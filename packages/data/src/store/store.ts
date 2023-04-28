@@ -4,7 +4,7 @@ export type Subscription = (data: Record[]) => void
 
 export interface ResourceStore {
   data: { [id: string]: Record }
-  subscribers: Array<Subscription>
+  subscribers: Subscription[]
 }
 
 export interface Store {
@@ -39,7 +39,7 @@ export function insert(resource: string, data: Record[]): void {
 export function convertRecordArrayToById(data: Record[]): {
   [id: string]: Record
 } {
-  return data.reduce((acc: any, item) => {
+  return data.reduce((acc: { [id: string]: Record }, item) => {
     acc[item.id] = item
     return acc
   }, {})

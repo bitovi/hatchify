@@ -12,7 +12,7 @@ export interface QueryList {
 
 export interface Record {
   id: string
-  [key: string]: any
+  [key: string]: any // @todo strict typing
 }
 
 export function getList(

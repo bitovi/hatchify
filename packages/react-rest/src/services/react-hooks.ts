@@ -9,7 +9,7 @@ export const useList = (resource: string, query: QueryList): [Record[]] => {
 
   useEffect(() => {
     getList(resource, query).then((records) => setData(Object.values(records)))
-  }, [])
+  }, [resource, query])
 
   useEffect(() => {
     const unsubscribe = subscribeToList(resource, (records) => {
@@ -17,7 +17,7 @@ export const useList = (resource: string, query: QueryList): [Record[]] => {
     })
 
     return () => unsubscribe()
-  }, [])
+  }, [resource])
 
   return [data]
 }
