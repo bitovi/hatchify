@@ -1,0 +1,4 @@
+ignore-dirs:
+  - /dist
+ignores:
+  - "@types/*"
