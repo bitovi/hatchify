@@ -31,13 +31,13 @@ export type ReactRest = {
 }
 
 export function reactRest(schemas: Schemas): ReactRest {
-  createStore(Object.keys(schemas))
+  createStore(Object.values(schemas).map((schema) => schema.resource))
   const functions = {} as ReactRest
 
   Object.values(schemas).forEach((schemas) => {
     functions[schemas.name] = {
-      getList: (query) => getList(schemas.name, schemas.resource, query),
-      useList: (query) => useList(schemas.name, schemas.resource, query),
+      getList: (query) => getList(schemas.resource, query),
+      useList: (query) => useList(schemas.resource, query),
       subscribeToList: (callback) => subscribeToList(schemas.name, callback),
     }
   })
