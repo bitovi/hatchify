@@ -1,5 +1,19 @@
-import { describe, it } from "vitest"
+import { describe, expect, it } from "vitest"
+import { getList } from "./source-jsonapi"
+import { baseUrl, articles } from "./mocks/handlers"
 
 describe("source-jsonapi", () => {
-  it.todo("tests")
+  describe("getList", () => {
+    it("works", async () => {
+      const result = await getList(
+        {
+          baseUrl,
+          resource: "articles",
+        },
+        {},
+      )
+
+      expect(result).toEqual({ data: articles })
+    })
+  })
 })

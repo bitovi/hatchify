@@ -25,6 +25,10 @@
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "vite build"
   },
+  "dependencies": {
+    "msw": "^1.2.1",
+    "source-jsonapi": "^0.0.0"
+  },
   "devDependencies": {
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",

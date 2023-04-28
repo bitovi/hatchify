@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite"
 import dts from "vite-plugin-dts"
 
@@ -8,6 +9,12 @@ export default defineConfig({
       entry: "src/data.ts",
       formats: ["es", "cjs"],
     },
+    rollupOptions: {
+      external: ["source-jsonapi"],
+    },
   },
   plugins: [dts()],
+  test: {
+    setupFiles: ["./src/setupTests.ts"],
+  },
 })

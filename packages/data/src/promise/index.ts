@@ -1,0 +1,1 @@
+export { getList } from "./promise"

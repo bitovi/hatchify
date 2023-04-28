@@ -25,9 +25,21 @@
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "vite build"
   },
+  "dependencies": {
+    "data": "^0.0.0",
+    "source-jsonapi": "^0.0.0"
+  },
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.2.0",
+    "jsdom": "^21.1.1",
+    "msw": "^1.2.1",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
