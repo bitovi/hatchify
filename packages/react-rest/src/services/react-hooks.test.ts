@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "data"
 import { useList } from "./react-hooks"
-import { articles } from "../mocks/handlers"
+import { articles } from "../../../shared/mocks/handlers"
 
 describe("react-rest/services/react-hooks", () => {
   describe("useList", () => {

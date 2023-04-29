@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { getList } from "./source-jsonapi"
-import { baseUrl, articles } from "./mocks/handlers"
+import { baseUrl, articles } from "../../shared/mocks/handlers"
 
 describe("source-jsonapi", () => {
   describe("getList", () => {

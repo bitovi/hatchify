@@ -1,7 +1,7 @@
 import { afterEach, describe, it, expect } from "vitest"
 import { getList } from "./promise"
 import { convertRecordArrayToById, createStore } from "../store"
-import { articles } from "../mocks/handlers"
+import { articles } from "../../../shared/mocks/handlers"
 
 describe("data/promise", () => {
   afterEach(() => {

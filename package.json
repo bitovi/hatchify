@@ -17,6 +17,7 @@
     "@bitovi/eslint-config": "^1.5.0",
     "depcheck": "^1.4.3",
     "eslint": "^8.25.0",
+    "msw": "^1.2.1",
     "nx": "15.9.2",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
