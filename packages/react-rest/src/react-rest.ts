@@ -1,12 +1,12 @@
 import { subscribeToList, getList, createStore } from "data"
-import type { QueryList, Record } from "source-jsonapi"
+import type { DataSource, QueryList, Record } from "source-jsonapi"
 import type { Unsubscribe } from "data"
 import { useList } from "./services/react-hooks"
 
-export type Schema = {
+export interface BaseSchema {
   name: string // "Article"
   resource: string // "articles"
-  displayAttribute: string // "title"
+  displayAttribute: string
   attributes: {
     [field: string]: string | { type: string }
   }
@@ -18,8 +18,13 @@ export type Schema = {
   }
 }
 
-export type Schemas = {
-  [schemaName: string]: Schema
+export interface ReactSchema {
+  schema: BaseSchema
+  dataSource: DataSource
+}
+
+export type ReactSchemas = {
+  [schemaName: string]: ReactSchema
 }
 
 export type ReactRest = {
@@ -30,15 +35,17 @@ export type ReactRest = {
   }
 }
 
-export function reactRest(schemas: Schemas): ReactRest {
-  createStore(Object.values(schemas).map((schema) => schema.resource))
+export function reactRest(reactSchemas: ReactSchemas): ReactRest {
   const functions = {} as ReactRest
+  const storeKeys = Object.values(reactSchemas).map((rs) => rs.schema.name)
+  createStore(storeKeys)
 
-  Object.values(schemas).forEach((schemas) => {
-    functions[schemas.name] = {
-      getList: (query) => getList(schemas.resource, query),
-      useList: (query) => useList(schemas.resource, query),
-      subscribeToList: (callback) => subscribeToList(schemas.name, callback),
+  Object.values(reactSchemas).forEach((reactSchema) => {
+    const { schema, dataSource } = reactSchema
+    functions[schema.name] = {
+      getList: (query) => getList(dataSource, schema.resource, query),
+      useList: (query) => useList(dataSource, schema.resource, query),
+      subscribeToList: (callback) => subscribeToList(schema.name, callback),
     }
   })
 
