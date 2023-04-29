@@ -27,3 +27,18 @@ export const useList = (
 
   return [data]
 }
+
+export const useCreateOne = (
+  dataSource: DataSource,
+  resource: string,
+): [(data: Omit<Record, "id">) => Promise<Record>, any, Record?] => {
+  const [data, setData] = useState<Record>()
+
+  const createOne = async (data: Omit<Record, "id">) => {
+    const record = await dataSource.createOne(resource, data)
+
+    setData(record.data)
+  }
+
+  return [createOne, undefined, data]
+}

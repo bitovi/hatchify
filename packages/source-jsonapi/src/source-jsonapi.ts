@@ -24,13 +24,29 @@ export function getList(
   )
 }
 
+export function createOne(
+  config: Config,
+  data: Omit<Record, "id">,
+): Promise<{ data: Record }> {
+  return fetch(`${config.baseUrl}/${config.resource}`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  }).then((response) => response.json())
+}
+
 export interface DataSource {
   getList: (resource: string, query: QueryList) => Promise<{ data: Record[] }>
+  createOne: (
+    resource: string,
+    data: Omit<Record, "id">,
+  ) => Promise<{ data: Record }>
 }
 
 export function jsonapi(config: { baseUrl: string }): DataSource {
   return {
-    getList: (resource: string, query: QueryList) =>
+    getList: (resource, query) =>
       getList({ baseUrl: config.baseUrl, resource }, query),
+    createOne: (resource, data) =>
+      createOne({ baseUrl: config.baseUrl, resource }, data),
   }
 }

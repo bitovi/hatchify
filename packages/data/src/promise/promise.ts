@@ -12,3 +12,15 @@ export const getList = async (
 
   return response.data
 }
+
+export const createOne = async (
+  dataSource: DataSource,
+  resource: string,
+  data: Omit<Record, "id">,
+): Promise<Record> => {
+  const response = await dataSource.createOne(resource, data)
+
+  insert(resource, [response.data])
+
+  return response.data
+}
