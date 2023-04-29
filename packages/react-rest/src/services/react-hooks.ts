@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react"
 import { getList, getStore, subscribeToList } from "data"
-import type { Record, QueryList } from "source-jsonapi"
+import type { DataSource, Record, QueryList } from "source-jsonapi"
 
-export const useList = (resource: string, query: QueryList): [Record[]] => {
+export const useList = (
+  dataSource: DataSource,
+  resource: string,
+  query: QueryList,
+): [Record[]] => {
   const [data, setData] = useState(
     Object.values(getStore(resource)?.data ?? []),
   )
 
   useEffect(() => {
-    getList(resource, query).then((records) => setData(Object.values(records)))
+    getList(dataSource, resource, query).then((records) =>
+      setData(Object.values(records)),
+    )
   }, [resource, query])
 
   useEffect(() => {

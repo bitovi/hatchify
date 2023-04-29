@@ -1,25 +1,35 @@
 import { describe, it, expect } from "vitest"
+import { jsonapi } from "source-jsonapi"
 import { reactRest } from "./react-rest"
-import type { Schema } from "./react-rest"
+import type { ReactSchema } from "./react-rest"
+import { baseUrl } from "./mocks/handlers"
 
 describe("react-rest", () => {
   it("should return functions for each schema", () => {
-    const Article: Schema = {
-      name: "Article",
-      resource: "articles",
-      displayAttribute: "title",
-      attributes: {
-        title: "string",
-        body: "string",
+    const dataSource = jsonapi({ baseUrl })
+
+    const Article: ReactSchema = {
+      dataSource,
+      schema: {
+        name: "Article",
+        resource: "articles",
+        displayAttribute: "title",
+        attributes: {
+          title: "string",
+          body: "string",
+        },
       },
     }
-    const Person: Schema = {
-      name: "Person",
-      resource: "people",
-      displayAttribute: "name",
-      attributes: {
-        name: "string",
-        age: "number",
+    const Person: ReactSchema = {
+      dataSource,
+      schema: {
+        name: "Person",
+        resource: "people",
+        displayAttribute: "name",
+        attributes: {
+          name: "string",
+          age: "number",
+        },
       },
     }
 

@@ -2,14 +2,17 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "data"
+import { jsonapi } from "source-jsonapi"
 import { useList } from "./react-hooks"
-import { articles } from "../mocks/handlers"
+import { articles, baseUrl } from "../mocks/handlers"
 
 describe("react-rest/services/react-hooks", () => {
   describe("useList", () => {
     it("should fetch a list of records", async () => {
       createStore(["articles"])
-      const { result } = renderHook(() => useList("articles", {}))
+      const dataSource = jsonapi({ baseUrl })
+
+      const { result } = renderHook(() => useList(dataSource, "articles", {}))
 
       await waitFor(() => expect(result.current).toEqual([articles]))
     })

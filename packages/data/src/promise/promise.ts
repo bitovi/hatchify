@@ -1,16 +1,12 @@
-import { getList as dataSourceGetList } from "source-jsonapi"
-import type { Record, QueryList } from "source-jsonapi"
+import type { DataSource, Record, QueryList } from "source-jsonapi"
 import { insert } from "../store"
 
 export const getList = async (
+  dataSource: DataSource,
   resource: string,
   query: QueryList,
 ): Promise<Record[]> => {
-  const response = await dataSourceGetList(
-    // @todo pull from schema
-    { baseUrl: "http://api.example.com", resource },
-    query,
-  )
+  const response = await dataSource.getList(resource, query)
 
   insert(resource, response.data)
 

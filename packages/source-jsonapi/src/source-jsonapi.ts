@@ -23,3 +23,14 @@ export function getList(
     response.json(),
   )
 }
+
+export interface DataSource {
+  getList: (resource: string, query: QueryList) => Promise<{ data: Record[] }>
+}
+
+export function jsonapi(config: { baseUrl: string }): DataSource {
+  return {
+    getList: (resource: string, query: QueryList) =>
+      getList({ baseUrl: config.baseUrl, resource }, query),
+  }
+}
