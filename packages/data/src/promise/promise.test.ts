@@ -1,7 +1,7 @@
 import { afterEach, describe, it, expect } from "vitest"
 import { getList } from "./promise"
 import { convertRecordArrayToById, createStore } from "../store"
-import { articles, baseUrl } from "@shared/mocks/handlers"
+import { articles, baseUrl } from "shared/mocks/handlers"
 import { jsonapi } from "source-jsonapi"
 
 describe("data/promise", () => {

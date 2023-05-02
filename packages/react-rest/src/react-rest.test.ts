@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest"
 import { jsonapi } from "source-jsonapi"
 import { reactRest } from "./react-rest"
 import type { ReactSchema } from "./react-rest"
-import { baseUrl } from "@shared/mocks/handlers"
+import { baseUrl } from "shared/mocks/handlers"
 
 describe("react-rest", () => {
   it("should return functions for each schema", () => {

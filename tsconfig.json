@@ -21,11 +21,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "useDefineForClassFields": true,
-
-    "baseUrl": "",
-    "paths": {
-      "@shared/*": ["shared/*"]
-    }
   },
   "exclude": ["node_modules"]
 }

@@ -4,7 +4,7 @@ import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "data"
 import { jsonapi } from "source-jsonapi"
 import { useList } from "./react-hooks"
-import { articles, baseUrl } from "@shared/mocks/handlers"
+import { articles, baseUrl } from "shared/mocks/handlers"
 
 describe("react-rest/services/react-hooks", () => {
   describe("useList", () => {
