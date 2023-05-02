@@ -33,7 +33,7 @@ export function insert(resource: string, data: Record[]): void {
     ...store[resource].data,
     ...convertRecordArrayToById(data),
   }
-  // @todo notify subscribers
+  store[resource].subscribers.forEach((subscriber) => subscriber(data))
 }
 
 export function convertRecordArrayToById(data: Record[]): {
