@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest"
+import { describe, it, expect, vi } from "vitest"
 import { createStore, insert } from "./store"
 
 describe("data/store", () => {
@@ -15,7 +15,9 @@ describe("data/store", () => {
         },
       })
     })
+  })
 
+  describe("insert", () => {
     it("should insert data into the store", () => {
       const store = createStore(["articles", "people"])
       insert("articles", [
@@ -43,6 +45,20 @@ describe("data/store", () => {
           subscribers: [],
         },
       })
+    })
+
+    it("should notify subscribers", () => {
+      const store = createStore(["articles", "people"])
+      const subscriber = vi.fn()
+      store.articles.subscribers.push(subscriber)
+
+      insert("articles", [
+        { id: "article-1", title: "title-1", body: "body-1" },
+      ])
+
+      expect(subscriber).toHaveBeenCalledWith([
+        { id: "article-1", title: "title-1", body: "body-1" },
+      ])
     })
   })
 })
