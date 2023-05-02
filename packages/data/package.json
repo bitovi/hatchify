@@ -29,6 +29,7 @@
     "source-jsonapi": "^0.0.0"
   },
   "devDependencies": {
+    "shared": "0.0.0",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
