@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 import { data, getList, fixtures } from "./source-fixtures"
 
-describe("source-jsonapi", () => {
-  describe("jsonapi", () => {
+describe("source-fixtures", () => {
+  describe("fixtures", () => {
     it("returns a DataSource", async () => {
       const dataSource = fixtures()
 
