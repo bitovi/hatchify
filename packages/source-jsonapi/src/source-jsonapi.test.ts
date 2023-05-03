@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { getList, jsonapi } from "./source-jsonapi"
+import { createOne, getList, jsonapi } from "./source-jsonapi"
 import { baseUrl, articles } from "shared/mocks/handlers"
 
 describe("source-jsonapi", () => {
@@ -9,9 +9,11 @@ describe("source-jsonapi", () => {
 
       expect(dataSource).toEqual({
         getList: expect.any(Function),
+        createOne: expect.any(Function),
       })
     })
   })
+
   describe("getList", () => {
     it("works", async () => {
       const config = { baseUrl, resource: "articles" }
@@ -25,6 +27,46 @@ describe("source-jsonapi", () => {
       const result = await dataSource.getList("articles", {})
 
       expect(result).toEqual({ data: articles })
+    })
+  })
+
+  describe("createOne", () => {
+    it("works", async () => {
+      const config = { baseUrl, resource: "articles" }
+      const result = await createOne(config, {
+        title: "title",
+        body: "body",
+      })
+
+      expect(result).toEqual({
+        data: {
+          type: "Article",
+          id: `article-id-${articles.length}`,
+          attributes: {
+            title: "title",
+            body: "body",
+          },
+        },
+      })
+    })
+
+    it("can be called from a DataSource", async () => {
+      const dataSource = jsonapi({ baseUrl })
+      const result = await dataSource.createOne("articles", {
+        title: "title",
+        body: "body",
+      })
+
+      expect(result).toEqual({
+        data: {
+          type: "Article",
+          id: `article-id-${articles.length}`,
+          attributes: {
+            title: "title",
+            body: "body",
+          },
+        },
+      })
     })
   })
 })

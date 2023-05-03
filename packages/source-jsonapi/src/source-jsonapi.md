@@ -22,6 +22,24 @@ getList(config: Config, query: QueryList): Promise<{ data: Record[] }>
 - `Promise<{ data: Record[] }>`
   - data `Record[]` - the data returned from the API
 
+## createOne
+
+```ts
+createOne(config: Config, data: Omit<Record, "id">,): Promise<{ data: Record }>
+```
+
+**params**
+
+- config `Config` - the configuration object for the API
+  - baseUrl `string` - baseURL for the API to fetch data from
+  - resource `string` - the API endpoint to append to the baseURL, ie. `articles`
+- data `Omit<Record, "id">` - the data to create
+
+**returns**
+
+- `Promise<{ data: Record }>`
+  - data `Record` - the data returned from the API
+
 ## jsonapi
 
 ```ts

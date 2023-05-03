@@ -37,12 +37,16 @@ describe("react-rest", () => {
 
     expect(api).toEqual({
       Article: {
+        createOne: expect.any(Function),
         getList: expect.any(Function),
+        useCreateOne: expect.any(Function),
         useList: expect.any(Function),
         subscribeToList: expect.any(Function),
       },
       Person: {
+        createOne: expect.any(Function),
         getList: expect.any(Function),
+        useCreateOne: expect.any(Function),
         useList: expect.any(Function),
         subscribeToList: expect.any(Function),
       },
