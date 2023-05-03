@@ -1,4 +1,4 @@
-import type { DataSource, Record, QueryList } from "source-jsonapi"
+import type { DataSource, Record, QueryList } from "hatchify-core"
 import { insert } from "../store"
 
 export const getList = async (

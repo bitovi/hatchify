@@ -1,25 +1,10 @@
 import { subscribeToList, getList, createStore } from "data-core"
-import type { DataSource, QueryList, Record } from "source-jsonapi"
 import type { Unsubscribe } from "data-core"
+import type { DataSource, QueryList, Record, Schema } from "hatchify-core"
 import { useList } from "./services/react-hooks"
 
-export interface BaseSchema {
-  name: string // "Article"
-  resource: string // "articles"
-  displayAttribute: string
-  attributes: {
-    [field: string]: string | { type: string }
-  }
-  relationships?: {
-    [field: string]: {
-      type: "many" | "one"
-      schema: string
-    }
-  }
-}
-
 export interface ReactSchema {
-  schema: BaseSchema
+  schema: Schema
   dataSource: DataSource
 }
 

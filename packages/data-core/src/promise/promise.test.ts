@@ -1,8 +1,7 @@
 import { afterEach, describe, it, expect } from "vitest"
 import { getList } from "./promise"
 import { convertRecordArrayToById, createStore } from "../store"
-import { articles, baseUrl } from "../mocks/handlers"
-import { jsonapi } from "source-jsonapi"
+import { data, fixtures } from "source-fixtures"
 
 describe("data-core/promise", () => {
   afterEach(() => {
@@ -13,11 +12,12 @@ describe("data-core/promise", () => {
   describe("getList", () => {
     it("should return a list of records", async () => {
       const store = createStore(["articles"])
-      const dataSource = jsonapi({ baseUrl })
+      const dataSource = fixtures()
       const result = await getList(dataSource, "articles", {})
+      const expected = data.articles
 
-      expect(result).toEqual(articles)
-      expect(store.articles.data).toEqual(convertRecordArrayToById(articles))
+      expect(result).toEqual(expected)
+      expect(store.articles.data).toEqual(convertRecordArrayToById(expected))
     })
   })
 })

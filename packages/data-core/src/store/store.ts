@@ -1,4 +1,4 @@
-import type { Record } from "source-jsonapi"
+import type { Record } from "hatchify-core"
 
 export type Subscription = (data: Record[]) => void
 

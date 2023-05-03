@@ -1,5 +1,5 @@
 import { getStore } from "../store"
-import type { Record } from "source-jsonapi"
+import type { Record } from "hatchify-core"
 
 export type Unsubscribe = () => void
 

@@ -27,13 +27,13 @@
   },
   "dependencies": {
     "data-core": "^0.0.0",
-    "source-jsonapi": "^0.0.0"
+    "hatchify-core": "^0.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.0",
     "jsdom": "^21.1.1",
-    "msw": "^1.2.1",
+    "source-fixtures": "^0.0.0",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
