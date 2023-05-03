@@ -1,4 +1,4 @@
-name: data
+name: data-core
 
 on:
   push:

@@ -4,7 +4,7 @@ import { convertRecordArrayToById, createStore } from "../store"
 import { articles, baseUrl } from "../mocks/handlers"
 import { jsonapi } from "source-jsonapi"
 
-describe("data/promise", () => {
+describe("data-core/promise", () => {
   afterEach(() => {
     // reset the store's state
     createStore(["articles"])

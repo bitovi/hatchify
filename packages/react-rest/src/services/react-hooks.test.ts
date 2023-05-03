@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import { createStore } from "data"
+import { createStore } from "data-core"
 import { jsonapi } from "source-jsonapi"
 import { useList } from "./react-hooks"
 import { articles, baseUrl } from "../mocks/handlers"

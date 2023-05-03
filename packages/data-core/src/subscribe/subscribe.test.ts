@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest"
 import { subscribeToList } from "./subscribe"
 import { createStore } from "../store"
 
-describe("data/subscribe", () => {
+describe("data-core/subscribe", () => {
   describe("subscribeToList", () => {
     it("callback should be called from store subscribers", () => {
       const store = createStore(["articles"])

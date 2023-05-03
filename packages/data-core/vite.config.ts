@@ -6,7 +6,7 @@ import dts from "vite-plugin-dts"
 export default defineConfig({
   build: {
     lib: {
-      entry: "src/data.ts",
+      entry: "src/data-core.ts",
       formats: ["es", "cjs"],
     },
     rollupOptions: {

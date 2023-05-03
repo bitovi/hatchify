@@ -10,7 +10,7 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["data", "source-jsonapi"],
+      external: ["data-core", "source-jsonapi"],
     },
   },
   plugins: [dts()],

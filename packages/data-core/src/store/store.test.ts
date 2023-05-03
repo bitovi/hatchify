@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest"
 import { createStore, insert } from "./store"
 
-describe("data/store", () => {
+describe("data-core/store", () => {
   describe("createStore", () => {
     it("should create a ResourceStore for each schema", () => {
       expect(createStore(["articles", "people"])).toEqual({

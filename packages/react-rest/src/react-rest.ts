@@ -1,6 +1,6 @@
-import { subscribeToList, getList, createStore } from "data"
+import { subscribeToList, getList, createStore } from "data-core"
 import type { DataSource, QueryList, Record } from "source-jsonapi"
-import type { Unsubscribe } from "data"
+import type { Unsubscribe } from "data-core"
 import { useList } from "./services/react-hooks"
 
 export interface BaseSchema {
