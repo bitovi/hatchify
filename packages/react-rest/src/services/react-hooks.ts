@@ -15,7 +15,7 @@ export const useList = (
     getList(dataSource, resource, query).then((records) =>
       setData(Object.values(records)),
     )
-  }, [resource, query])
+  }, [dataSource, resource, query])
 
   useEffect(() => {
     const unsubscribe = subscribeToList(resource, (records) => {

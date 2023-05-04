@@ -1,14 +1,19 @@
 import { describe, it, expect } from "vitest"
-import { fixtures } from "source-fixtures"
 import { reactRest } from "./react-rest"
 import type { ReactSchema } from "./react-rest"
+import type { Source } from "data-core"
+
+const fakeDataSource: Source = {
+  getList: () =>
+    Promise.resolve({
+      data: [],
+    }),
+}
 
 describe("react-rest", () => {
   it("should return functions for each schema", () => {
-    const dataSource = fixtures()
-
     const Article: ReactSchema = {
-      dataSource,
+      dataSource: fakeDataSource,
       schema: {
         name: "Article",
         resource: "articles",
@@ -20,7 +25,7 @@ describe("react-rest", () => {
       },
     }
     const Person: ReactSchema = {
-      dataSource,
+      dataSource: fakeDataSource,
       schema: {
         name: "Person",
         resource: "people",

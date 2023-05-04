@@ -1,7 +1,19 @@
 import { afterEach, describe, it, expect } from "vitest"
 import { getList } from "./promise"
 import { convertRecordArrayToById, createStore } from "../store"
-import { data, fixtures } from "source-fixtures"
+import type { Source } from "../types"
+
+const fakeData = [
+  { id: "1", title: "foo", body: "foo-body" },
+  { id: "2", title: "bar", body: "bar-body" },
+]
+
+const fakeDataSource: Source = {
+  getList: () =>
+    Promise.resolve({
+      data: fakeData,
+    }),
+}
 
 describe("data-core/promise", () => {
   afterEach(() => {
@@ -11,13 +23,19 @@ describe("data-core/promise", () => {
 
   describe("getList", () => {
     it("should return a list of records", async () => {
-      const store = createStore(["articles"])
-      const dataSource = fixtures()
-      const result = await getList(dataSource, "articles", {})
-      const expected = data.articles
+      createStore(["articles"])
+      const result = await getList(fakeDataSource, "articles", {})
+      const expected = fakeData
 
       expect(result).toEqual(expected)
-      expect(store.articles.data).toEqual(convertRecordArrayToById(expected))
+    })
+
+    it("should insert the records into the store", async () => {
+      const store = createStore(["articles"])
+      await getList(fakeDataSource, "articles", {})
+      const expected = convertRecordArrayToById(fakeData)
+
+      expect(store.articles.data).toEqual(expected)
     })
   })
 })

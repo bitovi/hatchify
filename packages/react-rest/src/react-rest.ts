@@ -1,6 +1,5 @@
 import { subscribeToList, getList, createStore } from "data-core"
-import type { Unsubscribe } from "data-core"
-import type { Source, QueryList, Record, Schema } from "data-core"
+import type { Source, QueryList, Record, Schema, Unsubscribe } from "data-core"
 import { useList } from "./services/react-hooks"
 
 export interface ReactSchema {
