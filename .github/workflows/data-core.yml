@@ -18,6 +18,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup source-fixtures
+        run: npx nx build source-fixtures
+
       - name: Verify
         uses: ./.github/actions/job-verify
 
