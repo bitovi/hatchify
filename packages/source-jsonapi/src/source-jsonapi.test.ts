@@ -12,6 +12,7 @@ describe("source-jsonapi", () => {
       })
     })
   })
+
   describe("getList", () => {
     it("works", async () => {
       const config = { baseUrl, resource: "articles" }

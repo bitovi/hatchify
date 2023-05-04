@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { defineConfig } from "vite"
 import dts from "vite-plugin-dts"
 
@@ -6,15 +5,9 @@ import dts from "vite-plugin-dts"
 export default defineConfig({
   build: {
     lib: {
-      entry: "src/source-jsonapi.ts",
+      entry: "src/hatchify-core.ts",
       formats: ["es", "cjs"],
-    },
-    rollupOptions: {
-      external: ["hatchify-core"],
     },
   },
   plugins: [dts()],
-  test: {
-    setupFiles: ["./src/setupTests.ts"],
-  },
 })

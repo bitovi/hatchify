@@ -1,12 +1,11 @@
 import { describe, it, expect } from "vitest"
-import { jsonapi } from "source-jsonapi"
+import { fixtures } from "source-fixtures"
 import { reactRest } from "./react-rest"
 import type { ReactSchema } from "./react-rest"
-import { baseUrl } from "./mocks/handlers"
 
 describe("react-rest", () => {
   it("should return functions for each schema", () => {
-    const dataSource = jsonapi({ baseUrl })
+    const dataSource = fixtures()
 
     const Article: ReactSchema = {
       dataSource,

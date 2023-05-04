@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { getList, getStore, subscribeToList } from "data-core"
-import type { DataSource, Record, QueryList } from "source-jsonapi"
+import type { DataSource, Record, QueryList } from "hatchify-core"
 
 export const useList = (
   dataSource: DataSource,
