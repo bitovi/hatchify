@@ -4,7 +4,7 @@ import { baseUrl, articles } from "./mocks/handlers"
 
 describe("source-jsonapi", () => {
   describe("jsonapi", () => {
-    it("returns a DataSource", async () => {
+    it("returns a Source", async () => {
       const dataSource = jsonapi({ baseUrl })
 
       expect(dataSource).toEqual({
@@ -21,7 +21,7 @@ describe("source-jsonapi", () => {
       expect(result).toEqual({ data: articles })
     })
 
-    it("can be called from a DataSource", async () => {
+    it("can be called from a Source", async () => {
       const dataSource = jsonapi({ baseUrl })
       const result = await dataSource.getList("articles", {})
 

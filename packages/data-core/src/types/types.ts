@@ -13,12 +13,6 @@ export interface Schema {
   }
 }
 
-// data-sources
-export interface Config {
-  baseUrl: string
-  resource: string
-}
-
 export interface QueryList {
   fields?: string[]
   page?: { size: number; number: number }
@@ -31,6 +25,11 @@ export interface Record {
   [key: string]: any // @todo strict typing
 }
 
-export interface DataSource {
+export interface SourceConfig {
+  baseUrl: string
+  resource: string
+}
+
+export interface Source {
   getList: (resource: string, query: QueryList) => Promise<{ data: Record[] }>
 }

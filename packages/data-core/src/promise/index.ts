@@ -1,1 +1,1 @@
-export { getList } from "./promise"
+export * from "./promise"

@@ -1,8 +1,8 @@
-import type { DataSource, Record, QueryList } from "hatchify-core"
+import type { Source, Record, QueryList } from "../types"
 import { insert } from "../store"
 
 export const getList = async (
-  dataSource: DataSource,
+  dataSource: Source,
   resource: string,
   query: QueryList,
 ): Promise<Record[]> => {

@@ -5,12 +5,12 @@ This is the default `data-source`. It is _only_ responsible for the network requ
 ## getList
 
 ```ts
-getList(config: Config, query: QueryList): Promise<{ data: Record[] }>
+getList(config: SourceConfig, query: QueryList): Promise<{ data: Record[] }>
 ```
 
 **params**
 
-- config `Config` - the configuration object for the API
+- config `SourceConfig` - the configuration object for the data source
   - baseUrl `string` - baseURL for the API to fetch data from
   - resource `string` - the API endpoint to append to the baseURL, ie. `articles`
 - query `QueryList` - the query object for the API
@@ -25,15 +25,15 @@ getList(config: Config, query: QueryList): Promise<{ data: Record[] }>
 ## jsonapi
 
 ```ts
-jsonapi(config: { baseUrl: string }): DataSource
+jsonapi(config: { baseUrl: string }): Source
 ```
 
 **params**
 
-- config `Config` - the configuration object for the API
+- config `SourceConfig` - the configuration object for the data source
   - baseUrl `string` - baseURL for the API to fetch data from
 
 **returns**
 
-- `DataSource` - object containing the data source methods
+- `Source` - object containing the data source methods
   - getList `getList`

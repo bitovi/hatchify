@@ -9,7 +9,7 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["data-core", "hatchify-core"],
+      external: ["data-core"],
     },
   },
   plugins: [dts()],

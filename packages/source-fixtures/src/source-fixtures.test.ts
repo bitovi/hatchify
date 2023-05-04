@@ -3,7 +3,7 @@ import { data, getList, fixtures } from "./source-fixtures"
 
 describe("source-fixtures", () => {
   describe("fixtures", () => {
-    it("returns a DataSource", async () => {
+    it("returns a Source", async () => {
       const dataSource = fixtures()
 
       expect(dataSource).toEqual({
@@ -19,7 +19,7 @@ describe("source-fixtures", () => {
       expect(result).toEqual({ data: data.articles })
     })
 
-    it("can be called from a DataSource", async () => {
+    it("can be called from a Source", async () => {
       const dataSource = fixtures()
       const result = await dataSource.getList("articles", {})
 

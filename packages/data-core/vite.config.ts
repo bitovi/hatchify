@@ -8,9 +8,6 @@ export default defineConfig({
       entry: "src/data-core.ts",
       formats: ["es", "cjs"],
     },
-    rollupOptions: {
-      external: ["hatchify-core"],
-    },
   },
   plugins: [dts()],
 })

@@ -1,9 +1,9 @@
 import type {
-  Config,
-  DataSource,
+  Source,
+  SourceConfig,
   QueryList,
   Record as HatchifyRecord,
-} from "hatchify-core"
+} from "data-core"
 
 export const data: Record<string, HatchifyRecord[]> = {
   articles: [
@@ -26,13 +26,13 @@ export const data: Record<string, HatchifyRecord[]> = {
 }
 
 export function getList(
-  config: Omit<Config, "baseUrl">,
+  config: Omit<SourceConfig, "baseUrl">,
   query: QueryList,
 ): Promise<{ data: HatchifyRecord[] }> {
   return Promise.resolve({ data: data[config.resource] })
 }
 
-export function fixtures(): DataSource {
+export function fixtures(): Source {
   return {
     getList: (resource: string, query: QueryList) =>
       getList({ resource }, query),

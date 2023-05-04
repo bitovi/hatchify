@@ -1,7 +1,7 @@
-import type { Config, DataSource, QueryList, Record } from "hatchify-core"
+import type { Source, SourceConfig, QueryList, Record } from "data-core"
 
 export function getList(
-  config: Config,
+  config: SourceConfig,
   query: QueryList, // @todo implement query for fields, page, sort, and filter
 ): Promise<{ data: Record[] }> {
   return fetch(`${config.baseUrl}/${config.resource}`).then((response) =>
@@ -9,7 +9,7 @@ export function getList(
   )
 }
 
-export function jsonapi(config: { baseUrl: string }): DataSource {
+export function jsonapi(config: { baseUrl: string }): Source {
   return {
     getList: (resource: string, query: QueryList) =>
       getList({ baseUrl: config.baseUrl, resource }, query),

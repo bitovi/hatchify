@@ -26,8 +26,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "data-core": "^0.0.0",
-    "hatchify-core": "^0.0.0"
+    "data-core": "^0.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",

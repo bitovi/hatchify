@@ -1,4 +1,4 @@
-import type { Record } from "hatchify-core"
+import type { Record } from "../types"
 
 export type Subscription = (data: Record[]) => void
 

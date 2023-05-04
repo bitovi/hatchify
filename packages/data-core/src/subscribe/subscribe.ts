@@ -1,5 +1,5 @@
 import { getStore } from "../store"
-import type { Record } from "hatchify-core"
+import type { Record } from "../types"
 
 export type Unsubscribe = () => void
 
