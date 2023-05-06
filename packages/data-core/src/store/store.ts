@@ -1,9 +1,9 @@
-import type { Record } from "../types"
+import type { Record, Resource } from "../types"
 
 export type Subscription = (data: Record[]) => void
 
 export interface ResourceStore {
-  data: { [id: string]: Record }
+  data: { [id: string]: Resource }
   subscribers: Subscription[]
 }
 
@@ -13,9 +13,9 @@ export interface Store {
 
 export const store: Store = {}
 
-export function createStore(schemaKeys: string[]): Store {
-  schemaKeys.forEach((schemaKey) => {
-    store[schemaKey] = {
+export function createStore(schemas: string[]): Store {
+  schemas.forEach((name) => {
+    store[name] = {
       data: {},
       subscribers: [],
     }
@@ -24,23 +24,34 @@ export function createStore(schemaKeys: string[]): Store {
   return store
 }
 
-export function getStore(resource: string): ResourceStore {
-  return store[resource]
+export function getStore(schema: string): ResourceStore {
+  return store[schema]
 }
 
-export function insert(resource: string, data: Record[]): void {
-  store[resource].data = {
-    ...store[resource].data,
-    ...convertRecordArrayToById(data),
+export function insert(schema: string, data: Resource[]): void {
+  store[schema].data = {
+    ...store[schema].data,
+    ...keyResourcesById(data),
   }
-  store[resource].subscribers.forEach((subscriber) => subscriber(data))
+
+  const records = data.map(convertResourceToRecord)
+  store[schema].subscribers.forEach((subscriber) => subscriber(records))
 }
 
-export function convertRecordArrayToById(data: Record[]): {
-  [id: string]: Record
+export function keyResourcesById(data: Resource[]): {
+  [id: string]: Resource
 } {
-  return data.reduce((acc: { [id: string]: Record }, item) => {
+  return data.reduce((acc: { [id: string]: Resource }, item) => {
     acc[item.id] = item
     return acc
   }, {})
+}
+
+export function convertResourceToRecord(resource: Resource): Record {
+  return {
+    id: resource.id,
+    __schema: resource.__schema,
+    ...resource.attributes,
+    // @todo relationships
+  }
 }

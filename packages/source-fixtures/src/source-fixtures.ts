@@ -1,40 +1,50 @@
-import type {
-  Source,
-  SourceConfig,
-  QueryList,
-  Record as HatchifyRecord,
-} from "data-core"
+import type { Source, SourceConfig, QueryList, Resource } from "data-core"
 
-export const data: Record<string, HatchifyRecord[]> = {
+export const data: Record<string, any[]> = {
   articles: [
     {
       id: "article-1",
-      title: "Article 1",
-      body: "Body 1",
+      attributes: {
+        title: "Article 1",
+        body: "Body 1",
+      },
     },
     {
       id: "article-2",
-      title: "Article 2",
-      body: "Body 2",
+      attributes: {
+        title: "Article 2",
+        body: "Body 2",
+      },
     },
     {
       id: "article-3",
-      title: "Article 3",
-      body: "Body 3",
+      attributes: {
+        title: "Article 3",
+        body: "Body 3",
+      },
     },
   ],
 }
 
 export function getList(
-  config: Omit<SourceConfig, "baseUrl">,
+  config: SourceConfig,
+  schema: string,
   query: QueryList,
-): Promise<{ data: HatchifyRecord[] }> {
-  return Promise.resolve({ data: data[config.resource] })
+): Promise<{ data: Resource[] }> {
+  return Promise.resolve({
+    data: data[config.url].map((resource) => {
+      return {
+        __schema: schema,
+        ...resource,
+      }
+    }),
+  })
 }
 
-export function fixtures(): Source {
+export function fixtures(config: SourceConfig): Source {
   return {
-    getList: (resource: string, query: QueryList) =>
-      getList({ resource }, query),
+    version: "0.0.0",
+    getList: (schema: string, query: QueryList) =>
+      getList(config, schema, query),
   }
 }

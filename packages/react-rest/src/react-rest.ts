@@ -27,8 +27,8 @@ export function reactRest(reactSchemas: ReactSchemas): ReactRest {
   Object.values(reactSchemas).forEach((reactSchema) => {
     const { schema, dataSource } = reactSchema
     functions[schema.name] = {
-      getList: (query) => getList(dataSource, schema.resource, query),
-      useList: (query) => useList(dataSource, schema.resource, query),
+      getList: (query) => getList(dataSource, schema.name, query),
+      useList: (query) => useList(dataSource, schema.name, query),
       subscribeToList: (callback) => subscribeToList(schema.name, callback),
     }
   })

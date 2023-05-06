@@ -1,17 +1,25 @@
-import type { Source, SourceConfig, QueryList, Record } from "data-core"
+import type { Source, SourceConfig, QueryList, Resource } from "data-core"
 
-export function getList(
+export async function getList(
   config: SourceConfig,
+  schema: string,
   query: QueryList, // @todo implement query for fields, page, sort, and filter
-): Promise<{ data: Record[] }> {
-  return fetch(`${config.baseUrl}/${config.resource}`).then((response) =>
-    response.json(),
-  )
+): Promise<{ data: Resource[] }> {
+  const response = await fetch(`${config.url}`)
+  const data = await response.json()
+
+  return Promise.resolve({
+    data: data.data.map((record: any) => ({
+      __schema: schema,
+      ...record,
+    })),
+  })
 }
 
-export function jsonapi(config: { baseUrl: string }): Source {
+export function jsonapi(config: SourceConfig): Source {
   return {
-    getList: (resource: string, query: QueryList) =>
-      getList({ baseUrl: config.baseUrl, resource }, query),
+    version: "0.0.0",
+    getList: (schema: string, query: QueryList) =>
+      getList(config, schema, query),
   }
 }

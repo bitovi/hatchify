@@ -1,14 +1,27 @@
 import { afterEach, describe, it, expect } from "vitest"
 import { getList } from "./promise"
-import { convertRecordArrayToById, createStore } from "../store"
+import {
+  keyResourcesById,
+  createStore,
+  convertResourceToRecord,
+} from "../store"
 import type { Source } from "../types"
 
 const fakeData = [
-  { id: "1", title: "foo", body: "foo-body" },
-  { id: "2", title: "bar", body: "bar-body" },
+  {
+    id: "1",
+    __schema: "Article",
+    attributes: { title: "foo", body: "foo-body" },
+  },
+  {
+    id: "2",
+    __schema: "Article",
+    attributes: { title: "bar", body: "bar-body" },
+  },
 ]
 
 const fakeDataSource: Source = {
+  version: "0.0.0",
   getList: () =>
     Promise.resolve({
       data: fakeData,
@@ -18,24 +31,24 @@ const fakeDataSource: Source = {
 describe("data-core/promise", () => {
   afterEach(() => {
     // reset the store's state
-    createStore(["articles"])
+    createStore(["Article"])
   })
 
   describe("getList", () => {
     it("should return a list of records", async () => {
-      createStore(["articles"])
-      const result = await getList(fakeDataSource, "articles", {})
-      const expected = fakeData
+      createStore(["Article"])
+      const result = await getList(fakeDataSource, "Article", {})
+      const expected = fakeData.map(convertResourceToRecord)
 
       expect(result).toEqual(expected)
     })
 
     it("should insert the records into the store", async () => {
-      const store = createStore(["articles"])
-      await getList(fakeDataSource, "articles", {})
-      const expected = convertRecordArrayToById(fakeData)
+      const store = createStore(["Article"])
+      await getList(fakeDataSource, "Article", {})
+      const expected = keyResourcesById(fakeData)
 
-      expect(store.articles.data).toEqual(expected)
+      expect(store.Article.data).toEqual(expected)
     })
   })
 })

@@ -1,6 +1,5 @@
 export interface Schema {
   name: string // "Article"
-  resource: string // "articles"
   displayAttribute: string
   attributes: {
     [field: string]: string | { type: string }
@@ -25,11 +24,25 @@ export interface Record {
   [key: string]: any // @todo strict typing
 }
 
-export interface SourceConfig {
-  baseUrl: string
-  resource: string
+export interface Resource {
+  id: string
+  __schema: string
+  attributes: {
+    [key: string]: any // @todo
+  }
+  relationships?: {
+    [key: string]: any // @todo
+  }
 }
 
-export interface Source {
-  getList: (resource: string, query: QueryList) => Promise<{ data: Record[] }>
+export interface SourceConfig {
+  type: string
+  url: string
 }
+
+export interface SourceV0_0_0 {
+  version: "0.0.0"
+  getList: (schema: string, query: QueryList) => Promise<{ data: Resource[] }>
+}
+
+export type Source = SourceV0_0_0 // | SourceV0_0_1 | ...

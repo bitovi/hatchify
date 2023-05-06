@@ -1,14 +1,14 @@
 import type { Source, Record, QueryList } from "../types"
-import { insert } from "../store"
+import { convertResourceToRecord, insert } from "../store"
 
 export const getList = async (
   dataSource: Source,
-  resource: string,
+  schema: string,
   query: QueryList,
 ): Promise<Record[]> => {
-  const response = await dataSource.getList(resource, query)
+  const response = await dataSource.getList(schema, query)
 
-  insert(resource, response.data)
+  insert(schema, response.data)
 
-  return response.data
+  return response.data.map(convertResourceToRecord)
 }

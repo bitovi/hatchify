@@ -4,6 +4,7 @@ import type { ReactSchema } from "./react-rest"
 import type { Source } from "data-core"
 
 const fakeDataSource: Source = {
+  version: "0.0.0",
   getList: () =>
     Promise.resolve({
       data: [],
@@ -16,7 +17,6 @@ describe("react-rest", () => {
       dataSource: fakeDataSource,
       schema: {
         name: "Article",
-        resource: "articles",
         displayAttribute: "title",
         attributes: {
           title: "string",
@@ -28,7 +28,6 @@ describe("react-rest", () => {
       dataSource: fakeDataSource,
       schema: {
         name: "Person",
-        resource: "people",
         displayAttribute: "name",
         attributes: {
           name: "string",

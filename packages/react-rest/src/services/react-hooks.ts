@@ -1,29 +1,25 @@
 import { useState, useEffect } from "react"
-import { getList, getStore, subscribeToList } from "data-core"
+import { getList, subscribeToList } from "data-core"
 import type { Source, Record, QueryList } from "data-core"
 
 export const useList = (
   dataSource: Source,
-  resource: string,
+  schema: string,
   query: QueryList,
 ): [Record[]] => {
-  const [data, setData] = useState(
-    Object.values(getStore(resource)?.data ?? []),
-  )
+  const [data, setData] = useState<Record[]>([]) // @todo default to what's in the store
 
   useEffect(() => {
-    getList(dataSource, resource, query).then((records) =>
-      setData(Object.values(records)),
+    getList(dataSource, schema, query).then(setData)
+  }, [dataSource, schema, query])
+
+  useEffect(() => {
+    const unsubscribe = subscribeToList(schema, (records: Record[]) =>
+      setData(records),
     )
-  }, [dataSource, resource, query])
-
-  useEffect(() => {
-    const unsubscribe = subscribeToList(resource, (records) => {
-      setData(Object.values(records))
-    })
 
     return () => unsubscribe()
-  }, [resource])
+  }, [schema])
 
   return [data]
 }
