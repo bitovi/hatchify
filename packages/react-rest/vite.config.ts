@@ -9,7 +9,7 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["data-core"],
+      external: [/node_modules/],
     },
   },
   plugins: [dts()],
