@@ -1,4 +1,4 @@
-export { getList } from "./promise"
+export { createOne, getList } from "./promise"
 export { subscribeToList } from "./subscribe"
 export {
   createStore,
@@ -8,6 +8,7 @@ export {
 } from "./store"
 export type { Unsubscribe } from "./subscribe"
 export type {
+  CreateData,
   QueryList,
   Record,
   Resource,

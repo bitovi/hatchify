@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { getList, subscribeToList } from "data-core"
-import type { Source, Record, QueryList } from "data-core"
+import type { CreateData, Source, Record, QueryList } from "data-core"
 
 export const useList = (
   dataSource: Source,
@@ -22,4 +22,18 @@ export const useList = (
   }, [schema])
 
   return [data]
+}
+
+export const useCreateOne = (
+  dataSource: Source,
+  schema: string,
+): [(data: CreateData) => void, any, Record?] => {
+  const [data, setData] = useState<Record | undefined>(undefined)
+
+  function createOne(data: CreateData) {
+    dataSource.createOne(schema, data).then((data) => setData(data.data))
+    // .catch(setError)
+  }
+
+  return [createOne, undefined, data]
 }

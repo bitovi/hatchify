@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore, convertResourceToRecord } from "data-core"
 import type { Source } from "data-core"
-import { useList } from "./react-hooks"
+import { useCreateOne, useList } from "./react-hooks"
 
 const fakeData = [
   {
@@ -23,6 +23,14 @@ const fakeDataSource: Source = {
   getList: () =>
     Promise.resolve({
       data: fakeData,
+    }),
+  createOne: () =>
+    Promise.resolve({
+      data: {
+        id: "3",
+        __schema: "Article",
+        attributes: { title: "baz", body: "baz-body" },
+      },
     }),
 }
 
@@ -72,6 +80,38 @@ describe("react-rest/services/react-hooks", () => {
       await waitFor(() =>
         expect(result.current).toEqual([
           newFakeData.map(convertResourceToRecord),
+        ]),
+      )
+    })
+  })
+
+  describe("useCreateOne", () => {
+    it("should create a record", async () => {
+      createStore(["Article"])
+
+      const { result } = renderHook(() =>
+        useCreateOne(fakeDataSource, "Article"),
+      )
+
+      await waitFor(() => {
+        expect(result.current).toEqual([
+          expect.any(Function),
+          undefined,
+          undefined,
+        ])
+      })
+
+      await result.current[0]({ title: "baz", body: "baz-body" })
+
+      await waitFor(() =>
+        expect(result.current).toEqual([
+          expect.any(Function),
+          undefined,
+          {
+            id: "3",
+            __schema: "Article",
+            attributes: { title: "baz", body: "baz-body" },
+          },
         ]),
       )
     })

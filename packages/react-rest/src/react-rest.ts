@@ -1,6 +1,13 @@
-import { subscribeToList, getList, createStore } from "data-core"
-import type { Source, QueryList, Record, Schema, Unsubscribe } from "data-core"
-import { useList } from "./services/react-hooks"
+import { subscribeToList, getList, createOne, createStore } from "data-core"
+import type {
+  CreateData,
+  Source,
+  QueryList,
+  Record,
+  Schema,
+  Unsubscribe,
+} from "data-core"
+import { useCreateOne, useList } from "./services/react-hooks"
 
 export interface ReactSchema {
   schema: Schema
@@ -14,7 +21,9 @@ export type ReactSchemas = {
 export type ReactRest = {
   [schemaName: string]: {
     getList: (query: QueryList) => Promise<Record[]>
+    createOne: (data: CreateData) => Promise<Record>
     useList: (query: QueryList) => [Record[]]
+    useCreateOne: () => [(data: CreateData) => void, any, Record?]
     subscribeToList: (callback: (data: Record[]) => void) => Unsubscribe
   }
 }
@@ -28,7 +37,9 @@ export function reactRest(reactSchemas: ReactSchemas): ReactRest {
     const { schema, dataSource } = reactSchema
     functions[schema.name] = {
       getList: (query) => getList(dataSource, schema.name, query),
+      createOne: (data) => createOne(dataSource, schema.name, data),
       useList: (query) => useList(dataSource, schema.name, query),
+      useCreateOne: () => useCreateOne(dataSource, schema.name),
       subscribeToList: (callback) => subscribeToList(schema.name, callback),
     }
   })

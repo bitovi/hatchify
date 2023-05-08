@@ -6,7 +6,12 @@ This is the default `data-source`. It is _only_ responsible for the network requ
 
 - returns a `promise` that resolves to an `array` of Resource `objects` that represent the data requested.
 
+## createOne
+
+- returns a `promise` that resolves to a Resource `object` that represents the data requested.
+
 ## jsonapi
 
 - returns a source `object` containing the following methods:
   - `getList`
+  - `createOne`

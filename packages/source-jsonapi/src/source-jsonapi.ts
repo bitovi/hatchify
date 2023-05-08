@@ -1,4 +1,10 @@
-import type { Source, SourceConfig, QueryList, Resource } from "data-core"
+import type {
+  CreateData,
+  Source,
+  SourceConfig,
+  QueryList,
+  Resource,
+} from "data-core"
 
 export async function getList(
   config: SourceConfig,
@@ -16,10 +22,31 @@ export async function getList(
   })
 }
 
+export async function createOne(
+  config: SourceConfig,
+  schema: string,
+  data: CreateData,
+): Promise<{ data: Resource }> {
+  const response = await fetch(`${config.url}`, {
+    method: "POST",
+    body: JSON.stringify({ data }),
+  })
+  const record = await response.json()
+
+  return Promise.resolve({
+    data: {
+      __schema: schema,
+      ...record.data,
+    },
+  })
+}
+
 export function jsonapi(config: SourceConfig): Source {
   return {
     version: "0.0.0",
     getList: (schema: string, query: QueryList) =>
       getList(config, schema, query),
+    createOne: (schema: string, data: CreateData) =>
+      createOne(config, schema, data),
   }
 }

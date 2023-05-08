@@ -35,6 +35,8 @@ export interface Resource {
   }
 }
 
+export type CreateData = Omit<Record, "id" | "__schema">
+
 export interface SourceConfig {
   type: string
   url: string
@@ -43,6 +45,7 @@ export interface SourceConfig {
 export interface SourceV0_0_0 {
   version: "0.0.0"
   getList: (schema: string, query: QueryList) => Promise<{ data: Resource[] }>
+  createOne: (schema: string, data: CreateData) => Promise<{ data: Resource }>
 }
 
 export type Source = SourceV0_0_0 // | SourceV0_0_1 | ...
