@@ -29,9 +29,19 @@ export function createStore(schemas: string[]): Store {
 
 /**
  * Returns the ResourceStore for a given schema.
+ * @todo query parameter
  */
 export function getStore(schema: string): ResourceStore {
   return store[schema]
+}
+
+/**
+ * Returns the records for a given schema.
+ */
+export function getRecords(schema: string): Record[] {
+  return store[schema] && "data" in store[schema]
+    ? Object.values(store[schema].data).map(convertResourceToRecord)
+    : []
 }
 
 /**

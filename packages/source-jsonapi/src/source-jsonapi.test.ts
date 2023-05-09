@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest"
+import { rest } from "msw"
 import { createOne, getList, jsonapi } from "./source-jsonapi"
 import { baseUrl, articles } from "./mocks/handlers"
+import { server } from "./mocks/server"
 
 describe("source-jsonapi", () => {
   const sourceConfig = { url: `${baseUrl}/articles`, type: "article" }
@@ -28,6 +30,18 @@ describe("source-jsonapi", () => {
       expect(result).toEqual(expected)
     })
 
+    it("throws an error if the request fails", async () => {
+      server.use(
+        rest.get(`${baseUrl}/articles`, (_, res, ctx) =>
+          res.once(ctx.status(500), ctx.json({ error: "error message" })),
+        ),
+      )
+
+      await expect(getList(sourceConfig, "Article", {})).rejects.toThrowError(
+        "failed to fetch list",
+      )
+    })
+
     it("can be called from a Source", async () => {
       const dataSource = jsonapi(sourceConfig)
       const spy = vi.spyOn(dataSource, "getList")
@@ -49,6 +63,18 @@ describe("source-jsonapi", () => {
       }
       const result = await createOne(sourceConfig, "Article", data)
       expect(result).toEqual(expected)
+    })
+
+    it("throws an error if the request fails", async () => {
+      server.use(
+        rest.post(`${baseUrl}/articles`, (_, res, ctx) =>
+          res.once(ctx.status(500), ctx.json({ error: "error message" })),
+        ),
+      )
+
+      await expect(() =>
+        createOne(sourceConfig, "Article", {}),
+      ).rejects.toThrowError("failed to create record")
     })
 
     it("can be called from a Source", async () => {

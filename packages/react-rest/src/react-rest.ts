@@ -1,6 +1,7 @@
 import { subscribeToList, getList, createOne, createStore } from "data-core"
 import type {
   CreateData,
+  Meta,
   Source,
   QueryList,
   Record,
@@ -22,8 +23,8 @@ export type ReactRest = {
   [schemaName: string]: {
     getList: (query: QueryList) => Promise<Record[]>
     createOne: (data: CreateData) => Promise<Record>
-    useList: (query: QueryList) => [Record[]]
-    useCreateOne: () => [(data: CreateData) => void, any, Record?]
+    useList: (query: QueryList) => [Record[], Meta]
+    useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     subscribeToList: (callback: (data: Record[]) => void) => Unsubscribe
   }
 }

@@ -58,6 +58,17 @@ describe("data-core/promise", () => {
 
       expect(store.Article.data).toEqual(expected)
     })
+
+    it("should throw an error if the request fails", async () => {
+      const errorDataSource = {
+        ...fakeDataSource,
+        getList: () => Promise.reject(new Error("network error")),
+      }
+
+      await expect(
+        getList(errorDataSource, "Article", {}),
+      ).rejects.toThrowError("network error")
+    })
   })
 
   describe("createOne", () => {
@@ -87,6 +98,16 @@ describe("data-core/promise", () => {
       store.Article.subscribers.push(subscriber)
       await createOne(fakeDataSource, "Article", data)
       expect(subscriber).toHaveBeenCalledTimes(1)
+    })
+
+    it("should throw an error if the request fails", async () => {
+      const errorDataSource = {
+        ...fakeDataSource,
+        createOne: () => Promise.reject(new Error("network error")),
+      }
+      await expect(
+        createOne(errorDataSource, "Article", data),
+      ).rejects.toThrowError("network error")
     })
   })
 })

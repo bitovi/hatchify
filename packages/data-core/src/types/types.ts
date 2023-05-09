@@ -37,6 +37,17 @@ export interface Resource {
 
 export type CreateData = Omit<Record, "id" | "__schema">
 
+export interface Meta {
+  status: "loading" | "success" | "error"
+  meta?: { [key: string]: any } // @todo pagination
+  error?: any // @todo validation
+  isStale?: boolean
+  isLoading?: boolean
+  isDone?: boolean
+  isRejected?: boolean
+  isRevalidating?: boolean
+}
+
 export interface SourceConfig {
   type: string
   url: string

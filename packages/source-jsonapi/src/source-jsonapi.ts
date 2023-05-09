@@ -16,6 +16,12 @@ export async function getList(
   query: QueryList, // @todo query for fields, page, sort, and filter
 ): Promise<{ data: Resource[] }> {
   const response = await fetch(`${config.url}`)
+
+  // @todo proper validation
+  if (!response.ok) {
+    throw Error("failed to fetch list")
+  }
+
   const data = await response.json()
 
   return Promise.resolve({
@@ -39,6 +45,12 @@ export async function createOne(
     method: "POST",
     body: JSON.stringify({ data }),
   })
+
+  // @todo proper validation
+  if (!response.ok) {
+    throw Error("failed to create record")
+  }
+
   const record = await response.json()
 
   return Promise.resolve({

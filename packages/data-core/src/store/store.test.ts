@@ -1,13 +1,18 @@
-import { describe, it, expect, vi } from "vitest"
+import { afterEach, describe, it, expect, vi } from "vitest"
 import {
   convertResourceToRecord,
   createStore,
+  getRecords,
   keyResourcesById,
   insert,
 } from "./store"
 import type { Resource } from "../types"
 
 describe("data-core/store", () => {
+  afterEach(() => {
+    // reset the store's state
+    createStore(["Article", "Person"])
+  })
   describe("createStore", () => {
     it("should create a ResourceStore for each schema", () => {
       expect(createStore(["Article", "Person"])).toEqual({
@@ -139,6 +144,39 @@ describe("data-core/store", () => {
         "1": { id: "1", __schema: "Entity", attributes: { name: "name-1" } },
         "2": { id: "2", __schema: "Entity", attributes: { name: "name-2" } },
       })
+    })
+  })
+
+  describe("getRecords", () => {
+    it("should return an array of records for a given schema", () => {
+      createStore(["Article", "Person"])
+      insert("Article", [
+        {
+          id: "article-1",
+          __schema: "Article",
+          attributes: { title: "title-1", body: "body-1" },
+        },
+      ])
+      insert("Person", [
+        {
+          id: "person-1",
+          __schema: "Person",
+          attributes: { name: "name-1", age: 30 },
+        },
+      ])
+
+      expect(getRecords("Article")).toEqual([
+        {
+          id: "article-1",
+          __schema: "Article",
+          title: "title-1",
+          body: "body-1",
+        },
+      ])
+    })
+
+    it("should return an empty array if there are no records for a given schema", () => {
+      expect(getRecords("Tags")).toEqual([])
     })
   })
 })
