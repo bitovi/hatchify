@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useCallback, useState, useEffect } from "react"
 import { createOne, getList, subscribeToList } from "data-core"
 import type { CreateData, Meta, Source, Record, QueryList } from "data-core"
 import { getRecords } from "data-core"
@@ -15,15 +15,19 @@ export const useList = (
   const defaultData = getRecords(schema)
   const [data, setData] = useState<Record[]>(defaultData)
   const [error, setError] = useState<Error | undefined>(undefined)
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
+  const getListCallback = useCallback(() => {
     setLoading(true)
     getList(dataSource, schema, query)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
   }, [dataSource, schema, query])
+
+  useEffect(() => {
+    getListCallback()
+  }, [])
 
   useEffect(() => {
     return subscribeToList(schema, (records: Record[]) => setData(records))
@@ -35,6 +39,7 @@ export const useList = (
   const meta = {
     status,
     error,
+    loading,
     isLoading: status === "loading",
     isDone: status === "success",
     isRejected: status === "error",

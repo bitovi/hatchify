@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore, convertResourceToRecord } from "data-core"
-import type { Source } from "data-core"
+import type { Source, Subscription } from "data-core"
 import { useCreateOne, useList } from "./react-hooks"
 
 const fakeData = [
@@ -35,7 +35,7 @@ const fakeDataSource: Source = {
 }
 
 describe("react-rest/services/react-hooks", () => {
-  describe.skip("useList", () => {
+  describe("useList", () => {
     it("should fetch a list of records", async () => {
       createStore(["Article"])
 
@@ -47,6 +47,7 @@ describe("react-rest/services/react-hooks", () => {
         expect(result.current).toEqual([
           fakeData.map(convertResourceToRecord),
           {
+            status: "success",
             loading: false,
             error: undefined,
             isLoading: false,
@@ -58,7 +59,7 @@ describe("react-rest/services/react-hooks", () => {
     })
 
     it("should subscribe and return latest data", async () => {
-      createStore(["Article"])
+      const store = createStore(["Article"])
 
       const { result } = renderHook(() =>
         useList(fakeDataSource, "Article", {}),
@@ -68,6 +69,7 @@ describe("react-rest/services/react-hooks", () => {
         expect(result.current).toEqual([
           fakeData.map(convertResourceToRecord),
           {
+            status: "success",
             loading: false,
             error: undefined,
             isLoading: false,
@@ -90,14 +92,21 @@ describe("react-rest/services/react-hooks", () => {
         },
       ]
 
-      fakeDataSource.getList = () =>
-        Promise.resolve({
-          data: newFakeData,
-        })
+      store.Article.subscribers.forEach((subscriber: Subscription) =>
+        subscriber(newFakeData.map(convertResourceToRecord)),
+      )
 
       await waitFor(() =>
         expect(result.current).toEqual([
           newFakeData.map(convertResourceToRecord),
+          {
+            status: "success",
+            loading: false,
+            error: undefined,
+            isDone: true,
+            isLoading: false,
+            isRejected: false,
+          },
         ]),
       )
     })
@@ -117,6 +126,7 @@ describe("react-rest/services/react-hooks", () => {
           [],
           {
             status: "error",
+            loading: false,
             error: new Error("Something went wrong"),
             isLoading: false,
             isDone: false,

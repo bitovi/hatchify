@@ -17,4 +17,5 @@ export type {
   Schema,
   Source,
   SourceConfig,
+  Subscription,
 } from "./types"

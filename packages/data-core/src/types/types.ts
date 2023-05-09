@@ -48,6 +48,8 @@ export interface Meta {
   isRevalidating?: boolean
 }
 
+export type Subscription = (data: Record[]) => void
+
 export interface SourceConfig {
   type: string
   url: string

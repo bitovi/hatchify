@@ -1,6 +1,4 @@
-import type { Record, Resource } from "../types"
-
-export type Subscription = (data: Record[]) => void
+import type { Record, Resource, Subscription } from "../types"
 
 export interface ResourceStore {
   data: { [id: string]: Resource }
