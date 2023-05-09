@@ -1,19 +1,18 @@
 import { describe, expect, it } from "vitest"
-import { getList, jsonapi } from "./source-jsonapi"
-import { baseUrl, articles } from "./mocks/handlers"
+import { data, getList, fixtures } from "./source-fixtures"
 
-describe("source-jsonapi", () => {
-  const sourceConfig = { url: `${baseUrl}/articles`, type: "article" }
+describe("source-fixtures", () => {
+  const sourceConfig = { type: "article", url: "articles" }
   const expected = {
-    data: articles.map((article) => ({
+    data: data.articles.map((article) => ({
       __schema: "Article",
       ...article,
     })),
   }
 
-  describe("jsonapi", () => {
+  describe("fixtures", () => {
     it("returns a Source", async () => {
-      const dataSource = jsonapi(sourceConfig)
+      const dataSource = fixtures(sourceConfig)
 
       expect(dataSource).toEqual({
         version: 0,
@@ -30,7 +29,7 @@ describe("source-jsonapi", () => {
     })
 
     it("can be called from a Source", async () => {
-      const dataSource = jsonapi(sourceConfig)
+      const dataSource = fixtures(sourceConfig)
       const result = await dataSource.getList("Article", {})
 
       expect(result).toEqual(expected)

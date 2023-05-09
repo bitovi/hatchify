@@ -5,8 +5,11 @@ import dts from "vite-plugin-dts"
 export default defineConfig({
   build: {
     lib: {
-      entry: "src/data.ts",
+      entry: "src/source-fixtures.ts",
       formats: ["es", "cjs"],
+    },
+    rollupOptions: {
+      external: [/node_modules/],
     },
   },
   plugins: [dts()],

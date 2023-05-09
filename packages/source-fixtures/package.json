@@ -1,15 +1,15 @@
 {
-  "name": "react-rest",
+  "name": "source-fixtures",
   "private": true,
   "version": "0.0.0",
-  "main": "./dist/react-rest.js",
-  "module": "./dist/react-rest.mjs",
-  "types": "./dist/react-rest.d.ts",
+  "main": "./dist/source-fixtures.js",
+  "module": "./dist/source-fixtures.mjs",
+  "types": "./dist/source-fixtures.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/react-rest.js",
-      "import": "./dist/react-rest.mjs",
-      "types": "./src/react-rest.ts"
+      "require": "./dist/source-fixtures.js",
+      "import": "./dist/source-fixtures.mjs",
+      "types": "./src/source-fixtures.ts"
     },
     "./package.json": "./package.json"
   },
@@ -25,19 +25,10 @@
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "vite build"
   },
-  "dependencies": {
-    "data-core": "^0.0.0"
-  },
   "devDependencies": {
-    "@testing-library/react": "^14.0.0",
-    "@types/react": "^18.2.0",
-    "jsdom": "^21.1.1",
+    "data-core": "^0.0.0",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
-  },
-  "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   }
 }
