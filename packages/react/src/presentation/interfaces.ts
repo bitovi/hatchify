@@ -1,5 +1,38 @@
+import type { HatchifyDisplay } from "../services/displays/hatchifyDisplays"
 
 export type Primitive = string | boolean | number
+
+export interface XListProps {
+  displays: HatchifyDisplay[]
+  useData: () => FlatRecord[]
+}
+
+export interface XLayoutProps {
+  schema: Schema
+  renderActions?: () => JSX.Element
+  children?: React.ReactNode
+}
+
+export interface XDetailsProps {
+  displays: HatchifyDisplay[]
+  useData: () => FlatRecord
+}
+
+// export interface XFormProps {
+//   isEdit: boolean
+//   fields: HatchifyFormField[]
+//   formState: FormState
+//   onUpdateField: ({
+//     key,
+//     value,
+//     attributeSchema,
+//   }: {
+//     key: string
+//     value: FormFieldValueType
+//     attributeSchema: AttributeSchema
+//   }) => void
+//   onSave: () => void
+// }
 
 export type Relationship = {
   id: string
