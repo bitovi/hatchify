@@ -27,7 +27,7 @@ export interface Record {
 export interface Resource {
   id: string
   __schema: string
-  attributes: {
+  attributes?: {
     [key: string]: any // @todo
   }
   relationships?: {
@@ -40,9 +40,9 @@ export interface SourceConfig {
   url: string
 }
 
-export interface SourceV0_0_0 {
-  version: "0.0.0"
+export interface SourceV0 {
+  version: 0
   getList: (schema: string, query: QueryList) => Promise<{ data: Resource[] }>
 }
 
-export type Source = SourceV0_0_0 // | SourceV0_0_1 | ...
+export type Source = SourceV0 // | SourceV1 | ...

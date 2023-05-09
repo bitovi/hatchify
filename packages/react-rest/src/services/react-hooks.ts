@@ -14,11 +14,7 @@ export const useList = (
   }, [dataSource, schema, query])
 
   useEffect(() => {
-    const unsubscribe = subscribeToList(schema, (records: Record[]) =>
-      setData(records),
-    )
-
-    return () => unsubscribe()
+    return subscribeToList(schema, (records: Record[]) => setData(records))
   }, [schema])
 
   return [data]

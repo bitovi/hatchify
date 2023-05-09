@@ -43,7 +43,7 @@ export function getList(
 
 export function fixtures(config: SourceConfig): Source {
   return {
-    version: "0.0.0",
+    version: 0,
     getList: (schema: string, query: QueryList) =>
       getList(config, schema, query),
   }

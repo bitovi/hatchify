@@ -16,7 +16,7 @@ describe("source-jsonapi", () => {
       const dataSource = jsonapi(sourceConfig)
 
       expect(dataSource).toEqual({
-        version: "0.0.0",
+        version: 0,
         getList: expect.any(Function),
       })
     })

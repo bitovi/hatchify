@@ -18,7 +18,7 @@ export async function getList(
 
 export function jsonapi(config: SourceConfig): Source {
   return {
-    version: "0.0.0",
+    version: 0,
     getList: (schema: string, query: QueryList) =>
       getList(config, schema, query),
   }
