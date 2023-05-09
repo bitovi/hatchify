@@ -28,21 +28,27 @@ export type ReactRest = {
   }
 }
 
+/**
+ * Returns a set of functions for interacting with the data-core store and
+ * data source for each schema.
+ */
 export function reactRest(reactSchemas: ReactSchemas): ReactRest {
-  const functions = {} as ReactRest
   const storeKeys = Object.values(reactSchemas).map((rs) => rs.schema.name)
   createStore(storeKeys)
 
-  Object.values(reactSchemas).forEach((reactSchema) => {
+  const functions = Object.values(reactSchemas).reduce((acc, reactSchema) => {
     const { schema, dataSource } = reactSchema
-    functions[schema.name] = {
+
+    acc[schema.name] = {
       getList: (query) => getList(dataSource, schema.name, query),
       createOne: (data) => createOne(dataSource, schema.name, data),
       useList: (query) => useList(dataSource, schema.name, query),
       useCreateOne: () => useCreateOne(dataSource, schema.name),
       subscribeToList: (callback) => subscribeToList(schema.name, callback),
     }
-  })
+
+    return acc
+  }, {} as ReactRest)
 
   return functions
 }

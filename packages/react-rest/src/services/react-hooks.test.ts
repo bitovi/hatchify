@@ -19,7 +19,7 @@ const fakeData = [
 ]
 
 const fakeDataSource: Source = {
-  version: "0.0.0",
+  version: 0,
   getList: () =>
     Promise.resolve({
       data: fakeData,

@@ -2,6 +2,10 @@ import { useState, useEffect } from "react"
 import { getList, subscribeToList } from "data-core"
 import type { CreateData, Source, Record, QueryList } from "data-core"
 
+/**
+ * Fetches a list of records using the data-core getList function,
+ * subscribes to the store for updates to the list, returns the list.
+ */
 export const useList = (
   dataSource: Source,
   schema: string,
@@ -14,16 +18,16 @@ export const useList = (
   }, [dataSource, schema, query])
 
   useEffect(() => {
-    const unsubscribe = subscribeToList(schema, (records: Record[]) =>
-      setData(records),
-    )
-
-    return () => unsubscribe()
+    return subscribeToList(schema, (records: Record[]) => setData(records))
   }, [schema])
 
   return [data]
 }
 
+/**
+ * Returns a function that creates a new record using the data-core createOne,
+ * @todo metadata, and the last created record.
+ */
 export const useCreateOne = (
   dataSource: Source,
   schema: string,

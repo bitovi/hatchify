@@ -5,7 +5,7 @@ import type { Source } from "data-core"
 import type { Resource } from "data-core"
 
 const fakeDataSource: Source = {
-  version: "0.0.0",
+  version: 0,
   getList: () =>
     Promise.resolve({
       data: [] as Resource[],

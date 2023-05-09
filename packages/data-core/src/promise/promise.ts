@@ -1,6 +1,10 @@
 import type { CreateData, Source, Record, QueryList } from "../types"
 import { convertResourceToRecord, insert } from "../store"
 
+/**
+ * Fetches a list of resources from a data source, inserts them into the store,
+ * notifies subscribers, and returns them as records.
+ */
 export const getList = async (
   dataSource: Source,
   schema: string,
@@ -13,6 +17,10 @@ export const getList = async (
   return response.data.map(convertResourceToRecord)
 }
 
+/**
+ * Creates a new resource in the data source, inserts it into the store,
+ * notifies subscribers, and returns it as a record.
+ */
 export const createOne = async (
   dataSource: Source,
   schema: string,
