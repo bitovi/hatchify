@@ -1,9 +1,17 @@
-import { subscribeToList, getList, createOne, createStore } from "data-core"
+import {
+  createOne,
+  createStore,
+  getList,
+  getOne,
+  subscribeToList,
+  subscribeToOne,
+} from "data-core"
 import type {
   CreateData,
   Meta,
   Source,
   QueryList,
+  QueryOne,
   Record,
   Schema,
   Unsubscribe,
@@ -22,10 +30,12 @@ export type ReactSchemas = {
 export type ReactRest = {
   [schemaName: string]: {
     getList: (query: QueryList) => Promise<Record[]>
+    getOne: (query: QueryOne) => Promise<Record>
     createOne: (data: CreateData) => Promise<Record>
     useList: (query: QueryList) => [Record[], Meta]
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     subscribeToList: (callback: (data: Record[]) => void) => Unsubscribe
+    subscribeToOne: (callback: (data: Record) => void) => Unsubscribe
   }
 }
 
@@ -42,10 +52,12 @@ export function reactRest(reactSchemas: ReactSchemas): ReactRest {
 
     acc[schema.name] = {
       getList: (query) => getList(dataSource, schema.name, query),
+      getOne: (query) => getOne(dataSource, schema.name, query),
       createOne: (data) => createOne(dataSource, schema.name, data),
       useList: (query) => useList(dataSource, schema.name, query),
       useCreateOne: () => useCreateOne(dataSource, schema.name),
       subscribeToList: (callback) => subscribeToList(schema.name, callback),
+      subscribeToOne: (callback) => subscribeToOne(schema.name, callback),
     }
 
     return acc

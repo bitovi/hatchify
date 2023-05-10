@@ -1,17 +1,11 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import { createOne, getList, jsonapi } from "./source-jsonapi"
+import { createOne, getList, getOne, jsonapi } from "./source-jsonapi"
 import { baseUrl, articles } from "./mocks/handlers"
 import { server } from "./mocks/server"
 
 describe("source-jsonapi", () => {
   const sourceConfig = { url: `${baseUrl}/articles`, type: "article" }
-  const expected = {
-    data: articles.map((article) => ({
-      __schema: "Article",
-      ...article,
-    })),
-  }
 
   describe("jsonapi", () => {
     it("returns a Source", async () => {
@@ -19,6 +13,7 @@ describe("source-jsonapi", () => {
       expect(dataSource).toEqual({
         version: 0,
         getList: expect.any(Function),
+        getOne: expect.any(Function),
         createOne: expect.any(Function),
       })
     })
@@ -26,6 +21,12 @@ describe("source-jsonapi", () => {
 
   describe("getList", () => {
     it("works", async () => {
+      const expected = {
+        data: articles.map((article) => ({
+          __schema: "Article",
+          ...article,
+        })),
+      }
       const result = await getList(sourceConfig, "Article", {})
       expect(result).toEqual(expected)
     })
@@ -47,6 +48,40 @@ describe("source-jsonapi", () => {
       const spy = vi.spyOn(dataSource, "getList")
       await dataSource.getList("Article", {})
       expect(spy).toHaveBeenCalledWith("Article", {})
+    })
+  })
+
+  describe("getOne", () => {
+    const query = { id: "article-id-1" }
+
+    it("works", async () => {
+      const expected = {
+        data: {
+          ...articles.find((article) => article.id === "article-id-1"),
+          __schema: "Article",
+        },
+      }
+      const result = await getOne(sourceConfig, "Article", query)
+      expect(result).toEqual(expected)
+    })
+
+    it("throws an error if the request fails", async () => {
+      server.use(
+        rest.get(`${baseUrl}/articles/article-id-1`, (_, res, ctx) =>
+          res.once(ctx.status(500), ctx.json({ error: "error message" })),
+        ),
+      )
+
+      await expect(getOne(sourceConfig, "Article", query)).rejects.toThrowError(
+        "failed to fetch record",
+      )
+    })
+
+    it("can be called from a Source", async () => {
+      const dataSource = jsonapi(sourceConfig)
+      const spy = vi.spyOn(dataSource, "getOne")
+      await dataSource.getOne("Article", query)
+      expect(spy).toHaveBeenCalledWith("Article", query)
     })
   })
 

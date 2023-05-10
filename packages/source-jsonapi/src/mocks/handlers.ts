@@ -33,7 +33,7 @@ export const handlers = [
   rest.get(`${baseUrl}/articles`, (_, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: articles }))
   }),
-  rest.get(`${baseUrl}/articles:id`, (req, res, ctx) => {
+  rest.get(`${baseUrl}/articles/:id`, (req, res, ctx) => {
     const { id } = req.params
     const article = articles.find((article) => article.id === id)
     if (!article) {

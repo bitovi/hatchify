@@ -1,7 +1,20 @@
 import { useCallback, useState, useEffect } from "react"
-import { createOne, getList, subscribeToList } from "data-core"
-import type { CreateData, Meta, Source, Record, QueryList } from "data-core"
-import { getRecords } from "data-core"
+import {
+  createOne,
+  getList,
+  getOne,
+  getRecords,
+  subscribeToList,
+  subscribeToOne,
+} from "data-core"
+import type {
+  CreateData,
+  Meta,
+  Source,
+  Record,
+  QueryList,
+  QueryOne,
+} from "data-core"
 
 /**
  * Fetches a list of records using the data-core getList function,
@@ -17,7 +30,7 @@ export const useList = (
   const [error, setError] = useState<Error | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const getListCallback = useCallback(() => {
+  useEffect(() => {
     setLoading(true)
     getList(dataSource, schema, query)
       .then(setData)
@@ -26,12 +39,50 @@ export const useList = (
   }, [dataSource, schema, query])
 
   useEffect(() => {
-    getListCallback()
-  }, [])
-
-  useEffect(() => {
     return subscribeToList(schema, (records: Record[]) => setData(records))
   }, [schema])
+
+  const status = (
+    error ? "error" : loading ? "loading" : "success"
+  ) as Meta["status"]
+  const meta = {
+    status,
+    error,
+    loading,
+    isLoading: status === "loading",
+    isDone: status === "success",
+    isRejected: status === "error",
+  }
+
+  return [data, meta]
+}
+
+/**
+ * Fetches a single records using the data-core getOne function,
+ * subscribes to the store for updates to the record, returns the record.
+ */
+export const useOne = (
+  dataSource: Source,
+  schema: string,
+  query: QueryOne,
+): [Record | undefined, Meta] => {
+  const defaultData = getRecords(schema)
+  const record = defaultData.find((record: Record) => record.id === query.id)
+  const [data, setData] = useState<Record | undefined>(record)
+  const [error, setError] = useState<Error | undefined>(undefined)
+  const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    setLoading(true)
+    getOne(dataSource, schema, query)
+      .then(setData)
+      .catch(setError)
+      .finally(() => setLoading(false))
+  }, [dataSource, schema, query])
+
+  useEffect(() => {
+    return subscribeToOne(schema, (record: Record) => setData(record), query.id)
+  }, [query.id])
 
   const status = (
     error ? "error" : loading ? "loading" : "success"

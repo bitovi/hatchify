@@ -19,6 +19,8 @@ export interface QueryList {
   filter?: { [key: string]: { [filter: string]: string } }
 }
 
+export type QueryOne = { id: string; fields?: string[] }
+
 export interface Record {
   id: string
   [key: string]: any // @todo strict typing
@@ -58,6 +60,7 @@ export interface SourceConfig {
 export interface SourceV0 {
   version: 0
   getList: (schema: string, query: QueryList) => Promise<{ data: Resource[] }>
+  getOne: (schema: string, query: QueryOne) => Promise<{ data: Resource }>
   createOne: (schema: string, data: CreateData) => Promise<{ data: Resource }>
 }
 
