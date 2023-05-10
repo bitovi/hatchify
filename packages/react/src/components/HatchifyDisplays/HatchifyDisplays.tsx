@@ -1,11 +1,12 @@
+import type { Record } from "data-core"
+
 import type {
   ValueComponent,
-  FlatRecord,
   CellValue,
   Attribute,
 } from "../../presentation/interfaces"
 
-export type Render = ({ record }: { record: FlatRecord }) => JSX.Element
+export type Render = ({ record }: { record: Record }) => JSX.Element
 
 export type RenderValue = ({
   value,
@@ -13,7 +14,7 @@ export type RenderValue = ({
   attributeSchema,
 }: {
   value: CellValue
-  record: FlatRecord
+  record: Record
   attributeSchema?: Attribute
 }) => JSX.Element
 

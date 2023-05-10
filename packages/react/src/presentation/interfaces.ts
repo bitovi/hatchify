@@ -1,10 +1,11 @@
 import type { HatchifyDisplay } from "../services/displays/hatchifyDisplays"
+import type { Record, Schema } from "data-core"
 
 export type Primitive = string | boolean | number
 
 export interface XListProps {
   displays: HatchifyDisplay[]
-  useData: () => FlatRecord[]
+  useData: () => Record[]
 }
 
 export interface XLayoutProps {
@@ -15,7 +16,7 @@ export interface XLayoutProps {
 
 export interface XDetailsProps {
   displays: HatchifyDisplay[]
-  useData: () => FlatRecord
+  useData: () => Record
 }
 
 // export interface XFormProps {
@@ -54,7 +55,7 @@ export type Attribute = string | AttributeSchema
 
 export type ValueComponent = React.FC<{
   value: CellValue
-  record: FlatRecord
+  record: Record
   attributeSchema: Attribute | null
   attribute?: string | null
 }>
@@ -62,27 +63,27 @@ export type ValueComponent = React.FC<{
 
 
 
-
+/// ***** import the Schema from Arthur PR
 
 ///TODO placeholder for until Arthurs PR get merge
-export interface FlatRecord {
-  id: string | number
-  [field: string]: CellValue
-}
+// export interface FlatRecord {
+//   id: string | number
+//   [field: string]: CellValue
+// }
 
-export interface RelationshipSchema {
-  target: string
-  options: { through: string; as: string }
-}
+// export interface RelationshipSchema {
+//   target: string
+//   options: { through: string; as: string }
+// }
 
-export interface Schema {
-  name: string
-  attributes: { [key: string]: Attribute }
-  // validation
-  belongsToMany?: RelationshipSchema[]
-  hasMany?: RelationshipSchema[]
-  hasOne?: RelationshipSchema[]
-  /* EXTRA */
-  displayField: string
-  jsonApiField: string
-}
+// export interface Schema {
+//   name: string
+//   attributes: { [key: string]: Attribute }
+//   // validation
+//   belongsToMany?: RelationshipSchema[]
+//   hasMany?: RelationshipSchema[]
+//   hasOne?: RelationshipSchema[]
+//   /* EXTRA */
+//   displayField: string
+//   jsonApiField: string
+// }
