@@ -1,15 +1,17 @@
 import { useParams } from "react-router-dom"
+import type { Record, Schema } from "data-core"
+
 // import { getOne } from "../../services/api/api"
 import { useHatchifyPresentation } from "../HatchifyPresentationProvider"
 import { getDisplays } from "../../services/displays/hatchifyDisplays"
 
 // import type { Schema } from "../../schemas/schemas"
-import type { Schema, FlatRecord, ValueComponent } from "../../presentation/interfaces"
+import type { ValueComponent } from "../../presentation/interfaces"
 
 interface HatchifyDetailsProps {
   schema: Schema
   valueComponents?: { [attribute: string]: ValueComponent }
-  useData?: () => FlatRecord
+  useData?: () => Record
   children?: React.ReactNode | null
 }
 
