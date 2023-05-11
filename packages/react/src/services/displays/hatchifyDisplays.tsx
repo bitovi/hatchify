@@ -1,28 +1,27 @@
 import { Children as ReactChildren } from "react"
 import cloneDeep from "lodash/cloneDeep"
 import { v4 as uuidv4 } from "uuid"
-import type { Record, Schema } from "data-core"
+import type { Schema } from "data-core"
 
 import {
   HatchifyAttributeDisplay,
   HatchifyExtraDisplay,
-} from "../../components/HatchifyDisplays"
+} from "../../components"
 
 import type {
   Attribute,
   // Schema,
   Relationship as RelationshipType,
-  // FlatRecord,
+  FlatRecord,
   ValueComponent,
 } from "../../presentation/interfaces"
 
-import type { Render, RenderValue } from "../../components/HatchifyDisplays"
-import type { DefaultValueComponentsTypes } from "../../components/HatchifyPresentationProvider"
+import type { Render, RenderValue, DefaultValueComponentsTypes } from "../../components"
 
 export interface HatchifyDisplay {
   key: string
   label: string
-  render: ({ record }: { record: Record }) => React.ReactNode
+  render: ({ record }: { record: FlatRecord }) => React.ReactNode
 }
 
 export interface Schema {
@@ -43,12 +42,12 @@ export function getDefaultRender(
   attribute: string,
   attributeType: string,
   defaultValueComponents: DefaultValueComponentsTypes,
-): ({ record }: { record: Record }) => React.ReactNode {
+): ({ record }: { record: FlatRecord }) => React.ReactNode {
   const { String, Number, Boolean, Relationship, RelationshipList, Date } =
     defaultValueComponents
 
   // @todo primitive lists?
-  const defaultRender = ({ record }: { record: Record }) => {
+  const defaultRender = ({ record }: { record: FlatRecord }) => {
     const value = record[attribute]
 
     if (attributeType === "date" && typeof value === "string") {

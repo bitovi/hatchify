@@ -1,18 +1,18 @@
-import type { Record, Schema } from "data-core"
+import type { Schema } from "data-core"
 
-import { getDisplays } from "../../services/displays/hatchifyDisplays";
-import { useHatchifyPresentation } from "../HatchifyPresentationProvider";
+import { getDisplays } from "../../services";
+import { useHatchifyPresentation } from "..";
 
-import type { ValueComponent } from "../../presentation/interfaces";
+import type { FlatRecord, ValueComponent } from "../../presentation/interfaces";
 
 interface HatchifyListProps {
   schema: Schema
   valueComponents?: { [attribute: string]: ValueComponent }
-  useData?: () => Record[]
+  useData?: () => FlatRecord[]
   children?: React.ReactNode | null
 }
 
-const HatchifyList: React.FC<HatchifyListProps> = ({
+export const HatchifyList: React.FC<HatchifyListProps> = ({
   schema,
   valueComponents,
   useData,

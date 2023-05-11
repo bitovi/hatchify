@@ -1,1 +1,1 @@
-export { default } from "./HatchifyList"
+export { HatchifyList } from "./HatchifyList"

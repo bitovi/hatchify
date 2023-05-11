@@ -5,7 +5,7 @@ import type {
   XLayoutProps,
   XDetailsProps,
   Relationship as RelationshipType,
-  // XFormProps,
+  XFormProps,
 } from "../../presentation/interfaces"
 
 import {
@@ -75,7 +75,7 @@ export interface HatchifyPresentationContextProps {
   List: React.FC<XListProps>
   Layout: React.FC<XLayoutProps>
   Details: React.FC<XDetailsProps>
-  // Form: React.FC<XFormProps>
+  Form: React.FC<XFormProps>
   defaultValueComponents: DefaultValueComponentsTypes
   defaultFieldComponents: DefaultFieldComponentsTypes
 }
@@ -109,7 +109,7 @@ export const HatchifyPresentationContext =
     List: () => null,
     Layout: () => null,
     Details: () => null,
-    // Form: () => null,
+    Form: () => null,
     defaultValueComponents: HatchifyPresentationDefaultValueComponents,
     defaultFieldComponents: HatchifyPresentationDefaultFieldComponents,
   })
@@ -124,13 +124,13 @@ interface HatchifyPresentationProviderProps
   children: React.ReactNode
 }
 
-const HatchifyPresentationProvider: React.FC<
+export const HatchifyPresentationProvider: React.FC<
   HatchifyPresentationProviderProps
 > = ({
   List,
   Layout,
   Details,
-  // Form,
+  Form,
   defaultValueComponents,
   defaultFieldComponents,
   children,
@@ -141,7 +141,7 @@ const HatchifyPresentationProvider: React.FC<
         List,
         Layout,
         Details,
-        // Form,
+        Form,
         defaultValueComponents,
         defaultFieldComponents,
       }}
