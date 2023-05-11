@@ -53,7 +53,9 @@ export function insert(schema: string, data: Resource[]): void {
 
   const records = data.map(convertResourceToRecord)
 
-  store[schema].subscribers.forEach((subscriber) => subscriber(records))
+  for (const subscriber of store[schema].subscribers) {
+    subscriber(records)
+  }
 }
 
 /**

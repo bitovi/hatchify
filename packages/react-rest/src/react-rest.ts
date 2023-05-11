@@ -35,7 +35,10 @@ export type ReactRest = {
     useList: (query: QueryList) => [Record[], Meta]
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     subscribeToList: (callback: (data: Record[]) => void) => Unsubscribe
-    subscribeToOne: (callback: (data: Record) => void) => Unsubscribe
+    subscribeToOne: (
+      callback: (data: Record) => void,
+      id: string,
+    ) => Unsubscribe
   }
 }
 
@@ -57,7 +60,8 @@ export function reactRest(reactSchemas: ReactSchemas): ReactRest {
       useList: (query) => useList(dataSource, schema.name, query),
       useCreateOne: () => useCreateOne(dataSource, schema.name),
       subscribeToList: (callback) => subscribeToList(schema.name, callback),
-      subscribeToOne: (callback) => subscribeToOne(schema.name, callback),
+      subscribeToOne: (callback, id) =>
+        subscribeToOne(schema.name, callback, id),
     }
 
     return acc

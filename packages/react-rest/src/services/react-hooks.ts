@@ -30,13 +30,17 @@ export const useList = (
   const [error, setError] = useState<Error | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
+  const getListCallback = useCallback(() => {
     setLoading(true)
     getList(dataSource, schema, query)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
   }, [dataSource, schema, query])
+
+  useEffect(() => {
+    getListCallback()
+  }, [])
 
   useEffect(() => {
     return subscribeToList(schema, (records: Record[]) => setData(records))
