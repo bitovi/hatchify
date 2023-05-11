@@ -1,5 +1,7 @@
-import type { HatchifyDisplay } from "../services/displays/hatchifyDisplays"
 import type { Record, Schema } from "data-core"
+
+import type { HatchifyDisplay, HatchifyFormField, FormFieldValueType } from "../services"
+import type { FormState } from "../components/HatchifyForm"
 
 export type Primitive = string | boolean | number
 
@@ -19,21 +21,21 @@ export interface XDetailsProps {
   useData: () => Record
 }
 
-// export interface XFormProps {
-//   isEdit: boolean
-//   fields: HatchifyFormField[]
-//   formState: FormState
-//   onUpdateField: ({
-//     key,
-//     value,
-//     attributeSchema,
-//   }: {
-//     key: string
-//     value: FormFieldValueType
-//     attributeSchema: AttributeSchema
-//   }) => void
-//   onSave: () => void
-// }
+export interface XFormProps {
+  isEdit: boolean
+  fields: HatchifyFormField[]
+  formState: FormState
+  onUpdateField: ({
+    key,
+    value,
+    attributeSchema,
+  }: {
+    key: string
+    value: FormFieldValueType
+    attributeSchema: AttributeSchema
+  }) => void
+  onSave: () => void
+}
 
 export type Relationship = {
   id: string
@@ -42,6 +44,11 @@ export type Relationship = {
 }
 
 export type CellValue = Primitive | Relationship | Relationship[]
+
+export interface FlatRecord {
+  id: string | number
+  [field: string]: CellValue
+}
 
 export type AttributeSchema = {
   type: string
@@ -60,17 +67,18 @@ export type ValueComponent = React.FC<{
   attribute?: string | null
 }>
 
+export type FieldComponent = React.FC<{
+  value: Primitive | string[]
+  onUpdate: (value: Primitive) => void
+  attributeSchema?: Attribute
+}>
+
 
 
 
 /// ***** import the Schema from Arthur PR
 
 ///TODO placeholder for until Arthurs PR get merge
-// export interface FlatRecord {
-//   id: string | number
-//   [field: string]: CellValue
-// }
-
 // export interface RelationshipSchema {
 //   target: string
 //   options: { through: string; as: string }

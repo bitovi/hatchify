@@ -1,4 +1,4 @@
-import type { DefaultFieldComponentsTypes } from "../HatchifyPresentationProvider"
+import type { DefaultFieldComponentsTypes } from ".."
 
 export const String: DefaultFieldComponentsTypes["String"] = ({
   value,

@@ -2,8 +2,9 @@ export {
   useHatchifyPresentation,
   HatchifyPresentationDefaultValueComponents,
   HatchifyPresentationDefaultFieldComponents,
+  HatchifyPresentationProvider,
 } from "./HatchifyPresentationProvider"
 export type {
-  DefaultValueComponentsTypes
+  DefaultValueComponentsTypes,
+  DefaultFieldComponentsTypes
 } from "./HatchifyPresentationProvider"
-export { default } from "./HatchifyPresentationProvider"
