@@ -1,6 +1,14 @@
-import { subscribeToList, getList, createStore } from "data-core"
-import type { Source, QueryList, Record, Schema, Unsubscribe } from "data-core"
-import { useList } from "./services/react-hooks"
+import { subscribeToList, getList, createOne, createStore } from "data-core"
+import type {
+  CreateData,
+  Meta,
+  Source,
+  QueryList,
+  Record,
+  Schema,
+  Unsubscribe,
+} from "data-core"
+import { useCreateOne, useList } from "./services/react-hooks"
 
 export interface ReactSchema {
   schema: Schema
@@ -14,24 +22,34 @@ export type ReactSchemas = {
 export type ReactRest = {
   [schemaName: string]: {
     getList: (query: QueryList) => Promise<Record[]>
-    useList: (query: QueryList) => [Record[]]
+    createOne: (data: CreateData) => Promise<Record>
+    useList: (query: QueryList) => [Record[], Meta]
+    useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     subscribeToList: (callback: (data: Record[]) => void) => Unsubscribe
   }
 }
 
+/**
+ * Returns a set of functions for interacting with the data-core store and
+ * data source for each schema.
+ */
 export function reactRest(reactSchemas: ReactSchemas): ReactRest {
-  const functions = {} as ReactRest
   const storeKeys = Object.values(reactSchemas).map((rs) => rs.schema.name)
   createStore(storeKeys)
 
-  Object.values(reactSchemas).forEach((reactSchema) => {
+  const functions = Object.values(reactSchemas).reduce((acc, reactSchema) => {
     const { schema, dataSource } = reactSchema
-    functions[schema.name] = {
+
+    acc[schema.name] = {
       getList: (query) => getList(dataSource, schema.name, query),
+      createOne: (data) => createOne(dataSource, schema.name, data),
       useList: (query) => useList(dataSource, schema.name, query),
+      useCreateOne: () => useCreateOne(dataSource, schema.name),
       subscribeToList: (callback) => subscribeToList(schema.name, callback),
     }
-  })
+
+    return acc
+  }, {} as ReactRest)
 
   return functions
 }

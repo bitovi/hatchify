@@ -1,6 +1,12 @@
-import type { Source, SourceConfig, QueryList, Resource } from "data-core"
+import type {
+  CreateData,
+  Source,
+  SourceConfig,
+  QueryList,
+  Resource,
+} from "data-core"
 
-export const data: Record<string, any[]> = {
+export const fixtureData: Record<string, any[]> = {
   articles: [
     {
       id: "article-1",
@@ -32,7 +38,7 @@ export function getList(
   query: QueryList,
 ): Promise<{ data: Resource[] }> {
   return Promise.resolve({
-    data: data[config.url].map((resource) => {
+    data: fixtureData[config.url].map((resource) => {
       return {
         __schema: schema,
         ...resource,
@@ -41,10 +47,32 @@ export function getList(
   })
 }
 
+export function createOne(
+  config: SourceConfig,
+  schema: string,
+  data: CreateData,
+): Promise<{ data: Resource }> {
+  const resource = {
+    id: `${config.url}-${fixtureData[config.url].length + 1}`,
+    ...data,
+  }
+
+  fixtureData[config.url].push(resource)
+
+  return Promise.resolve({
+    data: {
+      __schema: schema,
+      ...resource,
+    } as Resource,
+  })
+}
+
 export function fixtures(config: SourceConfig): Source {
   return {
     version: 0,
     getList: (schema: string, query: QueryList) =>
       getList(config, schema, query),
+    createOne: (schema: string, data: CreateData) =>
+      createOne(config, schema, data),
   }
 }

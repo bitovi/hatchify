@@ -35,6 +35,21 @@ export interface Resource {
   }
 }
 
+export type CreateData = Omit<Record, "id" | "__schema">
+
+export interface Meta {
+  status: "loading" | "success" | "error"
+  meta?: { [key: string]: any } // @todo pagination
+  error?: any // @todo validation
+  isStale?: boolean
+  isLoading?: boolean
+  isDone?: boolean
+  isRejected?: boolean
+  isRevalidating?: boolean
+}
+
+export type Subscription = (data: Record[]) => void
+
 export interface SourceConfig {
   type: string
   url: string
@@ -43,6 +58,7 @@ export interface SourceConfig {
 export interface SourceV0 {
   version: 0
   getList: (schema: string, query: QueryList) => Promise<{ data: Resource[] }>
+  createOne: (schema: string, data: CreateData) => Promise<{ data: Resource }>
 }
 
 export type Source = SourceV0 // | SourceV1 | ...

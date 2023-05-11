@@ -1,6 +1,4 @@
-import type { Record, Resource } from "../types"
-
-export type Subscription = (data: Record[]) => void
+import type { Record, Resource, Subscription } from "../types"
 
 export interface ResourceStore {
   data: { [id: string]: Resource }
@@ -13,21 +11,40 @@ export interface Store {
 
 export const store: Store = {}
 
+/**
+ * Initializes the store with a ResourceStore for each schema.
+ */
 export function createStore(schemas: string[]): Store {
-  schemas.forEach((name) => {
-    store[name] = {
+  for (let i = 0; i < schemas.length; i++) {
+    store[schemas[i]] = {
       data: {},
       subscribers: [],
     }
-  })
+  }
 
   return store
 }
 
+/**
+ * Returns the ResourceStore for a given schema.
+ * @todo query parameter
+ */
 export function getStore(schema: string): ResourceStore {
   return store[schema]
 }
 
+/**
+ * Returns the records for a given schema.
+ */
+export function getRecords(schema: string): Record[] {
+  return store[schema] && "data" in store[schema]
+    ? Object.values(store[schema].data).map(convertResourceToRecord)
+    : []
+}
+
+/**
+ * Inserts data into the store and notifies subscribers.
+ */
 export function insert(schema: string, data: Resource[]): void {
   store[schema].data = {
     ...store[schema].data,
@@ -35,9 +52,15 @@ export function insert(schema: string, data: Resource[]): void {
   }
 
   const records = data.map(convertResourceToRecord)
-  store[schema].subscribers.forEach((subscriber) => subscriber(records))
+
+  for (const subscriber of store[schema].subscribers) {
+    subscriber(records)
+  }
 }
 
+/**
+ * Converts an array of resources into an object keyed by id.
+ */
 export function keyResourcesById(data: Resource[]): {
   [id: string]: Resource
 } {
@@ -47,6 +70,9 @@ export function keyResourcesById(data: Resource[]): {
   }, {})
 }
 
+/**
+ * Converts a resource to a record.
+ */
 export function convertResourceToRecord(resource: Resource): Record {
   return {
     id: resource.id,

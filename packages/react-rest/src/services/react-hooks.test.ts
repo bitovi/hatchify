@@ -2,8 +2,8 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore, convertResourceToRecord } from "data-core"
-import type { Source } from "data-core"
-import { useList } from "./react-hooks"
+import type { Source, Subscription } from "data-core"
+import { useCreateOne, useList } from "./react-hooks"
 
 const fakeData = [
   {
@@ -24,6 +24,14 @@ const fakeDataSource: Source = {
     Promise.resolve({
       data: fakeData,
     }),
+  createOne: () =>
+    Promise.resolve({
+      data: {
+        id: "3",
+        __schema: "Article",
+        attributes: { title: "baz", body: "baz-body" },
+      },
+    }),
 }
 
 describe("react-rest/services/react-hooks", () => {
@@ -36,19 +44,39 @@ describe("react-rest/services/react-hooks", () => {
       )
 
       await waitFor(() =>
-        expect(result.current).toEqual([fakeData.map(convertResourceToRecord)]),
+        expect(result.current).toEqual([
+          fakeData.map(convertResourceToRecord),
+          {
+            status: "success",
+            loading: false,
+            error: undefined,
+            isLoading: false,
+            isDone: true,
+            isRejected: false,
+          },
+        ]),
       )
     })
 
     it("should subscribe and return latest data", async () => {
-      createStore(["Article"])
+      const store = createStore(["Article"])
 
       const { result } = renderHook(() =>
         useList(fakeDataSource, "Article", {}),
       )
 
       await waitFor(() =>
-        expect(result.current).toEqual([fakeData.map(convertResourceToRecord)]),
+        expect(result.current).toEqual([
+          fakeData.map(convertResourceToRecord),
+          {
+            status: "success",
+            loading: false,
+            error: undefined,
+            isLoading: false,
+            isDone: true,
+            isRejected: false,
+          },
+        ]),
       )
 
       const newFakeData = [
@@ -64,14 +92,132 @@ describe("react-rest/services/react-hooks", () => {
         },
       ]
 
-      fakeDataSource.getList = () =>
-        Promise.resolve({
-          data: newFakeData,
-        })
+      store.Article.subscribers.forEach((subscriber: Subscription) =>
+        subscriber(newFakeData.map(convertResourceToRecord)),
+      )
 
       await waitFor(() =>
         expect(result.current).toEqual([
           newFakeData.map(convertResourceToRecord),
+          {
+            status: "success",
+            loading: false,
+            error: undefined,
+            isDone: true,
+            isLoading: false,
+            isRejected: false,
+          },
+        ]),
+      )
+    })
+
+    it("should return an error", async () => {
+      createStore(["Article"])
+
+      fakeDataSource.getList = () =>
+        Promise.reject(new Error("Something went wrong"))
+
+      const { result } = renderHook(() =>
+        useList(fakeDataSource, "Article", {}),
+      )
+
+      await waitFor(() =>
+        expect(result.current).toEqual([
+          [],
+          {
+            status: "error",
+            loading: false,
+            error: new Error("Something went wrong"),
+            isLoading: false,
+            isDone: false,
+            isRejected: true,
+          },
+        ]),
+      )
+    })
+  })
+
+  describe("useCreateOne", () => {
+    it("should create a record", async () => {
+      createStore(["Article"])
+
+      const { result } = renderHook(() =>
+        useCreateOne(fakeDataSource, "Article"),
+      )
+
+      await waitFor(() => {
+        expect(result.current).toEqual([
+          expect.any(Function),
+          {
+            status: "success",
+            error: undefined,
+            isLoading: false,
+            isDone: true,
+            isRejected: false,
+          },
+          undefined,
+        ])
+      })
+
+      await result.current[0]({ title: "baz", body: "baz-body" })
+
+      await waitFor(() =>
+        expect(result.current).toEqual([
+          expect.any(Function),
+          {
+            status: "success",
+            error: undefined,
+            isLoading: false,
+            isDone: true,
+            isRejected: false,
+          },
+          {
+            id: "3",
+            __schema: "Article",
+            title: "baz",
+            body: "baz-body",
+          },
+        ]),
+      )
+    })
+
+    it("should return an error if the request fails", async () => {
+      createStore(["Article"])
+
+      const { result } = renderHook(() =>
+        useCreateOne(fakeDataSource, "Article"),
+      )
+
+      await waitFor(() => {
+        expect(result.current).toEqual([
+          expect.any(Function),
+          {
+            status: "success",
+            error: undefined,
+            isLoading: false,
+            isDone: true,
+            isRejected: false,
+          },
+          undefined,
+        ])
+      })
+
+      fakeDataSource.createOne = () =>
+        Promise.reject(new Error("Something went wrong"))
+
+      await result.current[0]({ title: "baz", body: "baz-body" })
+
+      await waitFor(() =>
+        expect(result.current).toEqual([
+          expect.any(Function),
+          {
+            status: "error",
+            error: new Error("Something went wrong"),
+            isLoading: false,
+            isDone: false,
+            isRejected: true,
+          },
+          undefined,
         ]),
       )
     })
