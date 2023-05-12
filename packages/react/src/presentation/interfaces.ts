@@ -1,4 +1,4 @@
-import type { Record, Schema } from "data-core"
+import type { Schema } from "data-core"
 
 import type { HatchifyDisplay, HatchifyFormField, FormFieldValueType } from "../services"
 import type { FormState } from "../components/HatchifyForm"
@@ -7,7 +7,7 @@ export type Primitive = string | boolean | number
 
 export interface XListProps {
   displays: HatchifyDisplay[]
-  useData: () => Record[]
+  useData: () => FlatRecord[]
 }
 
 export interface XLayoutProps {
@@ -18,7 +18,7 @@ export interface XLayoutProps {
 
 export interface XDetailsProps {
   displays: HatchifyDisplay[]
-  useData: () => Record
+  useData: () => FlatRecord
 }
 
 export interface XFormProps {
@@ -62,7 +62,7 @@ export type Attribute = string | AttributeSchema
 
 export type ValueComponent = React.FC<{
   value: CellValue
-  record: Record
+  record: FlatRecord
   attributeSchema: Attribute | null
   attribute?: string | null
 }>
@@ -72,26 +72,3 @@ export type FieldComponent = React.FC<{
   onUpdate: (value: Primitive) => void
   attributeSchema?: Attribute
 }>
-
-
-
-
-/// ***** import the Schema from Arthur PR
-
-///TODO placeholder for until Arthurs PR get merge
-// export interface RelationshipSchema {
-//   target: string
-//   options: { through: string; as: string }
-// }
-
-// export interface Schema {
-//   name: string
-//   attributes: { [key: string]: Attribute }
-//   // validation
-//   belongsToMany?: RelationshipSchema[]
-//   hasMany?: RelationshipSchema[]
-//   hasOne?: RelationshipSchema[]
-//   /* EXTRA */
-//   displayField: string
-//   jsonApiField: string
-// }

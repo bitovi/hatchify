@@ -1,9 +1,11 @@
 import type {
   FlatRecord,
+  FieldComponent,
   ValueComponent,
   CellValue,
   Attribute,
 } from "../../presentation/interfaces"
+import type {FormFieldRender} from "../../services";
 
 export type Render = ({ record }: { record: FlatRecord }) => JSX.Element
 
@@ -37,3 +39,13 @@ export const HatchifyAttributeDisplay: React.FC<
   return null
 }
 
+export type HatchifyAttributeFieldProps = {
+  attribute: string
+  label?: string
+} & ({ render?: FormFieldRender } | { FieldComponent?: FieldComponent })
+
+export const HatchifyAttributeField: React.FC<
+  HatchifyAttributeFieldProps
+> = () => {
+  return null
+}
