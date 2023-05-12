@@ -1,9 +1,11 @@
 export {
   HatchifyAttributeDisplay,
-  HatchifyExtraDisplay
+  HatchifyExtraDisplay,
+  HatchifyAttributeField
 } from "./HatchifyDisplays"
 
 export type {
   Render,
-  RenderValue
+  RenderValue,
+  HatchifyAttributeFieldProps
 } from "./HatchifyDisplays"

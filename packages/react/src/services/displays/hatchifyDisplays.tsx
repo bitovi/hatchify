@@ -10,7 +10,6 @@ import {
 
 import type {
   Attribute,
-  // Schema,
   Relationship as RelationshipType,
   FlatRecord,
   ValueComponent,

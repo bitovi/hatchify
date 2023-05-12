@@ -1,11 +1,10 @@
-import { useParams } from "react-router-dom"
+// import { useParams } from "react-router-dom"
 import type { Schema } from "data-core"
 
 // import { getOne } from "../../services/api/api"
 import { useHatchifyPresentation } from ".."
 import { getDisplays } from "../../services"
 
-// import type { Schema } from "../../schemas/schemas"
 import type { FlatRecord, ValueComponent } from "../../presentation/interfaces"
 
 interface HatchifyDetailsProps {
@@ -21,7 +20,7 @@ export const HatchifyDetails: React.FC<HatchifyDetailsProps> = ({
   useData,
   children,
 }) => {
-  const { id } = useParams<{ id: string }>()
+  // const { id } = useParams<{ id: string }>()
   const { Details, defaultValueComponents } = useHatchifyPresentation()
   const displays = getDisplays(
     schema,
