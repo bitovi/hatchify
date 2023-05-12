@@ -1,13 +1,15 @@
-export { createOne, getList, getOne } from "./promise"
-export { subscribeToList, subscribeToOne } from "./subscribe"
 export {
+  createOne,
   createStore,
   convertResourceToRecord,
+  getList,
+  getOne,
   getRecords,
   getStore,
   keyResourcesById,
-} from "./store"
-export type { Unsubscribe } from "./subscribe"
+  subscribeToList,
+  subscribeToOne,
+} from "./services"
 export type {
   CreateData,
   Meta,
@@ -19,4 +21,5 @@ export type {
   Source,
   SourceConfig,
   Subscription,
-} from "./types"
+  Unsubscribe,
+} from "./services"
