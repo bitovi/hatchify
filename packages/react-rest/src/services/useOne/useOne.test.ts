@@ -50,7 +50,7 @@ describe("react-rest/services/useOne", () => {
     )
   })
 
-  it.only("should subscribe and return latest data", async () => {
+  it("should subscribe and return latest data", async () => {
     const store = createStore(["Article"])
 
     const { result } = renderHook(() =>
