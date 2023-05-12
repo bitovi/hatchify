@@ -1,5 +1,5 @@
-import { useCallback, useState, useEffect } from "react"
 import { getList, getRecords, subscribeToList } from "data-core"
+import { useState, useEffect } from "react"
 import type { Meta, Source, Record, QueryList } from "data-core"
 
 /**
@@ -16,17 +16,13 @@ export const useList = (
   const [error, setError] = useState<Error | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const getListCallback = useCallback(() => {
+  useEffect(() => {
     setLoading(true)
     getList(dataSource, schema, query)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schema, query])
-
-  useEffect(() => {
-    getListCallback()
-  }, [])
+  }, [dataSource, schema, query.fields, query.filter, query.sort, query.page])
 
   useEffect(() => {
     return subscribeToList(schema, (records: Record[]) => setData(records))

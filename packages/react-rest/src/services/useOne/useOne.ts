@@ -23,11 +23,11 @@ export const useOne = (
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schema, query])
+  }, [dataSource, schema, query.fields, query.id])
 
   useEffect(() => {
     return subscribeToOne(schema, (record: Record) => setData(record), query.id)
-  }, [query.id])
+  }, [schema, query.id])
 
   const status = (
     error ? "error" : loading ? "loading" : "success"
