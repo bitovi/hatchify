@@ -12,6 +12,8 @@ export interface Schema {
   }
 }
 
+export type Unsubscribe = () => void
+
 export interface QueryList {
   fields?: string[]
   page?: { size: number; number: number }
