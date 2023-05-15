@@ -12,12 +12,16 @@ export interface Schema {
   }
 }
 
+export type Unsubscribe = () => void
+
 export interface QueryList {
   fields?: string[]
   page?: { size: number; number: number }
   sort?: { [key: string]: "asc" | "desc" }
   filter?: { [key: string]: { [filter: string]: string } }
 }
+
+export type QueryOne = { id: string; fields?: string[] }
 
 export interface Record {
   id: string
@@ -58,6 +62,7 @@ export interface SourceConfig {
 export interface SourceV0 {
   version: 0
   getList: (schema: string, query: QueryList) => Promise<{ data: Resource[] }>
+  getOne: (schema: string, query: QueryOne) => Promise<{ data: Resource }>
   createOne: (schema: string, data: CreateData) => Promise<{ data: Resource }>
 }
 

@@ -1,7 +1,5 @@
-import { getStore } from "../store"
-import type { Record } from "../types"
-
-export type Unsubscribe = () => void
+import { getStore } from "../../store"
+import type { Record, Unsubscribe } from "../../types"
 
 /**
  * Adds a subscriber to the store for a given schema.

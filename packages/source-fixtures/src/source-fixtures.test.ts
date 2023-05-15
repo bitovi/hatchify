@@ -1,5 +1,11 @@
 import { describe, expect, it, vi } from "vitest"
-import { createOne, fixtureData, getList, fixtures } from "./source-fixtures"
+import {
+  createOne,
+  fixtureData,
+  getList,
+  getOne,
+  fixtures,
+} from "./source-fixtures"
 
 describe("source-fixtures", () => {
   const sourceConfig = { type: "article", url: "articles" }
@@ -11,6 +17,7 @@ describe("source-fixtures", () => {
       expect(dataSource).toEqual({
         version: 0,
         getList: expect.any(Function),
+        getOne: expect.any(Function),
         createOne: expect.any(Function),
       })
     })
@@ -34,6 +41,25 @@ describe("source-fixtures", () => {
       const spy = vi.spyOn(dataSource, "getList")
       await dataSource.getList("Article", {})
       expect(spy).toHaveBeenCalledWith("Article", {})
+    })
+  })
+
+  describe("getOne", () => {
+    const query = { id: "article-1" }
+    const expected = {
+      data: { __schema: "Article", ...fixtureData.articles[0] },
+    }
+
+    it("works", async () => {
+      const result = await getOne(sourceConfig, "Article", query)
+      expect(result).toEqual(expected)
+    })
+
+    it("can be called from a Source", async () => {
+      const dataSource = fixtures(sourceConfig)
+      const spy = vi.spyOn(dataSource, "getOne")
+      await dataSource.getOne("Article", query)
+      expect(spy).toHaveBeenCalledWith("Article", query)
     })
   })
 
