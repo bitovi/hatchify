@@ -20,8 +20,8 @@ export async function getList(
 
   return Promise.resolve({
     data: data.data.map((record: any) => ({
-      __schema: schema,
       ...record,
+      __schema: schema,
     })),
   })
 }

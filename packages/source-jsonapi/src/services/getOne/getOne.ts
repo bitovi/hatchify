@@ -20,8 +20,8 @@ export async function getOne(
 
   return Promise.resolve({
     data: {
-      __schema: schema,
       ...record.data,
+      __schema: schema,
     },
   })
 }
