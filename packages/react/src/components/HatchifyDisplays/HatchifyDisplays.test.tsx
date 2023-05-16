@@ -1,25 +1,28 @@
+import { describe, it, vi } from "vitest"
+
 import { render } from "@testing-library/react"
 import {
   HatchifyExtraDisplay,
-  HatchifyAttributeDisplay
+  HatchifyAttributeDisplay,
+  HatchifyAttributeField
 } from "./HatchifyDisplays"
 
-describe.skip("hatchifyjs/components/HatchifyColumns", () => {
-  describe.skip("HatchifyExtraDisplay", () => {
-    it("works", () => {
-      render(<HatchifyExtraDisplay label="Label" render={() => <div />} />)
+describe("hatchifyjs/components/HatchifyColumns", () => {
+  describe("HatchifyExtraDisplay", () => {
+    it("works", () => {      
+      render(<HatchifyExtraDisplay label="Label" render={() => <div />} />);
     })
   })
 
-  describe.skip("HatchifyAttributeDisplay", () => {
+  describe("HatchifyAttributeDisplay", () => {
     it("works", () => {
       render(<HatchifyAttributeDisplay attribute="field" />)
     })
   })
 
-  // describe.skip("HatchifyAttributeField", () => {
-  //   it("works", () => {
-  //     render(<HatchifyAttributeField attribute="field" render={jest.fn()} />)
-  //   })
-  // })
+  describe("HatchifyAttributeField", () => {
+    it("works", () => {
+      render(<HatchifyAttributeField attribute="field" render={vi.fn()} />)
+    })
+  })
 })
