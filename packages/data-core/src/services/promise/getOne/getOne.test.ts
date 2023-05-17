@@ -4,7 +4,7 @@ import {
   createStore,
   convertResourceToRecord,
 } from "../../store"
-import type { Resource, Source } from "../../types"
+import type { Resource, Schema, Source } from "../../types"
 import { getOne } from "./getOne"
 
 const fakeData = [
@@ -27,6 +27,8 @@ const fakeDataSource: Source = {
   createOne: () => Promise.resolve({ data: {} as Resource }),
 }
 
+const ArticleSchema = { name: "Article" } as Schema
+
 describe("data-core/promise", () => {
   afterEach(() => {
     // reset the store's state
@@ -38,7 +40,7 @@ describe("data-core/promise", () => {
 
     it("should return a record", async () => {
       createStore(["Article"])
-      const result = await getOne(fakeDataSource, "Article", query)
+      const result = await getOne(fakeDataSource, ArticleSchema, query)
       const expected = convertResourceToRecord(fakeData[0])
 
       expect(result).toEqual(expected)
@@ -46,7 +48,7 @@ describe("data-core/promise", () => {
 
     it("should insert the record into the store", async () => {
       const store = createStore(["Article"])
-      await getOne(fakeDataSource, "Article", query)
+      await getOne(fakeDataSource, ArticleSchema, query)
       const expected = keyResourcesById([fakeData[0]])
 
       expect(store.Article.data).toEqual(expected)
@@ -59,7 +61,7 @@ describe("data-core/promise", () => {
       }
 
       await expect(
-        getOne(errorDataSource, "Article", query),
+        getOne(errorDataSource, ArticleSchema, query),
       ).rejects.toThrowError("network error")
     })
   })

@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "data-core"
-import type { Resource, Source } from "data-core"
+import type { Resource, Schema, Source } from "data-core"
 import { useCreateOne } from "./useCreateOne"
 
 const fakeDataSource: Source = {
@@ -19,11 +19,15 @@ const fakeDataSource: Source = {
     }),
 }
 
+const ArticleSchema = { name: "Article" } as Schema
+
 describe("react-rest/services/useCreateOne", () => {
   it("should create a record", async () => {
     createStore(["Article"])
 
-    const { result } = renderHook(() => useCreateOne(fakeDataSource, "Article"))
+    const { result } = renderHook(() =>
+      useCreateOne(fakeDataSource, ArticleSchema),
+    )
 
     await waitFor(() => {
       expect(result.current).toEqual([
@@ -64,7 +68,9 @@ describe("react-rest/services/useCreateOne", () => {
   it("should return an error if the request fails", async () => {
     createStore(["Article"])
 
-    const { result } = renderHook(() => useCreateOne(fakeDataSource, "Article"))
+    const { result } = renderHook(() =>
+      useCreateOne(fakeDataSource, ArticleSchema),
+    )
 
     await waitFor(() => {
       expect(result.current).toEqual([

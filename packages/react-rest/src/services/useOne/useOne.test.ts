@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore, convertResourceToRecord } from "data-core"
-import type { Resource, Source, Subscription } from "data-core"
+import type { Resource, Schema, Source, Subscription } from "data-core"
 import { useOne } from "./useOne"
 
 const fakeData = [
@@ -25,6 +25,8 @@ const fakeDataSource: Source = {
   createOne: () => Promise.resolve({ data: {} as Resource }),
 }
 
+const ArticleSchema = { name: "Article" } as Schema
+
 describe("react-rest/services/useOne", () => {
   const query = { id: "1" }
 
@@ -32,7 +34,7 @@ describe("react-rest/services/useOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, "Article", query),
+      useOne(fakeDataSource, ArticleSchema, query),
     )
 
     await waitFor(() =>
@@ -54,7 +56,7 @@ describe("react-rest/services/useOne", () => {
     const store = createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, "Article", query),
+      useOne(fakeDataSource, ArticleSchema, query),
     )
 
     await waitFor(() =>
@@ -105,7 +107,7 @@ describe("react-rest/services/useOne", () => {
       Promise.reject(new Error("Something went wrong"))
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, "Article", query),
+      useOne(fakeDataSource, ArticleSchema, query),
     )
 
     await waitFor(() =>

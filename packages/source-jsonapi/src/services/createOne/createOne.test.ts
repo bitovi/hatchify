@@ -6,6 +6,7 @@ import { jsonapi } from "../../source-jsonapi"
 import { createOne } from "./createOne"
 
 const sourceConfig = { url: `${baseUrl}/articles`, type: "article" }
+const ArticleSchema = { name: "Article" }
 
 describe("source-jsonapi/services/createOne", () => {
   it("works", async () => {
@@ -18,7 +19,7 @@ describe("source-jsonapi/services/createOne", () => {
         ...data,
       },
     }
-    const result = await createOne(sourceConfig, "Article", data)
+    const result = await createOne(sourceConfig, ArticleSchema, data)
     expect(result).toEqual(expected)
   })
 
@@ -30,7 +31,7 @@ describe("source-jsonapi/services/createOne", () => {
     )
 
     await expect(() =>
-      createOne(sourceConfig, "Article", {}),
+      createOne(sourceConfig, ArticleSchema, {}),
     ).rejects.toThrowError("failed to create record")
   })
 
@@ -38,7 +39,7 @@ describe("source-jsonapi/services/createOne", () => {
     const dataSource = jsonapi(sourceConfig)
     const data = { attributes: { title: "Hello, World!" } }
     const spy = vi.spyOn(dataSource, "createOne")
-    await dataSource.createOne("Article", data)
-    expect(spy).toHaveBeenCalledWith("Article", data)
+    await dataSource.createOne(ArticleSchema, data)
+    expect(spy).toHaveBeenCalledWith(ArticleSchema, data)
   })
 })

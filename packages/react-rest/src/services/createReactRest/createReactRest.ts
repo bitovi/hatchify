@@ -5,6 +5,7 @@ import {
   getOne,
   subscribeToList,
   subscribeToOne,
+  transformSchema,
 } from "data-core"
 import type {
   CreateData,
@@ -55,21 +56,21 @@ export function createReactRest(reactSchemas: ReactSchemas): ReactRest {
   createStore(storeKeys)
 
   const functions = Object.values(reactSchemas).reduce((acc, reactSchema) => {
-    const { schema, dataSource } = reactSchema
+    const { schema: oldSchema, dataSource } = reactSchema
+    const schema = transformSchema(oldSchema)
 
     acc[schema.name] = {
       // promises
-      createOne: (data) => createOne(dataSource, schema.name, data),
-      getList: (query) => getList(dataSource, schema.name, query),
-      getOne: (query) => getOne(dataSource, schema.name, query),
+      createOne: (data) => createOne(dataSource, schema, data),
+      getList: (query) => getList(dataSource, schema, query),
+      getOne: (query) => getOne(dataSource, schema, query),
       // hooks
-      useCreateOne: () => useCreateOne(dataSource, schema.name),
-      useList: (query) => useList(dataSource, schema.name, query),
-      useOne: (query) => useOne(dataSource, schema.name, query),
+      useCreateOne: () => useCreateOne(dataSource, schema),
+      useList: (query) => useList(dataSource, schema, query),
+      useOne: (query) => useOne(dataSource, schema, query),
       // subscribes
-      subscribeToList: (callback) => subscribeToList(schema.name, callback),
-      subscribeToOne: (callback, id) =>
-        subscribeToOne(schema.name, callback, id),
+      subscribeToList: (callback) => subscribeToList(schema, callback),
+      subscribeToOne: (callback, id) => subscribeToOne(schema, callback, id),
     }
 
     return acc

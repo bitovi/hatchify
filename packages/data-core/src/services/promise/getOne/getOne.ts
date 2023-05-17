@@ -1,4 +1,4 @@
-import type { Source, Record, QueryOne } from "../../types"
+import type { Source, Record, QueryOne, Schema } from "../../types"
 import { convertResourceToRecord, insert } from "../../store"
 
 /**
@@ -7,12 +7,12 @@ import { convertResourceToRecord, insert } from "../../store"
  */
 export const getOne = async (
   dataSource: Source,
-  schema: string,
+  schema: Schema,
   query: QueryOne,
 ): Promise<Record> => {
   const response = await dataSource.getOne(schema, query)
 
-  insert(schema, [response.data])
+  insert(schema.name, [response.data])
 
   return convertResourceToRecord(response.data)
 }

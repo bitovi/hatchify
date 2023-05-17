@@ -1,6 +1,6 @@
 import { getList, getRecords, subscribeToList } from "data-core"
 import { useState, useEffect } from "react"
-import type { Meta, Source, Record, QueryList } from "data-core"
+import type { Meta, QueryList, Record, Schema, Source } from "data-core"
 
 /**
  * Fetches a list of records using the data-core getList function,
@@ -8,10 +8,10 @@ import type { Meta, Source, Record, QueryList } from "data-core"
  */
 export const useList = (
   dataSource: Source,
-  schema: string,
+  schema: Schema,
   query: QueryList,
 ): [Record[], Meta] => {
-  const defaultData = getRecords(schema)
+  const defaultData = getRecords(schema.name)
   const [data, setData] = useState<Record[]>(defaultData)
   const [error, setError] = useState<Error | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
@@ -25,7 +25,7 @@ export const useList = (
   }, [dataSource, schema, query.fields, query.filter, query.sort, query.page])
 
   useEffect(() => {
-    return subscribeToList(schema, (records: Record[]) => setData(records))
+    return subscribeToList(schema.name, (records: Record[]) => setData(records))
   }, [schema])
 
   const status = (

@@ -1,5 +1,6 @@
 import type {
   CreateData,
+  Schema,
   Source,
   SourceConfig,
   QueryList,
@@ -13,10 +14,10 @@ import { createOne, getList, getOne } from ".."
 export function jsonapi(config: SourceConfig): Source {
   return {
     version: 0,
-    getList: (schema: string, query: QueryList) =>
+    getList: (schema: Schema, query: QueryList) =>
       getList(config, schema, query),
-    getOne: (schema: string, query: QueryOne) => getOne(config, schema, query),
-    createOne: (schema: string, data: CreateData) =>
+    getOne: (schema: Schema, query: QueryOne) => getOne(config, schema, query),
+    createOne: (schema: Schema, data: CreateData) =>
       createOne(config, schema, data),
   }
 }

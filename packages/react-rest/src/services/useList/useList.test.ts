@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore, convertResourceToRecord } from "data-core"
-import type { Resource, Source, Subscription } from "data-core"
+import type { Resource, Schema, Source, Subscription } from "data-core"
 import { useList } from "./useList"
 
 const fakeData = [
@@ -25,11 +25,15 @@ const fakeDataSource: Source = {
   createOne: () => Promise.resolve({ data: {} as Resource }),
 }
 
+const ArticleSchema = { name: "Article" } as Schema
+
 describe("react-rest/services/useList", () => {
   it("should fetch a list of records", async () => {
     createStore(["Article"])
 
-    const { result } = renderHook(() => useList(fakeDataSource, "Article", {}))
+    const { result } = renderHook(() =>
+      useList(fakeDataSource, ArticleSchema, {}),
+    )
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -49,7 +53,9 @@ describe("react-rest/services/useList", () => {
   it("should subscribe and return latest data", async () => {
     const store = createStore(["Article"])
 
-    const { result } = renderHook(() => useList(fakeDataSource, "Article", {}))
+    const { result } = renderHook(() =>
+      useList(fakeDataSource, ArticleSchema, {}),
+    )
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -103,7 +109,9 @@ describe("react-rest/services/useList", () => {
     fakeDataSource.getList = () =>
       Promise.reject(new Error("Something went wrong"))
 
-    const { result } = renderHook(() => useList(fakeDataSource, "Article", {}))
+    const { result } = renderHook(() =>
+      useList(fakeDataSource, ArticleSchema, {}),
+    )
 
     await waitFor(() =>
       expect(result.current).toEqual([

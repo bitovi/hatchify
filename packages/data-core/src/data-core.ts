@@ -9,6 +9,7 @@ export {
   keyResourcesById,
   subscribeToList,
   subscribeToOne,
+  transformSchema,
 } from "./services"
 export type {
   CreateData,

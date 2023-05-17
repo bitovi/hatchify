@@ -4,7 +4,7 @@ import {
   createStore,
   convertResourceToRecord,
 } from "../../store"
-import type { Resource, Source } from "../../types"
+import type { Resource, Schema, Source } from "../../types"
 import { createOne } from "./createOne"
 
 const fakeDataSource: Source = {
@@ -21,6 +21,8 @@ const fakeDataSource: Source = {
     }),
 }
 
+const ArticleSchema = { name: "Article" } as Schema
+
 describe("data-core/services/promise/createOne", () => {
   const data = {
     attributes: { title: "baz", body: "baz-body" },
@@ -33,13 +35,13 @@ describe("data-core/services/promise/createOne", () => {
 
   it("should return the new record", async () => {
     createStore(["Article"])
-    const result = await createOne(fakeDataSource, "Article", data)
+    const result = await createOne(fakeDataSource, ArticleSchema, data)
     expect(result).toEqual(convertResourceToRecord(expected))
   })
 
   it("should insert the record into the store", async () => {
     const store = createStore(["Article"])
-    await createOne(fakeDataSource, "Article", data)
+    await createOne(fakeDataSource, ArticleSchema, data)
     expect(store.Article.data).toEqual(keyResourcesById([expected]))
   })
 
@@ -47,7 +49,7 @@ describe("data-core/services/promise/createOne", () => {
     const store = createStore(["Article"])
     const subscriber = vi.fn()
     store.Article.subscribers.push(subscriber)
-    await createOne(fakeDataSource, "Article", data)
+    await createOne(fakeDataSource, ArticleSchema, data)
     expect(subscriber).toHaveBeenCalledTimes(1)
   })
 
@@ -57,7 +59,7 @@ describe("data-core/services/promise/createOne", () => {
       createOne: () => Promise.reject(new Error("network error")),
     }
     await expect(
-      createOne(errorDataSource, "Article", data),
+      createOne(errorDataSource, ArticleSchema, data),
     ).rejects.toThrowError("network error")
   })
 })

@@ -1,4 +1,4 @@
-import type { CreateData, SourceConfig, Resource } from "data-core"
+import type { CreateData, Schema, SourceConfig, Resource } from "data-core"
 
 /**
  * Creates a new resource, adds the __schema to the request response,
@@ -6,7 +6,7 @@ import type { CreateData, SourceConfig, Resource } from "data-core"
  */
 export async function createOne(
   config: SourceConfig,
-  schema: string,
+  schema: Schema,
   data: CreateData,
 ): Promise<{ data: Resource }> {
   const response = await fetch(`${config.url}`, {
@@ -23,7 +23,7 @@ export async function createOne(
 
   return Promise.resolve({
     data: {
-      __schema: schema,
+      __schema: schema.name,
       ...record.data,
     },
   })

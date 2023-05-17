@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { getOne, getRecords, subscribeToOne } from "data-core"
-import type { Meta, QueryOne, Record, Source } from "data-core"
+import type { Meta, QueryOne, Record, Schema, Source } from "data-core"
 
 /**
  * Fetches a single records using the data-core getOne function,
@@ -8,10 +8,10 @@ import type { Meta, QueryOne, Record, Source } from "data-core"
  */
 export const useOne = (
   dataSource: Source,
-  schema: string,
+  schema: Schema,
   query: QueryOne,
 ): [Record | undefined, Meta] => {
-  const defaultData = getRecords(schema)
+  const defaultData = getRecords(schema.name)
   const record = defaultData.find((record: Record) => record.id === query.id)
   const [data, setData] = useState<Record | undefined>(record)
   const [error, setError] = useState<Error | undefined>(undefined)
@@ -26,7 +26,11 @@ export const useOne = (
   }, [dataSource, schema, query.fields, query.id])
 
   useEffect(() => {
-    return subscribeToOne(schema, (record: Record) => setData(record), query.id)
+    return subscribeToOne(
+      schema.name,
+      (record: Record) => setData(record),
+      query.id,
+    )
   }, [schema, query.id])
 
   const status = (
