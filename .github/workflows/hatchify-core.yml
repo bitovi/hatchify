@@ -1,4 +1,4 @@
-name: @hatchifyjs/hatchify-core
+name: "@hatchifyjs/hatchify-core"
 
 on:
   push:

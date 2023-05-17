@@ -1,4 +1,4 @@
-name: @hatchifyjs/react-rest
+name: "@hatchifyjs/react-rest"
 
 on:
   push:
