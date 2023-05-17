@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
-import { Schema as OldSchema } from "@hatchifyjs/hatchify-core"
-import { Schema } from "../types"
+import type { Schema as OldSchema } from "@hatchifyjs/hatchify-core"
+import type { Schema } from "../types"
 import { transformDataType, transformSchema } from "./utils"
 
 describe("data-core/services/types/utils", () => {
