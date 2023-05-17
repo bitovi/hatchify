@@ -1,5 +1,5 @@
 {
-  "name": "react-rest",
+  "name": "@hatchifyjs/react-rest",
   "private": true,
   "version": "0.0.0",
   "main": "./dist/react-rest.js",
@@ -26,7 +26,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "data-core": "^0.0.0"
+    "@hatchifyjs/data-core": "^0.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",

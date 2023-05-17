@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { getOne, getRecords, subscribeToOne } from "data-core"
-import type { Meta, QueryOne, Record, Source } from "data-core"
+import { getOne, getRecords, subscribeToOne } from "@hatchifyjs/data-core"
+import type { Meta, QueryOne, Record, Source } from "@hatchifyjs/data-core"
 
 /**
  * Fetches a single records using the data-core getOne function,
