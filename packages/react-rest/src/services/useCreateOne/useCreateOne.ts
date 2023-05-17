@@ -1,6 +1,12 @@
 import { useState } from "react"
-import { createOne } from "data-core"
-import type { CreateData, Meta, Record, Schema, Source } from "data-core"
+import { createOne } from "@hatchifyjs/data-core"
+import type {
+  CreateData,
+  Meta,
+  Record,
+  Schema,
+  Source,
+} from "@hatchifyjs/data-core"
 
 /**
  * Returns a function that creates a new record using the data-core createOne,

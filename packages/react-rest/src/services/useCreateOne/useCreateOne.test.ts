@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import { createStore } from "data-core"
-import type { Resource, Schema, Source } from "data-core"
+import { createStore } from "@hatchifyjs/data-core"
+import type { Resource, Schema, Source } from "@hatchifyjs/data-core"
 import { useCreateOne } from "./useCreateOne"
 
 const fakeDataSource: Source = {

@@ -1,6 +1,12 @@
-import { getList, getRecords, subscribeToList } from "data-core"
+import { getList, getRecords, subscribeToList } from "@hatchifyjs/data-core"
 import { useState, useEffect } from "react"
-import type { Meta, QueryList, Record, Schema, Source } from "data-core"
+import type {
+  Meta,
+  QueryList,
+  Record,
+  Schema,
+  Source,
+} from "@hatchifyjs/data-core"
 
 /**
  * Fetches a list of records using the data-core getList function,

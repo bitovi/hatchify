@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest"
-import type { Resource, Source } from "data-core"
+import type { Resource, Source } from "@hatchifyjs/data-core"
 import type { ReactSchema } from "./createReactRest"
 import { createReactRest } from "./createReactRest"
 
@@ -16,7 +16,6 @@ describe("react-rest/services/createReactRest", () => {
       dataSource: fakeDataSource,
       schema: {
         name: "Article",
-        displayAttribute: "title",
         attributes: {
           title: "string",
           body: "string",
@@ -27,7 +26,6 @@ describe("react-rest/services/createReactRest", () => {
       dataSource: fakeDataSource,
       schema: {
         name: "Person",
-        displayAttribute: "name",
         attributes: {
           name: "string",
           age: "number",

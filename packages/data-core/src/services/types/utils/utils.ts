@@ -1,4 +1,5 @@
-import { OldSchema, Schema } from "../types"
+import type { Schema as OldSchema } from "@hatchifyjs/hatchify-core"
+import type { Schema } from "../types"
 
 export function transformSchema(schema: OldSchema): Schema {
   const resolved: Schema = {

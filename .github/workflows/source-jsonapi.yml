@@ -1,4 +1,4 @@
-name: source-jsonapi
+name: "@hatchifyjs/source-jsonapi"
 
 on:
   push:

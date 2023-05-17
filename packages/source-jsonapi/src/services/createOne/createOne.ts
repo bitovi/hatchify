@@ -1,4 +1,9 @@
-import type { CreateData, Schema, SourceConfig, Resource } from "data-core"
+import type {
+  CreateData,
+  Schema,
+  SourceConfig,
+  Resource,
+} from "@hatchifyjs/data-core"
 
 /**
  * Creates a new resource, adds the __schema to the request response,

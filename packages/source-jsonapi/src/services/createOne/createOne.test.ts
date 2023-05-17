@@ -1,12 +1,13 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
+import type { Schema } from "@hatchifyjs/data-core"
 import { baseUrl, articles } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import { jsonapi } from "../../source-jsonapi"
 import { createOne } from "./createOne"
 
 const sourceConfig = { url: `${baseUrl}/articles`, type: "article" }
-const ArticleSchema = { name: "Article" }
+const ArticleSchema = { name: "Article" } as Schema
 
 describe("source-jsonapi/services/createOne", () => {
   it("works", async () => {

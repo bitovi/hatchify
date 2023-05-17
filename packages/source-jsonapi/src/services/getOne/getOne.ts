@@ -1,4 +1,9 @@
-import type { Schema, SourceConfig, QueryOne, Resource } from "data-core"
+import type {
+  Schema,
+  SourceConfig,
+  QueryOne,
+  Resource,
+} from "@hatchifyjs/data-core"
 
 /**
  * Fetches a single resource, adds the __schema to the request response,

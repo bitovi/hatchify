@@ -12,25 +12,6 @@ export interface Schema {
   }
 }
 
-export interface OldSchema {
-  name: string
-  attributes: {
-    [field: string]: string // type
-  }
-  belongsTo?: {
-    target: string
-    options: { as: string }
-  }[]
-  hasOne?: {
-    target: string
-    options: { as: string }
-  }[]
-  hasMany?: {
-    target: string
-    options: { as: string }
-  }[]
-}
-
 export type Unsubscribe = () => void
 
 export interface QueryList {

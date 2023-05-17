@@ -5,7 +5,7 @@ import type {
   SourceConfig,
   QueryList,
   QueryOne,
-} from "data-core"
+} from "@hatchifyjs/data-core"
 import { createOne, getList, getOne } from ".."
 
 /**
