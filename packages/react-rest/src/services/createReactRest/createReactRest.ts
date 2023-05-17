@@ -5,7 +5,7 @@ import {
   getOne,
   subscribeToList,
   subscribeToOne,
-} from "data-core"
+} from "@hatchifyjs/data-core"
 import type {
   CreateData,
   Meta,
@@ -15,7 +15,7 @@ import type {
   Record,
   Schema,
   Unsubscribe,
-} from "data-core"
+} from "@hatchifyjs/data-core"
 import { useCreateOne, useList, useOne } from ".."
 
 export interface ReactSchema {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest"
-import type { Resource, Source } from "data-core"
+import type { Resource, Source } from "@hatchifyjs/data-core"
 import type { ReactSchema } from "./createReactRest"
 import { createReactRest } from "./createReactRest"
 

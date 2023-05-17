@@ -1,15 +1,15 @@
 {
-  "name": "@hatchifyjs/data-core",
+  "name": "@hatchifyjs/hatchify-core",
   "private": true,
   "version": "0.0.0",
-  "main": "./dist/data-core.js",
-  "module": "./dist/data-core.mjs",
-  "types": "./dist/data-core.d.ts",
+  "main": "./dist/hatchify-core.js",
+  "module": "./dist/hatchify-core.mjs",
+  "types": "./dist/hatchify-core.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/data-core.js",
-      "import": "./dist/data-core.mjs",
-      "types": "./src/data-core.ts"
+      "require": "./dist/hatchify-core.js",
+      "import": "./dist/hatchify-core.mjs",
+      "types": "./src/hatchify-core.ts"
     },
     "./package.json": "./package.json"
   },
@@ -19,15 +19,14 @@
     "prettier": "prettier --check vite.config.ts src",
     "depcheck": "depcheck .",
     "dev": "vite",
-    "test": "vitest run",
-    "test:dev": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test": "",
+    "test:dev": "",
+    "test:coverage": "",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "vite build"
   },
   "devDependencies": {
     "vite": "^4.3.1",
-    "vite-plugin-dts": "^2.3.0",
-    "vitest": "^0.30.1"
+    "vite-plugin-dts": "^2.3.0"
   }
 }
