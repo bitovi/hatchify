@@ -31,6 +31,7 @@ export const HatchifyDetails: React.FC<HatchifyDetailsProps> = ({
 
   if (!useData) {
     // const resource = getOne(schema, id as string)
+    // TODO utilize getOne to get the data. I hard coded this for now because we don't have an api currently
     useData = () => {return {id: 123}};  //resource.read()
   }
 
