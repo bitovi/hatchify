@@ -4,7 +4,7 @@ import {
   createStore,
   convertResourceToRecord,
 } from "../../store"
-import type { Resource, Schema, Source } from "../../types"
+import type { Schema, Source } from "../../types"
 import { getList } from "./getList"
 
 const fakeData = [
@@ -22,9 +22,9 @@ const fakeData = [
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve({ data: fakeData }),
-  getOne: () => Promise.resolve({ data: {} as Resource }),
-  createOne: () => Promise.resolve({ data: {} as Resource }),
+  getList: () => Promise.resolve(fakeData),
+  getOne: () => Promise.resolve([]),
+  createOne: () => Promise.resolve([]),
 }
 
 const ArticleSchema = { name: "Article" } as Schema

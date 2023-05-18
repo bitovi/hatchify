@@ -4,6 +4,7 @@ import type {
   SourceConfig,
   Resource,
 } from "@hatchifyjs/data-core"
+import { convertToRecords, fetchJsonApi } from "../jsonapi"
 
 /**
  * Creates a new resource, adds the __schema to the request response,
@@ -13,23 +14,9 @@ export async function createOne(
   config: SourceConfig,
   schema: Schema,
   data: CreateData,
-): Promise<{ data: Resource }> {
-  const response = await fetch(`${config.url}`, {
-    method: "POST",
-    body: JSON.stringify({ data }),
-  })
+): Promise<Resource[]> {
+  const json = await fetchJsonApi("POST", config.url, data)
+  // todo relationships: json.included
 
-  // @todo proper validation
-  if (!response.ok) {
-    throw Error("failed to create record")
-  }
-
-  const record = await response.json()
-
-  return Promise.resolve({
-    data: {
-      __schema: schema.name,
-      ...record.data,
-    },
-  })
+  return Promise.resolve(convertToRecords(json.data, schema.name))
 }

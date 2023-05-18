@@ -1,5 +1,5 @@
 import type { Schema as OldSchema } from "@hatchifyjs/hatchify-core"
-import type { Schema } from "../types"
+import type { Schema } from "../schema"
 
 // the current backend schema attribute types are sequelize datatypes.
 // this function converts them to the types we use in the frontend.

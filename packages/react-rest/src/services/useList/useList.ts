@@ -19,12 +19,20 @@ export const useList = (
 ): [Record[], Meta] => {
   const defaultData = getRecords(schema.name)
   const [data, setData] = useState<Record[]>(defaultData)
+
   const [error, setError] = useState<Error | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
+  // @todo in test this infinitely loops if deps array is just `query`??
   useEffect(() => {
     setLoading(true)
-    getList(dataSource, schema, query)
+
+    getList(dataSource, schema, {
+      fields: query.fields,
+      filter: query.filter,
+      sort: query.sort,
+      page: query.page,
+    })
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
@@ -34,13 +42,11 @@ export const useList = (
     return subscribeToList(schema.name, (records: Record[]) => setData(records))
   }, [schema])
 
-  const status = (
-    error ? "error" : loading ? "loading" : "success"
-  ) as Meta["status"]
-  const meta = {
+  const status = error ? "error" : loading ? "loading" : "success"
+
+  const meta: Meta = {
     status,
     error,
-    loading,
     isLoading: status === "loading",
     isDone: status === "success",
     isRejected: status === "error",

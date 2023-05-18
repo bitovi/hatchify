@@ -4,6 +4,7 @@ import type {
   QueryOne,
   Resource,
 } from "@hatchifyjs/data-core"
+import { convertToRecords, fetchJsonApi } from "../jsonapi"
 
 /**
  * Fetches a single resource, adds the __schema to the request response,
@@ -13,20 +14,9 @@ export async function getOne(
   config: SourceConfig,
   schema: Schema,
   query: QueryOne,
-): Promise<{ data: Resource }> {
-  const response = await fetch(`${config.url}/${query.id}`)
+): Promise<Resource[]> {
+  const json = await fetchJsonApi("GET", `${config.url}/${query.id}`)
+  // todo relationships: json.included
 
-  // @todo proper validation
-  if (!response.ok) {
-    throw Error("failed to fetch record")
-  }
-
-  const record = await response.json()
-
-  return Promise.resolve({
-    data: {
-      ...record.data,
-      __schema: schema.name,
-    },
-  })
+  return Promise.resolve(convertToRecords(json.data, schema.name))
 }

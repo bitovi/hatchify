@@ -10,9 +10,10 @@ export const getList = async (
   schema: Schema,
   query: QueryList,
 ): Promise<Record[]> => {
-  const response = await dataSource.getList(schema, query)
+  const resources = await dataSource.getList(schema, query)
 
-  insert(schema.name, response.data)
+  insert(schema.name, resources)
 
-  return response.data.map(convertResourceToRecord)
+  // todo flatten related records into base records
+  return resources.map(convertResourceToRecord)
 }

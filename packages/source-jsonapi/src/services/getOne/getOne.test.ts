@@ -13,12 +13,12 @@ describe("source-jsonapi/services/getOne", () => {
   const query = { id: "article-id-1" }
 
   it("works", async () => {
-    const expected = {
-      data: {
+    const expected = [
+      {
         ...articles.find((article) => article.id === "article-id-1"),
         __schema: "Article",
       },
-    }
+    ]
     const result = await getOne(sourceConfig, ArticleSchema, query)
     expect(result).toEqual(expected)
   })
@@ -32,7 +32,7 @@ describe("source-jsonapi/services/getOne", () => {
 
     await expect(
       getOne(sourceConfig, ArticleSchema, query),
-    ).rejects.toThrowError("failed to fetch record")
+    ).rejects.toThrowError("request failed")
   })
 
   it("can be called from a Source", async () => {

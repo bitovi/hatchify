@@ -30,21 +30,26 @@ export const articles = [
 ]
 
 export const handlers = [
-  rest.get(`${baseUrl}/articles`, (_, res, ctx) => {
+  rest.get(`${baseUrl}/articles`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: articles }))
   }),
+
   rest.get(`${baseUrl}/articles/:id`, (req, res, ctx) => {
     const { id } = req.params
     const article = articles.find((article) => article.id === id)
+
     if (!article) {
       return res(ctx.status(404), ctx.json(null))
     }
+
     return res(ctx.status(200), ctx.json({ data: article }))
   }),
+
   rest.post(`${baseUrl}/articles`, async (req, res, ctx) => {
     const {
       data: { attributes },
     } = await req.json()
+
     const article = {
       type: "Article",
       id: `article-id-${articles.length + 1}`,
@@ -52,6 +57,7 @@ export const handlers = [
     }
 
     articles.push(article)
+
     return res(ctx.status(201), ctx.json({ data: article }))
   }),
 ]

@@ -28,10 +28,9 @@ export const useCreateOne = (
       .finally(() => setLoading(false))
   }
 
-  const status = (
-    error ? "error" : loading ? "loading" : "success"
-  ) as Meta["status"]
-  const meta = {
+  const status = error ? "error" : loading ? "loading" : "success"
+
+  const meta: Meta = {
     status,
     error,
     isLoading: status === "loading",

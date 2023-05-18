@@ -2,12 +2,7 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore, convertResourceToRecord } from "@hatchifyjs/data-core"
-import type {
-  Resource,
-  Schema,
-  Source,
-  Subscription,
-} from "@hatchifyjs/data-core"
+import type { Schema, Source, Subscription } from "@hatchifyjs/data-core"
 import { useList } from "./useList"
 
 const fakeData = [
@@ -25,9 +20,9 @@ const fakeData = [
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve({ data: fakeData }),
-  getOne: () => Promise.resolve({ data: {} as Resource }),
-  createOne: () => Promise.resolve({ data: {} as Resource }),
+  getList: () => Promise.resolve(fakeData),
+  getOne: () => Promise.resolve([]),
+  createOne: () => Promise.resolve([]),
 }
 
 const ArticleSchema = { name: "Article" } as Schema

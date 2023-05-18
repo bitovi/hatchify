@@ -12,14 +12,14 @@ const ArticleSchema = { name: "Article" } as Schema
 describe("source-jsonapi/services/createOne", () => {
   it("works", async () => {
     const data = { attributes: { title: "Hello, World!" } }
-    const expected = {
-      data: {
+    const expected = [
+      {
         __schema: "Article",
         type: "Article",
         id: `article-id-${articles.length + 1}`,
         ...data,
       },
-    }
+    ]
     const result = await createOne(sourceConfig, ArticleSchema, data)
     expect(result).toEqual(expected)
   })
@@ -33,7 +33,7 @@ describe("source-jsonapi/services/createOne", () => {
 
     await expect(() =>
       createOne(sourceConfig, ArticleSchema, {}),
-    ).rejects.toThrowError("failed to create record")
+    ).rejects.toThrowError("request failed")
   })
 
   it("can be called from a Source", async () => {

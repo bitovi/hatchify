@@ -1,3 +1,19 @@
+export type {
+  CreateData,
+  Meta,
+  MetaData,
+  MetaError,
+  QueryList,
+  QueryOne,
+  Record,
+  Resource,
+  Schema,
+  Source,
+  SourceConfig,
+  Subscription,
+  Unsubscribe,
+} from "./services"
+
 export {
   createOne,
   createStore,
@@ -10,17 +26,4 @@ export {
   subscribeToList,
   subscribeToOne,
   transformSchema,
-} from "./services"
-export type {
-  CreateData,
-  Meta,
-  QueryList,
-  QueryOne,
-  Record,
-  Resource,
-  Schema,
-  Source,
-  SourceConfig,
-  Subscription,
-  Unsubscribe,
 } from "./services"

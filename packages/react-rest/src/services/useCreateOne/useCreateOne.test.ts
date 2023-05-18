@@ -2,21 +2,21 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "@hatchifyjs/data-core"
-import type { Resource, Schema, Source } from "@hatchifyjs/data-core"
+import type { Schema, Source } from "@hatchifyjs/data-core"
 import { useCreateOne } from "./useCreateOne"
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve({ data: [] as Resource[] }),
-  getOne: () => Promise.resolve({ data: {} as Resource }),
+  getList: () => Promise.resolve([]),
+  getOne: () => Promise.resolve([]),
   createOne: () =>
-    Promise.resolve({
-      data: {
+    Promise.resolve([
+      {
         id: "3",
         __schema: "Article",
         attributes: { title: "baz", body: "baz-body" },
       },
-    }),
+    ]),
 }
 
 const ArticleSchema = { name: "Article" } as Schema

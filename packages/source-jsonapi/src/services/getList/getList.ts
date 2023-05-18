@@ -4,6 +4,7 @@ import type {
   QueryList,
   Resource,
 } from "@hatchifyjs/data-core"
+import { convertToRecords, fetchJsonApi } from "../jsonapi"
 
 /**
  * Fetches a list of resources, adds the __schema to each resource, and
@@ -12,21 +13,10 @@ import type {
 export async function getList(
   config: SourceConfig,
   schema: Schema,
-  query: QueryList, // @todo query for fields, page, sort, and filter
-): Promise<{ data: Resource[] }> {
-  const response = await fetch(`${config.url}`)
+  query: QueryList, // todo query for fields, page, sort, and filter
+): Promise<Resource[]> {
+  const json = await fetchJsonApi("GET", config.url)
+  // todo relationships: json.included
 
-  // @todo proper validation
-  if (!response.ok) {
-    throw Error("failed to fetch list")
-  }
-
-  const data = await response.json()
-
-  return Promise.resolve({
-    data: data.data.map((record: any) => ({
-      ...record,
-      __schema: schema.name,
-    })),
-  })
+  return Promise.resolve(convertToRecords(json.data, schema.name))
 }

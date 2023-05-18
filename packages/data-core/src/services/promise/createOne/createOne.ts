@@ -10,9 +10,10 @@ export const createOne = async (
   schema: Schema,
   data: CreateData, // @todo Resource or Record?
 ): Promise<Record> => {
-  const response = await dataSource.createOne(schema, data)
+  const resources = await dataSource.createOne(schema, data)
 
-  insert(schema.name, [response.data])
+  insert(schema.name, resources)
 
-  return convertResourceToRecord(response.data)
+  // todo flatten related records into base records
+  return convertResourceToRecord(resources[0])
 }
