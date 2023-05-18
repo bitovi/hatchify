@@ -19,6 +19,7 @@ export {
   createStore,
   convertResourceToRecord,
   getList,
+  getMeta,
   getOne,
   getRecords,
   getStore,

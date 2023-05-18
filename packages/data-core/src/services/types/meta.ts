@@ -1,9 +1,9 @@
-export type MetaData = { meta: string } // @todo + pagination goes here
-export type Error = { message: string } // @todo
+export type MetaData = any // todo + pagination goes here
+export type Error = any // todo
 
 export type Meta = MetaLoading | MetaSuccess | MetaError
 
-// * isDone: ONLY if status is "success" or "error"
+// * isDone: ONLY if status is "success": if this allows "error" do we need an "isSuccess?"
 // * isLoading: ONLY if status is "loading"
 // * isRejected: ONLY if status is "error"
 // * isRevalidating: ONLY if status is "loading" and isStale is true
@@ -15,7 +15,7 @@ export type Meta = MetaLoading | MetaSuccess | MetaError
 export interface MetaLoading {
   status: "loading"
   meta?: MetaData
-  error: never
+  error: undefined
 
   isDone: false
   isLoading: true
@@ -26,7 +26,7 @@ export interface MetaLoading {
 export interface MetaSuccess {
   status: "success"
   meta?: MetaData
-  error: never
+  error: undefined
 
   isDone: true
   isLoading: false
@@ -45,15 +45,3 @@ export interface MetaError {
   isRevalidating: false // ? false? never?
   isStale: boolean // ? boolean? never?
 }
-
-// export interface MetaRevalidating {
-//   status: "loading"
-//   meta?: MetaData
-//   error: never
-
-//   isDone: false
-//   isLoading: true
-//   isRejected: false
-//   isRevalidating: true
-//   isStale: true
-// }

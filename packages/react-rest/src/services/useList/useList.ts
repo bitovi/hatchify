@@ -1,7 +1,13 @@
-import { getList, getRecords, subscribeToList } from "@hatchifyjs/data-core"
+import {
+  getList,
+  getMeta,
+  getRecords,
+  subscribeToList,
+} from "@hatchifyjs/data-core"
 import { useState, useEffect } from "react"
 import type {
   Meta,
+  MetaError,
   QueryList,
   Record,
   Schema,
@@ -20,7 +26,7 @@ export const useList = (
   const defaultData = getRecords(schema.name)
   const [data, setData] = useState<Record[]>(defaultData)
 
-  const [error, setError] = useState<Error | undefined>(undefined)
+  const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
   // @todo in test this infinitely loops if deps array is just `query`??
@@ -42,15 +48,6 @@ export const useList = (
     return subscribeToList(schema.name, (records: Record[]) => setData(records))
   }, [schema])
 
-  const status = error ? "error" : loading ? "loading" : "success"
-
-  const meta: Meta = {
-    status,
-    error,
-    isLoading: status === "loading",
-    isDone: status === "success",
-    isRejected: status === "error",
-  }
-
+  const meta: Meta = getMeta(error, loading, false, undefined)
   return [data, meta]
 }
