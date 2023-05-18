@@ -1,11 +1,13 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
+import type { Schema } from "@hatchifyjs/data-core"
 import { baseUrl, articles } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import { jsonapi } from "../../source-jsonapi"
 import { getOne } from "./getOne"
 
 const sourceConfig = { url: `${baseUrl}/articles`, type: "article" }
+const ArticleSchema = { name: "Article" } as Schema
 
 describe("source-jsonapi/services/getOne", () => {
   const query = { id: "article-id-1" }
@@ -17,7 +19,7 @@ describe("source-jsonapi/services/getOne", () => {
         __schema: "Article",
       },
     }
-    const result = await getOne(sourceConfig, "Article", query)
+    const result = await getOne(sourceConfig, ArticleSchema, query)
     expect(result).toEqual(expected)
   })
 
@@ -28,15 +30,15 @@ describe("source-jsonapi/services/getOne", () => {
       ),
     )
 
-    await expect(getOne(sourceConfig, "Article", query)).rejects.toThrowError(
-      "failed to fetch record",
-    )
+    await expect(
+      getOne(sourceConfig, ArticleSchema, query),
+    ).rejects.toThrowError("failed to fetch record")
   })
 
   it("can be called from a Source", async () => {
     const dataSource = jsonapi(sourceConfig)
     const spy = vi.spyOn(dataSource, "getOne")
-    await dataSource.getOne("Article", query)
-    expect(spy).toHaveBeenCalledWith("Article", query)
+    await dataSource.getOne(ArticleSchema, query)
+    expect(spy).toHaveBeenCalledWith(ArticleSchema, query)
   })
 })

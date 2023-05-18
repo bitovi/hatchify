@@ -4,7 +4,7 @@ import {
   createStore,
   convertResourceToRecord,
 } from "../../store"
-import type { Resource, Source } from "../../types"
+import type { Resource, Schema, Source } from "../../types"
 import { getList } from "./getList"
 
 const fakeData = [
@@ -27,10 +27,12 @@ const fakeDataSource: Source = {
   createOne: () => Promise.resolve({ data: {} as Resource }),
 }
 
+const ArticleSchema = { name: "Article" } as Schema
+
 describe("data-core/services/promise/getList", () => {
   it("should return a list of records", async () => {
     createStore(["Article"])
-    const result = await getList(fakeDataSource, "Article", {})
+    const result = await getList(fakeDataSource, ArticleSchema, {})
     const expected = fakeData.map(convertResourceToRecord)
 
     expect(result).toEqual(expected)
@@ -38,7 +40,7 @@ describe("data-core/services/promise/getList", () => {
 
   it("should insert the records into the store", async () => {
     const store = createStore(["Article"])
-    await getList(fakeDataSource, "Article", {})
+    await getList(fakeDataSource, ArticleSchema, {})
     const expected = keyResourcesById(fakeData)
 
     expect(store.Article.data).toEqual(expected)
@@ -50,8 +52,8 @@ describe("data-core/services/promise/getList", () => {
       getList: () => Promise.reject(new Error("network error")),
     }
 
-    await expect(getList(errorDataSource, "Article", {})).rejects.toThrowError(
-      "network error",
-    )
+    await expect(
+      getList(errorDataSource, ArticleSchema, {}),
+    ).rejects.toThrowError("network error")
   })
 })

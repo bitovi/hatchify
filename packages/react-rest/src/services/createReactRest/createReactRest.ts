@@ -5,6 +5,7 @@ import {
   getOne,
   subscribeToList,
   subscribeToOne,
+  transformSchema,
 } from "@hatchifyjs/data-core"
 import type {
   CreateData,
@@ -13,9 +14,9 @@ import type {
   QueryList,
   QueryOne,
   Record,
-  Schema,
   Unsubscribe,
 } from "@hatchifyjs/data-core"
+import type { Schema } from "@hatchifyjs/hatchify-core"
 import { useCreateOne, useList, useOne } from ".."
 
 export interface ReactSchema {
@@ -55,17 +56,18 @@ export function createReactRest(reactSchemas: ReactSchemas): ReactRest {
   createStore(storeKeys)
 
   const functions = Object.values(reactSchemas).reduce((acc, reactSchema) => {
-    const { schema, dataSource } = reactSchema
+    const { schema: oldSchema, dataSource } = reactSchema
+    const schema = transformSchema(oldSchema)
 
     acc[schema.name] = {
       // promises
-      createOne: (data) => createOne(dataSource, schema.name, data),
-      getList: (query) => getList(dataSource, schema.name, query),
-      getOne: (query) => getOne(dataSource, schema.name, query),
+      createOne: (data) => createOne(dataSource, schema, data),
+      getList: (query) => getList(dataSource, schema, query),
+      getOne: (query) => getOne(dataSource, schema, query),
       // hooks
-      useCreateOne: () => useCreateOne(dataSource, schema.name),
-      useList: (query) => useList(dataSource, schema.name, query),
-      useOne: (query) => useOne(dataSource, schema.name, query),
+      useCreateOne: () => useCreateOne(dataSource, schema),
+      useList: (query) => useList(dataSource, schema, query),
+      useOne: (query) => useOne(dataSource, schema, query),
       // subscribes
       subscribeToList: (callback) => subscribeToList(schema.name, callback),
       subscribeToOne: (callback, id) =>

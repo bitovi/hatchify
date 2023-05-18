@@ -1,4 +1,9 @@
-import type { SourceConfig, QueryOne, Resource } from "@hatchifyjs/data-core"
+import type {
+  Schema,
+  SourceConfig,
+  QueryOne,
+  Resource,
+} from "@hatchifyjs/data-core"
 
 /**
  * Fetches a single resource, adds the __schema to the request response,
@@ -6,7 +11,7 @@ import type { SourceConfig, QueryOne, Resource } from "@hatchifyjs/data-core"
  */
 export async function getOne(
   config: SourceConfig,
-  schema: string,
+  schema: Schema,
   query: QueryOne,
 ): Promise<{ data: Resource }> {
   const response = await fetch(`${config.url}/${query.id}`)
@@ -21,7 +26,7 @@ export async function getOne(
   return Promise.resolve({
     data: {
       ...record.data,
-      __schema: schema,
+      __schema: schema.name,
     },
   })
 }

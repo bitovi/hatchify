@@ -61,9 +61,9 @@ export interface SourceConfig {
 
 export interface SourceV0 {
   version: 0
-  getList: (schema: string, query: QueryList) => Promise<{ data: Resource[] }>
-  getOne: (schema: string, query: QueryOne) => Promise<{ data: Resource }>
-  createOne: (schema: string, data: CreateData) => Promise<{ data: Resource }>
+  getList: (schema: Schema, query: QueryList) => Promise<{ data: Resource[] }>
+  getOne: (schema: Schema, query: QueryOne) => Promise<{ data: Resource }>
+  createOne: (schema: Schema, data: CreateData) => Promise<{ data: Resource }>
 }
 
 export type Source = SourceV0 // | SourceV1 | ...
