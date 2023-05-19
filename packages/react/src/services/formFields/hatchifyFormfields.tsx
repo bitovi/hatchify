@@ -187,7 +187,7 @@ export function getHatchifyFormField({
       />
     )
   } else {
-    formField.render = getDefaultRender(
+    formField.render = getDefaultFormFieldRender(
       attribute,
       attributeSchema,
       defaultFieldComponents,
@@ -198,7 +198,7 @@ export function getHatchifyFormField({
   return formField
 }
 
-export function getDefaultRender(
+export function getDefaultFormFieldRender(
   attribute: string,
   attributeSchema: AttributeSchema,
   defaultFieldComponents: DefaultFieldComponentsTypes,

@@ -26,7 +26,7 @@ export const HatchifyList: React.FC<HatchifyListProps> = ({
     children,
   )
 
-  // @todo implement this in a better way when data layer is implemented
+  // @TODO implement this in a better way when data layer is implemented
   if (!useData) {
     // const resource = getMany(schema)
     useData = () => [] //resource.read()

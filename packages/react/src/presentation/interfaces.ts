@@ -5,6 +5,11 @@ import type { FormState } from "../components/HatchifyForm"
 
 export type Primitive = string | boolean | number
 
+export interface XProviderProps<T> {
+  theme?: T
+  children: React.ReactNode
+}
+
 export interface XListProps {
   displays: HatchifyDisplay[]
   useData: () => FlatRecord[]
