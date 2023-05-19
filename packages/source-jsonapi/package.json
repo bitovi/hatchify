@@ -1,5 +1,5 @@
 {
-  "name": "source-jsonapi",
+  "name": "@hatchifyjs/source-jsonapi",
   "private": true,
   "version": "0.0.0",
   "main": "./dist/source-jsonapi.js",
@@ -25,8 +25,10 @@
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "vite build"
   },
+  "dependencies": {
+    "@hatchifyjs/data-core": "^0.0.0"
+  },
   "devDependencies": {
-    "data-core": "^0.0.0",
     "msw": "^1.2.1",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",

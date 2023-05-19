@@ -1,5 +1,5 @@
 {
-  "name": "data-core",
+  "name": "@hatchifyjs/data-core",
   "private": true,
   "version": "0.0.0",
   "main": "./dist/data-core.js",
@@ -24,6 +24,9 @@
     "test:coverage": "vitest run --coverage",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "vite build"
+  },
+  "dependencies": {
+    "@hatchifyjs/hatchify-core": "^0.0.0"
   },
   "devDependencies": {
     "vite": "^4.3.1",

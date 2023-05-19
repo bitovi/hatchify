@@ -1,17 +1,26 @@
-export { getList } from "./promise"
-export { subscribeToList } from "./subscribe"
 export {
+  createOne,
   createStore,
   convertResourceToRecord,
-  keyResourcesById,
+  getList,
+  getOne,
+  getRecords,
   getStore,
-} from "./store"
-export type { Unsubscribe } from "./subscribe"
+  keyResourcesById,
+  subscribeToList,
+  subscribeToOne,
+  transformSchema,
+} from "./services"
 export type {
+  CreateData,
+  Meta,
   QueryList,
+  QueryOne,
   Record,
   Resource,
   Schema,
   Source,
   SourceConfig,
-} from "./types"
+  Subscription,
+  Unsubscribe,
+} from "./services"
