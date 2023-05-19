@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { isEmpty } from "lodash"
 
-import type { Schema } from "data-core";
+import type { Schema } from "@hatchifyjs/data-core";
 
 import { useHatchifyPresentation } from "..";
 import { getFormFields } from "../../services";

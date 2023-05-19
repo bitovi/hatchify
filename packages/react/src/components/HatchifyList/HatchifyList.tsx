@@ -1,4 +1,4 @@
-import type { Schema } from "data-core"
+import type { Schema } from "@hatchifyjs/data-core"
 
 import { getDisplays } from "../../services";
 import { useHatchifyPresentation } from "..";

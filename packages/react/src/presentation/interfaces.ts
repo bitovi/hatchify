@@ -1,4 +1,4 @@
-import type { Schema } from "data-core"
+import type { Schema } from "@hatchifyjs/data-core"
 
 import type { HatchifyDisplay, HatchifyFormField, FormFieldValueType } from "../services"
 import type { FormState } from "../components/HatchifyForm"

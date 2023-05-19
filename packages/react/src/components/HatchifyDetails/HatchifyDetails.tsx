@@ -1,5 +1,5 @@
 // import { useParams } from "react-router-dom"
-import type { Schema } from "data-core"
+import type { Schema } from "@hatchifyjs/data-core"
 
 // import { getOne } from "../../services/api/api"
 import { useHatchifyPresentation } from ".."
