@@ -76,7 +76,7 @@ export const Relationship: DefaultFieldComponentsTypes["Relationship"] = ({
   label,
   onUpdate,
 }) => {
-  // @todo should this be a controlled input?
+  // TODO should this be a controlled input?
   return (
     <Autocomplete
       multiple={hasMany}
