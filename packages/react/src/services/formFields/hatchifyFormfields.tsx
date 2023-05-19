@@ -3,7 +3,7 @@ import { Children as ReactChildren } from "react"
 import { hasValidChildren } from "../displays/hatchifyDisplays"
 import { HatchifyAttributeField } from "../../components";
 
-import type { Schema } from "data-core";
+import type { Schema } from "@hatchifyjs/data-core";
 import type { Attribute, AttributeSchema, Primitive, FieldComponent } from "../../presentation/interfaces";
 import type {DefaultFieldComponentsTypes, HatchifyAttributeFieldProps} from "../../components";
 

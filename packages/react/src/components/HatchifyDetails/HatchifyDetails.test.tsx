@@ -2,7 +2,7 @@ import { describe, it, vi } from "vitest"
 import { render } from "@testing-library/react"
 
 import {HatchifyDetails} from "./HatchifyDetails"
-import type { Schema } from "data-core"
+import type { Schema } from "@hatchifyjs/data-core"
 
 const TestSchema: Schema = {
   name: "Test",
