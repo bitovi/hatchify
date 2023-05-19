@@ -37,7 +37,7 @@ export interface Schema {
   }
 }
 
-export function getDefaultRender(
+export function getDefaultDisplayRender(
   attribute: string,
   attributeType: string,
   defaultValueComponents: DefaultValueComponentsTypes,
@@ -234,7 +234,7 @@ export function getHatchifyDisplay({
       />
     )
   } else {
-    display.render = getDefaultRender(
+    display.render = getDefaultDisplayRender(
       attribute,
       attributeSchema.type,
       defaultValueComponents,

@@ -1,0 +1,1 @@
+export {MuiProvider} from "./MuiProvider";
