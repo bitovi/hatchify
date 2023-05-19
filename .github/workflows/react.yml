@@ -1,4 +1,4 @@
-name: react
+name: "@hatchifyjs/react"
 
 on:
   push:
