@@ -13,7 +13,8 @@ describe("source-jsonapi/services/getList", () => {
   it("works", async () => {
     const expected = articles.map((article) => ({
       __schema: "Article",
-      ...article,
+      attributes: article.attributes,
+      id: article.id,
     }))
     const result = await getList(sourceConfig, ArticleSchema, {})
     expect(result).toEqual(expected)

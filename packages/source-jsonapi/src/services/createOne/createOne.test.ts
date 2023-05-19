@@ -15,7 +15,6 @@ describe("source-jsonapi/services/createOne", () => {
     const expected = [
       {
         __schema: "Article",
-        type: "Article",
         id: `article-id-${articles.length + 1}`,
         ...data,
       },

@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest"
-import type { Resource, Source } from "@hatchifyjs/data-core"
+import type { Source } from "@hatchifyjs/data-core"
 import type { ReactSchema } from "./createReactRest"
 import { createReactRest } from "./createReactRest"
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve({ data: [] as Resource[] }),
-  getOne: () => Promise.resolve({ data: {} as Resource }),
-  createOne: () => Promise.resolve({ data: {} as Resource }),
+  getList: () => Promise.resolve([]),
+  getOne: () => Promise.resolve([]),
+  createOne: () => Promise.resolve([]),
 }
 
 describe("react-rest/services/createReactRest", () => {

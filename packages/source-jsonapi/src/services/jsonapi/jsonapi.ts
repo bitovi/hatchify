@@ -31,9 +31,9 @@ export function jsonapi(config: SourceConfig): Source {
 }
 
 export async function fetchJsonApi(
-  method: string = "GET",
+  method: "GET" | "POST" | "PATCH" | "DELETE",
   url: string,
-  body?: any,
+  body?: { [key: string]: any },
 ): // todo support `included` (relationships) property
 Promise<{ data: JsonApiResource }> {
   const response = await fetch(url, {
@@ -49,12 +49,13 @@ Promise<{ data: JsonApiResource }> {
   return response.json()
 }
 
-function jsonApiResourceToRecord(
+export function jsonApiResourceToRecord(
   resource: JsonApiResource,
   schemaName: string,
 ): Resource {
   return {
-    ...resource,
+    attributes: resource.attributes,
+    // todo relationships
     id: resource.id.toString(),
     __schema: schemaName,
   }

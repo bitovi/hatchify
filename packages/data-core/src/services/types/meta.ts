@@ -3,14 +3,12 @@ export type Error = any // todo
 
 export type Meta = MetaLoading | MetaSuccess | MetaError
 
-// * isDone: ONLY if status is "success": if this allows "error" do we need an "isSuccess?"
-// * isLoading: ONLY if status is "loading"
-// * isRejected: ONLY if status is "error"
-// * isRevalidating: ONLY if status is "loading" and isStale is true
-// * isStale: ONLY if status is "loading" and there is data (outside of Meta type)
-//      * can isStale be true if there is no data? i don't think so
-//      * can isStale be true if status is "success" or "error"?
-//         * i don't think so - if there is stale data it _should_ be refetched and status should be "loading"
+// * isDone: no more network requests: true if status is "success" or "error"
+// * isLoading: network request in progress: true if status is "loading"
+// * isRejected: network request failed: true if status is "error"
+// * isRevalidating: network request in progress and data is stale: true if status is "loading" and isStale is true
+// * isStale: data is stale: true if status is "loading" or "error"
+// * isSuccess: network request succeeded: true if status is "success"
 
 export interface MetaLoading {
   status: "loading"
@@ -22,6 +20,7 @@ export interface MetaLoading {
   isRejected: false
   isRevalidating: boolean
   isStale: boolean
+  isSuccess: false
 }
 export interface MetaSuccess {
   status: "success"
@@ -32,16 +31,18 @@ export interface MetaSuccess {
   isLoading: false
   isRejected: false
   isRevalidating: false
-  isStale: false // ? never?
+  isStale: false
+  isSuccess: true
 }
 export interface MetaError {
   status: "error"
   meta?: MetaData
   error: Error
 
-  isDone: false
+  isDone: true
   isLoading: false
   isRejected: true
-  isRevalidating: false // ? false? never?
-  isStale: boolean // ? boolean? never?
+  isRevalidating: false
+  isStale: boolean
+  isSuccess: false
 }

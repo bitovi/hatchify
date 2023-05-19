@@ -111,6 +111,7 @@ export function getMeta(
       isRejected: false,
       isRevalidating: false,
       isStale: false,
+      isSuccess: true,
     }
   } else if (status === "loading") {
     return {
@@ -122,17 +123,19 @@ export function getMeta(
       isRejected: false,
       isRevalidating: isStale,
       isStale,
+      isSuccess: false,
     }
   } else {
     return {
       status,
       meta,
       error,
-      isDone: false,
+      isDone: true,
       isLoading: false,
       isRejected: true,
       isRevalidating: false,
       isStale,
+      isSuccess: false,
     }
   }
 }
