@@ -3,11 +3,17 @@ import { Children as ReactChildren } from "react"
 import { hasValidChildren } from "../displays/hatchifyDisplays"
 import { HatchifyAttributeField } from "../../components";
 
-import type { Schema } from "@hatchifyjs/data-core";
+// import type { Schema } from "@hatchifyjs/data-core";
+import type { Schema } from "../api/schemas";//TODO update to the right schema
+
 import type { Attribute, AttributeSchema, Primitive, FieldComponent } from "../../presentation/interfaces";
 import type {DefaultFieldComponentsTypes, HatchifyAttributeFieldProps} from "../../components";
+import {
+  API_BASE_URL,
+  getDisplayValueKeyForSchema,
+  getFlatRecords } from "../api";
 
-export type FormFieldValueType = Primitive | string[]
+export type FormFieldValueType = Primitive | string[];
 
 export type FormFieldRender = ({
   value,
@@ -252,6 +258,3 @@ export function getDefaultFormFieldRender(
 
   return defaultRender
 }
-
-
-//TODO Fix these errors

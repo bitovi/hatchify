@@ -1,7 +1,8 @@
 import { Children as ReactChildren } from "react"
 import cloneDeep from "lodash/cloneDeep"
 import { v4 as uuidv4 } from "uuid"
-import type { Schema } from "@hatchifyjs/data-core"
+// import type { Schema} from "@hatchifyjs/data-core"
+import type { Schema } from "../api/schemas";//TODO update to the right schema
 
 import {
   HatchifyAttributeDisplay,
@@ -302,6 +303,3 @@ export function getDisplays(
 
   return displays
 }
-
-
-//TODO Fix these errors above
