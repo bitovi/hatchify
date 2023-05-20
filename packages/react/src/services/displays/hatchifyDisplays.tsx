@@ -1,7 +1,8 @@
 import { Children as ReactChildren } from "react"
 import cloneDeep from "lodash/cloneDeep"
 import { v4 as uuidv4 } from "uuid"
-import type { Schema } from "@hatchifyjs/data-core"
+// import type { Schema} from "@hatchifyjs/data-core"
+import type { Schema } from "../api/schemas";//TODO update to the right schema
 
 import {
   HatchifyAttributeDisplay,
@@ -23,21 +24,7 @@ export interface HatchifyDisplay {
   render: ({ record }: { record: FlatRecord }) => React.ReactNode
 }
 
-export interface Schema {
-  name: string // "Article"
-  displayAttribute: string,
-  attributes: {
-    [field: string]: string | { type: string }
-  }
-  relationships?: {
-    [field: string]: {
-      type: "many" | "one"
-      schema: string
-    }
-  }
-}
-
-export function getDefaultRender(
+export function getDefaultDisplayRender(
   attribute: string,
   attributeType: string,
   defaultValueComponents: DefaultValueComponentsTypes,
@@ -234,7 +221,7 @@ export function getHatchifyDisplay({
       />
     )
   } else {
-    display.render = getDefaultRender(
+    display.render = getDefaultDisplayRender(
       attribute,
       attributeSchema.type,
       defaultValueComponents,
@@ -302,6 +289,3 @@ export function getDisplays(
 
   return displays
 }
-
-
-//TODO Fix these errors above
