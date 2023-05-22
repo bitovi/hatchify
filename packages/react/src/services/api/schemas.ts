@@ -8,7 +8,7 @@ export interface Relationship {
   options: { through: string; as: string }
 }
 
-// TODO we probl
+// TODO we will need to update this to use the data-core Schema once we define it
 export interface Schema {
   name: string
   attributes: { [key: string]: Attribute }
