@@ -1,9 +1,11 @@
-// import { useParams } from "react-router-dom"
-import type { Schema } from "data-core"
+import { useParams } from "react-router-dom"
+// import type { Schema } from "@hatchifyjs/data-core"
 
-// import { getOne } from "../../services/api/api"
+import { getOne } from "../../services/api/api"
 import { useHatchifyPresentation } from ".."
 import { getDisplays } from "../../services"
+
+import type { Schema } from "../../services/api/schemas" //TODO update schema
 
 import type { FlatRecord, ValueComponent } from "../../presentation/interfaces"
 
@@ -20,7 +22,7 @@ export const HatchifyDetails: React.FC<HatchifyDetailsProps> = ({
   useData,
   children,
 }) => {
-  // const { id } = useParams<{ id: string }>()
+  const { id } = useParams<{ id: string }>()
   const { Details, defaultValueComponents } = useHatchifyPresentation()
   const displays = getDisplays(
     schema,
@@ -30,9 +32,8 @@ export const HatchifyDetails: React.FC<HatchifyDetailsProps> = ({
   )
 
   if (!useData) {
-    // const resource = getOne(schema, id as string)
-    // TODO utilize getOne to get the data. I hard coded this for now because we don't have an api currently
-    useData = () => {return {id: 123}};  //resource.read()
+    const resource = getOne(schema, id as string)
+    useData = () => resource.read()
   }
 
   return <Details displays={displays} useData={useData} />

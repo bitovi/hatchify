@@ -1,13 +1,15 @@
 import { describe, it, vi } from "vitest"
 import { render } from "@testing-library/react"
 
-import {HatchifyForm} from "./HatchifyForm"
-import type { Schema } from "data-core"
+import { HatchifyForm } from "./HatchifyForm"
+// import type { Schema } from "@hatchifyjs/data-core"
+import type { Schema } from "../../services/api/schemas" //TODO update schema
 
 const TestSchema: Schema = {
   name: "Test",
   attributes: { id: "string", name: "string" },
-  displayAttribute: "name",
+  displayField: "name",
+  jsonApiField: "tests",
 }
 
 describe("hatchifyjs/components/HatchifyForm", () => {

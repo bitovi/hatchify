@@ -1,9 +1,10 @@
-import type { Schema } from "data-core"
+// import type { Schema } from "@hatchifyjs/data-core"
+import type { Schema } from "../../services/api/schemas" //TODO update schema
 
-import { getDisplays } from "../../services";
-import { useHatchifyPresentation } from "..";
+import { getDisplays } from "../../services"
+import { useHatchifyPresentation } from ".."
 
-import type { FlatRecord, ValueComponent } from "../../presentation/interfaces";
+import type { FlatRecord, ValueComponent } from "../../presentation/interfaces"
 
 interface HatchifyListProps {
   schema: Schema

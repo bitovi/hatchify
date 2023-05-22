@@ -1,1 +1,1 @@
-export {HatchifyFormPage} from "./HatchifyFormPage";
+export { HatchifyFormPage } from "./HatchifyFormPage"
