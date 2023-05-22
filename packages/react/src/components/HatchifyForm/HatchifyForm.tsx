@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 import { isEmpty } from "lodash"
 
 // import type { Schema } from "@hatchifyjs/data-core";
 import type { Schema } from "../../services/api/schemas" //TODO update schema
 
-import { useHatchifyPresentation } from "..";
-import { getFormFields } from "../../services";
+import { useHatchifyPresentation } from ".."
+import { getFormFields } from "../../services"
 
-import type { Primitive, FieldComponent } from "../../presentation/interfaces";
-import type {
-  FormFieldValueType,
-  HatchifyFormField,
-} from "../../services";
+import type { Primitive, FieldComponent } from "../../presentation/interfaces"
+import type { FormFieldValueType, HatchifyFormField } from "../../services"
 
 export type FormState = { [key: string]: Primitive | string[] }
 

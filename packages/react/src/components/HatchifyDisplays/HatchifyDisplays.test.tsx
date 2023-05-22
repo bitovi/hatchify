@@ -4,13 +4,13 @@ import { render } from "@testing-library/react"
 import {
   HatchifyExtraDisplay,
   HatchifyAttributeDisplay,
-  HatchifyAttributeField
+  HatchifyAttributeField,
 } from "./HatchifyDisplays"
 
 describe("hatchifyjs/components/HatchifyColumns", () => {
   describe("HatchifyExtraDisplay", () => {
-    it("works", () => {      
-      render(<HatchifyExtraDisplay label="Label" render={() => <div />} />);
+    it("works", () => {
+      render(<HatchifyExtraDisplay label="Label" render={() => <div />} />)
     })
   })
 

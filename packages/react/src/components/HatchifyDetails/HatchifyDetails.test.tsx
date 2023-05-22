@@ -1,7 +1,7 @@
 import { describe, it, vi } from "vitest"
 import { render } from "@testing-library/react"
 
-import {HatchifyDetails} from "./HatchifyDetails"
+import { HatchifyDetails } from "./HatchifyDetails"
 // import type { Schema } from "@hatchifyjs/data-core"
 import type { Schema } from "../../services/api/schemas" //TODO update schema
 
@@ -13,15 +13,15 @@ const TestSchema: Schema = {
 }
 
 //Mock wont be used until we find a way to read the param.
-//TODO mock the api when we get enough data about the api 
+//TODO mock the api when we get enough data about the api
 vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual<object>("react-router-dom");
+  const actual = await vi.importActual<object>("react-router-dom")
 
   return {
     ...actual,
-    useParams: vi.fn().mockReturnValue({ 
-      id: "1"
-    })
+    useParams: vi.fn().mockReturnValue({
+      id: "1",
+    }),
   }
 })
 

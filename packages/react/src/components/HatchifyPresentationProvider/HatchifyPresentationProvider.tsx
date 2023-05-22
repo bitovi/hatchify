@@ -101,8 +101,6 @@ export const HatchifyPresentationDefaultFieldComponents = {
   Relationship: RelationshipInput,
 }
 
-
-
 export const HatchifyPresentationContext =
   createContext<HatchifyPresentationContextProps>({
     // @todo default/headless components?
@@ -114,10 +112,8 @@ export const HatchifyPresentationContext =
     defaultFieldComponents: HatchifyPresentationDefaultFieldComponents,
   })
 
-
 export const useHatchifyPresentation = (): HatchifyPresentationContextProps =>
-useContext(HatchifyPresentationContext)
-
+  useContext(HatchifyPresentationContext)
 
 interface HatchifyPresentationProviderProps
   extends HatchifyPresentationContextProps {

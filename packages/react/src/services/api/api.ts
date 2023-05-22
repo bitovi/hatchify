@@ -5,12 +5,9 @@ import type {
 } from "../../presentation/interfaces"
 import type { FormState } from "../../components/HatchifyForm"
 // import type { Schema } from "@hatchifyjs/data-core"
-import * as schemas from "./schemas" // TODO this is hardcoded schemas, we will need to update this file to consume the schemas, instead of importing it 
-import type { Schema } from "./schemas";//TODO update to the right schema
-import type {
-  FormFieldValueType,
-  HatchifyFormField,
-} from "../formFields"
+import * as schemas from "./schemas" // TODO this is hardcoded schemas, we will need to update this file to consume the schemas, instead of importing it
+import type { Schema } from "./schemas" //TODO update to the right schema
+import type { FormFieldValueType, HatchifyFormField } from "../formFields"
 
 export const API_BASE_URL = "https://dummy.data/api"
 
