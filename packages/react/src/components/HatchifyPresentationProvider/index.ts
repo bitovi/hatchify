@@ -6,5 +6,5 @@ export {
 } from "./HatchifyPresentationProvider"
 export type {
   DefaultValueComponentsTypes,
-  DefaultFieldComponentsTypes
+  DefaultFieldComponentsTypes,
 } from "./HatchifyPresentationProvider"

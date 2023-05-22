@@ -1,5 +1,3 @@
-export { HatchifyForm } from "./HatchifyForm";
+export { HatchifyForm } from "./HatchifyForm"
 
-export type {
-  FormState
-} from "./HatchifyForm"
+export type { FormState } from "./HatchifyForm"

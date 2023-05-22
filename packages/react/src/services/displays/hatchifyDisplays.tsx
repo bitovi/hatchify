@@ -2,7 +2,7 @@ import { Children as ReactChildren } from "react"
 import cloneDeep from "lodash/cloneDeep"
 import { v4 as uuidv4 } from "uuid"
 // import type { Schema} from "@hatchifyjs/data-core"
-import type { Schema } from "../api/schemas";//TODO update to the right schema
+import type { Schema } from "../api/schemas" //TODO update to the right schema
 
 import {
   HatchifyAttributeDisplay,
@@ -16,7 +16,11 @@ import type {
   ValueComponent,
 } from "../../presentation/interfaces"
 
-import type { Render, RenderValue, DefaultValueComponentsTypes } from "../../components"
+import type {
+  Render,
+  RenderValue,
+  DefaultValueComponentsTypes,
+} from "../../components"
 
 export interface HatchifyDisplay {
   key: string
@@ -67,7 +71,6 @@ export function getDefaultDisplayRender(
 
   return defaultRender
 }
-
 
 export function getDisplaysFromChildren(
   schema: Schema,

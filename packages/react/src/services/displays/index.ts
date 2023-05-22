@@ -1,1 +1,1 @@
-export * from "./hatchifyDisplays";
+export * from "./hatchifyDisplays"

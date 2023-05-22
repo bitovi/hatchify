@@ -1,6 +1,6 @@
 import { describe, it, vi } from "vitest"
 import { render } from "@testing-library/react"
-import {HatchifyFormPage} from "./HatchifyFormPage"
+import { HatchifyFormPage } from "./HatchifyFormPage"
 // import type { Schema } from "@hatchifyjs/data-core"
 import type { Schema } from "../../services/api/schemas" //TODO update schema
 

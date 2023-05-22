@@ -9,7 +9,7 @@ const TestSchema: Schema = {
   name: "Test",
   attributes: { id: "string", name: "string" },
   displayField: "name",
-  jsonApiField: "tests"
+  jsonApiField: "tests",
 }
 
 describe("hatchifyjs/components/HatchifyDetailsPage", () => {

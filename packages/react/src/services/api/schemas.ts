@@ -1,6 +1,6 @@
 // import type { Schema } from "@hatchifyjs/data-core"
 
-import type { Attribute } from "../../presentation/interfaces";
+import type { Attribute } from "../../presentation/interfaces"
 
 // TODO there are 2 different Relationship interface. The other one is in presentation interfaces
 export interface Relationship {
