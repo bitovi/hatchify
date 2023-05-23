@@ -1,0 +1,1 @@
+export { MuiDetails } from "./MuiDetails"

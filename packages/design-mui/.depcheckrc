@@ -1,0 +1,1 @@
+ignores: ["@emotion/styled", "@testing-library/jest-dom"]
