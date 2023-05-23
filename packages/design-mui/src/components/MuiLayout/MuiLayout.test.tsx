@@ -2,7 +2,8 @@ import { describe, it, expect } from "vitest"
 
 import { render, screen } from "@testing-library/react"
 import {MuiLayout} from "./MuiLayout"
-import type { Schema } from "data-core"
+
+import type { Schema } from "@hatchifyjs/react"
 
 const TestSchema: Schema = {
   name: "Test",
