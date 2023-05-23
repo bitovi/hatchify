@@ -8,7 +8,8 @@ import type { Schema } from "@hatchifyjs/react"
 const TestSchema: Schema = {
   name: "Test",
   attributes: { id: "string", name: "string" },
-  displayAttribute: "name"
+  displayField: "name",
+  jsonApiField: "tests",
 }
 
 describe("hatchifyjs/presentation/mui/MuiLayout", () => {

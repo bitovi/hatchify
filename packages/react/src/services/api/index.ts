@@ -1,2 +1,2 @@
 export * from "./api"
-export type { Schema } from "./schemas"
+export * from "./schemas"
