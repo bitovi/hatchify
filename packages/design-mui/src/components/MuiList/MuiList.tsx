@@ -10,7 +10,7 @@ import {
   TableContainer,
 } from "@mui/material"
 
-import type { XListProps } from "@hatchifyjs/react"
+import type { XListProps } from "@hatchifyjs/react-ui"
 
 const styles = {
   tableContainer: css`

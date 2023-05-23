@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { createOne, getMeta } from "@hatchifyjs/data-core"
+import { createOne, getMeta } from "@hatchifyjs/rest-client"
 import type {
   CreateData,
   Meta,
@@ -7,10 +7,10 @@ import type {
   Record,
   Schema,
   Source,
-} from "@hatchifyjs/data-core"
+} from "@hatchifyjs/rest-client"
 
 /**
- * Returns a function that creates a new record using the data-core createOne,
+ * Returns a function that creates a new record using the rest-client createOne,
  * @todo metadata, and the last created record.
  */
 export const useCreateOne = (

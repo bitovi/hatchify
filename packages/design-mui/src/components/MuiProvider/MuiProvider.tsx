@@ -5,7 +5,7 @@ import {
   HatchifyPresentationProvider,
   HatchifyPresentationDefaultValueComponents,
   HatchifyPresentationDefaultFieldComponents,
-} from "@hatchifyjs/react"
+} from "@hatchifyjs/react-ui"
 import { MuiLayout } from "../MuiLayout"
 import { MuiList } from "../MuiList"
 import { MuiForm } from "../MuiForm"
@@ -18,7 +18,7 @@ import {
   Relationship as RelationshipInput,
 } from "./DefaultFieldComponents"
 import { Relationship, RelationshipList } from "./DefaultDisplayComponents"
-import type { XProviderProps } from "@hatchifyjs/react"
+import type { XProviderProps } from "@hatchifyjs/react-ui"
 
 const defaultTheme = createTheme()
 

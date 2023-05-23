@@ -4,7 +4,7 @@ import { MuiList } from "./MuiList"
 import {
   HatchifyPresentationDefaultValueComponents,
   getDefaultDisplayRender,
-} from "@hatchifyjs/react"
+} from "@hatchifyjs/react-ui"
 
 describe.skip("hatchifyjs/presentation/mui/MuiList", () => {
   describe.skip("MuiList", () => {

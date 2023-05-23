@@ -3,7 +3,7 @@ import { Suspense } from "react"
 import { Box, Grid } from "@mui/material"
 import { css } from "@emotion/react"
 
-import type { XDetailsProps } from "@hatchifyjs/react"
+import type { XDetailsProps } from "@hatchifyjs/react-ui"
 
 const styles = {
   label: css`

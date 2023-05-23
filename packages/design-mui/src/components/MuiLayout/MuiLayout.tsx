@@ -2,7 +2,7 @@
 import { Container } from "@mui/material"
 import { css } from "@emotion/react"
 
-import type { XLayoutProps } from "@hatchifyjs/react"
+import type { XLayoutProps } from "@hatchifyjs/react-ui"
 
 const styles = {
   headerRow: css`

@@ -6,7 +6,7 @@ import { MuiDetails } from "./MuiDetails"
 import {
   HatchifyPresentationDefaultValueComponents,
   getDefaultDisplayRender,
-} from "@hatchifyjs/react"
+} from "@hatchifyjs/react-ui"
 
 describe("hatchifyjs/presentation/mui/MuiDetails", () => {
   describe("MuiDetails", () => {

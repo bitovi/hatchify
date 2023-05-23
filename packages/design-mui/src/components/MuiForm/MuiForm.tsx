@@ -3,7 +3,7 @@ import { Fragment } from "react"
 import { Box, Button, Grid } from "@mui/material"
 import { css } from "@emotion/react"
 
-import type { XFormProps } from "@hatchifyjs/react"
+import type { XFormProps } from "@hatchifyjs/react-ui"
 
 const styles = {
   box: css`

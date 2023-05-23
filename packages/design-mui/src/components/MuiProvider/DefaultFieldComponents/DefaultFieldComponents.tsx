@@ -4,7 +4,7 @@ import {
   FormControlLabel,
   TextField,
 } from "@mui/material"
-import type { DefaultFieldComponentsTypes } from "@hatchifyjs/react"
+import type { DefaultFieldComponentsTypes } from "@hatchifyjs/react-ui"
 
 export const String: DefaultFieldComponentsTypes["String"] = ({
   value,
