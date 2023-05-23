@@ -4,7 +4,7 @@ import {
   getOne,
   getRecords,
   subscribeToOne,
-} from "@hatchifyjs/data-core"
+} from "@hatchifyjs/rest-client"
 import type {
   Meta,
   MetaError,
@@ -12,10 +12,10 @@ import type {
   Record,
   Schema,
   Source,
-} from "@hatchifyjs/data-core"
+} from "@hatchifyjs/rest-client"
 
 /**
- * Fetches a single records using the data-core getOne function,
+ * Fetches a single records using the rest-client getOne function,
  * subscribes to the store for updates to the record, returns the record.
  */
 export const useOne = (

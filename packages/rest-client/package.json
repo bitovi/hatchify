@@ -1,15 +1,15 @@
 {
-  "name": "@hatchifyjs/react",
+  "name": "@hatchifyjs/rest-client",
   "private": true,
   "version": "0.0.0",
-  "main": "./dist/react.js",
-  "module": "./dist/react.mjs",
-  "types": "./dist/react.d.ts",
+  "main": "./dist/rest-client.js",
+  "module": "./dist/rest-client.mjs",
+  "types": "./dist/rest-client.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/react.js",
-      "import": "./dist/react.mjs",
-      "types": "./src/react.ts"
+      "require": "./dist/rest-client.js",
+      "import": "./dist/rest-client.mjs",
+      "types": "./src/rest-client.ts"
     },
     "./package.json": "./package.json"
   },
@@ -26,20 +26,11 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/react-ui": "^0.0.0",
-    "@hatchifyjs/react-rest": "^0.0.0",
     "@hatchifyjs/hatchify-core": "^0.0.0"
   },
   "devDependencies": {
-    "@testing-library/react": "^14.0.0",
-    "@types/react": "^18.2.0",
-    "jsdom": "^21.1.1",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
-  },
-  "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   }
 }

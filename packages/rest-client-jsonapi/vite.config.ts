@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite"
 import dts from "vite-plugin-dts"
 
@@ -5,7 +6,7 @@ import dts from "vite-plugin-dts"
 export default defineConfig({
   build: {
     lib: {
-      entry: "src/react.ts",
+      entry: "src/rest-client-jsonapi.ts",
       formats: ["es", "cjs"],
     },
     rollupOptions: {
@@ -13,4 +14,7 @@ export default defineConfig({
     },
   },
   plugins: [dts()],
+  test: {
+    setupFiles: ["./src/setupTests.ts"],
+  },
 })

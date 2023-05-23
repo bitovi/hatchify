@@ -5,11 +5,8 @@ import dts from "vite-plugin-dts"
 export default defineConfig({
   build: {
     lib: {
-      entry: "src/react.ts",
+      entry: "src/rest-client.ts",
       formats: ["es", "cjs"],
-    },
-    rollupOptions: {
-      external: [/node_modules/],
     },
   },
   plugins: [dts()],

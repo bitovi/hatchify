@@ -3,7 +3,7 @@ import {
   getMeta,
   getRecords,
   subscribeToList,
-} from "@hatchifyjs/data-core"
+} from "@hatchifyjs/rest-client"
 import { useState, useEffect } from "react"
 import type {
   Meta,
@@ -12,10 +12,10 @@ import type {
   Record,
   Schema,
   Source,
-} from "@hatchifyjs/data-core"
+} from "@hatchifyjs/rest-client"
 
 /**
- * Fetches a list of records using the data-core getList function,
+ * Fetches a list of records using the rest-client getList function,
  * subscribes to the store for updates to the list, returns the list.
  */
 export const useList = (

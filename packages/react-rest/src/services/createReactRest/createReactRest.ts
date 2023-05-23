@@ -6,7 +6,7 @@ import {
   subscribeToList,
   subscribeToOne,
   transformSchema,
-} from "@hatchifyjs/data-core"
+} from "@hatchifyjs/rest-client"
 import type {
   CreateData,
   Meta,
@@ -15,7 +15,7 @@ import type {
   QueryOne,
   Record,
   Unsubscribe,
-} from "@hatchifyjs/data-core"
+} from "@hatchifyjs/rest-client"
 import type { Schema } from "@hatchifyjs/hatchify-core"
 import { useCreateOne, useList, useOne } from ".."
 
@@ -48,7 +48,7 @@ export type ReactRest = {
 }
 
 /**
- * Returns a set of functions for interacting with the data-core store and
+ * Returns a set of functions for interacting with the rest-client store and
  * data source for each schema.
  */
 export function createReactRest(reactSchemas: ReactSchemas): ReactRest {
