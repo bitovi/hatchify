@@ -1,0 +1,37 @@
+{
+  "experimentalResolver": true,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+      "@shared/*": ["src/shared/*"],
+      "@hatchifyjs/*": ["src/hatchifyjs/*"]
+    },
+
+    "jsx": "react-jsx",
+    "module": "NodeNext",
+    "moduleResolution": "Node",
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "noEmit": true,
+
+    "composite": true,
+    "incremental": true,
+    "strict": true,
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "useDefineForClassFields": true
+  },
+  "include": ["@types", "src", "vite.config.ts", "./setupTests.ts"],
+  "exclude": ["node_modules"],
+}
