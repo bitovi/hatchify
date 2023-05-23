@@ -1,15 +1,15 @@
 {
-  "name": "@hatchifyjs/react",
+  "name": "@hatchifyjs/design-mui",
   "private": true,
   "version": "0.0.0",
-  "main": "./dist/react.js",
-  "module": "./dist/react.mjs",
-  "types": "./dist/react.d.ts",
+  "main": "./dist/design-mui.js",
+  "module": "./dist/design-mui.mjs",
+  "types": "./dist/design-mui.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/react.js",
-      "import": "./dist/react.mjs",
-      "types": "./src/react.ts"
+      "require": "./dist/design-mui.js",
+      "import": "./dist/design-mui.mjs",
+      "types": "./src/design-mui.ts"
     },
     "./package.json": "./package.json"
   },
@@ -25,20 +25,20 @@
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "vite build"
   },
-  "dependencies": {
-    "@hatchifyjs/react-ui": "^0.0.0",
-    "@hatchifyjs/react-rest": "^0.0.0",
-    "@hatchifyjs/hatchify-core": "^0.0.0",
-    "@hatchifyjs/rest-client-jsonapi": "^0.0.0"
-  },
   "devDependencies": {
-    "@types/react": "^18.2.0",
-    "jsdom": "^21.1.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.0.28",
+    "@vitejs/plugin-react": "^4.0.0",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
   },
-  "peerDependencies": {
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@hatchifyjs/react-ui": "^0.0.0",
+    "@mui/material": "^5.12.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
