@@ -7,7 +7,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   build: {
     lib: {
-      entry: "src/react.ts",
+      entry: "src/design-mui.ts",
       formats: ["es", "cjs"],
     },
   },
