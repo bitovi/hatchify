@@ -1,0 +1,36 @@
+{
+  "name": "hatchify-demo-react-mui",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "eslint": "eslint *.config.ts src",
+    "prettier": "prettier --check *.config.ts src",
+    "prettier:fix": "prettier --write *.config.ts src",
+    "depcheck": "depcheck .",
+    "dev": "vite",
+    "clean": "rm -rf tsconfig.tsbuildinfo dist",
+    "build": "tsc && vite build",
+    "test": "TZ=UT jest"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": "@bitovi/eslint-config/react",
+    "rules": {
+      "import/order": "off"
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "trailingComma": "all"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "vite": "^4.2.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
+  }
+}
