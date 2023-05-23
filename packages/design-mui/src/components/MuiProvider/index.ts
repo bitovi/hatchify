@@ -1,1 +1,1 @@
-export {MuiProvider} from "./MuiProvider";
+export { MuiProvider } from "./MuiProvider"

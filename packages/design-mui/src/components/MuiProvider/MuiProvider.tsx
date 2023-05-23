@@ -5,11 +5,11 @@ import {
   HatchifyPresentationProvider,
   HatchifyPresentationDefaultValueComponents,
   HatchifyPresentationDefaultFieldComponents,
-} from "@hatchifyjs/react";
-import {MuiLayout} from "../MuiLayout"
-import {MuiList} from "../MuiList"
+} from "@hatchifyjs/react"
+import { MuiLayout } from "../MuiLayout"
+import { MuiList } from "../MuiList"
 import { MuiForm } from "../MuiForm"
-import {MuiDetails} from "../MuiDetails"
+import { MuiDetails } from "../MuiDetails"
 import {
   String as StringInput,
   Number as NumberInput,

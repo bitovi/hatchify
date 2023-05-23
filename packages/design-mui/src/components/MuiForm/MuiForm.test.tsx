@@ -1,7 +1,7 @@
 import { describe, it, vi, expect } from "vitest"
 
 import { render, screen } from "@testing-library/react"
-import {MuiForm} from "./MuiForm"
+import { MuiForm } from "./MuiForm"
 
 describe("hatchifyjs/presentation/mui/MuiForm", () => {
   describe("MuiForm", () => {

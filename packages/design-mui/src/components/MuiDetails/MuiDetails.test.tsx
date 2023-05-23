@@ -2,8 +2,11 @@ import { describe, it, expect } from "vitest"
 
 import { render, screen } from "@testing-library/react"
 
-import {MuiDetails} from "./MuiDetails"
-import { HatchifyPresentationDefaultValueComponents, getDefaultDisplayRender } from "@hatchifyjs/react"
+import { MuiDetails } from "./MuiDetails"
+import {
+  HatchifyPresentationDefaultValueComponents,
+  getDefaultDisplayRender,
+} from "@hatchifyjs/react"
 
 describe("hatchifyjs/presentation/mui/MuiDetails", () => {
   describe("MuiDetails", () => {

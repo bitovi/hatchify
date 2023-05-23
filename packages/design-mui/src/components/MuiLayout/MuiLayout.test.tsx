@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest"
 
 import { render, screen } from "@testing-library/react"
-import {MuiLayout} from "./MuiLayout"
+import { MuiLayout } from "./MuiLayout"
 
 import type { Schema } from "@hatchifyjs/react"
 

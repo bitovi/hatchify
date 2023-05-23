@@ -1,1 +1,1 @@
-export * from "./MuiProvider";
+export * from "./MuiProvider"
