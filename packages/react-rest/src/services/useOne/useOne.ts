@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react"
-import { getOne, getRecords, subscribeToOne } from "@hatchifyjs/data-core"
+import {
+  getMeta,
+  getOne,
+  getRecords,
+  subscribeToOne,
+} from "@hatchifyjs/data-core"
 import type {
   Meta,
+  MetaError,
   QueryOne,
   Record,
   Schema,
@@ -19,17 +25,19 @@ export const useOne = (
 ): [Record | undefined, Meta] => {
   const defaultData = getRecords(schema.name)
   const record = defaultData.find((record: Record) => record.id === query.id)
+
   const [data, setData] = useState<Record | undefined>(record)
-  const [error, setError] = useState<Error | undefined>(undefined)
+  const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     setLoading(true)
-    getOne(dataSource, schema, query)
+
+    getOne(dataSource, schema, { id: query.id, fields: query.fields })
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schema, query.fields, query.id])
+  }, [dataSource, schema, query.id, query.fields])
 
   useEffect(() => {
     return subscribeToOne(
@@ -39,17 +47,6 @@ export const useOne = (
     )
   }, [schema, query.id])
 
-  const status = (
-    error ? "error" : loading ? "loading" : "success"
-  ) as Meta["status"]
-  const meta = {
-    status,
-    error,
-    loading,
-    isLoading: status === "loading",
-    isDone: status === "success",
-    isRejected: status === "error",
-  }
-
+  const meta: Meta = getMeta(error, loading, false, undefined)
   return [data, meta]
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
 import type { Schema } from "@hatchifyjs/data-core"
-import { baseUrl, articles } from "../../mocks/handlers"
+import { baseUrl } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import { jsonapi } from "../../source-jsonapi"
 import { getOne } from "./getOne"
@@ -13,12 +13,16 @@ describe("source-jsonapi/services/getOne", () => {
   const query = { id: "article-id-1" }
 
   it("works", async () => {
-    const expected = {
-      data: {
-        ...articles.find((article) => article.id === "article-id-1"),
+    const expected = [
+      {
         __schema: "Article",
+        id: "article-id-1",
+        attributes: {
+          title: "Article 1",
+          body: "Article 1 body",
+        },
       },
-    }
+    ]
     const result = await getOne(sourceConfig, ArticleSchema, query)
     expect(result).toEqual(expected)
   })
@@ -32,7 +36,7 @@ describe("source-jsonapi/services/getOne", () => {
 
     await expect(
       getOne(sourceConfig, ArticleSchema, query),
-    ).rejects.toThrowError("failed to fetch record")
+    ).rejects.toThrowError("request failed")
   })
 
   it("can be called from a Source", async () => {

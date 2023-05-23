@@ -2,21 +2,21 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "@hatchifyjs/data-core"
-import type { Resource, Schema, Source } from "@hatchifyjs/data-core"
+import type { Schema, Source } from "@hatchifyjs/data-core"
 import { useCreateOne } from "./useCreateOne"
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve({ data: [] as Resource[] }),
-  getOne: () => Promise.resolve({ data: {} as Resource }),
+  getList: () => Promise.resolve([]),
+  getOne: () => Promise.resolve([]),
   createOne: () =>
-    Promise.resolve({
-      data: {
+    Promise.resolve([
+      {
         id: "3",
         __schema: "Article",
         attributes: { title: "baz", body: "baz-body" },
       },
-    }),
+    ]),
 }
 
 const ArticleSchema = { name: "Article" } as Schema
@@ -34,10 +34,14 @@ describe("react-rest/services/useCreateOne", () => {
         expect.any(Function),
         {
           status: "success",
+          meta: undefined,
           error: undefined,
-          isLoading: false,
           isDone: true,
+          isLoading: false,
           isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
         },
         undefined,
       ])
@@ -50,10 +54,14 @@ describe("react-rest/services/useCreateOne", () => {
         expect.any(Function),
         {
           status: "success",
+          meta: undefined,
           error: undefined,
-          isLoading: false,
           isDone: true,
+          isLoading: false,
           isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
         },
         {
           id: "3",
@@ -77,10 +85,14 @@ describe("react-rest/services/useCreateOne", () => {
         expect.any(Function),
         {
           status: "success",
+          meta: undefined,
           error: undefined,
-          isLoading: false,
           isDone: true,
+          isLoading: false,
           isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
         },
         undefined,
       ])
@@ -96,10 +108,14 @@ describe("react-rest/services/useCreateOne", () => {
         expect.any(Function),
         {
           status: "error",
+          meta: undefined,
           error: new Error("Something went wrong"),
+          isDone: true,
           isLoading: false,
-          isDone: false,
           isRejected: true,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: false,
         },
         undefined,
       ]),

@@ -1,8 +1,9 @@
 import { useState } from "react"
-import { createOne } from "@hatchifyjs/data-core"
+import { createOne, getMeta } from "@hatchifyjs/data-core"
 import type {
   CreateData,
   Meta,
+  MetaError,
   Record,
   Schema,
   Source,
@@ -17,7 +18,7 @@ export const useCreateOne = (
   schema: Schema,
 ): [(data: CreateData) => void, Meta, Record?] => {
   const [data, setData] = useState<Record | undefined>(undefined)
-  const [error, setError] = useState<Error | undefined>(undefined)
+  const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
   function create(data: CreateData) {
@@ -28,16 +29,6 @@ export const useCreateOne = (
       .finally(() => setLoading(false))
   }
 
-  const status = (
-    error ? "error" : loading ? "loading" : "success"
-  ) as Meta["status"]
-  const meta = {
-    status,
-    error,
-    isLoading: status === "loading",
-    isDone: status === "success",
-    isRejected: status === "error",
-  }
-
+  const meta = getMeta(error, loading, false, undefined)
   return [create, meta, data]
 }

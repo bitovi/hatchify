@@ -11,12 +11,11 @@ const ArticleSchema = { name: "Article" } as Schema
 
 describe("source-jsonapi/services/getList", () => {
   it("works", async () => {
-    const expected = {
-      data: articles.map((article) => ({
-        __schema: "Article",
-        ...article,
-      })),
-    }
+    const expected = articles.map((article) => ({
+      __schema: "Article",
+      attributes: article.attributes,
+      id: article.id,
+    }))
     const result = await getList(sourceConfig, ArticleSchema, {})
     expect(result).toEqual(expected)
   })
@@ -29,7 +28,7 @@ describe("source-jsonapi/services/getList", () => {
     )
 
     await expect(getList(sourceConfig, ArticleSchema, {})).rejects.toThrowError(
-      "failed to fetch list",
+      "request failed",
     )
   })
 

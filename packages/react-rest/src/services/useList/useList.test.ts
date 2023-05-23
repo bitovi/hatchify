@@ -2,12 +2,7 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore, convertResourceToRecord } from "@hatchifyjs/data-core"
-import type {
-  Resource,
-  Schema,
-  Source,
-  Subscription,
-} from "@hatchifyjs/data-core"
+import type { Schema, Source, Subscription } from "@hatchifyjs/data-core"
 import { useList } from "./useList"
 
 const fakeData = [
@@ -25,9 +20,9 @@ const fakeData = [
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve({ data: fakeData }),
-  getOne: () => Promise.resolve({ data: {} as Resource }),
-  createOne: () => Promise.resolve({ data: {} as Resource }),
+  getList: () => Promise.resolve(fakeData),
+  getOne: () => Promise.resolve([]),
+  createOne: () => Promise.resolve([]),
 }
 
 const ArticleSchema = { name: "Article" } as Schema
@@ -45,11 +40,14 @@ describe("react-rest/services/useList", () => {
         fakeData.map(convertResourceToRecord),
         {
           status: "success",
-          loading: false,
+          meta: undefined,
           error: undefined,
-          isLoading: false,
           isDone: true,
+          isLoading: false,
           isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
         },
       ]),
     )
@@ -67,11 +65,14 @@ describe("react-rest/services/useList", () => {
         fakeData.map(convertResourceToRecord),
         {
           status: "success",
-          loading: false,
+          meta: undefined,
           error: undefined,
-          isLoading: false,
           isDone: true,
+          isLoading: false,
           isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
         },
       ]),
     )
@@ -98,11 +99,14 @@ describe("react-rest/services/useList", () => {
         newFakeData.map(convertResourceToRecord),
         {
           status: "success",
-          loading: false,
+          meta: undefined,
           error: undefined,
           isDone: true,
           isLoading: false,
           isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
         },
       ]),
     )
@@ -123,11 +127,14 @@ describe("react-rest/services/useList", () => {
         [],
         {
           status: "error",
-          loading: false,
+          meta: undefined,
           error: new Error("Something went wrong"),
+          isDone: true,
           isLoading: false,
-          isDone: false,
           isRejected: true,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: false,
         },
       ]),
     )

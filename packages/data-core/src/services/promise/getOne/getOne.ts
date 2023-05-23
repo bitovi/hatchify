@@ -10,9 +10,10 @@ export const getOne = async (
   schema: Schema,
   query: QueryOne,
 ): Promise<Record> => {
-  const response = await dataSource.getOne(schema, query)
+  const resources = await dataSource.getOne(schema, query)
 
-  insert(schema.name, [response.data])
+  insert(schema.name, resources)
 
-  return convertResourceToRecord(response.data)
+  // todo flatten related records into base records
+  return convertResourceToRecord(resources[0])
 }
