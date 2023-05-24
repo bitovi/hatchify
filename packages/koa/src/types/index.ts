@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { NextFunction, Request, Response } from "express"
-import Koa, { DefaultState, DefaultContext, Middleware } from "koa"
-import {
+import type { NextFunction, Request, Response } from "express"
+import type { DefaultState, DefaultContext, Middleware } from "koa"
+import type Koa from "koa"
+import type {
   Model,
   BelongsToManyOptions,
   ModelValidateOptions,
@@ -14,8 +15,8 @@ import {
   DataType,
   ModelAttributeColumnOptions,
 } from "sequelize"
-import { ModelHooks } from "sequelize/types/hooks"
-import { Scaffold } from ".."
+import type { ModelHooks } from "sequelize/types/hooks"
+import type { Scaffold } from ".."
 
 export { DataTypes, ModelValidateOptions, ModelAttributes } from "sequelize"
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { Scaffold } from ".."
-import { JSONObject } from "../types"
+import type { Scaffold } from ".."
+import type { JSONObject } from "../types"
 
 /**
  * Provides a set of exported functions, per Model, that

@@ -1,17 +1,18 @@
-import { Model, Sequelize, Options, DataTypes } from "sequelize"
-import JSONAPISerializer from "json-api-serializer"
+import type { Model, Sequelize, Options } from "sequelize"
+import { DataTypes } from "sequelize"
+import type JSONAPISerializer from "json-api-serializer"
 import * as inflection from "inflection"
 import querystringParser from "@bitovi/sequelize-querystring-parser"
-import {
+import type {
   ScaffoldModel,
   SequelizeModelsCollection,
-  ScaffoldSymbolModel,
   ScaffoldModelCollection,
   Virtuals,
 } from "../types"
+import { ScaffoldSymbolModel } from "../types"
 import { extendedSequelize } from "./extended"
-import { Scaffold } from ".."
-import { IAssociation, ICreateScaffoldModel } from "./types"
+import type { Scaffold } from ".."
+import type { IAssociation, ICreateScaffoldModel } from "./types"
 import { registerSchema } from "../serialize"
 import { ScaffoldError } from "../error/errors"
 import { codes, statusCodes } from "../error/constants"

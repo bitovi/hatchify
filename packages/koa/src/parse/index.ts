@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import {
+import type {
   DestroyOptions,
   UpdateOptions,
   Identifier,
   CreateOptions,
   FindOptions,
 } from "sequelize"
-import { Scaffold } from ".."
+import type { Scaffold } from ".."
 import {
   buildCreateOptions,
   buildDestroyOptions,
@@ -16,7 +16,7 @@ import {
   buildUpdateOptions,
 } from "./builder"
 // import { buildDeserializerForModelStandalone } from "../deserialize";
-import { JSONObject, ScaffoldModel } from "../types"
+import type { JSONObject, ScaffoldModel } from "../types"
 import { ValidationError } from "../error/errors"
 import { codes, statusCodes } from "../error/constants"
 

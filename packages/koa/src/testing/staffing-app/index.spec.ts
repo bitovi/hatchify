@@ -3,8 +3,13 @@ import { createServer, GET, POST } from "../utils"
 
 describe("Staffing App Example", () => {
   const [app, scaffold] = createStaffingAppInstance()
+
   beforeAll(async () => {
     await scaffold.createDatabase()
+  })
+
+  afterAll(async () => {
+    await scaffold.orm.close()
   })
 
   it("should handle get assignments", async () => {
@@ -67,9 +72,5 @@ describe("Staffing App Example", () => {
     })
 
     expect(assignment).toBeTruthy()
-  })
-
-  afterAll(async () => {
-    await scaffold.orm.close()
   })
 })

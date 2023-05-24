@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Attributes, ModelStatic, Transaction } from "sequelize"
-import { Scaffold } from "../.."
-import { JSONAnyObject } from "../../types"
-import { IAssociation } from "../types"
+import type { Attributes, ModelStatic, Transaction } from "sequelize"
+import type { Scaffold } from "../.."
+import type { JSONAnyObject } from "../../types"
+import type { IAssociation } from "../types"
 import { handleUpdateMany, handleUpdateOne } from "./sequelize.patch"
 import {
   handleBulkCreateMany,
@@ -14,8 +14,8 @@ export const getValidAttributesAndAssociations = (
   attributes: Attributes<any> | Array<Attributes<any>>,
   associations: Record<string, IAssociation> | undefined,
 ) => {
-  const belongsAssociation: Array<string> = [] // the total no of associations that the current model Belongs to
-  const externalAssociations: Array<string> = [] // this associations do not belong in the current model.
+  const belongsAssociation: string[] = [] // the total no of associations that the current model Belongs to
+  const externalAssociations: string[] = [] // this associations do not belong in the current model.
   let currentModelAttributes = attributes
   const otherAssociationAttributes: JSONAnyObject = {}
 
@@ -63,7 +63,7 @@ export const getValidAttributesAndAssociations = (
 export const handleCreateAssociations = async (
   scaffold: Scaffold,
   model: ModelStatic<any>,
-  validAssociations: Array<string>,
+  validAssociations: string[],
   associations: Record<string, IAssociation>,
   attributes: Attributes<any>,
   transaction: Transaction,
@@ -110,11 +110,11 @@ export const handleCreateAssociations = async (
 export const handleBulkCreateAssociations = async (
   scaffold: Scaffold,
   model: ModelStatic<any>,
-  validAssociations: Array<string>,
+  validAssociations: string[],
   associations: Record<string, IAssociation>,
   attributes: JSONAnyObject,
   transaction: Transaction,
-  modelIds: Array<string>,
+  modelIds: string[],
   primaryKey = "id",
 ) => {
   for (const association of validAssociations) {
@@ -156,7 +156,7 @@ export const handleBulkCreateAssociations = async (
 export const handleUpdateAssociations = async (
   scaffold: Scaffold,
   model: ModelStatic<any>,
-  validAssociations: Array<string>,
+  validAssociations: string[],
   associations: Record<string, IAssociation>,
   attributes: Attributes<any>,
   transaction: Transaction,

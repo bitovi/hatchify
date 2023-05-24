@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { ModelAttributes } from "sequelize"
 import {
   DataTypes,
-  ModelAttributes,
   // Model,
   // Sequelize,
   // InferAttributes,
@@ -84,7 +84,10 @@ export const Skill: ScaffoldModelDefinition = {
 const result = null // TestSkillModel.findAll({ attributes: ["name", "id", "fish"] });
 console.log(result)
 
-function pickObjectKeys<T extends {}, K extends keyof T>(obj: T, keys: K[]) {
+function pickObjectKeys<T extends object, K extends keyof T>(
+  obj: T,
+  keys: K[],
+) {
   const result = {} as Pick<T, K>
   for (const key of keys) {
     if (key in obj) {

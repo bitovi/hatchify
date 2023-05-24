@@ -1,5 +1,6 @@
 import { Scaffold } from "./index"
-import { ScaffoldSymbolModel, DataTypes, ScaffoldModel } from "./types"
+import type { ScaffoldModel } from "./types"
+import { ScaffoldSymbolModel, DataTypes } from "./types"
 
 describe("Internal Tests", () => {
   const Model: ScaffoldModel = {

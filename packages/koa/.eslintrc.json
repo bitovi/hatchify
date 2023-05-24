@@ -1,0 +1,15 @@
+{
+  "extends": ["../../.eslintrc"],
+  "ignorePatterns": ["dist/*"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["libs/ui/tsconfig.*?.json"]
+      },
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "warn"
+      }
+    }
+  ]
+}

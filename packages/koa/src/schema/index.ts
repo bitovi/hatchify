@@ -1,5 +1,5 @@
-import { Scaffold } from ".."
-import { ScaffoldModel } from "../types"
+import type { Scaffold } from ".."
+import type { ScaffoldModel } from "../types"
 
 export function buildSchemaForModel(
   scaffold: Scaffold,

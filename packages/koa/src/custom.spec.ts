@@ -1,7 +1,8 @@
 import { Scaffold } from "./index"
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import { DataTypes, ScaffoldModel } from "./types"
+import type { ScaffoldModel } from "./types"
+import { DataTypes } from "./types"
 import { createServer, GET } from "./testing/utils"
 
 describe("Internal Tests", () => {

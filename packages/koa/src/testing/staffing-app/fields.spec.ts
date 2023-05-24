@@ -1,7 +1,8 @@
 import Koa from "koa"
 import Chance from "chance"
 import { Scaffold } from "../../index"
-import { DataTypes, ScaffoldModel } from "../../types"
+import type { ScaffoldModel } from "../../types"
+import { DataTypes } from "../../types"
 import { createStaffingAppInstance } from "./staffing"
 import { createServer, GET, POST } from "../utils"
 

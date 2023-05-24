@@ -1,6 +1,7 @@
 import { codes, statusCodes } from "../../../error/constants"
 import { ValidationError } from "../../../error/errors"
-import { ScaffoldModel, DataTypes } from "../../../types"
+import type { ScaffoldModel } from "../../../types"
+import { DataTypes } from "../../../types"
 
 export const Employee: ScaffoldModel = {
   name: "Employee",

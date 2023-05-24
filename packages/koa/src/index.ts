@@ -1,9 +1,9 @@
-import { Identifier, Sequelize } from "sequelize"
+import type { Identifier, Sequelize } from "sequelize"
 import JSONAPISerializer from "json-api-serializer"
 import { match } from "path-to-regexp"
 import { capitalize, singularize } from "inflection"
 
-import {
+import type {
   ScaffoldModel,
   ScaffoldModelCollection,
   ScaffoldOptions,
@@ -17,26 +17,25 @@ import {
   createSequelizeInstance,
   buildScaffoldModelObject,
 } from "./sequelize"
-import {
-  buildParserForModel,
+import type {
   // buildParserForModelStandalone,
   ParseFunctions,
 } from "./parse"
+import { buildParserForModel } from "./parse"
 
-import {
-  buildSerializerForModel,
+import type {
   // buildSerializerForModelStandalone,
   SerializeFunctions,
 } from "./serialize"
-import {
-  buildMiddlewareForModel,
-  errorMiddleware,
-  MiddlewareFunctionsKoa,
-} from "./middleware"
-import { buildEverythingForModel, EverythingFunctions } from "./everything"
+import { buildSerializerForModel } from "./serialize"
+import type { MiddlewareFunctionsKoa } from "./middleware"
+import { buildMiddlewareForModel, errorMiddleware } from "./middleware"
+import type { EverythingFunctions } from "./everything"
+import { buildEverythingForModel } from "./everything"
 import { buildSchemaForModel } from "./schema"
-import { IAssociation } from "./sequelize/types"
-import { ScaffoldError, ScaffoldErrorOptions } from "./error/errors"
+import type { IAssociation } from "./sequelize/types"
+import type { ScaffoldErrorOptions } from "./error/errors"
+import { ScaffoldError } from "./error/errors"
 
 /**
  * Parse can be imported from the `@bitovi/scaffold` package

@@ -1,5 +1,6 @@
 import { Scaffold, Op } from "../../exports"
-import Koa, { Context } from "koa"
+import type { Context } from "koa"
+import Koa from "koa"
 import signale from "signale"
 import KoaRouter from "@koa/router"
 
@@ -8,7 +9,7 @@ import { Employee } from "./models/Employee"
 import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 import { Skill } from "./models/Skill"
-import { Model } from "sequelize"
+import type { Model } from "sequelize"
 
 export function createStaffingAppInstance(): [Koa, Scaffold] {
   // Create a basic Koa application

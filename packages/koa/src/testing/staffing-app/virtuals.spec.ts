@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Chance from "chance"
 import { Scaffold } from "../../index"
-import { DataTypes, ScaffoldModel } from "../../types"
+import type { ScaffoldModel } from "../../types"
+import { DataTypes } from "../../types"
 import { Assignment } from "./models/Assignment"
 import { Employee } from "./models/Employee"
 import { Project } from "./models/Project"

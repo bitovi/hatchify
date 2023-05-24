@@ -1,4 +1,5 @@
-import coBody, { Context } from "co-body"
+import type { Context } from "co-body"
+import coBody from "co-body"
 // import { Deserializer } from "jsonapi-serializer";
 
 export async function parseScaffoldBody(ctx: Context) {

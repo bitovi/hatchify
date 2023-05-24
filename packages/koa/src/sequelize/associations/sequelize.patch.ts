@@ -1,9 +1,14 @@
 import * as inflection from "inflection"
-import { Attributes, ModelStatic, Transaction, UpdateOptions } from "sequelize"
+import type {
+  Attributes,
+  ModelStatic,
+  Transaction,
+  UpdateOptions,
+} from "sequelize"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Scaffold } from "../.."
-import { IAssociation, IAssociationBody } from "../types"
+import type { Scaffold } from "../.."
+import type { IAssociation, IAssociationBody } from "../types"
 
 export const handleUpdateBelongs = async (
   model: ModelStatic<any>,
@@ -15,7 +20,7 @@ export const handleUpdateBelongs = async (
   },
   origUpdate: any,
   currentModelAttributes: Attributes<any>,
-  belongsAssociation: Array<string>,
+  belongsAssociation: string[],
   associations: Record<string, IAssociation>,
   attributes: Attributes<any>,
   transaction: Transaction,
@@ -67,7 +72,7 @@ export const handleUpdateMany = async (
   if (!modelInstance) {
     return
   }
-  const joinIds: Array<string> = association.attributes.map(
+  const joinIds: string[] = association.attributes.map(
     (data) => data[primaryKey],
   )
   if (joinIds.length === 0) return

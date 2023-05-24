@@ -1,4 +1,4 @@
-import { SequelizeModelsCollection, Virtuals } from "../../types"
+import type { SequelizeModelsCollection, Virtuals } from "../../types"
 
 export interface IAssociation {
   type: string

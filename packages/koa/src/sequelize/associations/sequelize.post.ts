@@ -1,18 +1,18 @@
 import * as inflection from "inflection"
-import { Attributes, ModelStatic, Transaction } from "sequelize"
+import type { Attributes, ModelStatic, Transaction } from "sequelize"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Scaffold } from "../.."
+import type { Scaffold } from "../.."
 import { codes, statusCodes } from "../../error/constants"
 import { ScaffoldError } from "../../error/errors"
-import { JSONAnyObject } from "../../types"
-import { IAssociation, IAssociationBody } from "../types"
+import type { JSONAnyObject } from "../../types"
+import type { IAssociation, IAssociationBody } from "../types"
 
 export const handleCreateBelongs = async (
   model: ModelStatic<any>,
   origCreate: any,
   currentModelAttributes: Attributes<any>,
-  belongsAssociation: Array<string>,
+  belongsAssociation: string[],
   associations: Record<string, IAssociation>,
   attributes: Attributes<any>,
   transaction: Transaction,
@@ -36,13 +36,13 @@ export const handleBulkCreateBelongs = async (
   model: ModelStatic<any>,
   origBulkCreate: any,
   currentModelAttributes: Array<Attributes<any>>,
-  belongsAssociation: Array<string>,
+  belongsAssociation: string[],
   associations: Record<string, IAssociation>,
   otherAttributes: Attributes<any>,
   transaction: Transaction,
   primaryKey = "id",
 ) => {
-  const bulkModelAttributes: Array<any> = []
+  const bulkModelAttributes: any[] = []
   let i = 0
   currentModelAttributes.forEach((currentModelAttribute) => {
     const updatedModelAttributes = currentModelAttribute
@@ -63,8 +63,8 @@ export const handleBulkCreateBelongs = async (
 
 export const handleCreateHasOne = async (
   scaffold: Scaffold,
-  association: IAssociationBody<JSONAnyObject | Array<JSONAnyObject>>,
-  model: { name: string; id?: string | Array<string> },
+  association: IAssociationBody<JSONAnyObject | JSONAnyObject[]>,
+  model: { name: string; id?: string | string[] },
   transaction: Transaction,
   primaryKey = "id",
   isCreateOne = true,
@@ -95,7 +95,7 @@ export const handleCreateHasOne = async (
 
 export const handleCreateMany = async (
   scaffold: Scaffold,
-  association: IAssociationBody<Array<JSONAnyObject>>,
+  association: IAssociationBody<JSONAnyObject[]>,
   model: { name: string; id: string },
   transaction: Transaction,
   primaryKey = "id",
@@ -115,7 +115,7 @@ export const handleCreateMany = async (
     })
   }
   const isCreate = !association.attributes[0][primaryKey]
-  let joinIds: Array<string> = []
+  let joinIds: string[] = []
   if (isCreate) {
     // Create the models first and add their ids to the joinIds.
     const associationData = await scaffold.model[
@@ -134,8 +134,8 @@ export const handleCreateMany = async (
 
 export const handleBulkCreateMany = async (
   scaffold: Scaffold,
-  association: IAssociationBody<Array<JSONAnyObject[]>>,
-  model: { name: string; id: Array<string> },
+  association: IAssociationBody<JSONAnyObject[][]>,
+  model: { name: string; id: string[] },
   transaction: Transaction,
   primaryKey = "id",
 ) => {
@@ -156,7 +156,7 @@ export const handleBulkCreateMany = async (
   let i = 0
   for (const modelInstance of modelInstances) {
     const isCreate = !association.attributes[i][0][primaryKey]
-    let joinIds: Array<string> = []
+    let joinIds: string[] = []
     if (isCreate) {
       // Create the models first and add their ids to the joinIds.
       const associationData = await scaffold.model[

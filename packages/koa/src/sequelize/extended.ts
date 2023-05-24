@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {
-  Sequelize,
-  Model,
+import type {
   CreateOptions,
   ModelStatic,
   Attributes,
   UpdateOptions,
 } from "sequelize"
-import { Col, Fn, Literal, MakeNullishOptional } from "sequelize/types/utils"
-import { Scaffold } from ".."
+import { Sequelize, Model } from "sequelize"
+import type {
+  Col,
+  Fn,
+  Literal,
+  MakeNullishOptional,
+} from "sequelize/types/utils"
+import type { Scaffold } from ".."
 import { NotFoundError } from "../error/errors"
 import {
   getValidAttributesAndAssociations,
@@ -22,7 +26,7 @@ import {
   handleBulkCreateBelongs,
   handleCreateBelongs,
 } from "./associations/sequelize.post"
-import { IAssociation } from "./types"
+import type { IAssociation } from "./types"
 import { addVirtuals } from "./virtuals"
 
 /**
@@ -128,7 +132,7 @@ export function extendedSequelize(scaffold: Scaffold) {
     O extends CreateOptions<Attributes<M>> = CreateOptions<Attributes<M>>,
   >(
     this: ModelStatic<M>,
-    attributes: MakeNullishOptional<M["_creationAttributes"]>[],
+    attributes: Array<MakeNullishOptional<M["_creationAttributes"]>>,
     options?: O,
   ) {
     const associations = scaffold.associationsLookup[this.name]
@@ -136,9 +140,9 @@ export function extendedSequelize(scaffold: Scaffold) {
 
     let modelData:
       | undefined
-      | (O extends { returning: false } | { ignoreDuplicates: true }
-          ? void
-          : M)[]
+      | Array<
+          O extends { returning: false } | { ignoreDuplicates: true } ? void : M
+        >
     let currentModelAttributes = attributes
 
     const {

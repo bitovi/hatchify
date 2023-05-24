@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { Scaffold } from ".."
-import { Identifier } from "sequelize"
+import type { Scaffold } from ".."
+import type { Identifier } from "sequelize"
 // import { JSONObject } from "../types";
-import { JSONAPIDocument } from "json-api-serializer"
+import type { JSONAPIDocument } from "json-api-serializer"
 // import { statusCodes } from "../error/constants";
 import { NotFoundError } from "../error/errors"
 

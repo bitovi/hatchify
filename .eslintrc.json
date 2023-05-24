@@ -1,0 +1,4 @@
+{
+  "root": true,
+  "extends": "@bitovi/eslint-config/react"
+}

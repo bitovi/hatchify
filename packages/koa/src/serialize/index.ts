@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { Model } from "sequelize"
-import { Scaffold } from ".."
+import type { Model } from "sequelize"
+import type { Scaffold } from ".."
 
-import JSONAPISerializer from "json-api-serializer"
-import { JSONAPIDocument } from "json-api-serializer"
-import { IAssociation } from "../sequelize/types"
-import { ScaffoldModel } from "../types"
+import type JSONAPISerializer, { JSONAPIDocument } from "json-api-serializer"
+import type { IAssociation } from "../sequelize/types"
+import type { ScaffoldModel } from "../types"
 
 /**
  * Provides a set of exported functions, per Model, that
