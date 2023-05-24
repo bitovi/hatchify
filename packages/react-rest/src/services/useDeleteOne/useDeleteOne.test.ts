@@ -3,32 +3,25 @@ import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "@hatchifyjs/rest-client"
 import type { Schema, Source } from "@hatchifyjs/rest-client"
-import { useCreateOne } from "./useCreateOne"
+import { useDeleteOne } from "./useDeleteOne"
 
 const fakeDataSource: Source = {
   version: 0,
   getList: () => Promise.resolve([]),
   getOne: () => Promise.resolve([]),
-  createOne: () =>
-    Promise.resolve([
-      {
-        id: "3",
-        __schema: "Article",
-        attributes: { title: "baz", body: "baz-body" },
-      },
-    ]),
+  createOne: () => Promise.resolve([]),
   updateOne: () => Promise.resolve([]),
   deleteOne: () => Promise.resolve(),
 }
 
 const ArticleSchema = { name: "Article" } as Schema
 
-describe("react-rest/services/useCreateOne", () => {
-  it("should create a record", async () => {
+describe("react-rest/services/useDeleteOne", () => {
+  it("should delete a record", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useCreateOne(fakeDataSource, ArticleSchema),
+      useDeleteOne(fakeDataSource, ArticleSchema),
     )
 
     await waitFor(() => {
@@ -45,11 +38,10 @@ describe("react-rest/services/useCreateOne", () => {
           isStale: false,
           isSuccess: true,
         },
-        undefined,
       ])
     })
 
-    await result.current[0]({ title: "baz", body: "baz-body" })
+    await result.current[0]("id")
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -65,12 +57,6 @@ describe("react-rest/services/useCreateOne", () => {
           isStale: false,
           isSuccess: true,
         },
-        {
-          id: "3",
-          __schema: "Article",
-          title: "baz",
-          body: "baz-body",
-        },
       ]),
     )
   })
@@ -79,7 +65,7 @@ describe("react-rest/services/useCreateOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useCreateOne(fakeDataSource, ArticleSchema),
+      useDeleteOne(fakeDataSource, ArticleSchema),
     )
 
     await waitFor(() => {
@@ -96,14 +82,13 @@ describe("react-rest/services/useCreateOne", () => {
           isStale: false,
           isSuccess: true,
         },
-        undefined,
       ])
     })
 
-    fakeDataSource.createOne = () =>
+    fakeDataSource.deleteOne = () =>
       Promise.reject(new Error("Something went wrong"))
 
-    await result.current[0]({ title: "baz", body: "baz-body" })
+    await result.current[0]("id")
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -119,7 +104,6 @@ describe("react-rest/services/useCreateOne", () => {
           isStale: false,
           isSuccess: false,
         },
-        undefined,
       ]),
     )
   })

@@ -19,6 +19,7 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
         getOne: expect.any(Function),
         createOne: expect.any(Function),
         updateOne: expect.any(Function),
+        deleteOne: expect.any(Function),
       })
     })
   })

@@ -9,6 +9,7 @@ const fakeDataSource: Source = {
   getOne: () => Promise.resolve([]),
   createOne: () => Promise.resolve([]),
   updateOne: () => Promise.resolve([]),
+  deleteOne: () => Promise.resolve(),
 }
 
 describe("react-rest/services/createReactRest", () => {
@@ -39,21 +40,29 @@ describe("react-rest/services/createReactRest", () => {
     expect(api).toEqual({
       Article: {
         createOne: expect.any(Function),
+        deleteOne: expect.any(Function),
         getList: expect.any(Function),
         getOne: expect.any(Function),
+        updateOne: expect.any(Function),
         useCreateOne: expect.any(Function),
+        useDeleteOne: expect.any(Function),
         useList: expect.any(Function),
         useOne: expect.any(Function),
+        useUpdateOne: expect.any(Function),
         subscribeToList: expect.any(Function),
         subscribeToOne: expect.any(Function),
       },
       Person: {
         createOne: expect.any(Function),
+        deleteOne: expect.any(Function),
         getList: expect.any(Function),
         getOne: expect.any(Function),
+        updateOne: expect.any(Function),
         useCreateOne: expect.any(Function),
+        useDeleteOne: expect.any(Function),
         useList: expect.any(Function),
         useOne: expect.any(Function),
+        useUpdateOne: expect.any(Function),
         subscribeToList: expect.any(Function),
         subscribeToOne: expect.any(Function),
       },

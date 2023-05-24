@@ -5,6 +5,7 @@ import {
   getRecords,
   keyResourcesById,
   insert,
+  remove,
 } from "./store"
 import type { Resource } from "../types"
 
@@ -177,6 +178,61 @@ describe("rest-client/store", () => {
 
     it("should return an empty array if there are no records for a given schema", () => {
       expect(getRecords("Tags")).toEqual([])
+    })
+  })
+
+  describe("remove", () => {
+    it("should remove records from the store", () => {
+      createStore(["Article"])
+      insert("Article", [
+        {
+          id: "article-1",
+          __schema: "Article",
+          attributes: { title: "title-1", body: "body-1" },
+        },
+        {
+          id: "article-2",
+          __schema: "Article",
+          attributes: { title: "title-2", body: "body-2" },
+        },
+        {
+          id: "article-3",
+          __schema: "Article",
+          attributes: { title: "title-3", body: "body-3" },
+        },
+      ])
+
+      expect(getRecords("Article")).toEqual([
+        {
+          id: "article-1",
+          __schema: "Article",
+          title: "title-1",
+          body: "body-1",
+        },
+        {
+          id: "article-2",
+          __schema: "Article",
+          title: "title-2",
+          body: "body-2",
+        },
+        {
+          id: "article-3",
+          __schema: "Article",
+          title: "title-3",
+          body: "body-3",
+        },
+      ])
+
+      remove("Article", ["article-1", "article-3"])
+
+      expect(getRecords("Article")).toEqual([
+        {
+          id: "article-2",
+          __schema: "Article",
+          title: "title-2",
+          body: "body-2",
+        },
+      ])
     })
   })
 })
