@@ -78,8 +78,8 @@ class ConflictError extends ScaffoldError {
   }
 }
 
+export type { ScaffoldErrorOptions }
 export {
-  ScaffoldErrorOptions,
   ScaffoldError,
   ValidationError,
   NotFoundError,

@@ -18,7 +18,8 @@ import type {
 import type { ModelHooks } from "sequelize/types/hooks"
 import type { Scaffold } from ".."
 
-export { DataTypes, ModelValidateOptions, ModelAttributes } from "sequelize"
+export { DataTypes } from "sequelize"
+export type { ModelValidateOptions, ModelAttributes } from "sequelize"
 
 export type KoaMiddleware = Middleware
 export type ExpressMiddleware = (

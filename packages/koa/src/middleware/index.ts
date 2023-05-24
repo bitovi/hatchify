@@ -100,13 +100,13 @@ export function findOneMiddleware(scaffold: Scaffold, modelName: string) {
   return async function findOneImpl(ctx: Koa.Context) {
     const params = scaffold.getScaffoldURLParamsForRoute(ctx.path)
     if (!params.id) {
-      return ctx.throw(400, "BAD_REQUEST")
+      ctx.throw(400, "BAD_REQUEST")
     }
 
     // If this is a wildcard or allModel situation, figure out the model from the route
     if (modelName === "*") {
       if (!params.model) {
-        return ctx.throw(400, "BAD_REQUEST")
+        ctx.throw(400, "BAD_REQUEST")
       }
 
       modelName = params.model

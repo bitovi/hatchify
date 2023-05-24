@@ -3,7 +3,8 @@
 import type { Model } from "sequelize"
 import type { Scaffold } from ".."
 
-import type JSONAPISerializer, { JSONAPIDocument } from "json-api-serializer"
+import type JSONAPISerializer from "json-api-serializer"
+import type { JSONAPIDocument } from "json-api-serializer"
 import type { IAssociation } from "../sequelize/types"
 import type { ScaffoldModel } from "../types"
 

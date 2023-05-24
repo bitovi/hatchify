@@ -1,9 +1,9 @@
 export * from "./index"
-export {
+export { DataTypes } from "./types"
+export type {
   ScaffoldModel,
   KoaMiddleware,
   ExpressMiddleware,
-  DataTypes,
   ScaffoldOptions,
   BelongsToManyResult,
   BelongsToResult,
@@ -14,15 +14,15 @@ export {
   ModelFunctionsCollection,
 } from "./types"
 
-export { EverythingFunctions } from "./everything"
+export type { EverythingFunctions } from "./everything"
 
-export {
+export type {
   MiddlewareFunctionsExpress,
   MiddlewareFunctionsKoa,
 } from "./middleware"
 
-export { ParseFunctions } from "./parse"
+export type { ParseFunctions } from "./parse"
 
-export { SerializeFunctions } from "./serialize"
+export type { SerializeFunctions } from "./serialize"
 
 export { Op } from "sequelize"
