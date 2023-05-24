@@ -12,6 +12,7 @@ export type {
   SourceConfig,
   Subscription,
   Unsubscribe,
+  UpdateData,
 } from "./services"
 
 export {
@@ -27,4 +28,5 @@ export {
   subscribeToList,
   subscribeToOne,
   transformSchema,
+  updateOne,
 } from "./services"

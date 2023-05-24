@@ -8,6 +8,7 @@ const fakeDataSource: Source = {
   getList: () => Promise.resolve([]),
   getOne: () => Promise.resolve([]),
   createOne: () => Promise.resolve([]),
+  updateOne: () => Promise.resolve([]),
 }
 
 describe("react-rest/services/createReactRest", () => {
