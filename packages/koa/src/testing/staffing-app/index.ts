@@ -1,13 +1,13 @@
-import { createStaffingAppInstance } from "./staffing";
+import { createStaffingAppInstance } from "./staffing"
 
 async function init() {
-  const [app, scaffold] = await createStaffingAppInstance();
+  const [app, scaffold] = await createStaffingAppInstance()
 
-  await scaffold.createDatabase();
+  await scaffold.createDatabase()
 
   app.listen(3000, () => {
-    console.log("Scaffold Started");
-  });
+    console.log("Scaffold Started")
+  })
 }
 
-init();
+init()

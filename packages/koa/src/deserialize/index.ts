@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { Scaffold } from "..";
-import { JSONObject } from "../types";
+import { Scaffold } from ".."
+import { JSONObject } from "../types"
 
 /**
  * Provides a set of exported functions, per Model, that
@@ -19,29 +19,29 @@ export interface DeserializeFunctions {
    *
    * @returns {JSONObject}
    */
-  create: (data: unknown, options?: any) => Promise<JSONObject>;
-  update: (data: unknown, options?: any) => Promise<JSONObject>;
+  create: (data: unknown, options?: any) => Promise<JSONObject>
+  update: (data: unknown, options?: any) => Promise<JSONObject>
 }
 
 export function buildDeserializerForModel(
   scaffold: Scaffold,
-  modelName: string
+  modelName: string,
 ): DeserializeFunctions {
   return {
     create: async (data: any) => {
       try {
-        return scaffold.serializer.deserialize(modelName, data);
+        return scaffold.serializer.deserialize(modelName, data)
       } catch (err) {
-        return data;
+        return data
       }
     },
 
     update: async (data: any) => {
       try {
-        return scaffold.serializer.deserialize(modelName, data);
+        return scaffold.serializer.deserialize(modelName, data)
       } catch (err) {
-        return data;
+        return data
       }
     },
-  };
+  }
 }

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { Model } from "sequelize";
-import { Scaffold } from "..";
+import { Model } from "sequelize"
+import { Scaffold } from ".."
 
-import JSONAPISerializer from "json-api-serializer";
-import { JSONAPIDocument } from "json-api-serializer";
-import { IAssociation } from "../sequelize/types";
-import { ScaffoldModel } from "../types";
+import JSONAPISerializer from "json-api-serializer"
+import { JSONAPIDocument } from "json-api-serializer"
+import { IAssociation } from "../sequelize/types"
+import { ScaffoldModel } from "../types"
 
 /**
  * Provides a set of exported functions, per Model, that
@@ -14,7 +14,7 @@ import { ScaffoldModel } from "../types";
  * converts it into JSON:API response format
  */
 export interface SerializeFunctions<
-  T extends Model<any, any> = Model<any, any>
+  T extends Model<any, any> = Model<any, any>,
 > {
   /**
    * Takes a Model instance and converts it into a
@@ -26,27 +26,27 @@ export interface SerializeFunctions<
    *
    * @returns {JSONAPIDocument}
    */
-  findAll: (data: T[], attributes) => Promise<JSONAPIDocument>;
-  findOne: (data: T, attributes) => Promise<JSONAPIDocument>;
+  findAll: (data: T[], attributes) => Promise<JSONAPIDocument>
+  findOne: (data: T, attributes) => Promise<JSONAPIDocument>
   findAndCountAll: (
     data: {
-      rows: T[];
-      count: number;
+      rows: T[]
+      count: number
     },
-    attributes
-  ) => Promise<JSONAPIDocument>;
-  create: (data: T) => Promise<JSONAPIDocument>;
-  update: (rowCount: number) => Promise<JSONAPIDocument>;
-  destroy: (rowCount: number) => Promise<JSONAPIDocument>;
+    attributes,
+  ) => Promise<JSONAPIDocument>
+  create: (data: T) => Promise<JSONAPIDocument>
+  update: (rowCount: number) => Promise<JSONAPIDocument>
+  destroy: (rowCount: number) => Promise<JSONAPIDocument>
 }
 
 async function findAllImpl(
   scaffold: Scaffold,
   name: string,
   array,
-  attributes
+  attributes,
 ) {
-  const virtualsForModel = scaffold.virtuals[name];
+  const virtualsForModel = scaffold.virtuals[name]
 
   if (virtualsForModel) {
     return serializeWithoutUnsolicitedVirtuals(
@@ -54,20 +54,20 @@ async function findAllImpl(
       array,
       name,
       attributes,
-      Object.keys(scaffold.virtuals[name])
-    );
+      Object.keys(scaffold.virtuals[name]),
+    )
   }
 
-  return scaffold.serializer.serialize(name, array);
+  return scaffold.serializer.serialize(name, array)
 }
 
 async function findOneImpl(
   scaffold: Scaffold,
   name: string,
   instance,
-  attributes
+  attributes,
 ) {
-  const virtualsForModel = scaffold.virtuals[name];
+  const virtualsForModel = scaffold.virtuals[name]
 
   if (virtualsForModel) {
     return serializeWithoutUnsolicitedVirtuals(
@@ -75,19 +75,19 @@ async function findOneImpl(
       instance,
       name,
       attributes,
-      Object.keys(scaffold.virtuals[name])
-    );
+      Object.keys(scaffold.virtuals[name]),
+    )
   }
-  return scaffold.serializer.serialize(name, instance);
+  return scaffold.serializer.serialize(name, instance)
 }
 
 async function findAndCountAllImpl(
   scaffold: Scaffold,
   name: string,
   result,
-  attributes
+  attributes,
 ) {
-  const virtualsForModel = scaffold.virtuals[name];
+  const virtualsForModel = scaffold.virtuals[name]
 
   if (virtualsForModel) {
     return serializeWithoutUnsolicitedVirtuals(
@@ -95,23 +95,23 @@ async function findAndCountAllImpl(
       result.rows,
       name,
       attributes,
-      Object.keys(scaffold.virtuals[name])
-    );
+      Object.keys(scaffold.virtuals[name]),
+    )
   }
 
-  return scaffold.serializer.serialize(name, result.rows);
+  return scaffold.serializer.serialize(name, result.rows)
 }
 
 async function createImpl(scaffold: Scaffold, name: string, instance) {
-  return scaffold.serializer.serialize(name, instance);
+  return scaffold.serializer.serialize(name, instance)
 }
 
 async function destroyImpl(scaffold: Scaffold, name: string, rowCount) {
-  return scaffold.serializer.serialize(name, null, { count: rowCount });
+  return scaffold.serializer.serialize(name, null, { count: rowCount })
 }
 
 async function updateImpl(scaffold: Scaffold, name: string, rowCount) {
-  return scaffold.serializer.serialize(name, null, { count: rowCount });
+  return scaffold.serializer.serialize(name, null, { count: rowCount })
 }
 
 // export function buildSerializerForModelStandalone(
@@ -138,7 +138,7 @@ async function updateImpl(scaffold: Scaffold, name: string, rowCount) {
 
 export function buildSerializerForModel(
   scaffold: Scaffold,
-  modelName: string
+  modelName: string,
 ): SerializeFunctions {
   return {
     findAll: async (array, attributes) =>
@@ -150,37 +150,37 @@ export function buildSerializerForModel(
     create: async (instance) => createImpl(scaffold, modelName, instance),
     destroy: async (rowCount) => destroyImpl(scaffold, modelName, rowCount),
     update: async (rowCount) => updateImpl(scaffold, modelName, rowCount),
-  };
+  }
 }
 
 const deserialize = (data: any) => {
   if (data) {
-    const { id } = data;
-    return { id };
+    const { id } = data
+    return { id }
   }
-  return data;
-};
+  return data
+}
 
 export function registerSchema(
   serializer: JSONAPISerializer,
   model: ScaffoldModel,
   associations: Record<string, IAssociation>,
-  primaryKey: string
+  primaryKey: string,
 ) {
-  const relationships: { [key: string]: any } = {};
-  const associationsKeys = Object.keys(associations);
+  const relationships: { [key: string]: any } = {}
+  const associationsKeys = Object.keys(associations)
   associationsKeys.forEach((associationsKey) => {
-    const association = associations[associationsKey];
+    const association = associations[associationsKey]
     relationships[associationsKey] = {
       type: association.model,
       deserialize,
-    };
-  });
+    }
+  })
   serializer.register(model.name, {
     id: primaryKey,
     whitelist: Object.keys(model.attributes),
     relationships,
-  });
+  })
 }
 
 const serializeWithoutUnsolicitedVirtuals = (
@@ -188,11 +188,11 @@ const serializeWithoutUnsolicitedVirtuals = (
   array,
   name,
   attributes,
-  virtualsForModel
+  virtualsForModel,
 ) => {
   const blackListArray = attributes
     ? virtualsForModel.filter((virtual) => !attributes.includes(virtual))
-    : virtualsForModel;
+    : virtualsForModel
 
   return scaffold.serializer.serialize(
     name,
@@ -204,6 +204,6 @@ const serializeWithoutUnsolicitedVirtuals = (
       [name]: {
         blacklist: blackListArray,
       },
-    }
-  );
-};
+    },
+  )
+}

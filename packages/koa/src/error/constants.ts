@@ -9,7 +9,7 @@ const codes = {
   ERR_DATABASE_ERROR: "database-error",
   ERR_INVALID_RESULT: "invalid-result",
   ERR_SERVER_ERROR: "server-error",
-};
+}
 
 const statusCodes = {
   BAD_REQUEST: 400,
@@ -20,6 +20,6 @@ const statusCodes = {
   CONFLICT: 409,
   UNPROCESSABLE_ENTITY: 422,
   INTERNAL_SERVER_ERROR: 500,
-};
+}
 
-export { codes, statusCodes };
+export { codes, statusCodes }

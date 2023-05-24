@@ -1,6 +1,6 @@
-import { codes, statusCodes } from "../../../error/constants";
-import { ValidationError } from "../../../error/errors";
-import { ScaffoldModel, DataTypes } from "../../../types";
+import { codes, statusCodes } from "../../../error/constants"
+import { ValidationError } from "../../../error/errors"
+import { ScaffoldModel, DataTypes } from "../../../types"
 
 export const Employee: ScaffoldModel = {
   name: "Employee",
@@ -26,7 +26,7 @@ export const Employee: ScaffoldModel = {
     current_project: {
       type: DataTypes.VIRTUAL(DataTypes.STRING),
       get() {
-        return "Yum";
+        return "Yum"
       },
     },
   },
@@ -38,7 +38,7 @@ export const Employee: ScaffoldModel = {
           title: "START_DATE_MUST_BE_BEFORE_END_DATE",
           code: codes.ERR_INVALID_PARAMETER,
           status: statusCodes.UNPROCESSABLE_ENTITY,
-        });
+        })
       }
     },
     endDateAfterStartDate() {
@@ -51,14 +51,14 @@ export const Employee: ScaffoldModel = {
           title: "START_DATE_MUST_BE_BEFORE_END_DATE",
           code: codes.ERR_INVALID_PARAMETER,
           status: statusCodes.UNPROCESSABLE_ENTITY,
-        });
+        })
       }
     },
   },
   belongsToMany: [
     { target: "Role", options: { through: "role__employee", as: "roles" } },
   ],
-};
+}
 
 /*
 -- public.employee definition

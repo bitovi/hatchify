@@ -1,4 +1,4 @@
-import { ScaffoldModel, DataTypes } from "../../../types";
+import { ScaffoldModel, DataTypes } from "../../../types"
 
 export const Role: ScaffoldModel = {
   name: "Role",
@@ -45,7 +45,7 @@ export const Role: ScaffoldModel = {
     },
     { target: "Skill", options: { through: "role__skill", as: "skills" } },
   ],
-};
+}
 
 /*
 

@@ -1,8 +1,8 @@
-import coBody, { Context } from "co-body";
+import coBody, { Context } from "co-body"
 // import { Deserializer } from "jsonapi-serializer";
 
 export async function parseScaffoldBody(ctx: Context) {
-  const parsed = await coBody(ctx);
+  const parsed = await coBody(ctx)
 
   // if (type === "application/vnd.api+json") {
   //   const deserializer = new Deserializer({ keyForAttribute: "snake_case" });
@@ -12,5 +12,5 @@ export async function parseScaffoldBody(ctx: Context) {
   //   return result;
   // }
 
-  return parsed;
+  return parsed
 }

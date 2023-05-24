@@ -1,4 +1,4 @@
-export * from "./index";
+export * from "./index"
 export {
   ScaffoldModel,
   KoaMiddleware,
@@ -12,17 +12,17 @@ export {
   ModelValidateOptions,
   ModelAttributes,
   ModelFunctionsCollection,
-} from "./types";
+} from "./types"
 
-export { EverythingFunctions } from "./everything";
+export { EverythingFunctions } from "./everything"
 
 export {
   MiddlewareFunctionsExpress,
   MiddlewareFunctionsKoa,
-} from "./middleware";
+} from "./middleware"
 
-export { ParseFunctions } from "./parse";
+export { ParseFunctions } from "./parse"
 
-export { SerializeFunctions } from "./serialize";
+export { SerializeFunctions } from "./serialize"
 
-export { Op } from "sequelize";
+export { Op } from "sequelize"

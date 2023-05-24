@@ -1,7 +1,7 @@
-import { Identifier, Sequelize } from "sequelize";
-import JSONAPISerializer from "json-api-serializer";
-import { match } from "path-to-regexp";
-import { capitalize, singularize } from "inflection";
+import { Identifier, Sequelize } from "sequelize"
+import JSONAPISerializer from "json-api-serializer"
+import { match } from "path-to-regexp"
+import { capitalize, singularize } from "inflection"
 
 import {
   ScaffoldModel,
@@ -11,32 +11,32 @@ import {
   FunctionsHandler,
   ModelFunctionsCollection,
   Virtuals,
-} from "./types";
+} from "./types"
 import {
   convertScaffoldModels,
   createSequelizeInstance,
   buildScaffoldModelObject,
-} from "./sequelize";
+} from "./sequelize"
 import {
   buildParserForModel,
   // buildParserForModelStandalone,
   ParseFunctions,
-} from "./parse";
+} from "./parse"
 
 import {
   buildSerializerForModel,
   // buildSerializerForModelStandalone,
   SerializeFunctions,
-} from "./serialize";
+} from "./serialize"
 import {
   buildMiddlewareForModel,
   errorMiddleware,
   MiddlewareFunctionsKoa,
-} from "./middleware";
-import { buildEverythingForModel, EverythingFunctions } from "./everything";
-import { buildSchemaForModel } from "./schema";
-import { IAssociation } from "./sequelize/types";
-import { ScaffoldError, ScaffoldErrorOptions } from "./error/errors";
+} from "./middleware"
+import { buildEverythingForModel, EverythingFunctions } from "./everything"
+import { buildSchemaForModel } from "./schema"
+import { IAssociation } from "./sequelize/types"
+import { ScaffoldError, ScaffoldErrorOptions } from "./error/errors"
 
 /**
  * Parse can be imported from the `@bitovi/scaffold` package
@@ -79,17 +79,17 @@ import { ScaffoldError, ScaffoldErrorOptions } from "./error/errors";
  *
  */
 export class Scaffold {
-  private _sequelizeModels: SequelizeModelsCollection;
-  private _sequelize: Sequelize;
-  private _serializer: JSONAPISerializer;
-  private _allowedMethods: ["GET", "POST", "PATCH", "DELETE"];
-  private _sequelizeModelNames: string[];
-  private _prefix: string;
+  private _sequelizeModels: SequelizeModelsCollection
+  private _sequelize: Sequelize
+  private _serializer: JSONAPISerializer
+  private _allowedMethods: ["GET", "POST", "PATCH", "DELETE"]
+  private _sequelizeModelNames: string[]
+  private _prefix: string
 
-  virtuals: Virtuals;
+  virtuals: Virtuals
 
   // this is a lookup that shows all associations for each model.
-  associationsLookup: Record<string, Record<string, IAssociation> | undefined>;
+  associationsLookup: Record<string, Record<string, IAssociation> | undefined>
 
   /**
    * Creates a new Scaffold instance
@@ -101,32 +101,32 @@ export class Scaffold {
    */
   constructor(models: ScaffoldModel[], options: ScaffoldOptions = {}) {
     // Prepare the ORM instance and keep references to the different Models
-    this._sequelize = createSequelizeInstance(this, options.database);
+    this._sequelize = createSequelizeInstance(this, options.database)
 
-    this._serializer = new JSONAPISerializer();
+    this._serializer = new JSONAPISerializer()
 
     // Fetch the scaffold models and associations look up
     const {
       associationsLookup,
       models: sequelizeModels,
       virtuals,
-    } = convertScaffoldModels(this._sequelize, this._serializer, models);
+    } = convertScaffoldModels(this._sequelize, this._serializer, models)
 
-    this.virtuals = virtuals;
-    this.associationsLookup = associationsLookup;
-    this._sequelizeModels = sequelizeModels;
+    this.virtuals = virtuals
+    this.associationsLookup = associationsLookup
+    this._sequelizeModels = sequelizeModels
 
     // Types of requests that Scaffold should attempt to process
-    this._allowedMethods = ["GET", "POST", "PATCH", "DELETE"];
+    this._allowedMethods = ["GET", "POST", "PATCH", "DELETE"]
 
     // Do some quick work up front to get the list of model names
-    this._sequelizeModelNames = Object.keys(this._sequelizeModels);
+    this._sequelizeModelNames = Object.keys(this._sequelizeModels)
 
     // Store the route prefix if the user set one
-    this._prefix = options.prefix || "";
+    this._prefix = options.prefix || ""
 
     if (options.sync) {
-      this.createDatabase();
+      this.createDatabase()
     }
   }
 
@@ -135,7 +135,7 @@ export class Scaffold {
    * @hidden
    */
   get orm(): Sequelize {
-    return this._sequelize;
+    return this._sequelize
   }
 
   /**
@@ -143,7 +143,7 @@ export class Scaffold {
    * @hidden
    */
   get serializer(): JSONAPISerializer {
-    return this._serializer;
+    return this._serializer
   }
 
   /**
@@ -158,7 +158,7 @@ export class Scaffold {
    * @category General Use
    */
   get model(): SequelizeModelsCollection {
-    return this._sequelizeModels;
+    return this._sequelizeModels
   }
 
   /**
@@ -166,7 +166,7 @@ export class Scaffold {
    * @hidden
    */
   get models(): ScaffoldModelCollection {
-    return buildScaffoldModelObject(this._sequelizeModels);
+    return buildScaffoldModelObject(this._sequelizeModels)
   }
 
   /**
@@ -183,7 +183,7 @@ export class Scaffold {
    * @category General Use
    */
   get parse() {
-    return buildExportWrapper<ParseFunctions>(this, buildParserForModel);
+    return buildExportWrapper<ParseFunctions>(this, buildParserForModel)
   }
 
   /**
@@ -200,10 +200,7 @@ export class Scaffold {
    * @category General Use
    */
   get serialize() {
-    return buildExportWrapper<SerializeFunctions>(
-      this,
-      buildSerializerForModel
-    );
+    return buildExportWrapper<SerializeFunctions>(this, buildSerializerForModel)
   }
 
   /**
@@ -213,9 +210,9 @@ export class Scaffold {
    * @returns { ScaffoldError}
    */
   static createError(options: ScaffoldErrorOptions): ScaffoldError {
-    const error = new ScaffoldError(options);
+    const error = new ScaffoldError(options)
 
-    return error;
+    return error
   }
 
   /**
@@ -234,8 +231,8 @@ export class Scaffold {
   get middleware() {
     return buildExportWrapper<MiddlewareFunctionsKoa>(
       this,
-      buildMiddlewareForModel
-    );
+      buildMiddlewareForModel,
+    )
   }
 
   /**
@@ -252,7 +249,7 @@ export class Scaffold {
    * @category General Use
    */
   get schema() {
-    return buildExportWrapper<ScaffoldModel>(this, buildSchemaForModel);
+    return buildExportWrapper<ScaffoldModel>(this, buildSchemaForModel)
   }
 
   /**
@@ -274,8 +271,8 @@ export class Scaffold {
   get everything() {
     return buildExportWrapper<EverythingFunctions>(
       this,
-      buildEverythingForModel
-    );
+      buildEverythingForModel,
+    )
   }
 
   /**
@@ -292,15 +289,15 @@ export class Scaffold {
    */
   isValidScaffoldRoute(method, path: string): boolean {
     if (!this._allowedMethods.includes(method)) {
-      return false;
+      return false
     }
 
-    const model = this.getScaffoldModelNameForRoute(path);
+    const model = this.getScaffoldModelNameForRoute(path)
 
     if (model) {
-      return true;
+      return true
     } else {
-      return false;
+      return false
     }
   }
 
@@ -315,8 +312,8 @@ export class Scaffold {
    * @internal
    */
   getScaffoldURLParamsForRoute(path: string): {
-    model?: string;
-    id?: Identifier;
+    model?: string
+    id?: Identifier
   } {
     const isPathWithModelId = match<{ model: string; id: Identifier }>(
       this._prefix + "/:model/:id",
@@ -325,22 +322,22 @@ export class Scaffold {
         strict: false,
         sensitive: false,
         end: false,
-      }
-    );
+      },
+    )
 
-    const isPathWithModelIdResult = isPathWithModelId(path);
+    const isPathWithModelIdResult = isPathWithModelId(path)
     if (isPathWithModelIdResult) {
-      const endpointName = isPathWithModelIdResult.params.model;
+      const endpointName = isPathWithModelIdResult.params.model
 
       // Validate if endpoint name is lowercase
       if (endpointName === endpointName.toLowerCase()) {
-        const singular = singularize(endpointName);
+        const singular = singularize(endpointName)
 
         // Validate if endpoint name is plural
         if (endpointName !== singular) {
-          isPathWithModelIdResult.params.model = capitalize(singular);
+          isPathWithModelIdResult.params.model = capitalize(singular)
 
-          return isPathWithModelIdResult.params;
+          return isPathWithModelIdResult.params
         }
       }
     }
@@ -350,26 +347,26 @@ export class Scaffold {
       strict: false,
       sensitive: false,
       end: false,
-    });
+    })
 
-    const isPathWithModelResult = isPathWithModel(path);
+    const isPathWithModelResult = isPathWithModel(path)
     if (isPathWithModelResult) {
-      const endpointName = isPathWithModelResult.params.model;
+      const endpointName = isPathWithModelResult.params.model
 
       // Validate if endpoint is lowercase
       if (endpointName === endpointName.toLowerCase()) {
-        const singular = singularize(endpointName);
+        const singular = singularize(endpointName)
 
         // Validate if endpoint name is plural
         if (endpointName !== singular) {
-          isPathWithModelResult.params.model = capitalize(singular);
+          isPathWithModelResult.params.model = capitalize(singular)
 
-          return isPathWithModelResult.params;
+          return isPathWithModelResult.params
         }
       }
     }
 
-    return {};
+    return {}
   }
 
   /**
@@ -385,18 +382,18 @@ export class Scaffold {
    * @internal
    */
   getScaffoldModelNameForRoute(path: string): false | string {
-    const result = this.getScaffoldURLParamsForRoute(path);
+    const result = this.getScaffoldURLParamsForRoute(path)
 
     if (result.model) {
-      const pathModelName = result.model;
+      const pathModelName = result.model
       const matchedModelName = this._sequelizeModelNames.find(
-        (name) => name.toLowerCase() === pathModelName.toLowerCase()
-      );
+        (name) => name.toLowerCase() === pathModelName.toLowerCase(),
+      )
       if (matchedModelName) {
-        return matchedModelName;
+        return matchedModelName
       }
     }
-    return false;
+    return false
   }
 
   /**
@@ -412,25 +409,25 @@ export class Scaffold {
    * @category Testing Use
    */
   async createDatabase(): Promise<Sequelize> {
-    return this._sequelize.sync({});
+    return this._sequelize.sync({})
   }
 }
 
-export const Error = ScaffoldError;
+export const Error = ScaffoldError
 
-export const errorHandlerMiddleware = errorMiddleware;
+export const errorHandlerMiddleware = errorMiddleware
 
 function buildExportWrapper<T>(
   scaffold: Scaffold,
-  handlerFunction: FunctionsHandler<T>
+  handlerFunction: FunctionsHandler<T>,
 ): ModelFunctionsCollection<T> {
   const wrapper: ModelFunctionsCollection<T> = {
     "*": handlerFunction(scaffold, "*"),
     allModels: handlerFunction(scaffold, "*"),
-  };
+  }
   Object.keys(scaffold.models).forEach((modelName) => {
-    wrapper[modelName] = handlerFunction(scaffold, modelName);
-  });
+    wrapper[modelName] = handlerFunction(scaffold, modelName)
+  })
 
-  return wrapper;
+  return wrapper
 }

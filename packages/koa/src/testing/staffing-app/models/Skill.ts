@@ -1,4 +1,4 @@
-import { ScaffoldModel, DataTypes } from "../../../types";
+import { ScaffoldModel, DataTypes } from "../../../types"
 
 export const Skill: ScaffoldModel = {
   name: "Skill",
@@ -17,14 +17,14 @@ export const Skill: ScaffoldModel = {
     vname: {
       type: DataTypes.VIRTUAL(DataTypes.INTEGER),
       get() {
-        return this.name;
+        return this.name
       },
     },
   },
   belongsToMany: [
     { target: "Role", options: { through: "role__skill", as: "roles" } },
   ],
-};
+}
 
 /*
 -- public.skill definition

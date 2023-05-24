@@ -1,13 +1,13 @@
-import { ScaffoldError } from "../errors";
+import { ScaffoldError } from "../errors"
 
 const ScaffoldErrorHandler = (error) => {
   if (error instanceof ScaffoldError) {
-    return error;
+    return error
   }
 
-  error = new ScaffoldError(error);
+  error = new ScaffoldError(error)
 
-  return error;
-};
+  return error
+}
 
-export default ScaffoldErrorHandler;
+export default ScaffoldErrorHandler

@@ -1,11 +1,11 @@
-import { Scaffold } from "..";
-import { ScaffoldModel } from "../types";
+import { Scaffold } from ".."
+import { ScaffoldModel } from "../types"
 
 export function buildSchemaForModel(
   scaffold: Scaffold,
-  modelName: string
+  modelName: string,
 ): ScaffoldModel {
-  return scaffold.models[modelName];
+  return scaffold.models[modelName]
 }
 
 // function resolveWildcard(scaffold: Scaffold, path): string {

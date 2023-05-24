@@ -1,4 +1,4 @@
-import { ScaffoldModel, DataTypes } from "../../../types";
+import { ScaffoldModel, DataTypes } from "../../../types"
 
 export const Assignment: ScaffoldModel = {
   name: "Assignment",
@@ -35,7 +35,7 @@ export const Assignment: ScaffoldModel = {
       options: { as: "projects", through: "Role" },
     },
   ],
-};
+}
 
 /*
 -- public."assignment" definition

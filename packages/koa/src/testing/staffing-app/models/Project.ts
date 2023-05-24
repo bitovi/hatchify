@@ -1,4 +1,4 @@
-import { ScaffoldModel, DataTypes } from "../../../types";
+import { ScaffoldModel, DataTypes } from "../../../types"
 
 export const Project: ScaffoldModel = {
   name: "Project",
@@ -21,7 +21,7 @@ export const Project: ScaffoldModel = {
       type: DataTypes.VIRTUAL(DataTypes.INTEGER),
       include: ["roles.skills"],
       get() {
-        return this.roles && this.roles.length;
+        return this.roles && this.roles.length
       },
     },
   },
@@ -32,4 +32,4 @@ export const Project: ScaffoldModel = {
       options: { as: "assignments", through: { model: "Role" } },
     },
   ],
-};
+}

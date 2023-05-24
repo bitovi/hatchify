@@ -8,12 +8,12 @@ import {
   // InferCreationAttributes,
   // ModelStatic,
   // ModelCtor
-} from "sequelize";
+} from "sequelize"
 // const _seqModelSymbol = Symbol("underlying-sequelize-model");
 
 interface ScaffoldModelDefinition {
-  attributes: ModelAttributes;
-  name: string;
+  attributes: ModelAttributes
+  name: string
 }
 
 // type InferModel<T extends Model<any, any>> = Model<
@@ -46,7 +46,7 @@ export const Skill: ScaffoldModelDefinition = {
       unique: true,
     },
   },
-};
+}
 
 // I dont really want to have to define this interface.
 // I want it to figure these properties out via the Definition only...
@@ -81,24 +81,24 @@ export const Skill: ScaffoldModelDefinition = {
 // const TestSkillModel = createModel<SkillModel>(Skill)
 
 // These attributes, I assume, should be typechecked based on the actual property names in SkillModel or Skill definitions
-const result = null; // TestSkillModel.findAll({ attributes: ["name", "id", "fish"] });
-console.log(result);
+const result = null // TestSkillModel.findAll({ attributes: ["name", "id", "fish"] });
+console.log(result)
 
-function pickObjectKeys<T, K extends keyof T>(obj: T, keys: K[]) {
-  const result = {} as Pick<T, K>;
+function pickObjectKeys<T extends {}, K extends keyof T>(obj: T, keys: K[]) {
+  const result = {} as Pick<T, K>
   for (const key of keys) {
     if (key in obj) {
-      result[key] = obj[key];
+      result[key] = obj[key]
     }
   }
-  return result;
+  return result
 }
 
 const language = {
   name: "TypeScript",
   age: 8,
   extensions: ["ts", "tsx"],
-};
+}
 
-const ageAndExtensions = pickObjectKeys(language, ["age", "extensions"]);
-console.log(ageAndExtensions);
+const ageAndExtensions = pickObjectKeys(language, ["age", "extensions"])
+console.log(ageAndExtensions)

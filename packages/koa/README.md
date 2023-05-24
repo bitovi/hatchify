@@ -23,9 +23,9 @@ npm i koa @bitovi/scaffold
 Create an `index.js` file containing the following 'Hello World' example code
 
 ```typescript
-import Koa from "koa";
-import path from "path";
-import { Scaffold, DataTypes } from "@bitovi/scaffold";
+import Koa from "koa"
+import path from "path"
+import { Scaffold, DataTypes } from "@bitovi/scaffold"
 
 const User = {
   name: "User",
@@ -33,9 +33,9 @@ const User = {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
   },
-};
+}
 
-const app = new Koa();
+const app = new Koa()
 const scaffold = new Scaffold([User], {
   name: "Scaffold Demo",
   prefix: "/api",
@@ -43,17 +43,17 @@ const scaffold = new Scaffold([User], {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
-});
+})
 
-app.use(scaffold.middleware.allModels.all);
+app.use(scaffold.middleware.allModels.all)
 
 app.use(async (ctx) => {
-  ctx.body = "Hello From Koa";
-});
+  ctx.body = "Hello From Koa"
+})
 
 app.listen(3000, () => {
-  console.log("Started on port 3000");
-});
+  console.log("Started on port 3000")
+})
 ```
 
 Run the example using `node index.js` to see it in action! At this point you can created an entire application that can perform CRUD operations to a persistant sqlite database for our example `User` model.
@@ -104,9 +104,9 @@ npm i koa @bitovi/scaffold
 Create an `index.js` file containing the following 'Hello World' example code
 
 ```typescript
-import Koa from "koa";
-import path from "path";
-import { Scaffold, DataTypes } from "@bitovi/scaffold";
+import Koa from "koa"
+import path from "path"
+import { Scaffold, DataTypes } from "@bitovi/scaffold"
 
 const User = {
   name: "User",
@@ -114,9 +114,9 @@ const User = {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
   },
-};
+}
 
-const app = new Koa();
+const app = new Koa()
 const scaffold = new Scaffold([User], {
   name: "Scaffold Demo",
   prefix: "/api",
@@ -124,17 +124,17 @@ const scaffold = new Scaffold([User], {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
-});
+})
 
-app.use(scaffold.middleware.allModels.all);
+app.use(scaffold.middleware.allModels.all)
 
 app.use(async (ctx) => {
-  ctx.body = "Hello From Koa";
-});
+  ctx.body = "Hello From Koa"
+})
 
 app.listen(3000, () => {
-  console.log("Started on port 3000");
-});
+  console.log("Started on port 3000")
+})
 ```
 
 At this point you have created a Koa application with Scaffold connected as Middleware. In this above example we are configuring Scaffold to use sqlite as a database and to store any of our data in the `example.sqlite` file.
@@ -142,7 +142,7 @@ At this point you have created a Koa application with Scaffold connected as Midd
 The most important step in working with Scaffold is creating Models that define the data within your application. Lets take a look at this example `Models.js` file containing two different exported Models:
 
 ```typescript
-import { DataTypes } from "@bitovi/scaffold/types";
+import { DataTypes } from "@bitovi/scaffold/types"
 
 export const Player = {
   name: "Player",
@@ -153,7 +153,7 @@ export const Player = {
     endDate: DataTypes.DATE,
   },
   belongsTo: [{ target: "Team" }],
-};
+}
 
 export const Team = {
   name: "Team",
@@ -161,7 +161,7 @@ export const Team = {
     name: DataTypes.STRING,
   },
   hasMany: [{ target: "Player", options: { as: "players" } }],
-};
+}
 ```
 
 This is pretty simple!
@@ -171,12 +171,12 @@ The only things you are required to provide are a `name` for your model and the 
 Now that we have a Schema defined, we can update our application code accordingly:
 
 ```typescript
-import Koa from "koa";
-import path from "path";
-import { Scaffold, DataTypes } from "@bitovi/scaffold";
-import { Player, Team } from "./Models";
+import Koa from "koa"
+import path from "path"
+import { Scaffold, DataTypes } from "@bitovi/scaffold"
+import { Player, Team } from "./Models"
 
-const app = new Koa();
+const app = new Koa()
 const scaffold = new Scaffold([Player, Team], {
   name: "Scaffold Demo",
   prefix: "/api",
@@ -184,17 +184,17 @@ const scaffold = new Scaffold([Player, Team], {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
-});
+})
 
-app.use(scaffold.middleware.allModels.all);
+app.use(scaffold.middleware.allModels.all)
 
 app.use(async (ctx) => {
-  ctx.body = "Hello From Koa";
-});
+  ctx.body = "Hello From Koa"
+})
 
 app.listen(3000, () => {
-  console.log("Started on port 3000");
-});
+  console.log("Started on port 3000")
+})
 ```
 
 In the above example, if we run our application, Scaffold will create CRUD application endpoints for our newly imported `Player` and `Team` models automatically. If you try any other URLs you will get back the default 'Hello From Koa' response.
@@ -219,7 +219,7 @@ One of the first things that we might want to explore is how we can add (or remo
 Taking the same models as before, now we want to add a new field for the Players. Maybe now we also want to include their position on the team. If we use these models to describe a Football team we could create an ENUM field of positions:
 
 ```typescript
-import { DataTypes } from "@bitovi/scaffold/types";
+import { DataTypes } from "@bitovi/scaffold/types"
 
 export const Player = {
   name: "Player",
@@ -237,7 +237,7 @@ export const Player = {
     ]),
   },
   belongsTo: [{ target: "Team" }],
-};
+}
 
 export const Team = {
   name: "Team",
@@ -245,7 +245,7 @@ export const Team = {
     name: DataTypes.STRING,
   },
   hasMany: [{ target: "Player", options: { as: "players" } }],
-};
+}
 ```
 
 Now that we have this new field defined within our model we can start the Scaffold application again.
@@ -268,14 +268,14 @@ For example, if you had a new `User` model that needed special authorization rul
 Lets take a look at our same sample application again, but this time make a few customizations
 
 ```typescript
-import Koa from "koa";
-import KoaRouter from "@koa/router";
-import path from "path";
-import { Scaffold } from "@bitovi/scaffold";
-import { Player, Team, User } from "./Models";
+import Koa from "koa"
+import KoaRouter from "@koa/router"
+import path from "path"
+import { Scaffold } from "@bitovi/scaffold"
+import { Player, Team, User } from "./Models"
 
-const app = new Koa();
-const router = new KoaRouter();
+const app = new Koa()
+const router = new KoaRouter()
 
 const scaffold = new Scaffold([Player, Team, User], {
   name: "Scaffold Demo",
@@ -284,26 +284,26 @@ const scaffold = new Scaffold([Player, Team, User], {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
-});
+})
 
 router.get("/User", async (ctx, next) => {
   if (ctx.headers.authorization !== "custom-value") {
-    ctx.throw(401, "Bad Auth Token");
+    ctx.throw(401, "Bad Auth Token")
   }
-  ctx.body = await scaffold.everything.User.findAll(ctx.query);
-});
+  ctx.body = await scaffold.everything.User.findAll(ctx.query)
+})
 
-app.use(router.routes());
-app.use(router.allowedMethods());
-app.use(scaffold.middleware.allModels.all);
+app.use(router.routes())
+app.use(router.allowedMethods())
+app.use(scaffold.middleware.allModels.all)
 
 app.use(async (ctx) => {
-  ctx.body = "Hello From Koa";
-});
+  ctx.body = "Hello From Koa"
+})
 
 app.listen(3000, () => {
-  console.log("Started on port 3000");
-});
+  console.log("Started on port 3000")
+})
 ```
 
 From this example you can see a few of the functions that Scaffold exports for you. These model functions, along with more generic helpers, allow you to manipulate models, format data, and parse incoming request params with ease.
@@ -322,7 +322,7 @@ const scaffold = new Scaffold([Player, Team, User], {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
-});
+})
 ```
 
 This example shows how to use a postgresql database
@@ -338,7 +338,7 @@ const scaffold = new Scaffold([Player, Team, User], {
     username: "example_user",
     password: "example_password",
   },
-});
+})
 ```
 
 The following options are allowed within the db options object:
@@ -365,18 +365,18 @@ npm i @koa/router
 Simply hook this into your existing Koa instance
 
 ```typescript
-import Koa from "koa";
-import KoaRouter from "@koa/router";
+import Koa from "koa"
+import KoaRouter from "@koa/router"
 
-const app = new Koa();
-const router = new KoaRouter();
+const app = new Koa()
+const router = new KoaRouter()
 
 router.get("/custom-route", async (ctx) => {
-  ctx.body = "Hello Koa Router";
-});
+  ctx.body = "Hello Koa Router"
+})
 
-app.use(router.routes());
-app.use(router.allowedMethods());
+app.use(router.routes())
+app.use(router.allowedMethods())
 ```
 
 Within your custom route you can still take advantage of many Scaffold functions using the provided exports. These exported functions allow you to access:
@@ -388,14 +388,14 @@ Within your custom route you can still take advantage of many Scaffold functions
 Here is a more complete example using many of the Scaffold built in helpers to perform some report generation across many database tables
 
 ```typescript
-import Koa from "koa";
-import KoaRouter from "@koa/router";
-import path from "path";
-import { Scaffold, Op } from "@bitovi/scaffold";
-import { Player, Team, User } from "./Models";
+import Koa from "koa"
+import KoaRouter from "@koa/router"
+import path from "path"
+import { Scaffold, Op } from "@bitovi/scaffold"
+import { Player, Team, User } from "./Models"
 
-const app = new Koa();
-const router = new KoaRouter();
+const app = new Koa()
+const router = new KoaRouter()
 
 const scaffold = new Scaffold([Player, Team, User], {
   name: "Scaffold Demo",
@@ -404,10 +404,10 @@ const scaffold = new Scaffold([Player, Team, User], {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
-});
+})
 
 router.get("/generate-report", async (ctx) => {
-  const requestedStartDate = ctx.params.startDate;
+  const requestedStartDate = ctx.params.startDate
 
   const users = await scaffold.model.UserModel.findAndCountAll({
     where: {
@@ -415,23 +415,23 @@ router.get("/generate-report", async (ctx) => {
         [Op.gt]: requestedStartDate,
       },
     },
-  });
+  })
 
-  const teams = await scaffold.model.TeamModel.findAndCountAll();
+  const teams = await scaffold.model.TeamModel.findAndCountAll()
 
-  const usersResult = await scaffold.serialize.UserModel.findAndCountAll(users);
-  const teamsResult = await scaffold.serialize.TeamModel.findAndCountAll(teams);
+  const usersResult = await scaffold.serialize.UserModel.findAndCountAll(users)
+  const teamsResult = await scaffold.serialize.TeamModel.findAndCountAll(teams)
 
-  ctx.body = { users: usersResult, teams: teamsResult };
-});
+  ctx.body = { users: usersResult, teams: teamsResult }
+})
 
-app.use(router.routes());
-app.use(router.allowedMethods());
-app.use(scaffold.middleware.allModels.all);
+app.use(router.routes())
+app.use(router.allowedMethods())
+app.use(scaffold.middleware.allModels.all)
 
 app.listen(3000, () => {
-  console.log("Started on port 3000");
-});
+  console.log("Started on port 3000")
+})
 ```
 
 # API Endpoint Enhancement
@@ -441,14 +441,14 @@ One common need when building expressive REST APIs is the ability to create frie
 We will create a query parameter alias that takes the string `today` and turns it into the current date/time stamp. Take a look at the following code block:
 
 ```typescript
-import Koa from "koa";
-import KoaRouter from "@koa/router";
-import path from "path";
-import { Scaffold } from "@bitovi/scaffold";
-import { Player, Team, User } from "./Models";
+import Koa from "koa"
+import KoaRouter from "@koa/router"
+import path from "path"
+import { Scaffold } from "@bitovi/scaffold"
+import { Player, Team, User } from "./Models"
 
-const app = new Koa();
-const router = new KoaRouter();
+const app = new Koa()
+const router = new KoaRouter()
 
 const scaffold = new Scaffold([Player, Team, User], {
   name: "Scaffold Demo",
@@ -457,32 +457,32 @@ const scaffold = new Scaffold([Player, Team, User], {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
-});
+})
 
 router.get(
   "/users",
   async (ctx, next) => {
     if (ctx.params.startDate && ctx.params.startDate === "today ") {
-      const today = new Date();
-      ctx.params.startDate = today;
+      const today = new Date()
+      ctx.params.startDate = today
     }
 
     if (ctx.params.startDate && ctx.params.startDate === "yesterday ") {
-      const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
-      ctx.params.startDate = yesterday;
+      const yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
+      ctx.params.startDate = yesterday
     }
-    await next();
+    await next()
   },
-  scaffold.middleware.User.findAll
-);
+  scaffold.middleware.User.findAll,
+)
 
-app.use(router.routes());
-app.use(router.allowedMethods());
-app.use(scaffold.middleware.allModels.all);
+app.use(router.routes())
+app.use(router.allowedMethods())
+app.use(scaffold.middleware.allModels.all)
 
 app.listen(3000, () => {
-  console.log("Started on port 3000");
-});
+  console.log("Started on port 3000")
+})
 ```
 
 In this example if we see the string ‘today’ or ‘yesterday’ as our stateDate query parameter we can override the value to replace it with a proper JavaScript Date object.
@@ -511,11 +511,11 @@ export const Employee = {
         this.end_date &&
         this.start_date <= this.end_date
       ) {
-        throw new Error("START_DATE_MUST_BE_BEFORE_END_DATE");
+        throw new Error("START_DATE_MUST_BE_BEFORE_END_DATE")
       }
     },
   },
-};
+}
 ```
 
 # Advanced Data Validation
@@ -617,7 +617,7 @@ app.listen(3000, () => {
 Scaffold can help you define and build complex relationships between different models within your application. In our previous examples we have used Players and Teams to briefly describe a relationship. Lets take a look at that example again:
 
 ```typescript
-import { DataTypes } from "@bitovi/scaffold/types";
+import { DataTypes } from "@bitovi/scaffold/types"
 
 export const Player = {
   name: "Player",
@@ -628,7 +628,7 @@ export const Player = {
     endDate: DataTypes.DATE,
   },
   belongsTo: [{ target: "Team" }],
-};
+}
 
 export const Team = {
   name: "Team",
@@ -636,7 +636,7 @@ export const Team = {
     name: DataTypes.STRING,
   },
   hasMany: [{ target: "Player", options: { as: "players" } }],
-};
+}
 ```
 
 We can see that the `Player` has a `belongsTo` property that names `Team` as the target. Similarially, the `Team` contains a `hasMany` property that names `Player` as the target. Given this description we can reason that a Team can have many players and each Player can belong to a single Team.
@@ -644,7 +644,7 @@ We can see that the `Player` has a `belongsTo` property that names `Team` as the
 For another example lets look at `Movies` and `Actors`. Unlike `Players` and `Teams` an Actor CAN be in more than one Movie and a Movie can contain many Actors. How could we describe this sort of relationship?
 
 ```typescript
-import { DataTypes } from "@bitovi/scaffold/types";
+import { DataTypes } from "@bitovi/scaffold/types"
 
 export const Actor = {
   name: "Actor",
@@ -658,7 +658,7 @@ export const Actor = {
     name: DataTypes.STRING,
   },
   belongsToMany: [{ target: "Movie", options: { through: "ActorMovies" } }],
-};
+}
 
 export const Movie = {
   name: "Movie",
@@ -672,7 +672,7 @@ export const Movie = {
     name: DataTypes.STRING,
   },
   belongsToMany: [{ target: "Actor", options: { through: "ActorMovies" } }],
-};
+}
 ```
 
 In this case both models contain a belongsToMany type relationship. One of the differences here is that we need another table to help us define this complex many-to-many relationship. We can see this as the `through` option providing a table name of `ActorMovies`.
