@@ -25,6 +25,7 @@ const fakeDataSource: Source = {
   getList: () => Promise.resolve([]),
   getOne: () => Promise.resolve([fakeData[0]]),
   createOne: () => Promise.resolve([]),
+  updateOne: () => Promise.resolve([]),
 }
 
 const ArticleSchema = { name: "Article" } as Schema

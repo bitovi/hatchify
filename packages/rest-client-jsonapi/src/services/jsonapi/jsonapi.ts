@@ -6,8 +6,9 @@ import type {
   QueryList,
   QueryOne,
   Resource,
+  UpdateData,
 } from "@hatchifyjs/rest-client"
-import { createOne, getList, getOne } from ".."
+import { createOne, getList, getOne, updateOne } from ".."
 
 export interface JsonApiResource {
   id: string | number
@@ -27,6 +28,8 @@ export function jsonapi(config: SourceConfig): Source {
     getOne: (schema: Schema, query: QueryOne) => getOne(config, schema, query),
     createOne: (schema: Schema, data: CreateData) =>
       createOne(config, schema, data),
+    updateOne: (schema: Schema, data: UpdateData) =>
+      updateOne(config, schema, data),
   }
 }
 

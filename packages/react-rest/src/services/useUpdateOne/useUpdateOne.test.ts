@@ -1,46 +1,38 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import { createStore, convertResourceToRecord } from "@hatchifyjs/rest-client"
-import type { Schema, Source, Subscription } from "@hatchifyjs/rest-client"
-import { useOne } from "./useOne"
-
-const fakeData = [
-  {
-    id: "1",
-    __schema: "Article",
-    attributes: { title: "foo", body: "foo-body" },
-  },
-  {
-    id: "2",
-    __schema: "Article",
-    attributes: { title: "bar", body: "bar-body" },
-  },
-]
+import { createStore } from "@hatchifyjs/rest-client"
+import type { Schema, Source } from "@hatchifyjs/rest-client"
+import { useUpdateOne } from "./useUpdateOne"
 
 const fakeDataSource: Source = {
   version: 0,
   getList: () => Promise.resolve([]),
-  getOne: () => Promise.resolve([fakeData[0]]),
+  getOne: () => Promise.resolve([]),
   createOne: () => Promise.resolve([]),
-  updateOne: () => Promise.resolve([]),
+  updateOne: () =>
+    Promise.resolve([
+      {
+        id: "1",
+        __schema: "Article",
+        attributes: { title: "updated-title", body: "baz-body" },
+      },
+    ]),
 }
 
 const ArticleSchema = { name: "Article" } as Schema
 
-describe("react-rest/services/useOne", () => {
-  const query = { id: "1" }
-
-  it("should fetch a record", async () => {
+describe("react-rest/services/useUpdateOne", () => {
+  it("should update a record", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, ArticleSchema, query),
+      useUpdateOne(fakeDataSource, ArticleSchema),
     )
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(result.current).toEqual([
-        convertResourceToRecord(fakeData[0]),
+        expect.any(Function),
         {
           status: "success",
           meta: undefined,
@@ -51,78 +43,70 @@ describe("react-rest/services/useOne", () => {
           isRevalidating: false,
           isStale: false,
           isSuccess: true,
+        },
+        undefined,
+      ])
+    })
+
+    await result.current[0]({ title: "updated-title", body: "baz-body" })
+
+    await waitFor(() =>
+      expect(result.current).toEqual([
+        expect.any(Function),
+        {
+          status: "success",
+          meta: undefined,
+          error: undefined,
+          isDone: true,
+          isLoading: false,
+          isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
+        },
+        {
+          id: "1",
+          __schema: "Article",
+          title: "updated-title",
+          body: "baz-body",
         },
       ]),
     )
   })
 
-  it("should subscribe and return latest data", async () => {
-    const store = createStore(["Article"])
-
-    const { result } = renderHook(() =>
-      useOne(fakeDataSource, ArticleSchema, query),
-    )
-
-    await waitFor(() =>
-      expect(result.current).toEqual([
-        convertResourceToRecord(fakeData[0]),
-        {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isDone: true,
-          isLoading: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
-        },
-      ]),
-    )
-
-    const newFakeData = [
-      {
-        id: "1",
-        __schema: "Article",
-        attributes: { title: "new title", body: "new body" },
-      },
-    ]
-
-    store.Article.subscribers.forEach((subscriber: Subscription) =>
-      subscriber(newFakeData.map(convertResourceToRecord)),
-    )
-
-    await waitFor(() =>
-      expect(result.current).toEqual([
-        convertResourceToRecord(newFakeData[0]),
-        {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isDone: true,
-          isLoading: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
-        },
-      ]),
-    )
-  })
-
-  it("should return an error", async () => {
+  it("should return an error if the request fails", async () => {
     createStore(["Article"])
 
-    fakeDataSource.getOne = () =>
+    const { result } = renderHook(() =>
+      useUpdateOne(fakeDataSource, ArticleSchema),
+    )
+
+    await waitFor(() => {
+      expect(result.current).toEqual([
+        expect.any(Function),
+        {
+          status: "success",
+          meta: undefined,
+          error: undefined,
+          isDone: true,
+          isLoading: false,
+          isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
+        },
+        undefined,
+      ])
+    })
+
+    fakeDataSource.updateOne = () =>
       Promise.reject(new Error("Something went wrong"))
 
-    const { result } = renderHook(() =>
-      useOne(fakeDataSource, ArticleSchema, query),
-    )
+    await result.current[0]({ title: "updated-title", body: "baz-body" })
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        undefined,
+        expect.any(Function),
         {
           status: "error",
           meta: undefined,
@@ -134,6 +118,7 @@ describe("react-rest/services/useOne", () => {
           isStale: false,
           isSuccess: false,
         },
+        undefined,
       ]),
     )
   })
