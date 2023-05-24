@@ -59,6 +59,25 @@ export function insert(schema: string, data: Resource[]): void {
 }
 
 /**
+ * Removes ids from the store and notifies subscribers.
+ */
+export function remove(schema: string, ids: string[]): void {
+  const copy = { ...store[schema].data }
+
+  for (const id of ids) {
+    delete copy[id]
+  }
+
+  store[schema].data = copy
+
+  const records = getRecords(schema)
+
+  for (const subscriber of store[schema].subscribers) {
+    subscriber(records)
+  }
+}
+
+/**
  * Converts an array of resources into an object keyed by id.
  */
 export function keyResourcesById(data: Resource[]): {

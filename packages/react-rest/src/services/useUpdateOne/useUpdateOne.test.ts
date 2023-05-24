@@ -18,6 +18,7 @@ const fakeDataSource: Source = {
         attributes: { title: "updated-title", body: "baz-body" },
       },
     ]),
+  deleteOne: () => Promise.resolve(),
 }
 
 const ArticleSchema = { name: "Article" } as Schema

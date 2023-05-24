@@ -1,6 +1,7 @@
 export {
   createReactRest,
   useCreateOne,
+  useDeleteOne,
   useList,
   useOne,
   useUpdateOne,

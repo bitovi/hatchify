@@ -15,6 +15,7 @@ export interface SourceV0 {
   getOne: (schema: Schema, query: QueryOne) => Promise<Resource[]>
   createOne: (schema: Schema, data: CreateData) => Promise<Resource[]>
   updateOne: (schema: Schema, data: UpdateData) => Promise<Resource[]>
+  deleteOne: (schema: Schema, id: string) => Promise<void>
 }
 
 export type Source = SourceV0 // | SourceV1 | ...

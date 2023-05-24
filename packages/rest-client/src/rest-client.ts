@@ -18,6 +18,7 @@ export type {
 export {
   createOne,
   createStore,
+  deleteOne,
   convertResourceToRecord,
   getList,
   getMeta,

@@ -20,6 +20,7 @@ const fakeDataSource: Source = {
       },
     ]),
   updateOne: () => Promise.resolve([]),
+  deleteOne: () => Promise.resolve(),
 }
 
 const ArticleSchema = { name: "Article" } as Schema
