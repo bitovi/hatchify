@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-unused-vars */
 import type { Scaffold } from ".."
 import type { JSONObject } from "../types"
 

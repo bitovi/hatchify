@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Chance from "chance"
 import { Scaffold } from "../../index"
 import type { ScaffoldModel } from "../../types"

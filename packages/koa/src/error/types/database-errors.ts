@@ -7,10 +7,9 @@ import {
 
 const databaseErrorHandlers = (error) => {
   const { name, message } = error
+  const pointer = error.errors[0].path
 
   if (name === "SequelizeValidationError") {
-    const pointer = error.errors[0].path
-
     if (error.errors[0].type === "notNull Violation") {
       error = new ValidationError({
         title: `${error.errors[0].path} is required.`,
@@ -21,9 +20,6 @@ const databaseErrorHandlers = (error) => {
   } else {
     switch (name) {
       case "SequelizeUniqueConstraintError":
-        // eslint-disable-next-line no-case-declarations
-        const pointer = error.errors[0].path
-
         error = new UniqueConstraintError({
           title: `Record with ${pointer} already exists`,
           pointer,

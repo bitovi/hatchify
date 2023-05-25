@@ -107,7 +107,6 @@ export function buildDestroyOptions(
 
 export function buildAttributeList(
   query: ParsedUrlQuery,
-  // eslint-disable-next-line no-unused-vars
   seqModel: SequelizeModelInstance,
 ): string[] {
   const queryAttributes = query.attributes

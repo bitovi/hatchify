@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 import type {
   DestroyOptions,
   UpdateOptions,
@@ -37,9 +34,7 @@ export interface ParseFunctions {
   findAll: (querystring: string) => Promise<FindOptions>
   findOne: (querystring: string, id: Identifier) => Promise<FindOptions>
   findAndCountAll: (querystring: string) => Promise<FindOptions>
-  create: <T extends ScaffoldModel = ScaffoldModel>(
-    body: unknown,
-  ) => Promise<{ body: JSONObject; ops: CreateOptions }>
+  create: (body: unknown) => Promise<{ body: JSONObject; ops: CreateOptions }>
   update: (
     body: unknown,
     id?: Identifier,

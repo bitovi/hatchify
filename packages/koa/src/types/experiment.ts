@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ModelAttributes } from "sequelize"
 import {
   DataTypes,
@@ -23,7 +22,6 @@ interface ScaffoldModelDefinition {
 
 // interface ScaffoldModel<T extends InferModel<T>>
 //   extends ScaffoldModelDefinition {
-//   // eslint-disable-next-line @typescript-eslint/ban-types
 //   findAll: ModelCtor<T>['findAll']
 //   findOne: ModelCtor<T>['findOne']
 //   create: ModelCtor<T>['create']

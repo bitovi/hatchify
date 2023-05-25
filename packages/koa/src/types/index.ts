@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { DefaultState, DefaultContext, Middleware } from "koa"
 import type Koa from "koa"
 import type {
