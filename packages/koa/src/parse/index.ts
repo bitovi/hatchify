@@ -12,7 +12,6 @@ import {
   buildFindOptions,
   buildUpdateOptions,
 } from "./builder"
-// import { buildDeserializerForModelStandalone } from "../deserialize";
 import type { JSONObject, ScaffoldModel } from "../types"
 import { ValidationError } from "../error/errors"
 import { codes, statusCodes } from "../error/constants"

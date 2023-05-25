@@ -31,7 +31,7 @@ export function buildFindOptions(
   }
 
   // Perform additional checks if needed...
-  if (ops.data && ops.data.attributes && Array.isArray(ops.data.attributes)) {
+  if (ops.data?.attributes && Array.isArray(ops.data.attributes)) {
     ops.data.attributes.forEach((attr: string) => {
       if (!model.attributes[attr]) {
         ops.errors.push("Unknown attribute " + attr)
@@ -52,7 +52,7 @@ export function buildFindOptions(
 export function buildCreateOptions(querystring: string): QSP<CreateOptions> {
   const ops: QSP<CreateOptions> = querystringParser.parse(querystring)
 
-  // If we do have an error, fail fast and return it, dont bother checking anything else
+  // If we do have an error, fail fast and return it, don't bother checking anything else
   if (ops.errors.length > 0) {
     return ops
   }

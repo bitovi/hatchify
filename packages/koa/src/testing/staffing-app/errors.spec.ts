@@ -10,7 +10,7 @@ import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 
 describe("Errors", () => {
-  it("should return JSONAPI error format with Scaffold default middleware", async () => {
+  it("should return JSON API error format with Scaffold default middleware", async () => {
     // Create a basic Koa application
     const app = new Koa()
     const router = new KoaRouter()
@@ -66,7 +66,7 @@ describe("Errors", () => {
     await scaffold.orm.close()
   })
 
-  it("should return JSONAPI error format with only Scaffold error handler middleware and Scaffold.Error", async () => {
+  it("should return JSON API error format with only Scaffold error handler middleware and Scaffold.Error", async () => {
     // Create a basic Koa application
     const app = new Koa()
     const router = new KoaRouter()
