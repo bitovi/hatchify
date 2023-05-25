@@ -6,7 +6,7 @@ import { useHatchifyPresentation } from ".."
 
 import type { FlatRecord, ValueComponent } from "../../presentation/interfaces"
 
-interface HatchifyListProps {
+export interface HatchifyListProps {
   schema: Schema
   valueComponents?: { [attribute: string]: ValueComponent }
   useData?: () => FlatRecord[]

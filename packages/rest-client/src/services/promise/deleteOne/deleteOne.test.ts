@@ -1,0 +1,40 @@
+import { describe, it, expect } from "vitest"
+import { createStore } from "../../store"
+import type { Schema, Source } from "../../types"
+import { deleteOne } from "./deleteOne"
+
+const fakeDataSource: Source = {
+  version: 0,
+  getList: () => Promise.resolve([]),
+  getOne: () => Promise.resolve([]),
+  createOne: () => Promise.resolve([]),
+  updateOne: () => Promise.resolve([]),
+  deleteOne: () => Promise.resolve(),
+}
+
+const ArticleSchema = { name: "Article" } as Schema
+
+describe("rest-client/services/promise/deleteOne", () => {
+  const data = "1"
+  const expected = undefined
+
+  it("should return the new record", async () => {
+    createStore(["Article"])
+    const result = await deleteOne(fakeDataSource, ArticleSchema, data)
+    expect(result).toEqual(expected)
+  })
+
+  it.todo("should remove the record from the store")
+
+  it.todo("should notify subscribers")
+
+  it("should throw an error if the request fails", async () => {
+    const errorDataSource = {
+      ...fakeDataSource,
+      deleteOne: () => Promise.reject(new Error("network error")),
+    }
+    await expect(
+      deleteOne(errorDataSource, ArticleSchema, data),
+    ).rejects.toThrowError("network error")
+  })
+})

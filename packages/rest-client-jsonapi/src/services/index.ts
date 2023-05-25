@@ -1,4 +1,6 @@
 export * from "./createOne"
+export * from "./deleteOne"
 export * from "./getList"
 export * from "./getOne"
 export * from "./jsonapi"
+export * from "./updateOne"

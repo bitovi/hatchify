@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest"
 import type { Source } from "@hatchifyjs/rest-client"
-import type { ReactSchema } from "./createReactRest"
 import { createReactRest } from "./createReactRest"
 
 const fakeDataSource: Source = {
@@ -8,51 +7,55 @@ const fakeDataSource: Source = {
   getList: () => Promise.resolve([]),
   getOne: () => Promise.resolve([]),
   createOne: () => Promise.resolve([]),
+  updateOne: () => Promise.resolve([]),
+  deleteOne: () => Promise.resolve(),
 }
 
 describe("react-rest/services/createReactRest", () => {
   it("should return functions for each schema", () => {
-    const Article: ReactSchema = {
-      dataSource: fakeDataSource,
-      schema: {
-        name: "Article",
-        attributes: {
-          title: "string",
-          body: "string",
-        },
+    const Article = {
+      name: "Article",
+      attributes: {
+        title: "string",
+        body: "string",
       },
     }
-    const Person: ReactSchema = {
-      dataSource: fakeDataSource,
-      schema: {
-        name: "Person",
-        attributes: {
-          name: "string",
-          age: "number",
-        },
+    const Person = {
+      name: "Person",
+      attributes: {
+        name: "string",
+        age: "number",
       },
     }
 
-    const api = createReactRest({ Article, Person })
+    const api = createReactRest({ Article, Person }, fakeDataSource)
 
     expect(api).toEqual({
       Article: {
         createOne: expect.any(Function),
+        deleteOne: expect.any(Function),
         getList: expect.any(Function),
         getOne: expect.any(Function),
+        updateOne: expect.any(Function),
         useCreateOne: expect.any(Function),
+        useDeleteOne: expect.any(Function),
         useList: expect.any(Function),
         useOne: expect.any(Function),
+        useUpdateOne: expect.any(Function),
         subscribeToList: expect.any(Function),
         subscribeToOne: expect.any(Function),
       },
       Person: {
         createOne: expect.any(Function),
+        deleteOne: expect.any(Function),
         getList: expect.any(Function),
         getOne: expect.any(Function),
+        updateOne: expect.any(Function),
         useCreateOne: expect.any(Function),
+        useDeleteOne: expect.any(Function),
         useList: expect.any(Function),
         useOne: expect.any(Function),
+        useUpdateOne: expect.any(Function),
         subscribeToList: expect.any(Function),
         subscribeToOne: expect.any(Function),
       },

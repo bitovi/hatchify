@@ -8,15 +8,18 @@ export type {
   Record,
   Resource,
   Schema,
+  SchemaMap,
   Source,
   SourceConfig,
   Subscription,
   Unsubscribe,
+  UpdateData,
 } from "./services"
 
 export {
   createOne,
   createStore,
+  deleteOne,
   convertResourceToRecord,
   getList,
   getMeta,
@@ -27,4 +30,5 @@ export {
   subscribeToList,
   subscribeToOne,
   transformSchema,
+  updateOne,
 } from "./services"

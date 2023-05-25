@@ -3,32 +3,32 @@ import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "@hatchifyjs/rest-client"
 import type { Schema, Source } from "@hatchifyjs/rest-client"
-import { useCreateOne } from "./useCreateOne"
+import { useUpdateOne } from "./useUpdateOne"
 
 const fakeDataSource: Source = {
   version: 0,
   getList: () => Promise.resolve([]),
   getOne: () => Promise.resolve([]),
-  createOne: () =>
+  createOne: () => Promise.resolve([]),
+  updateOne: () =>
     Promise.resolve([
       {
-        id: "3",
+        id: "1",
         __schema: "Article",
-        attributes: { title: "baz", body: "baz-body" },
+        attributes: { title: "updated-title", body: "baz-body" },
       },
     ]),
-  updateOne: () => Promise.resolve([]),
   deleteOne: () => Promise.resolve(),
 }
 
 const ArticleSchema = { name: "Article" } as Schema
 
-describe("react-rest/services/useCreateOne", () => {
-  it("should create a record", async () => {
+describe("react-rest/services/useUpdateOne", () => {
+  it("should update a record", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useCreateOne(fakeDataSource, ArticleSchema),
+      useUpdateOne(fakeDataSource, ArticleSchema),
     )
 
     await waitFor(() => {
@@ -49,7 +49,7 @@ describe("react-rest/services/useCreateOne", () => {
       ])
     })
 
-    await result.current[0]({ title: "baz", body: "baz-body" })
+    await result.current[0]({ title: "updated-title", body: "baz-body" })
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -66,9 +66,9 @@ describe("react-rest/services/useCreateOne", () => {
           isSuccess: true,
         },
         {
-          id: "3",
+          id: "1",
           __schema: "Article",
-          title: "baz",
+          title: "updated-title",
           body: "baz-body",
         },
       ]),
@@ -79,7 +79,7 @@ describe("react-rest/services/useCreateOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useCreateOne(fakeDataSource, ArticleSchema),
+      useUpdateOne(fakeDataSource, ArticleSchema),
     )
 
     await waitFor(() => {
@@ -100,10 +100,10 @@ describe("react-rest/services/useCreateOne", () => {
       ])
     })
 
-    fakeDataSource.createOne = () =>
+    fakeDataSource.updateOne = () =>
       Promise.reject(new Error("Something went wrong"))
 
-    await result.current[0]({ title: "baz", body: "baz-body" })
+    await result.current[0]({ title: "updated-title", body: "baz-body" })
 
     await waitFor(() =>
       expect(result.current).toEqual([

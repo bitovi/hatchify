@@ -1,46 +1,49 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
 import type { Schema } from "@hatchifyjs/rest-client"
-import { baseUrl, articles } from "../../mocks/handlers"
+import { baseUrl } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import { jsonapi } from "../../rest-client-jsonapi"
-import { createOne } from "./createOne"
+import { updateOne } from "./updateOne"
 
 const ArticleSchema = { name: "Article" } as Schema
 const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 const sourceConfig = { baseUrl, schemaMap }
 
-describe("rest-client-jsonapi/services/createOne", () => {
+describe("rest-client-jsonapi/services/updateOne", () => {
   it("works", async () => {
-    const data = { attributes: { title: "Hello, World!" } }
+    const data = { id: "article-id-1", attributes: { title: "A new world!" } }
     const expected = [
       {
         __schema: "Article",
-        id: `article-id-${articles.length + 1}`,
-        ...data,
+        id: "article-id-1",
+        attributes: {
+          title: "A new world!",
+          body: "Article 1 body",
+        },
       },
     ]
-    const result = await createOne(sourceConfig, ArticleSchema, data)
+    const result = await updateOne(sourceConfig, ArticleSchema, data)
     expect(result).toEqual(expected)
   })
 
   it("throws an error if the request fails", async () => {
     server.use(
-      rest.post(`${baseUrl}/articles`, (_, res, ctx) =>
+      rest.patch(`${baseUrl}/articles/article-id-1`, (_, res, ctx) =>
         res.once(ctx.status(500), ctx.json({ error: "error message" })),
       ),
     )
 
     await expect(() =>
-      createOne(sourceConfig, ArticleSchema, {}),
+      updateOne(sourceConfig, ArticleSchema, {}),
     ).rejects.toThrowError("request failed")
   })
 
   it("can be called from a Source", async () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
-    const data = { attributes: { title: "Hello, World!" } }
-    const spy = vi.spyOn(dataSource, "createOne")
-    await dataSource.createOne(ArticleSchema, data)
+    const data = { id: "article-id-1", attributes: { title: "Hello, World!" } }
+    const spy = vi.spyOn(dataSource, "updateOne")
+    await dataSource.updateOne(ArticleSchema, data)
     expect(spy).toHaveBeenCalledWith(ArticleSchema, data)
   })
 })

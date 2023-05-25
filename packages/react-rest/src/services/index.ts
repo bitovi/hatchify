@@ -1,4 +1,6 @@
 export * from "./createReactRest"
 export * from "./useCreateOne"
+export * from "./useDeleteOne"
 export * from "./useList"
 export * from "./useOne"
+export * from "./useUpdateOne"

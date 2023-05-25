@@ -45,6 +45,44 @@ export const handlers = [
     return res(ctx.status(200), ctx.json({ data: article }))
   }),
 
+  rest.patch(`${baseUrl}/articles/:id`, async (req, res, ctx) => {
+    const { id } = req.params
+    const article = articles.find((article) => article.id === id)
+
+    if (!article) {
+      return res(ctx.status(404), ctx.json(null))
+    }
+
+    const {
+      data: { attributes },
+    } = await req.json()
+
+    const updatedArticle = {
+      ...article,
+      attributes: {
+        ...article.attributes,
+        ...attributes,
+      },
+    }
+
+    articles[articles.indexOf(article)] = updatedArticle
+
+    return res(ctx.status(200), ctx.json({ data: updatedArticle }))
+  }),
+
+  rest.delete(`${baseUrl}/articles/:id`, (req, res, ctx) => {
+    const { id } = req.params
+    const article = articles.find((article) => article.id === id)
+
+    if (!article) {
+      return res(ctx.status(404), ctx.json(null))
+    }
+
+    articles.splice(articles.indexOf(article), 1)
+
+    return res(ctx.status(204))
+  }),
+
   rest.post(`${baseUrl}/articles`, async (req, res, ctx) => {
     const {
       data: { attributes },
