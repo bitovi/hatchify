@@ -16,6 +16,7 @@
     "docs:watch": "typedoc --watch",
     "test:watch": "jest --watch",
     "test:verbose": "jest --watch --verbose",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "pretty": "prettier --check .",
