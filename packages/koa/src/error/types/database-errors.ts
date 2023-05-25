@@ -7,7 +7,7 @@ import {
 
 const databaseErrorHandlers = (error) => {
   const { name, message } = error
-  const pointer = error.errors[0].path
+  const pointer = error.errors?.[0].path
 
   if (name === "SequelizeValidationError") {
     if (error.errors[0].type === "notNull Violation") {
