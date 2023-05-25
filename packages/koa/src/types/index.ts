@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-unused-vars */
-import type { NextFunction, Request, Response } from "express"
 import type { DefaultState, DefaultContext, Middleware } from "koa"
 import type Koa from "koa"
 import type {
@@ -22,11 +20,6 @@ export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"
 
 export type KoaMiddleware = Middleware
-export type ExpressMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => void
 
 /**
  * Scaffold Configuration

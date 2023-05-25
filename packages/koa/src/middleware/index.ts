@@ -1,6 +1,6 @@
 import type Koa from "koa"
 import type { Scaffold } from ".."
-import type { KoaMiddleware, ExpressMiddleware } from "../types"
+import type { KoaMiddleware } from "../types"
 import { parseScaffoldBody } from "../parse/body"
 import errorResponseHandler from "../error"
 import { ValidationError } from "../error/errors"
@@ -46,19 +46,6 @@ export interface MiddlewareFunctionsKoa {
    * @category General Use
    */
   all: KoaMiddleware
-}
-
-/**
- * Provides a set of exported functions, per Model, that
- * provide Express Middleware for each operation
- */
-export interface MiddlewareFunctionsExpress {
-  findAll: ExpressMiddleware
-  findOne: ExpressMiddleware
-  findAndCountAll: ExpressMiddleware
-  create: ExpressMiddleware
-  update: ExpressMiddleware
-  destroy: ExpressMiddleware
 }
 
 export function buildMiddlewareForModel(

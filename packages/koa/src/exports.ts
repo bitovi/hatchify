@@ -3,7 +3,6 @@ export { DataTypes } from "./types"
 export type {
   ScaffoldModel,
   KoaMiddleware,
-  ExpressMiddleware,
   ScaffoldOptions,
   BelongsToManyResult,
   BelongsToResult,
@@ -16,10 +15,7 @@ export type {
 
 export type { EverythingFunctions } from "./everything"
 
-export type {
-  MiddlewareFunctionsExpress,
-  MiddlewareFunctionsKoa,
-} from "./middleware"
+export type { MiddlewareFunctionsKoa } from "./middleware"
 
 export type { ParseFunctions } from "./parse"
 
