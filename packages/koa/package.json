@@ -57,6 +57,7 @@
     "path-to-regexp": "^6.2.1",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.25.3",
+    "sequelize-create-with-associations": "^0.2.0",
     "signale": "^1.4.0",
     "sqlite3": "^5.1.2",
     "typedoc": "^0.23.21",

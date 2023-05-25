@@ -33,7 +33,7 @@ import { buildMiddlewareForModel, errorMiddleware } from "./middleware"
 import type { EverythingFunctions } from "./everything"
 import { buildEverythingForModel } from "./everything"
 import { buildSchemaForModel } from "./schema"
-import type { IAssociation } from "./sequelize/types"
+import type { IAssociation } from "sequelize-create-with-associations"
 import type { ScaffoldErrorOptions } from "./error/errors"
 import { ScaffoldError } from "./error/errors"
 
