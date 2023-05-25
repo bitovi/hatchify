@@ -2,9 +2,16 @@ import type { Schema } from "./schema"
 import type { QueryList, QueryOne } from "./query"
 import type { CreateData, Resource, UpdateData } from "./data"
 
+export interface SchemaMap {
+  [schemaName: string]: {
+    type: string // jsonapi type
+    endpoint: string // appends to baseUrl
+  }
+}
+
 export interface SourceConfig {
-  type: string
-  url: string
+  baseUrl: string
+  schemaMap: SchemaMap
 }
 
 // always return a Resource[] even if it's a single resource because

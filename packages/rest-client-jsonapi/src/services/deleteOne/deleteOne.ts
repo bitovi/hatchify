@@ -9,7 +9,10 @@ export async function deleteOne(
   schema: Schema, // todo might be needed for url in future changes
   id: string,
 ): Promise<void> {
-  await fetchJsonApi("DELETE", `${config.url}/${id}`)
+  await fetchJsonApi(
+    "DELETE",
+    `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}/${id}`,
+  )
 
   return Promise.resolve()
 }

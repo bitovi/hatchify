@@ -6,8 +6,9 @@ import { server } from "../../mocks/server"
 import { jsonapi } from "../../rest-client-jsonapi"
 import { deleteOne } from "./deleteOne"
 
-const sourceConfig = { url: `${baseUrl}/articles`, type: "article" }
 const ArticleSchema = { name: "Article" } as Schema
+const schemaMap = { Article: { type: "article", endpoint: "articles" } }
+const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/deleteOne", () => {
   it("works", async () => {
@@ -30,7 +31,7 @@ describe("rest-client-jsonapi/services/deleteOne", () => {
   })
 
   it("can be called from a Source", async () => {
-    const dataSource = jsonapi(sourceConfig)
+    const dataSource = jsonapi(baseUrl, schemaMap)
     const data = "article-id-2"
     const spy = vi.spyOn(dataSource, "deleteOne")
     await dataSource.deleteOne(ArticleSchema, data)

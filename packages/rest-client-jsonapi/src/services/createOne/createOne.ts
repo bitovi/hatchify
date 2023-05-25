@@ -15,7 +15,11 @@ export async function createOne(
   schema: Schema,
   data: CreateData,
 ): Promise<Resource[]> {
-  const json = await fetchJsonApi("POST", config.url, data)
+  const json = await fetchJsonApi(
+    "POST",
+    `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}`,
+    data,
+  )
   // todo relationships: json.included
 
   return Promise.resolve(convertToRecords(json.data, schema.name))

@@ -7,12 +7,12 @@ import {
   convertToRecords,
 } from "./jsonapi"
 
-const sourceConfig = { url: `${baseUrl}/articles`, type: "article" }
+const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 
 describe("rest-client-jsonapi/services/jsonapi", () => {
   describe("jsonapi", () => {
     it("returns a Source", async () => {
-      const dataSource = jsonapi(sourceConfig)
+      const dataSource = jsonapi(baseUrl, schemaMap)
       expect(dataSource).toEqual({
         version: 0,
         getList: expect.any(Function),
@@ -26,7 +26,10 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
 
   describe("fetchJsonApi", () => {
     it("works", async () => {
-      const data = await fetchJsonApi("GET", sourceConfig.url)
+      const data = await fetchJsonApi(
+        "GET",
+        `${baseUrl}/${schemaMap.Article.endpoint}`,
+      )
       expect(data).toEqual({
         data: [
           {
