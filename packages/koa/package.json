@@ -10,6 +10,7 @@
     "prepare": "npm run build",
     "build": "tsc",
     "build:watch": "tsc --watch",
+    "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "test": "jest",
     "test:coverage": "jest --watch --collect-coverage",
     "docs": "typedoc",
@@ -19,8 +20,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "pretty": "prettier --check .",
-    "pretty:fix": "prettier --write .",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write .",
     "prepublishOnly": "npm run build"
   },
   "repository": {
