@@ -22,15 +22,6 @@ import type {
 import type { Schema } from "@hatchifyjs/hatchify-core"
 import { useCreateOne, useDeleteOne, useList, useOne, useUpdateOne } from ".."
 
-export interface ReactSchema {
-  schema: Schema
-  dataSource: Source
-}
-
-export type ReactSchemas = {
-  [schemaName: string]: ReactSchema
-}
-
 export type ReactRest = {
   [schemaName: string]: {
     // promises
@@ -58,12 +49,14 @@ export type ReactRest = {
  * Returns a set of functions for interacting with the rest-client store and
  * data source for each schema.
  */
-export function createReactRest(reactSchemas: ReactSchemas): ReactRest {
-  const storeKeys = Object.values(reactSchemas).map((rs) => rs.schema.name)
+export function createReactRest(
+  schemas: { [schemaName: string]: Schema },
+  dataSource: Source,
+): ReactRest {
+  const storeKeys = Object.values(schemas).map((schema) => schema.name)
   createStore(storeKeys)
 
-  const functions = Object.values(reactSchemas).reduce((acc, reactSchema) => {
-    const { schema: oldSchema, dataSource } = reactSchema
+  const functions = Object.values(schemas).reduce((acc, oldSchema) => {
     const schema = transformSchema(oldSchema)
 
     acc[schema.name] = {

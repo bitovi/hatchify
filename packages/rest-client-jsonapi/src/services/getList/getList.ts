@@ -15,7 +15,10 @@ export async function getList(
   schema: Schema,
   query: QueryList, // todo query for fields, page, sort, and filter
 ): Promise<Resource[]> {
-  const json = await fetchJsonApi("GET", config.url)
+  const json = await fetchJsonApi(
+    "GET",
+    `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}`,
+  )
   // todo relationships: json.included
 
   return Promise.resolve(convertToRecords(json.data, schema.name))

@@ -15,7 +15,10 @@ export async function getOne(
   schema: Schema,
   query: QueryOne,
 ): Promise<Resource[]> {
-  const json = await fetchJsonApi("GET", `${config.url}/${query.id}`)
+  const json = await fetchJsonApi(
+    "GET",
+    `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}/${query.id}`,
+  )
   // todo relationships: json.included
 
   return Promise.resolve(convertToRecords(json.data, schema.name))

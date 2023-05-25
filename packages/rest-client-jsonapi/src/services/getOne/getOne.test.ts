@@ -6,8 +6,9 @@ import { server } from "../../mocks/server"
 import { jsonapi } from "../../rest-client-jsonapi"
 import { getOne } from "./getOne"
 
-const sourceConfig = { url: `${baseUrl}/articles`, type: "article" }
 const ArticleSchema = { name: "Article" } as Schema
+const schemaMap = { Article: { type: "article", endpoint: "articles" } }
+const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/getOne", () => {
   const query = { id: "article-id-1" }
@@ -40,7 +41,7 @@ describe("rest-client-jsonapi/services/getOne", () => {
   })
 
   it("can be called from a Source", async () => {
-    const dataSource = jsonapi(sourceConfig)
+    const dataSource = jsonapi(baseUrl, schemaMap)
     const spy = vi.spyOn(dataSource, "getOne")
     await dataSource.getOne(ArticleSchema, query)
     expect(spy).toHaveBeenCalledWith(ArticleSchema, query)

@@ -8,6 +8,7 @@ export type {
   Record,
   Resource,
   Schema,
+  SchemaMap,
   Source,
   SourceConfig,
   Subscription,

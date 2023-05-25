@@ -1,3 +1,5 @@
+export type { ReactRest } from "./services"
+
 export {
   createReactRest,
   useCreateOne,
@@ -6,4 +8,3 @@ export {
   useOne,
   useUpdateOne,
 } from "./services"
-export type { ReactRest, ReactSchema, ReactSchemas } from "./services"

@@ -1,4 +1,4 @@
-import type { Source, SourceConfig, Resource } from "@hatchifyjs/rest-client"
+import type { Source, SchemaMap, Resource } from "@hatchifyjs/rest-client"
 import { createOne, deleteOne, getList, getOne, updateOne } from ".."
 
 export interface JsonApiResource {
@@ -11,7 +11,9 @@ export interface JsonApiResource {
 /**
  * Creates a new JSON:API Source.
  */
-export function jsonapi(config: SourceConfig): Source {
+export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
+  const config = { baseUrl, schemaMap }
+
   return {
     version: 0,
     getList: (schema, query) => getList(config, schema, query),
