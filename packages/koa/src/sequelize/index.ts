@@ -10,7 +10,7 @@ import type {
   Virtuals,
 } from "../types"
 import { ScaffoldSymbolModel } from "../types"
-import extendedSequelize from "sequelize-create-with-associations"
+import extendSequelize from "sequelize-create-with-associations"
 import type {
   IAssociation,
   ICreateScaffoldModel,
@@ -36,7 +36,7 @@ export function buildScaffoldModelObject(
 }
 
 export function createSequelizeInstance(options?: Options): Sequelize {
-  extendedSequelize(Sequelize)
+  extendSequelize(Sequelize)
 
   if (!options) {
     return new Sequelize("sqlite::memory:", {
