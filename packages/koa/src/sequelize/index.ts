@@ -1,5 +1,5 @@
-import type { Model, Sequelize, Options } from "sequelize"
-import { DataTypes } from "sequelize"
+import type { Model, Options } from "sequelize"
+import { DataTypes, Sequelize } from "sequelize"
 import type JSONAPISerializer from "json-api-serializer"
 import * as inflection from "inflection"
 import querystringParser from "@bitovi/sequelize-querystring-parser"
@@ -11,7 +11,6 @@ import type {
 } from "../types"
 import { ScaffoldSymbolModel } from "../types"
 import extendedSequelize from "sequelize-create-with-associations"
-import type { Scaffold } from ".."
 import type {
   IAssociation,
   ICreateScaffoldModel,
@@ -36,20 +35,16 @@ export function buildScaffoldModelObject(
   return result
 }
 
-export function createSequelizeInstance(
-  scaffold: Scaffold,
-  options?: Options,
-): Sequelize {
-  const ScaffoldSequelize = extendedSequelize(scaffold)
+export function createSequelizeInstance(options?: Options): Sequelize {
+  extendedSequelize(Sequelize)
 
   if (!options) {
-    return new ScaffoldSequelize("sqlite::memory:", {
+    return new Sequelize("sqlite::memory:", {
       logging: false,
     })
   }
 
-  const sequelize: Sequelize = new ScaffoldSequelize(options)
-  return sequelize
+  return new Sequelize(options)
 }
 
 export function convertScaffoldModels(

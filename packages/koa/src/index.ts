@@ -100,7 +100,7 @@ export class Scaffold {
    */
   constructor(models: ScaffoldModel[], options: ScaffoldOptions = {}) {
     // Prepare the ORM instance and keep references to the different Models
-    this._sequelize = createSequelizeInstance(this, options.database)
+    this._sequelize = createSequelizeInstance(options.database)
 
     this._serializer = new JSONAPISerializer()
 
