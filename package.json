@@ -5,6 +5,10 @@
   "scripts": {
     "check-packages": "ts-node ./scripts/check-packages"
   },
+  "eslintConfig": {
+    "root": true,
+    "extends": "@bitovi/eslint-config/react"
+  },
   "prettier": {
     "semi": false,
     "trailingComma": "all"

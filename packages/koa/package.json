@@ -5,6 +5,24 @@
   "description": "Fullstack CRUD Application Solution",
   "main": "dist/exports.js",
   "types": "dist/exports.d.ts",
+  "eslintConfig": {
+    "extends": [
+      "../../package.json"
+    ],
+    "ignorePatterns": [
+      "dist/*"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts"
+        ],
+        "rules": {
+          "@typescript-eslint/explicit-module-boundary-types": "warn"
+        }
+      }
+    ]
+  },
   "scripts": {
     "prebuild": "npm run prettier:fix",
     "prepare": "npm run build",
