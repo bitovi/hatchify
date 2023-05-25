@@ -25,6 +25,9 @@
     "trailingComma": "all"
   },
   "dependencies": {
+    "@hatchifyjs/design-mui": "file:../../packages/design-mui",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
