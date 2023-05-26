@@ -1,8 +1,8 @@
 import type {
-  Schema,
   SourceConfig,
   QueryOne,
   Resource,
+  Schemas,
 } from "@hatchifyjs/rest-client"
 import { convertToRecords, fetchJsonApi } from "../jsonapi"
 
@@ -12,13 +12,14 @@ import { convertToRecords, fetchJsonApi } from "../jsonapi"
  */
 export async function getOne(
   config: SourceConfig,
-  schema: Schema,
+  allSchemas: Schemas,
+  schemaName: string,
   query: QueryOne,
 ): Promise<Resource[]> {
   const json = await fetchJsonApi(
     "GET",
-    `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}/${query.id}`,
+    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${query.id}`,
   )
 
-  return Promise.resolve(convertToRecords(json.data, schema.name))
+  return Promise.resolve(convertToRecords(json.data, schemaName))
 }

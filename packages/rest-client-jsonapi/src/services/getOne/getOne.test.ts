@@ -7,6 +7,7 @@ import { jsonapi } from "../../rest-client-jsonapi"
 import { getOne } from "./getOne"
 
 const ArticleSchema = { name: "Article" } as Schema
+const schemas = { Article: ArticleSchema }
 const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 const sourceConfig = { baseUrl, schemaMap }
 
@@ -24,7 +25,7 @@ describe("rest-client-jsonapi/services/getOne", () => {
         },
       },
     ]
-    const result = await getOne(sourceConfig, ArticleSchema, query)
+    const result = await getOne(sourceConfig, schemas, "Article", query)
     expect(result).toEqual(expected)
   })
 
@@ -36,14 +37,14 @@ describe("rest-client-jsonapi/services/getOne", () => {
     )
 
     await expect(
-      getOne(sourceConfig, ArticleSchema, query),
+      getOne(sourceConfig, schemas, "Article", query),
     ).rejects.toThrowError("request failed")
   })
 
   it("can be called from a Source", async () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
     const spy = vi.spyOn(dataSource, "getOne")
-    await dataSource.getOne(ArticleSchema, query)
-    expect(spy).toHaveBeenCalledWith(ArticleSchema, query)
+    await dataSource.getOne(schemas, "Article", query)
+    expect(spy).toHaveBeenCalledWith(schemas, "Article", query)
   })
 })

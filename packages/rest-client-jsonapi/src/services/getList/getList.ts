@@ -1,5 +1,5 @@
 import type {
-  Schema,
+  Schemas,
   SourceConfig,
   QueryList,
   Resource,
@@ -12,14 +12,15 @@ import { convertToRecords, fetchJsonApi } from "../jsonapi"
  */
 export async function getList(
   config: SourceConfig,
-  schema: Schema,
-  query: QueryList, // todo query for fields, page, sort, and filter
+  allSchemas: Schemas,
+  schemaName: string,
+  query: QueryList, // todo page, sort, and filter
 ): Promise<Resource[]> {
   const json = await fetchJsonApi(
     "GET",
-    `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}`,
+    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}`,
   )
-  // todo relationships: json.included
+  // todo: flattening relationships
 
-  return Promise.resolve(convertToRecords(json.data, schema.name))
+  return Promise.resolve(convertToRecords(json.data, schemaName))
 }
