@@ -5,6 +5,7 @@ import {
   fetchJsonApi,
   jsonApiResourceToRecord,
   convertToRecords,
+  fieldsToFieldset,
 } from "./jsonapi"
 
 const schemaMap = { Article: { type: "article", endpoint: "articles" } }
@@ -12,7 +13,7 @@ const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 describe("rest-client-jsonapi/services/jsonapi", () => {
   describe("jsonapi", () => {
     it("returns a Source", async () => {
-      const dataSource = jsonapi(baseUrl, schemaMap)
+      const dataSource = jsonapi({ baseUrl, schemaMap })
       expect(dataSource).toEqual({
         version: 0,
         getList: expect.any(Function),
@@ -102,6 +103,15 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
           },
         },
       ])
+    })
+  })
+
+  describe.only("fieldsToFieldset", () => {
+    it("works", () => {
+      const fields = ["title", "body", "author.name", "author.email"]
+      expect(fieldsToFieldset("book", fields)).toEqual(
+        "fields[book]=title,body&fields[author]=name,email",
+      )
     })
   })
 })

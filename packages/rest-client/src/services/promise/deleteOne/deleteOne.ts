@@ -7,6 +7,7 @@ import { remove } from "../../store"
  */
 export const deleteOne = async (
   dataSource: Source,
+  schemas: globalThis.Record<string, Schema>, // todo: will be passed do dataSource in future
   schema: Schema,
   id: string, // @todo Resource or Record?
 ): Promise<void> => {

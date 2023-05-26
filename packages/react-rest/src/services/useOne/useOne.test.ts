@@ -27,7 +27,12 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = { name: "Article" } as Schema
+const ArticleSchema = {
+  name: "Article",
+  displayAttribute: "title",
+  attributes: { title: "string", body: "string" },
+} as Schema
+const schemas = { Article: ArticleSchema }
 
 describe("react-rest/services/useOne", () => {
   const query = { id: "1" }
@@ -36,7 +41,7 @@ describe("react-rest/services/useOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, ArticleSchema, query),
+      useOne(fakeDataSource, schemas, ArticleSchema, query),
     )
 
     await waitFor(() =>
@@ -61,7 +66,7 @@ describe("react-rest/services/useOne", () => {
     const store = createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, ArticleSchema, query),
+      useOne(fakeDataSource, schemas, ArticleSchema, query),
     )
 
     await waitFor(() =>
@@ -118,7 +123,7 @@ describe("react-rest/services/useOne", () => {
       Promise.reject(new Error("Something went wrong"))
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, ArticleSchema, query),
+      useOne(fakeDataSource, schemas, ArticleSchema, query),
     )
 
     await waitFor(() =>

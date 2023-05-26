@@ -21,14 +21,19 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = { name: "Article" } as Schema
+const ArticleSchema = {
+  name: "Article",
+  displayAttribute: "title",
+  attributes: { title: "string", body: "string" },
+} as Schema
+const schemas = { Article: ArticleSchema }
 
 describe("react-rest/services/useUpdateOne", () => {
   it("should update a record", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useUpdateOne(fakeDataSource, ArticleSchema),
+      useUpdateOne(fakeDataSource, schemas, ArticleSchema),
     )
 
     await waitFor(() => {
@@ -79,7 +84,7 @@ describe("react-rest/services/useUpdateOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useUpdateOne(fakeDataSource, ArticleSchema),
+      useUpdateOne(fakeDataSource, schemas, ArticleSchema),
     )
 
     await waitFor(() => {

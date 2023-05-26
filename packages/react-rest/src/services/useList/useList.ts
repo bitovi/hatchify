@@ -1,10 +1,10 @@
+import { useState, useEffect } from "react"
 import {
   getList,
   getMeta,
   getRecords,
   subscribeToList,
 } from "@hatchifyjs/rest-client"
-import { useState, useEffect } from "react"
 import type {
   Meta,
   MetaError,
@@ -20,6 +20,7 @@ import type {
  */
 export const useList = (
   dataSource: Source,
+  schemas: globalThis.Record<string, Schema>,
   schema: Schema,
   query: QueryList,
 ): [Record[], Meta] => {
@@ -29,20 +30,13 @@ export const useList = (
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  // @todo in test this infinitely loops if deps array is just `query`??
   useEffect(() => {
     setLoading(true)
-
-    getList(dataSource, schema, {
-      fields: query.fields,
-      filter: query.filter,
-      sort: query.sort,
-      page: query.page,
-    })
+    getList(dataSource, schemas, schema, query)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schema, query.fields, query.filter, query.sort, query.page])
+  }, [dataSource, schema, query])
 
   useEffect(() => {
     return subscribeToList(schema.name, (records: Record[]) => setData(records))

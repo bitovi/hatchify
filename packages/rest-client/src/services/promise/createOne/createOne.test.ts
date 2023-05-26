@@ -23,7 +23,12 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = { name: "Article" } as Schema
+const ArticleSchema = {
+  name: "Article",
+  displayAttribute: "title",
+  attributes: { title: "string", body: "string" },
+} as Schema
+const schemas = { Article: ArticleSchema }
 
 describe("rest-client/services/promise/createOne", () => {
   const data = {
@@ -37,13 +42,13 @@ describe("rest-client/services/promise/createOne", () => {
 
   it("should return the new record", async () => {
     createStore(["Article"])
-    const result = await createOne(fakeDataSource, ArticleSchema, data)
+    const result = await createOne(fakeDataSource, schemas, ArticleSchema, data)
     expect(result).toEqual(convertResourceToRecord(expected))
   })
 
   it("should insert the record into the store", async () => {
     const store = createStore(["Article"])
-    await createOne(fakeDataSource, ArticleSchema, data)
+    await createOne(fakeDataSource, schemas, ArticleSchema, data)
     expect(store.Article.data).toEqual(keyResourcesById([expected]))
   })
 
@@ -51,7 +56,7 @@ describe("rest-client/services/promise/createOne", () => {
     const store = createStore(["Article"])
     const subscriber = vi.fn()
     store.Article.subscribers.push(subscriber)
-    await createOne(fakeDataSource, ArticleSchema, data)
+    await createOne(fakeDataSource, schemas, ArticleSchema, data)
     expect(subscriber).toHaveBeenCalledTimes(1)
   })
 
@@ -61,7 +66,7 @@ describe("rest-client/services/promise/createOne", () => {
       createOne: () => Promise.reject(new Error("network error")),
     }
     await expect(
-      createOne(errorDataSource, ArticleSchema, data),
+      createOne(errorDataSource, schemas, ArticleSchema, data),
     ).rejects.toThrowError("network error")
   })
 })

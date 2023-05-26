@@ -7,13 +7,14 @@ import { convertResourceToRecord, insert } from "../../store"
  */
 export const updateOne = async (
   dataSource: Source,
+  schemas: globalThis.Record<string, Schema>, // todo: will be passed do dataSource in future
   schema: Schema,
-  data: UpdateData, // @todo Resource or Record?
+  data: UpdateData, // todo: Resource or Record?
 ): Promise<Record> => {
   const resources = await dataSource.updateOne(schema, data)
 
   insert(schema.name, resources)
 
-  // todo flatten related records into base records
+  // todo: flatten related records into base records
   return convertResourceToRecord(resources[0])
 }

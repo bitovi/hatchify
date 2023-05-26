@@ -15,6 +15,7 @@ import type {
  */
 export const useCreateOne = (
   dataSource: Source,
+  schemas: globalThis.Record<string, Schema>,
   schema: Schema,
 ): [(data: CreateData) => void, Meta, Record?] => {
   const [data, setData] = useState<Record | undefined>(undefined)
@@ -23,7 +24,7 @@ export const useCreateOne = (
 
   function create(data: CreateData) {
     setLoading(true)
-    createOne(dataSource, schema, data)
+    createOne(dataSource, schemas, schema, data)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))

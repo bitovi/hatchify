@@ -29,7 +29,12 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = { name: "Article" } as Schema
+const ArticleSchema = {
+  name: "Article",
+  displayAttribute: "title",
+  attributes: { title: "string", body: "string" },
+} as Schema
+const schemas = { Article: ArticleSchema }
 
 describe("rest-client/promise", () => {
   afterEach(() => {
@@ -42,7 +47,7 @@ describe("rest-client/promise", () => {
 
     it("should return a record", async () => {
       createStore(["Article"])
-      const result = await getOne(fakeDataSource, ArticleSchema, query)
+      const result = await getOne(fakeDataSource, schemas, ArticleSchema, query)
       const expected = convertResourceToRecord(fakeData[0])
 
       expect(result).toEqual(expected)
@@ -50,7 +55,7 @@ describe("rest-client/promise", () => {
 
     it("should insert the record into the store", async () => {
       const store = createStore(["Article"])
-      await getOne(fakeDataSource, ArticleSchema, query)
+      await getOne(fakeDataSource, schemas, ArticleSchema, query)
       const expected = keyResourcesById([fakeData[0]])
 
       expect(store.Article.data).toEqual(expected)
@@ -63,7 +68,7 @@ describe("rest-client/promise", () => {
       }
 
       await expect(
-        getOne(errorDataSource, ArticleSchema, query),
+        getOne(errorDataSource, schemas, ArticleSchema, query),
       ).rejects.toThrowError("network error")
     })
   })

@@ -47,6 +47,29 @@ Promise<{ data: JsonApiResource }> {
   return response.json()
 }
 
+// converts ["title", "body", "author.name", "author.age"] to fields[articles]=title,body&fields[author]=name,age
+export function fieldsToFieldset(schemaName: string, fields: string[]): string {
+  const keyedFields: globalThis.Record<string, string[]> = {}
+
+  for (const field of fields) {
+    if (!field.includes(".")) {
+      keyedFields[schemaName] = keyedFields[schemaName] || []
+      keyedFields[schemaName].push(field)
+      continue
+    }
+
+    const [key, attribute] = field.split(".")
+    keyedFields[key] = keyedFields[key] || []
+    keyedFields[key].push(attribute)
+  }
+
+  const fieldset = Object.entries(keyedFields)
+    .map(([key, attributes]) => `fields[${key}]=${attributes.join(",")}`)
+    .join("&")
+
+  return fieldset
+}
+
 export function jsonApiResourceToRecord(
   resource: JsonApiResource,
   schemaName: string,

@@ -15,6 +15,7 @@ import type {
  */
 export const useUpdateOne = (
   dataSource: Source,
+  schemas: globalThis.Record<string, Schema>,
   schema: Schema,
 ): [(data: UpdateData) => void, Meta, Record?] => {
   const [data, setData] = useState<Record | undefined>(undefined)
@@ -23,7 +24,7 @@ export const useUpdateOne = (
 
   function update(data: UpdateData) {
     setLoading(true)
-    updateOne(dataSource, schema, data)
+    updateOne(dataSource, schemas, schema, data)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))

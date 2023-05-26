@@ -20,6 +20,7 @@ import type {
  */
 export const useOne = (
   dataSource: Source,
+  schemas: globalThis.Record<string, Schema>,
   schema: Schema,
   query: QueryOne,
 ): [Record | undefined, Meta] => {
@@ -33,11 +34,11 @@ export const useOne = (
   useEffect(() => {
     setLoading(true)
 
-    getOne(dataSource, schema, { id: query.id, fields: query.fields })
+    getOne(dataSource, schemas, schema, query)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schema, query.id, query.fields])
+  }, [dataSource, schema, query])
 
   useEffect(() => {
     return subscribeToOne(

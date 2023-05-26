@@ -7,6 +7,7 @@ import type { Meta, MetaError, Schema, Source } from "@hatchifyjs/rest-client"
  */
 export const useDeleteOne = (
   dataSource: Source,
+  schemas: globalThis.Record<string, Schema>,
   schema: Schema,
 ): [(id: string) => void, Meta] => {
   const [error, setError] = useState<MetaError | undefined>(undefined)
@@ -14,7 +15,7 @@ export const useDeleteOne = (
 
   function remove(id: string) {
     setLoading(true)
-    deleteOne(dataSource, schema, id)
+    deleteOne(dataSource, schemas, schema, id)
       .catch(setError)
       .finally(() => setLoading(false))
   }
