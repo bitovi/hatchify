@@ -1,4 +1,4 @@
-import { Hatchify } from "./index"
+import { Hatchify } from "./koa"
 import Koa from "koa"
 import type { HatchifyModel } from "./types"
 import { DataTypes } from "./types"

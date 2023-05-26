@@ -1,4 +1,4 @@
-import type { Hatchify } from ".."
+import type { Hatchify } from "../koa"
 import type { JSONObject } from "../types"
 
 /**

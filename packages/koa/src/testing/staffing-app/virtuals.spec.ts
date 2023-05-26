@@ -1,5 +1,5 @@
 import Chance from "chance"
-import { Hatchify } from "../../index"
+import { Hatchify } from "../../koa"
 import type { HatchifyModel } from "../../types"
 import { DataTypes } from "../../types"
 import { Assignment } from "./models/Assignment"
