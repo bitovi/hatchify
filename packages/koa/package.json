@@ -62,6 +62,7 @@
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
     "@bitovi/sequelize-querystring-parser": "^0.1.6",
+    "@hatchifyjs/sequelize-create-with-associations": "^0.1.1",
     "@koa/router": "^12.0.0",
     "@types/jsonapi-serializer": "^3.6.5",
     "chance": "^1.1.11",
@@ -72,7 +73,6 @@
     "koa": "^2.13.4",
     "path-to-regexp": "^6.2.1",
     "sequelize": "^6.25.3",
-    "sequelize-create-with-associations": "^0.2.0",
     "signale": "^1.4.0",
     "typedoc": "^0.23.21"
   },

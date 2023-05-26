@@ -3,7 +3,7 @@ import type { Hatchify } from "../koa"
 
 import type JSONAPISerializer from "json-api-serializer"
 import type { JSONAPIDocument } from "json-api-serializer"
-import type { IAssociation } from "sequelize-create-with-associations"
+import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
 import type { HatchifyModel } from "../types"
 
 /**

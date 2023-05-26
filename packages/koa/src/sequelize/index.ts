@@ -10,11 +10,11 @@ import type {
   Virtuals,
 } from "../types"
 import { HatchifySymbolModel } from "../types"
-import extendSequelize from "sequelize-create-with-associations"
+import extendSequelize from "@hatchifyjs/sequelize-create-with-associations"
 import type {
   IAssociation,
   ICreateHatchifyModel,
-} from "sequelize-create-with-associations"
+} from "@hatchifyjs/sequelize-create-with-associations"
 import { registerSchema } from "../serialize"
 import { HatchifyError } from "../error/errors"
 import { codes, statusCodes } from "../error/constants"
