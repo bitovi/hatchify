@@ -11,3 +11,5 @@ export interface Schema {
     }
   }
 }
+
+export type Schemas = Record<string, Schema>

@@ -1,4 +1,4 @@
-import type { Schema, Source } from "../../types"
+import type { Schemas, Source } from "../../types"
 import { remove } from "../../store"
 
 /**
@@ -7,13 +7,13 @@ import { remove } from "../../store"
  */
 export const deleteOne = async (
   dataSource: Source,
-  schemas: globalThis.Record<string, Schema>, // todo: will be passed do dataSource in future
-  schema: Schema,
-  id: string, // @todo Resource or Record?
+  allSchemas: Schemas,
+  schemaName: string,
+  id: string,
 ): Promise<void> => {
-  await dataSource.deleteOne(schema, id)
+  await dataSource.deleteOne(allSchemas, schemaName, id)
 
-  remove(schema.name, [id])
+  remove(schemaName, [id])
 
   return
 }

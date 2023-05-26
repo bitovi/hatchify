@@ -12,7 +12,7 @@ const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/getOne", () => {
-  const query = { id: "article-id-1" }
+  const query = { id: "article-id-1", fields: [], include: [] }
 
   it("works", async () => {
     const expected = [

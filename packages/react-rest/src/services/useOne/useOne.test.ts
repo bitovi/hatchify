@@ -41,7 +41,7 @@ describe("react-rest/services/useOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, ArticleSchema, query),
+      useOne(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>
@@ -66,7 +66,7 @@ describe("react-rest/services/useOne", () => {
     const store = createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, ArticleSchema, query),
+      useOne(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>
@@ -123,7 +123,7 @@ describe("react-rest/services/useOne", () => {
       Promise.reject(new Error("Something went wrong"))
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, ArticleSchema, query),
+      useOne(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>

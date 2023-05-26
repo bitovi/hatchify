@@ -47,7 +47,7 @@ describe("rest-client/promise", () => {
 
     it("should return a record", async () => {
       createStore(["Article"])
-      const result = await getOne(fakeDataSource, schemas, ArticleSchema, query)
+      const result = await getOne(fakeDataSource, schemas, "Article", query)
       const expected = convertResourceToRecord(fakeData[0])
 
       expect(result).toEqual(expected)
@@ -55,7 +55,7 @@ describe("rest-client/promise", () => {
 
     it("should insert the record into the store", async () => {
       const store = createStore(["Article"])
-      await getOne(fakeDataSource, schemas, ArticleSchema, query)
+      await getOne(fakeDataSource, schemas, "Article", query)
       const expected = keyResourcesById([fakeData[0]])
 
       expect(store.Article.data).toEqual(expected)
@@ -68,7 +68,7 @@ describe("rest-client/promise", () => {
       }
 
       await expect(
-        getOne(errorDataSource, schemas, ArticleSchema, query),
+        getOne(errorDataSource, schemas, "Article", query),
       ).rejects.toThrowError("network error")
     })
   })

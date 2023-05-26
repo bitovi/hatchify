@@ -166,19 +166,19 @@ describe("rest-client/services/types/utils", () => {
           "rating",
         ])
         expect(getAttributesFromSchema(schemas, "Book", "author")).toEqual([
-          "Person.name",
-          "Person.rating",
+          "author.name",
+          "author.rating",
         ])
         expect(
           getAttributesFromSchema(schemas, "Book", "illustrators"),
-        ).toEqual(["Person.name", "Person.rating"])
+        ).toEqual(["illustrators.name", "illustrators.rating"])
         expect(getAttributesFromSchema(schemas, "Person", "authored")).toEqual([
-          "Book.title",
-          "Book.year",
+          "authored.title",
+          "authored.year",
         ])
         expect(
           getAttributesFromSchema(schemas, "Person", "illustrated"),
-        ).toEqual(["Book.title", "Book.year"])
+        ).toEqual(["illustrated.title", "illustrated.year"])
       })
     })
 
@@ -189,30 +189,30 @@ describe("rest-client/services/types/utils", () => {
         ).toEqual([
           "title",
           "year",
-          "Person.name",
-          "Person.rating",
-          "Person.name",
-          "Person.rating",
+          "author.name",
+          "author.rating",
+          "illustrators.name",
+          "illustrators.rating",
         ])
         expect(getFieldsFromInclude(schemas, "Book", ["author"])).toEqual([
           "title",
           "year",
-          "Person.name",
-          "Person.rating",
+          "author.name",
+          "author.rating",
         ])
         expect(
           getFieldsFromInclude(schemas, "Person", ["authored", "illustrated"]),
         ).toEqual([
           "name",
           "rating",
-          "Book.title",
-          "Book.year",
-          "Book.title",
-          "Book.year",
+          "authored.title",
+          "authored.year",
+          "illustrated.title",
+          "illustrated.year",
         ])
         expect(
           getFieldsFromInclude(schemas, "Person", ["illustrated"]),
-        ).toEqual(["name", "rating", "Book.title", "Book.year"])
+        ).toEqual(["name", "rating", "illustrated.title", "illustrated.year"])
       })
     })
 
@@ -228,19 +228,19 @@ describe("rest-client/services/types/utils", () => {
       })
     })
 
-    describe.skip("getFields", () => {
+    describe("getFields", () => {
       it("works", () => {
         expect(getFields(schemas, "Book", { include: ["author"] })).toEqual([
           "title",
           "year",
-          "Person.name",
-          "Person.rating",
+          "author.name",
+          "author.rating",
         ])
         expect(
           getFields(schemas, "Book", {
             fields: ["title", "author.name", "author.rating"],
           }),
-        ).toEqual(["title", "Person.name", "Person.rating"])
+        ).toEqual(["title", "author.name", "author.rating"])
         expect(getFields(schemas, "Book", { id: "5" })).toEqual([
           "title",
           "year",

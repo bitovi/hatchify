@@ -26,7 +26,7 @@ describe("react-rest/services/useDeleteOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useDeleteOne(fakeDataSource, schemas, ArticleSchema),
+      useDeleteOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {
@@ -70,7 +70,7 @@ describe("react-rest/services/useDeleteOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useDeleteOne(fakeDataSource, schemas, ArticleSchema),
+      useDeleteOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {

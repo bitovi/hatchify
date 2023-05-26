@@ -40,7 +40,7 @@ describe("react-rest/services/useList", () => {
     const query = {}
 
     const { result } = renderHook(() =>
-      useList(fakeDataSource, schemas, ArticleSchema, query),
+      useList(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>
@@ -66,7 +66,7 @@ describe("react-rest/services/useList", () => {
     const query = {}
 
     const { result } = renderHook(() =>
-      useList(fakeDataSource, schemas, ArticleSchema, query),
+      useList(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>
@@ -129,7 +129,7 @@ describe("react-rest/services/useList", () => {
       Promise.reject(new Error("Something went wrong"))
 
     const { result } = renderHook(() =>
-      useList(fakeDataSource, schemas, ArticleSchema, query),
+      useList(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>

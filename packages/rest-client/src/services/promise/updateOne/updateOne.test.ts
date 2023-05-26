@@ -39,7 +39,7 @@ describe("rest-client/services/promise/updateOne", () => {
 
   it("should return the new record", async () => {
     createStore(["Article"])
-    const result = await updateOne(fakeDataSource, schemas, ArticleSchema, data)
+    const result = await updateOne(fakeDataSource, schemas, "Article", data)
     expect(result).toEqual(convertResourceToRecord(expected))
   })
 
@@ -53,7 +53,7 @@ describe("rest-client/services/promise/updateOne", () => {
       updateOne: () => Promise.reject(new Error("network error")),
     }
     await expect(
-      updateOne(errorDataSource, schemas, ArticleSchema, data),
+      updateOne(errorDataSource, schemas, "Article", data),
     ).rejects.toThrowError("network error")
   })
 })

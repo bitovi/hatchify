@@ -33,7 +33,7 @@ describe("react-rest/services/useUpdateOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useUpdateOne(fakeDataSource, schemas, ArticleSchema),
+      useUpdateOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {
@@ -84,7 +84,7 @@ describe("react-rest/services/useUpdateOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useUpdateOne(fakeDataSource, schemas, ArticleSchema),
+      useUpdateOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {

@@ -1,17 +1,13 @@
-export type Include = string[]
+export type Include = string[] // todo: typed to schema relationships
 
-export type Fields = string[]
+export type Fields = string[] // todo: typed to schema attributes & relationships.attributes
 
-export type Selector =
-  | { include: Include; fields?: undefined }
-  | { fields: Fields; include?: undefined }
-  | { include?: undefined; fields?: undefined }
+export type Selector = { include?: Include; fields?: Fields }
 
 export type QueryList = Selector & {
-  fields?: string[]
   page?: { size: number; number: number }
   sort?: { [key: string]: "asc" | "desc" }
   filter?: { [key: string]: { [filter: string]: string } }
 }
 
-export type QueryOne = Selector & { id: string; fields?: string[] }
+export type QueryOne = Selector & { id: string }

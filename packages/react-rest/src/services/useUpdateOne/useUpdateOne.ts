@@ -5,7 +5,7 @@ import type {
   Meta,
   MetaError,
   Record,
-  Schema,
+  Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
 
@@ -15,8 +15,8 @@ import type {
  */
 export const useUpdateOne = (
   dataSource: Source,
-  schemas: globalThis.Record<string, Schema>,
-  schema: Schema,
+  allSchemas: Schemas,
+  schemaName: string,
 ): [(data: UpdateData) => void, Meta, Record?] => {
   const [data, setData] = useState<Record | undefined>(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
@@ -24,7 +24,7 @@ export const useUpdateOne = (
 
   function update(data: UpdateData) {
     setLoading(true)
-    updateOne(dataSource, schemas, schema, data)
+    updateOne(dataSource, allSchemas, schemaName, data)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))

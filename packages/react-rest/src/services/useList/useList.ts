@@ -10,7 +10,7 @@ import type {
   MetaError,
   QueryList,
   Record,
-  Schema,
+  Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
 
@@ -20,11 +20,11 @@ import type {
  */
 export const useList = (
   dataSource: Source,
-  schemas: globalThis.Record<string, Schema>,
-  schema: Schema,
+  allSchemas: Schemas,
+  schemaName: string,
   query: QueryList,
 ): [Record[], Meta] => {
-  const defaultData = getRecords(schema.name)
+  const defaultData = getRecords(schemaName)
   const [data, setData] = useState<Record[]>(defaultData)
 
   const [error, setError] = useState<MetaError | undefined>(undefined)
@@ -32,15 +32,15 @@ export const useList = (
 
   useEffect(() => {
     setLoading(true)
-    getList(dataSource, schemas, schema, query)
+    getList(dataSource, allSchemas, schemaName, query)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schema, query])
+  }, [dataSource, schemaName, query])
 
   useEffect(() => {
-    return subscribeToList(schema.name, (records: Record[]) => setData(records))
-  }, [schema])
+    return subscribeToList(schemaName, (records: Record[]) => setData(records))
+  }, [schemaName])
 
   const meta: Meta = getMeta(error, loading, false, undefined)
   return [data, meta]

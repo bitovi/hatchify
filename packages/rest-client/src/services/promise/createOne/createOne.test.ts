@@ -42,13 +42,13 @@ describe("rest-client/services/promise/createOne", () => {
 
   it("should return the new record", async () => {
     createStore(["Article"])
-    const result = await createOne(fakeDataSource, schemas, ArticleSchema, data)
+    const result = await createOne(fakeDataSource, schemas, "Article", data)
     expect(result).toEqual(convertResourceToRecord(expected))
   })
 
   it("should insert the record into the store", async () => {
     const store = createStore(["Article"])
-    await createOne(fakeDataSource, schemas, ArticleSchema, data)
+    await createOne(fakeDataSource, schemas, "Article", data)
     expect(store.Article.data).toEqual(keyResourcesById([expected]))
   })
 
@@ -56,7 +56,7 @@ describe("rest-client/services/promise/createOne", () => {
     const store = createStore(["Article"])
     const subscriber = vi.fn()
     store.Article.subscribers.push(subscriber)
-    await createOne(fakeDataSource, schemas, ArticleSchema, data)
+    await createOne(fakeDataSource, schemas, "Article", data)
     expect(subscriber).toHaveBeenCalledTimes(1)
   })
 
@@ -66,7 +66,7 @@ describe("rest-client/services/promise/createOne", () => {
       createOne: () => Promise.reject(new Error("network error")),
     }
     await expect(
-      createOne(errorDataSource, schemas, ArticleSchema, data),
+      createOne(errorDataSource, schemas, "Article", data),
     ).rejects.toThrowError("network error")
   })
 })

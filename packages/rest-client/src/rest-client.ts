@@ -1,5 +1,7 @@
 export type {
   CreateData,
+  Fields,
+  Include,
   Meta,
   MetaData,
   MetaError,
@@ -8,6 +10,7 @@ export type {
   Record,
   Resource,
   Schema,
+  Schemas,
   SchemaMap,
   Source,
   SourceConfig,

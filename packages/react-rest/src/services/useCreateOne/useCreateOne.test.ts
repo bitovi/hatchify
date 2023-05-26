@@ -33,7 +33,7 @@ describe("react-rest/services/useCreateOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useCreateOne(fakeDataSource, schemas, ArticleSchema),
+      useCreateOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {
@@ -84,7 +84,7 @@ describe("react-rest/services/useCreateOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useCreateOne(fakeDataSource, schemas, ArticleSchema),
+      useCreateOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {

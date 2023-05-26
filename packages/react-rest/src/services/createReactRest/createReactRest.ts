@@ -65,17 +65,17 @@ export function createReactRest(
   const functions = Object.values(schemas).reduce((acc, schema) => {
     acc[schema.name] = {
       // promises
-      createOne: (data) => createOne(dataSource, schemas, schema, data),
-      deleteOne: (id) => deleteOne(dataSource, schemas, schema, id),
-      getList: (query) => getList(dataSource, schemas, schema, query),
-      getOne: (query) => getOne(dataSource, schemas, schema, query),
-      updateOne: (data) => updateOne(dataSource, schemas, schema, data),
+      createOne: (data) => createOne(dataSource, schemas, schema.name, data),
+      deleteOne: (id) => deleteOne(dataSource, schemas, schema.name, id),
+      getList: (query) => getList(dataSource, schemas, schema.name, query),
+      getOne: (query) => getOne(dataSource, schemas, schema.name, query),
+      updateOne: (data) => updateOne(dataSource, schemas, schema.name, data),
       // hooks
-      useCreateOne: () => useCreateOne(dataSource, schemas, schema),
-      useDeleteOne: () => useDeleteOne(dataSource, schemas, schema),
-      useList: (query) => useList(dataSource, schemas, schema, query),
-      useOne: (query) => useOne(dataSource, schemas, schema, query),
-      useUpdateOne: () => useUpdateOne(dataSource, schemas, schema),
+      useCreateOne: () => useCreateOne(dataSource, schemas, schema.name),
+      useDeleteOne: () => useDeleteOne(dataSource, schemas, schema.name),
+      useList: (query) => useList(dataSource, schemas, schema.name, query),
+      useOne: (query) => useOne(dataSource, schemas, schema.name, query),
+      useUpdateOne: () => useUpdateOne(dataSource, schemas, schema.name),
       // subscribes
       subscribeToList: (callback) => subscribeToList(schema.name, callback),
       subscribeToOne: (callback, id) =>

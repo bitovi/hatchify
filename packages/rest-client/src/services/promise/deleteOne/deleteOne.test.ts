@@ -25,7 +25,7 @@ describe("rest-client/services/promise/deleteOne", () => {
 
   it("should return the new record", async () => {
     createStore(["Article"])
-    const result = await deleteOne(fakeDataSource, schemas, ArticleSchema, data)
+    const result = await deleteOne(fakeDataSource, schemas, "Article", data)
     expect(result).toEqual(expected)
   })
 
@@ -39,7 +39,7 @@ describe("rest-client/services/promise/deleteOne", () => {
       deleteOne: () => Promise.reject(new Error("network error")),
     }
     await expect(
-      deleteOne(errorDataSource, schemas, ArticleSchema, data),
+      deleteOne(errorDataSource, schemas, "Article", data),
     ).rejects.toThrowError("network error")
   })
 })
