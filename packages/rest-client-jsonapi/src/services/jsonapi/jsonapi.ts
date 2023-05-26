@@ -47,23 +47,33 @@ Promise<{ data: JsonApiResource }> {
   return response.json()
 }
 
-// converts ["title", "body", "author.name", "author.age"] to fields[articles]=title,body&fields[author]=name,age
-export function fieldsToFieldset(schemaName: string, fields: string[]): string {
-  const keyedFields: globalThis.Record<string, string[]> = {}
+/**
+ * Converts: "articles" + ["title", "body", "author.name", "author.age"] to
+ * "fields[article]=title,body&fields[person]=name,age"
+ * The schemaMap is required because the field[<type>] maps to the jsonapi type.
+ */
+export function fieldsToFieldset(
+  schemaMap: SchemaMap,
+  schemaName: string,
+  fields: string[],
+): string {
+  const fieldsByType: globalThis.Record<string, string[]> = {}
 
   for (const field of fields) {
     if (!field.includes(".")) {
-      keyedFields[schemaName] = keyedFields[schemaName] || []
-      keyedFields[schemaName].push(field)
+      const type = schemaMap[schemaName].type
+      fieldsByType[type] = fieldsByType[type] || []
+      fieldsByType[type].push(field)
       continue
     }
 
     const [key, attribute] = field.split(".")
-    keyedFields[key] = keyedFields[key] || []
-    keyedFields[key].push(attribute)
+    const type = schemaMap[key].type
+    fieldsByType[type] = fieldsByType[type] || []
+    fieldsByType[type].push(attribute)
   }
 
-  const fieldset = Object.entries(keyedFields)
+  const fieldset = Object.entries(fieldsByType)
     .map(([key, attributes]) => `fields[${key}]=${attributes.join(",")}`)
     .join("&")
 

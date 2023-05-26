@@ -19,7 +19,6 @@ export async function getOne(
     "GET",
     `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}/${query.id}`,
   )
-  // todo relationships: json.included
 
   return Promise.resolve(convertToRecords(json.data, schema.name))
 }

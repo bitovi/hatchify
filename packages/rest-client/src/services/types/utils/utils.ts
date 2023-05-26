@@ -157,8 +157,9 @@ export function getAttributesFromSchema(
     }
   }
 
+  // console.log("path", path, schemaName)
   return Object.keys(schemas[schemaName].attributes).map((attribute) =>
-    path ? `${path}.${attribute}` : attribute,
+    path ? `${schemaName}.${attribute}` : attribute,
   )
 }
 

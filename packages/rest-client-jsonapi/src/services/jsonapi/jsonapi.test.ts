@@ -13,7 +13,7 @@ const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 describe("rest-client-jsonapi/services/jsonapi", () => {
   describe("jsonapi", () => {
     it("returns a Source", async () => {
-      const dataSource = jsonapi({ baseUrl, schemaMap })
+      const dataSource = jsonapi(baseUrl, schemaMap)
       expect(dataSource).toEqual({
         version: 0,
         getList: expect.any(Function),
@@ -108,9 +108,29 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
 
   describe.only("fieldsToFieldset", () => {
     it("works", () => {
-      const fields = ["title", "body", "author.name", "author.email"]
-      expect(fieldsToFieldset("book", fields)).toEqual(
-        "fields[book]=title,body&fields[author]=name,email",
+      const schemaMap = {
+        Book: { type: "book_type", endpoint: "books" },
+        Person: { type: "person_type", endpoint: "people" },
+      }
+
+      expect(
+        fieldsToFieldset(schemaMap, "Book", [
+          "title",
+          "body",
+          "Person.name",
+          "Person.email",
+        ]),
+      ).toEqual("fields[book_type]=title,body&fields[person_type]=name,email")
+
+      expect(
+        fieldsToFieldset(schemaMap, "Person", [
+          "firstName",
+          "age",
+          "Book.title",
+          "Book.year",
+        ]),
+      ).toEqual(
+        "fields[person_type]=firstName,age&fields[book_type]=title,year",
       )
     })
   })
