@@ -1,9 +1,9 @@
-# Scaffold Development Recommentations
+# Scaffold Development Recommendations
 
-### Getting Started
+## Getting Started
 
-1. Clone this repository: https://github.com/bitovi/bitscaffold
-2. `cd bitscaffold`
+1. Clone this repository: https://github.com/bitovi/hatchify
+2. `cd hatchify`
 3. `npm install`
 4. `npm run build`
    - Runs Prettier

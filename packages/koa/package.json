@@ -45,14 +45,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitovi/bitscaffold.git"
+    "url": "git+https://github.com/bitovi/hatchify.git"
   },
   "author": "Mark Repka <mrepka@bitovi.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bitovi/bitscaffold/issues"
+    "url": "https://github.com/bitovi/hatchify/issues"
   },
-  "homepage": "https://github.com/bitovi/bitscaffold#readme",
+  "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
     "@bitovi/sequelize-querystring-parser": "^0.1.6",
     "@koa/router": "^12.0.0",

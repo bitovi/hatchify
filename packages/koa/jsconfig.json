@@ -1,6 +1,0 @@
-// So vs code intellisense works for jest globals: https://stackoverflow.com/a/57874758
-{
-  "typeAcquisition": {
-    "include": ["jest"]
-  }
-}

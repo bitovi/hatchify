@@ -10,7 +10,7 @@
   "media": "./media",
   "navigationLinks": {
     "Bitovi": "https://bitovi.com",
-    "GitHub": "https://github.com/bitovi/bitscaffold"
+    "GitHub": "https://github.com/bitovi/hatchify"
   },
   "sidebarLinks": {
     "Confluence": "https://bitovi.atlassian.net/wiki/spaces/SCAFFOLD/overview",
