@@ -1,4 +1,4 @@
-import { Hatchify } from "./index"
+import { Hatchify } from "./koa"
 import Koa from "koa"
 import KoaRouter from "@koa/router"
 import type { HatchifyModel } from "./types"

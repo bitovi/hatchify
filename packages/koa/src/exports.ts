@@ -1,4 +1,4 @@
-export * from "./index"
+export * from "./koa"
 export { DataTypes } from "./types"
 export type {
   HatchifyModel,

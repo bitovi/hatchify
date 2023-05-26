@@ -3,8 +3,15 @@
   "private": true,
   "version": "0.0.8",
   "description": "Fullstack CRUD Application Solution",
-  "main": "dist/exports.js",
-  "types": "dist/exports.d.ts",
+  "main": "./dist/koa.js",
+  "types": "./dist/koa.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/koa.js",
+      "types": "./src/koa.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "eslintConfig": {
     "extends": [
       "../../package.json"

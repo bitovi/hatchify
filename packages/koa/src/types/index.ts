@@ -13,7 +13,7 @@ import type {
   ModelAttributeColumnOptions,
 } from "sequelize"
 import type { ModelHooks } from "sequelize/types/hooks"
-import type { Hatchify } from ".."
+import type { Hatchify } from "../koa"
 
 export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"

@@ -1,5 +1,5 @@
 import type Koa from "koa"
-import type { Hatchify } from ".."
+import type { Hatchify } from "../koa"
 import type { KoaMiddleware } from "../types"
 import { parseHatchifyBody } from "../parse/body"
 import errorResponseHandler from "../error"
