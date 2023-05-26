@@ -2,7 +2,7 @@ import http from "node:http"
 import type Koa from "koa"
 import request from "supertest"
 import { Deserializer } from "jsonapi-serializer"
-import { ScaffoldError } from "../error/errors"
+import { HatchifyError } from "../error/errors"
 import { codes, statusCodes } from "../error/constants"
 
 export function createServer(app: Koa) {
@@ -16,7 +16,7 @@ async function parse(result) {
   let status
 
   if (!result) {
-    throw new ScaffoldError({
+    throw new HatchifyError({
       title: "Invalid Result",
       code: codes.ERR_INVALID_RESULT,
       status: statusCodes.UNPROCESSABLE_ENTITY,

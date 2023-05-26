@@ -1,21 +1,21 @@
-import type { Scaffold } from ".."
-import type { ScaffoldModel } from "../types"
+import type { Hatchify } from ".."
+import type { HatchifyModel } from "../types"
 
 export function buildSchemaForModel(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   modelName: string,
-): ScaffoldModel {
-  return scaffold.models[modelName]
+): HatchifyModel {
+  return hatchify.models[modelName]
 }
 
-// function resolveWildcard(scaffold: Scaffold, path): string {
-//     const params = scaffold.getScaffoldURLParamsForRoute(path);
+// function resolveWildcard(hatchify: Hatchify, path): string {
+//     const params = hatchify.getHatchifyURLParamsForRoute(path);
 //     if (!params.model) {
-//         throw scaffold.createError({ code: "400", title: "Invalid URL Format" });
+//         throw hatchify.createError({ code: "400", title: "Invalid URL Format" });
 //     }
 
-//     if (!scaffold.model[params.model]) {
-//         throw scaffold.createError({ code: "400", title: "Bad Model Name: " });
+//     if (!hatchify.model[params.model]) {
+//         throw hatchify.createError({ code: "400", title: "Bad Model Name: " });
 //     }
 
 //     return params.model;

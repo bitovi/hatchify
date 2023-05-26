@@ -1,9 +1,9 @@
 export * from "./index"
 export { DataTypes } from "./types"
 export type {
-  ScaffoldModel,
+  HatchifyModel,
   KoaMiddleware,
-  ScaffoldOptions,
+  HatchifyOptions,
   BelongsToManyResult,
   BelongsToResult,
   HasOneResult,

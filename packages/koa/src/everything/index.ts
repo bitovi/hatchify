@@ -1,4 +1,4 @@
-import type { Scaffold } from ".."
+import type { Hatchify } from ".."
 import type { Identifier } from "sequelize"
 // import { JSONObject } from "../types";
 import type { JSONAPIDocument } from "json-api-serializer"
@@ -19,24 +19,24 @@ export interface EverythingFunctions {
 }
 
 export function buildEverythingForModel(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   modelName: string,
 ): EverythingFunctions {
   return {
-    findAll: findAllEverything(scaffold, modelName),
-    findOne: findOneEverything(scaffold, modelName),
-    findAndCountAll: findAndCountAllEverything(scaffold, modelName),
-    create: createEverything(scaffold, modelName),
-    destroy: destroyEverything(scaffold, modelName),
-    update: updateEverything(scaffold, modelName),
+    findAll: findAllEverything(hatchify, modelName),
+    findOne: findOneEverything(hatchify, modelName),
+    findAndCountAll: findAndCountAllEverything(hatchify, modelName),
+    create: createEverything(hatchify, modelName),
+    destroy: destroyEverything(hatchify, modelName),
+    update: updateEverything(hatchify, modelName),
   }
 }
 
-export function findAllEverything(scaffold: Scaffold, modelName: string) {
+export function findAllEverything(hatchify: Hatchify, modelName: string) {
   return async function findAllImpl(querystring: string) {
-    const params = await scaffold.parse[modelName].findAll(querystring)
-    const result = await scaffold.model[modelName].findAll(params)
-    const response = await scaffold.serialize[modelName].findAll(
+    const params = await hatchify.parse[modelName].findAll(querystring)
+    const result = await hatchify.model[modelName].findAll(params)
+    const response = await hatchify.serialize[modelName].findAll(
       result,
       params.attributes,
     )
@@ -45,16 +45,16 @@ export function findAllEverything(scaffold: Scaffold, modelName: string) {
   }
 }
 
-export function findOneEverything(scaffold: Scaffold, modelName: string) {
+export function findOneEverything(hatchify: Hatchify, modelName: string) {
   return async function findOneImpl(querystring: string, id: Identifier) {
-    const params = await scaffold.parse[modelName].findOne(querystring, id)
-    const result = await scaffold.model[modelName].findByPk(id, params)
+    const params = await hatchify.parse[modelName].findOne(querystring, id)
+    const result = await hatchify.model[modelName].findByPk(id, params)
     if (!result) {
       throw new NotFoundError({
         detail: modelName + " with id " + id + " was not found",
       })
     }
-    const response = await scaffold.serialize[modelName].findOne(
+    const response = await hatchify.serialize[modelName].findOne(
       result,
       params.attributes,
     )
@@ -63,14 +63,14 @@ export function findOneEverything(scaffold: Scaffold, modelName: string) {
 }
 
 export function findAndCountAllEverything(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   modelName: string,
 ) {
   return async function findAndCountAllImpl(querystring: string) {
-    const params = await scaffold.parse[modelName].findAndCountAll(querystring)
-    const result = await scaffold.model[modelName].findAndCountAll(params)
+    const params = await hatchify.parse[modelName].findAndCountAll(querystring)
+    const result = await hatchify.model[modelName].findAndCountAll(params)
 
-    const response = await scaffold.serialize[modelName].findAndCountAll(
+    const response = await hatchify.serialize[modelName].findAndCountAll(
       result,
       params.attributes,
     )
@@ -78,33 +78,33 @@ export function findAndCountAllEverything(
   }
 }
 
-export function createEverything(scaffold: Scaffold, modelName: string) {
+export function createEverything(hatchify: Hatchify, modelName: string) {
   return async function createImpl(rawbody: unknown) {
-    const { body, ops } = await scaffold.parse[modelName].create(rawbody)
-    const result = await scaffold.model[modelName].create(body, ops)
-    const response = await scaffold.serialize[modelName].create(result)
+    const { body, ops } = await hatchify.parse[modelName].create(rawbody)
+    const result = await hatchify.model[modelName].create(body, ops)
+    const response = await hatchify.serialize[modelName].create(result)
     return response
   }
 }
 
-export function updateEverything(scaffold: Scaffold, modelName: string) {
+export function updateEverything(hatchify: Hatchify, modelName: string) {
   return async function updateImpl(
     rawbody: any,
     querystring: string,
     id?: Identifier,
   ) {
-    const { body, ops } = await scaffold.parse[modelName].update(rawbody, id)
-    const result = await scaffold.model[modelName].update(body, ops)
-    const response = await scaffold.serialize[modelName].update(result[0])
+    const { body, ops } = await hatchify.parse[modelName].update(rawbody, id)
+    const result = await hatchify.model[modelName].update(body, ops)
+    const response = await hatchify.serialize[modelName].update(result[0])
     return response
   }
 }
 
-export function destroyEverything(scaffold: Scaffold, modelName: string) {
+export function destroyEverything(hatchify: Hatchify, modelName: string) {
   return async function destroyImpl(querystring: string, id: Identifier) {
-    const params = await scaffold.parse[modelName].destroy(querystring, id)
-    const result = await scaffold.model[modelName].destroy(params)
-    const response = await scaffold.serialize[modelName].destroy(result)
+    const params = await hatchify.parse[modelName].destroy(querystring, id)
+    const result = await hatchify.model[modelName].destroy(params)
+    const response = await hatchify.serialize[modelName].destroy(result)
     return response
   }
 }

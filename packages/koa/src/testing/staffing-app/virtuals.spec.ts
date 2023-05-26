@@ -1,6 +1,6 @@
 import Chance from "chance"
-import { Scaffold } from "../../index"
-import type { ScaffoldModel } from "../../types"
+import { Hatchify } from "../../index"
+import type { HatchifyModel } from "../../types"
 import { DataTypes } from "../../types"
 import { Assignment } from "./models/Assignment"
 import { Employee } from "./models/Employee"
@@ -11,8 +11,8 @@ import { Skill } from "./models/Skill"
 const chance = new Chance()
 
 describe("Virtuals Tests", () => {
-  it("should return scaffold virtuals", () => {
-    const Sample: ScaffoldModel = {
+  it("should return hatchify virtuals", () => {
+    const Sample: HatchifyModel = {
       name: "Sample",
       attributes: {
         name: {
@@ -29,15 +29,15 @@ describe("Virtuals Tests", () => {
       },
     }
 
-    const scaffold = new Scaffold([Sample])
+    const hatchify = new Hatchify([Sample])
 
-    expect(scaffold.virtuals).toStrictEqual({
+    expect(hatchify.virtuals).toStrictEqual({
       Sample: { noOfRoles: [{ association: "roles", include: [] }] },
     })
   })
 
-  it("should return scaffold virtuals without include", () => {
-    const Sample: ScaffoldModel = {
+  it("should return hatchify virtuals without include", () => {
+    const Sample: HatchifyModel = {
       name: "Sample",
       attributes: {
         name: {
@@ -53,21 +53,21 @@ describe("Virtuals Tests", () => {
       },
     }
 
-    const scaffold = new Scaffold([Sample])
+    const hatchify = new Hatchify([Sample])
 
-    expect(scaffold.virtuals).toStrictEqual({ Sample: { nameInCaps: [] } })
+    expect(hatchify.virtuals).toStrictEqual({ Sample: { nameInCaps: [] } })
   })
 
   it("should return virtual field with include in query options", async () => {
-    const scaffold = new Scaffold([Project, Role, Assignment, Skill, Employee])
+    const hatchify = new Hatchify([Project, Role, Assignment, Skill, Employee])
 
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
-    const project: any = await scaffold.model.Project.create({
+    const project: any = await hatchify.model.Project.create({
       name: chance.word(),
     })
 
-    await scaffold.model.Role.bulkCreate([
+    await hatchify.model.Role.bulkCreate([
       {
         name: chance.word(),
         project_id: project.id,
@@ -82,23 +82,23 @@ describe("Virtuals Tests", () => {
       },
     ])
 
-    const projectFindAll: any[] = await scaffold.model.Project.findAll({
+    const projectFindAll: any[] = await hatchify.model.Project.findAll({
       include: ["roles"],
     })
 
-    const projectFindOne: any = await scaffold.model.Project.findOne({
+    const projectFindOne: any = await hatchify.model.Project.findOne({
       where: {
         id: project.id,
       },
       include: "roles",
     })
 
-    const projectFindByPk: any = await scaffold.model.Project.findByPk(
+    const projectFindByPk: any = await hatchify.model.Project.findByPk(
       project.id,
       { include: "roles" },
     )
 
-    const projectFindOrCreate: any = await scaffold.model.Project.findOne({
+    const projectFindOrCreate: any = await hatchify.model.Project.findOne({
       where: {
         id: project.id,
       },
@@ -110,6 +110,6 @@ describe("Virtuals Tests", () => {
     expect(projectFindByPk.noOfRoles).toBe(2)
     expect(projectFindOrCreate.noOfRoles).toBe(2)
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 })

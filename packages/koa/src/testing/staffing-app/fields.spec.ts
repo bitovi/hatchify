@@ -1,17 +1,17 @@
 import Koa from "koa"
 import Chance from "chance"
-import { Scaffold } from "../../index"
-import type { ScaffoldModel } from "../../types"
+import { Hatchify } from "../../index"
+import type { HatchifyModel } from "../../types"
 import { DataTypes } from "../../types"
 import { createStaffingAppInstance } from "./staffing"
 import { createServer, GET, POST } from "../utils"
 
 const chance = new Chance()
 describe("Tests for fields parameter", () => {
-  const [app, scaffold] = createStaffingAppInstance()
+  const [app, hatchify] = createStaffingAppInstance()
 
   beforeAll(async () => {
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
   })
 
   it("should return only specified fields for find all", async () => {
@@ -33,7 +33,7 @@ describe("Tests for fields parameter", () => {
   })
 
   it("should not return virtuals not explicitly specified in query for find all", async () => {
-    const Employee: ScaffoldModel = {
+    const Employee: HatchifyModel = {
       name: "Employee",
       attributes: {
         name: {
@@ -50,11 +50,11 @@ describe("Tests for fields parameter", () => {
     }
 
     const app = new Koa()
-    const scaffold = new Scaffold([Employee], { prefix: "/api" })
-    app.use(scaffold.middleware.allModels.all)
+    const hatchify = new Hatchify([Employee], { prefix: "/api" })
+    app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     await POST(server, "/api/employees", {
       name: chance.name(),
@@ -99,7 +99,7 @@ describe("Tests for fields parameter", () => {
   })
 
   it("should not return virtuals not explicitly specified in query for find by id", async () => {
-    const Employee: ScaffoldModel = {
+    const Employee: HatchifyModel = {
       name: "Employee",
       attributes: {
         name: {
@@ -116,11 +116,11 @@ describe("Tests for fields parameter", () => {
     }
 
     const app = new Koa()
-    const scaffold = new Scaffold([Employee], { prefix: "/api" })
-    app.use(scaffold.middleware.allModels.all)
+    const hatchify = new Hatchify([Employee], { prefix: "/api" })
+    app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     const { id: employeeId } = (
       await POST(server, "/api/employees", {

@@ -1,12 +1,12 @@
-import { Scaffold } from "./index"
+import { Hatchify } from "./index"
 import Koa from "koa"
-import type { ScaffoldModel } from "./types"
+import type { HatchifyModel } from "./types"
 import { DataTypes } from "./types"
 import { createServer, GET, POST } from "./testing/utils"
 import { Serializer } from "jsonapi-serializer"
 
 describe("JSON:API Tests", () => {
-  const Model: ScaffoldModel = {
+  const Model: HatchifyModel = {
     name: "Model",
     attributes: {
       first_name: {
@@ -31,11 +31,11 @@ describe("JSON:API Tests", () => {
 
   it("should handle JSON:API create body", async () => {
     const app = new Koa()
-    const scaffold = new Scaffold([Model], { prefix: "/api" })
-    app.use(scaffold.middleware.allModels.all)
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     await POST(
       server,
@@ -79,6 +79,6 @@ describe("JSON:API Tests", () => {
     expect(find.deserialized).toBeTruthy()
     expect(find.deserialized.id).toBe(create.deserialized.id)
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 })

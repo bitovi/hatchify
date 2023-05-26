@@ -2,7 +2,7 @@ import { createServer, GET, POST } from "../utils"
 import { codes, statusCodes } from "../../error/constants"
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import { Scaffold, errorHandlerMiddleware } from "../.."
+import { Hatchify, errorHandlerMiddleware } from "../.."
 import { Skill } from "./models/Skill"
 import { Assignment } from "./models/Assignment"
 import { Employee } from "./models/Employee"
@@ -10,26 +10,26 @@ import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 
 describe("Errors", () => {
-  it("should return JSON API error format with Scaffold default middleware", async () => {
+  it("should return JSON API error format with Hatchify default middleware", async () => {
     // Create a basic Koa application
     const app = new Koa()
     const router = new KoaRouter()
 
-    // Create a Scaffold instance containing your Models
-    const scaffold = new Scaffold(
+    // Create a Hatchify instance containing your Models
+    const hatchify = new Hatchify(
       [Assignment, Employee, Project, Role, Skill],
       {
         prefix: "/api",
       },
     )
 
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     // Hook up the router
     app.use(router.routes())
 
-    // Attach the Scaffold default middleware to your Koa application
-    app.use(scaffold.middleware.allModels.all)
+    // Attach the Hatchify default middleware to your Koa application
+    app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
 
@@ -63,30 +63,30 @@ describe("Errors", () => {
     expect(code).toBe(codes.ERR_CONFLICT)
     expect(pointer).toEqual("/data/attributes/name")
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 
-  it("should return JSON API error format with only Scaffold error handler middleware and Scaffold.Error", async () => {
+  it("should return JSON API error format with only Hatchify error handler middleware and Hatchify.Error", async () => {
     // Create a basic Koa application
     const app = new Koa()
     const router = new KoaRouter()
 
-    // Create a Scaffold instance containing your Models
-    const scaffold = new Scaffold(
+    // Create a Hatchify instance containing your Models
+    const hatchify = new Hatchify(
       [Assignment, Employee, Project, Role, Skill],
       {
         prefix: "/api",
       },
     )
 
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
-    // Attach the Scaffold default middleware to your Koa application
+    // Attach the Hatchify default middleware to your Koa application
     app.use(errorHandlerMiddleware)
 
     app.use(router.routes())
 
-    app.use(scaffold.middleware.allModels.crud)
+    app.use(hatchify.middleware.allModels.crud)
 
     const server = createServer(app)
 
@@ -96,7 +96,7 @@ describe("Errors", () => {
     }
 
     router.get("/err", async () => {
-      throw Scaffold.createError(errorDetails)
+      throw Hatchify.createError(errorDetails)
     })
 
     const result = await GET(server, "/err")
@@ -106,6 +106,6 @@ describe("Errors", () => {
     expect(code).toBe(errorDetails.code)
     expect(result.status).toEqual(status)
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 })

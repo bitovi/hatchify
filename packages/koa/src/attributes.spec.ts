@@ -1,11 +1,11 @@
-import { Scaffold } from "./index"
+import { Hatchify } from "./index"
 import Koa from "koa"
-import type { ScaffoldModel } from "./types"
+import type { HatchifyModel } from "./types"
 import { DataTypes } from "./types"
 import { createServer, GET, POST } from "./testing/utils"
 
 describe("Attribute Tests", () => {
-  const Model: ScaffoldModel = {
+  const Model: HatchifyModel = {
     name: "Model",
     attributes: {
       firstName: {
@@ -22,11 +22,11 @@ describe("Attribute Tests", () => {
 
   it("should create a record and fetch specific attributes", async () => {
     const app = new Koa()
-    const scaffold = new Scaffold([Model], { prefix: "/api" })
-    app.use(scaffold.middleware.allModels.all)
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     const create = await POST(server, "/api/models", {
       firstName: "firstName",
@@ -59,16 +59,16 @@ describe("Attribute Tests", () => {
     expect(find2.deserialized).not.toHaveProperty("first_name")
     expect(find2.deserialized).toHaveProperty("last_name")
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 
   it("should create a record and error when fetching unknown attributes", async () => {
     const app = new Koa()
-    const scaffold = new Scaffold([Model], { prefix: "/api" })
-    app.use(scaffold.middleware.allModels.all)
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     const create = await POST(server, "/api/models", {
       firstName: "firstName",
@@ -87,16 +87,16 @@ describe("Attribute Tests", () => {
     expect(find1).toBeTruthy()
     expect(find1.status).not.toBe(200) // This should be improved
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 
   it("should create several record and fetch all with specific attributes", async () => {
     const app = new Koa()
-    const scaffold = new Scaffold([Model], { prefix: "/api" })
-    app.use(scaffold.middleware.allModels.all)
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     await POST(server, "/api/models", {
       firstName: "firstName1",
@@ -137,6 +137,6 @@ describe("Attribute Tests", () => {
       expect(entry).not.toHaveProperty("first_name")
     })
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 })

@@ -1,12 +1,12 @@
 import { createStaffingAppInstance } from "./staffing"
 
 async function init() {
-  const [app, scaffold] = await createStaffingAppInstance()
+  const [app, hatchify] = await createStaffingAppInstance()
 
-  await scaffold.createDatabase()
+  await hatchify.createDatabase()
 
   app.listen(3000, () => {
-    console.log("Scaffold Started")
+    console.log("Hatchify Started")
   })
 }
 

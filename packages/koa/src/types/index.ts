@@ -13,7 +13,7 @@ import type {
   ModelAttributeColumnOptions,
 } from "sequelize"
 import type { ModelHooks } from "sequelize/types/hooks"
-import type { Scaffold } from ".."
+import type { Hatchify } from ".."
 
 export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"
@@ -21,11 +21,11 @@ export type { ModelValidateOptions, ModelAttributes } from "sequelize"
 export type KoaMiddleware = Middleware
 
 /**
- * Scaffold Configuration
+ * Hatchify Configuration
  */
-export interface ScaffoldOptions {
+export interface HatchifyOptions {
   /**
-   * Setting this prefix will signal to Scaffold that it should
+   * Setting this prefix will signal to Hatchify that it should
    * expect this path at the beginning of any incoming requests.
    *
    * This is used internally for regex path matching
@@ -51,27 +51,27 @@ export interface ScaffoldOptions {
   database?: Options
 }
 
-export const ScaffoldSymbolModel = Symbol("scaffold")
+export const HatchifySymbolModel = Symbol("hatchify")
 
 /**
- * Sequelize Models used internally within Scaffold contain an
+ * Sequelize Models used internally within Hatchify contain an
  * additional Symbol property that provides access back to the
- * original Scaffold Model that was used to generate it.
+ * original Hatchify Model that was used to generate it.
  *
  * This can be helpful if there are additional properties or fields
  * provided on the original class that do not exist on the
  * Sequelize model itself.
  */
 export type SequelizeModelInstance = ModelCtor<Model<any, any>> & {
-  [ScaffoldSymbolModel]: ScaffoldModel
+  [HatchifySymbolModel]: HatchifyModel
 }
 
 export type SequelizeModelsCollection = {
   [key: string]: SequelizeModelInstance
 }
 
-export type ScaffoldModelCollection = {
-  [key: string]: ScaffoldModel
+export type HatchifyModelCollection = {
+  [key: string]: HatchifyModel
 }
 
 export type JSONObject = Record<string, unknown>
@@ -85,16 +85,16 @@ export interface ModelFunctionsCollection<T> {
 }
 
 export type FunctionsHandler<T> = (
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   name: string | symbol,
 ) => T
 
-export type ScaffoldAttributes = ModelAttributes<Model>
-export type ScaffoldApplication = Koa<DefaultState, DefaultContext>
+export type HatchifyAttributes = ModelAttributes<Model>
+export type HatchifyApplication = Koa<DefaultState, DefaultContext>
 
 /**
- * Used when defining a Scaffold Model relationship
- * to bridge Scaffold Models and Sequelize Model options
+ * Used when defining a Hatchify Model relationship
+ * to bridge Hatchify Models and Sequelize Model options
  */
 export interface BelongsToManyResult {
   target: string
@@ -102,8 +102,8 @@ export interface BelongsToManyResult {
 }
 
 /**
- * Used when defining a Scaffold Model relationship
- * to bridge Scaffold Models and Sequelize Model options
+ * Used when defining a Hatchify Model relationship
+ * to bridge Hatchify Models and Sequelize Model options
  */
 export interface BelongsToResult {
   target: string
@@ -111,8 +111,8 @@ export interface BelongsToResult {
 }
 
 /**
- * Used when defining a Scaffold Model relationship
- * to bridge Scaffold Models and Sequelize Model options
+ * Used when defining a Hatchify Model relationship
+ * to bridge Hatchify Models and Sequelize Model options
  */
 export interface HasOneResult {
   target: string
@@ -120,8 +120,8 @@ export interface HasOneResult {
 }
 
 /**
- * Used when defining a Scaffold Model relationship
- * to bridge Scaffold Models and Sequelize Model options
+ * Used when defining a Hatchify Model relationship
+ * to bridge Hatchify Models and Sequelize Model options
  */
 export interface HasManyResult {
   target: string
@@ -150,17 +150,17 @@ type ModelAttributes<M extends Model = Model, TAttributes = unknown> = {
 }
 
 /**
- * Models can be defined in Scaffold by creating a `[name].ts` file containing
+ * Models can be defined in Hatchify by creating a `[name].ts` file containing
  * the following required (and optional) fields shown here.
  *
- * After a model is defined and passed to a Scaffold instance it will be
- * available within scaffold.orm.* by its model name
+ * After a model is defined and passed to a Hatchify instance it will be
+ * available within hatchify.orm.* by its model name
  *
  * The model name field will also dictate the usage for the dynamicly exported
- * functions provided by your Scaffold instance
+ * functions provided by your Hatchify instance
  *
  */
-export interface ScaffoldModel {
+export interface HatchifyModel {
   /**
    * Model Attributes define the fields that are associated with this model and
    * also reflect, generally, on the associated columns in your underlying database
@@ -179,12 +179,12 @@ export interface ScaffoldModel {
 
   /**
    * The Model `name` dictates the underlying database table name as well
-   * as how your model can be accessed later through your Scaffold instance
+   * as how your model can be accessed later through your Hatchify instance
    */
   name: string
 
   /**
-   * Validation in Scaffold is directly tied to features within the Sequelize ORM
+   * Validation in Hatchify is directly tied to features within the Sequelize ORM
    * See the Sequelize [documentation for more information](https://sequelize.org/docs/v6/core-concepts/validations-and-constraints/#model-wide-validations)
    */
   validation?: ModelValidateOptions
