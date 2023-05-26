@@ -56,7 +56,7 @@ export function getDefaultDisplayRender(
       return <Number value={value} />
     }
 
-    // @todo <ScaffoldAttributeDisplay/> with relationship category|user|filetype is coming through as "extra" rather than "relationship"
+    // @todo <HatchifyAttributeDisplay/> with relationship category|user|filetype is coming through as "extra" rather than "relationship"
     if (attributeType === "relationship" || attributeType === "extra") {
       return Array.isArray(value) ? (
         <RelationshipList values={value} />

@@ -10,7 +10,7 @@ class Source {
   }
 }
 
-interface ScaffoldErrorOptions {
+interface HatchifyErrorOptions {
   pointer?: string
   parameter?: string
   status: number
@@ -20,7 +20,7 @@ interface ScaffoldErrorOptions {
   title?: string
 }
 
-class ScaffoldError extends Error {
+class HatchifyError extends Error {
   status: number
   code: string
   detail?: string
@@ -34,7 +34,7 @@ class ScaffoldError extends Error {
     detail,
     pointer,
     parameter,
-  }: ScaffoldErrorOptions) {
+  }: HatchifyErrorOptions) {
     super()
     this.status = status || statusCodes.INTERNAL_SERVER_ERROR
     this.code = code || codes.ERR_SERVER_ERROR
@@ -44,14 +44,14 @@ class ScaffoldError extends Error {
   }
 }
 
-class ValidationError extends ScaffoldError {
+class ValidationError extends HatchifyError {
   constructor(params) {
     super(params)
     this.status = params.status || statusCodes.BAD_REQUEST
   }
 }
 
-class NotFoundError extends ScaffoldError {
+class NotFoundError extends HatchifyError {
   constructor(params) {
     super(params)
     this.title = params.title || "Not found"
@@ -60,7 +60,7 @@ class NotFoundError extends ScaffoldError {
   }
 }
 
-class UniqueConstraintError extends ScaffoldError {
+class UniqueConstraintError extends HatchifyError {
   constructor(params) {
     super(params)
     this.title = params.title || "Conflict"
@@ -69,7 +69,7 @@ class UniqueConstraintError extends ScaffoldError {
   }
 }
 
-class ConflictError extends ScaffoldError {
+class ConflictError extends HatchifyError {
   constructor(params) {
     super(params)
     this.title = params.title || "Conflict"
@@ -78,9 +78,9 @@ class ConflictError extends ScaffoldError {
   }
 }
 
-export type { ScaffoldErrorOptions }
+export type { HatchifyErrorOptions }
 export {
-  ScaffoldError,
+  HatchifyError,
   ValidationError,
   NotFoundError,
   UniqueConstraintError,

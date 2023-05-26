@@ -1,11 +1,11 @@
-import { Scaffold } from "./index"
+import { Hatchify } from "./index"
 import Koa from "koa"
-import type { ScaffoldModel } from "./types"
+import type { HatchifyModel } from "./types"
 import { DataTypes } from "./types"
 import { createServer, GET } from "./testing/utils"
 
 describe("Schema Tests", () => {
-  const Model: ScaffoldModel = {
+  const Model: HatchifyModel = {
     name: "Model",
     attributes: {
       firstName: {
@@ -21,19 +21,19 @@ describe("Schema Tests", () => {
 
   it("should create fetch the schema for a specific model", async () => {
     const app = new Koa()
-    const scaffold = new Scaffold([Model], { prefix: "/api" })
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
     app.use(async (ctx) => {
-      ctx.body = scaffold.schema.Model
+      ctx.body = hatchify.schema.Model
     })
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     const find1 = await GET(server, "/")
 
     expect(find1).toBeTruthy()
     expect(find1.status).toBe(200)
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 })

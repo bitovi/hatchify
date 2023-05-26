@@ -1,12 +1,12 @@
-import { Scaffold } from "./index"
+import { Hatchify } from "./index"
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import type { ScaffoldModel } from "./types"
+import type { HatchifyModel } from "./types"
 import { DataTypes } from "./types"
 import { createServer, GET } from "./testing/utils"
 
 describe("Internal Tests", () => {
-  const Model: ScaffoldModel = {
+  const Model: HatchifyModel = {
     name: "Model",
     attributes: {
       firstName: {
@@ -20,7 +20,7 @@ describe("Internal Tests", () => {
     },
   }
 
-  const Model2: ScaffoldModel = {
+  const Model2: HatchifyModel = {
     name: "Model2",
     attributes: {
       firstName: {
@@ -34,7 +34,7 @@ describe("Internal Tests", () => {
     },
   }
 
-  const Model3: ScaffoldModel = {
+  const Model3: HatchifyModel = {
     name: "Model3",
     attributes: {
       firstName: {
@@ -52,28 +52,28 @@ describe("Internal Tests", () => {
     const app = new Koa()
     const router = new KoaRouter()
 
-    const scaffold = new Scaffold([Model, Model2, Model3], { prefix: "/api" })
+    const hatchify = new Hatchify([Model, Model2, Model3], { prefix: "/api" })
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     router.get("/user-custom-route", async (ctx) => {
       ctx.body = { test: true }
     })
 
     router.get("/alternative-model-2", async (ctx) => {
-      const response = await scaffold.everything.Model.findAll(ctx.query)
+      const response = await hatchify.everything.Model.findAll(ctx.query)
       ctx.body = { test: true, data: response }
     })
 
     router.get("/alternative-model-3", async (ctx) => {
-      const response = await scaffold.everything.allModels.create
+      const response = await hatchify.everything.allModels.create
       ctx.body = { test: true, data: response }
     })
 
     app.use(router.routes())
     app.use(router.allowedMethods())
-    app.use(scaffold.middleware.allModels.all)
+    app.use(hatchify.middleware.allModels.all)
 
     // Add a fallthrough default handler that just returns not found
     app.use((ctx) => {
@@ -96,23 +96,23 @@ describe("Internal Tests", () => {
     expect(req4).toBeTruthy()
     expect(req4.status).toBe(404)
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 
   it("should handle allModel custom routes", async () => {
     const app = new Koa()
     const router = new KoaRouter()
 
-    const scaffold = new Scaffold([Model, Model2, Model3], {})
+    const hatchify = new Hatchify([Model, Model2, Model3], {})
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
-    router.get("/model3s", scaffold.middleware.allModels.findAll)
+    router.get("/model3s", hatchify.middleware.allModels.findAll)
 
     app.use(router.routes())
     app.use(router.allowedMethods())
-    app.use(scaffold.middleware.allModels.all)
+    app.use(hatchify.middleware.allModels.all)
 
     // Add a fallthrough default handler that just returns not found
     app.use((ctx) => {
@@ -125,17 +125,17 @@ describe("Internal Tests", () => {
     expect(req6.status).toBe(200)
     expect(req6.deserialized).toHaveProperty("length")
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 
   it("should handle custom user auth example", async () => {
     const app = new Koa()
     const router = new KoaRouter()
 
-    const scaffold = new Scaffold([Model], { prefix: "/api" })
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     router.get(
       "/alternative-model",
@@ -146,12 +146,12 @@ describe("Internal Tests", () => {
 
         await next()
       },
-      scaffold.middleware.Model.findAll,
+      hatchify.middleware.Model.findAll,
     )
 
     app.use(router.routes())
     app.use(router.allowedMethods())
-    app.use(scaffold.middleware.allModels.all)
+    app.use(hatchify.middleware.allModels.all)
 
     // Add a fallthrough default handler that just returns not found
     app.use((ctx) => {
@@ -164,17 +164,17 @@ describe("Internal Tests", () => {
     expect(req2.status).toBe(200)
     expect(req2.deserialized).toHaveProperty("length")
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 
   it("should handle custom user auth missing header", async () => {
     const app = new Koa()
     const router = new KoaRouter()
 
-    const scaffold = new Scaffold([Model], { prefix: "/api" })
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
 
     const server = createServer(app)
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
 
     router.get(
       "/alternative-model",
@@ -185,12 +185,12 @@ describe("Internal Tests", () => {
 
         await next()
       },
-      scaffold.middleware.Model.findAll,
+      hatchify.middleware.Model.findAll,
     )
 
     app.use(router.routes())
     app.use(router.allowedMethods())
-    app.use(scaffold.middleware.allModels.all)
+    app.use(hatchify.middleware.allModels.all)
 
     // Add a fallthrough default handler that just returns not found
     app.use((ctx) => {
@@ -202,6 +202,6 @@ describe("Internal Tests", () => {
     expect(req2).toBeTruthy()
     expect(req2.status).toBe(401)
 
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 })

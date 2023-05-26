@@ -1,4 +1,4 @@
-import type { Scaffold } from ".."
+import type { Hatchify } from ".."
 import type { JSONObject } from "../types"
 
 /**
@@ -22,13 +22,13 @@ export interface DeserializeFunctions {
 }
 
 export function buildDeserializerForModel(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   modelName: string,
 ): DeserializeFunctions {
   return {
     create: async (data: any) => {
       try {
-        return scaffold.serializer.deserialize(modelName, data)
+        return hatchify.serializer.deserialize(modelName, data)
       } catch (err) {
         return data
       }
@@ -36,7 +36,7 @@ export function buildDeserializerForModel(
 
     update: async (data: any) => {
       try {
-        return scaffold.serializer.deserialize(modelName, data)
+        return hatchify.serializer.deserialize(modelName, data)
       } catch (err) {
         return data
       }

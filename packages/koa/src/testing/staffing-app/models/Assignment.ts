@@ -1,7 +1,7 @@
-import type { ScaffoldModel } from "../../../types"
+import type { HatchifyModel } from "../../../types"
 import { DataTypes } from "../../../types"
 
-export const Assignment: ScaffoldModel = {
+export const Assignment: HatchifyModel = {
   name: "Assignment",
   attributes: {
     id: {

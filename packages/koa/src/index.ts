@@ -4,18 +4,18 @@ import { match } from "path-to-regexp"
 import { capitalize, singularize } from "inflection"
 
 import type {
-  ScaffoldModel,
-  ScaffoldModelCollection,
-  ScaffoldOptions,
+  HatchifyModel,
+  HatchifyModelCollection,
+  HatchifyOptions,
   SequelizeModelsCollection,
   FunctionsHandler,
   ModelFunctionsCollection,
   Virtuals,
 } from "./types"
 import {
-  convertScaffoldModels,
+  convertHatchifyModels,
   createSequelizeInstance,
-  buildScaffoldModelObject,
+  buildHatchifyModelObject,
 } from "./sequelize"
 import type {
   // buildParserForModelStandalone,
@@ -34,50 +34,50 @@ import type { EverythingFunctions } from "./everything"
 import { buildEverythingForModel } from "./everything"
 import { buildSchemaForModel } from "./schema"
 import type { IAssociation } from "sequelize-create-with-associations"
-import type { ScaffoldErrorOptions } from "./error/errors"
-import { ScaffoldError } from "./error/errors"
+import type { HatchifyErrorOptions } from "./error/errors"
+import { HatchifyError } from "./error/errors"
 
 /**
- * Parse can be imported from the `@bitovi/scaffold` package
+ * Parse can be imported from the `@bitovi/hatchify` package
  *
- * This function provides direct access to the querystring parsing and validation of Scaffold without
- * needing to create a Scaffold instance. You can use a Scaffold Model directly along with your querystring
+ * This function provides direct access to the querystring parsing and validation of Hatchify without
+ * needing to create a Hatchify instance. You can use a Hatchify Model directly along with your querystring
  * and the Parse function will return the underlying ORM query options.
  *
- * @param {ScaffoldModel} model The Scaffold Model to use for validation, attributes, relationships, etc
+ * @param {HatchifyModel} model The Hatchify Model to use for validation, attributes, relationships, etc
  * @returns {ModelFunctionsCollection<ParseFunctions>}
  */
-// export function Parse(model: ScaffoldModel) {
+// export function Parse(model: HatchifyModel) {
 //   return buildParserForModelStandalone(model);
 // }
 
 /**
- * Serialize can be imported from the `@bitovi/scaffold` package
+ * Serialize can be imported from the `@bitovi/hatchify` package
  *
- * This function provides direct access to the result serializer Scaffold without
- * needing to create a Scaffold instance. You can use a Scaffold Model directly along with your data
+ * This function provides direct access to the result serializer Hatchify without
+ * needing to create a Hatchify instance. You can use a Hatchify Model directly along with your data
  * and the Serialize function will return a valid JSON:API serialized version.
  *
- * @param {ScaffoldModel} model The Scaffold Model to use for validation, attributes, relationships, etc
+ * @param {HatchifyModel} model The Hatchify Model to use for validation, attributes, relationships, etc
  * @returns {ModelFunctionsCollection<SerializeFunctions>}
  */
-// export function Serialize(model: ScaffoldModel) {
+// export function Serialize(model: HatchifyModel) {
 //   return buildSerializerForModelStandalone(model);
 // }
 
 /**
- * Scaffold can be imported from the `@bitovi/scaffold` package
+ * Hatchify can be imported from the `@hatchifyjs/koa` package
  *
- * This class provides the entry point into the Scaffold library. To use Scaffold with your project
+ * This class provides the entry point into the Hatchify library. To use Hatchify with your project
  * you will create an instance of this class passing it your Model definitions along with (optional) settings.
  *
  * @see {@link constructor}
  *
- * In order to use Scaffold with Koa or Express you should look at the Middleware exports below
+ * In order to use Hatchify with Koa or Express you should look at the Middleware exports below
  * @see {@link MiddlewareFunctionsKoa.all}
  *
  */
-export class Scaffold {
+export class Hatchify {
   private _sequelizeModels: SequelizeModelsCollection
   private _sequelize: Sequelize
   private _serializer: JSONAPISerializer
@@ -91,31 +91,31 @@ export class Scaffold {
   associationsLookup: Record<string, Record<string, IAssociation> | undefined>
 
   /**
-   * Creates a new Scaffold instance
+   * Creates a new Hatchify instance
    *
-   * @param {ScaffoldModel[]} models An array of Scaffold Models
-   * @param {ScaffoldOptions} options Configuration options for Scaffold
+   * @param {HatchifyModel[]} models An array of Hatchify Models
+   * @param {HatchifyOptions} options Configuration options for Hatchify
    *
-   * @return {Scaffold}
+   * @return {Hatchify}
    */
-  constructor(models: ScaffoldModel[], options: ScaffoldOptions = {}) {
+  constructor(models: HatchifyModel[], options: HatchifyOptions = {}) {
     // Prepare the ORM instance and keep references to the different Models
     this._sequelize = createSequelizeInstance(options.database)
 
     this._serializer = new JSONAPISerializer()
 
-    // Fetch the scaffold models and associations look up
+    // Fetch the hatchify models and associations look up
     const {
       associationsLookup,
       models: sequelizeModels,
       virtuals,
-    } = convertScaffoldModels(this._sequelize, this._serializer, models)
+    } = convertHatchifyModels(this._sequelize, this._serializer, models)
 
     this.virtuals = virtuals
     this.associationsLookup = associationsLookup
     this._sequelizeModels = sequelizeModels
 
-    // Types of requests that Scaffold should attempt to process
+    // Types of requests that Hatchify should attempt to process
     this._allowedMethods = ["GET", "POST", "PATCH", "DELETE"]
 
     // Do some quick work up front to get the list of model names
@@ -146,7 +146,7 @@ export class Scaffold {
   }
 
   /**
-   * The `model` export is one of the primary tools provided by Scaffold for working
+   * The `model` export is one of the primary tools provided by Hatchify for working
    * with your Models in custom routes.
    *
    * From the `model` export you can target one of your Models by name which will
@@ -161,15 +161,15 @@ export class Scaffold {
   }
 
   /**
-   * Returns an object mapping model names to Scaffold models
+   * Returns an object mapping model names to Hatchify models
    * @hidden
    */
-  get models(): ScaffoldModelCollection {
-    return buildScaffoldModelObject(this._sequelizeModels)
+  get models(): HatchifyModelCollection {
+    return buildHatchifyModelObject(this._sequelizeModels)
   }
 
   /**
-   * The `parse` export is one of the primary tools provided by Scaffold for working
+   * The `parse` export is one of the primary tools provided by Hatchify for working
    * with your Models in custom routes.
    *
    * From the `parse` export you can target one of your Models by name which will
@@ -186,7 +186,7 @@ export class Scaffold {
   }
 
   /**
-   * The `serialize` export is one of the primary tools provided by Scaffold for working
+   * The `serialize` export is one of the primary tools provided by Hatchify for working
    * with your Models in custom routes.
    *
    * From the `serialize` export you can target one of your Models by name which will
@@ -205,17 +205,17 @@ export class Scaffold {
   /**
    * Create a JSON:API Compliant Error Result
    *
-   * @param {ScaffoldError} options
-   * @returns { ScaffoldError}
+   * @param {HatchifyError} options
+   * @returns { HatchifyError}
    */
-  static createError(options: ScaffoldErrorOptions): ScaffoldError {
-    const error = new ScaffoldError(options)
+  static createError(options: HatchifyErrorOptions): HatchifyError {
+    const error = new HatchifyError(options)
 
     return error
   }
 
   /**
-   * The `middleware` export is one of the primary tools provided by Scaffold for working
+   * The `middleware` export is one of the primary tools provided by Hatchify for working
    * with your Models in custom routes.
    *
    * From the `middleware` export you can target one of your Models by name which will
@@ -235,24 +235,24 @@ export class Scaffold {
   }
 
   /**
-   * The `schema` export is one of the primary tools provided by Scaffold for working
+   * The `schema` export is one of the primary tools provided by Hatchify for working
    * with your Models in custom routes.
    *
    * From the `schema` export you can target one of your Models by name which will
    * give you further access to a number of named functions
    *
    * For more information about the underlying per-model functions:
-   * @see {@link ScaffoldModel}
+   * @see {@link HatchifyModel}
    *
-   * @returns {ModelFunctionsCollection<ScaffoldModel>}
+   * @returns {ModelFunctionsCollection<HatchifyModel>}
    * @category General Use
    */
   get schema() {
-    return buildExportWrapper<ScaffoldModel>(this, buildSchemaForModel)
+    return buildExportWrapper<HatchifyModel>(this, buildSchemaForModel)
   }
 
   /**
-   * The `everything` export is one of the primary tools provided by Scaffold for working
+   * The `everything` export is one of the primary tools provided by Hatchify for working
    * with your Models in custom routes.
    *
    * The `everything` export calls the `parse`, `model`, and `serialize` under the hood
@@ -276,22 +276,22 @@ export class Scaffold {
 
   /**
    * This function takes the method, path, and the known list of models
-   * from the Scaffold instance and determines if the current requested path
-   * is one that matches a Scaffold operation.
+   * from the Hatchify instance and determines if the current requested path
+   * is one that matches a Hatchify operation.
    *
-   * Note: While this function is exported from Scaffold it is unusual to need to it externally
+   * Note: While this function is exported from Hatchify it is unusual to need to it externally
    *
    * @param {string} method GET, PUT, POST, DELETE, PATCH
    * @param {string} path Usually the incoming request URL
    * @return {boolean}
    * @internal
    */
-  isValidScaffoldRoute(method, path: string): boolean {
+  isValidHatchifyRoute(method, path: string): boolean {
     if (!this._allowedMethods.includes(method)) {
       return false
     }
 
-    const model = this.getScaffoldModelNameForRoute(path)
+    const model = this.getHatchifyModelNameForRoute(path)
 
     if (model) {
       return true
@@ -301,16 +301,16 @@ export class Scaffold {
   }
 
   /**
-   * This function will take a URL and attempt to pull Scaffold
+   * This function will take a URL and attempt to pull Hatchify
    * specific parameters from it. Generally these are the `model` and or `id`
    *
-   * Note: While this function is exported from Scaffold it is unusual to need to it externally
+   * Note: While this function is exported from Hatchify it is unusual to need to it externally
    *
    * @param path Usually the incoming request URL
    * @returns { model?: string; id?: Identifier }
    * @internal
    */
-  getScaffoldURLParamsForRoute(path: string): {
+  getHatchifyURLParamsForRoute(path: string): {
     model?: string
     id?: Identifier
   } {
@@ -369,19 +369,19 @@ export class Scaffold {
   }
 
   /**
-   * This function will take a URL and attempt to pull a Scaffold model name
+   * This function will take a URL and attempt to pull a Hatchify model name
    * parameter from it. If one is found, and valid, it will be returned.
    *
    * If there is no model, or it is not a known name, `false` will be returned
    *
-   * Note: While this function is exported from Scaffold it is unusual to need to it externally
+   * Note: While this function is exported from Hatchify it is unusual to need to it externally
    *
    * @param {string} path Usually the incoming request URL
    * @returns {string | false} Returns a `string` with the model name, if found, otherwise `false`
    * @internal
    */
-  getScaffoldModelNameForRoute(path: string): false | string {
-    const result = this.getScaffoldURLParamsForRoute(path)
+  getHatchifyModelNameForRoute(path: string): false | string {
+    const result = this.getHatchifyURLParamsForRoute(path)
 
     if (result.model) {
       const pathModelName = result.model
@@ -412,20 +412,20 @@ export class Scaffold {
   }
 }
 
-export const Error = ScaffoldError
+export const Error = HatchifyError
 
 export const errorHandlerMiddleware = errorMiddleware
 
 function buildExportWrapper<T>(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   handlerFunction: FunctionsHandler<T>,
 ): ModelFunctionsCollection<T> {
   const wrapper: ModelFunctionsCollection<T> = {
-    "*": handlerFunction(scaffold, "*"),
-    allModels: handlerFunction(scaffold, "*"),
+    "*": handlerFunction(hatchify, "*"),
+    allModels: handlerFunction(hatchify, "*"),
   }
-  Object.keys(scaffold.models).forEach((modelName) => {
-    wrapper[modelName] = handlerFunction(scaffold, modelName)
+  Object.keys(hatchify.models).forEach((modelName) => {
+    wrapper[modelName] = handlerFunction(hatchify, modelName)
   })
 
   return wrapper

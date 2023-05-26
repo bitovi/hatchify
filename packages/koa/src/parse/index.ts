@@ -5,14 +5,14 @@ import type {
   CreateOptions,
   FindOptions,
 } from "sequelize"
-import type { Scaffold } from ".."
+import type { Hatchify } from ".."
 import {
   buildCreateOptions,
   buildDestroyOptions,
   buildFindOptions,
   buildUpdateOptions,
 } from "./builder"
-import type { JSONObject, ScaffoldModel } from "../types"
+import type { JSONObject, HatchifyModel } from "../types"
 import { ValidationError } from "../error/errors"
 import { codes, statusCodes } from "../error/constants"
 
@@ -41,7 +41,7 @@ export interface ParseFunctions {
   destroy: (querystring: string, id?: Identifier) => Promise<DestroyOptions>
 }
 
-async function findAllImpl(model: ScaffoldModel, querystring: string) {
+async function findAllImpl(model: HatchifyModel, querystring: string) {
   const { data, errors } = buildFindOptions(model, querystring)
   if (errors.length > 0) {
     throw new ValidationError({
@@ -53,7 +53,7 @@ async function findAllImpl(model: ScaffoldModel, querystring: string) {
   return data
 }
 
-async function findOneImpl(model: ScaffoldModel, querystring: string, id) {
+async function findOneImpl(model: HatchifyModel, querystring: string, id) {
   const { data, errors } = buildFindOptions(model, querystring, id)
   if (errors.length > 0) {
     throw new ValidationError({
@@ -65,7 +65,7 @@ async function findOneImpl(model: ScaffoldModel, querystring: string, id) {
   return data
 }
 
-async function findAndCountAllImpl(model: ScaffoldModel, querystring: string) {
+async function findAndCountAllImpl(model: HatchifyModel, querystring: string) {
   const { data, errors } = buildFindOptions(model, querystring)
   if (errors.length > 0) {
     throw new ValidationError({
@@ -77,12 +77,12 @@ async function findAndCountAllImpl(model: ScaffoldModel, querystring: string) {
   return data
 }
 
-async function createImpl<T extends ScaffoldModel = ScaffoldModel>(
-  scaffold: Scaffold,
+async function createImpl<T extends HatchifyModel = HatchifyModel>(
+  hatchify: Hatchify,
   model: T,
   body: unknown,
 ) {
-  const serializer = scaffold.serializer
+  const serializer = hatchify.serializer
   const { data, errors } = buildCreateOptions("")
   if (errors.length > 0) {
     throw new ValidationError({
@@ -102,12 +102,12 @@ async function createImpl<T extends ScaffoldModel = ScaffoldModel>(
 }
 
 async function updateImpl(
-  scaffold: Scaffold,
-  model: ScaffoldModel,
+  hatchify: Hatchify,
+  model: HatchifyModel,
   body: unknown,
   id,
 ) {
-  const serializer = scaffold.serializer
+  const serializer = hatchify.serializer
   const { data, errors } = buildUpdateOptions("", id)
   if (errors.length > 0) {
     throw new ValidationError({
@@ -127,7 +127,7 @@ async function updateImpl(
   }
 }
 
-async function destroyImpl(model: ScaffoldModel, querystring: string, id) {
+async function destroyImpl(model: HatchifyModel, querystring: string, id) {
   const { data, errors } = buildDestroyOptions(querystring, id)
   if (errors.length > 0) {
     throw new ValidationError({
@@ -141,24 +141,24 @@ async function destroyImpl(model: ScaffoldModel, querystring: string, id) {
 }
 
 export function buildParserForModelStandalone(
-  scaffold: Scaffold,
-  model: ScaffoldModel,
+  hatchify: Hatchify,
+  model: HatchifyModel,
 ): ParseFunctions {
   return {
     findAll: async (querystring) => findAllImpl(model, querystring),
     findOne: async (querystring, id) => findOneImpl(model, querystring, id),
     findAndCountAll: async (querystring) =>
       findAndCountAllImpl(model, querystring),
-    create: async (body) => createImpl(scaffold, model, body),
+    create: async (body) => createImpl(hatchify, model, body),
     destroy: async (querystring, id) => destroyImpl(model, querystring, id),
-    update: async (body, id) => updateImpl(scaffold, model, body, id),
+    update: async (body, id) => updateImpl(hatchify, model, body, id),
   }
 }
 
 export function buildParserForModel(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   modelName: string,
 ): ParseFunctions {
-  const model = scaffold.models[modelName]
-  return buildParserForModelStandalone(scaffold, model)
+  const model = hatchify.models[modelName]
+  return buildParserForModelStandalone(hatchify, model)
 }

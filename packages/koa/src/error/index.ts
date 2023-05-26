@@ -1,6 +1,6 @@
 import { statusCodes } from "./constants"
 import databaseErrorHandlers from "./types/database-errors"
-import ScaffoldErrorHandler from "./types/general-errors"
+import HatchifyErrorHandler from "./types/general-errors"
 
 const errorResponseHandler = (error) => {
   const errors: any[] = []
@@ -17,7 +17,7 @@ const errorResponseHandler = (error) => {
   ) {
     errors.push(databaseErrorHandlers(error))
   } else {
-    errors.push(ScaffoldErrorHandler(error))
+    errors.push(HatchifyErrorHandler(error))
   }
 
   status = errors[0].status || status

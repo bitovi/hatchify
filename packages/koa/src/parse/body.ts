@@ -2,7 +2,7 @@ import type { Context } from "co-body"
 import coBody from "co-body"
 // import { Deserializer } from "jsonapi-serializer";
 
-export async function parseScaffoldBody(ctx: Context) {
+export async function parseHatchifyBody(ctx: Context) {
   const parsed = await coBody(ctx)
 
   // if (type === "application/vnd.api+json") {

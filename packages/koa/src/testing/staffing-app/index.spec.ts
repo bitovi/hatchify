@@ -2,14 +2,14 @@ import { createStaffingAppInstance } from "./staffing"
 import { createServer, GET, POST } from "../utils"
 
 describe("Staffing App Example", () => {
-  const [app, scaffold] = createStaffingAppInstance()
+  const [app, hatchify] = createStaffingAppInstance()
 
   beforeAll(async () => {
-    await scaffold.createDatabase()
+    await hatchify.createDatabase()
   })
 
   afterAll(async () => {
-    await scaffold.orm.close()
+    await hatchify.orm.close()
   })
 
   it("should handle get assignments", async () => {

@@ -7,7 +7,7 @@ import type {
   UpdateOptions,
   WhereOptions,
 } from "sequelize"
-import type { ScaffoldModel, SequelizeModelInstance } from "../types"
+import type { HatchifyModel, SequelizeModelInstance } from "../types"
 import querystringParser from "@bitovi/sequelize-querystring-parser"
 import { ValidationError } from "../error/errors"
 import { codes, statusCodes } from "../error/constants"
@@ -19,7 +19,7 @@ interface QSP<T> {
 }
 
 export function buildFindOptions(
-  model: ScaffoldModel,
+  model: HatchifyModel,
   querystring: string,
   id?: Identifier,
 ): QSP<FindOptions> {

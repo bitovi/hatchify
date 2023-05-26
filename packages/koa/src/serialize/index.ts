@@ -1,10 +1,10 @@
 import type { Model } from "sequelize"
-import type { Scaffold } from ".."
+import type { Hatchify } from ".."
 
 import type JSONAPISerializer from "json-api-serializer"
 import type { JSONAPIDocument } from "json-api-serializer"
 import type { IAssociation } from "sequelize-create-with-associations"
-import type { ScaffoldModel } from "../types"
+import type { HatchifyModel } from "../types"
 
 /**
  * Provides a set of exported functions, per Model, that
@@ -39,82 +39,82 @@ export interface SerializeFunctions<
 }
 
 async function findAllImpl(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   name: string,
   array,
   attributes,
 ) {
-  const virtualsForModel = scaffold.virtuals[name]
+  const virtualsForModel = hatchify.virtuals[name]
 
   if (virtualsForModel) {
     return serializeWithoutUnsolicitedVirtuals(
-      scaffold,
+      hatchify,
       array,
       name,
       attributes,
-      Object.keys(scaffold.virtuals[name]),
+      Object.keys(hatchify.virtuals[name]),
     )
   }
 
-  return scaffold.serializer.serialize(name, array)
+  return hatchify.serializer.serialize(name, array)
 }
 
 async function findOneImpl(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   name: string,
   instance,
   attributes,
 ) {
-  const virtualsForModel = scaffold.virtuals[name]
+  const virtualsForModel = hatchify.virtuals[name]
 
   if (virtualsForModel) {
     return serializeWithoutUnsolicitedVirtuals(
-      scaffold,
+      hatchify,
       instance,
       name,
       attributes,
-      Object.keys(scaffold.virtuals[name]),
+      Object.keys(hatchify.virtuals[name]),
     )
   }
-  return scaffold.serializer.serialize(name, instance)
+  return hatchify.serializer.serialize(name, instance)
 }
 
 async function findAndCountAllImpl(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   name: string,
   result,
   attributes,
 ) {
-  const virtualsForModel = scaffold.virtuals[name]
+  const virtualsForModel = hatchify.virtuals[name]
 
   if (virtualsForModel) {
     return serializeWithoutUnsolicitedVirtuals(
-      scaffold,
+      hatchify,
       result.rows,
       name,
       attributes,
-      Object.keys(scaffold.virtuals[name]),
+      Object.keys(hatchify.virtuals[name]),
     )
   }
 
-  return scaffold.serializer.serialize(name, result.rows)
+  return hatchify.serializer.serialize(name, result.rows)
 }
 
-async function createImpl(scaffold: Scaffold, name: string, instance) {
-  return scaffold.serializer.serialize(name, instance)
+async function createImpl(hatchify: Hatchify, name: string, instance) {
+  return hatchify.serializer.serialize(name, instance)
 }
 
-async function destroyImpl(scaffold: Scaffold, name: string, rowCount) {
-  return scaffold.serializer.serialize(name, null, { count: rowCount })
+async function destroyImpl(hatchify: Hatchify, name: string, rowCount) {
+  return hatchify.serializer.serialize(name, null, { count: rowCount })
 }
 
-async function updateImpl(scaffold: Scaffold, name: string, rowCount) {
-  return scaffold.serializer.serialize(name, null, { count: rowCount })
+async function updateImpl(hatchify: Hatchify, name: string, rowCount) {
+  return hatchify.serializer.serialize(name, null, { count: rowCount })
 }
 
 // export function buildSerializerForModelStandalone(
 //     serializer: JSONAPISerializer,
-//     model: ScaffoldModel
+//     model: HatchifyModel
 // ): SerializeFunctions {
 //   return {
 //     findAll: async (array) => findAllImpl(model.name, array),
@@ -135,19 +135,19 @@ async function updateImpl(scaffold: Scaffold, name: string, rowCount) {
 // }
 
 export function buildSerializerForModel(
-  scaffold: Scaffold,
+  hatchify: Hatchify,
   modelName: string,
 ): SerializeFunctions {
   return {
     findAll: async (array, attributes) =>
-      findAllImpl(scaffold, modelName, array, attributes),
+      findAllImpl(hatchify, modelName, array, attributes),
     findOne: async (instance, attributes) =>
-      findOneImpl(scaffold, modelName, instance, attributes),
+      findOneImpl(hatchify, modelName, instance, attributes),
     findAndCountAll: async (result, attributes) =>
-      findAndCountAllImpl(scaffold, modelName, result, attributes),
-    create: async (instance) => createImpl(scaffold, modelName, instance),
-    destroy: async (rowCount) => destroyImpl(scaffold, modelName, rowCount),
-    update: async (rowCount) => updateImpl(scaffold, modelName, rowCount),
+      findAndCountAllImpl(hatchify, modelName, result, attributes),
+    create: async (instance) => createImpl(hatchify, modelName, instance),
+    destroy: async (rowCount) => destroyImpl(hatchify, modelName, rowCount),
+    update: async (rowCount) => updateImpl(hatchify, modelName, rowCount),
   }
 }
 
@@ -161,7 +161,7 @@ const deserialize = (data: any) => {
 
 export function registerSchema(
   serializer: JSONAPISerializer,
-  model: ScaffoldModel,
+  model: HatchifyModel,
   associations: Record<string, IAssociation>,
   primaryKey: string,
 ) {
@@ -182,7 +182,7 @@ export function registerSchema(
 }
 
 const serializeWithoutUnsolicitedVirtuals = (
-  scaffold,
+  hatchify,
   array,
   name,
   attributes,
@@ -192,7 +192,7 @@ const serializeWithoutUnsolicitedVirtuals = (
     ? virtualsForModel.filter((virtual) => !attributes.includes(virtual))
     : virtualsForModel
 
-  return scaffold.serializer.serialize(
+  return hatchify.serializer.serialize(
     name,
     array,
     "default",

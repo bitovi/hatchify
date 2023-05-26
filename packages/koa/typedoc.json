@@ -3,7 +3,7 @@
   "entryPoints": ["./src/exports.ts"],
   "out": "docs",
   "theme": "default",
-  "name": "@bitovi/scaffold",
+  "name": "@hatchifyjs/koa",
   "includeVersion": true,
   "disableSources": true,
   "githubPages": true,

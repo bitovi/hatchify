@@ -1,6 +1,6 @@
 import { codes, statusCodes } from "../constants"
 import {
-  ScaffoldError,
+  HatchifyError,
   UniqueConstraintError,
   ValidationError,
 } from "../errors"
@@ -28,7 +28,7 @@ const databaseErrorHandlers = (error) => {
         break
 
       case "SequelizeForeignKeyConstraintError":
-        error = new ScaffoldError({
+        error = new HatchifyError({
           code: codes.ERR_CONFLICT,
           title: "Foreign key constraint violation",
           status: statusCodes.CONFLICT,
@@ -37,7 +37,7 @@ const databaseErrorHandlers = (error) => {
 
       case "SequelizeDatabaseError":
       default:
-        error = new ScaffoldError({
+        error = new HatchifyError({
           code: codes.ERR_DATABASE_ERROR,
           title: message,
           status: statusCodes.INTERNAL_SERVER_ERROR,

@@ -4,33 +4,33 @@ import type JSONAPISerializer from "json-api-serializer"
 import * as inflection from "inflection"
 import querystringParser from "@bitovi/sequelize-querystring-parser"
 import type {
-  ScaffoldModel,
+  HatchifyModel,
   SequelizeModelsCollection,
-  ScaffoldModelCollection,
+  HatchifyModelCollection,
   Virtuals,
 } from "../types"
-import { ScaffoldSymbolModel } from "../types"
+import { HatchifySymbolModel } from "../types"
 import extendSequelize from "sequelize-create-with-associations"
 import type {
   IAssociation,
-  ICreateScaffoldModel,
+  ICreateHatchifyModel,
 } from "sequelize-create-with-associations"
 import { registerSchema } from "../serialize"
-import { ScaffoldError } from "../error/errors"
+import { HatchifyError } from "../error/errors"
 import { codes, statusCodes } from "../error/constants"
 
 const splitIncludeToJSONAPiQuery = (include) => {
   return `include=${include.join(",")}`
 }
 
-export function buildScaffoldModelObject(
+export function buildHatchifyModelObject(
   models: SequelizeModelsCollection,
-): ScaffoldModelCollection {
+): HatchifyModelCollection {
   const names = Object.keys(models)
 
-  const result: ScaffoldModelCollection = {}
+  const result: HatchifyModelCollection = {}
   names.forEach((name) => {
-    result[name] = models[name][ScaffoldSymbolModel]
+    result[name] = models[name][HatchifySymbolModel]
   })
   return result
 }
@@ -47,11 +47,11 @@ export function createSequelizeInstance(options?: Options): Sequelize {
   return new Sequelize(options)
 }
 
-export function convertScaffoldModels(
+export function convertHatchifyModels(
   sequelize: Sequelize,
   serializer: JSONAPISerializer,
-  models: ScaffoldModel[],
-): ICreateScaffoldModel {
+  models: HatchifyModel[],
+): ICreateHatchifyModel {
   const virtuals: Virtuals = {}
   const primaryKeys: Record<string, string> = {}
   models.forEach((model) => {
@@ -85,7 +85,7 @@ export function convertScaffoldModels(
       }
     }
 
-    const temp = sequelize.define<Model<ScaffoldModel["attributes"]>>(
+    const temp = sequelize.define<Model<HatchifyModel["attributes"]>>(
       model.name,
       model.attributes,
       {
@@ -100,7 +100,7 @@ export function convertScaffoldModels(
     // GET THE PRIMARY KEY
     primaryKeys[model.name] = temp.primaryKeyAttribute
 
-    temp[ScaffoldSymbolModel] = model
+    temp[HatchifySymbolModel] = model
   })
 
   const associationsLookup: Record<string, Record<string, IAssociation>> = {}
@@ -115,7 +115,7 @@ export function convertScaffoldModels(
         // Grab the array of targets and options
         model[relationship].forEach(({ target, options }) => {
           if (!target || !sequelize.models[target]) {
-            throw new ScaffoldError({
+            throw new HatchifyError({
               title:
                 "Unknown Model association for " +
                 model.name +

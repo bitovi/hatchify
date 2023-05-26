@@ -10,7 +10,7 @@ import {
 } from "sequelize"
 // const _seqModelSymbol = Symbol("underlying-sequelize-model");
 
-interface ScaffoldModelDefinition {
+interface HatchifyModelDefinition {
   attributes: ModelAttributes
   name: string
 }
@@ -20,8 +20,8 @@ interface ScaffoldModelDefinition {
 //   InferCreationAttributes<T>
 // >
 
-// interface ScaffoldModel<T extends InferModel<T>>
-//   extends ScaffoldModelDefinition {
+// interface HatchifyModel<T extends InferModel<T>>
+//   extends HatchifyModelDefinition {
 //   findAll: ModelCtor<T>['findAll']
 //   findOne: ModelCtor<T>['findOne']
 //   create: ModelCtor<T>['create']
@@ -29,7 +29,7 @@ interface ScaffoldModelDefinition {
 //   destroy: ModelCtor<T>['destroy']
 // }
 
-export const Skill: ScaffoldModelDefinition = {
+export const Skill: HatchifyModelDefinition = {
   name: "Skill",
   attributes: {
     id: {
@@ -59,11 +59,11 @@ export const Skill: ScaffoldModelDefinition = {
 
 // function createModel<
 //   Q extends Model<any, any>,
-//   T extends ScaffoldModelDefinition = ScaffoldModelDefinition
-// >(modeldef: T): ScaffoldModel<Q> {
+//   T extends HatchifyModelDefinition = HatchifyModelDefinition
+// >(modeldef: T): HatchifyModel<Q> {
 //   const temp = sequelize.define<Q>(modeldef.name, modeldef.attributes);
 
-//   const model: ScaffoldModel<Q> = {
+//   const model: HatchifyModel<Q> = {
 //     name: modeldef.name,
 //     attributes: modeldef.attributes,
 //     findAll: temp.findAll,

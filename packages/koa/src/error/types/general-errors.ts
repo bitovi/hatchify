@@ -1,13 +1,13 @@
-import { ScaffoldError } from "../errors"
+import { HatchifyError } from "../errors"
 
-const ScaffoldErrorHandler = (error) => {
-  if (error instanceof ScaffoldError) {
+const HatchifyErrorHandler = (error) => {
+  if (error instanceof HatchifyError) {
     return error
   }
 
-  error = new ScaffoldError(error)
+  error = new HatchifyError(error)
 
   return error
 }
 
-export default ScaffoldErrorHandler
+export default HatchifyErrorHandler
