@@ -33,7 +33,7 @@ import { buildMiddlewareForModel, errorMiddleware } from "./middleware"
 import type { EverythingFunctions } from "./everything"
 import { buildEverythingForModel } from "./everything"
 import { buildSchemaForModel } from "./schema"
-import type { IAssociation } from "sequelize-create-with-associations"
+import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
 import type { HatchifyErrorOptions } from "./error/errors"
 import { HatchifyError } from "./error/errors"
 
@@ -429,4 +429,11 @@ function buildExportWrapper<T>(
   })
 
   return wrapper
+}
+
+export function hatchifyKoa(
+  models: HatchifyModel[],
+  options: HatchifyOptions = {},
+): Hatchify {
+  return new Hatchify(models, options)
 }
