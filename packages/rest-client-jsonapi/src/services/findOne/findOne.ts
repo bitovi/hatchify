@@ -4,13 +4,13 @@ import type {
   Resource,
   Schemas,
 } from "@hatchifyjs/rest-client"
-import { convertToRecords, fetchJsonApi, getQueryParams } from "../jsonapi"
+import { convertToRecords, fetchJsonApi, getQueryParams } from "../utils"
 
 /**
  * Fetches a single resource, adds the __schema to the request response,
  * and returns it.
  */
-export async function getOne(
+export async function findOne(
   config: SourceConfig,
   allSchemas: Schemas,
   schemaName: string,

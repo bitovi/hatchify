@@ -4,14 +4,14 @@ import type { Schema } from "@hatchifyjs/rest-client"
 import { baseUrl } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import { jsonapi } from "../../rest-client-jsonapi"
-import { getOne } from "./getOne"
+import { findOne } from "./findOne"
 
 const ArticleSchema = { name: "Article" } as Schema
 const schemas = { Article: ArticleSchema }
 const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 const sourceConfig = { baseUrl, schemaMap }
 
-describe("rest-client-jsonapi/services/getOne", () => {
+describe("rest-client-jsonapi/services/findOne", () => {
   const query = { id: "article-id-1", fields: [], include: [] }
 
   it("works", async () => {
@@ -25,7 +25,7 @@ describe("rest-client-jsonapi/services/getOne", () => {
         },
       },
     ]
-    const result = await getOne(sourceConfig, schemas, "Article", query)
+    const result = await findOne(sourceConfig, schemas, "Article", query)
     expect(result).toEqual(expected)
   })
 
@@ -37,14 +37,14 @@ describe("rest-client-jsonapi/services/getOne", () => {
     )
 
     await expect(
-      getOne(sourceConfig, schemas, "Article", query),
+      findOne(sourceConfig, schemas, "Article", query),
     ).rejects.toThrowError("request failed")
   })
 
   it("can be called from a Source", async () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
-    const spy = vi.spyOn(dataSource, "getOne")
-    await dataSource.getOne(schemas, "Article", query)
+    const spy = vi.spyOn(dataSource, "findOne")
+    await dataSource.findOne(schemas, "Article", query)
     expect(spy).toHaveBeenCalledWith(schemas, "Article", query)
   })
 })

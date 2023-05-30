@@ -5,7 +5,7 @@ import {
   convertResourceToRecord,
 } from "../../store"
 import type { Schema, Source } from "../../types"
-import { getOne } from "./getOne"
+import { findOne } from "./findOne"
 
 const fakeData = [
   {
@@ -22,8 +22,8 @@ const fakeData = [
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve([]),
-  getOne: () => Promise.resolve([fakeData[0]]),
+  findAll: () => Promise.resolve([]),
+  findOne: () => Promise.resolve([fakeData[0]]),
   createOne: () => Promise.resolve([]),
   updateOne: () => Promise.resolve([]),
   deleteOne: () => Promise.resolve(),
@@ -42,12 +42,12 @@ describe("rest-client/promise", () => {
     createStore(["Article"])
   })
 
-  describe("getOne", () => {
+  describe("findOne", () => {
     const query = { id: "1" }
 
     it("should return a record", async () => {
       createStore(["Article"])
-      const result = await getOne(fakeDataSource, schemas, "Article", query)
+      const result = await findOne(fakeDataSource, schemas, "Article", query)
       const expected = convertResourceToRecord(fakeData[0])
 
       expect(result).toEqual(expected)
@@ -55,7 +55,7 @@ describe("rest-client/promise", () => {
 
     it("should insert the record into the store", async () => {
       const store = createStore(["Article"])
-      await getOne(fakeDataSource, schemas, "Article", query)
+      await findOne(fakeDataSource, schemas, "Article", query)
       const expected = keyResourcesById([fakeData[0]])
 
       expect(store.Article.data).toEqual(expected)
@@ -64,11 +64,11 @@ describe("rest-client/promise", () => {
     it("should throw an error if the request fails", async () => {
       const errorDataSource = {
         ...fakeDataSource,
-        getOne: () => Promise.reject(new Error("network error")),
+        findOne: () => Promise.reject(new Error("network error")),
       }
 
       await expect(
-        getOne(errorDataSource, schemas, "Article", query),
+        findOne(errorDataSource, schemas, "Article", query),
       ).rejects.toThrowError("network error")
     })
   })

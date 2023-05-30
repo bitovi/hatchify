@@ -1,5 +1,5 @@
 import type { Schemas, SourceConfig } from "@hatchifyjs/rest-client"
-import { fetchJsonApi } from "../jsonapi"
+import { fetchJsonApi } from "../utils"
 
 /**
  * Deletes a resource.

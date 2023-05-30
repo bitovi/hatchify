@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import {
   getMeta,
-  getOne,
+  findOne,
   getRecords,
   subscribeToOne,
 } from "@hatchifyjs/rest-client"
@@ -15,7 +15,7 @@ import type {
 } from "@hatchifyjs/rest-client"
 
 /**
- * Fetches a single records using the rest-client getOne function,
+ * Fetches a single records using the rest-client findOne function,
  * subscribes to the store for updates to the record, returns the record.
  */
 export const useOne = (
@@ -34,7 +34,7 @@ export const useOne = (
   useEffect(() => {
     setLoading(true)
 
-    getOne(dataSource, allSchemas, schemaName, query)
+    findOne(dataSource, allSchemas, schemaName, query)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))

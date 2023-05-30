@@ -2,9 +2,9 @@ import {
   createOne,
   createStore,
   deleteOne,
-  getList,
-  getOne,
-  subscribeToList,
+  findAll,
+  findOne,
+  subscribeToAll,
   subscribeToOne,
   transformSchema,
   updateOne,
@@ -21,24 +21,24 @@ import type {
   UpdateData,
 } from "@hatchifyjs/rest-client"
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
-import { useCreateOne, useDeleteOne, useList, useOne, useUpdateOne } from ".."
+import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
 
 export type ReactRest = {
   [schemaName: string]: {
     // promises
     createOne: (data: CreateData) => Promise<Record>
     deleteOne: (id: string) => Promise<void>
-    getOne: (query: QueryOne) => Promise<Record>
-    getList: (query: QueryList) => Promise<Record[]>
+    findOne: (query: QueryOne) => Promise<Record>
+    findAll: (query: QueryList) => Promise<Record[]>
     updateOne: (data: UpdateData) => Promise<Record>
     // hooks
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     useDeleteOne: () => [(id: string) => void, Meta]
-    useList: (query: QueryList) => [Record[], Meta]
+    useAll: (query: QueryList) => [Record[], Meta]
     useOne: (query: QueryOne) => [Record | undefined, Meta]
     useUpdateOne: (id: string) => [(data: CreateData) => void, Meta, Record?]
     // subscribes
-    subscribeToList: (callback: (data: Record[]) => void) => Unsubscribe
+    subscribeToAll: (callback: (data: Record[]) => void) => Unsubscribe
     subscribeToOne: (
       callback: (data: Record) => void,
       id: string,
@@ -67,17 +67,17 @@ export function createReactRest(
       // promises
       createOne: (data) => createOne(dataSource, schemas, schema.name, data),
       deleteOne: (id) => deleteOne(dataSource, schemas, schema.name, id),
-      getList: (query) => getList(dataSource, schemas, schema.name, query),
-      getOne: (query) => getOne(dataSource, schemas, schema.name, query),
+      findAll: (query) => findAll(dataSource, schemas, schema.name, query),
+      findOne: (query) => findOne(dataSource, schemas, schema.name, query),
       updateOne: (data) => updateOne(dataSource, schemas, schema.name, data),
       // hooks
       useCreateOne: () => useCreateOne(dataSource, schemas, schema.name),
       useDeleteOne: () => useDeleteOne(dataSource, schemas, schema.name),
-      useList: (query) => useList(dataSource, schemas, schema.name, query),
+      useAll: (query) => useAll(dataSource, schemas, schema.name, query),
       useOne: (query) => useOne(dataSource, schemas, schema.name, query),
       useUpdateOne: () => useUpdateOne(dataSource, schemas, schema.name),
       // subscribes
-      subscribeToList: (callback) => subscribeToList(schema.name, callback),
+      subscribeToAll: (callback) => subscribeToAll(schema.name, callback),
       subscribeToOne: (callback, id) =>
         subscribeToOne(schema.name, callback, id),
     }

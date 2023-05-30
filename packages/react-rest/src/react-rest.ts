@@ -4,7 +4,7 @@ export {
   createReactRest,
   useCreateOne,
   useDeleteOne,
-  useList,
+  useAll,
   useOne,
   useUpdateOne,
 } from "./services"

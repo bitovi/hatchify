@@ -4,13 +4,13 @@ import type {
   QueryList,
   Resource,
 } from "@hatchifyjs/rest-client"
-import { convertToRecords, fetchJsonApi, getQueryParams } from "../jsonapi"
+import { convertToRecords, fetchJsonApi, getQueryParams } from "../utils"
 
 /**
  * Fetches a list of resources, adds the __schema to each resource, and
  * returns them.
  */
-export async function getList(
+export async function findAll(
   config: SourceConfig,
   allSchemas: Schemas,
   schemaName: string,

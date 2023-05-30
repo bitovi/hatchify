@@ -7,8 +7,8 @@ import { useCreateOne } from "./useCreateOne"
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve([]),
-  getOne: () => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  findOne: () => Promise.resolve([]),
   createOne: () =>
     Promise.resolve([
       {

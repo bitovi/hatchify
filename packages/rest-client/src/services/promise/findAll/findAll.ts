@@ -1,23 +1,23 @@
-import type { Source, Record, QueryOne, Schemas } from "../../types"
+import type { Source, Record, QueryList, Schemas } from "../../types"
 import { getFields } from "../../types"
 import { convertResourceToRecord, insert } from "../../store"
 
 /**
- * Fetches a single resource from a data source, inserts it into the store,
- * notifies subscribers, and returns it as a record.
+ * Fetches a list of resources from a data source, inserts them into the store,
+ * notifies subscribers, and returns them as records.
  */
-export const getOne = async (
+export const findAll = async (
   dataSource: Source,
   allSchemas: Schemas,
   schemaName: string,
-  query: QueryOne,
-): Promise<Record> => {
+  query: QueryList,
+): Promise<Record[]> => {
   const updatedQuery = {
     ...query,
     fields: getFields(allSchemas, schemaName, query),
-  } as Required<QueryOne>
+  } as Required<QueryList>
 
-  const resources = await dataSource.getOne(
+  const resources = await dataSource.findAll(
     allSchemas,
     schemaName,
     updatedQuery,
@@ -26,5 +26,5 @@ export const getOne = async (
   insert(schemaName, resources)
 
   // todo: flatten related records into base records
-  return convertResourceToRecord(resources[0])
+  return resources.map(convertResourceToRecord)
 }

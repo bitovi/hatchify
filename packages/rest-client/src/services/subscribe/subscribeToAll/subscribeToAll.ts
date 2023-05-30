@@ -4,7 +4,7 @@ import type { Record, Unsubscribe } from "../../types"
 /**
  * Adds a subscriber to the store for a given schema.
  */
-export const subscribeToList = (
+export const subscribeToAll = (
   resource: string,
   onChange: (data: Record[]) => void,
 ): Unsubscribe => {

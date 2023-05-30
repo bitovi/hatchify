@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore, convertResourceToRecord } from "@hatchifyjs/rest-client"
 import type { Schema, Source, Subscription } from "@hatchifyjs/rest-client"
-import { useList } from "./useList"
+import { useAll } from "./useAll"
 
 const fakeData = [
   {
@@ -20,8 +20,8 @@ const fakeData = [
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve(fakeData),
-  getOne: () => Promise.resolve([]),
+  findAll: () => Promise.resolve(fakeData),
+  findOne: () => Promise.resolve([]),
   createOne: () => Promise.resolve([]),
   updateOne: () => Promise.resolve([]),
   deleteOne: () => Promise.resolve(),
@@ -34,13 +34,13 @@ const ArticleSchema = {
 } as Schema
 const schemas = { Article: ArticleSchema }
 
-describe("react-rest/services/useList", () => {
+describe("react-rest/services/useAll", () => {
   it("should fetch a list of records", async () => {
     createStore(["Article"])
     const query = {}
 
     const { result } = renderHook(() =>
-      useList(fakeDataSource, schemas, "Article", query),
+      useAll(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>
@@ -66,7 +66,7 @@ describe("react-rest/services/useList", () => {
     const query = {}
 
     const { result } = renderHook(() =>
-      useList(fakeDataSource, schemas, "Article", query),
+      useAll(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>
@@ -125,11 +125,11 @@ describe("react-rest/services/useList", () => {
     createStore(["Article"])
     const query = {}
 
-    fakeDataSource.getList = () =>
+    fakeDataSource.findAll = () =>
       Promise.reject(new Error("Something went wrong"))
 
     const { result } = renderHook(() =>
-      useList(fakeDataSource, schemas, "Article", query),
+      useAll(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>

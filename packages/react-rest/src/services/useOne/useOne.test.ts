@@ -20,8 +20,8 @@ const fakeData = [
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve([]),
-  getOne: () => Promise.resolve([fakeData[0]]),
+  findAll: () => Promise.resolve([]),
+  findOne: () => Promise.resolve([fakeData[0]]),
   createOne: () => Promise.resolve([]),
   updateOne: () => Promise.resolve([]),
   deleteOne: () => Promise.resolve(),
@@ -119,7 +119,7 @@ describe("react-rest/services/useOne", () => {
   it("should return an error", async () => {
     createStore(["Article"])
 
-    fakeDataSource.getOne = () =>
+    fakeDataSource.findOne = () =>
       Promise.reject(new Error("Something went wrong"))
 
     const { result } = renderHook(() =>
