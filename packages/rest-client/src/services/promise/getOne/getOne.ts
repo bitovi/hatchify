@@ -1,4 +1,5 @@
-import type { Source, Record, QueryOne, Schema } from "../../types"
+import type { Source, Record, QueryOne, Schemas } from "../../types"
+import { getFields } from "../../types"
 import { convertResourceToRecord, insert } from "../../store"
 
 /**
@@ -7,13 +8,23 @@ import { convertResourceToRecord, insert } from "../../store"
  */
 export const getOne = async (
   dataSource: Source,
-  schema: Schema,
+  allSchemas: Schemas,
+  schemaName: string,
   query: QueryOne,
 ): Promise<Record> => {
-  const resources = await dataSource.getOne(schema, query)
+  const updatedQuery = {
+    ...query,
+    fields: getFields(allSchemas, schemaName, query),
+  } as Required<QueryOne>
 
-  insert(schema.name, resources)
+  const resources = await dataSource.getOne(
+    allSchemas,
+    schemaName,
+    updatedQuery,
+  )
 
-  // todo flatten related records into base records
+  insert(schemaName, resources)
+
+  // todo: flatten related records into base records
   return convertResourceToRecord(resources[0])
 }

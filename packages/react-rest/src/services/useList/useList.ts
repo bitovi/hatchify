@@ -1,16 +1,16 @@
+import { useState, useEffect } from "react"
 import {
   getList,
   getMeta,
   getRecords,
   subscribeToList,
 } from "@hatchifyjs/rest-client"
-import { useState, useEffect } from "react"
 import type {
   Meta,
   MetaError,
   QueryList,
   Record,
-  Schema,
+  Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
 
@@ -20,33 +20,27 @@ import type {
  */
 export const useList = (
   dataSource: Source,
-  schema: Schema,
+  allSchemas: Schemas,
+  schemaName: string,
   query: QueryList,
 ): [Record[], Meta] => {
-  const defaultData = getRecords(schema.name)
+  const defaultData = getRecords(schemaName)
   const [data, setData] = useState<Record[]>(defaultData)
 
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  // @todo in test this infinitely loops if deps array is just `query`??
   useEffect(() => {
     setLoading(true)
-
-    getList(dataSource, schema, {
-      fields: query.fields,
-      filter: query.filter,
-      sort: query.sort,
-      page: query.page,
-    })
+    getList(dataSource, allSchemas, schemaName, query)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schema, query.fields, query.filter, query.sort, query.page])
+  }, [dataSource, schemaName, query])
 
   useEffect(() => {
-    return subscribeToList(schema.name, (records: Record[]) => setData(records))
-  }, [schema])
+    return subscribeToList(schemaName, (records: Record[]) => setData(records))
+  }, [schemaName])
 
   const meta: Meta = getMeta(error, loading, false, undefined)
   return [data, meta]

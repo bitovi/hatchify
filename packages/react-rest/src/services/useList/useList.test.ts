@@ -27,14 +27,20 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = { name: "Article" } as Schema
+const ArticleSchema = {
+  name: "Article",
+  displayAttribute: "title",
+  attributes: { title: "string", body: "string" },
+} as Schema
+const schemas = { Article: ArticleSchema }
 
 describe("react-rest/services/useList", () => {
   it("should fetch a list of records", async () => {
     createStore(["Article"])
+    const query = {}
 
     const { result } = renderHook(() =>
-      useList(fakeDataSource, ArticleSchema, {}),
+      useList(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>
@@ -57,9 +63,10 @@ describe("react-rest/services/useList", () => {
 
   it("should subscribe and return latest data", async () => {
     const store = createStore(["Article"])
+    const query = {}
 
     const { result } = renderHook(() =>
-      useList(fakeDataSource, ArticleSchema, {}),
+      useList(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>
@@ -116,12 +123,13 @@ describe("react-rest/services/useList", () => {
 
   it("should return an error", async () => {
     createStore(["Article"])
+    const query = {}
 
     fakeDataSource.getList = () =>
       Promise.reject(new Error("Something went wrong"))
 
     const { result } = renderHook(() =>
-      useList(fakeDataSource, ArticleSchema, {}),
+      useList(fakeDataSource, schemas, "Article", query),
     )
 
     await waitFor(() =>

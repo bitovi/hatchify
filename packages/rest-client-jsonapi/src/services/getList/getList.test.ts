@@ -7,17 +7,28 @@ import { jsonapi } from "../../rest-client-jsonapi"
 import { getList } from "./getList"
 
 const ArticleSchema = { name: "Article" } as Schema
+const schemas = { Article: ArticleSchema }
 const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/getList", () => {
+  const query = {
+    fields: [],
+    include: [],
+    page: { size: 0, number: 0 },
+    sort: {},
+    filter: {},
+  }
+
   it("works", async () => {
     const expected = articles.map((article) => ({
       __schema: "Article",
       attributes: article.attributes,
       id: article.id,
     }))
-    const result = await getList(sourceConfig, ArticleSchema, {})
+
+    const result = await getList(sourceConfig, schemas, "Article", query)
+
     expect(result).toEqual(expected)
   })
 
@@ -28,15 +39,15 @@ describe("rest-client-jsonapi/services/getList", () => {
       ),
     )
 
-    await expect(getList(sourceConfig, ArticleSchema, {})).rejects.toThrowError(
-      "request failed",
-    )
+    await expect(
+      getList(sourceConfig, schemas, "Article", query),
+    ).rejects.toThrowError("request failed")
   })
 
   it("can be called from a Source", async () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
     const spy = vi.spyOn(dataSource, "getList")
-    await dataSource.getList(ArticleSchema, {})
-    expect(spy).toHaveBeenCalledWith(ArticleSchema, {})
+    await dataSource.getList(schemas, "Article", query)
+    expect(spy).toHaveBeenCalledWith(schemas, "Article", query)
   })
 })

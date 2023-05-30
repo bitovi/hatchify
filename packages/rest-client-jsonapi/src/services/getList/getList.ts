@@ -1,10 +1,10 @@
 import type {
-  Schema,
+  Schemas,
   SourceConfig,
   QueryList,
   Resource,
 } from "@hatchifyjs/rest-client"
-import { convertToRecords, fetchJsonApi } from "../jsonapi"
+import { convertToRecords, fetchJsonApi, getQueryParams } from "../jsonapi"
 
 /**
  * Fetches a list of resources, adds the __schema to each resource, and
@@ -12,14 +12,23 @@ import { convertToRecords, fetchJsonApi } from "../jsonapi"
  */
 export async function getList(
   config: SourceConfig,
-  schema: Schema,
-  query: QueryList, // todo query for fields, page, sort, and filter
+  allSchemas: Schemas,
+  schemaName: string,
+  query: Required<QueryList>, // todo page, sort, and filter
 ): Promise<Resource[]> {
+  const queryParams = getQueryParams(
+    config.schemaMap,
+    allSchemas,
+    schemaName,
+    query.fields,
+    query.include,
+  )
+
   const json = await fetchJsonApi(
     "GET",
-    `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}`,
+    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}${queryParams}`,
   )
-  // todo relationships: json.included
+  // todo: flattening relationships
 
-  return Promise.resolve(convertToRecords(json.data, schema.name))
+  return Promise.resolve(convertToRecords(json.data, schemaName))
 }

@@ -1,4 +1,4 @@
-import type { Schema, SourceConfig } from "@hatchifyjs/rest-client"
+import type { Schemas, SourceConfig } from "@hatchifyjs/rest-client"
 import { fetchJsonApi } from "../jsonapi"
 
 /**
@@ -6,12 +6,13 @@ import { fetchJsonApi } from "../jsonapi"
  */
 export async function deleteOne(
   config: SourceConfig,
-  schema: Schema, // todo might be needed for url in future changes
+  allSchemas: Schemas,
+  schemaName: string,
   id: string,
 ): Promise<void> {
   await fetchJsonApi(
     "DELETE",
-    `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}/${id}`,
+    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${id}`,
   )
 
   return Promise.resolve()

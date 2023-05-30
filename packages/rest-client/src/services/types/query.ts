@@ -1,10 +1,13 @@
-// @todo Selector (Include/Fields)
+export type Include = string[] // todo: typed to schema relationships
 
-export interface QueryList {
-  fields?: string[]
+export type Fields = string[] // todo: typed to schema attributes & relationships.attributes
+
+export type Selector = { include?: Include; fields?: Fields }
+
+export type QueryList = Selector & {
   page?: { size: number; number: number }
   sort?: { [key: string]: "asc" | "desc" }
   filter?: { [key: string]: { [filter: string]: string } }
 }
 
-export type QueryOne = { id: string; fields?: string[] }
+export type QueryOne = Selector & { id: string }

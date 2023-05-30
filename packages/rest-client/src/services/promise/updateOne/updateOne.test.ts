@@ -19,7 +19,12 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = { name: "Article" } as Schema
+const ArticleSchema = {
+  name: "Article",
+  displayAttribute: "title",
+  attributes: { title: "string", body: "string" },
+} as Schema
+const schemas = { Article: ArticleSchema }
 
 describe("rest-client/services/promise/updateOne", () => {
   const data = {
@@ -34,7 +39,7 @@ describe("rest-client/services/promise/updateOne", () => {
 
   it("should return the new record", async () => {
     createStore(["Article"])
-    const result = await updateOne(fakeDataSource, ArticleSchema, data)
+    const result = await updateOne(fakeDataSource, schemas, "Article", data)
     expect(result).toEqual(convertResourceToRecord(expected))
   })
 
@@ -48,7 +53,7 @@ describe("rest-client/services/promise/updateOne", () => {
       updateOne: () => Promise.reject(new Error("network error")),
     }
     await expect(
-      updateOne(errorDataSource, ArticleSchema, data),
+      updateOne(errorDataSource, schemas, "Article", data),
     ).rejects.toThrowError("network error")
   })
 })

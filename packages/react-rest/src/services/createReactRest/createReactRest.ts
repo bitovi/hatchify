@@ -16,10 +16,11 @@ import type {
   QueryList,
   QueryOne,
   Record,
+  Schema,
   Unsubscribe,
   UpdateData,
 } from "@hatchifyjs/rest-client"
-import type { Schema } from "@hatchifyjs/hatchify-core"
+import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import { useCreateOne, useDeleteOne, useList, useOne, useUpdateOne } from ".."
 
 export type ReactRest = {
@@ -50,28 +51,31 @@ export type ReactRest = {
  * data source for each schema.
  */
 export function createReactRest(
-  schemas: { [schemaName: string]: Schema },
+  legacySchemas: { [schemaName: string]: LegacySchema },
   dataSource: Source,
 ): ReactRest {
-  const storeKeys = Object.values(schemas).map((schema) => schema.name)
+  const storeKeys = Object.values(legacySchemas).map((schema) => schema.name)
   createStore(storeKeys)
 
-  const functions = Object.values(schemas).reduce((acc, oldSchema) => {
-    const schema = transformSchema(oldSchema)
+  const schemas = Object.values(legacySchemas).reduce((acc, schema) => {
+    acc[schema.name] = transformSchema(schema)
+    return acc
+  }, {} as globalThis.Record<string, Schema>)
 
+  const functions = Object.values(schemas).reduce((acc, schema) => {
     acc[schema.name] = {
       // promises
-      createOne: (data) => createOne(dataSource, schema, data),
-      deleteOne: (id) => deleteOne(dataSource, schema, id),
-      getList: (query) => getList(dataSource, schema, query),
-      getOne: (query) => getOne(dataSource, schema, query),
-      updateOne: (data) => updateOne(dataSource, schema, data),
+      createOne: (data) => createOne(dataSource, schemas, schema.name, data),
+      deleteOne: (id) => deleteOne(dataSource, schemas, schema.name, id),
+      getList: (query) => getList(dataSource, schemas, schema.name, query),
+      getOne: (query) => getOne(dataSource, schemas, schema.name, query),
+      updateOne: (data) => updateOne(dataSource, schemas, schema.name, data),
       // hooks
-      useCreateOne: () => useCreateOne(dataSource, schema),
-      useDeleteOne: () => useDeleteOne(dataSource, schema),
-      useList: (query) => useList(dataSource, schema, query),
-      useOne: (query) => useOne(dataSource, schema, query),
-      useUpdateOne: () => useUpdateOne(dataSource, schema),
+      useCreateOne: () => useCreateOne(dataSource, schemas, schema.name),
+      useDeleteOne: () => useDeleteOne(dataSource, schemas, schema.name),
+      useList: (query) => useList(dataSource, schemas, schema.name, query),
+      useOne: (query) => useOne(dataSource, schemas, schema.name, query),
+      useUpdateOne: () => useUpdateOne(dataSource, schemas, schema.name),
       // subscribes
       subscribeToList: (callback) => subscribeToList(schema.name, callback),
       subscribeToOne: (callback, id) =>

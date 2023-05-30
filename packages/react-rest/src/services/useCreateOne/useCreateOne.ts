@@ -5,7 +5,7 @@ import type {
   Meta,
   MetaError,
   Record,
-  Schema,
+  Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
 
@@ -15,7 +15,8 @@ import type {
  */
 export const useCreateOne = (
   dataSource: Source,
-  schema: Schema,
+  allSchemas: Schemas,
+  schemaName: string,
 ): [(data: CreateData) => void, Meta, Record?] => {
   const [data, setData] = useState<Record | undefined>(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
@@ -23,7 +24,7 @@ export const useCreateOne = (
 
   function create(data: CreateData) {
     setLoading(true)
-    createOne(dataSource, schema, data)
+    createOne(dataSource, allSchemas, schemaName, data)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))

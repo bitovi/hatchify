@@ -29,12 +29,17 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = { name: "Article" } as Schema
+const ArticleSchema = {
+  name: "Article",
+  displayAttribute: "title",
+  attributes: { title: "string", body: "string" },
+} as Schema
+const schemas = { Article: ArticleSchema }
 
 describe("rest-client/services/promise/getList", () => {
   it("should return a list of records", async () => {
     createStore(["Article"])
-    const result = await getList(fakeDataSource, ArticleSchema, {})
+    const result = await getList(fakeDataSource, schemas, "Article", {})
     const expected = fakeData.map(convertResourceToRecord)
 
     expect(result).toEqual(expected)
@@ -42,7 +47,7 @@ describe("rest-client/services/promise/getList", () => {
 
   it("should insert the records into the store", async () => {
     const store = createStore(["Article"])
-    await getList(fakeDataSource, ArticleSchema, {})
+    await getList(fakeDataSource, schemas, "Article", {})
     const expected = keyResourcesById(fakeData)
 
     expect(store.Article.data).toEqual(expected)
@@ -55,7 +60,7 @@ describe("rest-client/services/promise/getList", () => {
     }
 
     await expect(
-      getList(errorDataSource, ArticleSchema, {}),
+      getList(errorDataSource, schemas, "Article", {}),
     ).rejects.toThrowError("network error")
   })
 })

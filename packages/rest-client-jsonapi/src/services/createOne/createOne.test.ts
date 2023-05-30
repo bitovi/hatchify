@@ -7,6 +7,7 @@ import { jsonapi } from "../../rest-client-jsonapi"
 import { createOne } from "./createOne"
 
 const ArticleSchema = { name: "Article" } as Schema
+const schemas = { Article: ArticleSchema }
 const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 const sourceConfig = { baseUrl, schemaMap }
 
@@ -20,7 +21,7 @@ describe("rest-client-jsonapi/services/createOne", () => {
         ...data,
       },
     ]
-    const result = await createOne(sourceConfig, ArticleSchema, data)
+    const result = await createOne(sourceConfig, schemas, "Article", data)
     expect(result).toEqual(expected)
   })
 
@@ -32,7 +33,7 @@ describe("rest-client-jsonapi/services/createOne", () => {
     )
 
     await expect(() =>
-      createOne(sourceConfig, ArticleSchema, {}),
+      createOne(sourceConfig, schemas, "Article", {}),
     ).rejects.toThrowError("request failed")
   })
 
@@ -40,7 +41,7 @@ describe("rest-client-jsonapi/services/createOne", () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
     const data = { attributes: { title: "Hello, World!" } }
     const spy = vi.spyOn(dataSource, "createOne")
-    await dataSource.createOne(ArticleSchema, data)
-    expect(spy).toHaveBeenCalledWith(ArticleSchema, data)
+    await dataSource.createOne(schemas, "Article", data)
+    expect(spy).toHaveBeenCalledWith(schemas, "Article", data)
   })
 })

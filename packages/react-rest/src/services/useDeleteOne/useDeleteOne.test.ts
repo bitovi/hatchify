@@ -14,14 +14,19 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = { name: "Article" } as Schema
+const ArticleSchema = {
+  name: "Article",
+  displayAttribute: "title",
+  attributes: { title: "string", body: "string" },
+} as Schema
+const schemas = { Article: ArticleSchema }
 
 describe("react-rest/services/useDeleteOne", () => {
   it("should delete a record", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useDeleteOne(fakeDataSource, ArticleSchema),
+      useDeleteOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {
@@ -65,7 +70,7 @@ describe("react-rest/services/useDeleteOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useDeleteOne(fakeDataSource, ArticleSchema),
+      useDeleteOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {
