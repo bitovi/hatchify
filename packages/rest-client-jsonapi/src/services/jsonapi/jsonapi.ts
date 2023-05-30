@@ -1,5 +1,11 @@
-import type { Source, SchemaMap, Resource } from "@hatchifyjs/rest-client"
-import type { Fields, Include, Schemas } from "@hatchifyjs/rest-client"
+import type {
+  Fields,
+  Include,
+  Schemas,
+  Source,
+  SchemaMap,
+  Resource,
+} from "@hatchifyjs/rest-client"
 import { createOne, deleteOne, getList, getOne, updateOne } from ".."
 
 export interface JsonApiResource {
