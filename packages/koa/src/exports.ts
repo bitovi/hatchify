@@ -15,7 +15,7 @@ export type {
 
 export type { EverythingFunctions } from "./everything"
 
-export type { MiddlewareFunctionsKoa } from "./middleware"
+export type { MiddlewareFunctionsKoa } from "./middleware/koa"
 
 export type { ParseFunctions } from "./parse"
 

@@ -28,8 +28,8 @@ import type {
   SerializeFunctions,
 } from "./serialize"
 import { buildSerializerForModel } from "./serialize"
-import type { MiddlewareFunctionsKoa } from "./middleware"
-import { buildMiddlewareForModel, errorMiddleware } from "./middleware"
+import type { MiddlewareFunctionsKoa } from "./middleware/koa"
+import { buildMiddlewareForModel, errorMiddleware } from "./middleware/koa"
 import type { EverythingFunctions } from "./everything"
 import { buildEverythingForModel } from "./everything"
 import { buildSchemaForModel } from "./schema"
