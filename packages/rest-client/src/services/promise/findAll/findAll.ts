@@ -1,5 +1,5 @@
 import type { Source, Record, QueryList, Schemas } from "../../types"
-import { getFields } from "../../types"
+import { getFields } from "../../utils"
 import { convertResourceToRecord, insert } from "../../store"
 
 /**
