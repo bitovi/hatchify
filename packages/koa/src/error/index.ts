@@ -1,9 +1,18 @@
 import { statusCodes } from "./constants"
-import databaseErrorHandlers from "./types/database-errors"
-import HatchifyErrorHandler from "./types/general-errors"
+import type { HatchifyError } from "./errors"
+import { databaseErrorHandlers } from "./types/database-errors"
+import type { SequelizeError } from "./types/database-errors"
+import { hatchifyErrorHandler } from "./types/general-errors"
 
-const errorResponseHandler = (error) => {
-  const errors: any[] = []
+export type GeneralError = SequelizeError | HatchifyError
+
+export interface ErrorResponse {
+  errors: GeneralError[]
+  status: number
+}
+
+export function errorResponseHandler(error: Error): ErrorResponse {
+  const errors: GeneralError[] = []
 
   let status = statusCodes.INTERNAL_SERVER_ERROR
 
@@ -15,14 +24,12 @@ const errorResponseHandler = (error) => {
       "SequelizeForeignKeyConstraintError",
     ].includes(error.name)
   ) {
-    errors.push(databaseErrorHandlers(error))
+    errors.push(databaseErrorHandlers(error as SequelizeError))
   } else {
-    errors.push(HatchifyErrorHandler(error))
+    errors.push(hatchifyErrorHandler(error as HatchifyError))
   }
 
   status = errors[0].status || status
 
   return { errors, status }
 }
-
-export default errorResponseHandler

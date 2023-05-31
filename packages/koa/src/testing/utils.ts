@@ -31,16 +31,14 @@ async function parse(result) {
     text = result.text
 
     try {
-      const temp = JSON.parse(result.text)
-      serialized = temp
+      serialized = JSON.parse(result.text)
     } catch (err) {
       // do nothing, its just not JSON probably
     }
 
     try {
       const deserializer = new Deserializer({ keyForAttribute: "snake_case" })
-      const temp = await deserializer.deserialize(serialized)
-      deserialized = temp
+      deserialized = await deserializer.deserialize(serialized)
     } catch (err) {
       // do nothing, its just not JSON:API probably
     }

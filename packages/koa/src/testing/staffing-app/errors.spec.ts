@@ -56,8 +56,7 @@ describe("Errors", () => {
       code,
       source: { pointer },
     } = JSON.parse(
-      results.filter((result) => result.status === statusCodes.CONFLICT)[0]
-        .text,
+      results.find((result) => result.status === statusCodes.CONFLICT)?.text,
     )[0]
 
     expect(code).toBe(codes.ERR_CONFLICT)
@@ -104,7 +103,7 @@ describe("Errors", () => {
     const { code, status } = JSON.parse(result.text)[0]
 
     expect(code).toBe(errorDetails.code)
-    expect(result.status).toEqual(status)
+    expect(status).toEqual(result.status)
 
     await hatchify.orm.close()
   })

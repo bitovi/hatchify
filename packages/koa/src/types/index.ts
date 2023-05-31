@@ -14,6 +14,8 @@ import type {
 } from "sequelize"
 import type { ModelHooks } from "sequelize/types/hooks"
 import type { Hatchify } from "../koa"
+import type { JSONAPIDocument } from "json-api-serializer"
+import type { GeneralError } from "../error"
 
 export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"
@@ -214,3 +216,18 @@ export interface Virtuals {
     [attribute: string]: string
   }
 }
+
+export interface MiddlewareRequest {
+  body: unknown
+  method: string
+  path: string
+  querystring: string
+  errorCallback: (statusCode: number, errorCode: string) => void
+}
+
+export interface MiddlewareResponse {
+  body: JSONAPIDocument | GeneralError[]
+  status?: number
+}
+
+export type NextFunction = () => Promise<void>

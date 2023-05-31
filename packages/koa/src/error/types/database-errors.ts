@@ -1,3 +1,4 @@
+import type { Error } from "sequelize"
 import { codes, statusCodes } from "../constants"
 import {
   HatchifyError,
@@ -5,12 +6,22 @@ import {
   ValidationError,
 } from "../errors"
 
-const databaseErrorHandlers = (error) => {
+export interface SequelizeError {
+  errors?: Array<{
+    path: string
+    type: string
+  }>
+  message: string
+  name: string
+  status?: number
+}
+
+export function databaseErrorHandlers(error: SequelizeError): Error {
   const { name, message } = error
   const pointer = error.errors?.[0].path
 
   if (name === "SequelizeValidationError") {
-    if (error.errors[0].type === "notNull Violation") {
+    if (error.errors?.[0].type === "notNull Violation") {
       error = new ValidationError({
         title: `${error.errors[0].path} is required.`,
         status: statusCodes.UNPROCESSABLE_ENTITY,
@@ -48,5 +59,3 @@ const databaseErrorHandlers = (error) => {
 
   return error
 }
-
-export default databaseErrorHandlers

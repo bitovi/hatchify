@@ -1,13 +1,12 @@
 import { HatchifyError } from "../errors"
+import type { HatchifyErrorOptions } from "../errors"
 
-const HatchifyErrorHandler = (error) => {
+export function hatchifyErrorHandler(
+  error: HatchifyErrorOptions,
+): HatchifyError {
   if (error instanceof HatchifyError) {
     return error
   }
 
-  error = new HatchifyError(error)
-
-  return error
+  return new HatchifyError(error)
 }
-
-export default HatchifyErrorHandler
