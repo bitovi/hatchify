@@ -10,6 +10,9 @@ export default defineConfig({
       entry: "src/react-ui.ts",
       formats: ["es", "cjs"],
     },
+    rollupOptions: {
+      external: ["react", "react-dom", "react-router-dom","uuid", "lodash" ]
+    }
   },
   plugins: [dts(), react()],
   test: {

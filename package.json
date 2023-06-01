@@ -27,5 +27,8 @@
   ],
   "dependencies": {
     "semver": "^7.5.0"
+  },
+  "msw": {
+    "workerDirectory": "example/react-mui-demo"
   }
 }
