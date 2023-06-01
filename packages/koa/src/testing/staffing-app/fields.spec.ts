@@ -1,6 +1,6 @@
 import Koa from "koa"
 import Chance from "chance"
-import { Hatchify } from "../../koa"
+import { HatchifyKoa } from "../../koa"
 import type { HatchifyModel } from "../../types"
 import { DataTypes } from "../../types"
 import { createStaffingAppInstance } from "./staffing"
@@ -50,7 +50,7 @@ describe("Tests for fields parameter", () => {
     }
 
     const app = new Koa()
-    const hatchify = new Hatchify([Employee], { prefix: "/api" })
+    const hatchify = new HatchifyKoa([Employee], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
@@ -116,7 +116,7 @@ describe("Tests for fields parameter", () => {
     }
 
     const app = new Koa()
-    const hatchify = new Hatchify([Employee], { prefix: "/api" })
+    const hatchify = new HatchifyKoa([Employee], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)

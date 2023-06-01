@@ -1,4 +1,4 @@
-import type { Hatchify } from "../koa"
+import type { Hatchify } from "../node"
 import type { Identifier } from "sequelize"
 // import { JSONObject } from "../types";
 import type { JSONAPIDocument } from "json-api-serializer"

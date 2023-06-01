@@ -1,4 +1,4 @@
-import type { Hatchify } from "../koa"
+import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
 export function buildSchemaForModel(

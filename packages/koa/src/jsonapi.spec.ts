@@ -1,4 +1,4 @@
-import { Hatchify } from "./koa"
+import { HatchifyKoa } from "./koa"
 import Koa from "koa"
 import type { HatchifyModel } from "./types"
 import { DataTypes } from "./types"
@@ -31,7 +31,7 @@ describe("JSON:API Tests", () => {
 
   it("should handle JSON:API create body", async () => {
     const app = new Koa()
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    const hatchify = new HatchifyKoa([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)

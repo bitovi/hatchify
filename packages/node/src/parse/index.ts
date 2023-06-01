@@ -5,7 +5,7 @@ import type {
   CreateOptions,
   FindOptions,
 } from "sequelize"
-import type { Hatchify } from "../koa"
+import type { Hatchify } from "../node"
 import {
   buildCreateOptions,
   buildDestroyOptions,

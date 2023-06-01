@@ -1,4 +1,4 @@
-import { Hatchify } from "./koa"
+import { Hatchify } from "./node"
 import type { HatchifyModel } from "./types"
 import { HatchifySymbolModel, DataTypes } from "./types"
 

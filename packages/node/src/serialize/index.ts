@@ -1,5 +1,5 @@
 import type { Model } from "sequelize"
-import type { Hatchify } from "../koa"
+import type { Hatchify } from "../node"
 
 import type JSONAPISerializer from "json-api-serializer"
 import type { JSONAPIDocument } from "json-api-serializer"

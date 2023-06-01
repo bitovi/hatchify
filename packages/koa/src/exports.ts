@@ -1,8 +1,8 @@
 export * from "./koa"
-export { DataTypes } from "./types"
+
 export type {
+  DataTypes,
   HatchifyModel,
-  KoaMiddleware,
   HatchifyOptions,
   BelongsToManyResult,
   BelongsToResult,
@@ -11,14 +11,12 @@ export type {
   ModelValidateOptions,
   ModelAttributes,
   ModelFunctionsCollection,
-} from "./types"
+  EverythingFunctions,
+  ParseFunctions,
+  SerializeFunctions,
+  Op,
+} from "@hatchifyjs/node"
 
-export type { EverythingFunctions } from "./everything"
+export type { KoaMiddleware } from "./types"
 
 export type { MiddlewareFunctionsKoa } from "./middleware/koa"
-
-export type { ParseFunctions } from "./parse"
-
-export type { SerializeFunctions } from "./serialize"
-
-export { Op } from "sequelize"
