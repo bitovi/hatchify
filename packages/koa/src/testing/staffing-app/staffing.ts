@@ -1,7 +1,6 @@
 import { Hatchify, Op } from "../../exports"
 import type { Context } from "koa"
 import Koa from "koa"
-import signale from "signale"
 import KoaRouter from "@koa/router"
 
 import { Assignment } from "./models/Assignment"
@@ -24,7 +23,8 @@ export function createStaffingAppInstance(): [Koa, Hatchify] {
 
   // Set up your Koa app as normal, for example, a logging middleware
   app.use(async (ctx, next) => {
-    signale.info("Incoming Request: ", ctx.method, ctx.path)
+    // eslint-disable-next-line no-console
+    console.info("Incoming Request: ", ctx.method, ctx.path)
     await next()
   })
 

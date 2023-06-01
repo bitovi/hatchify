@@ -68,7 +68,6 @@
     "jsonapi-serializer": "^3.6.7",
     "path-to-regexp": "^6.2.1",
     "sequelize": "^6.25.3",
-    "signale": "^1.4.0",
     "typedoc": "^0.23.21"
   },
   "devDependencies": {

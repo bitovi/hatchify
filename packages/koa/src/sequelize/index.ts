@@ -138,7 +138,7 @@ export function convertHatchifyModels(
           if (!associationName) {
             associationName = target.toLowerCase()
             if (relationship !== "hasOne" && relationship !== "belongsTo") {
-              associationName = inflection.pluralize("target")
+              associationName = inflection.pluralize("target") // TODO: what is happening here?
             }
           }
 
