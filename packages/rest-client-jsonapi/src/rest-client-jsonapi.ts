@@ -1,1 +1,1 @@
-export { createOne, getList, getOne, jsonapi, updateOne } from "./services"
+export { createOne, findAll, findOne, jsonapi, updateOne } from "./services"

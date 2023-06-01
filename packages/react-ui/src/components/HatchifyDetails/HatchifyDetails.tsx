@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 // import type { Schema } from "@hatchifyjs/rest-client"
 
-import { getOne } from "../../services/api/api"
+import { findOne } from "../../services/api/api"
 import { useHatchifyPresentation } from ".."
 import { getDisplays } from "../../services"
 
@@ -32,7 +32,7 @@ export const HatchifyDetails: React.FC<HatchifyDetailsProps> = ({
   )
 
   if (!useData) {
-    const resource = getOne(schema, id as string)
+    const resource = findOne(schema, id as string)
     useData = () => resource.read()
   }
 

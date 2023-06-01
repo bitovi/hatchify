@@ -1,5 +1,5 @@
 export * from "./createOne"
 export * from "./deleteOne"
-export * from "./getList"
-export * from "./getOne"
+export * from "./findAll"
+export * from "./findOne"
 export * from "./updateOne"

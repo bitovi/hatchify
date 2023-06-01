@@ -191,7 +191,7 @@ export async function createOne(
   // @todo store response in cache
 }
 
-export function getOne(
+export function findOne(
   schema: Schema,
   id: string | number,
 ): { read: () => FlatRecord } {

@@ -1,2 +1,2 @@
-export * from "./subscribeToList"
+export * from "./subscribeToAll"
 export * from "./subscribeToOne"

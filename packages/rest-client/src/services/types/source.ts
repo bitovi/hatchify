@@ -18,12 +18,12 @@ export interface SourceConfig {
 // their may be a need to return related resources
 export interface SourceV0 {
   version: 0
-  getList: (
+  findAll: (
     allSchemas: Schemas,
     schemaName: string,
     query: Required<QueryList>,
   ) => Promise<Resource[]>
-  getOne: (
+  findOne: (
     allSchemas: Schemas,
     schemaName: string,
     query: Required<QueryOne>,

@@ -4,7 +4,7 @@ import type {
   SourceConfig,
   Resource,
 } from "@hatchifyjs/rest-client"
-import { convertToRecords, fetchJsonApi } from "../jsonapi"
+import { convertToRecords, fetchJsonApi } from "../utils"
 
 /**
  * Creates a new resource, adds the __schema to the request response,
