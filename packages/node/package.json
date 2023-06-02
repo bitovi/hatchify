@@ -41,14 +41,13 @@
   "dependencies": {
     "@bitovi/sequelize-querystring-parser": "^0.1.6",
     "@hatchifyjs/sequelize-create-with-associations": "^0.3.1",
-    "@types/jsonapi-serializer": "^3.6.5",
     "inflection": "^2.0.1",
     "json-api-serializer": "^2.6.6",
-    "jsonapi-serializer": "^3.6.7",
     "path-to-regexp": "^6.2.1",
     "sequelize": "^6.25.3"
   },
   "devDependencies": {
+    "@bitovi/eslint-config": "^1.6.0",
     "@types/jest": "^29.2.1",
     "@types/json-api-serializer": "^2.6.3",
     "@types/node": "^18.11.9",
