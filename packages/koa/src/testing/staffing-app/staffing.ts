@@ -9,7 +9,7 @@ import { Employee } from "./models/Employee"
 import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 import { Skill } from "./models/Skill"
-import { HatchifyKoa } from "../../koa"
+import { Hatchify } from "../../koa"
 
 interface Assignment {
   id: string
@@ -18,19 +18,16 @@ interface Assignment {
   end_date: Date
 }
 
-export function createStaffingAppInstance(): [Koa, HatchifyKoa] {
+export function createStaffingAppInstance(): [Koa, Hatchify] {
   // Create a basic Koa application
   const app = new Koa()
   const router = new KoaRouter()
 
   // Create a Hatchify instance containing your Models
-  const hatchify = new HatchifyKoa(
-    [Assignment, Employee, Project, Role, Skill],
-    {
-      prefix: "/api",
-      expose: true,
-    },
-  )
+  const hatchify = new Hatchify([Assignment, Employee, Project, Role, Skill], {
+    prefix: "/api",
+    expose: true,
+  })
 
   // Set up your Koa app as normal, for example, a logging middleware
   app.use(async (ctx, next) => {

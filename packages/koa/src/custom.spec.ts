@@ -3,7 +3,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 import KoaRouter from "@koa/router"
 import Koa from "koa"
 
-import { HatchifyKoa } from "./koa"
+import { Hatchify } from "./koa"
 import { GET, createServer } from "./testing/utils"
 
 describe("Internal Tests", () => {
@@ -53,7 +53,7 @@ describe("Internal Tests", () => {
     const app = new Koa()
     const router = new KoaRouter()
 
-    const hatchify = new HatchifyKoa([Model, Model2, Model3], {
+    const hatchify = new Hatchify([Model, Model2, Model3], {
       prefix: "/api",
     })
 
@@ -106,7 +106,7 @@ describe("Internal Tests", () => {
     const app = new Koa()
     const router = new KoaRouter()
 
-    const hatchify = new HatchifyKoa([Model, Model2, Model3], {})
+    const hatchify = new Hatchify([Model, Model2, Model3], {})
 
     const server = createServer(app)
     await hatchify.createDatabase()
@@ -135,7 +135,7 @@ describe("Internal Tests", () => {
     const app = new Koa()
     const router = new KoaRouter()
 
-    const hatchify = new HatchifyKoa([Model], { prefix: "/api" })
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
 
     const server = createServer(app)
     await hatchify.createDatabase()
@@ -174,7 +174,7 @@ describe("Internal Tests", () => {
     const app = new Koa()
     const router = new KoaRouter()
 
-    const hatchify = new HatchifyKoa([Model], { prefix: "/api" })
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
 
     const server = createServer(app)
     await hatchify.createDatabase()
