@@ -2,12 +2,14 @@ import { HatchifyList, useHatchifyPresentation } from ".."
 import type {
   ValueComponent,
   XLayoutProps,
+  FlatRecord
 } from "../../presentation/interfaces"
-import type { Meta, QueryList, Record } from "@hatchifyjs/rest-client"
+// import type { Meta, QueryList, Record } from "@hatchifyjs/rest-client"
 
 interface HatchifyListPageProps extends XLayoutProps {
   valueComponents?: { [attribute: string]: ValueComponent }
-  useData: (query: QueryList) => [Record[], Meta]
+  useData?: () => FlatRecord[]
+  // useData: (query: QueryList) => [Record[], Meta]
 }
 
 export const HatchifyListPage: React.FC<HatchifyListPageProps> = ({
@@ -24,7 +26,7 @@ export const HatchifyListPage: React.FC<HatchifyListPageProps> = ({
       <HatchifyList
         schema={schema}
         valueComponents={valueComponents}
-        useList={useData}
+        useData={useData}
       >
         {children}
       </HatchifyList>
