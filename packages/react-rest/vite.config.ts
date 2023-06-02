@@ -10,7 +10,6 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        /node_modules/,
         "@hatchifyjs/hatchify-core",
         "@hatchifyjs/rest-client",
         "react",
