@@ -16,7 +16,7 @@ import type { MiddlewareFunctionsKoa } from "./middleware/koa"
  * @see {@link MiddlewareFunctionsKoa.all}
  *
  */
-export class Hatchify extends Hatchify {
+export class HatchifyKoa extends Hatchify {
   constructor(models: HatchifyModel[], options: HatchifyOptions = {}) {
     super(models, options)
   }
@@ -47,6 +47,6 @@ export const errorHandlerMiddleware = errorMiddleware
 export function hatchifyKoa(
   models: HatchifyModel[],
   options: HatchifyOptions = {},
-): Hatchify {
-  return new Hatchify(models, options)
+): HatchifyKoa {
+  return new HatchifyKoa(models, options)
 }

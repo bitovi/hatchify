@@ -2,7 +2,7 @@ import { DataTypes } from "@hatchifyjs/node"
 import type { HatchifyModel } from "@hatchifyjs/node"
 import Koa from "koa"
 
-import { Hatchify } from "./koa"
+import { HatchifyKoa } from "./koa"
 import { GET, POST, createServer } from "./testing/utils"
 
 describe("Attribute Tests", () => {
@@ -23,7 +23,7 @@ describe("Attribute Tests", () => {
 
   it("should create a record and fetch specific attributes", async () => {
     const app = new Koa()
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    const hatchify = new HatchifyKoa([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
@@ -65,7 +65,7 @@ describe("Attribute Tests", () => {
 
   it("should create a record and error when fetching unknown attributes", async () => {
     const app = new Koa()
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    const hatchify = new HatchifyKoa([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
@@ -93,7 +93,7 @@ describe("Attribute Tests", () => {
 
   it("should create several record and fetch all with specific attributes", async () => {
     const app = new Koa()
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    const hatchify = new HatchifyKoa([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)

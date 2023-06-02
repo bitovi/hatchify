@@ -2,7 +2,7 @@ import { DataTypes } from "@hatchifyjs/node"
 import type { HatchifyModel } from "@hatchifyjs/node"
 import Koa from "koa"
 
-import { Hatchify } from "./koa"
+import { HatchifyKoa } from "./koa"
 import { GET, createServer } from "./testing/utils"
 
 describe("Schema Tests", () => {
@@ -22,7 +22,7 @@ describe("Schema Tests", () => {
 
   it("should create fetch the schema for a specific model", async () => {
     const app = new Koa()
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    const hatchify = new HatchifyKoa([Model], { prefix: "/api" })
     app.use(async (ctx) => {
       ctx.body = hatchify.schema.Model
     })

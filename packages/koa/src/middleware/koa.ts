@@ -3,7 +3,7 @@ import { errorResponseHandler, getMiddlewareFunctions } from "@hatchifyjs/node"
 import type Koa from "koa"
 import type { Middleware as KoaMiddleware } from "koa"
 
-import type { Hatchify } from "../koa"
+import type { HatchifyKoa } from "../koa"
 import { parseHatchifyBody } from "../parse/body"
 
 /**
@@ -49,7 +49,7 @@ export interface MiddlewareFunctionsKoa {
 }
 
 export function buildKoaMiddlewareForModel(
-  hatchify: Hatchify,
+  hatchify: HatchifyKoa,
   modelName: string,
 ): MiddlewareFunctionsKoa {
   return Object.entries(getMiddlewareFunctions(hatchify, modelName)).reduce(
