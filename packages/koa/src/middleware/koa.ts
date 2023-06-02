@@ -48,7 +48,7 @@ export interface MiddlewareFunctionsKoa {
   all: KoaMiddleware
 }
 
-export function buildKoaMiddlewareForModel(
+export function buildMiddlewareForModel(
   hatchify: Hatchify,
   modelName: string,
 ): MiddlewareFunctionsKoa {
