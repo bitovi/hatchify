@@ -10,7 +10,7 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: [/node_modules/],
+      external: [/node_modules/, "@hatchifyjs/rest-client"],
     },
   },
   plugins: [dts()],
