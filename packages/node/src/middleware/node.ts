@@ -8,7 +8,6 @@ import type {
   NextFunction,
 } from "../types"
 
-
 export function getMiddlewareFunctions(
   hatchify: Hatchify,
   modelName: string,
