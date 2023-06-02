@@ -1,15 +1,22 @@
-import { Hatchify, Op } from "../../exports"
+import { Op } from "@hatchifyjs/node"
+import KoaRouter from "@koa/router"
 import type { Context } from "koa"
 import Koa from "koa"
-import signale from "signale"
-import KoaRouter from "@koa/router"
+import type { Model } from "sequelize"
 
 import { Assignment } from "./models/Assignment"
 import { Employee } from "./models/Employee"
 import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 import { Skill } from "./models/Skill"
-import type { Model } from "sequelize"
+import { Hatchify } from "../../koa"
+
+interface Assignment {
+  id: string
+  employee_id: number
+  start_date: Date
+  end_date: Date
+}
 
 export function createStaffingAppInstance(): [Koa, Hatchify] {
   // Create a basic Koa application
@@ -24,7 +31,8 @@ export function createStaffingAppInstance(): [Koa, Hatchify] {
 
   // Set up your Koa app as normal, for example, a logging middleware
   app.use(async (ctx, next) => {
-    signale.info("Incoming Request: ", ctx.method, ctx.path)
+    // eslint-disable-next-line no-console
+    console.info("Incoming Request: ", ctx.method, ctx.path)
     await next()
   })
 
@@ -58,13 +66,13 @@ export function createStaffingAppInstance(): [Koa, Hatchify] {
 
   router.get("/test-special-thing/:model", hatchify.middleware.allModels.crud)
 
-  router.post("/Assignment", async (ctx) => {
+  router.post("/Assignment", async (ctx: Context) => {
     // Run a parse first to do a general check that all the required
     // information is there, before we start the transactions and everything
     // If this doesnt pass we can fail fast and just bail out.
     const createOptions = await hatchify.parse.Assignment.create(ctx.body)
 
-    const { start_date, end_date, employee_id } = ctx.body
+    const { start_date, end_date, employee_id } = <Assignment>ctx.body
 
     // Get a transaction
     const check_overlap = await hatchify.orm.transaction()

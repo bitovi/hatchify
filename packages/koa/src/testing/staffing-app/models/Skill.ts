@@ -1,5 +1,5 @@
-import type { HatchifyModel } from "../../../types"
-import { DataTypes } from "../../../types"
+import { DataTypes } from "@hatchifyjs/node"
+import type { HatchifyModel } from "@hatchifyjs/node"
 
 export const Skill: HatchifyModel = {
   name: "Skill",

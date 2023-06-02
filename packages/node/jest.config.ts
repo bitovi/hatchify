@@ -7,9 +7,6 @@ const config: JestConfigWithTsJest = {
   coverageProvider: "v8",
   testEnvironment: "node",
   transform: { ".+\\.ts$": "ts-jest" },
-  moduleNameMapper: {
-    "@hatchifyjs/node": "<rootDir>/../node/src/exports.ts",
-  },
 }
 
 export default config

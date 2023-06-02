@@ -1,10 +1,11 @@
-import Koa from "koa"
+import { DataTypes } from "@hatchifyjs/node"
+import type { HatchifyModel } from "@hatchifyjs/node"
 import Chance from "chance"
-import { Hatchify } from "../../koa"
-import type { HatchifyModel } from "../../types"
-import { DataTypes } from "../../types"
+import Koa from "koa"
+
 import { createStaffingAppInstance } from "./staffing"
-import { createServer, GET, POST } from "../utils"
+import { Hatchify } from "../../koa"
+import { GET, POST, createServer } from "../utils"
 
 const chance = new Chance()
 describe("Tests for fields parameter", () => {

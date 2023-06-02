@@ -1,9 +1,10 @@
-import { Hatchify } from "./koa"
-import Koa from "koa"
+import { DataTypes } from "@hatchifyjs/node"
+import type { HatchifyModel } from "@hatchifyjs/node"
 import KoaRouter from "@koa/router"
-import type { HatchifyModel } from "./types"
-import { DataTypes } from "./types"
-import { createServer, GET } from "./testing/utils"
+import Koa from "koa"
+
+import { Hatchify } from "./koa"
+import { GET, createServer } from "./testing/utils"
 
 describe("Internal Tests", () => {
   const Model: HatchifyModel = {
@@ -52,7 +53,9 @@ describe("Internal Tests", () => {
     const app = new Koa()
     const router = new KoaRouter()
 
-    const hatchify = new Hatchify([Model, Model2, Model3], { prefix: "/api" })
+    const hatchify = new Hatchify([Model, Model2, Model3], {
+      prefix: "/api",
+    })
 
     const server = createServer(app)
     await hatchify.createDatabase()
@@ -62,7 +65,7 @@ describe("Internal Tests", () => {
     })
 
     router.get("/alternative-model-2", async (ctx) => {
-      const response = await hatchify.everything.Model.findAll(ctx.query)
+      const response = await hatchify.everything.Model.findAll(ctx.querystring)
       ctx.body = { test: true, data: response }
     })
 
@@ -144,7 +147,7 @@ describe("Internal Tests", () => {
           return ctx.throw(401, "Bad Auth")
         }
 
-        await next()
+        return await next()
       },
       hatchify.middleware.Model.findAll,
     )
@@ -183,7 +186,7 @@ describe("Internal Tests", () => {
           return ctx.throw(401, "Bad Auth")
         }
 
-        await next()
+        return await next()
       },
       hatchify.middleware.Model.findAll,
     )

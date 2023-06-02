@@ -1,13 +1,14 @@
-import { createServer, GET, POST } from "../utils"
-import { codes, statusCodes } from "../../error/constants"
-import Koa from "koa"
+import { codes, statusCodes } from "@hatchifyjs/node"
 import KoaRouter from "@koa/router"
-import { Hatchify, errorHandlerMiddleware } from "../../koa"
-import { Skill } from "./models/Skill"
+import Koa from "koa"
+
 import { Assignment } from "./models/Assignment"
 import { Employee } from "./models/Employee"
 import { Project } from "./models/Project"
 import { Role } from "./models/Role"
+import { Skill } from "./models/Skill"
+import { Hatchify, errorHandlerMiddleware } from "../../koa"
+import { GET, POST, createServer } from "../utils"
 
 describe("Errors", () => {
   it("should return JSON API error format with Hatchify default middleware", async () => {
@@ -56,8 +57,7 @@ describe("Errors", () => {
       code,
       source: { pointer },
     } = JSON.parse(
-      results.filter((result) => result.status === statusCodes.CONFLICT)[0]
-        .text,
+      results.find((result) => result.status === statusCodes.CONFLICT)?.text,
     )[0]
 
     expect(code).toBe(codes.ERR_CONFLICT)
@@ -104,7 +104,7 @@ describe("Errors", () => {
     const { code, status } = JSON.parse(result.text)[0]
 
     expect(code).toBe(errorDetails.code)
-    expect(result.status).toEqual(status)
+    expect(status).toEqual(result.status)
 
     await hatchify.orm.close()
   })

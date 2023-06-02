@@ -1,9 +1,9 @@
-import type { Model } from "sequelize"
-import type { Hatchify } from "../koa"
-
+import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
 import type JSONAPISerializer from "json-api-serializer"
 import type { JSONAPIDocument } from "json-api-serializer"
-import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
+import type { Model } from "sequelize"
+
+import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
 /**

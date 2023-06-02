@@ -1,8 +1,9 @@
-import { Hatchify } from "./koa"
+import { DataTypes } from "@hatchifyjs/node"
+import type { HatchifyModel } from "@hatchifyjs/node"
 import Koa from "koa"
-import type { HatchifyModel } from "./types"
-import { DataTypes } from "./types"
-import { createServer, GET } from "./testing/utils"
+
+import { Hatchify } from "./koa"
+import { GET, createServer } from "./testing/utils"
 
 describe("Schema Tests", () => {
   const Model: HatchifyModel = {

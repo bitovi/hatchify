@@ -1,9 +1,9 @@
 import http from "node:http"
+
+import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
+import { Deserializer } from "jsonapi-serializer"
 import type Koa from "koa"
 import request from "supertest"
-import { Deserializer } from "jsonapi-serializer"
-import { HatchifyError } from "../error/errors"
-import { codes, statusCodes } from "../error/constants"
 
 export function createServer(app: Koa) {
   return http.createServer(app.callback())
@@ -31,16 +31,14 @@ async function parse(result) {
     text = result.text
 
     try {
-      const temp = JSON.parse(result.text)
-      serialized = temp
+      serialized = JSON.parse(result.text)
     } catch (err) {
       // do nothing, its just not JSON probably
     }
 
     try {
       const deserializer = new Deserializer({ keyForAttribute: "snake_case" })
-      const temp = await deserializer.deserialize(serialized)
-      deserialized = temp
+      deserialized = await deserializer.deserialize(serialized)
     } catch (err) {
       // do nothing, its just not JSON:API probably
     }

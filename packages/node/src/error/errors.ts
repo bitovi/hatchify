@@ -1,10 +1,10 @@
 import { codes, statusCodes } from "./constants"
 
 class Source {
-  pointer: string
-  parameter: string
+  pointer?: string
+  parameter?: string
 
-  constructor(pointer, parameter) {
+  constructor(pointer?: string, parameter?: string) {
     this.pointer = pointer && "/data/attributes/" + pointer
     this.parameter = parameter
   }
