@@ -2,6 +2,7 @@
 import { Suspense } from "react"
 import { css } from "@emotion/react"
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -50,7 +51,11 @@ export const MuiList: React.FC<XListProps> = ({ displays, useData }) => {
 export default MuiList
 
 const MuiListRows: React.FC<XListProps> = ({ displays, useData }) => {
-  const data = useData()
+  const [data, meta] = useData({})
+
+  if (meta.isLoading) {
+    return <SkeletonCells displays={displays} />
+  }
 
   return (
     <>
@@ -69,20 +74,20 @@ const MuiListRows: React.FC<XListProps> = ({ displays, useData }) => {
   )
 }
 
-// type SkeletonCellsProps = Omit<XListProps, "useData">
+type SkeletonCellsProps = Omit<XListProps, "useData">
 
-// const SkeletonCells = ({ displays }: SkeletonCellsProps) => {
-//   return (
-//     <>
-//       {[1, 2, 3].map((key) => (
-//         <TableRow key={key}>
-//           {displays.map((display) => (
-//             <TableCell key={display.label}>
-//               <Skeleton variant="rounded" />
-//             </TableCell>
-//           ))}
-//         </TableRow>
-//       ))}
-//     </>
-//   )
-// }
+const SkeletonCells = ({ displays }: SkeletonCellsProps) => {
+  return (
+    <>
+      {[1, 2, 3].map((key) => (
+        <TableRow key={key}>
+          {displays.map((display) => (
+            <TableCell key={display.label}>
+              <Skeleton variant="rounded" />
+            </TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </>
+  )
+}

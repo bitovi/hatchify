@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import {MuiProvider} from "@hatchifyjs/design-mui"
+import { MuiProvider } from "@hatchifyjs/design-mui"
 
 import Layout from "./components"
 import {
@@ -14,7 +14,7 @@ import {
   CreateUser,
   FileTypes,
   ViewFileType,
-  CreateFileType
+  CreateFileType,
 } from "./pages"
 
 // @ts-expect-error

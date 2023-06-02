@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import { setupWorker } from "msw"
 import mswHandlers from "./mocks/handlers"
-import App from "./App";
+import App from "./App2"
 import "./index.css"
 
 // @ts-expect-error

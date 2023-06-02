@@ -5,18 +5,21 @@ import { getDisplays } from "../../services"
 import { useHatchifyPresentation } from ".."
 
 import type { FlatRecord, ValueComponent } from "../../presentation/interfaces"
+import { Meta, QueryList, Record } from "@hatchifyjs/rest-client"
 
 export interface HatchifyListProps {
   schema: Schema
   valueComponents?: { [attribute: string]: ValueComponent }
   useData?: () => FlatRecord[]
   children?: React.ReactNode | null
+  useList: (query: QueryList) => [Record[], Meta]
 }
 
 export const HatchifyList: React.FC<HatchifyListProps> = ({
   schema,
   valueComponents,
   useData,
+  useList,
   children,
 }) => {
   const { List, defaultValueComponents } = useHatchifyPresentation()
@@ -33,5 +36,5 @@ export const HatchifyList: React.FC<HatchifyListProps> = ({
     useData = () => [] //resource.read()
   }
 
-  return <List displays={displays} useData={useData} />
+  return <List displays={displays} useData={useList} />
 }

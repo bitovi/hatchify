@@ -9,7 +9,7 @@ import {
 import type { Render } from "@hatchifyjs/react-ui"
 
 import { Document } from "../../types"
-import ClickableChip from "../../components";
+import ClickableChip from "../../components"
 
 const List: React.FC = () => {
   const navigate = useNavigate()

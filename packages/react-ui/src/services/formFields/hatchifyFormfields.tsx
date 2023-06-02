@@ -246,10 +246,6 @@ export function getDefaultFormFieldRender(
     }
 
     if (attributeSchema.type === "relationship" && Array.isArray(value)) {
-      // console.log("attribute", attribute)
-      // console.log("attributeSchema", attributeSchema)
-      // console.log("options", options)
-      // console.log("-----------------")
       return (
         <Relationship
           hasMany={false}

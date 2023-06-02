@@ -11,8 +11,8 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react-router-dom","uuid", "lodash" ]
-    }
+      external: ["react", "react-dom", "react-router-dom", "uuid", "lodash"],
+    },
   },
   plugins: [dts(), react()],
   test: {
