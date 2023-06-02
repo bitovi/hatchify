@@ -44,7 +44,7 @@
     "inflection": "^2.0.1",
     "json-api-serializer": "^2.6.6",
     "path-to-regexp": "^6.2.1",
-    "sequelize": "^6.25.3"
+    "sequelize": "^6.32.0"
   },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",
@@ -52,7 +52,6 @@
     "@types/json-api-serializer": "^2.6.3",
     "@types/node": "^18.11.9",
     "jest": "^29.2.2",
-    "sequelize": "^6.25.3",
     "ts-jest": "^29.0.3"
   },
   "eslintConfig": {
