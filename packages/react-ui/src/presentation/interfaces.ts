@@ -7,6 +7,7 @@ import type {
   FormFieldValueType,
 } from "../services"
 import type { FormState } from "../components/HatchifyForm"
+// import { Meta, QueryList, Record } from "@hatchifyjs/rest-client"
 
 export type Primitive = string | boolean | number
 
@@ -18,6 +19,7 @@ export interface XProviderProps<T> {
 export interface XListProps {
   displays: HatchifyDisplay[]
   useData: () => FlatRecord[]
+  // useData: (query: QueryList)C => [Record[], Meta]
 }
 
 export interface XLayoutProps {

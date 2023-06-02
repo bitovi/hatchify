@@ -8,6 +8,9 @@ export default defineConfig({
       entry: "src/rest-client.ts",
       formats: ["es", "cjs"],
     },
+    rollupOptions: {
+      external: ["@hatchifyjs/hatchify-core"],
+    },
   },
   plugins: [dts()],
 })

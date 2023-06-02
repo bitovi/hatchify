@@ -10,6 +10,16 @@ export default defineConfig({
       entry: "src/design-mui.ts",
       formats: ["es", "cjs"],
     },
+    rollupOptions: {
+      external: [
+        "react",
+        "react-dom",
+        "@hatchifyjs/react-ui",
+        "@mui/material",
+        "@emotion/react",
+        "@emotion/styled",
+      ],
+    },
   },
   plugins: [dts(), react()],
   test: {

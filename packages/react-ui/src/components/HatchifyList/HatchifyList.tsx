@@ -1,22 +1,25 @@
-// import type { Schema } from "@hatchifyjs/rest-client"
+// import type { Schema } from "@hatchifyjs/hatchify-core"
 import type { Schema } from "../../services/api/schemas" //TODO update schema
 
 import { getDisplays } from "../../services"
 import { useHatchifyPresentation } from ".."
 
 import type { FlatRecord, ValueComponent } from "../../presentation/interfaces"
+// import type { Meta, QueryList, Record } from "@hatchifyjs/rest-client"
 
 export interface HatchifyListProps {
   schema: Schema
   valueComponents?: { [attribute: string]: ValueComponent }
   useData?: () => FlatRecord[]
   children?: React.ReactNode | null
+  // useList: (query: QueryList) => [Record[], Meta]
 }
 
 export const HatchifyList: React.FC<HatchifyListProps> = ({
   schema,
   valueComponents,
   useData,
+  // useList,
   children,
 }) => {
   const { List, defaultValueComponents } = useHatchifyPresentation()

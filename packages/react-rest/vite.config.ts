@@ -9,7 +9,12 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: [/node_modules/],
+      external: [
+        "@hatchifyjs/hatchify-core",
+        "@hatchifyjs/rest-client",
+        "react",
+        "react-dom",
+      ],
     },
   },
   plugins: [dts()],

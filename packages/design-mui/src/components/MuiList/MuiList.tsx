@@ -2,6 +2,7 @@
 import { Suspense } from "react"
 import { css } from "@emotion/react"
 import {
+  // Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -51,6 +52,11 @@ export default MuiList
 
 const MuiListRows: React.FC<XListProps> = ({ displays, useData }) => {
   const data = useData()
+  // const [data, meta] = useData({})
+
+  // if (meta.isLoading) {
+  //   return <SkeletonCells displays={displays} />
+  // }
 
   return (
     <>

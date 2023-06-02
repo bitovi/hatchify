@@ -10,6 +10,18 @@ export default defineConfig({
       entry: "src/react-ui.ts",
       formats: ["es", "cjs"],
     },
+    rollupOptions: {
+      external: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "uuid",
+        "lodash",
+        "@hatchifyjs/hatchify-core",
+        "@hatchifyjs/react-rest",
+        "@hatchifyjs/rest-client",
+      ],
+    },
   },
   plugins: [dts(), react()],
   test: {
