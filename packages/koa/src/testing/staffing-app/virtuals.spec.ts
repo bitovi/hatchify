@@ -7,7 +7,7 @@ import { Employee } from "./models/Employee"
 import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 import { Skill } from "./models/Skill"
-import { HatchifyKoa } from "../../koa"
+import { Hatchify } from "../../koa"
 
 const chance = new Chance()
 
@@ -30,7 +30,7 @@ describe("Virtuals Tests", () => {
       },
     }
 
-    const hatchify = new HatchifyKoa([Sample])
+    const hatchify = new Hatchify([Sample])
 
     expect(hatchify.virtuals).toStrictEqual({
       Sample: { noOfRoles: [{ association: "roles", include: [] }] },
@@ -54,19 +54,13 @@ describe("Virtuals Tests", () => {
       },
     }
 
-    const hatchify = new HatchifyKoa([Sample])
+    const hatchify = new Hatchify([Sample])
 
     expect(hatchify.virtuals).toStrictEqual({ Sample: { nameInCaps: [] } })
   })
 
   it("should return virtual field with include in query options", async () => {
-    const hatchify = new HatchifyKoa([
-      Project,
-      Role,
-      Assignment,
-      Skill,
-      Employee,
-    ])
+    const hatchify = new Hatchify([Project, Role, Assignment, Skill, Employee])
 
     await hatchify.createDatabase()
 

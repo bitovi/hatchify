@@ -1,4 +1,4 @@
-import { Hatchify, buildExportWrapper } from "@hatchifyjs/node"
+import { Hatchify as HatchifyNode, buildExportWrapper } from "@hatchifyjs/node"
 import type { HatchifyModel, HatchifyOptions } from "@hatchifyjs/node"
 
 import { buildKoaMiddlewareForModel, errorMiddleware } from "./middleware/koa"
@@ -16,7 +16,7 @@ import type { MiddlewareFunctionsKoa } from "./middleware/koa"
  * @see {@link MiddlewareFunctionsKoa.all}
  *
  */
-export class HatchifyKoa extends Hatchify {
+export class Hatchify extends HatchifyNode {
   constructor(models: HatchifyModel[], options: HatchifyOptions = {}) {
     super(models, options)
   }
@@ -47,6 +47,6 @@ export const errorHandlerMiddleware = errorMiddleware
 export function hatchifyKoa(
   models: HatchifyModel[],
   options: HatchifyOptions = {},
-): HatchifyKoa {
-  return new HatchifyKoa(models, options)
+): Hatchify {
+  return new Hatchify(models, options)
 }

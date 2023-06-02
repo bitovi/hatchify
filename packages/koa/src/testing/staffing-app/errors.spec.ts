@@ -7,7 +7,7 @@ import { Employee } from "./models/Employee"
 import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 import { Skill } from "./models/Skill"
-import { HatchifyKoa, errorHandlerMiddleware } from "../../koa"
+import { Hatchify, errorHandlerMiddleware } from "../../koa"
 import { GET, POST, createServer } from "../utils"
 
 describe("Errors", () => {
@@ -17,7 +17,7 @@ describe("Errors", () => {
     const router = new KoaRouter()
 
     // Create a Hatchify instance containing your Models
-    const hatchify = new HatchifyKoa(
+    const hatchify = new Hatchify(
       [Assignment, Employee, Project, Role, Skill],
       {
         prefix: "/api",
@@ -72,7 +72,7 @@ describe("Errors", () => {
     const router = new KoaRouter()
 
     // Create a Hatchify instance containing your Models
-    const hatchify = new HatchifyKoa(
+    const hatchify = new Hatchify(
       [Assignment, Employee, Project, Role, Skill],
       {
         prefix: "/api",
@@ -96,7 +96,7 @@ describe("Errors", () => {
     }
 
     router.get("/err", async () => {
-      throw HatchifyKoa.createError(errorDetails)
+      throw Hatchify.createError(errorDetails)
     })
 
     const result = await GET(server, "/err")

@@ -3,7 +3,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 import { Serializer } from "jsonapi-serializer"
 import Koa from "koa"
 
-import { HatchifyKoa } from "./koa"
+import { Hatchify } from "./koa"
 import { GET, POST, createServer } from "./testing/utils"
 
 describe("JSON:API Tests", () => {
@@ -32,7 +32,7 @@ describe("JSON:API Tests", () => {
 
   it("should handle JSON:API create body", async () => {
     const app = new Koa()
-    const hatchify = new HatchifyKoa([Model], { prefix: "/api" })
+    const hatchify = new Hatchify([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)
