@@ -2,7 +2,7 @@ import { HatchifyList, useHatchifyPresentation } from ".."
 import type {
   ValueComponent,
   XLayoutProps,
-  FlatRecord
+  FlatRecord,
 } from "../../presentation/interfaces"
 // import type { Meta, QueryList, Record } from "@hatchifyjs/rest-client"
 

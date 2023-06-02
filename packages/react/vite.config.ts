@@ -11,7 +11,14 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["@hatchifyjs/design-mui","@hatchifyjs/hatchify-core", "@hatchifyjs/react-ui","@hatchifyjs/rest-client-jsonapi" ,"react", "react-dom" ],
+      external: [
+        "@hatchifyjs/design-mui",
+        "@hatchifyjs/hatchify-core",
+        "@hatchifyjs/react-ui",
+        "@hatchifyjs/rest-client-jsonapi",
+        "react",
+        "react-dom",
+      ],
     },
   },
   plugins: [dts(), react()],

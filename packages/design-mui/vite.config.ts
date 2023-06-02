@@ -11,8 +11,15 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["react", "react-dom", "@hatchifyjs/react-ui", "@mui/material", "@emotion/react","@emotion/styled",  ]
-    }
+      external: [
+        "react",
+        "react-dom",
+        "@hatchifyjs/react-ui",
+        "@mui/material",
+        "@emotion/react",
+        "@emotion/styled",
+      ],
+    },
   },
   plugins: [dts(), react()],
   test: {
