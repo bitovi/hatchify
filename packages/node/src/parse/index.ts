@@ -1,20 +1,21 @@
 import type {
-  DestroyOptions,
-  UpdateOptions,
-  Identifier,
   CreateOptions,
+  DestroyOptions,
   FindOptions,
+  Identifier,
+  UpdateOptions,
 } from "sequelize"
-import type { Hatchify } from "../node"
+
 import {
   buildCreateOptions,
   buildDestroyOptions,
   buildFindOptions,
   buildUpdateOptions,
 } from "./builder"
-import type { JSONObject, HatchifyModel } from "../types"
-import { ValidationError } from "../error/errors"
 import { codes, statusCodes } from "../error/constants"
+import { ValidationError } from "../error/errors"
+import type { Hatchify } from "../node"
+import type { HatchifyModel, JSONObject } from "../types"
 
 /**
  * Provides a set of exported functions, per Model, that

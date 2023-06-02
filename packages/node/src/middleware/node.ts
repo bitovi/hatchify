@@ -1,3 +1,6 @@
+import { errorResponseHandler } from "../error"
+import { codes, statusCodes } from "../error/constants"
+import { ValidationError } from "../error/errors"
 import type { Hatchify } from "../node"
 import type {
   MiddlewareRequest,
@@ -5,9 +8,6 @@ import type {
   NextFunction,
 } from "../types"
 
-import { errorResponseHandler } from "../error"
-import { ValidationError } from "../error/errors"
-import { codes, statusCodes } from "../error/constants"
 
 export function getMiddlewareFunctions(
   hatchify: Hatchify,

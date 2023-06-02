@@ -1,8 +1,9 @@
-import { HatchifyKoa } from "./koa"
-import Koa from "koa"
 import { DataTypes } from "@hatchifyjs/node"
 import type { HatchifyModel } from "@hatchifyjs/node"
-import { createServer, GET, POST } from "./testing/utils"
+import Koa from "koa"
+
+import { HatchifyKoa } from "./koa"
+import { GET, POST, createServer } from "./testing/utils"
 
 describe("Attribute Tests", () => {
   const Model: HatchifyModel = {

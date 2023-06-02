@@ -1,9 +1,10 @@
-import { HatchifyKoa } from "./koa"
-import Koa from "koa"
-import type { HatchifyModel } from "./types"
-import { DataTypes } from "./types"
-import { createServer, GET, POST } from "./testing/utils"
+import { DataTypes } from "@hatchifyjs/node"
+import type { HatchifyModel } from "@hatchifyjs/node"
 import { Serializer } from "jsonapi-serializer"
+import Koa from "koa"
+
+import { HatchifyKoa } from "./koa"
+import { GET, POST, createServer } from "./testing/utils"
 
 describe("JSON:API Tests", () => {
   const Model: HatchifyModel = {

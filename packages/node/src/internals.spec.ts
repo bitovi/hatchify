@@ -1,6 +1,6 @@
 import { Hatchify } from "./node"
 import type { HatchifyModel } from "./types"
-import { HatchifySymbolModel, DataTypes } from "./types"
+import { DataTypes, HatchifySymbolModel } from "./types"
 
 describe("Internal Tests", () => {
   const Model: HatchifyModel = {

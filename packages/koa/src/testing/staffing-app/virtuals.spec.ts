@@ -1,12 +1,13 @@
+import { DataTypes } from "@hatchifyjs/node"
+import type { HatchifyModel } from "@hatchifyjs/node"
 import Chance from "chance"
-import { HatchifyKoa } from "../../koa"
-import type { HatchifyModel } from "../../types"
-import { DataTypes } from "../../types"
+
 import { Assignment } from "./models/Assignment"
 import { Employee } from "./models/Employee"
 import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 import { Skill } from "./models/Skill"
+import { HatchifyKoa } from "../../koa"
 
 const chance = new Chance()
 

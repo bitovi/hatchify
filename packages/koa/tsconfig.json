@@ -1,15 +1,10 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src"],
+  "include": ["../node/src/**/*.ts"],
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
     "outDir": "dist",
-    "rootDir": "src",
     "sourceMap": true,
     "strict": false,
-    "strictNullChecks": true,
-    "target": "ES2022"
+    "strictNullChecks": true
   }
 }

@@ -1,7 +1,10 @@
-import { codes, statusCodes } from "../../../error/constants"
-import { ValidationError } from "../../../error/errors"
-import type { HatchifyModel } from "../../../types"
-import { DataTypes } from "../../../types"
+import {
+  DataTypes,
+  ValidationError,
+  codes,
+  statusCodes,
+} from "@hatchifyjs/node"
+import type { HatchifyModel } from "@hatchifyjs/node"
 
 export const Employee: HatchifyModel = {
   name: "Employee",

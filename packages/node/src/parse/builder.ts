@@ -1,4 +1,6 @@
 import type { ParsedUrlQuery } from "node:querystring"
+
+import querystringParser from "@bitovi/sequelize-querystring-parser"
 import type {
   CreateOptions,
   DestroyOptions,
@@ -7,10 +9,10 @@ import type {
   UpdateOptions,
   WhereOptions,
 } from "sequelize"
-import type { HatchifyModel, SequelizeModelInstance } from "../types"
-import querystringParser from "@bitovi/sequelize-querystring-parser"
-import { ValidationError } from "../error/errors"
+
 import { codes, statusCodes } from "../error/constants"
+import { ValidationError } from "../error/errors"
+import type { HatchifyModel, SequelizeModelInstance } from "../types"
 
 interface QSP<T> {
   data: T

@@ -1,23 +1,24 @@
-import type { Model, Options } from "sequelize"
-import { DataTypes, Sequelize } from "sequelize"
-import type JSONAPISerializer from "json-api-serializer"
-import * as inflection from "inflection"
 import querystringParser from "@bitovi/sequelize-querystring-parser"
-import type {
-  HatchifyModel,
-  SequelizeModelsCollection,
-  HatchifyModelCollection,
-  Virtuals,
-} from "../types"
-import { HatchifySymbolModel } from "../types"
 import extendSequelize from "@hatchifyjs/sequelize-create-with-associations"
 import type {
   IAssociation,
   ICreateHatchifyModel,
 } from "@hatchifyjs/sequelize-create-with-associations"
-import { registerSchema } from "../serialize"
-import { HatchifyError } from "../error/errors"
+import * as inflection from "inflection"
+import type JSONAPISerializer from "json-api-serializer"
+import type { Model, Options } from "sequelize"
+import { DataTypes, Sequelize } from "sequelize"
+
 import { codes, statusCodes } from "../error/constants"
+import { HatchifyError } from "../error/errors"
+import { registerSchema } from "../serialize"
+import type {
+  HatchifyModel,
+  HatchifyModelCollection,
+  SequelizeModelsCollection,
+  Virtuals,
+} from "../types"
+import { HatchifySymbolModel } from "../types"
 
 const splitIncludeToJSONAPiQuery = (include) => {
   return `include=${include.join(",")}`

@@ -1,4 +1,4 @@
-enum codes {
+export enum codes {
   ERR_PARAMETER_REQUIRED = "parameter-required",
   ERR_CONFLICT = "resource-conflict-occurred",
   ERR_RANGE = "range-error",
@@ -11,7 +11,7 @@ enum codes {
   ERR_SERVER_ERROR = "server-error",
 }
 
-enum statusCodes {
+export enum statusCodes {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
@@ -21,5 +21,3 @@ enum statusCodes {
   UNPROCESSABLE_ENTITY = 422,
   INTERNAL_SERVER_ERROR = 500,
 }
-
-export { codes, statusCodes }

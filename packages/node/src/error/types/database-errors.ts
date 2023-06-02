@@ -1,4 +1,5 @@
 import type { Error } from "sequelize"
+
 import { codes, statusCodes } from "../constants"
 import {
   HatchifyError,

@@ -1,19 +1,20 @@
+import type { JSONAPIDocument } from "json-api-serializer"
 import type {
-  Model,
   BelongsToManyOptions,
-  ModelValidateOptions,
   BelongsToOptions,
-  HasOneOptions,
-  HasManyOptions,
-  Options,
-  ModelCtor,
   DataType,
+  HasManyOptions,
+  HasOneOptions,
+  Model,
   ModelAttributeColumnOptions,
+  ModelCtor,
+  ModelValidateOptions,
+  Options,
 } from "sequelize"
 import type { ModelHooks } from "sequelize/types/hooks"
-import type { Hatchify } from "../node"
-import type { JSONAPIDocument } from "json-api-serializer"
+
 import type { GeneralError } from "../error"
+import type { Hatchify } from "../node"
 
 export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"

@@ -1,5 +1,5 @@
 import { createStaffingAppInstance } from "./staffing"
-import { createServer, GET, POST } from "../utils"
+import { GET, POST, createServer } from "../utils"
 
 describe("Staffing App Example", () => {
   const [app, hatchify] = createStaffingAppInstance()

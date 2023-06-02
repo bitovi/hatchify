@@ -1,5 +1,6 @@
 import { Hatchify, buildExportWrapper } from "@hatchifyjs/node"
 import type { HatchifyModel, HatchifyOptions } from "@hatchifyjs/node"
+
 import { buildKoaMiddlewareForModel, errorMiddleware } from "./middleware/koa"
 import type { MiddlewareFunctionsKoa } from "./middleware/koa"
 

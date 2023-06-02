@@ -1,39 +1,38 @@
-import type { Identifier, Sequelize } from "sequelize"
+import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
+import { capitalize, singularize } from "inflection"
 import JSONAPISerializer from "json-api-serializer"
 import { match } from "path-to-regexp"
-import { capitalize, singularize } from "inflection"
+import type { Identifier, Sequelize } from "sequelize"
 
-import type {
-  HatchifyModel,
-  HatchifyModelCollection,
-  HatchifyOptions,
-  SequelizeModelsCollection,
-  FunctionsHandler,
-  ModelFunctionsCollection,
-  Virtuals,
-} from "./types"
-import {
-  convertHatchifyModels,
-  createSequelizeInstance,
-  buildHatchifyModelObject,
-} from "./sequelize"
+import type { HatchifyErrorOptions } from "./error/errors"
+import { HatchifyError } from "./error/errors"
+import type { EverythingFunctions } from "./everything"
+import { buildEverythingForModel } from "./everything"
+import { buildParserForModel } from "./parse"
 import type {
   // buildParserForModelStandalone,
   ParseFunctions,
 } from "./parse"
-import { buildParserForModel } from "./parse"
-
+import { buildSchemaForModel } from "./schema"
+import {
+  buildHatchifyModelObject,
+  convertHatchifyModels,
+  createSequelizeInstance,
+} from "./sequelize"
+import { buildSerializerForModel } from "./serialize"
 import type {
   // buildSerializerForModelStandalone,
   SerializeFunctions,
 } from "./serialize"
-import { buildSerializerForModel } from "./serialize"
-import type { EverythingFunctions } from "./everything"
-import { buildEverythingForModel } from "./everything"
-import { buildSchemaForModel } from "./schema"
-import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
-import type { HatchifyErrorOptions } from "./error/errors"
-import { HatchifyError } from "./error/errors"
+import type {
+  FunctionsHandler,
+  HatchifyModel,
+  HatchifyModelCollection,
+  HatchifyOptions,
+  ModelFunctionsCollection,
+  SequelizeModelsCollection,
+  Virtuals,
+} from "./types"
 
 /**
  * Parse can be imported from the `@bitovi/hatchify` package
@@ -392,7 +391,7 @@ export class Hatchify {
 
 export const Error = HatchifyError
 
-function buildExportWrapper<T>(
+export function buildExportWrapper<T>(
   hatchify: Hatchify,
   handlerFunction: FunctionsHandler<T>,
 ): ModelFunctionsCollection<T> {
