@@ -1,4 +1,4 @@
-import type { Schema, Source, Record, UpdateData } from "../../types"
+import type { Schemas, Source, Record, UpdateData } from "../../types"
 import { convertResourceToRecord, insert } from "../../store"
 
 /**
@@ -7,13 +7,14 @@ import { convertResourceToRecord, insert } from "../../store"
  */
 export const updateOne = async (
   dataSource: Source,
-  schema: Schema,
-  data: UpdateData, // @todo Resource or Record?
+  allSchemas: Schemas,
+  schemaName: string,
+  data: UpdateData, // todo: Resource or Record?
 ): Promise<Record> => {
-  const resources = await dataSource.updateOne(schema, data)
+  const resources = await dataSource.updateOne(allSchemas, schemaName, data)
 
-  insert(schema.name, resources)
+  insert(schemaName, resources)
 
-  // todo flatten related records into base records
+  // todo: flatten related records into base records
   return convertResourceToRecord(resources[0])
 }

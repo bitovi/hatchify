@@ -7,6 +7,7 @@ import { jsonapi } from "../../rest-client-jsonapi"
 import { updateOne } from "./updateOne"
 
 const ArticleSchema = { name: "Article" } as Schema
+const schemas = { Article: ArticleSchema }
 const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 const sourceConfig = { baseUrl, schemaMap }
 
@@ -23,7 +24,7 @@ describe("rest-client-jsonapi/services/updateOne", () => {
         },
       },
     ]
-    const result = await updateOne(sourceConfig, ArticleSchema, data)
+    const result = await updateOne(sourceConfig, schemas, "Article", data)
     expect(result).toEqual(expected)
   })
 
@@ -35,7 +36,7 @@ describe("rest-client-jsonapi/services/updateOne", () => {
     )
 
     await expect(() =>
-      updateOne(sourceConfig, ArticleSchema, {}),
+      updateOne(sourceConfig, schemas, "Article", {}),
     ).rejects.toThrowError("request failed")
   })
 
@@ -43,7 +44,7 @@ describe("rest-client-jsonapi/services/updateOne", () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
     const data = { id: "article-id-1", attributes: { title: "Hello, World!" } }
     const spy = vi.spyOn(dataSource, "updateOne")
-    await dataSource.updateOne(ArticleSchema, data)
-    expect(spy).toHaveBeenCalledWith(ArticleSchema, data)
+    await dataSource.updateOne(schemas, "Article", data)
+    expect(spy).toHaveBeenCalledWith(schemas, "Article", data)
   })
 })

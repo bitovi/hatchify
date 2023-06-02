@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import {
   getMeta,
-  getOne,
+  findOne,
   getRecords,
   subscribeToOne,
 } from "@hatchifyjs/rest-client"
@@ -10,20 +10,21 @@ import type {
   MetaError,
   QueryOne,
   Record,
-  Schema,
+  Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
 
 /**
- * Fetches a single records using the rest-client getOne function,
+ * Fetches a single records using the rest-client findOne function,
  * subscribes to the store for updates to the record, returns the record.
  */
 export const useOne = (
   dataSource: Source,
-  schema: Schema,
+  allSchemas: Schemas,
+  schemaName: string,
   query: QueryOne,
 ): [Record | undefined, Meta] => {
-  const defaultData = getRecords(schema.name)
+  const defaultData = getRecords(schemaName)
   const record = defaultData.find((record: Record) => record.id === query.id)
 
   const [data, setData] = useState<Record | undefined>(record)
@@ -33,19 +34,19 @@ export const useOne = (
   useEffect(() => {
     setLoading(true)
 
-    getOne(dataSource, schema, { id: query.id, fields: query.fields })
+    findOne(dataSource, allSchemas, schemaName, query)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schema, query.id, query.fields])
+  }, [dataSource, schemaName, query])
 
   useEffect(() => {
     return subscribeToOne(
-      schema.name,
+      schemaName,
       (record: Record) => setData(record),
       query.id,
     )
-  }, [schema, query.id])
+  }, [schemaName, query.id])
 
   const meta: Meta = getMeta(error, loading, false, undefined)
   return [data, meta]

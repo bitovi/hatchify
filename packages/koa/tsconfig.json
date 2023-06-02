@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["../node/src/**/*.ts"],
+  "compilerOptions": {
+    "outDir": "dist",
+    "sourceMap": true,
+    "strict": false,
+    "strictNullChecks": true
+  }
+}

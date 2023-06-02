@@ -20,7 +20,11 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "rootDir": ".",
+    "paths": {
+      "@hatchifyjs/node": ["./packages/node/src/exports.ts"]
+    }
   },
   "exclude": ["node_modules"]
 }

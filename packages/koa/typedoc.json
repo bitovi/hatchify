@@ -1,0 +1,19 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/exports.ts"],
+  "out": "docs",
+  "theme": "default",
+  "name": "@hatchifyjs/koa",
+  "includeVersion": true,
+  "disableSources": true,
+  "githubPages": true,
+  "media": "./media",
+  "navigationLinks": {
+    "Bitovi": "https://bitovi.com",
+    "GitHub": "https://github.com/bitovi/hatchify"
+  },
+  "sidebarLinks": {
+    "Confluence": "https://bitovi.atlassian.net/wiki/spaces/SCAFFOLD/overview",
+    "Jira Software": "https://bitovi.atlassian.net/browse/SCAFFOLD"
+  }
+}

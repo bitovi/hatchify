@@ -7,8 +7,8 @@ import { useCreateOne } from "./useCreateOne"
 
 const fakeDataSource: Source = {
   version: 0,
-  getList: () => Promise.resolve([]),
-  getOne: () => Promise.resolve([]),
+  findAll: () => Promise.resolve([]),
+  findOne: () => Promise.resolve([]),
   createOne: () =>
     Promise.resolve([
       {
@@ -21,14 +21,19 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = { name: "Article" } as Schema
+const ArticleSchema = {
+  name: "Article",
+  displayAttribute: "title",
+  attributes: { title: "string", body: "string" },
+} as Schema
+const schemas = { Article: ArticleSchema }
 
 describe("react-rest/services/useCreateOne", () => {
   it("should create a record", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useCreateOne(fakeDataSource, ArticleSchema),
+      useCreateOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {
@@ -79,7 +84,7 @@ describe("react-rest/services/useCreateOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useCreateOne(fakeDataSource, ArticleSchema),
+      useCreateOne(fakeDataSource, schemas, "Article"),
     )
 
     await waitFor(() => {

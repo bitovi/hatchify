@@ -1,10 +1,10 @@
 import type {
   CreateData,
-  Schema,
+  Schemas,
   SourceConfig,
   Resource,
 } from "@hatchifyjs/rest-client"
-import { convertToRecords, fetchJsonApi } from "../jsonapi"
+import { convertToRecords, fetchJsonApi } from "../utils"
 
 /**
  * Creates a new resource, adds the __schema to the request response,
@@ -12,15 +12,16 @@ import { convertToRecords, fetchJsonApi } from "../jsonapi"
  */
 export async function createOne(
   config: SourceConfig,
-  schema: Schema,
+  allSchemas: Schemas,
+  schemaName: string,
   data: CreateData,
 ): Promise<Resource[]> {
   const json = await fetchJsonApi(
     "POST",
-    `${config.baseUrl}/${config.schemaMap[schema.name].endpoint}`,
+    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}`,
     data,
   )
-  // todo relationships: json.included
+  // todo: relationships
 
-  return Promise.resolve(convertToRecords(json.data, schema.name))
+  return Promise.resolve(convertToRecords(json.data, schemaName))
 }

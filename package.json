@@ -14,7 +14,7 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@bitovi/eslint-config": "^1.5.0",
+    "@bitovi/eslint-config": "^1.6.0",
     "depcheck": "^1.4.3",
     "eslint": "^8.25.0",
     "nx": "15.9.2",
