@@ -38,9 +38,9 @@ export const useAll = (
       .finally(() => setLoading(false))
   }, [dataSource, schemaName, query])
 
-  useEffect(() => {
-    return subscribeToAll(schemaName, (records: Record[]) => setData(records))
-  }, [schemaName])
+  // useEffect(() => {
+  // return subscribeToAll(schemaName, (records: Record[]) => setData(records))
+  // }, [schemaName])
 
   const meta: Meta = getMeta(error, loading, false, undefined)
   return [data, meta]

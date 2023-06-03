@@ -1,4 +1,5 @@
 import {
+  Schemas,
   createOne,
   createStore,
   deleteOne,
@@ -16,7 +17,6 @@ import type {
   QueryList,
   QueryOne,
   Record,
-  Schema,
   Unsubscribe,
   UpdateData,
 } from "@hatchifyjs/rest-client"
@@ -50,7 +50,7 @@ export type ReactRest = {
  * Returns a set of functions for interacting with the rest-client store and
  * data source for each schema.
  */
-export function createReactRest(
+export function hatchifyReactRest(
   legacySchemas: { [schemaName: string]: LegacySchema },
   dataSource: Source,
 ): ReactRest {
@@ -60,7 +60,7 @@ export function createReactRest(
   const schemas = Object.values(legacySchemas).reduce((acc, schema) => {
     acc[schema.name] = transformSchema(schema)
     return acc
-  }, {} as globalThis.Record<string, Schema>)
+  }, {} as Schemas)
 
   const functions = Object.values(schemas).reduce((acc, schema) => {
     acc[schema.name] = {

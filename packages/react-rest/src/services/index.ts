@@ -1,4 +1,4 @@
-export * from "./createReactRest"
+export * from "./hatchifyReactRest"
 export * from "./useCreateOne"
 export * from "./useDeleteOne"
 export * from "./useAll"

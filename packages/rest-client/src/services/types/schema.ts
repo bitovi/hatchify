@@ -1,8 +1,10 @@
+export type Attribute = string | { type: string }
+
 export interface Schema {
   name: string // "Article"
   displayAttribute: string
   attributes: {
-    [field: string]: string | { type: string }
+    [field: string]: Attribute
   }
   relationships?: {
     [field: string]: {
