@@ -24,7 +24,7 @@ export const findAll = async (
   )
 
   // todo: Dan - remove insert, use notify on create/update/delete
-  insert(schemaName, resources)
+  // insert(schemaName, resources)
 
   // todo: flatten related records into base records
   return resources.map(convertResourceToRecord)

@@ -36,20 +36,25 @@ export const useAll = (
 
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
-
-  useEffect(() => {
+  const fetchAll = ()=> {
     setLoading(true)
     findAll(dataSource, allSchemas, schemaName, memQuery)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, allSchemas, schemaName, memQuery])
+  }
+  
+  useEffect(() => {
+    fetchAll();
+  }, [dataSource, allSchemas, schemaName, memQuery, fetchAll])
 
   // todo: Dan - when notified, refetch data from datasource (backend)
   // useEffect(() => {
-  //   return subscribeToAll(schemaName, (records: Record[]) => setData(records))
-  // }, [schemaName])
+  //   return fetchAll()
+  // }, [datasource])
 
   const meta: Meta = getMeta(error, loading, false, undefined)
   return [data, meta]
 }
+
+

@@ -53,8 +53,6 @@ export default MuiList
 const MuiListRows: React.FC<XListProps> = ({ displays, useData }) => {
   const [query] = useState({})
   const [data, meta] = useData(query)
-  // const [data, meta] = useData({})
-  console.log("data", data)
 
   if (meta.isLoading) {
     return <SkeletonCells displays={displays} />

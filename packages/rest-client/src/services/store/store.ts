@@ -61,7 +61,7 @@ export function insert(schemaName: string, data: Resource[]): void {
 // todo: Dan
 export function notifySubscribers(schemaName: string): void {
   for (const subscriber of store[schemaName].subscribers) {
-    subscriber([])
+    // subscriber(schemaName)
   }
 }
 
