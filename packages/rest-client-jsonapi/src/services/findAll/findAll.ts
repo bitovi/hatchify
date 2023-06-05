@@ -30,7 +30,5 @@ export async function findAll(
   )
   // todo: flattening relationships
 
-  console.log("json.data", json.data)
-
   return Promise.resolve(convertToRecords(json.data, schemaName))
 }

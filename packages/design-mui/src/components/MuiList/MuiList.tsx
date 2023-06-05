@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { Suspense } from "react"
+import { Suspense, useState } from "react"
 import { css } from "@emotion/react"
 import {
   Skeleton,
@@ -51,7 +51,9 @@ export const MuiList: React.FC<XListProps> = ({ displays, useData }) => {
 export default MuiList
 
 const MuiListRows: React.FC<XListProps> = ({ displays, useData }) => {
-  const [data, meta] = useData({})
+  const [query] = useState({})
+  const [data, meta] = useData(query)
+  // const [data, meta] = useData({})
   console.log("data", data)
 
   if (meta.isLoading) {

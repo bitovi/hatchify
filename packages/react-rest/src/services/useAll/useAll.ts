@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import {
   findAll,
   getMeta,
@@ -14,6 +14,12 @@ import type {
   Source,
 } from "@hatchifyjs/rest-client"
 
+const useMemoizedQuery = (query: QueryList) => {
+  return useMemo(() => {
+    return query
+  }, [query.sort, query.filter, query.page, query.include, query.fields])
+}
+
 /**
  * Fetches a list of records using the rest-client findAll function,
  * subscribes to the store for updates to the list, returns the list.
@@ -24,6 +30,7 @@ export const useAll = (
   schemaName: string,
   query: QueryList,
 ): [Record[], Meta] => {
+  const memQuery = useMemoizedQuery(query)
   const defaultData = getRecords(schemaName)
   const [data, setData] = useState<Record[]>(defaultData)
 
@@ -32,14 +39,15 @@ export const useAll = (
 
   useEffect(() => {
     setLoading(true)
-    findAll(dataSource, allSchemas, schemaName, query)
+    findAll(dataSource, allSchemas, schemaName, memQuery)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schemaName, query])
+  }, [dataSource, allSchemas, schemaName, memQuery])
 
+  // todo: Dan - when notified, refetch data from datasource (backend)
   // useEffect(() => {
-  // return subscribeToAll(schemaName, (records: Record[]) => setData(records))
+  //   return subscribeToAll(schemaName, (records: Record[]) => setData(records))
   // }, [schemaName])
 
   const meta: Meta = getMeta(error, loading, false, undefined)

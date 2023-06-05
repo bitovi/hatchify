@@ -23,8 +23,14 @@ export const findAll = async (
     updatedQuery,
   )
 
+  // todo: Dan - remove insert, use notify on create/update/delete
   insert(schemaName, resources)
 
   // todo: flatten related records into base records
   return resources.map(convertResourceToRecord)
 }
+
+// todo: Dan
+// createOne, updateOne, deleteOne
+//  -> notifySubscribers (useList, useOne)
+//   -> refetch data
