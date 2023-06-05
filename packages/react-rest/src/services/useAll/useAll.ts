@@ -1,10 +1,6 @@
-import { useState, useEffect, useMemo } from "react"
-import {
-  findAll,
-  getMeta,
-  getRecords,
-  subscribeToAll,
-} from "@hatchifyjs/rest-client"
+import { useState, useEffect, useMemo, useCallback } from "react"
+import { findAll, getMeta, subscribeToAll } from "@hatchifyjs/rest-client"
+
 import type {
   Meta,
   MetaError,
@@ -14,6 +10,9 @@ import type {
   Source,
 } from "@hatchifyjs/rest-client"
 
+/**
+ * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
+ */
 const useMemoizedQuery = (query: QueryList) => {
   return useMemo(() => {
     return query
@@ -30,31 +29,28 @@ export const useAll = (
   schemaName: string,
   query: QueryList,
 ): [Record[], Meta] => {
-  const memQuery = useMemoizedQuery(query)
-  const defaultData = getRecords(schemaName)
-  const [data, setData] = useState<Record[]>(defaultData)
+  const memoizedQuery = useMemoizedQuery(query)
+  const [data, setData] = useState<Record[]>([])
 
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
-  const fetchAll = ()=> {
+
+  const fetchAll = useCallback(() => {
     setLoading(true)
-    findAll(dataSource, allSchemas, schemaName, memQuery)
+    findAll(dataSource, allSchemas, schemaName, memoizedQuery)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }
-  
-  useEffect(() => {
-    fetchAll();
-  }, [dataSource, allSchemas, schemaName, memQuery, fetchAll])
+  }, [dataSource, allSchemas, schemaName, memoizedQuery])
 
-  // todo: Dan - when notified, refetch data from datasource (backend)
-  // useEffect(() => {
-  //   return fetchAll()
-  // }, [datasource])
+  useEffect(() => {
+    fetchAll()
+  }, [fetchAll])
+
+  useEffect(() => {
+    return subscribeToAll(schemaName, fetchAll)
+  }, [schemaName, fetchAll])
 
   const meta: Meta = getMeta(error, loading, false, undefined)
   return [data, meta]
 }
-
-

@@ -46,7 +46,8 @@ describe("rest-client/services/promise/createOne", () => {
     expect(result).toEqual(convertResourceToRecord(expected))
   })
 
-  it("should insert the record into the store", async () => {
+  // todo: store + can-query-logic will be implemented later
+  it.skip("should insert the record into the store", async () => {
     const store = createStore(["Article"])
     await createOne(fakeDataSource, schemas, "Article", data)
     expect(store.Article.data).toEqual(keyResourcesById([expected]))

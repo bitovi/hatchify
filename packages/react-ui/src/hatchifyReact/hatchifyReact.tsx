@@ -38,7 +38,7 @@ export function hatchifyReact(
           allSchemas={schemas}
           schemaName={schema.name}
           useData={reactRest[schema.name].useAll}
-          // {...props}
+          {...props}
         />
       ),
     }

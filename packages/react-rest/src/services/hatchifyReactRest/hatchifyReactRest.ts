@@ -1,5 +1,4 @@
 import {
-  Schemas,
   createOne,
   createStore,
   deleteOne,
@@ -20,8 +19,10 @@ import type {
   Unsubscribe,
   UpdateData,
 } from "@hatchifyjs/rest-client"
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
+
+import type { Schemas } from "@hatchifyjs/rest-client"
+import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 
 export type ReactRest = {
   [schemaName: string]: {

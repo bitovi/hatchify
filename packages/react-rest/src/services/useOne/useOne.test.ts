@@ -93,9 +93,10 @@ describe("react-rest/services/useOne", () => {
         attributes: { title: "new title", body: "new body" },
       },
     ]
+    fakeDataSource.findOne = () => Promise.resolve(newFakeData)
 
     store.Article.subscribers.forEach((subscriber: Subscription) =>
-      subscriber(newFakeData.map(convertResourceToRecord)),
+      subscriber([]),
     )
 
     await waitFor(() =>

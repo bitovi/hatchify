@@ -58,10 +58,12 @@ export function insert(schemaName: string, data: Resource[]): void {
   }
 }
 
-// todo: Dan
+/**
+ * Notifies subscribers whenever a resource is created, updated, or deleted.
+ */
 export function notifySubscribers(schemaName: string): void {
   for (const subscriber of store[schemaName].subscribers) {
-    // subscriber(schemaName)
+    subscriber([]) // todo, future: should notify with can-query-logic results
   }
 }
 

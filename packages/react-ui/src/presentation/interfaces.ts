@@ -8,10 +8,11 @@ import type {
 import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
 
 import type {
-  HatchifyDisplay,
+  HatchifyDisplay as LegacyHatchifyDisplay,
   HatchifyFormField,
   FormFieldValueType,
 } from "../services-legacy"
+import type { HatchifyDisplay } from "../services"
 import type { FormState } from "../components/HatchifyForm"
 
 export type Primitive = string | boolean | number
@@ -33,7 +34,7 @@ export interface XLayoutProps {
 }
 
 export interface XDetailsProps {
-  displays: HatchifyDisplay[]
+  displays: LegacyHatchifyDisplay[]
   useData: () => FlatRecord
 }
 
