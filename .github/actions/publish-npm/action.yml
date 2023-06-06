@@ -14,6 +14,11 @@ runs:
   using: "composite"
 
   steps:
+    - name: Test123
+      id: test123
+      shell: bash
+      run: |
+        echo "test123"
     - name: Determine Tag
       id: tag
       shell: bash
