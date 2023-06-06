@@ -8,7 +8,7 @@ inputs:
     description: "The version segment to increment: major, minor, patch, or prerelease."
     required: true
   preId:
-    description: "Appended to the prerelease segment. (default: \"\")"
+    description: 'Appended to the prerelease segment. (default: "")'
 
 runs:
   using: "composite"
@@ -50,8 +50,7 @@ runs:
 
     - name: Publish to NPM Registry
       working-directory: ${{ inputs.package }}
-      uses: JS-DevTools/npm-publish@v2
+      uses: JS-DevTools/npm-publish@v1
       with:
         token: ${{ secrets.NPM_TOKEN }}
         tag: ${{ steps.tag.outputs.tag }}
-        dry-run: true
