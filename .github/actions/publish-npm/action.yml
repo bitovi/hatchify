@@ -30,17 +30,13 @@ runs:
         git config --local user.email "Workflow: ${{ inputs.package }}[bot]"
         git config --local user.name "${{ inputs.package }}[bot]@workflow"
 
-        TAG_CMD="--tag-version-prefix=\"${{ inputs.package }}/v\""
-        MESSAGE_CMD="-m \"Publish ${{ inputs.package }} v%s\""
-
         if [[ ${{ inputs.segment }} == pre* ]]; then
           if [[ -n "${{ inputs.preId }}" ]]; then
             PREID_CMD="--preid ${{ inputs.preId }}"
           fi
         fi
 
-        npm version ${{ inputs.segment }} $PREID_CMD $MESSAGE_CMD
-
+        npm version ${{ inputs.segment }} $PREID_CMD -m "Publish ${{ inputs.package }} v%s"
     - name: Test123
       id: test123
       shell: bash
