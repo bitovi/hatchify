@@ -8,7 +8,6 @@
         "cacheableOperations": [
           "typecheck",
           "eslint",
-          "prettier",
           "depcheck",
           "test",
           "clean",

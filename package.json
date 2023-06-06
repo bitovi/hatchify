@@ -7,7 +7,22 @@
   },
   "eslintConfig": {
     "root": true,
-    "extends": "@bitovi/eslint-config/react"
+    "extends": [
+      "@bitovi/eslint-config/react",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "semi": false,
+          "trailingComma": "all"
+        }
+      ]
+    }
   },
   "prettier": {
     "semi": false,
@@ -17,6 +32,8 @@
     "@bitovi/eslint-config": "^1.6.0",
     "depcheck": "^1.4.3",
     "eslint": "^8.25.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "nx": "15.9.2",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",

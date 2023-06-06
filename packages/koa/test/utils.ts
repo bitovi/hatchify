@@ -73,6 +73,16 @@ export async function POST(server, path, payload, type = "application/json") {
   return await parse(result)
 }
 
+export async function PATCH(server, path, payload, type = "application/json") {
+  const result = await request(server)
+    .patch(path)
+    .set("authorization", "test")
+    .set("content-type", type)
+    .send(payload)
+
+  return await parse(result)
+}
+
 export async function PUT(server, path, payload, type = "application/json") {
   const result = await request(server)
     .put(path)

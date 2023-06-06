@@ -10,30 +10,26 @@ export const Assignment: HatchifyModel = {
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
     },
-    start_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
+    start_date: DataTypes.DATE,
     end_date: DataTypes.DATE,
   },
   belongsTo: [
     {
       target: "Role",
-      options: { as: "role", foreignKey: "role_id", keyType: DataTypes.UUID },
+      options: { as: "role", foreignKey: "role_id" },
     },
     {
       target: "Employee",
       options: {
         as: "employee",
         foreignKey: "employee_id",
-        keyType: DataTypes.UUID,
       },
     },
   ],
   belongsToMany: [
     {
       target: "Project",
-      options: { as: "projects", through: "Role" },
+      options: { as: "projects", through: { model: "Role" } },
     },
   ],
 }

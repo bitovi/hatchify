@@ -17,10 +17,6 @@ runs:
       shell: bash
       run: npx nx eslint ${{ inputs.package }}
 
-    - name: Prettier
-      shell: bash
-      run: npx nx prettier ${{ inputs.package }}
-
     - name: depcheck
       shell: bash
       run: npx nx depcheck ${{ inputs.package }}

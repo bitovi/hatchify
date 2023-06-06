@@ -14,16 +14,17 @@ export const Skill: HatchifyModel = {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-    },
-    vname: {
-      type: DataTypes.VIRTUAL(DataTypes.INTEGER),
-      get() {
-        return this.name
+      validate: {
+        is: ["^[a-z].*?$", "i"],
       },
     },
   },
   belongsToMany: [
     { target: "Role", options: { through: "role__skill", as: "roles" } },
+    {
+      target: "Employee",
+      options: { through: "employee__skill", as: "employees" },
+    },
   ],
 }
 
