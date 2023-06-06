@@ -14,6 +14,15 @@ runs:
   using: "composite"
 
   steps:
+    - name: Determine Tag
+      id: tag
+      shell: bash
+      run: |
+        if [[ ${{ inputs.segment }} == pre* ]]; then
+          echo "tag=next" >> $GITHUB_OUTPUT
+        else
+          echo "tag=latest" >> $GITHUB_OUTPUT
+        fi
     - name: Test123
       id: test123
       shell: bash
