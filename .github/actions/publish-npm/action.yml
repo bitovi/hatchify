@@ -37,8 +37,15 @@ runs:
         fi
 
         npm version ${{ inputs.segment }} $PREID_CMD -m "Publish ${{ inputs.package }} v%s"
-    - name: Test123
-      id: test123
-      shell: bash
-      run: |
-        echo "test123"
+    - name: Publish to NPM Registry
+      uses: JS-DevTools/npm-publish@v1
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
+
+    - name: Push Tag
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        # branch: ${{ github.ref }} change this for testing
+        branch: ${{ github.ref }}
+        tags: true
