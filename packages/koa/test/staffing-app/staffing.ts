@@ -9,7 +9,7 @@ import { Employee } from "./models/Employee"
 import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 import { Skill } from "./models/Skill"
-import { Hatchify } from "../../koa"
+import { Hatchify } from "../../src/koa"
 
 interface Assignment {
   id: string

@@ -18,15 +18,12 @@
     "build:watch": "tsc --watch",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "depcheck": "depcheck .",
-    "test": "jest",
-    "test:coverage": "jest --watch --collect-coverage",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "test:verbose": "jest --watch --verbose",
     "typecheck": "tsc --noEmit",
     "eslint": "eslint .",
     "eslint:fix": "eslint --fix .",
-    "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write .",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -40,7 +37,7 @@
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
     "@bitovi/sequelize-querystring-parser": "^0.1.6",
-    "@hatchifyjs/sequelize-create-with-associations": "^0.3.1",
+    "@hatchifyjs/sequelize-create-with-associations": "^0.3.2",
     "inflection": "^2.0.1",
     "json-api-serializer": "^2.6.6",
     "path-to-regexp": "^6.2.1",
@@ -51,13 +48,19 @@
     "@types/jest": "^29.2.1",
     "@types/json-api-serializer": "^2.6.3",
     "@types/node": "^18.11.9",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.2.2",
     "ts-jest": "^29.0.3"
   },
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@bitovi/eslint-config/node"
+      "@bitovi/eslint-config/node",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
     ],
     "ignorePatterns": [
       "dist/*"
@@ -88,6 +91,19 @@
                 "order": "asc",
                 "caseInsensitive": true
               }
+            }
+          ],
+          "prettier/prettier": [
+            "error",
+            {
+              "bracketSpacing": true,
+              "endOfLine": "lf",
+              "parser": "typescript",
+              "printWidth": 80,
+              "semi": false,
+              "singleQuote": false,
+              "trailingComma": "all",
+              "useTabs": false
             }
           ],
           "sort-imports": [

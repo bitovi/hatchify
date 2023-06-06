@@ -24,16 +24,11 @@ export const Role: HatchifyModel = {
     end_confidence: {
       type: DataTypes.FLOAT,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
   },
   hasMany: [
     {
       target: "Assignment",
-      options: { as: "assignments", foreignKey: "id", keyType: DataTypes.UUID },
+      options: { as: "assignments" },
     },
   ],
   belongsTo: [
@@ -42,7 +37,7 @@ export const Role: HatchifyModel = {
   belongsToMany: [
     {
       target: "Employee",
-      options: { through: "role__employee", as: "employees" },
+      options: { through: { model: "Assignment" }, as: "employees" },
     },
     { target: "Skill", options: { through: "role__skill", as: "skills" } },
   ],

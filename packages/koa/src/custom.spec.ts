@@ -4,7 +4,7 @@ import KoaRouter from "@koa/router"
 import Koa from "koa"
 
 import { Hatchify } from "./koa"
-import { GET, createServer } from "./testing/utils"
+import { GET, createServer } from "../test/utils"
 
 describe("Internal Tests", () => {
   const Model: HatchifyModel = {

@@ -4,7 +4,7 @@ import Chance from "chance"
 import Koa from "koa"
 
 import { createStaffingAppInstance } from "./staffing"
-import { Hatchify } from "../../koa"
+import { Hatchify } from "../../src/koa"
 import { GET, POST, createServer } from "../utils"
 
 const chance = new Chance()
@@ -20,16 +20,16 @@ describe("Tests for fields parameter", () => {
 
     await POST(server, "/api/employees", {
       name: chance.name(),
-      age: chance.age(),
+      start_date: chance.date(),
     })
 
-    const [employees] = (
-      await GET(server, "/api/employees?fields=[Employee]=name,age")
+    const [employee] = (
+      await GET(server, "/api/employees?fields=[Employee]=name,start_date")
     ).deserialized
 
-    expect(employees).toEqual({
+    expect(employee).toEqual({
       name: expect.any(String),
-      age: expect.any(Number),
+      start_date: expect.any(String),
     })
   })
 
@@ -82,20 +82,20 @@ describe("Tests for fields parameter", () => {
     const { id: employeeId } = (
       await POST(server, "/api/employees", {
         name: chance.name(),
-        age: chance.age(),
+        start_date: chance.date(),
       })
     ).deserialized
 
     const employee = (
       await GET(
         server,
-        `/api/employees/${employeeId}?fields=[Employee]=name,age`,
+        `/api/employees/${employeeId}?fields=[Employee]=name,start_date`,
       )
     ).deserialized
 
     expect(employee).toEqual({
       name: expect.any(String),
-      age: expect.any(Number),
+      start_date: expect.any(String),
     })
   })
 
@@ -150,20 +150,18 @@ describe("Tests for fields parameter", () => {
 
     await POST(server, "/api/employees", {
       name: chance.name(),
-      age: chance.age(),
     })
 
-    const [employees] = (await GET(server, "/api/employees")).deserialized
+    const [employee] = (await GET(server, "/api/employees")).deserialized
 
-    expect(employees).toEqual({
+    expect(employee).toEqual({
       end_date: null,
-      start_date: null,
+      start_date: expect.any(String),
       id: expect.any(String),
       name: expect.any(String),
-      age: expect.any(Number),
     })
 
-    expect(employees).toEqual(
+    expect(employee).toEqual(
       expect.not.objectContaining({
         currentProject: expect.any(String),
       }),
@@ -173,17 +171,46 @@ describe("Tests for fields parameter", () => {
   it("should return virtual fields if specified", async () => {
     const server = createServer(app)
 
-    await POST(server, "/api/employees", {
-      name: chance.name(),
-      age: chance.age(),
+    const [{ deserialized: employee }, { deserialized: project }] =
+      await Promise.all([
+        POST(server, "/api/employees", {
+          name: chance.name(),
+          start_date: chance.date(),
+        }),
+        POST(server, "/api/projects", {
+          name: chance.name(),
+          description: chance.paragraph(),
+        }),
+      ])
+
+    const assignmentId = "d317d699-01ba-4a9b-bf3e-7287b7781c57"
+    const roleId = "b552e3d5-875e-4084-87dd-47a1bbcb8078"
+
+    await POST(server, "/api/assignments", {
+      assignment_id: assignmentId,
+      employee_id: employee.id,
+      role_id: roleId,
+      start_date: new Date(Date.now() - 86400000),
+      end_date: new Date(Date.now() + 86400000),
     })
-    const [employees] = (
-      await GET(server, "/api/employees?fields=[Employee]=name,current_project")
+
+    await POST(server, "/api/roles", {
+      id: roleId,
+      assignment_id: assignmentId,
+      project_id: project.id,
+      name: "HatchifyJS",
+      start_date: new Date(Date.now() - 86400000),
+      start_confidence: 1,
+      end_date: new Date(Date.now() + 86400000),
+    })
+
+    const [updatedEmployee] = (
+      await GET(server, "/api/employees?fields=[Employee]=name,currentProject")
     ).deserialized
 
-    expect(employees).toEqual({
+    expect(updatedEmployee).toEqual({
       name: expect.any(String),
-      current_project: "Yum",
+      current_project: null,
     })
   })
 })
