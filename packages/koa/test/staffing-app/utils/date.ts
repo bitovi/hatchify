@@ -12,7 +12,8 @@ const toDateFormat = (date) => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
 }
 
-const addDaysToDate = (date,
+const addDaysToDate = (
+  date,
   days = chance.integer({ min: 10, max: 365 * 2 }),
 ) => {
   date = new Date(date)
