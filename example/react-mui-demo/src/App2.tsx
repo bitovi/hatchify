@@ -6,7 +6,7 @@ import {
 } from "@hatchifyjs/react"
 import Layout from "./components"
 
-const app = hatchifyReact(
+const hatchedReact = hatchifyReact(
   {
     Document: {
       name: "Document",
@@ -22,7 +22,7 @@ const app = hatchifyReact(
   }),
 )
 
-const DocumentList = app.components.Document.List
+const DocumentList = hatchedReact.components.Document.List
 
 // @ts-expect-error
 const baseUrl = import.meta.env.BASE_URL
