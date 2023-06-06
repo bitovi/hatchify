@@ -39,7 +39,7 @@ runs:
           fi
         fi
 
-        npm version ${{ inputs.segment }} $PREID_CMD $TAG_CMD $MESSAGE_CMD
+        echo "npm version ${{ inputs.segment }} $PREID_CMD $TAG_CMD $MESSAGE_CMD"
 
     - name: Test123
       id: test123
