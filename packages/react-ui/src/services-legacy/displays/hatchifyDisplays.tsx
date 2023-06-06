@@ -1,7 +1,8 @@
 import { Children as ReactChildren } from "react"
 import cloneDeep from "lodash/cloneDeep"
 import { v4 as uuidv4 } from "uuid"
-import type { Attribute, Record, Schema } from "@hatchifyjs/rest-client"
+// import type { Schema} from "@hatchifyjs/rest-client"
+import type { Schema } from "../api/schemas" //TODO update to the right schema
 
 import {
   HatchifyAttributeDisplay,
@@ -9,8 +10,9 @@ import {
 } from "../../components"
 
 import type {
-  // Attribute,
+  Attribute,
   Relationship as RelationshipType,
+  FlatRecord,
   ValueComponent,
 } from "../../presentation/interfaces"
 
@@ -23,40 +25,39 @@ import type {
 export interface HatchifyDisplay {
   key: string
   label: string
-  render: ({ record }: { record: Record }) => React.ReactNode
+  render: ({ record }: { record: FlatRecord }) => React.ReactNode
 }
 
 export function getDefaultDisplayRender(
   attribute: string,
   attributeType: string,
   defaultValueComponents: DefaultValueComponentsTypes,
-): ({ record }: { record: Record }) => React.ReactNode {
-  const attType = attributeType.toLowerCase()
+): ({ record }: { record: FlatRecord }) => React.ReactNode {
   const { String, Number, Boolean, Relationship, RelationshipList, Date } =
     defaultValueComponents
 
   // @todo primitive lists?
-  const defaultRender = ({ record }: { record: Record }) => {
+  const defaultRender = ({ record }: { record: FlatRecord }) => {
     const value = record[attribute]
 
-    if (attType === "date" && typeof value === "string") {
+    if (attributeType === "date" && typeof value === "string") {
       return <Date value={value} />
     }
 
-    if (attType === "string" && typeof value === "string") {
+    if (attributeType === "string" && typeof value === "string") {
       return <String value={value} />
     }
 
-    if (attType === "boolean" && typeof value === "boolean") {
+    if (attributeType === "boolean" && typeof value === "boolean") {
       return <Boolean value={value} />
     }
 
-    if (attType === "number" && typeof value === "number") {
+    if (attributeType === "number" && typeof value === "number") {
       return <Number value={value} />
     }
 
     // @todo <HatchifyAttributeDisplay/> with relationship category|user|filetype is coming through as "extra" rather than "relationship"
-    if (attType === "relationship" || attType === "extra") {
+    if (attributeType === "relationship" || attributeType === "extra") {
       return Array.isArray(value) ? (
         <RelationshipList values={value} />
       ) : (
@@ -80,7 +81,12 @@ export function getDisplaysFromChildren(
     .filter((child) => child.type.name === HatchifyAttributeDisplay.name)
     .map((child) => {
       const { props } = child
-      const relationship = schema?.relationships?.[props.attribute]
+      const relationship = [
+        ...(schema?.hasMany || []),
+        ...(schema?.hasOne || []),
+      ].find((relationship) => {
+        return relationship.target === props.attribute
+      })
 
       return getHatchifyDisplay({
         isRelationship: relationship !== undefined,
@@ -114,43 +120,29 @@ export function getDisplaysFromSchema(
     },
   )
 
-  const manyRelationshipDisplays = Object.entries(schema?.relationships || {})
-    .filter(([key, relationship]) => {
-      return relationship.type === "many"
+  const hasManyDisplays = Object.values(schema?.hasMany || []).map((value) => {
+    return getHatchifyDisplay({
+      isRelationship: true,
+      attribute: value.target,
+      label: value.target,
+      attributeSchema: null, // the schema in this case is a "relationship"
+      valueComponents,
+      defaultValueComponents,
     })
-    .map(([key, relationship]) => {
-      // related schema = schema[relationship.schema]
-      return getHatchifyDisplay({
-        isRelationship: true,
-        attribute: key,
-        label: key,
-        attributeSchema: null, // the schema in this case is a "relationship"
-        valueComponents,
-        defaultValueComponents,
-      })
-    })
+  })
 
-  const oneRelationshipDisplays = Object.entries(schema?.relationships || {})
-    .filter(([key, relationship]) => {
-      return relationship.type === "one"
+  const hasOneDisplays = Object.values(schema?.hasOne || []).map((value) => {
+    return getHatchifyDisplay({
+      isRelationship: true,
+      attribute: value.target,
+      label: value.target,
+      attributeSchema: null, // the schema in this case is a "relationship"
+      valueComponents,
+      defaultValueComponents,
     })
-    .map(([key, relationship]) => {
-      // related schema = schema[relationship.schema]
-      return getHatchifyDisplay({
-        isRelationship: true,
-        attribute: key,
-        label: key,
-        attributeSchema: null, // the schema in this case is a "relationship"
-        valueComponents,
-        defaultValueComponents,
-      })
-    })
+  })
 
-  return [
-    ...attributesDisplays,
-    ...manyRelationshipDisplays,
-    ...oneRelationshipDisplays,
-  ]
+  return [...attributesDisplays, ...hasManyDisplays, ...hasOneDisplays]
 }
 
 // @todo refactor the logic around render in this function
@@ -178,15 +170,15 @@ export function getHatchifyDisplay({
   renderValue?: RenderValue | null
 }): HatchifyDisplay {
   if (!attributeSchema) {
-    attributeSchema = { type: "extra" }
+    attributeSchema = { type: "extra", allowNull: true }
   }
 
   if (typeof attributeSchema === "string") {
-    attributeSchema = { type: attributeSchema }
+    attributeSchema = { type: attributeSchema, allowNull: true }
   }
 
   if (isRelationship) {
-    attributeSchema = { type: "relationship" }
+    attributeSchema = { type: "relationship", allowNull: true }
   }
 
   const display: HatchifyDisplay = {

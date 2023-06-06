@@ -1,4 +1,5 @@
 export type {
+  Attribute,
   CreateData,
   Fields,
   Include,

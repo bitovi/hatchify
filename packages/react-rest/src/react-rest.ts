@@ -1,7 +1,7 @@
 export type { ReactRest } from "./services"
 
 export {
-  createReactRest,
+  hatchifyReactRest,
   useCreateOne,
   useDeleteOne,
   useAll,

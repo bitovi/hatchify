@@ -2,13 +2,16 @@ import { useEffect, useState } from "react"
 import { isEmpty } from "lodash"
 
 // import type { Schema } from "@hatchifyjs/rest-client";
-import type { Schema } from "../../services/api/schemas" //TODO update schema
+import type { Schema } from "../../services-legacy/api/schemas" //TODO update schema
 
 import { useHatchifyPresentation } from ".."
-import { getFormFields } from "../../services"
+import { getFormFields } from "../../services-legacy"
 
 import type { Primitive, FieldComponent } from "../../presentation/interfaces"
-import type { FormFieldValueType, HatchifyFormField } from "../../services"
+import type {
+  FormFieldValueType,
+  HatchifyFormField,
+} from "../../services-legacy"
 
 export type FormState = { [key: string]: Primitive | string[] }
 

@@ -72,12 +72,16 @@ export function getQueryParams(
     schemaName,
     fields,
   )
-  const includeParam = includeToQueryParam(include)
 
-  if (include.length) params += `?${includeParam}&`
-  else if (fields.length) params += `?include=`
+  // todo: include is undefined here
+  if (include) {
+    const includeParam = includeToQueryParam(include)
 
-  params += fieldsParam
+    if (include.length) params += `?${includeParam}&`
+    else if (fields.length) params += `?include=`
+
+    params += fieldsParam
+  }
 
   return params
 }

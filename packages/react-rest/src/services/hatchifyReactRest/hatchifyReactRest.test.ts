@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest"
 import type { Source } from "@hatchifyjs/rest-client"
-import { createReactRest } from "./createReactRest"
+import { hatchifyReactRest } from "./hatchifyReactRest"
 
 const fakeDataSource: Source = {
   version: 0,
@@ -11,7 +11,7 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-describe("react-rest/services/createReactRest", () => {
+describe("react-rest/services/hatchifyReactRest", () => {
   it("should return functions for each schema", () => {
     const Article = {
       name: "Article",
@@ -28,7 +28,7 @@ describe("react-rest/services/createReactRest", () => {
       },
     }
 
-    const api = createReactRest({ Article, Person }, fakeDataSource)
+    const api = hatchifyReactRest({ Article, Person }, fakeDataSource)
 
     expect(api).toEqual({
       Article: {

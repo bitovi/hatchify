@@ -1,9 +1,8 @@
 import type { Schemas, Source } from "../../types"
-import { remove } from "../../store"
+import { notifySubscribers } from "../../store"
 
 /**
- * Deletes a resource in the data source, updates the store,
- * and notifies subscribers.
+ * Deletes a resource in the data source and notifies subscribers.
  */
 export const deleteOne = async (
   dataSource: Source,
@@ -13,7 +12,7 @@ export const deleteOne = async (
 ): Promise<void> => {
   await dataSource.deleteOne(allSchemas, schemaName, id)
 
-  remove(schemaName, [id])
+  notifySubscribers(schemaName)
 
   return
 }

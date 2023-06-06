@@ -45,16 +45,25 @@ export function getRecords(schema: string): Record[] {
 /**
  * Inserts data into the store and notifies subscribers.
  */
-export function insert(schema: string, data: Resource[]): void {
-  store[schema].data = {
-    ...store[schema].data,
+export function insert(schemaName: string, data: Resource[]): void {
+  store[schemaName].data = {
+    ...store[schemaName].data,
     ...keyResourcesById(data),
   }
 
   const records = data.map(convertResourceToRecord)
 
-  for (const subscriber of store[schema].subscribers) {
+  for (const subscriber of store[schemaName].subscribers) {
     subscriber(records)
+  }
+}
+
+/**
+ * Notifies subscribers whenever a resource is created, updated, or deleted.
+ */
+export function notifySubscribers(schemaName: string): void {
+  for (const subscriber of store[schemaName].subscribers) {
+    subscriber([]) // todo, future: should notify with can-query-logic results
   }
 }
 
