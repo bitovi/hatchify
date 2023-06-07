@@ -2,15 +2,8 @@
   "name": "@hatchifyjs/node",
   "version": "0.0.1",
   "description": "Fullstack CRUD Application Solution",
-  "main": "./dist/node.js",
-  "types": "./dist/node.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/node.js",
-      "types": "./src/node.ts"
-    },
-    "./package.json": "./package.json"
-  },
+  "main": "./dist/exports.js",
+  "types": "./dist/exports.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "build": "tsc",
@@ -123,5 +116,24 @@
         }
       }
     ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.ts"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageProvider": "v8",
+    "coverageReporters": [
+      "html",
+      "text",
+      "text-summary"
+    ],
+    "testEnvironment": "node",
+    "transform": {
+      ".+\\.ts$": "ts-jest"
+    }
   }
 }
