@@ -38,9 +38,10 @@ runs:
 
         npm version ${{ inputs.segment }} $PREID_CMD -m "Publish ${{ inputs.package }} v%s"
     - name: Publish to NPM Registry
-      uses: JS-DevTools/npm-publish@v2
-      with:
-        token: ${{ secrets.NPM_TOKEN }}
+      shell: bash
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Push Tag
       uses: ad-m/github-push-action@master
