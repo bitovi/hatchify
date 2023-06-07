@@ -11,6 +11,6 @@ describe("rest-client-jsonapi/services/utils/fetch", () => {
       `${baseUrl}/${schemaMap.Article.endpoint}`,
     )
 
-    expect(data).toEqual({ data: testData })
+    expect(data).toEqual({ data: testData.data, included: testData.included })
   })
 })

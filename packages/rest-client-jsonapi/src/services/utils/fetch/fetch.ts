@@ -1,3 +1,5 @@
+import type { JsonApiResource } from "../../jsonapi"
+
 /**
  * Helper function for making fetch requests to a JSON:API backend.
  */
@@ -5,8 +7,7 @@ export async function fetchJsonApi<T>(
   method: "GET" | "POST" | "PATCH" | "DELETE",
   url: string,
   body?: { [key: string]: any },
-): // todo support `included` (relationships) property
-Promise<{ data: { data: T; included?: T } }> {
+): Promise<{ data: T; included?: JsonApiResource[] }> {
   const response = await fetch(url, {
     method,
     body: body ? JSON.stringify({ data: body }) : undefined,
@@ -18,7 +19,7 @@ Promise<{ data: { data: T; included?: T } }> {
   }
 
   if (response.status === 204) {
-    return { data: { data: {} as T } }
+    return { data: {} as T }
   }
 
   return response.json()

@@ -36,7 +36,7 @@ export async function findAll(
 
   return Promise.resolve(
     convertToHatchifyResources(
-      [...json.data.data, ...(json.data.included || [])],
+      [...json.data, ...(json.included || [])],
       config.schemaMap,
     ),
   )

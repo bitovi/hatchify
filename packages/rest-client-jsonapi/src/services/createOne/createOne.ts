@@ -24,6 +24,9 @@ export async function createOne(
   )
 
   return Promise.resolve(
-    convertToHatchifyResources(json.data.data, config.schemaMap),
+    convertToHatchifyResources(
+      [json.data, ...(json.included || [])],
+      config.schemaMap,
+    ),
   )
 }

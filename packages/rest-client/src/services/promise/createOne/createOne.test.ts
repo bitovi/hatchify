@@ -13,7 +13,7 @@ describe("rest-client/services/promise/createOne", () => {
     body: "baz-body",
   }
 
-  it.only("should return the new record", async () => {
+  it("should return the new record", async () => {
     createStore(["Article"])
 
     const result = await createOne(fakeDataSource, schemas, "Article", data)

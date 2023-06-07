@@ -84,7 +84,10 @@ export const testData = {
 
 export const handlers = [
   rest.get(`${baseUrl}/articles`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: testData }))
+    return res(
+      ctx.status(200),
+      ctx.json({ data: testData.data, included: testData.included }),
+    )
   }),
 
   rest.get(`${baseUrl}/articles/:id`, (req, res, ctx) => {
@@ -95,7 +98,7 @@ export const handlers = [
       return res(ctx.status(404), ctx.json(null))
     }
 
-    return res(ctx.status(200), ctx.json({ data: { data: article } }))
+    return res(ctx.status(200), ctx.json({ data: article }))
   }),
 
   rest.patch(`${baseUrl}/articles/:id`, async (req, res, ctx) => {
@@ -120,7 +123,7 @@ export const handlers = [
 
     testData.data[testData.data.indexOf(article)] = updatedArticle
 
-    return res(ctx.status(200), ctx.json({ data: { data: updatedArticle } }))
+    return res(ctx.status(200), ctx.json({ data: updatedArticle }))
   }),
 
   rest.delete(`${baseUrl}/articles/:id`, (req, res, ctx) => {
@@ -149,6 +152,6 @@ export const handlers = [
 
     testData.data.push(article)
 
-    return res(ctx.status(201), ctx.json({ data: { data: article } }))
+    return res(ctx.status(201), ctx.json({ data: article }))
   }),
 ]

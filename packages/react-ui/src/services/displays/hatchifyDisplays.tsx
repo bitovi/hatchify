@@ -57,6 +57,8 @@ export function getDefaultDisplayRender(
 
     // @todo <HatchifyAttributeDisplay/> with relationship category|user|filetype is coming through as "extra" rather than "relationship"
     if (attType === "relationship" || attType === "extra") {
+      // todo: remove this hardcode, the label should be set elsewhere as `relatedSchema.displayAttribute`
+      value.label = value.name
       return Array.isArray(value) ? (
         <RelationshipList values={value} />
       ) : (

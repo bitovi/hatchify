@@ -6,19 +6,34 @@ import {
 } from "@hatchifyjs/react"
 import Layout from "./components"
 
-const hatchedReact = hatchifyReact(
-  {
-    Document: {
-      name: "Document",
-      attributes: {
-        title: "string",
-        date: "date",
-        url: "string",
+const schemas = {
+  Document: {
+    name: "Document",
+    attributes: {
+      title: "string",
+      date: "date",
+      url: "string",
+    },
+    hasOne: [
+      {
+        target: "Category",
+        options: { as: "category" },
       },
+    ],
+  },
+  Category: {
+    name: "Category",
+    attributes: {
+      name: "string",
     },
   },
+}
+
+const hatchedReact = hatchifyReact(
+  schemas,
   createJsonapiClient("https://dummy.data/api", {
     Document: { type: "document", endpoint: "documents" },
+    Category: { type: "category", endpoint: "categories" },
   }),
 )
 
