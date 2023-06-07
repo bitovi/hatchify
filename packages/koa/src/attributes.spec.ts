@@ -3,7 +3,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 import Koa from "koa"
 
 import { Hatchify } from "./koa"
-import { GET, POST, createServer } from "../test/utils"
+import { GET, POST, createServer } from "./testing/utils"
 
 describe("Attribute Tests", () => {
   const Model: HatchifyModel = {

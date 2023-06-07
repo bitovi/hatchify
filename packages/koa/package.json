@@ -2,15 +2,8 @@
   "name": "@hatchifyjs/koa",
   "version": "0.0.1",
   "description": "Fullstack CRUD Application Solution",
-  "main": "./dist/koa.js",
-  "types": "./dist/koa.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/koa.js",
-      "types": "./src/koa.ts"
-    },
-    "./package.json": "./package.json"
-  },
+  "main": "./dist/exports.js",
+  "types": "./dist/exports.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "build": "tsc",
@@ -135,5 +128,31 @@
         }
       }
     ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.ts",
+      "!<rootDir>/src/testing/**/*.ts"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageProvider": "v8",
+    "coverageReporters": [
+      "html",
+      "text",
+      "text-summary"
+    ],
+    "testEnvironment": "node",
+    "transform": {
+      ".+\\.ts$": "ts-jest"
+    },
+    "modulePathIgnorePatterns": [
+      "<rootDir>/src/testing"
+    ],
+    "moduleNameMapper": {
+      "@hatchifyjs/node": "<rootDir>/../node/src/exports.ts"
+    }
   }
 }

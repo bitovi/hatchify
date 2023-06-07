@@ -4,7 +4,7 @@ import Chance from "chance"
 import Koa from "koa"
 
 import { createStaffingAppInstance } from "./staffing"
-import { Hatchify } from "../../src/koa"
+import { Hatchify } from "../../koa"
 import { GET, POST, createServer } from "../utils"
 
 const chance = new Chance()
