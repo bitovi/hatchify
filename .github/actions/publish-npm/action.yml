@@ -38,7 +38,7 @@ runs:
 
         npm version ${{ inputs.segment }} $PREID_CMD -m "Publish ${{ inputs.package }} v%s"
     - name: Publish to NPM Registry
-      uses: JS-DevTools/npm-publish@v1
+      uses: JS-DevTools/npm-publish@v2
       with:
         token: ${{ secrets.NPM_TOKEN }}
 
