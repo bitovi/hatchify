@@ -1,5 +1,6 @@
+import { ValidationError, statusCodes } from "@hatchifyjs/node"
+
 import { compareDates } from "./date"
-import { statusCodes, ValidationError } from "@hatchifyjs/node"
 
 const validateStartDate = (body) => {
   if (compareDates(body.end_date, body.start_date)) {
