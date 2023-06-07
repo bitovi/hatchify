@@ -40,7 +40,7 @@ runs:
     - name: Publish to NPM Registry
       shell: bash
       run: npm publish
-      secrets:
+      env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Push Tag
