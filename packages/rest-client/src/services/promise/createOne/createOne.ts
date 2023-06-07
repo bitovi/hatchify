@@ -1,5 +1,5 @@
 import type { CreateData, Schemas, Source, Record } from "../../types"
-import { convertResourceToRecord, notifySubscribers } from "../../store"
+import { flattenResourcesIntoRecords, notifySubscribers } from "../../store"
 
 /**
  * Creates a new resource in the data source, notifies subscribers,
@@ -15,6 +15,5 @@ export const createOne = async (
 
   notifySubscribers(schemaName)
 
-  // todo: flatten related records into base records
-  return convertResourceToRecord(resources[0])
+  return flattenResourcesIntoRecords(resources, schemaName)[0]
 }

@@ -8,7 +8,11 @@ import { updateOne } from "./updateOne"
 
 const ArticleSchema = { name: "Article" } as Schema
 const schemas = { Article: ArticleSchema }
-const schemaMap = { Article: { type: "article", endpoint: "articles" } }
+const schemaMap = {
+  Article: { type: "article", endpoint: "articles" },
+  Person: { type: "person", endpoint: "people" },
+  Tag: { type: "tag", endpoint: "tags" },
+}
 const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/updateOne", () => {
@@ -21,6 +25,22 @@ describe("rest-client-jsonapi/services/updateOne", () => {
         attributes: {
           title: "A new world!",
           body: "Article 1 body",
+        },
+        relationships: {
+          author: {
+            __schema: "Person",
+            id: "person-id-1",
+          },
+          tags: [
+            {
+              __schema: "Tag",
+              id: "tag-id-1",
+            },
+            {
+              __schema: "Tag",
+              id: "tag-id-2",
+            },
+          ],
         },
       },
     ]

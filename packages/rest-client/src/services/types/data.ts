@@ -1,6 +1,16 @@
+export interface RecordRelationship {
+  id: string
+  __schema: string
+  [key: string]: any // todo: strict typing
+}
 export interface Record {
   id: string
-  [key: string]: any // @todo strict typing
+  [key: string]: any // todo: strict typing
+}
+
+export interface ResourceRelationship {
+  id: string
+  __schema: string
 }
 
 export interface Resource {
@@ -9,9 +19,10 @@ export interface Resource {
   attributes?: {
     [key: string]: any // @todo
   }
-  relationships?: {
-    [key: string]: any // @todo
-  }
+  relationships?: globalThis.Record<
+    string,
+    ResourceRelationship | ResourceRelationship[]
+  >
 }
 
 export type CreateData = Omit<Record, "id" | "__schema">

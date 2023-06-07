@@ -1,46 +1,25 @@
 import { describe, it, expect } from "vitest"
-import { createStore, convertResourceToRecord } from "../../store"
-import type { Schema, Source } from "../../types"
+import { createStore } from "../../store"
 import { updateOne } from "./updateOne"
-
-const fakeDataSource: Source = {
-  version: 0,
-  findAll: () => Promise.resolve([]),
-  findOne: () => Promise.resolve([]),
-  createOne: () => Promise.resolve([]),
-  updateOne: () =>
-    Promise.resolve([
-      {
-        id: "1",
-        __schema: "Article",
-        attributes: { title: "updated title", body: "baz-body" },
-      },
-    ]),
-  deleteOne: () => Promise.resolve(),
-}
-
-const ArticleSchema = {
-  name: "Article",
-  displayAttribute: "title",
-  attributes: { title: "string", body: "string" },
-} as Schema
-const schemas = { Article: ArticleSchema }
+import { fakeDataSource, schemas } from "../../mocks/testData"
 
 describe("rest-client/services/promise/updateOne", () => {
   const data = {
-    id: "1",
-    attributes: { title: "updated title" },
+    id: "article-1",
+    attributes: { title: "updated title", body: "updated body" },
   }
+
   const expected = {
-    id: "1",
+    id: "article-1",
     __schema: "Article",
-    attributes: { title: "updated title", body: "baz-body" },
+    title: "updated title",
+    body: "updated body",
   }
 
   it("should return the new record", async () => {
     createStore(["Article"])
     const result = await updateOne(fakeDataSource, schemas, "Article", data)
-    expect(result).toEqual(convertResourceToRecord(expected))
+    expect(result).toEqual(expected)
   })
 
   it.todo("should insert the record into the store")

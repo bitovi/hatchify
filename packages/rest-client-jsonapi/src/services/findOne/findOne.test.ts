@@ -8,7 +8,11 @@ import { findOne } from "./findOne"
 
 const ArticleSchema = { name: "Article" } as Schema
 const schemas = { Article: ArticleSchema }
-const schemaMap = { Article: { type: "article", endpoint: "articles" } }
+const schemaMap = {
+  Article: { type: "article", endpoint: "articles" },
+  Person: { type: "person", endpoint: "people" },
+  Tag: { type: "tag", endpoint: "tags" },
+}
 const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/findOne", () => {
@@ -22,6 +26,13 @@ describe("rest-client-jsonapi/services/findOne", () => {
         attributes: {
           title: "Article 1",
           body: "Article 1 body",
+        },
+        relationships: {
+          author: { id: "person-id-1", __schema: "Person" },
+          tags: [
+            { id: "tag-id-1", __schema: "Tag" },
+            { id: "tag-id-2", __schema: "Tag" },
+          ],
         },
       },
     ]

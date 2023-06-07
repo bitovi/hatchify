@@ -7,22 +7,7 @@
   },
   "eslintConfig": {
     "root": true,
-    "extends": [
-      "@bitovi/eslint-config/react",
-      "prettier"
-    ],
-    "plugins": [
-      "prettier"
-    ],
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "semi": false,
-          "trailingComma": "all"
-        }
-      ]
-    }
+    "extends": "@bitovi/eslint-config/react"
   },
   "prettier": {
     "semi": false,

@@ -1,3 +1,3 @@
 export * from "./fetch"
-export * from "./records"
+export * from "./resources"
 export * from "./query"
