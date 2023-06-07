@@ -40,8 +40,9 @@ runs:
     - name: Publish to NPM Registry
       shell: bash
       run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      uses: JS-DevTools/npm-publish@v2
+      secrets:
+        token: ${{ secrets.NPM_TOKEN }}
 
     - name: Push Tag
       uses: ad-m/github-push-action@master
