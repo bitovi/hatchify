@@ -1,12 +1,12 @@
 // hatchify-app/schemas/todo.ts
-import { Schema } from "@hatchifyjs/react";
+// import { Schema } from "@hatchifyjs/react";
 
-export const Todo: Schema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     name: "STRING",
     due_date: "DATE",
-    importance: "INTEGER"
+    importance: "INTEGER",
   },
-  belongsTo: [{ target: "User", options: { as: "user" } }], 
+  belongsTo: [{ target: "User", options: { as: "user" } }],
 };

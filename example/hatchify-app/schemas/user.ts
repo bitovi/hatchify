@@ -1,7 +1,7 @@
 // hatchify-app/schemas/user.ts
-import type { Schema } from "@hatchifyjs/react";
+// import type { Schema } from "@hatchifyjs/react";
 
-export const User: Schema = {
+export const User = {
   name: "User",
   attributes: {
     name: "STRING",
