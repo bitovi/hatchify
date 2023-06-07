@@ -39,7 +39,7 @@ runs:
         npm version ${{ inputs.segment }} $PREID_CMD -m "Publish ${{ inputs.package }} v%s"
     - name: Publish to NPM Registry
       shell: bash
-      run: npm publish
+      run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
