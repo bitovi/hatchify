@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react"
-import {
-  getMeta,
-  findOne,
-  getRecords,
-  subscribeToOne,
-} from "@hatchifyjs/rest-client"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { getMeta, findOne, subscribeToAll } from "@hatchifyjs/rest-client"
+
 import type {
   Meta,
   MetaError,
@@ -13,6 +9,12 @@ import type {
   Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
+
+const useMemoizedQuery = (query: QueryOne) => {
+  return useMemo(() => {
+    return query
+  }, [query.include, query.fields, query.id])
+}
 
 /**
  * Fetches a single records using the rest-client findOne function,
@@ -24,29 +26,30 @@ export const useOne = (
   schemaName: string,
   query: QueryOne,
 ): [Record | undefined, Meta] => {
-  const defaultData = getRecords(schemaName)
-  const record = defaultData.find((record: Record) => record.id === query.id)
+  const memoizedQuery = useMemoizedQuery(query)
 
-  const [data, setData] = useState<Record | undefined>(record)
+  const [data, setData] = useState<Record | undefined>(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
+  const fetchOne = useCallback(() => {
     setLoading(true)
 
-    findOne(dataSource, allSchemas, schemaName, query)
+    findOne(dataSource, allSchemas, schemaName, memoizedQuery)
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
-  }, [dataSource, schemaName, query])
+  }, [dataSource, allSchemas, schemaName, memoizedQuery])
 
   useEffect(() => {
-    return subscribeToOne(
-      schemaName,
-      (record: Record) => setData(record),
-      query.id,
-    )
-  }, [schemaName, query.id])
+    fetchOne()
+  }, [fetchOne])
+
+  useEffect(() => {
+    // todo: should use subscribeToOne here once store + can-query-logic is implemented
+    // for now, subscribe to any change and refetch data
+    return subscribeToAll(schemaName, fetchOne)
+  }, [schemaName, fetchOne, memoizedQuery.id])
 
   const meta: Meta = getMeta(error, loading, false, undefined)
   return [data, meta]

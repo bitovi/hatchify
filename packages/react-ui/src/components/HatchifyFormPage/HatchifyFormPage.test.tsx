@@ -2,7 +2,7 @@ import { describe, it, vi } from "vitest"
 import { render } from "@testing-library/react"
 import { HatchifyFormPage } from "./HatchifyFormPage"
 // import type { Schema } from "@hatchifyjs/rest-client"
-import type { Schema } from "../../services/api/schemas" //TODO update schema
+import type { Schema } from "../../services-legacy/api/schemas" //TODO update schema
 
 const TestSchema: Schema = {
   name: "Test",

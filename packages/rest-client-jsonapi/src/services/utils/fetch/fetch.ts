@@ -3,12 +3,11 @@ import type { JsonApiResource } from "../../jsonapi"
 /**
  * Helper function for making fetch requests to a JSON:API backend.
  */
-export async function fetchJsonApi(
+export async function fetchJsonApi<T>(
   method: "GET" | "POST" | "PATCH" | "DELETE",
   url: string,
   body?: { [key: string]: any },
-): // todo support `included` (relationships) property
-Promise<{ data: JsonApiResource }> {
+): Promise<{ data: T; included?: JsonApiResource[] }> {
   const response = await fetch(url, {
     method,
     body: body ? JSON.stringify({ data: body }) : undefined,
@@ -20,7 +19,7 @@ Promise<{ data: JsonApiResource }> {
   }
 
   if (response.status === 204) {
-    return { data: {} as JsonApiResource }
+    return { data: {} as T }
   }
 
   return response.json()

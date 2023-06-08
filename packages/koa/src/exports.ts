@@ -1,7 +1,7 @@
 export * from "./koa"
 
+export { DataTypes, Op } from "@hatchifyjs/node"
 export type {
-  DataTypes,
   HatchifyModel,
   HatchifyOptions,
   BelongsToManyResult,
@@ -14,7 +14,6 @@ export type {
   EverythingFunctions,
   ParseFunctions,
   SerializeFunctions,
-  Op,
 } from "@hatchifyjs/node"
 
 export type { KoaMiddleware } from "./types"

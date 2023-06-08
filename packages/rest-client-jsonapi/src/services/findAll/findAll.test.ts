@@ -1,14 +1,20 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
 import type { Schema } from "@hatchifyjs/rest-client"
-import { baseUrl, articles } from "../../mocks/handlers"
+import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import { jsonapi } from "../../rest-client-jsonapi"
 import { findAll } from "./findAll"
+import { convertToHatchifyResources } from "../utils"
+import type { JsonApiResource } from "../jsonapi"
 
 const ArticleSchema = { name: "Article" } as Schema
 const schemas = { Article: ArticleSchema }
-const schemaMap = { Article: { type: "article", endpoint: "articles" } }
+const schemaMap = {
+  Article: { type: "article", endpoint: "articles" },
+  Person: { type: "person", endpoint: "people" },
+  Tag: { type: "tag", endpoint: "tags" },
+}
 const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/findAll", () => {
@@ -21,11 +27,10 @@ describe("rest-client-jsonapi/services/findAll", () => {
   }
 
   it("works", async () => {
-    const expected = articles.map((article) => ({
-      __schema: "Article",
-      attributes: article.attributes,
-      id: article.id,
-    }))
+    const expected = convertToHatchifyResources(
+      [...testData.data, ...testData.included] as JsonApiResource[],
+      schemaMap,
+    )
 
     const result = await findAll(sourceConfig, schemas, "Article", query)
 

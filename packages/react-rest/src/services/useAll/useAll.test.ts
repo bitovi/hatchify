@@ -1,7 +1,10 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import { createStore, convertResourceToRecord } from "@hatchifyjs/rest-client"
+import {
+  createStore,
+  flattenResourcesIntoRecords,
+} from "@hatchifyjs/rest-client"
 import type { Schema, Source, Subscription } from "@hatchifyjs/rest-client"
 import { useAll } from "./useAll"
 
@@ -45,7 +48,7 @@ describe("react-rest/services/useAll", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        fakeData.map(convertResourceToRecord),
+        flattenResourcesIntoRecords(fakeData, "Article"),
         {
           status: "success",
           meta: undefined,
@@ -71,7 +74,7 @@ describe("react-rest/services/useAll", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        fakeData.map(convertResourceToRecord),
+        flattenResourcesIntoRecords(fakeData, "Article"),
         {
           status: "success",
           meta: undefined,
@@ -98,14 +101,15 @@ describe("react-rest/services/useAll", () => {
         attributes: { title: "qux", body: "qux-body" },
       },
     ]
+    fakeDataSource.findAll = () => Promise.resolve(newFakeData)
 
     store.Article.subscribers.forEach((subscriber: Subscription) =>
-      subscriber(newFakeData.map(convertResourceToRecord)),
+      subscriber([]),
     )
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        newFakeData.map(convertResourceToRecord),
+        flattenResourcesIntoRecords(newFakeData, "Article"),
         {
           status: "success",
           meta: undefined,

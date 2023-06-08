@@ -18,13 +18,15 @@ export { errorResponseHandler } from "./error"
 
 export { codes, statusCodes } from "./error/constants"
 
-export { HatchifyError, ValidationError } from "./error/errors"
+export { ConflictError, HatchifyError, ValidationError } from "./error/errors"
 
 export type { EverythingFunctions } from "./everything"
 
 export { getMiddlewareFunctions } from "./middleware/node"
 
 export type { ParseFunctions } from "./parse"
+
+export { parseHatchifyBody } from "./parse/body"
 
 export type { SerializeFunctions } from "./serialize"
 

@@ -4,7 +4,12 @@ import type {
   Resource,
   Schemas,
 } from "@hatchifyjs/rest-client"
-import { convertToRecords, fetchJsonApi, getQueryParams } from "../utils"
+import {
+  convertToHatchifyResources,
+  fetchJsonApi,
+  getQueryParams,
+} from "../utils"
+import type { JsonApiResource } from "../jsonapi"
 
 /**
  * Fetches a single resource, adds the __schema to the request response,
@@ -24,10 +29,15 @@ export async function findOne(
     query.include,
   )
 
-  const json = await fetchJsonApi(
+  const json = await fetchJsonApi<JsonApiResource>(
     "GET",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${query.id}${queryParams}`,
   )
 
-  return Promise.resolve(convertToRecords(json.data, schemaName))
+  return Promise.resolve(
+    convertToHatchifyResources(
+      [json.data, ...(json.included || [])],
+      config.schemaMap,
+    ),
+  )
 }

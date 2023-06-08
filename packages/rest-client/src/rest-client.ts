@@ -1,4 +1,5 @@
 export type {
+  Attribute,
   CreateData,
   Fields,
   Include,
@@ -9,6 +10,7 @@ export type {
   QueryOne,
   Record,
   Resource,
+  ResourceRelationship,
   Schema,
   Schemas,
   SchemaMap,
@@ -23,8 +25,8 @@ export {
   createOne,
   createStore,
   deleteOne,
-  convertResourceToRecord,
   findAll,
+  flattenResourcesIntoRecords,
   getMeta,
   findOne,
   getRecords,

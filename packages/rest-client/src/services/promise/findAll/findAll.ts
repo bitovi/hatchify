@@ -1,6 +1,6 @@
 import type { Source, Record, QueryList, Schemas } from "../../types"
-import { getFields } from "../../utils"
-import { convertResourceToRecord, insert } from "../../store"
+import { getFields, getInclude } from "../../utils"
+import { flattenResourcesIntoRecords } from "../../store"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,
@@ -14,6 +14,7 @@ export const findAll = async (
 ): Promise<Record[]> => {
   const updatedQuery = {
     ...query,
+    include: getInclude(allSchemas, schemaName, query),
     fields: getFields(allSchemas, schemaName, query),
   } as Required<QueryList>
 
@@ -23,8 +24,5 @@ export const findAll = async (
     updatedQuery,
   )
 
-  insert(schemaName, resources)
-
-  // todo: flatten related records into base records
-  return resources.map(convertResourceToRecord)
+  return flattenResourcesIntoRecords(resources, schemaName)
 }

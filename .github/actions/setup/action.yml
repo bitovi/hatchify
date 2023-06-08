@@ -8,6 +8,7 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version-file: ".nvmrc"
+        registry-url: "https://registry.npmjs.org/"
 
     - name: Install dependencies
       shell: bash

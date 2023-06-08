@@ -12,12 +12,25 @@ describe.skip("hatchifyjs/presentation/mui/MuiList", () => {
       render(
         <MuiList
           useData={() => [
+            [
+              {
+                id: "uuid1",
+                firstName: "Joe",
+                lastName: "Smith",
+              },
+              { id: "uuid2", firstName: "John", lastName: "Snow" },
+            ],
             {
-              id: "uuid1",
-              firstName: "Joe",
-              lastName: "Smith",
+              status: "success",
+              meta: undefined,
+              error: undefined,
+              isDone: true,
+              isLoading: false,
+              isRejected: false,
+              isRevalidating: false,
+              isStale: false,
+              isSuccess: true,
             },
-            { id: "uuid2", firstName: "John", lastName: "Snow" },
           ]}
           displays={[
             {

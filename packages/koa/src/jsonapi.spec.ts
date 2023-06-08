@@ -4,7 +4,7 @@ import { Serializer } from "jsonapi-serializer"
 import Koa from "koa"
 
 import { Hatchify } from "./koa"
-import { GET, POST, createServer } from "../test/utils"
+import { GET, POST, createServer } from "./testing/utils"
 
 describe("JSON:API Tests", () => {
   const Model: HatchifyModel = {

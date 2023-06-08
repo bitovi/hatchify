@@ -1,13 +1,19 @@
 // import type { Schema } from "@hatchifyjs/rest-client"
-import type { Schema } from "../services/api/schemas" //TODO update schema
+import type {
+  Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
+  Meta,
+  QueryList,
+  Record,
+} from "@hatchifyjs/rest-client"
+import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
 
 import type {
-  HatchifyDisplay,
+  HatchifyDisplay as LegacyHatchifyDisplay,
   HatchifyFormField,
   FormFieldValueType,
-} from "../services"
+} from "../services-legacy"
+import type { HatchifyDisplay } from "../services"
 import type { FormState } from "../components/HatchifyForm"
-// import { Meta, QueryList, Record } from "@hatchifyjs/rest-client"
 
 export type Primitive = string | boolean | number
 
@@ -18,8 +24,7 @@ export interface XProviderProps<T> {
 
 export interface XListProps {
   displays: HatchifyDisplay[]
-  useData: () => FlatRecord[]
-  // useData: (query: QueryList)C => [Record[], Meta]
+  useData: (query: QueryList) => [Record[], Meta]
 }
 
 export interface XLayoutProps {
@@ -29,7 +34,7 @@ export interface XLayoutProps {
 }
 
 export interface XDetailsProps {
-  displays: HatchifyDisplay[]
+  displays: LegacyHatchifyDisplay[]
   useData: () => FlatRecord
 }
 
@@ -75,7 +80,7 @@ export type Attribute = string | AttributeSchema
 export type ValueComponent = React.FC<{
   value: CellValue
   record: FlatRecord
-  attributeSchema: Attribute | null
+  attributeSchema: NewAttribute | null
   attribute?: string | null
 }>
 

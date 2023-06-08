@@ -1,41 +1,53 @@
-// import { createReactRest } from "@hatchifyjs/react-rest"
-// import type { Schema } from "@hatchifyjs/hatchify-core"
-// import type { Source } from "@hatchifyjs/rest-client"
-// import type { ReactRest } from "@hatchifyjs/react-rest"
-// import { HatchifyList } from "../components/HatchifyList"
+import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
+import type { ReactRest } from "@hatchifyjs/react-rest"
+import type { Source, Schemas } from "@hatchifyjs/rest-client"
+import { hatchifyReactRest } from "@hatchifyjs/react-rest"
+import { transformSchema } from "@hatchifyjs/rest-client"
 
-// type Components = {
-//   [schemaName: string]: {
-//     List: () => any
-//   }
-// }
+import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
+import { HatchifyList } from "../components/HatchifyList"
 
-// type HatchifyApp = {
-//   components: Components
-//   model: ReactRest
-// }
+type Components = {
+  [schemaName: string]: {
+    List: (
+      props: Omit<HatchifyListProps, "allSchemas" | "schemaName" | "useData">,
+    ) => any
+  }
+}
 
-// export function hatchifyReact(
-//   schemas: { [schemaName: string]: Schema },
-//   dataSource: Source,
-// ): HatchifyApp {
-//   const rest = createReactRest(schemas, dataSource)
+type HatchifyApp = {
+  components: Components
+  model: ReactRest
+}
 
-//   const components = Object.values(schemas).reduce((acc, oldSchema) => {
-//     // const schema = transformSchema(oldSchema)
-//     const schema = oldSchema
+export function hatchifyReact(
+  legacySchemas: Record<string, LegacySchema>,
+  dataSource: Source,
+): HatchifyApp {
+  const reactRest = hatchifyReactRest(legacySchemas, dataSource)
 
-//     acc[schema.name] = {
-//       List: () => (
-//         <HatchifyList schema={schema} useList={rest[schema.name].useList} />
-//       ),
-//     }
+  const schemas = Object.values(legacySchemas).reduce((acc, schema) => {
+    acc[schema.name] = transformSchema(schema)
+    return acc
+  }, {} as Schemas)
 
-//     return acc
-//   }, {} as HatchifyApp["components"])
+  const components = Object.values(schemas).reduce((acc, schema) => {
+    acc[schema.name] = {
+      List: (props) => (
+        <HatchifyList
+          allSchemas={schemas}
+          schemaName={schema.name}
+          useData={reactRest[schema.name].useAll}
+          {...props}
+        />
+      ),
+    }
 
-//   return {
-//     components,
-//     model: rest,
-//   }
-// }
+    return acc
+  }, {} as HatchifyApp["components"])
+
+  return {
+    components,
+    model: reactRest,
+  }
+}
