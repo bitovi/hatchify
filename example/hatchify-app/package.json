@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/hatchify-app",
+    "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/hatchify-app && npm install",
     "dev:frontend": "vite",
     "dev:backend": "nodemon --esm backend/index.ts"
   },

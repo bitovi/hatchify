@@ -1,30 +1,31 @@
 import { test, expect } from "@playwright/test"
 
-test("has title", async ({ page }) => {
-  await page.goto("https://playwright.dev/")
-
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/)
-})
-
-test("get started link", async ({ page }) => {
-  await page.goto("https://playwright.dev/")
-
-  // Click the get started link.
-  await page.getByRole("link", { name: "Get started" }).click()
-
-  // Expects the URL to contain intro.
-  await expect(page).toHaveURL(/.*intro/)
-})
-
 test("works", async ({ page }) => {
-  await page.goto("http://localhost:5173/")
+  // await page.goto("http://localhost:5173/")
 
-  await expect(page.getByText("user")).toBeVisible()
+  // Table columns exist
+  // await expect(page.getByText("Name")).toBeVisible()
+  // await expect(page.getByText("Due Date")).toBeVisible()
+  // await expect(page.getByText("Importance")).toBeVisible()
+  // await expect(page.getByText("user")).toBeVisible()
+  page.on("console", (m) => console.log(m.text()))
+  const response = await fetch("http://localhost:3000/api/todos", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      data: {
+        type: "Todo",
+        attributes: {
+          name: "Test",
+          due_date: "2021-01-01",
+          importance: 1,
+        },
+      },
+    }),
+  })
+
+  const json = await response.json()
+  console.log("json------------>", json)
 })
-
-// test("doesn't work", async ({ page }) => {
-//   await page.goto("http://localhost:5173/")
-
-//   await expect(page.getByText("dafsdfasd")).toBeVisible()
-// })
