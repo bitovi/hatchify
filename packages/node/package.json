@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",
+    "@types/co-body": "^6.1.0",
     "@types/jest": "^29.2.1",
     "@types/json-api-serializer": "^2.6.3",
     "@types/node": "^18.11.9",
