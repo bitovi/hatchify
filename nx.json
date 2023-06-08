@@ -8,7 +8,6 @@
         "cacheableOperations": [
           "typecheck",
           "eslint",
-          "prettier",
           "depcheck",
           "test",
           "clean",
@@ -19,25 +18,16 @@
   },
   "targetDefaults": {
     "typecheck": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "build": {
-      "dependsOn": [
-        "^build",
-        "clean"
-      ]
+      "dependsOn": ["^build", "clean"]
     },
     "dev": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     }
   }
 }
