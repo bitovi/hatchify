@@ -1,11 +1,20 @@
 import type { Source, SchemaMap } from "@hatchifyjs/rest-client"
 import { createOne, deleteOne, findAll, findOne, updateOne } from ".."
 
+export type Relationship = {
+  id: string | number
+  type: string
+}
+
+export type JsonApiResourceRelationship = {
+  data: Relationship | Relationship[]
+}
+
 export interface JsonApiResource {
   id: string | number
   type: string
-  attributes?: { [key: string]: string | number | boolean | null }
-  // todo relationships
+  attributes?: Record<string, string | number | boolean | null>
+  relationships?: Record<string, JsonApiResourceRelationship>
 }
 
 /**

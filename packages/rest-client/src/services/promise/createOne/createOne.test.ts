@@ -1,56 +1,24 @@
 import { describe, it, expect, vi } from "vitest"
-import {
-  keyResourcesById,
-  createStore,
-  convertResourceToRecord,
-} from "../../store"
-import type { Schema, Source } from "../../types"
+import { createStore } from "../../store"
 import { createOne } from "./createOne"
-
-const fakeDataSource: Source = {
-  version: 0,
-  findAll: () => Promise.resolve([]),
-  findOne: () => Promise.resolve([]),
-  createOne: () =>
-    Promise.resolve([
-      {
-        id: "3",
-        __schema: "Article",
-        attributes: { title: "baz", body: "baz-body" },
-      },
-    ]),
-  updateOne: () => Promise.resolve([]),
-  deleteOne: () => Promise.resolve(),
-}
-
-const ArticleSchema = {
-  name: "Article",
-  displayAttribute: "title",
-  attributes: { title: "string", body: "string" },
-} as Schema
-const schemas = { Article: ArticleSchema }
+import { fakeDataSource, schemas } from "../../mocks/testData"
 
 describe("rest-client/services/promise/createOne", () => {
-  const data = {
-    attributes: { title: "baz", body: "baz-body" },
-  }
+  const data = { attributes: { title: "baz", body: "baz-body" } }
+
   const expected = {
-    id: "3",
+    id: "article-3",
     __schema: "Article",
-    attributes: { title: "baz", body: "baz-body" },
+    title: "baz",
+    body: "baz-body",
   }
 
   it("should return the new record", async () => {
     createStore(["Article"])
-    const result = await createOne(fakeDataSource, schemas, "Article", data)
-    expect(result).toEqual(convertResourceToRecord(expected))
-  })
 
-  // todo: store + can-query-logic will be implemented later
-  it.skip("should insert the record into the store", async () => {
-    const store = createStore(["Article"])
-    await createOne(fakeDataSource, schemas, "Article", data)
-    expect(store.Article.data).toEqual(keyResourcesById([expected]))
+    const result = await createOne(fakeDataSource, schemas, "Article", data)
+
+    expect(result).toEqual(expected)
   })
 
   it("should notify subscribers", async () => {

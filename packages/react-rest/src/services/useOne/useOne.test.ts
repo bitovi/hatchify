@@ -1,7 +1,10 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import { createStore, convertResourceToRecord } from "@hatchifyjs/rest-client"
+import {
+  createStore,
+  flattenResourcesIntoRecords,
+} from "@hatchifyjs/rest-client"
 import type { Schema, Source, Subscription } from "@hatchifyjs/rest-client"
 import { useOne } from "./useOne"
 
@@ -46,7 +49,7 @@ describe("react-rest/services/useOne", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        convertResourceToRecord(fakeData[0]),
+        flattenResourcesIntoRecords(fakeData, "Article", "1"),
         {
           status: "success",
           meta: undefined,
@@ -71,7 +74,7 @@ describe("react-rest/services/useOne", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        convertResourceToRecord(fakeData[0]),
+        flattenResourcesIntoRecords(fakeData, "Article", "1"),
         {
           status: "success",
           meta: undefined,
@@ -101,7 +104,7 @@ describe("react-rest/services/useOne", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        convertResourceToRecord(newFakeData[0]),
+        flattenResourcesIntoRecords(newFakeData, "Article", "1"),
         {
           status: "success",
           meta: undefined,

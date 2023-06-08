@@ -1,12 +1,13 @@
 import { afterEach, describe, it, expect, vi } from "vitest"
 import {
-  convertResourceToRecord,
   createStore,
   getRecords,
   keyResourcesById,
   insert,
   remove,
+  flattenResourcesIntoRecords,
 } from "./store"
+import { testData } from "../mocks/testData"
 import type { Resource } from "../types"
 
 describe("rest-client/store", () => {
@@ -117,23 +118,6 @@ describe("rest-client/store", () => {
     })
   })
 
-  describe("convertResourceToRecord", () => {
-    it("should convert a resource to a record", () => {
-      const resource = {
-        id: "article-1",
-        __schema: "Article",
-        attributes: { title: "title-1", body: "body-1" },
-      }
-
-      expect(convertResourceToRecord(resource)).toEqual({
-        id: "article-1",
-        __schema: "Article",
-        title: "title-1",
-        body: "body-1",
-      })
-    })
-  })
-
   describe("keyResourcesById", () => {
     it("should convert an array of resources to an object of resources keyed by id", () => {
       const resources: Resource[] = [
@@ -233,6 +217,49 @@ describe("rest-client/store", () => {
           body: "body-2",
         },
       ])
+    })
+  })
+
+  describe("flattenResourcesIntoRecords", () => {
+    it("works for many resources", () => {
+      const expected = [
+        {
+          id: "article-1",
+          __schema: "Article",
+          title: "foo",
+          body: "foo-body",
+          author: { id: "person-1", __schema: "Person", name: "foo" },
+          tags: [
+            { id: "tag-1", __schema: "Tag", title: "tag-1" },
+            { id: "tag-2", __schema: "Tag", title: "tag-2" },
+          ],
+        },
+        {
+          id: "article-2",
+          __schema: "Article",
+          title: "foo",
+          body: "foo-body",
+          author: { id: "person-1", __schema: "Person", name: "foo" },
+          tags: [{ id: "tag-1", __schema: "Tag", title: "tag-1" }],
+        },
+      ]
+
+      expect(flattenResourcesIntoRecords(testData, "Article")).toEqual(expected)
+    })
+
+    it("works for a single resource", () => {
+      const expected = {
+        id: "article-2",
+        __schema: "Article",
+        title: "foo",
+        body: "foo-body",
+        author: { id: "person-1", __schema: "Person", name: "foo" },
+        tags: [{ id: "tag-1", __schema: "Tag", title: "tag-1" }],
+      }
+
+      expect(
+        flattenResourcesIntoRecords(testData, "Article", "article-2"),
+      ).toEqual(expected)
     })
   })
 })

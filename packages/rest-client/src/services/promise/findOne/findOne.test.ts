@@ -1,40 +1,7 @@
 import { afterEach, describe, it, expect } from "vitest"
-import {
-  keyResourcesById,
-  createStore,
-  convertResourceToRecord,
-} from "../../store"
-import type { Schema, Source } from "../../types"
+import { createStore } from "../../store"
 import { findOne } from "./findOne"
-
-const fakeData = [
-  {
-    id: "1",
-    __schema: "Article",
-    attributes: { title: "foo", body: "foo-body" },
-  },
-  {
-    id: "2",
-    __schema: "Article",
-    attributes: { title: "bar", body: "bar-body" },
-  },
-]
-
-const fakeDataSource: Source = {
-  version: 0,
-  findAll: () => Promise.resolve([]),
-  findOne: () => Promise.resolve([fakeData[0]]),
-  createOne: () => Promise.resolve([]),
-  updateOne: () => Promise.resolve([]),
-  deleteOne: () => Promise.resolve(),
-}
-
-const ArticleSchema = {
-  name: "Article",
-  displayAttribute: "title",
-  attributes: { title: "string", body: "string" },
-} as Schema
-const schemas = { Article: ArticleSchema }
+import { fakeDataSource, schemas } from "../../mocks/testData"
 
 describe("rest-client/promise", () => {
   afterEach(() => {
@@ -43,23 +10,29 @@ describe("rest-client/promise", () => {
   })
 
   describe("findOne", () => {
-    const query = { id: "1" }
+    const query = { id: "article-1" }
 
     it("should return a record", async () => {
       createStore(["Article"])
       const result = await findOne(fakeDataSource, schemas, "Article", query)
-      const expected = convertResourceToRecord(fakeData[0])
+
+      const expected = {
+        id: "article-1",
+        __schema: "Article",
+        title: "foo",
+        body: "foo-body",
+        author: {
+          id: "person-1",
+          __schema: "Person",
+          name: "foo",
+        },
+        tags: [
+          { id: "tag-1", __schema: "Tag", title: "tag-1" },
+          { id: "tag-2", __schema: "Tag", title: "tag-2" },
+        ],
+      }
 
       expect(result).toEqual(expected)
-    })
-
-    // todo: store + can-query-logic will be implemented later
-    it.skip("should insert the record into the store", async () => {
-      const store = createStore(["Article"])
-      await findOne(fakeDataSource, schemas, "Article", query)
-      const expected = keyResourcesById([fakeData[0]])
-
-      expect(store.Article.data).toEqual(expected)
     })
 
     it("should throw an error if the request fails", async () => {

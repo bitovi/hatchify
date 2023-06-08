@@ -1,14 +1,18 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
 import type { Schema } from "@hatchifyjs/rest-client"
-import { baseUrl, articles } from "../../mocks/handlers"
+import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import { jsonapi } from "../../rest-client-jsonapi"
 import { createOne } from "./createOne"
 
 const ArticleSchema = { name: "Article" } as Schema
 const schemas = { Article: ArticleSchema }
-const schemaMap = { Article: { type: "article", endpoint: "articles" } }
+const schemaMap = {
+  Article: { type: "article", endpoint: "articles" },
+  Person: { type: "person", endpoint: "people" },
+  Tag: { type: "tag", endpoint: "tags" },
+}
 const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/createOne", () => {
@@ -17,7 +21,7 @@ describe("rest-client-jsonapi/services/createOne", () => {
     const expected = [
       {
         __schema: "Article",
-        id: `article-id-${articles.length + 1}`,
+        id: `article-id-${testData.data.length + 1}`,
         ...data,
       },
     ]
