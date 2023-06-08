@@ -4,7 +4,7 @@ import Express from "express"
 import { Serializer } from "jsonapi-serializer"
 
 import { Hatchify } from "./express"
-import { GET, POST, createServer } from "./testing/utils"
+import { GET, POST } from "./testing/utils"
 
 describe("JSON:API Tests", () => {
   const Model: HatchifyModel = {
@@ -35,7 +35,7 @@ describe("JSON:API Tests", () => {
     const hatchify = new Hatchify([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     await POST(

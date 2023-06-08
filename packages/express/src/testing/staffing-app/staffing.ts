@@ -1,6 +1,5 @@
 import { Op } from "@hatchifyjs/node"
 import Express from "express"
-import type * as core from "express-serve-static-core"
 import type { Model } from "sequelize"
 
 import { Assignment } from "./models/Assignment"
@@ -17,7 +16,7 @@ interface Assignment {
   end_date: Date
 }
 
-export function createStaffingAppInstance(): [core.Express, Hatchify] {
+export function createStaffingAppInstance(): [any, Hatchify] {
   // Create a basic Express application
   const app = Express()
 

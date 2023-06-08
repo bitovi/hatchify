@@ -3,7 +3,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 import Express from "express"
 
 import { Hatchify } from "./express"
-import { GET, createServer } from "./testing/utils"
+import { GET } from "./testing/utils"
 
 describe("Schema Tests", () => {
   const Model: HatchifyModel = {
@@ -27,7 +27,7 @@ describe("Schema Tests", () => {
       res.json(hatchify.schema.Model)
     })
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     const find1 = await GET(server, "/")

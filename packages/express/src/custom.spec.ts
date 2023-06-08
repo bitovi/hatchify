@@ -3,7 +3,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 import Express from "express"
 
 import { Hatchify } from "./express"
-import { GET, createServer } from "./testing/utils"
+import { GET } from "./testing/utils"
 
 describe("Internal Tests", () => {
   const Model: HatchifyModel = {
@@ -55,7 +55,7 @@ describe("Internal Tests", () => {
       prefix: "/api",
     })
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     app.get("/user-custom-route", (_req, res) => {
@@ -104,7 +104,7 @@ describe("Internal Tests", () => {
 
     const hatchify = new Hatchify([Model, Model2, Model3], {})
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     app.get("/model3s", hatchify.middleware.allModels.findAll)
@@ -129,7 +129,7 @@ describe("Internal Tests", () => {
 
     const hatchify = new Hatchify([Model], { prefix: "/api" })
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     app.get(
@@ -164,7 +164,7 @@ describe("Internal Tests", () => {
 
     const hatchify = new Hatchify([Model], { prefix: "/api" })
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     app.get(

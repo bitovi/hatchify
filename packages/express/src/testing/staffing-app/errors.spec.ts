@@ -7,7 +7,7 @@ import { Project } from "./models/Project"
 import { Role } from "./models/Role"
 import { Skill } from "./models/Skill"
 import { Hatchify, errorHandlerMiddleware } from "../../express"
-import { GET, POST, createServer } from "../utils"
+import { GET, POST } from "../utils"
 
 describe("Errors", () => {
   it("should return JSON API error format with Hatchify default middleware", async () => {
@@ -27,7 +27,7 @@ describe("Errors", () => {
     // Attach the Hatchify default middleware to your Express application
     app.use(hatchify.middleware.allModels.all)
 
-    const server = createServer(app)
+    const server = app
 
     const results = await Promise.all([
       POST(server, "/api/skills", {
@@ -80,7 +80,7 @@ describe("Errors", () => {
 
     app.use(hatchify.middleware.allModels.crud)
 
-    const server = createServer(app)
+    const server = app
 
     const errorDetails = {
       code: codes.ERR_PARAMETER_REQUIRED,

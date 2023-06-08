@@ -5,7 +5,7 @@ import Express from "express"
 
 import { createStaffingAppInstance } from "./staffing"
 import { Hatchify } from "../../express"
-import { GET, POST, createServer } from "../utils"
+import { GET, POST } from "../utils"
 
 const chance = new Chance()
 describe("Tests for fields parameter", () => {
@@ -16,7 +16,7 @@ describe("Tests for fields parameter", () => {
   })
 
   it("should return only specified fields for find all", async () => {
-    const server = createServer(app)
+    const server = app
 
     await POST(server, "/api/employees", {
       name: chance.name(),
@@ -54,7 +54,7 @@ describe("Tests for fields parameter", () => {
     const hatchify = new Hatchify([Employee], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     await POST(server, "/api/employees", {
@@ -77,7 +77,7 @@ describe("Tests for fields parameter", () => {
   })
 
   it("should return only specified fields for find by id", async () => {
-    const server = createServer(app)
+    const server = app
 
     const { id: employeeId } = (
       await POST(server, "/api/employees", {
@@ -120,7 +120,7 @@ describe("Tests for fields parameter", () => {
     const hatchify = new Hatchify([Employee], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     const { id: employeeId } = (
@@ -146,7 +146,7 @@ describe("Tests for fields parameter", () => {
   })
 
   it("should not return virtual fields if not specified", async () => {
-    const server = createServer(app)
+    const server = app
 
     await POST(server, "/api/employees", {
       name: chance.name(),
@@ -169,7 +169,7 @@ describe("Tests for fields parameter", () => {
   })
 
   it("should return virtual fields if specified", async () => {
-    const server = createServer(app)
+    const server = app
 
     const [{ deserialized: employee }, { deserialized: project }] =
       await Promise.all([

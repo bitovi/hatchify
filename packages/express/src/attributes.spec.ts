@@ -3,7 +3,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 import Express from "express"
 
 import { Hatchify } from "./express"
-import { GET, POST, createServer } from "./testing/utils"
+import { GET, POST } from "./testing/utils"
 
 describe("Attribute Tests", () => {
   const Model: HatchifyModel = {
@@ -26,7 +26,7 @@ describe("Attribute Tests", () => {
     const hatchify = new Hatchify([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     const create = await POST(server, "/api/models", {
@@ -68,7 +68,7 @@ describe("Attribute Tests", () => {
     const hatchify = new Hatchify([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     const create = await POST(server, "/api/models", {
@@ -96,7 +96,7 @@ describe("Attribute Tests", () => {
     const hatchify = new Hatchify([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
-    const server = createServer(app)
+    const server = app
     await hatchify.createDatabase()
 
     await POST(server, "/api/models", {

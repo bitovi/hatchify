@@ -1,11 +1,6 @@
 import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
-import type * as core from "express-serve-static-core"
 import { Deserializer } from "jsonapi-serializer"
 import request from "supertest"
-
-export function createServer(app: core.Express): core.Express {
-  return app
-}
 
 async function parse(result) {
   let serialized
