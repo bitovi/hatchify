@@ -16,3 +16,6 @@ Thumbs.db
 npm-debug.log*
 
 example.sqlite
+/test-results/
+/playwright-report/
+/playwright/.cache/
