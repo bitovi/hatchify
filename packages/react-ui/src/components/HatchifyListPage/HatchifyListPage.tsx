@@ -2,18 +2,21 @@ import { HatchifyList, useHatchifyPresentation } from ".."
 import type {
   ValueComponent,
   XLayoutProps,
-  FlatRecord,
 } from "../../presentation/interfaces"
-// import type { Meta, QueryList, Record } from "@hatchifyjs/rest-client"
+import type { Meta, QueryList, Record, Schemas } from "@hatchifyjs/rest-client"
 
 interface HatchifyListPageProps extends XLayoutProps {
+  allSchemas: Schemas
+  schemaName: string
+  useData: (query: QueryList) => [Record[], Meta]
   valueComponents?: { [attribute: string]: ValueComponent }
-  useData?: () => FlatRecord[]
-  // useData: (query: QueryList) => [Record[], Meta]
+  children?: React.ReactNode | null
 }
 
 export const HatchifyListPage: React.FC<HatchifyListPageProps> = ({
-  schema,
+  schema, // todo: legacy schema, remove when XLayout is updated
+  allSchemas,
+  schemaName,
   valueComponents,
   renderActions,
   children,
@@ -24,7 +27,8 @@ export const HatchifyListPage: React.FC<HatchifyListPageProps> = ({
   return (
     <Layout schema={schema} renderActions={renderActions}>
       <HatchifyList
-        schema={schema}
+        allSchemas={allSchemas}
+        schemaName={schemaName}
         valueComponents={valueComponents}
         useData={useData}
       >

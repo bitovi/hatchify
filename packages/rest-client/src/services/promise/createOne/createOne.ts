@@ -1,9 +1,9 @@
 import type { CreateData, Schemas, Source, Record } from "../../types"
-import { convertResourceToRecord, insert } from "../../store"
+import { convertResourceToRecord, notifySubscribers } from "../../store"
 
 /**
- * Creates a new resource in the data source, inserts it into the store,
- * notifies subscribers, and returns it as a record.
+ * Creates a new resource in the data source, notifies subscribers,
+ * and returns it as a record.
  */
 export const createOne = async (
   dataSource: Source,
@@ -13,7 +13,7 @@ export const createOne = async (
 ): Promise<Record> => {
   const resources = await dataSource.createOne(allSchemas, schemaName, data)
 
-  insert(schemaName, resources)
+  notifySubscribers(schemaName)
 
   // todo: flatten related records into base records
   return convertResourceToRecord(resources[0])

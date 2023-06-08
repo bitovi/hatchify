@@ -1,6 +1,6 @@
 import type { Source, Record, QueryList, Schemas } from "../../types"
 import { getFields } from "../../utils"
-import { convertResourceToRecord, insert } from "../../store"
+import { convertResourceToRecord } from "../../store"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,
@@ -22,8 +22,6 @@ export const findAll = async (
     schemaName,
     updatedQuery,
   )
-
-  insert(schemaName, resources)
 
   // todo: flatten related records into base records
   return resources.map(convertResourceToRecord)

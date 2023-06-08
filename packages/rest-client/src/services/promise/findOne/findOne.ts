@@ -1,6 +1,6 @@
 import type { Source, Record, QueryOne, Schemas } from "../../types"
 import { getFields } from "../../utils"
-import { convertResourceToRecord, insert } from "../../store"
+import { convertResourceToRecord } from "../../store"
 
 /**
  * Fetches a single resource from a data source, inserts it into the store,
@@ -22,8 +22,6 @@ export const findOne = async (
     schemaName,
     updatedQuery,
   )
-
-  insert(schemaName, resources)
 
   // todo: flatten related records into base records
   return convertResourceToRecord(resources[0])

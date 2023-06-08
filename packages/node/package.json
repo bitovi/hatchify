@@ -1,19 +1,11 @@
 {
   "name": "@hatchifyjs/node",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Fullstack CRUD Application Solution",
-  "main": "./dist/node.js",
-  "types": "./dist/node.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/node.js",
-      "types": "./src/node.ts"
-    },
-    "./package.json": "./package.json"
-  },
+  "main": "./dist/exports.js",
+  "types": "./dist/exports.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": "npm run clean && npm run build",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
@@ -24,7 +16,7 @@
     "typecheck": "tsc --noEmit",
     "eslint": "eslint .",
     "eslint:fix": "eslint --fix .",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -37,7 +29,7 @@
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
     "@bitovi/sequelize-querystring-parser": "^0.1.6",
-    "@hatchifyjs/sequelize-create-with-associations": "^0.3.2",
+    "@hatchifyjs/sequelize-create-with-associations": "^0.3.3",
     "inflection": "^2.0.1",
     "json-api-serializer": "^2.6.6",
     "path-to-regexp": "^6.2.1",
@@ -124,5 +116,24 @@
         }
       }
     ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.ts"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageProvider": "v8",
+    "coverageReporters": [
+      "html",
+      "text",
+      "text-summary"
+    ],
+    "testEnvironment": "node",
+    "transform": {
+      ".+\\.ts$": "ts-jest"
+    }
   }
 }

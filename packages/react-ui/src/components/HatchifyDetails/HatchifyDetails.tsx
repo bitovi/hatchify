@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom"
 // import type { Schema } from "@hatchifyjs/rest-client"
 
-import { findOne } from "../../services/api/api"
+import { findOne } from "../../services-legacy/api/api"
 import { useHatchifyPresentation } from ".."
-import { getDisplays } from "../../services"
+import { getDisplays } from "../../services-legacy"
 
-import type { Schema } from "../../services/api/schemas" //TODO update schema
+import type { Schema } from "../../services-legacy/api/schemas" //TODO update schema
 
 import type { FlatRecord, ValueComponent } from "../../presentation/interfaces"
 

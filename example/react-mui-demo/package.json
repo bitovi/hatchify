@@ -9,6 +9,7 @@
     "prettier:fix": "prettier --write *.config.ts src",
     "depcheck": "depcheck .",
     "dev": "vite",
+    "dev:rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/react-mui-demo && npm run dev",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "tsc && vite build",
     "test": "TZ=UT jest"

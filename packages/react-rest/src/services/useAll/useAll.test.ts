@@ -98,9 +98,10 @@ describe("react-rest/services/useAll", () => {
         attributes: { title: "qux", body: "qux-body" },
       },
     ]
+    fakeDataSource.findAll = () => Promise.resolve(newFakeData)
 
     store.Article.subscribers.forEach((subscriber: Subscription) =>
-      subscriber(newFakeData.map(convertResourceToRecord)),
+      subscriber([]),
     )
 
     await waitFor(() =>

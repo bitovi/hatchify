@@ -1,8 +1,5 @@
-import { statusCodes } from "../../managers/error-handler/constants"
-import {
-  ConflictError,
-  ValidationError,
-} from "../../managers/error-handler/errors"
+import { ConflictError, ValidationError, statusCodes } from "@hatchifyjs/node"
+
 import { compareDates } from "../../utils/date"
 
 const validateRoleOverlap = async ({ body, Role }) => {

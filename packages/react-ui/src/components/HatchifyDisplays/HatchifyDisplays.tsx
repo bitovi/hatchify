@@ -5,7 +5,7 @@ import type {
   CellValue,
   Attribute,
 } from "../../presentation/interfaces"
-import type { FormFieldRender } from "../../services"
+import type { FormFieldRender } from "../../services-legacy"
 
 export type Render = ({ record }: { record: FlatRecord }) => JSX.Element
 
