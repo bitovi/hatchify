@@ -34,6 +34,9 @@ export function jsonApiResourceToHatchifyResource(
   if (resource.relationships) {
     relationships = Object.entries(resource.relationships).reduce(
       (acc: Relationship, [key, value]) => {
+        // skip if relationship has no data
+        if (!value.data) return acc
+
         acc[key] = Array.isArray(value.data)
           ? value.data.map((v) => ({
               id: v.id.toString(),
@@ -70,5 +73,6 @@ export function convertToHatchifyResources(
   if (Array.isArray(data)) {
     return data.map((d) => jsonApiResourceToHatchifyResource(d, typeToSchema))
   }
+
   return [jsonApiResourceToHatchifyResource(data, typeToSchema)]
 }

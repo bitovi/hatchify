@@ -1,6 +1,5 @@
 import type { Source, Record, QueryList, Schemas } from "../../types"
-import { getFields, getInclude } from "../../utils"
-import { flattenResourcesIntoRecords } from "../../store"
+import { flattenResourcesIntoRecords, getFields, getInclude } from "../../utils"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,
@@ -24,5 +23,5 @@ export const findAll = async (
     updatedQuery,
   )
 
-  return flattenResourcesIntoRecords(resources, schemaName)
+  return flattenResourcesIntoRecords(allSchemas, resources, schemaName)
 }

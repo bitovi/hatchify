@@ -66,21 +66,21 @@ export function getQueryParams(
 ): string {
   let params = ""
 
-  const fieldsParam = fieldsToQueryParam(
-    schemaMap,
-    allSchemas,
-    schemaName,
-    fields,
-  )
+  // const fieldsParam = fieldsToQueryParam(
+  //   schemaMap,
+  //   allSchemas,
+  //   schemaName,
+  //   fields,
+  // )
 
-  // todo: include is undefined here
   if (include) {
     const includeParam = includeToQueryParam(include)
 
     if (include.length) params += `?${includeParam}&`
     else if (fields.length) params += `?include=`
 
-    params += fieldsParam
+    // todo: wait for backend to fix, using fieldsParam does not return an id in each object
+    // params += fieldsParam
   }
 
   return params

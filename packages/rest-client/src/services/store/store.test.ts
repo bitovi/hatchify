@@ -1,14 +1,6 @@
 import { afterEach, describe, it, expect, vi } from "vitest"
-import {
-  createStore,
-  getRecords,
-  keyResourcesById,
-  insert,
-  remove,
-  flattenResourcesIntoRecords,
-} from "./store"
-import { testData } from "../mocks/testData"
-import type { Resource } from "../types"
+import { createStore, getRecords, insert, remove } from "./store"
+import { schemas } from "../mocks/testData"
 
 describe("rest-client/store", () => {
   afterEach(() => {
@@ -33,21 +25,21 @@ describe("rest-client/store", () => {
   describe("insert", () => {
     it("should insert data into the store", () => {
       const store = createStore(["Article", "Person"])
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "1",
           __schema: "Article",
           attributes: { title: "title-1", body: "body-1" },
         },
       ])
-      insert("Person", [
+      insert(schemas, "Person", [
         {
           id: "1",
           __schema: "Person",
           attributes: { name: "name-1", age: 30 },
         },
       ])
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "2",
           __schema: "Article",
@@ -99,7 +91,7 @@ describe("rest-client/store", () => {
       const subscriber = vi.fn()
       store.Article.subscribers.push(subscriber)
 
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "article-1",
           __schema: "Article",
@@ -118,31 +110,17 @@ describe("rest-client/store", () => {
     })
   })
 
-  describe("keyResourcesById", () => {
-    it("should convert an array of resources to an object of resources keyed by id", () => {
-      const resources: Resource[] = [
-        { id: "1", __schema: "Entity", attributes: { name: "name-1" } },
-        { id: "2", __schema: "Entity", attributes: { name: "name-2" } },
-      ]
-
-      expect(keyResourcesById(resources)).toEqual({
-        "1": { id: "1", __schema: "Entity", attributes: { name: "name-1" } },
-        "2": { id: "2", __schema: "Entity", attributes: { name: "name-2" } },
-      })
-    })
-  })
-
   describe("getRecords", () => {
     it("should return an array of records for a given schema", () => {
       createStore(["Article", "Person"])
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "article-1",
           __schema: "Article",
           attributes: { title: "title-1", body: "body-1" },
         },
       ])
-      insert("Person", [
+      insert(schemas, "Person", [
         {
           id: "person-1",
           __schema: "Person",
@@ -150,7 +128,7 @@ describe("rest-client/store", () => {
         },
       ])
 
-      expect(getRecords("Article")).toEqual([
+      expect(getRecords(schemas, "Article")).toEqual([
         {
           id: "article-1",
           __schema: "Article",
@@ -161,14 +139,14 @@ describe("rest-client/store", () => {
     })
 
     it("should return an empty array if there are no records for a given schema", () => {
-      expect(getRecords("Tags")).toEqual([])
+      expect(getRecords(schemas, "Tags")).toEqual([])
     })
   })
 
   describe("remove", () => {
     it("should remove records from the store", () => {
       createStore(["Article"])
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "article-1",
           __schema: "Article",
@@ -186,7 +164,7 @@ describe("rest-client/store", () => {
         },
       ])
 
-      expect(getRecords("Article")).toEqual([
+      expect(getRecords(schemas, "Article")).toEqual([
         {
           id: "article-1",
           __schema: "Article",
@@ -207,9 +185,9 @@ describe("rest-client/store", () => {
         },
       ])
 
-      remove("Article", ["article-1", "article-3"])
+      remove(schemas, "Article", ["article-1", "article-3"])
 
-      expect(getRecords("Article")).toEqual([
+      expect(getRecords(schemas, "Article")).toEqual([
         {
           id: "article-2",
           __schema: "Article",
@@ -217,49 +195,6 @@ describe("rest-client/store", () => {
           body: "body-2",
         },
       ])
-    })
-  })
-
-  describe("flattenResourcesIntoRecords", () => {
-    it("works for many resources", () => {
-      const expected = [
-        {
-          id: "article-1",
-          __schema: "Article",
-          title: "foo",
-          body: "foo-body",
-          author: { id: "person-1", __schema: "Person", name: "foo" },
-          tags: [
-            { id: "tag-1", __schema: "Tag", title: "tag-1" },
-            { id: "tag-2", __schema: "Tag", title: "tag-2" },
-          ],
-        },
-        {
-          id: "article-2",
-          __schema: "Article",
-          title: "foo",
-          body: "foo-body",
-          author: { id: "person-1", __schema: "Person", name: "foo" },
-          tags: [{ id: "tag-1", __schema: "Tag", title: "tag-1" }],
-        },
-      ]
-
-      expect(flattenResourcesIntoRecords(testData, "Article")).toEqual(expected)
-    })
-
-    it("works for a single resource", () => {
-      const expected = {
-        id: "article-2",
-        __schema: "Article",
-        title: "foo",
-        body: "foo-body",
-        author: { id: "person-1", __schema: "Person", name: "foo" },
-        tags: [{ id: "tag-1", __schema: "Tag", title: "tag-1" }],
-      }
-
-      expect(
-        flattenResourcesIntoRecords(testData, "Article", "article-2"),
-      ).toEqual(expected)
     })
   })
 })

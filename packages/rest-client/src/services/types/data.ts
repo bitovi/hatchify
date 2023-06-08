@@ -1,6 +1,7 @@
 export interface RecordRelationship {
   id: string
   __schema: string
+  __label: string
   [key: string]: any // todo: strict typing
 }
 export interface Record {
