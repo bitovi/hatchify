@@ -14,3 +14,5 @@ node_modules
 Thumbs.db
 *.tsbuildinfo
 npm-debug.log*
+
+example.sqlite
