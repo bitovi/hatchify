@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react",
-  "version": "0.0.1-0",
+  "version": "0.0.1-1",
   "main": "./dist/react.js",
   "module": "./dist/react.mjs",
   "types": "./dist/react.d.ts",
