@@ -48,7 +48,7 @@ describe("react-rest/services/useAll", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(fakeData, "Article"),
+        flattenResourcesIntoRecords(schemas, fakeData, "Article"),
         {
           status: "success",
           meta: undefined,
@@ -74,7 +74,7 @@ describe("react-rest/services/useAll", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(fakeData, "Article"),
+        flattenResourcesIntoRecords(schemas, fakeData, "Article"),
         {
           status: "success",
           meta: undefined,
@@ -109,7 +109,7 @@ describe("react-rest/services/useAll", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(newFakeData, "Article"),
+        flattenResourcesIntoRecords(schemas, newFakeData, "Article"),
         {
           status: "success",
           meta: undefined,

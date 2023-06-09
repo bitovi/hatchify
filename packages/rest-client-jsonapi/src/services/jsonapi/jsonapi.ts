@@ -23,6 +23,15 @@ export interface JsonApiResource {
 export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
   const config = { baseUrl, schemaMap }
 
+  // Default `type` to `schemaMap` key if not set in `schemaMap`
+  config.schemaMap = Object.entries(schemaMap).reduce((acc, [key, value]) => {
+    acc[key] = {
+      ...value,
+      type: value.type || key,
+    }
+    return acc
+  }, {} as SchemaMap)
+
   return {
     version: 0,
     findAll: (allSchemas, schemaName, query) =>
