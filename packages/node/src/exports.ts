@@ -26,6 +26,8 @@ export { getMiddlewareFunctions } from "./middleware/node"
 
 export type { ParseFunctions } from "./parse"
 
+export { parseHatchifyBody } from "./parse/body"
+
 export type { SerializeFunctions } from "./serialize"
 
 export { Op } from "sequelize"

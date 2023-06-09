@@ -13,7 +13,7 @@
     "dev:backend": "nodemon --esm backend/index.ts"
   },
   "dependencies": {
-    "@hatchifyjs/koa": "file:../../packages/koa",
+    "@hatchifyjs/koa": "^0.0.4",
     "@hatchifyjs/react": "file:../../packages/react",
     "@koa/cors": "^4.0.0",
     "koa": "^2.14.2",

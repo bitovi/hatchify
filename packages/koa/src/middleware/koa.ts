@@ -1,10 +1,13 @@
 import type { MiddlewareRequest } from "@hatchifyjs/node"
-import { errorResponseHandler, getMiddlewareFunctions } from "@hatchifyjs/node"
+import {
+  errorResponseHandler,
+  getMiddlewareFunctions,
+  parseHatchifyBody,
+} from "@hatchifyjs/node"
 import type Koa from "koa"
 import type { Middleware as KoaMiddleware } from "koa"
 
 import type { Hatchify } from "../koa"
-import { parseHatchifyBody } from "../parse/body"
 
 /**
  * Provides a set of exported functions, per Model, that

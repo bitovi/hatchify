@@ -57,6 +57,13 @@ export function getDefaultDisplayRender(
 
     // @todo <HatchifyAttributeDisplay/> with relationship category|user|filetype is coming through as "extra" rather than "relationship"
     if (attType === "relationship" || attType === "extra") {
+      if (!value) {
+        return <String value="" />
+      }
+
+      // todo: __label is set at `react-rest` level - ideally this package is responsible for figuring out label via displayAttribute
+      value.label = value.__label || value.id
+
       return Array.isArray(value) ? (
         <RelationshipList values={value} />
       ) : (

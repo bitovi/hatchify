@@ -96,7 +96,9 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           ["author", "illustrators"],
         ),
       ).toEqual(
-        "?include=author,illustrators&fields[book_type]=title,body&fields[person_type]=name,email",
+        // todo: switch to commented out when backend returns id with each resource
+        // "?include=author,illustrators&fields[book_type]=title,body&fields[person_type]=name,email",
+        "?include=author,illustrators&",
       )
 
       expect(
@@ -115,18 +117,24 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           ["illustrated", "authored"],
         ),
       ).toEqual(
-        "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
+        // todo: switch to commented out when backend returns id with each resource
+        // "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
+        "?include=illustrated,authored&",
       )
     })
 
     it("works for when fields has values and include is empty", () => {
       expect(
         getQueryParams(schemaMap, schemas, "Book", ["title", "body"], []),
-      ).toEqual("?include=fields[book_type]=title,body")
+        // todo: switch to commented out when backend returns id with each resource
+        // ).toEqual("?include=fields[book_type]=title,body")
+      ).toEqual("?include=")
 
       expect(
         getQueryParams(schemaMap, schemas, "Person", ["firstName", "age"], []),
-      ).toEqual("?include=fields[person_type]=firstName,age")
+        // todo: switch to commented out when backend returns id with each resource
+        // ).toEqual("?include=fields[person_type]=firstName,age")
+      ).toEqual("?include=")
     })
 
     it("works when both fields and include are empty", () => {

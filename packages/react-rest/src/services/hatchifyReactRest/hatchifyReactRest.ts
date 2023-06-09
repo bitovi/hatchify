@@ -29,7 +29,7 @@ export type ReactRest = {
     // promises
     createOne: (data: CreateData) => Promise<Record>
     deleteOne: (id: string) => Promise<void>
-    findOne: (query: QueryOne) => Promise<Record>
+    findOne: (query: QueryOne) => Promise<Record | undefined>
     findAll: (query: QueryList) => Promise<Record[]>
     updateOne: (data: UpdateData) => Promise<Record>
     // hooks

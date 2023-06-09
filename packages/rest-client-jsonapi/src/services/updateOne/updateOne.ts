@@ -4,7 +4,8 @@ import type {
   SourceConfig,
   UpdateData,
 } from "@hatchifyjs/rest-client"
-import { convertToRecords, fetchJsonApi } from "../utils"
+import { convertToHatchifyResources, fetchJsonApi } from "../utils"
+import type { JsonApiResource } from "../jsonapi"
 
 /**
  * Updates a resource, adds the __schema to the request response,
@@ -16,11 +17,16 @@ export async function updateOne(
   schemaName: string,
   data: UpdateData,
 ): Promise<Resource[]> {
-  const json = await fetchJsonApi(
+  const json = await fetchJsonApi<JsonApiResource>(
     "PATCH",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${data.id}`,
     data,
   )
 
-  return Promise.resolve(convertToRecords(json.data, schemaName))
+  return Promise.resolve(
+    convertToHatchifyResources(
+      [json.data, ...(json.included || [])],
+      config.schemaMap,
+    ),
+  )
 }

@@ -69,21 +69,24 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command:
-  //     "cd example/hatchify-app && npm run rebuild && npm run dev:frontend & npm run dev:backend",
-  //   url: "http://localhost:5173/",
-  //   reuseExistingServer: !process.env.CI,
-  // },
   webServer: [
-    // {
-    // command:
-    // "cd example/hatchify-app && npm run rebuild && npm run dev:frontend",
-    // url: "http://localhost:5173/",
-    // },
     {
-      command: "cd example/hatchify-app && npm install && npm run dev:backend",
-      url: "http://localhost:3000/",
+      command: "cd example/hatchify-app && npm run dev:frontend",
+      reuseExistingServer: !process.env.CI,
+      port: 5173,
+      // remove later
+      // stderr: "pipe",
+      // stdout: "pipe",
+      // timeout: 10 * 5000,
+    },
+    {
+      command: "cd example/hatchify-app && npm run dev:backend",
+      reuseExistingServer: !process.env.CI,
+      port: 3000,
+      // remove later
+      // stderr: "pipe",
+      // stdout: "pipe",
+      // timeout: 10 * 5000,
     },
   ],
 })

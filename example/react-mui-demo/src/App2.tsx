@@ -5,20 +5,13 @@ import {
   MuiProvider,
 } from "@hatchifyjs/react"
 import Layout from "./components"
+import { Category, Document } from "./schemas"
 
 const hatchedReact = hatchifyReact(
-  {
-    Document: {
-      name: "Document",
-      attributes: {
-        title: "string",
-        date: "date",
-        url: "string",
-      },
-    },
-  },
+  { Category, Document },
   createJsonapiClient("https://dummy.data/api", {
     Document: { type: "document", endpoint: "documents" },
+    Category: { type: "category", endpoint: "categories" },
   }),
 )
 

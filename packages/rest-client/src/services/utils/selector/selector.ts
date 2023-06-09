@@ -22,7 +22,7 @@ export function getAttributesFromSchema(
 }
 
 /**
- * Convert a list of fields (jsonapi fieldsets) to a list of includes (jsonapi includes).
+ * Convert a list of fields (JSON:API fieldsets) to a list of includes (JSON:API includes).
  * https://jsonapi.org/format/#fetching-sparse-fieldsets
  * https://jsonapi.org/format/#fetching-includes
  */
@@ -40,7 +40,7 @@ export function getIncludeFromFields(fields: Fields): Include {
 }
 
 /**
- * Convert a list of include (jsonapi include) to a list of fields (jsonapi fieldset).
+ * Convert a list of include (JSON:API include) to a list of fields (JSON:API fieldset).
  * https://jsonapi.org/format/#fetching-includes
  * https://jsonapi.org/format/#fetching-sparse-fieldsets
  */
@@ -61,7 +61,40 @@ export function getFieldsFromInclude(
 }
 
 /**
- * Gets field list from a query.
+ * Get the to-one relationships as fields: [`${relationshipKey}.${displayAttribute}`, ...]
+ */
+export function getToOneRelationshipsAsFields(
+  schemas: Record<string, Schema>,
+  schemaName: string,
+): Fields {
+  return Object.entries(schemas[schemaName]?.relationships || [])
+    .filter(([key, relationship]) => {
+      return relationship.type === "one"
+    })
+    .map(([key, relationship]) => {
+      return `${key}.${schemas[relationship.schema].displayAttribute || "id"}`
+    })
+}
+
+/**
+ * Get the to-one relationships as include: [`${relationshipKey}`, ...]
+ */
+export function getToOneRelationshipsAsInclude(
+  schemas: Record<string, Schema>,
+  schemaName: string,
+): Include {
+  return Object.entries(schemas[schemaName]?.relationships || [])
+    .filter(([key, relationship]) => {
+      return relationship.type === "one"
+    })
+    .map(([key, relationship]) => {
+      return key
+    })
+}
+
+/**
+ * Either returns the fields from the selector, generates them from the include, or
+ * returns the default fields (all attributes and to-one relationships).
  */
 export function getFields(
   schemas: Record<string, Schema>,
@@ -73,5 +106,27 @@ export function getFields(
   } else if (selector.include !== undefined) {
     return getFieldsFromInclude(schemas, schemaName, selector.include)
   }
-  return getAttributesFromSchema(schemas, schemaName)
+
+  return [
+    ...getAttributesFromSchema(schemas, schemaName),
+    ...getToOneRelationshipsAsFields(schemas, schemaName),
+  ]
+}
+
+/**
+ * Either returns the include from the selector, generates them from the fields, or
+ * returns the default include (all to-one relationships).
+ */
+export function getInclude(
+  schemas: Record<string, Schema>,
+  schemaName: string,
+  selector: QueryList | QueryOne,
+): Include {
+  if (selector.include) {
+    return selector.include
+  } else if (selector.fields !== undefined) {
+    return getIncludeFromFields(selector.fields)
+  }
+
+  return getToOneRelationshipsAsInclude(schemas, schemaName)
 }

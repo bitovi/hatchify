@@ -1,13 +1,6 @@
 import { afterEach, describe, it, expect, vi } from "vitest"
-import {
-  convertResourceToRecord,
-  createStore,
-  getRecords,
-  keyResourcesById,
-  insert,
-  remove,
-} from "./store"
-import type { Resource } from "../types"
+import { createStore, getRecords, insert, remove } from "./store"
+import { schemas } from "../mocks/testData"
 
 describe("rest-client/store", () => {
   afterEach(() => {
@@ -32,21 +25,21 @@ describe("rest-client/store", () => {
   describe("insert", () => {
     it("should insert data into the store", () => {
       const store = createStore(["Article", "Person"])
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "1",
           __schema: "Article",
           attributes: { title: "title-1", body: "body-1" },
         },
       ])
-      insert("Person", [
+      insert(schemas, "Person", [
         {
           id: "1",
           __schema: "Person",
           attributes: { name: "name-1", age: 30 },
         },
       ])
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "2",
           __schema: "Article",
@@ -98,7 +91,7 @@ describe("rest-client/store", () => {
       const subscriber = vi.fn()
       store.Article.subscribers.push(subscriber)
 
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "article-1",
           __schema: "Article",
@@ -117,48 +110,17 @@ describe("rest-client/store", () => {
     })
   })
 
-  describe("convertResourceToRecord", () => {
-    it("should convert a resource to a record", () => {
-      const resource = {
-        id: "article-1",
-        __schema: "Article",
-        attributes: { title: "title-1", body: "body-1" },
-      }
-
-      expect(convertResourceToRecord(resource)).toEqual({
-        id: "article-1",
-        __schema: "Article",
-        title: "title-1",
-        body: "body-1",
-      })
-    })
-  })
-
-  describe("keyResourcesById", () => {
-    it("should convert an array of resources to an object of resources keyed by id", () => {
-      const resources: Resource[] = [
-        { id: "1", __schema: "Entity", attributes: { name: "name-1" } },
-        { id: "2", __schema: "Entity", attributes: { name: "name-2" } },
-      ]
-
-      expect(keyResourcesById(resources)).toEqual({
-        "1": { id: "1", __schema: "Entity", attributes: { name: "name-1" } },
-        "2": { id: "2", __schema: "Entity", attributes: { name: "name-2" } },
-      })
-    })
-  })
-
   describe("getRecords", () => {
     it("should return an array of records for a given schema", () => {
       createStore(["Article", "Person"])
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "article-1",
           __schema: "Article",
           attributes: { title: "title-1", body: "body-1" },
         },
       ])
-      insert("Person", [
+      insert(schemas, "Person", [
         {
           id: "person-1",
           __schema: "Person",
@@ -166,7 +128,7 @@ describe("rest-client/store", () => {
         },
       ])
 
-      expect(getRecords("Article")).toEqual([
+      expect(getRecords(schemas, "Article")).toEqual([
         {
           id: "article-1",
           __schema: "Article",
@@ -177,14 +139,14 @@ describe("rest-client/store", () => {
     })
 
     it("should return an empty array if there are no records for a given schema", () => {
-      expect(getRecords("Tags")).toEqual([])
+      expect(getRecords(schemas, "Tags")).toEqual([])
     })
   })
 
   describe("remove", () => {
     it("should remove records from the store", () => {
       createStore(["Article"])
-      insert("Article", [
+      insert(schemas, "Article", [
         {
           id: "article-1",
           __schema: "Article",
@@ -202,7 +164,7 @@ describe("rest-client/store", () => {
         },
       ])
 
-      expect(getRecords("Article")).toEqual([
+      expect(getRecords(schemas, "Article")).toEqual([
         {
           id: "article-1",
           __schema: "Article",
@@ -223,9 +185,9 @@ describe("rest-client/store", () => {
         },
       ])
 
-      remove("Article", ["article-1", "article-3"])
+      remove(schemas, "Article", ["article-1", "article-3"])
 
-      expect(getRecords("Article")).toEqual([
+      expect(getRecords(schemas, "Article")).toEqual([
         {
           id: "article-2",
           __schema: "Article",

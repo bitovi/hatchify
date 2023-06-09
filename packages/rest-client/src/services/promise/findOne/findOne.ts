@@ -1,6 +1,5 @@
 import type { Source, Record, QueryOne, Schemas } from "../../types"
-import { getFields } from "../../utils"
-import { convertResourceToRecord } from "../../store"
+import { flattenResourcesIntoRecords, getFields } from "../../utils"
 
 /**
  * Fetches a single resource from a data source, inserts it into the store,
@@ -11,7 +10,7 @@ export const findOne = async (
   allSchemas: Schemas,
   schemaName: string,
   query: QueryOne,
-): Promise<Record> => {
+): Promise<Record | undefined> => {
   const updatedQuery = {
     ...query,
     fields: getFields(allSchemas, schemaName, query),
@@ -23,6 +22,10 @@ export const findOne = async (
     updatedQuery,
   )
 
-  // todo: flatten related records into base records
-  return convertResourceToRecord(resources[0])
+  return flattenResourcesIntoRecords(
+    allSchemas,
+    resources,
+    schemaName,
+    query.id,
+  )
 }
