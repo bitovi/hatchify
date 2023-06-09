@@ -23,14 +23,23 @@ describe("Relationships", () => {
     belongsTo: [{ target: "User", options: { as: "user" } }],
   }
 
-  it("should always return type and id (HATCH-167)", async () => {
+  let server: any
+  let hatchify: Hatchify
+
+  beforeAll(async () => {
     const app = new Koa()
-    const hatchify = new Hatchify([Todo, User], { prefix: "/api" })
+    hatchify = new Hatchify([Todo, User], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
-    const server = createServer(app)
+    server = createServer(app)
     await hatchify.createDatabase()
+  })
 
+  afterAll(async () => {
+    await hatchify.orm.close()
+  })
+
+  it("should always return type and id (HATCH-167)", async () => {
     const { serialized: user } = await POST(server, "/api/users", {
       name: "John Doe",
       todos: [
@@ -118,7 +127,5 @@ describe("Relationships", () => {
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
     })
-
-    await hatchify.orm.close()
   })
 })
