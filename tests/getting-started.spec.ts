@@ -1,5 +1,30 @@
 import { test, expect } from "@playwright/test"
 
+test.beforeEach(async ({ request }) => {
+  console.log("deleting db 🔥🔥🔥🔥")
+  const backend = "http://localhost:3000"
+  //delete all db entries before testing
+  const users = await request.get(`${backend}/api/users`)
+  const usersData = await users.json()
+  const todos = await request.get(`${backend}/api/todos`)
+  const todosData = await todos.json()
+
+  if (usersData.data.length > 0) {
+    for (let i = 0; i < usersData.data.length; i++) {
+      await request.delete(`${backend}/api/users/${usersData.data.id}`)
+    }
+  }
+
+  if (todosData.data.length > 0) {
+    for (let i = 0; i < todosData.data.length; i++) {
+      await request.delete(`${backend}/api/todos/${todosData.data.id}`)
+    }
+  }
+  const todos1 = await request.get(`${backend}/api/todos`)
+  const todosData1 = await todos1.json()
+  console.log("deleting db 🔥🔥🔥🔥", todosData1)
+})
+
 test("works", async ({ page, request }) => {
   const backend = "http://localhost:3000"
   const frontend = "http://localhost:5173"
@@ -39,6 +64,7 @@ test("works", async ({ page, request }) => {
     },
   })
   expect(newUser.ok()).toBeTruthy()
+  const newUserData = await newUser.json()
 
   // * post todos with relationship to user
   const newTodo = await request.post(`${backend}/api/todos`, {
@@ -51,7 +77,7 @@ test("works", async ({ page, request }) => {
       },
       relationships: {
         user: {
-          data: [{ type: "User", id: 1 }],
+          data: { type: "User", id: newUserData.data.id },
         },
       },
     },
@@ -69,6 +95,11 @@ test("works", async ({ page, request }) => {
   const allUsers = await request.get(`${backend}/api/users`)
   const allUserData = await allUsers.json()
   expect(allUserData.data.length).toEqual(1)
+
+  // * validate included array gets returned
+  const todosWithUser = await request.get(`${backend}/api/todos?include=user`)
+  const todosWithUserData = await todosWithUser.json()
+  console.log("🟢🟢🟢🟢🟢", todosWithUserData)
 
   // * validate frontend shows todos with user
   await expect(page.getByText("Walk the dog")).toBeVisible()
