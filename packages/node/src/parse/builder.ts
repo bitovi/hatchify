@@ -34,8 +34,12 @@ export function buildFindOptions(
 
   // Perform additional checks if needed...
   if (ops.data?.attributes && Array.isArray(ops.data.attributes)) {
+    if (!ops.data.attributes.includes("id")) {
+      ops.data.attributes.push("id")
+    }
+
     ops.data.attributes.forEach((attr: string) => {
-      if (!model.attributes[attr]) {
+      if (attr !== "id" && !model.attributes[attr]) {
         ops.errors.push("Unknown attribute " + attr)
       }
     })
@@ -127,10 +131,11 @@ export function buildAttributeList(
     attributes.push("id")
   }
 
+  const modelAttributes = seqModel.getAttributes()
+
   attributes.forEach((attr) => {
     // Make sure that the requested attributes actually exist on the model
-    const modelAttributes = seqModel.getAttributes()
-    if (!modelAttributes[attr]) {
+    if (attr !== "id" && !modelAttributes[attr]) {
       throw new ValidationError({
         title: "Bad Attribute:" + attr,
         code: codes.ERR_INVALID_PARAMETER,

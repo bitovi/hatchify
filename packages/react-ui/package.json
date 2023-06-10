@@ -1,6 +1,5 @@
 {
   "name": "@hatchifyjs/react-ui",
-  "private": true,
   "version": "0.0.0",
   "main": "./dist/react-ui.js",
   "module": "./dist/react-ui.mjs",
