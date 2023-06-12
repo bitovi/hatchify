@@ -24,7 +24,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/hatchify-core": "^0.0.0"
+    "@hatchifyjs/hatchify-core": "^0.0.1-0"
   },
   "devDependencies": {
     "vite": "^4.3.1",
