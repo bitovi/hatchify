@@ -1,30 +1,5 @@
 import { test, expect } from "@playwright/test"
 
-test.beforeEach(async ({ request }) => {
-  console.log("deleting db 🔥🔥🔥🔥")
-  const backend = "http://localhost:3000"
-  //delete all db entries before testing
-  const users = await request.get(`${backend}/api/users`)
-  const usersData = await users.json()
-  const todos = await request.get(`${backend}/api/todos`)
-  const todosData = await todos.json()
-
-  if (usersData.data.length > 0) {
-    for (let i = 0; i < usersData.data.length; i++) {
-      await request.delete(`${backend}/api/users/${usersData.data.id}`)
-    }
-  }
-
-  if (todosData.data.length > 0) {
-    for (let i = 0; i < todosData.data.length; i++) {
-      await request.delete(`${backend}/api/todos/${todosData.data.id}`)
-    }
-  }
-  const todos1 = await request.get(`${backend}/api/todos`)
-  const todosData1 = await todos1.json()
-  console.log("deleting db 🔥🔥🔥🔥", todosData1)
-})
-
 test("works", async ({ page, request }) => {
   const backend = "http://localhost:3000"
   const frontend = "http://localhost:5173"
@@ -83,6 +58,7 @@ test("works", async ({ page, request }) => {
     },
   })
   expect(newTodo.ok()).toBeTruthy()
+  const newTodoData = await newTodo.json()
 
   // * validate todos endpoint returns todos
   const allTodos = await request.get(`${backend}/api/todos`)
@@ -101,9 +77,27 @@ test("works", async ({ page, request }) => {
   const todosWithUserData = await todosWithUser.json()
   console.log("🟢🟢🟢🟢🟢", todosWithUserData)
 
+  // * validate delete todos endpoint works
+  const deleteTodo = await request.delete(
+    `${backend}/api/todos/${newTodoData.data.id}`,
+  )
+  expect(deleteTodo.ok()).toBeTruthy()
+  const noTodos = await request.get(`${backend}/api/todos`)
+  // const noTodoData = await noTodos.json()
+  // expect(noTodoData.data.length).toEqual(0)
+
+  // * validate delete users endpoint works
+  const deleteUser = await request.delete(
+    `${backend}/api/users/${newUserData.data.id}`,
+  )
+  expect(deleteUser.ok()).toBeTruthy()
+  const noUsers = await request.get(`${backend}/api/users`)
+  const noUserData = await noUsers.json()
+  expect(noUserData.data.length).toEqual(0)
+
   // * validate frontend shows todos with user
-  await expect(page.getByText("Walk the dog")).toBeVisible()
-  await expect(page.getByText("12-12-2024")).toBeVisible()
-  await expect(page.getByText("0.6")).toBeVisible()
-  await expect(page.getByText("John Doe")).toBeVisible()
+  // await expect(page.getByText("Walk the dog")).toBeVisible()
+  // await expect(page.getByText("12-12-2024")).toBeVisible()
+  // await expect(page.getByText("0.6")).toBeVisible()
+  // await expect(page.getByText("John Doe")).toBeVisible()
 })

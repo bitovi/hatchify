@@ -10,7 +10,11 @@
     "preview": "vite preview",
     "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/hatchify-app && npm install",
     "dev:frontend": "vite",
-    "dev:backend": "nodemon --esm backend/index.ts"
+    "dev:backend": "nodemon --esm backend/index.ts",
+    "build:frontend": "tsc && vite build --outDir dist/frontend",
+    "build:backend": "tsc --module NodeNext --outDir dist/backend backend/index.ts schemas/user.ts",
+    "start:frontend": "vite preview --outDir dist/frontend",
+    "start:backend": "node dist/backend/backend/index.js"
   },
   "dependencies": {
     "@hatchifyjs/koa": "^0.0.4",
