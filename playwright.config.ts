@@ -37,10 +37,10 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
 
-    // {
-    //   name: "firefox",
-    //   use: { ...devices["Desktop Firefox"] },
-    // },
+    {
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
+    },
 
     // {
     //   name: "webkit",
@@ -71,7 +71,8 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: "cd example/hatchify-app && npm run dev:frontend",
+      command:
+        "cd example/hatchify-app && rm -f example.sqlite && npm run dev:frontend",
       reuseExistingServer: !process.env.CI,
       port: 5173,
       // remove later
@@ -81,7 +82,7 @@ export default defineConfig({
     },
     {
       command:
-        "cd example/hatchify-app && rm example.sqlite && npm run dev:backend",
+        "cd example/hatchify-app && rm -f example.sqlite && npm run dev:backend",
       reuseExistingServer: !process.env.CI,
       port: 3000,
       // remove later
