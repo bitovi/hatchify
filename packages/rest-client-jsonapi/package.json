@@ -24,7 +24,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/rest-client": "^0.0.0"
+    "@hatchifyjs/rest-client": "^0.0.1-0"
   },
   "devDependencies": {
     "msw": "^1.2.1",
