@@ -29,30 +29,40 @@ test("works", async ({ page, request }) => {
   await expect(page.getByText("Importance")).toBeVisible()
   await expect(page.getByText("user")).toBeVisible()
 
-  // * post user
-  const newUser = await request.post(`${backend}/api/users`, {
-    data: {
-      type: "User",
-      name: "John Doe",
-    },
-  })
-  expect(newUser.ok()).toBeTruthy()
-  const newUserData = await newUser.json()
-
-  // * post todos with relationship to user
+  // * post a todo
   const newTodo = await request.post(`${backend}/api/todos`, {
     data: {
-      type: "Todo",
-      name: "Walk the dog",
-      due_date: "12-12-2024",
-      importance: 0.6,
-      user: {
-        data: { type: "User", id: newUserData.data.id },
+      data: {
+        type: "Todo",
+        attributes: {
+          name: "Walk the dog",
+          due_date: "12-12-2024",
+          importance: 0.6,
+        },
       },
     },
   })
   expect(newTodo.ok()).toBeTruthy()
   const newTodoData = await newTodo.json()
+
+  // * post user with a todo relationship
+  const newUser = await request.post(`${backend}/api/users`, {
+    data: {
+      data: {
+        type: "User",
+        attributes: {
+          name: "John Doe",
+        },
+        relationships: {
+          todos: {
+            data: [{ type: "Todo", id: newTodoData.data.id }],
+          },
+        },
+      },
+    },
+  })
+  expect(newUser.ok()).toBeTruthy()
+  const newUserData = await newUser.json()
 
   // * validate todos endpoint returns todos
   const allTodos = await request.get(`${backend}/api/todos`)
@@ -67,16 +77,18 @@ test("works", async ({ page, request }) => {
   expect(allUserData.data.length).toEqual(1)
 
   // * validate included array gets returned
-  await request.get(`${backend}/api/todos?include=user`)
-  // const todosWithUserData = await todosWithUser.json()
-  // console.log("🟢🟢🟢🟢🟢", todosWithUserData.data)
+  const todosWithUser = await request.get(`${backend}/api/todos?include=user`)
+  const todosWithUserData = await todosWithUser.json()
+  expect(todosWithUserData.data.length).toEqual(1)
+  expect(todosWithUserData.included.length).toEqual(1)
 
   // * validate frontend shows todos with user
   await page.goto(frontend)
+  await page.reload()
   await expect(page.getByText("Walk the dog")).toBeVisible()
   await expect(page.getByText("12-12-2024")).toBeVisible()
   await expect(page.getByText("0.6")).toBeVisible()
-  // await expect(page.getByText("John Doe")).toBeVisible()
+  await expect(page.getByText("John Doe")).toBeVisible()
 
   // * validate delete todos endpoint works
   const deleteTodo = await request.delete(
