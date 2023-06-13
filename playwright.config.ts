@@ -42,10 +42,10 @@ export default defineConfig({
       use: { ...devices["Desktop Firefox"] },
     },
 
-    // {
-    //   name: "webkit",
-    //   use: { ...devices["Desktop Safari"] },
-    // },
+    {
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
+    },
 
     /* Test against mobile viewports. */
     // {
@@ -75,20 +75,12 @@ export default defineConfig({
         "nx run-many -t build && npm install && cd example/hatchify-app && npm install && rm -f example.sqlite && npm run dev:frontend",
       reuseExistingServer: !process.env.CI,
       port: 5173,
-      // remove later
-      // stderr: "pipe",
-      // stdout: "pipe",
-      // timeout: 10 * 5000,
     },
     {
       command:
         "nx run-many -t build && npm install && cd example/hatchify-app && npm install && rm -f example.sqlite && npm run dev:backend",
       reuseExistingServer: !process.env.CI,
       port: 3000,
-      // remove later
-      // stderr: "pipe",
-      // stdout: "pipe",
-      // timeout: 10 * 5000,
     },
   ],
 })

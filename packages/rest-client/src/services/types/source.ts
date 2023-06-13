@@ -4,7 +4,7 @@ import type { CreateData, Resource, UpdateData } from "./data"
 
 export interface SchemaMap {
   [schemaName: string]: {
-    type: string // jsonapi type
+    type?: string // jsonapi type
     endpoint: string // appends to baseUrl
   }
 }
