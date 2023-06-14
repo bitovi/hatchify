@@ -1,7 +1,7 @@
 import type {
   Resource,
   ResourceRelationship,
-  SchemaMap,
+  RequiredSchemaMap,
 } from "@hatchifyjs/rest-client"
 import type { JsonApiResource } from "../../jsonapi"
 
@@ -11,7 +11,7 @@ type Relationship = Record<
 >
 
 export const getTypeToSchema = (
-  schemaMap: SchemaMap,
+  schemaMap: RequiredSchemaMap,
 ): Record<string, string> => {
   return Object.entries(schemaMap).reduce((acc, [key, value]) => {
     acc[value.type] = key
@@ -66,7 +66,7 @@ export function jsonApiResourceToHatchifyResource(
  */
 export function convertToHatchifyResources(
   data: JsonApiResource | JsonApiResource[],
-  schemaMap: SchemaMap,
+  schemaMap: RequiredSchemaMap,
 ): Resource[] {
   const typeToSchema = getTypeToSchema(schemaMap)
 

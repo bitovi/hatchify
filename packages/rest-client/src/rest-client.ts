@@ -11,6 +11,7 @@ export type {
   Record,
   Resource,
   ResourceRelationship,
+  RequiredSchemaMap,
   Schema,
   Schemas,
   SchemaMap,
