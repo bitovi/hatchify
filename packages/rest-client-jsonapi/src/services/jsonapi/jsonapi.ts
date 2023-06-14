@@ -1,4 +1,8 @@
-import type { Source, SchemaMap } from "@hatchifyjs/rest-client"
+import type {
+  Source,
+  SchemaMap,
+  RequiredSchemaMap,
+} from "@hatchifyjs/rest-client"
 import { createOne, deleteOne, findAll, findOne, updateOne } from ".."
 
 export type Relationship = {
@@ -21,16 +25,19 @@ export interface JsonApiResource {
  * Creates a new JSON:API Source.
  */
 export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
-  const config = { baseUrl, schemaMap }
-
   // Default `type` to `schemaMap` key if not set in `schemaMap`
-  config.schemaMap = Object.entries(schemaMap).reduce((acc, [key, value]) => {
-    acc[key] = {
-      ...value,
-      type: value.type || key,
-    }
-    return acc
-  }, {} as SchemaMap)
+  const completeSchemaMap = Object.entries(schemaMap).reduce(
+    (acc, [key, value]) => {
+      acc[key] = {
+        ...value,
+        type: value.type || key,
+      }
+      return acc
+    },
+    {} as RequiredSchemaMap,
+  )
+
+  const config = { baseUrl, schemaMap: completeSchemaMap }
 
   return {
     version: 0,
