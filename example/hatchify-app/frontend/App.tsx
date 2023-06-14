@@ -10,8 +10,8 @@ import { User } from "../schemas/user"
 export const hatchedReact = hatchifyReact(
   { Todo, User },
   createJsonapiClient("http://localhost:3000/api", {
-    Todo: { endpoint: "todos", type: "Todo" },
-    User: { endpoint: "users", type: "User" },
+    Todo: { endpoint: "todos" },
+    User: { endpoint: "users" },
   }),
 )
 
