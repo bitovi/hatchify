@@ -24,8 +24,11 @@ import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
 import type { Schemas, Schema } from "@hatchifyjs/rest-client"
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 
-export type ReactRest = {
-  [schemaName: string]: {
+type SchemaRecord = { [schemaName: string]: LegacySchema | Schema }
+type SchemaKeys<Schema extends SchemaRecord> = keyof Schema
+
+type ReactRest<Schema extends SchemaRecord> = {
+  [schemaName in SchemaKeys<Schema> as string]: {
     // promises
     createOne: (data: CreateData) => Promise<Record>
     deleteOne: (id: string) => Promise<void>
@@ -52,9 +55,9 @@ export type ReactRest = {
  * data source for each schema.
  */
 export function hatchifyReactRest(
-  schemas: { [schemaName: string]: LegacySchema | Schema },
+  schemas: SchemaRecord,
   dataSource: Source,
-): ReactRest {
+): ReactRest<SchemaRecord> {
   const storeKeys = Object.values(schemas).map((schema) => schema.name)
   createStore(storeKeys)
 
@@ -64,7 +67,7 @@ export function hatchifyReactRest(
     return acc
   }, {} as Schemas)
 
-  const functions = Object.values(newSchemas).reduce((acc, schema) => {
+  const functions = Object.values(schemas).reduce((acc, schema) => {
     acc[schema.name] = {
       // promises
       createOne: (data) => createOne(dataSource, newSchemas, schema.name, data),
@@ -85,7 +88,7 @@ export function hatchifyReactRest(
     }
 
     return acc
-  }, {} as ReactRest)
+  }, {} as ReactRest<SchemaRecord>)
 
   return functions
 }
