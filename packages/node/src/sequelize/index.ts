@@ -1,5 +1,5 @@
 import querystringParser from "@bitovi/sequelize-querystring-parser"
-import extendSequelize from "@hatchifyjs/sequelize-create-with-associations"
+import { extendSequelize } from "@hatchifyjs/sequelize-create-with-associations"
 import type {
   IAssociation,
   ICreateHatchifyModel,
