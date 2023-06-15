@@ -1,8 +1,8 @@
 import type { HatchifyModel } from "@hatchifyjs/node"
-import Koa from "koa"
+import Express from "express"
 
-import { Hatchify } from "./koa"
-import { GET, POST, createServer } from "./testing/utils"
+import { Hatchify } from "./express"
+import { GET, POST } from "./testing/utils"
 
 describe("Relationships", () => {
   const User: HatchifyModel = {
@@ -27,11 +27,11 @@ describe("Relationships", () => {
   let hatchify: Hatchify
 
   beforeAll(async () => {
-    const app = new Koa()
+    const app = Express()
     hatchify = new Hatchify([Todo, User], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
-    server = createServer(app)
+    server = app
     await hatchify.createDatabase()
   })
 
