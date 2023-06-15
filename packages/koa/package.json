@@ -30,8 +30,9 @@
   },
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
-    "@hatchifyjs/node": "^0.0.3",
+    "@hatchifyjs/node": "^0.1.0",
     "jsonapi-serializer": "^3.6.7",
+    "sequelize": "^6.32.0",
     "typedoc": "^0.23.21"
   },
   "devDependencies": {
