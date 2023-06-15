@@ -72,13 +72,13 @@ export default defineConfig({
   webServer: [
     {
       command:
-        "npm install && nx run-many -t build && cd example/hatchify-app && npm install && rm -f example.sqlite && npm run dev:frontend",
+        "npx playwright install && npm install && nx run-many -t build && cd example/hatchify-app && npm install && rm -f example.sqlite && npm run dev:frontend",
       reuseExistingServer: !process.env.CI,
       port: 5173,
     },
     {
       command:
-        "npm install && nx run-many -t build && cd example/hatchify-app && npm install && rm -f example.sqlite && npm run dev:backend",
+        "npx playwright install && npm install && nx run-many -t build && cd example/hatchify-app && npm install && rm -f example.sqlite && npm run dev:backend",
       reuseExistingServer: !process.env.CI,
       port: 3000,
     },
