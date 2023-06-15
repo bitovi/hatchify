@@ -29,7 +29,7 @@ interface SchemaRecord {
 }
 type SchemaKeys<Schema extends SchemaRecord> = keyof Schema
 
-type ReactRest<Schema extends SchemaRecord> = {
+export type ReactRest<Schema extends SchemaRecord> = {
   [schemaName in SchemaKeys<Schema>]: {
     // promises
     createOne: (data: CreateData) => Promise<Record>
