@@ -6,6 +6,8 @@ test("works", async ({ page, request }) => {
   let response
   let json
 
+  console.log("test")
+
   // validate backend is running
   await page.goto(backend)
   await expect(page.getByText("Not found")).toBeVisible()
