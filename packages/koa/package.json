@@ -32,7 +32,6 @@
   "dependencies": {
     "@hatchifyjs/node": "^0.1.0",
     "jsonapi-serializer": "^3.6.7",
-    "sequelize": "^6.32.0",
     "typedoc": "^0.23.21"
   },
   "devDependencies": {
@@ -52,7 +51,8 @@
   },
   "peerDependencies": {
     "@types/koa": "2.x",
-    "koa": "2.x"
+    "koa": "2.x",
+    "sequelize": "6.x"
   },
   "eslintConfig": {
     "root": true,
