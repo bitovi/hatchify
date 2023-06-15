@@ -24,11 +24,13 @@ import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
 import type { Schemas, Schema } from "@hatchifyjs/rest-client"
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 
-type SchemaRecord = { [schemaName: string]: LegacySchema | Schema }
+interface SchemaRecord {
+  [schemaName: string]: LegacySchema | Schema
+}
 type SchemaKeys<Schema extends SchemaRecord> = keyof Schema
 
 type ReactRest<Schema extends SchemaRecord> = {
-  [schemaName in SchemaKeys<Schema> as string]: {
+  [schemaName in SchemaKeys<Schema>]: {
     // promises
     createOne: (data: CreateData) => Promise<Record>
     deleteOne: (id: string) => Promise<void>
@@ -50,14 +52,21 @@ type ReactRest<Schema extends SchemaRecord> = {
   }
 }
 
+type HatchifyRest<Schema extends SchemaRecord> = <
+  TSchema extends SchemaRecord = Schema,
+>(props: {
+  schemas: TSchema
+  dataSource: Source
+}) => ReactRest<TSchema>
+
 /**
  * Returns a set of functions for interacting with the rest-client store and
  * data source for each schema.
  */
-export function hatchifyReactRest(
-  schemas: SchemaRecord,
+export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
+  schemas: TSchemaRecord,
   dataSource: Source,
-): ReactRest<SchemaRecord> {
+): HatchifyRest<TSchemaRecord> {
   const storeKeys = Object.values(schemas).map((schema) => schema.name)
   createStore(storeKeys)
 
@@ -90,5 +99,5 @@ export function hatchifyReactRest(
     return acc
   }, {} as ReactRest<SchemaRecord>)
 
-  return functions
+  return functions as unknown as HatchifyRest<TSchemaRecord>
 }
