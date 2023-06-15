@@ -1,5 +1,5 @@
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
-import type { ReactRest } from "@hatchifyjs/react-rest"
+import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type { Source, Schemas } from "@hatchifyjs/rest-client"
 import { hatchifyReactRest } from "@hatchifyjs/react-rest"
 import { transformSchema } from "@hatchifyjs/rest-client"
@@ -17,7 +17,7 @@ type Components = {
 
 type HatchifyApp = {
   components: Components
-  model: ReactRest
+  model: ReactRest<SchemaRecord>
 }
 
 export function hatchifyReact(

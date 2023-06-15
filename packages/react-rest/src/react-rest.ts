@@ -1,4 +1,4 @@
-export type { ReactRest } from "./services"
+export type { ReactRest, SchemaRecord } from "./services"
 
 export {
   hatchifyReactRest,

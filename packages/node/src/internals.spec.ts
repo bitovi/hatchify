@@ -1,3 +1,4 @@
+import "sqlite3"
 import { Hatchify } from "./node"
 import type { HatchifyModel } from "./types"
 import { DataTypes, HatchifySymbolModel } from "./types"
