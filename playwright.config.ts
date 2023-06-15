@@ -77,7 +77,7 @@ export default defineConfig({
       port: 5173,
       stderr: "pipe",
       stdout: "pipe",
-      // timeout: 10 * 5000,
+      timeout: 120 * 1000,
     },
     {
       command:
@@ -86,7 +86,7 @@ export default defineConfig({
       port: 3000,
       stderr: "pipe",
       stdout: "pipe",
-      // timeout: 10 * 5000,
+      timeout: 120 * 1000,
     },
   ],
 })
