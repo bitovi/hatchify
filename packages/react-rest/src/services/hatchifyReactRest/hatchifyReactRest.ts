@@ -52,13 +52,6 @@ type ReactRest<Schema extends SchemaRecord> = {
   }
 }
 
-type HatchifyRest<Schema extends SchemaRecord> = <
-  TSchema extends SchemaRecord = Schema,
->(props: {
-  schemas: TSchema
-  dataSource: Source
-}) => ReactRest<TSchema>
-
 /**
  * Returns a set of functions for interacting with the rest-client store and
  * data source for each schema.
@@ -66,7 +59,7 @@ type HatchifyRest<Schema extends SchemaRecord> = <
 export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   schemas: TSchemaRecord,
   dataSource: Source,
-): HatchifyRest<TSchemaRecord> {
+): ReactRest<TSchemaRecord> {
   const storeKeys = Object.values(schemas).map((schema) => schema.name)
   createStore(storeKeys)
 
@@ -77,7 +70,7 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   }, {} as Schemas)
 
   const functions = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] = {
+    acc[schema.name as SchemaKeys<TSchemaRecord>] = {
       // promises
       createOne: (data) => createOne(dataSource, newSchemas, schema.name, data),
       deleteOne: (id) => deleteOne(dataSource, newSchemas, schema.name, id),
@@ -97,7 +90,7 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
     }
 
     return acc
-  }, {} as ReactRest<SchemaRecord>)
+  }, {} as ReactRest<TSchemaRecord>)
 
-  return functions as unknown as HatchifyRest<TSchemaRecord>
+  return functions
 }
