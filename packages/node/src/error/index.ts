@@ -16,6 +16,8 @@ export function errorResponseHandler(error: Error): ErrorResponse {
 
   let status = statusCodes.INTERNAL_SERVER_ERROR
 
+  console.error("Internal Server Error:", error)
+
   if (
     [
       "SequelizeDatabaseError",
