@@ -1,5 +1,4 @@
 // hatchify-app/schemas/todo.ts
-// import { Schema } from "@hatchifyjs/react";
 
 export const Todo = {
   name: "Todo",
