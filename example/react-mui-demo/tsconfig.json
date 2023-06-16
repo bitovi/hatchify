@@ -1,16 +1,17 @@
 {
   "experimentalResolver": true,
   "compilerOptions": {
-    "baseUrl": ".",
-    "jsx": "react-jsx",
     "module": "NodeNext",
     "moduleResolution": "Node",
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "noEmit": true,
+    "jsx": "react-jsx",
+    
     "composite": true,
     "incremental": true,
     "strict": true,
+    "noEmit": true,
+
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
@@ -24,6 +25,6 @@
     "skipLibCheck": true,
     "useDefineForClassFields": true
   },
-  "include": ["@types", "src", "vite.config.ts", "./setupTests.ts"],
+  "include": ["src", "vite.config.ts", "./setupTests.ts"],
   "exclude": ["node_modules"],
 }

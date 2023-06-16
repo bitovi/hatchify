@@ -2,18 +2,21 @@
   "name": "hatchify-app",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/hatchify-app && npm install",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/hatchify-appfrontend",
     "dev:frontend": "vite",
-    "dev:backend": "nodemon --esm backend/index.ts"
+    "dev:backend": "nodemon --esm backend/index.ts",
+    "build:frontend": "tsc && vite build --outDir dist/frontend",
+    "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
+    "start:frontend": "vite preview --outDir dist/frontend",
+    "start:backend": "node dist/backend/backend/index.js"
   },
   "dependencies": {
-    "@hatchifyjs/koa": "^0.0.4",
+    "@hatchifyjs/koa": "file:../../packages/koa",
     "@hatchifyjs/react": "file:../../packages/react",
     "@koa/cors": "^4.0.0",
     "koa": "^2.14.2",

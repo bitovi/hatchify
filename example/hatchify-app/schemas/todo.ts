@@ -9,4 +9,4 @@ export const Todo = {
     importance: "INTEGER",
   },
   belongsTo: [{ target: "User", options: { as: "user" } }],
-};
+}

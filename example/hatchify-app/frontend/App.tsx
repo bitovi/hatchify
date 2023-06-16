@@ -4,8 +4,8 @@ import {
   MuiProvider,
   createJsonapiClient,
 } from "@hatchifyjs/react"
-import { Todo } from "../schemas/Todo"
-import { User } from "../schemas/User"
+import { Todo } from "../schemas/todo"
+import { User } from "../schemas/user"
 
 export const hatchedReact = hatchifyReact(
   { Todo, User },
