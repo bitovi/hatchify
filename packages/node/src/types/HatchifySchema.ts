@@ -1,6 +1,6 @@
 type AttributeType = "string" | "number" | "boolean" | "date" | "json"
 
-type RelationshipType = "one" | "many"
+type RelationshipType = "one" | "many" | "many-through"
 
 export interface HatchifyModelV2 {
   name: string
@@ -78,16 +78,23 @@ interface ID {
   defaultValue?: string
 }
 
-interface Relationship {
-  type: RelationshipType
+type Relationship = SimpleRelationship | ThroughRelationship
+
+interface SimpleRelationship {
+  type: Exclude<RelationshipType, "many-through">
   schema: string
-  through?: string
+}
+
+interface ThroughRelationship {
+  type: "many-through"
+  schema: string
+  through: string
 }
 
 type ModelValidation = SimpleModelValidation | CustomModelValidation
 
 interface SimpleModelValidation {
-  type: "equal" | "less-than"
+  type: "equal" | "greater-than" | "less-than"
   lhs: string
   rhs: string
 }

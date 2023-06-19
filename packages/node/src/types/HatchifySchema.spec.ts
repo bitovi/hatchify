@@ -24,12 +24,12 @@ describe("HatchifySchemaV2", () => {
     },
     relationships: {
       roles: {
-        type: "many", // or "one"
+        type: "many-through", // or "many" or "one"
         schema: "Role",
         through: "role__employee",
       },
       skills: {
-        type: "many",
+        type: "many-through",
         schema: "Skill",
         through: "skill__employee",
       },
@@ -65,7 +65,7 @@ describe("HatchifySchemaV2", () => {
     },
     relationships: {
       employees: {
-        type: "many",
+        type: "many-through",
         schema: "Employee",
         through: "skill__employee",
       },
@@ -91,7 +91,6 @@ describe("HatchifySchemaV2", () => {
       employee: {
         type: "one",
         schema: "Employee",
-        through: "role__employee",
       },
     },
   }
