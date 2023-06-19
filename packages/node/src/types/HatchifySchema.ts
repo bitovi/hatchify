@@ -81,11 +81,7 @@ interface ID {
 interface Relationship {
   type: RelationshipType
   schema: string
-  sequelize?: RelationshipSequelize
-}
-
-interface RelationshipSequelize {
-  through: string
+  through?: string
 }
 
 type ModelValidation = SimpleModelValidation | CustomModelValidation

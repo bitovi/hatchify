@@ -26,16 +26,12 @@ describe("HatchifySchemaV2", () => {
       roles: {
         type: "many", // or "one"
         schema: "Role",
-        sequelize: {
-          through: "role__employee",
-        },
+        through: "role__employee",
       },
       skills: {
         type: "many",
         schema: "Skill",
-        sequelize: {
-          through: "skill__employee",
-        },
+        through: "skill__employee",
       },
     },
     validation: {
@@ -71,9 +67,7 @@ describe("HatchifySchemaV2", () => {
       employees: {
         type: "many",
         schema: "Employee",
-        sequelize: {
-          through: "skill__employee",
-        },
+        through: "skill__employee",
       },
     },
   }
@@ -97,9 +91,7 @@ describe("HatchifySchemaV2", () => {
       employee: {
         type: "one",
         schema: "Employee",
-        sequelize: {
-          through: "role__employee",
-        },
+        through: "role__employee",
       },
     },
   }
