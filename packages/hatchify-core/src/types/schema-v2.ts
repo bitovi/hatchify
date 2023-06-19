@@ -2,7 +2,7 @@ type AttributeType = "string" | "number" | "boolean" | "date" | "json"
 
 type RelationshipType = "one" | "many" | "many-through"
 
-export interface HatchifyModelV2 {
+export interface SchemaV2 {
   name: string
   displayAttribute: string
   id?: ID
@@ -27,8 +27,48 @@ interface NonVirtualAttribute extends SimpleAttribute {
   sequelize?: AttributeSequelize
 }
 
+type SequelizeString =
+  | "STRING"
+  | `STRING(${number})`
+  | "STRING.BINARY"
+  | "TEXT"
+  | "TEXT('tiny')"
+  | "CITEXT"
+  | "TSVECTOR"
+  | "UUID"
+
+type SequelizeBoolean = "BOOLEAN"
+
+type SequelizeNumber =
+  | "INTEGER"
+  | "BIGINT"
+  | `BIGINT(${number})`
+  | "FLOAT"
+  | `FLOAT(${number})`
+  | `FLOAT(${number},${number})`
+  | "REAL"
+  | `REAL(${number})`
+  | `REAL(${number},${number})`
+  | "DOUBLE"
+  | `DOUBLE(${number})`
+  | `DOUBLE(${number},${number})`
+  | "DECIMAL"
+  | `DECIMAL(${number},${number})`
+  | "INTEGER.UNSIGNED"
+  | "INTEGER.ZEROFILL"
+  | "INTEGER.UNSIGNED.ZEROFILL"
+
+type SequelizeDate = "DATE" | `DATE(${number})` | "DATEONLY"
+
+type SequelizeJson = "JSON" | "JSONB"
+
 interface AttributeSequelize {
-  type: string // "VARCHAR(255)" // TODO: If invalid will throw in runtime?
+  type:
+    | SequelizeString
+    | SequelizeBoolean
+    | SequelizeNumber
+    | SequelizeDate
+    | SequelizeJson
 }
 
 interface AttributeValidation {

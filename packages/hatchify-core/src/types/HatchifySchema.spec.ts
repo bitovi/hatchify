@@ -1,4 +1,4 @@
-import type { HatchifyModelV2 as Schema } from "./HatchifySchema"
+import type { SchemaV2 as Schema } from "./schema-v2"
 
 describe("HatchifySchemaV2", () => {
   const EmployeeSchema: Schema = {
@@ -16,7 +16,7 @@ describe("HatchifySchemaV2", () => {
           minLength: 5,
         },
         sequelize: {
-          type: "VARCHAR(255)",
+          type: "STRING(255)",
         },
       },
       start_date: "date",
