@@ -27,6 +27,7 @@ export async function findAll(
     schemaName,
     query.fields,
     query.include,
+    query.sort,
   )
 
   const json = await fetchJsonApi<JsonApiResource[]>(

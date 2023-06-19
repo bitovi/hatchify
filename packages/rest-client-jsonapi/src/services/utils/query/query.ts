@@ -55,6 +55,17 @@ export function includeToQueryParam(includes: Include): string {
 }
 
 /**
+ * Transforms the sort array or string from rest-client into a JSON:API compliant query parameter.
+ */
+export function sortToQueryParam(sort: string[] | string): string {
+  if (Array.isArray(sort)) {
+    return `sort=${sort.join(",")}`
+  } else {
+    return `sort=${sort}`
+  }
+}
+
+/**
  * Transforms the fields and include arrays from rest-client into a JSON:API compliant query parameter.
  */
 export function getQueryParams(
@@ -63,6 +74,7 @@ export function getQueryParams(
   schemaName: string,
   fields: Fields,
   include: Include,
+  sort?: string[] | string,
 ): string {
   let params = ""
 
@@ -81,6 +93,18 @@ export function getQueryParams(
 
     // todo: wait for backend to fix, using fieldsParam does not return an id in each object
     // params += fieldsParam
+  }
+
+  if (sort) {
+    const sortParam = sortToQueryParam(sort)
+
+    if (sort.length && !include.length && !fields.length) {
+      params += `?${sortParam}&`
+    }
+
+    if (sort.length && (include.length || fields.length)) {
+      params += `${sortParam}&`
+    }
   }
 
   return params
