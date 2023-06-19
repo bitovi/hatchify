@@ -1,6 +1,6 @@
 import type { SchemaV2 as Schema } from "./schema-v2"
 
-describe("HatchifySchemaV2", () => {
+describe("SchemaV2", () => {
   const EmployeeSchema: Schema = {
     name: "Employee",
     displayAttribute: "name",
