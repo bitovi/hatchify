@@ -1,6 +1,6 @@
 type AttributeType = "string" | "number" | "boolean" | "date" | "json"
 
-type RelationshipType = "one" | "many" | "many-through"
+type RelationshipType = "one" | "many:one" | "many:many"
 
 export interface SchemaV2 {
   name: string
@@ -121,12 +121,12 @@ interface ID {
 type Relationship = SimpleRelationship | ThroughRelationship
 
 interface SimpleRelationship {
-  type: Exclude<RelationshipType, "many-through">
+  type: Exclude<RelationshipType, "many:many">
   schema: string
 }
 
 interface ThroughRelationship {
-  type: "many-through"
+  type: "many:many"
   schema: string
   through: string
 }

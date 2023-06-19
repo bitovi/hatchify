@@ -24,12 +24,12 @@ describe("SchemaV2", () => {
     },
     relationships: {
       roles: {
-        type: "many-through", // or "many" or "one"
+        type: "many:many", // or "many:one" or "one"
         schema: "Role",
         through: "role__employee",
       },
       skills: {
-        type: "many-through",
+        type: "many:many",
         schema: "Skill",
         through: "skill__employee",
       },
@@ -65,7 +65,7 @@ describe("SchemaV2", () => {
     },
     relationships: {
       employees: {
-        type: "many-through",
+        type: "many:many",
         schema: "Employee",
         through: "skill__employee",
       },
