@@ -4,6 +4,7 @@ import {
   fieldsToQueryParam,
   getQueryParams,
   includeToQueryParam,
+  sortToQueryParam,
 } from "./query"
 
 describe("rest-client-jsonapi/services/utils/query", () => {
@@ -141,6 +142,48 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
       expect(getQueryParams(schemaMap, schemas, "Person", [], [])).toEqual("")
     })
+
+    it("works when sort is a string", () => {
+      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+      expect(
+        getQueryParams(schemaMap, schemas, "Person", [], [], "-created"),
+      ).toEqual("?sort=-created&")
+    })
+
+    it("works when sort is an array of strings", () => {
+      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+      expect(
+        getQueryParams(
+          schemaMap,
+          schemas,
+          "Person",
+          [],
+          [],
+          ["-created", "title", "user.name"],
+        ),
+      ).toEqual("?sort=-created,title,user.name&")
+    })
+
+    it("works when include, fields, sort have values", () => {
+      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+      expect(
+        getQueryParams(
+          schemaMap,
+          schemas,
+          "Person",
+          [
+            "firstName",
+            "age",
+            "illustrated.title",
+            "illustrated.year",
+            "authored.title",
+            "authored.year",
+          ],
+          ["illustrated", "authored"],
+          ["-created", "title", "user.name"],
+        ),
+      ).toEqual("?include=illustrated,authored&sort=-created,title,user.name&")
+    })
   })
 
   describe("includeToQueryParam", () => {
@@ -152,6 +195,16 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       expect(includeToQueryParam(["illustrated", "authored"])).toEqual(
         "include=illustrated,authored",
       )
+    })
+  })
+
+  describe("sortToQueryParam", () => {
+    it("works", () => {
+      expect(sortToQueryParam(["-created", "title", "user.name"])).toEqual(
+        "sort=-created,title,user.name",
+      )
+
+      expect(sortToQueryParam("-created")).toEqual("sort=-created")
     })
   })
 })
