@@ -529,7 +529,7 @@ export const Employee = {
   },
   validation: {
     startDateBeforeEndDate() {
-      const { startDate, endDate } = this as any
+      const { startDate, endDate } = this as unknown as { startDate: Date; endDate: Date }
       if (startDate && endDate && startDate >= endDate) {
         throw new Error("START_DATE_MUST_BE_BEFORE_END_DATE")
       }
@@ -621,7 +621,6 @@ router.post("/Assignment", async (ctx, next) => {
 app.use(router.routes())
 app.use(router.allowedMethods())
 app.use(hatchedKoa.middleware.allModels.all)
-
 ;(async () => {
   await hatchedKoa.createDatabase()
 
