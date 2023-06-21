@@ -17,8 +17,8 @@ npm init
 Install Hatchify along with the Koa web framework into your newly defined project
 
 ```bash
-npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/koa
-npm install @types/koa @types/koa__cors nodemon ts-node --save-dev
+npm install sequelize sqlite3 koa @hatchifyjs/koa
+npm install @types/koa nodemon ts-node --save-dev
 ```
 
 Create an `index.ts` file containing the following 'Hello World' example code
@@ -101,8 +101,8 @@ npm init
 Install Hatchify along with the Koa web framework into your newly defined project
 
 ```bash
-npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/koa
-npm install @types/koa @types/koa__cors nodemon ts-node --save-dev
+npm install sequelize sqlite3 koa @hatchifyjs/koa
+npm install @types/koa nodemon ts-node --save-dev
 ```
 
 Create an `index.ts` file containing the following 'Hello World' example code
