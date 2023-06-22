@@ -6,7 +6,7 @@ export type Selector = { include?: Include; fields?: Fields }
 
 export type QueryList = Selector & {
   page?: { size: number; number: number }
-  sort?: { [key: string]: "asc" | "desc" }
+  sort?: string[] | string
   filter?: { [key: string]: { [filter: string]: string } }
 }
 
