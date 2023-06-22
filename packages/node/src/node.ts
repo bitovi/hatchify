@@ -385,7 +385,7 @@ export class Hatchify {
    * @category Testing Use
    */
   async createDatabase(): Promise<Sequelize> {
-    return this._sequelize.sync({})
+    return this._sequelize.sync({ alter: true })
   }
 }
 

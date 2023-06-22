@@ -17,15 +17,16 @@ npm init
 Install Hatchify along with the Koa web framework into your newly defined project
 
 ```bash
-npm i koa @bitovi/hatchify
+npm install sequelize sqlite3 koa @hatchifyjs/koa
+npm install @types/koa nodemon ts-node --save-dev
 ```
 
-Create an `index.js` file containing the following 'Hello World' example code
+Create an `index.ts` file containing the following 'Hello World' example code
 
 ```typescript
 import Koa from "koa"
 import path from "path"
-import { Hatchify, DataTypes } from "@bitovi/hatchify"
+import { hatchifyKoa, DataTypes } from "@hatchifyjs/koa"
 
 const User = {
   name: "User",
@@ -36,37 +37,39 @@ const User = {
 }
 
 const app = new Koa()
-const hatchify = new Hatchify([User], {
-  name: "Hatchify Demo",
+const hatchedKoa = hatchifyKoa([User], {
   prefix: "/api",
-  db: {
+  database: {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
 })
 
-app.use(hatchify.middleware.allModels.all)
+app.use(hatchedKoa.middleware.allModels.all)
 
 app.use(async (ctx) => {
   ctx.body = "Hello From Koa"
 })
+;(async () => {
+  await hatchedKoa.createDatabase()
 
-app.listen(3000, () => {
-  console.log("Started on port 3000")
-})
+  app.listen(3000, () => {
+    console.log("Started on port 3000")
+  })
+})()
 ```
 
-Run the example using `node index.js` to see it in action! At this point you can created an entire application that can perform CRUD operations to a persistant sqlite database for our example `User` model.
+Run the example to see it in action! At this point you can created an entire application that can perform CRUD operations to a persistent SQLite database for our example `User` model.
 
 ```bash
-node index.js
+npx nodemon --esm index.ts
 ```
 
 To check that things are working correctly you can try the following URLs:
 
-- http://localhost:3000/api/hatchify/
-  - This is a test URL that will show the loaded Hatchify endpoints
-  - You should see a GET, PUT, POST and DELETE endpoints for the User model
+- http://localhost:3000/api/users
+  - This is a test URL that will show the loaded users
+  - You should see an empty data array at this point
 - http://localhost:3000/test
   - This is a URL that is NOT being handled by Hatchify
   - You should see 'Hello From Koa' as this endpoint hits the default non-CRUD handler
@@ -98,15 +101,16 @@ npm init
 Install Hatchify along with the Koa web framework into your newly defined project
 
 ```bash
-npm i koa @bitovi/hatchify
+npm install sequelize sqlite3 koa @hatchifyjs/koa
+npm install @types/koa nodemon ts-node --save-dev
 ```
 
-Create an `index.js` file containing the following 'Hello World' example code
+Create an `index.ts` file containing the following 'Hello World' example code
 
 ```typescript
 import Koa from "koa"
 import path from "path"
-import { Hatchify, DataTypes } from "@bitovi/hatchify"
+import { hatchifyKoa, DataTypes } from "@hatchifyjs/koa"
 
 const User = {
   name: "User",
@@ -117,32 +121,42 @@ const User = {
 }
 
 const app = new Koa()
-const hatchify = new Hatchify([User], {
-  name: "Hatchify Demo",
+const hatchedKoa = hatchifyKoa([User], {
   prefix: "/api",
-  db: {
+  database: {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
 })
 
-app.use(hatchify.middleware.allModels.all)
+app.use(hatchedKoa.middleware.allModels.all)
 
 app.use(async (ctx) => {
   ctx.body = "Hello From Koa"
 })
+;(async () => {
+  await hatchedKoa.createDatabase()
 
-app.listen(3000, () => {
-  console.log("Started on port 3000")
-})
+  app.listen(3000, () => {
+    console.log("Started on port 3000")
+  })
+})()
 ```
 
 At this point you have created a Koa application with Hatchify connected as Middleware. In this above example we are configuring Hatchify to use sqlite as a database and to store any of our data in the `example.sqlite` file.
 
-The most important step in working with Hatchify is creating Models that define the data within your application. Lets take a look at this example `Models.js` file containing two different exported Models:
+The most important step in working with Hatchify is creating Models that define the data within your application. Lets take a look at this example `models.ts` file containing two different exported Models:
 
 ```typescript
-import { DataTypes } from "@bitovi/hatchify/types"
+import { DataTypes } from "@hatchifyjs/koa"
+
+export const User = {
+  name: "User",
+  attributes: {
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+  },
+}
 
 export const Player = {
   name: "Player",
@@ -152,7 +166,7 @@ export const Player = {
     startDate: DataTypes.DATE,
     endDate: DataTypes.DATE,
   },
-  belongsTo: [{ target: "Team" }],
+  belongsTo: [{ target: "Team", options: { as: "team" } }],
 }
 
 export const Team = {
@@ -173,28 +187,30 @@ Now that we have a Schema defined, we can update our application code accordingl
 ```typescript
 import Koa from "koa"
 import path from "path"
-import { Hatchify, DataTypes } from "@bitovi/hatchify"
-import { Player, Team } from "./Models"
+import { hatchifyKoa } from "@hatchifyjs/koa"
+import { Player, Team } from "./models"
 
 const app = new Koa()
-const hatchify = new Hatchify([Player, Team], {
-  name: "Hatchify Demo",
+const hatchedKoa = hatchifyKoa([Player, Team], {
   prefix: "/api",
-  db: {
+  database: {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
 })
 
-app.use(hatchify.middleware.allModels.all)
+app.use(hatchedKoa.middleware.allModels.all)
 
 app.use(async (ctx) => {
   ctx.body = "Hello From Koa"
 })
+;(async () => {
+  await hatchedKoa.createDatabase()
 
-app.listen(3000, () => {
-  console.log("Started on port 3000")
-})
+  app.listen(3000, () => {
+    console.log("Started on port 3000")
+  })
+})()
 ```
 
 In the above example, if we run our application, Hatchify will create CRUD application endpoints for our newly imported `Player` and `Team` models automatically. If you try any other URLs you will get back the default 'Hello From Koa' response.
@@ -204,13 +220,13 @@ If you create additional schema files you can simply import them the same way, p
 Next we can start up the Hatchify to see everything in action.
 
 ```
-node index.js
+npx nodemon --esm index.ts
 ```
 
 You can use a REST Client to experiment with some of the following endpoints to see them in action:
 
-- GET http://localhost:3000/api/Players
-- POST http://localhost:3000/api/Players
+- GET http://localhost:3000/api/players
+- POST http://localhost:3000/api/players
 
 Now that we have our basic application up and running we can start looking at how to make changes and further develop our example
 
@@ -219,7 +235,15 @@ One of the first things that we might want to explore is how we can add (or remo
 Taking the same models as before, now we want to add a new field for the Players. Maybe now we also want to include their position on the team. If we use these models to describe a Football team we could create an ENUM field of positions:
 
 ```typescript
-import { DataTypes } from "@bitovi/hatchify/types"
+import { DataTypes } from "@hatchifyjs/koa"
+
+export const User = {
+  name: "User",
+  attributes: {
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+  },
+}
 
 export const Player = {
   name: "Player",
@@ -228,15 +252,9 @@ export const Player = {
     lastName: DataTypes.STRING,
     startDate: DataTypes.DATE,
     endDate: DataTypes.DATE,
-    position: DataTypes.ENUM([
-      "quarterback",
-      "offensive_lineman",
-      "running_back",
-      "fullback",
-      wide_receiver,
-    ]),
+    position: DataTypes.ENUM("quarterback", "offensive_lineman", "running_back", "fullback", "wide_receiver"),
   },
-  belongsTo: [{ target: "Team" }],
+  belongsTo: [{ target: "Team", options: { as: "team" } }],
 }
 
 export const Team = {
@@ -251,13 +269,13 @@ export const Team = {
 Now that we have this new field defined within our model we can start the Hatchify application again.
 
 ```
-node index.js
+npx nodemon --esm index.ts
 ```
 
 You can use a REST Client to experiment with some of the following endpoints to see them in action:
 
-- GET http://localhost:3000/api/Players
-- POST http://localhost:3000/api/Players
+- GET http://localhost:3000/api/players
+- POST http://localhost:3000/api/players
 
 # Project Customization
 
@@ -267,43 +285,50 @@ For example, if you had a new `User` model that needed special authorization rul
 
 Lets take a look at our same sample application again, but this time make a few customizations
 
+```bash
+npm install @koa/router
+npm install @types/koa__router --save-dev
+```
+
 ```typescript
 import Koa from "koa"
 import KoaRouter from "@koa/router"
 import path from "path"
-import { Hatchify } from "@bitovi/hatchify"
-import { Player, Team, User } from "./Models"
+import { hatchifyKoa } from "@hatchifyjs/koa"
+import { Player, Team, User } from "./models"
 
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchify = new Hatchify([Player, Team, User], {
-  name: "Hatchify Demo",
+const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
-  db: {
+  database: {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
 })
 
-router.get("/User", async (ctx, next) => {
+router.get("/api/users", async (ctx) => {
   if (ctx.headers.authorization !== "custom-value") {
     ctx.throw(401, "Bad Auth Token")
   }
-  ctx.body = await hatchify.everything.User.findAll(ctx.query)
+  ctx.body = await hatchedKoa.everything.User.findAll(ctx.querystring)
 })
 
 app.use(router.routes())
 app.use(router.allowedMethods())
-app.use(hatchify.middleware.allModels.all)
+app.use(hatchedKoa.middleware.allModels.all)
 
 app.use(async (ctx) => {
   ctx.body = "Hello From Koa"
 })
+;(async () => {
+  await hatchedKoa.createDatabase()
 
-app.listen(3000, () => {
-  console.log("Started on port 3000")
-})
+  app.listen(3000, () => {
+    console.log("Started on port 3000")
+  })
+})()
 ```
 
 From this example you can see a few of the functions that Hatchify exports for you. These model functions, along with more generic helpers, allow you to manipulate models, format data, and parse incoming request params with ease.
@@ -315,10 +340,9 @@ The main Hatchify constructor can, optionally, take a database parameter that ca
 This example shows how to use a sqlite local file storage
 
 ```typescript
-const hatchify = new Hatchify([Player, Team, User], {
-  name: "Hatchify Demo",
+const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
-  db: {
+  database: {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
@@ -328,10 +352,9 @@ const hatchify = new Hatchify([Player, Team, User], {
 This example shows how to use a postgresql database
 
 ```typescript
-const hatchify = new Hatchify([Player, Team, User], {
-  name: "Hatchify Demo",
+const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
-  db: {
+  database: {
     dialect: "postgres",
     host: "localhost",
     port: 5432,
@@ -359,7 +382,8 @@ For a more complete references see the Sequelize documentation [for the instance
 Because Hatchify goes hand in hand with the Koa web framework adding additional routes is very easy and flexible. You can start by adding Koa Router with npm i @koa/router to your project.
 
 ```
-npm i @koa/router
+npm install @koa/router
+npm install @types/koa__router --save-dev
 ```
 
 Simply hook this into your existing Koa instance
@@ -391,16 +415,15 @@ Here is a more complete example using many of the Hatchify built in helpers to p
 import Koa from "koa"
 import KoaRouter from "@koa/router"
 import path from "path"
-import { Hatchify, Op } from "@bitovi/hatchify"
-import { Player, Team, User } from "./Models"
+import { hatchifyKoa, Op } from "@hatchifyjs/koa"
+import { Player, Team, User } from "./models"
 
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchify = new Hatchify([Player, Team, User], {
-  name: "Hatchify Demo",
+const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
-  db: {
+  database: {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
@@ -409,7 +432,7 @@ const hatchify = new Hatchify([Player, Team, User], {
 router.get("/generate-report", async (ctx) => {
   const requestedStartDate = ctx.params.startDate
 
-  const users = await hatchify.model.UserModel.findAndCountAll({
+  const users = await hatchedKoa.model.Player.findAndCountAll({
     where: {
       startDate: {
         [Op.gt]: requestedStartDate,
@@ -417,21 +440,24 @@ router.get("/generate-report", async (ctx) => {
     },
   })
 
-  const teams = await hatchify.model.TeamModel.findAndCountAll()
+  const teams = await hatchedKoa.model.Team.findAndCountAll()
 
-  const usersResult = await hatchify.serialize.UserModel.findAndCountAll(users)
-  const teamsResult = await hatchify.serialize.TeamModel.findAndCountAll(teams)
+  const usersResult = await hatchedKoa.serialize.User.findAndCountAll(users, ["lastName"])
+  const teamsResult = await hatchedKoa.serialize.Team.findAndCountAll(teams, ["name"])
 
   ctx.body = { users: usersResult, teams: teamsResult }
 })
 
 app.use(router.routes())
 app.use(router.allowedMethods())
-app.use(hatchify.middleware.allModels.all)
+app.use(hatchedKoa.middleware.allModels.all)
+;(async () => {
+  await hatchedKoa.createDatabase()
 
-app.listen(3000, () => {
-  console.log("Started on port 3000")
-})
+  app.listen(3000, () => {
+    console.log("Started on port 3000")
+  })
+})()
 ```
 
 # API Endpoint Enhancement
@@ -444,45 +470,42 @@ We will create a query parameter alias that takes the string `today` and turns i
 import Koa from "koa"
 import KoaRouter from "@koa/router"
 import path from "path"
-import { Hatchify } from "@bitovi/hatchify"
-import { Player, Team, User } from "./Models"
+import { hatchifyKoa } from "@hatchifyjs/koa"
+import { Player, Team, User } from "./models"
 
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchify = new Hatchify([Player, Team, User], {
-  name: "Hatchify Demo",
+const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
-  db: {
+  database: {
     dialect: "sqlite",
     storage: path.join(__dirname, "example.sqlite"),
   },
 })
 
 router.get(
-  "/users",
+  "/api/players",
   async (ctx, next) => {
-    if (ctx.params.startDate && ctx.params.startDate === "today ") {
-      const today = new Date()
-      ctx.params.startDate = today
-    }
+    ctx.querystring = ctx.querystring.replace("=today", `=${new Date().toISOString()}`)
 
-    if (ctx.params.startDate && ctx.params.startDate === "yesterday ") {
-      const yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
-      ctx.params.startDate = yesterday
-    }
+    ctx.querystring = ctx.querystring.replace("=yesterday", `=${new Date(new Date().setDate(new Date().getDate() - 1)).toISOString()}`)
+
     await next()
   },
-  hatchify.middleware.User.findAll,
+  hatchedKoa.middleware.Player.findAll,
 )
 
 app.use(router.routes())
 app.use(router.allowedMethods())
-app.use(hatchify.middleware.allModels.all)
+app.use(hatchedKoa.middleware.allModels.all)
+;(async () => {
+  await hatchedKoa.createDatabase()
 
-app.listen(3000, () => {
-  console.log("Started on port 3000")
-})
+  app.listen(3000, () => {
+    console.log("Started on port 3000")
+  })
+})()
 ```
 
 In this example if we see the string ‘today’ or ‘yesterday’ as our stateDate query parameter we can override the value to replace it with a proper JavaScript Date object.
@@ -501,16 +524,13 @@ export const Employee = {
   attributes: {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    start_date: DataTypes.DATE,
-    end_date: DataTypes.DATE,
+    startDate: DataTypes.DATE,
+    endDate: DataTypes.DATE,
   },
   validation: {
     startDateBeforeEndDate() {
-      if (
-        this.start_date &&
-        this.end_date &&
-        this.start_date <= this.end_date
-      ) {
+      const { startDate, endDate } = this as unknown as { startDate: Date; endDate: Date }
+      if (startDate && endDate && startDate >= endDate) {
         throw new Error("START_DATE_MUST_BE_BEFORE_END_DATE")
       }
     },
@@ -535,81 +555,79 @@ In order to achieve this we can start by creating an override for the Assignment
 The following example code shows one way of tackling this problem:
 
 ```typescript
-import Koa from "koa";
-import KoaRouter from "@koa/router";
-import path from "path";
-import {
-  Hatchify,
-  Op,
-} from "@bitovi/hatchify";
-import { Assignment, Employee } from "./Models"
+import Koa from "koa"
+import KoaRouter from "@koa/router"
+import path from "path"
+import { hatchifyKoa, Op } from "@hatchifyjs/koa"
+import { Assignment, Employee } from "./models"
 
-const app = new Koa();
-const router = new KoaRouter();
+const app = new Koa()
+const router = new KoaRouter()
 
-const hatchify = new Hatchify([Assignment, Employee], {
-    name: "Hatchify Demo",
-    prefix: "/api",
-    db: {
-        dialect: 'sqlite',
-        storage: path.join(__dirname, 'example.sqlite')
-    }
-});
-
-
-router.post('/Assignment', await (ctx, next) => {
-  if (!hatchify.validate.Assignment.create(ctx)) {
-    ctx.throw('bad')
-  }
-
-  const { start_date, end_date, employee_id } = ctx.body;
-
-  // Get a transaction
-  const check_overlap = hatchify.useTransaction()
-
-  let assignmentsForEmployee = [];
-      assignmentsForEmployee = await hatchify.models.Assignment.findAll({
-        where: {
-            employee_id: employee_id
-        }
-      }, {transaction: check_overlap});
-
-      assignmentsForEmployee = await hatchify.models.Assignment.findAll({
-        where: {
-            employee_id: employee_id,
-            [Op.and]: {
-                start_date: {
-                    [Op.gt]: start_date
-                },
-                end_date: {
-                    [Op.lt]: end_date
-                }
-            }
-        }
-      }, {transaction: check_overlap})
-
-      if (assignmentsForEmployee.length > 0) {
-        await check_overlap.rollback()
-        ctx.throw(409, "EMPLOYEE_ALREADY_ASSIGNED");
-      }
-
-    const assignment = await hatchify.everything.Assignment.create(ctx.query, {
-      transaction: check_overlap
-    });
-    await check_overlap.commit();
-
-    ctx.body = assignment
-    ctx.status = 201;
+const hatchedKoa = hatchifyKoa([Assignment, Employee], {
+  prefix: "/api",
+  database: {
+    dialect: "sqlite",
+    storage: path.join(__dirname, "example.sqlite"),
+  },
 })
 
-app.use(router.routes());
-app.use(router.allowedMethods());
-app.use(hatchify.middleware.allModels.all);
+router.post("/Assignment", async (ctx, next) => {
+  // Run a parse first to do a general check that all the required
+  // information is there, before we start the transactions and everything
+  // If this doesn't pass we can fail fast and just bail out.
+  const createOptions = await hatchedKoa.parse.Assignment.create(ctx.body)
 
-app.listen(3000, () => {
-    console.log("Started on port 3000");
-});
+  const { start_date, end_date, employee_id } = <Assignment>ctx.body
 
+  // Get a transaction
+  const check_overlap = await hatchedKoa.orm.transaction()
+
+  let assignmentsForEmployee = await hatchedKoa.model.Assignment.findAll({
+    where: {
+      employee_id: employee_id,
+    },
+    transaction: check_overlap,
+  })
+
+  assignmentsForEmployee = await hatchedKoa.model.Assignment.findAll({
+    where: {
+      employee_id: employee_id,
+      [Op.and]: {
+        start_date: {
+          [Op.gt]: start_date,
+        },
+        end_date: {
+          [Op.lt]: end_date,
+        },
+      },
+    },
+    transaction: check_overlap,
+  })
+
+  if (assignmentsForEmployee.length > 0) {
+    await check_overlap.rollback()
+    ctx.throw(409, "EMPLOYEE_ALREADY_ASSIGNED")
+  }
+
+  const assignment = await hatchedKoa.model.Assignment.create(createOptions.body, { ...createOptions.ops, transaction: check_overlap })
+  const result = await hatchedKoa.serialize.Assignment.create(assignment)
+  await check_overlap.commit()
+
+  ctx.body = result
+  ctx.status = 201
+})
+
+app.use(router.routes())
+app.use(router.allowedMethods())
+app.use(hatchedKoa.middleware.allModels.all)
+;(async () => {
+  await hatchedKoa.createDatabase()
+
+  app.listen(3000, () => {
+    console.log("Started on port 3000")
+  })
+})()
 ```
 
 # Model Relationships
@@ -617,7 +635,7 @@ app.listen(3000, () => {
 Hatchify can help you define and build complex relationships between different models within your application. In our previous examples we have used Players and Teams to briefly describe a relationship. Lets take a look at that example again:
 
 ```typescript
-import { DataTypes } from "@bitovi/hatchify/types"
+import { DataTypes } from "@hatchifyjs/koa"
 
 export const Player = {
   name: "Player",
@@ -627,7 +645,7 @@ export const Player = {
     startDate: DataTypes.DATE,
     endDate: DataTypes.DATE,
   },
-  belongsTo: [{ target: "Team" }],
+  belongsTo: [{ target: "Team", options: { as: "team" } }],
 }
 
 export const Team = {
@@ -644,7 +662,7 @@ We can see that the `Player` has a `belongsTo` property that names `Team` as the
 For another example lets look at `Movies` and `Actors`. Unlike `Players` and `Teams` an Actor CAN be in more than one Movie and a Movie can contain many Actors. How could we describe this sort of relationship?
 
 ```typescript
-import { DataTypes } from "@bitovi/hatchify/types"
+import { DataTypes } from "@hatchifyjs/koa"
 
 export const Actor = {
   name: "Actor",
