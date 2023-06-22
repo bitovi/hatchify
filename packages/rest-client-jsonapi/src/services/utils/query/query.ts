@@ -3,6 +3,7 @@ import type {
   Include,
   Schemas,
   RequiredSchemaMap,
+  Filter,
 } from "@hatchifyjs/rest-client"
 
 /**
@@ -43,18 +44,37 @@ export function fieldsToQueryParam(
  * Transforms the include array from rest-client into a JSON:API compliant query parameter.
  */
 export function includeToQueryParam(includes: Include): string {
-  return `include=${includes.join(",")}`
+  return includes.length ? `include=${includes.join(",")}` : ""
 }
 
 /**
  * Transforms the sort array or string from rest-client into a JSON:API compliant query parameter.
  */
 export function sortToQueryParam(sort: string[] | string): string {
-  if (Array.isArray(sort)) {
-    return `sort=${sort.join(",")}`
-  } else {
-    return `sort=${sort}`
+  return Array.isArray(sort) ? `sort=${sort.join(",")}` : `sort=${sort}`
+}
+
+/**
+ * Transforms the filter object into filter query parameters.
+ * { name: "John", age: 30 } => "filter[name]=John&filter[age]=30"
+ * { name: ["John", "Jane"] } => "filter[name][]=John&filter[name][]=Jane"
+ */
+export function filterToQueryParam(filter: Filter): string {
+  if (typeof filter === "string") {
+    return filter
   }
+
+  const queries: string[] = []
+
+  for (const [key, value] of Object.entries(filter)) {
+    if (Array.isArray(value)) {
+      queries.push(value.map((v) => `filter[${key}][]=${v}`).join("&"))
+    } else {
+      queries.push(`filter[${key}]=${value}`)
+    }
+  }
+
+  return queries.join("&")
 }
 
 /**
@@ -67,39 +87,35 @@ export function getQueryParams(
   fields: Fields,
   include: Include,
   sort?: string[] | string,
+  filter?: Filter,
 ): string {
-  let params = ""
+  const params = []
 
-  const fieldsParam = fieldsToQueryParam(
-    schemaMap,
-    allSchemas,
-    schemaName,
-    fields,
-  )
-
-  if (include) {
+  if (include.length) {
     const includeParam = includeToQueryParam(include)
-    if (include.length) {
-      params += `?${includeParam}&`
-      if (fieldsParam) {
-        params += `${fieldsParam}&`
-      }
-    } else if (fieldsParam) {
-      params += `?include=${fieldsParam}&`
-    }
+    if (includeParam) params.push(includeParam)
+  }
+
+  if (fields) {
+    const fieldsParam = fieldsToQueryParam(
+      schemaMap,
+      allSchemas,
+      schemaName,
+      fields,
+    )
+
+    if (fieldsParam) params.push(fieldsParam)
   }
 
   if (sort) {
     const sortParam = sortToQueryParam(sort)
-
-    if (sort.length && !include.length && !fields.length) {
-      params += `?${sortParam}&`
-    }
-
-    if (sort.length && (include.length || fields.length)) {
-      params += `${sortParam}&`
-    }
+    if (sortParam) params.push(sortParam)
   }
 
-  return params
+  if (filter) {
+    const filterParam = filterToQueryParam(filter)
+    if (filterParam) params.push(filterParam)
+  }
+
+  return params.length ? `?${params.join("&")}` : ""
 }
