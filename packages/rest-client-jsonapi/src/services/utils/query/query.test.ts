@@ -86,7 +86,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           ["author", "illustrators"],
         ),
       ).toEqual(
-        "?include=author,illustrators&fields[Book]=title,body&fields[Person]=name,email",
+        "?include=author,illustrators&fields[Book]=title,body&fields[Person]=name,email&",
       )
 
       expect(
@@ -102,7 +102,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           ["illustrated", "authored"],
         ),
       ).toEqual(
-        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year",
+        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&",
       )
     })
 
@@ -115,7 +115,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           { Book: ["title", "body"] },
           [],
         ),
-      ).toEqual("?include=fields[Book]=title,body")
+      ).toEqual("?include=fields[Book]=title,body&")
 
       expect(
         getQueryParams(
@@ -125,7 +125,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           { Person: ["firstName", "age"] },
           [],
         ),
-      ).toEqual("?include=fields[Person]=firstName,age")
+      ).toEqual("?include=fields[Person]=firstName,age&")
     })
 
     it("works when both fields and include are empty", () => {
@@ -134,20 +134,20 @@ describe("rest-client-jsonapi/services/utils/query", () => {
     })
 
     it("works when sort is a string", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
       expect(
-        getQueryParams(schemaMap, schemas, "Person", [], [], "-created"),
+        getQueryParams(schemaMap, schemas, "Person", {}, [], "-created"),
       ).toEqual("?sort=-created&")
     })
 
     it("works when sort is an array of strings", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
       expect(
         getQueryParams(
           schemaMap,
           schemas,
           "Person",
-          [],
+          {},
           [],
           ["-created", "title", "user.name"],
         ),
@@ -155,24 +155,23 @@ describe("rest-client-jsonapi/services/utils/query", () => {
     })
 
     it("works when include, fields, sort have values", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
       expect(
         getQueryParams(
           schemaMap,
           schemas,
           "Person",
-          [
-            "firstName",
-            "age",
-            "illustrated.title",
-            "illustrated.year",
-            "authored.title",
-            "authored.year",
-          ],
+          {
+            Person: ["firstName", "age"],
+            illustrated: ["title", "year"],
+            authored: ["title", "year"],
+          },
           ["illustrated", "authored"],
           ["-created", "title", "user.name"],
         ),
-      ).toEqual("?include=illustrated,authored&sort=-created,title,user.name&")
+      ).toEqual(
+        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&sort=-created,title,user.name&",
+      )
     })
   })
 

@@ -82,10 +82,10 @@ export function getQueryParams(
     if (include.length) {
       params += `?${includeParam}&`
       if (fieldsParam) {
-        params += fieldsParam
+        params += `${fieldsParam}&`
       }
     } else if (fieldsParam) {
-      params += `?include=${fieldsParam}`
+      params += `?include=${fieldsParam}&`
     }
   }
 
