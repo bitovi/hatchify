@@ -19,7 +19,7 @@ const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/findAll", () => {
   const query = {
-    fields: [],
+    fields: {},
     include: [],
     page: { size: 0, number: 0 },
     sort: "",

@@ -16,9 +16,12 @@ export function getAttributesFromSchema(
     }
   }
 
-  return Object.keys(schemas[schemaName].attributes).map((attribute) =>
-    path ? `${path}.${attribute}` : attribute,
-  )
+  const fields: Fields = {}
+
+  fields[path ? path : schemaName] = Object.keys(
+    schemas[schemaName].attributes,
+  ).map((attribute) => attribute)
+  return fields
 }
 
 /**
@@ -26,16 +29,21 @@ export function getAttributesFromSchema(
  * https://jsonapi.org/format/#fetching-sparse-fieldsets
  * https://jsonapi.org/format/#fetching-includes
  */
-export function getIncludeFromFields(fields: Fields): Include {
+
+export function getIncludeFromFields(
+  fields: Fields,
+  schemaName: string,
+): Include {
   const includes: Record<string, true> = {}
 
-  for (const field of fields) {
-    if (!field.includes(".")) continue
+  const fieldKeys = Object.keys(fields)
 
-    const include = field.slice(0, field.lastIndexOf("."))
+  for (const field of fieldKeys) {
+    if (field === schemaName) continue
+
+    const include = field
     includes[include] = true
   }
-
   return Object.keys(includes)
 }
 
@@ -49,12 +57,13 @@ export function getFieldsFromInclude(
   schemaName: string,
   include: Include,
 ): Fields {
-  const fields: Fields = []
-
-  fields.push(...getAttributesFromSchema(schemas, schemaName))
+  let fields: Fields = { ...getAttributesFromSchema(schemas, schemaName) }
 
   for (const relationship of include) {
-    fields.push(...getAttributesFromSchema(schemas, schemaName, relationship))
+    fields = {
+      ...fields,
+      ...getAttributesFromSchema(schemas, schemaName, relationship),
+    }
   }
 
   return fields
@@ -67,13 +76,20 @@ export function getToOneRelationshipsAsFields(
   schemas: Record<string, Schema>,
   schemaName: string,
 ): Fields {
-  return Object.entries(schemas[schemaName]?.relationships || [])
-    .filter(([key, relationship]) => {
-      return relationship.type === "one"
-    })
-    .map(([key, relationship]) => {
-      return `${key}.${schemas[relationship.schema].displayAttribute || "id"}`
-    })
+  return Object.assign(
+    {},
+    ...Object.entries(schemas[schemaName]?.relationships || [])
+      .filter(([key, relationship]) => {
+        return relationship.type === "one"
+      })
+      .map(([key, relationship]) => {
+        return {
+          [`${key}`]: [
+            `${schemas[relationship.schema].displayAttribute || "id"}`,
+          ],
+        }
+      }),
+  )
 }
 
 /**
@@ -107,10 +123,10 @@ export function getFields(
     return getFieldsFromInclude(schemas, schemaName, selector.include)
   }
 
-  return [
+  return {
     ...getAttributesFromSchema(schemas, schemaName),
     ...getToOneRelationshipsAsFields(schemas, schemaName),
-  ]
+  }
 }
 
 /**
@@ -125,7 +141,7 @@ export function getInclude(
   if (selector.include) {
     return selector.include
   } else if (selector.fields !== undefined) {
-    return getIncludeFromFields(selector.fields)
+    return getIncludeFromFields(selector.fields, schemaName)
   }
 
   return getToOneRelationshipsAsInclude(schemas, schemaName)

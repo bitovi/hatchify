@@ -18,30 +18,22 @@ export function fieldsToQueryParam(
   schemaName: string,
   fields: Fields,
 ): string {
-  // a Set is used to deduplicate fields. eg. author.name and illustrators.name
-  // are different relationships, but both have the same JSON:API type.
-  const fieldsByType: globalThis.Record<string, Set<string>> = {}
-
-  for (const field of fields) {
-    // if there is no dot, then the field is an attribute of the base schema
-    if (!field.includes(".")) {
-      const jsonapiType = schemaMap[schemaName].type
-      fieldsByType[jsonapiType] = fieldsByType[jsonapiType] || new Set()
-      fieldsByType[jsonapiType].add(field)
+  const fieldsArr = Object.keys(fields)
+  const fieldsObj: Fields = {}
+  for (const field of fieldsArr) {
+    // if field is equal to the schemaName, then the field is an attribute of the base schema
+    if (field === schemaName) {
+      fieldsObj[schemaName] = fields[field]
       continue
     }
 
-    // otherwise, find the JSON:API type of the related schema
-    const [relationshipKey, attribute] = field.split(".")
     const baseSchema = allSchemas[schemaName]
     const relationship = baseSchema?.relationships || {}
-    const relatedSchema = relationship[relationshipKey].schema
-    const jsonapiType = schemaMap[relatedSchema].type
-    fieldsByType[jsonapiType] = fieldsByType[jsonapiType] || new Set()
-    fieldsByType[jsonapiType].add(attribute)
+    const relatedSchema = relationship[field].schema
+    fieldsObj[relatedSchema] = fields[field]
   }
 
-  const fieldset = Object.entries(fieldsByType)
+  const fieldset = Object.entries(fieldsObj)
     .map(([key, attributes]) => `fields[${key}]=${[...attributes].join(",")}`)
     .join("&")
 
@@ -52,7 +44,7 @@ export function fieldsToQueryParam(
  * Transforms the include array from rest-client into a JSON:API compliant query parameter.
  */
 export function includeToQueryParam(includes: Include): string {
-  return `include=${includes.join(",")}`
+  return includes.length ? `include=${includes.join(",")}` : ""
 }
 
 /**
@@ -99,21 +91,30 @@ export function getQueryParams(
 ): string {
   const params = []
 
-  if (include && include.length > 0) {
+  if (include.length) {
     const includeParam = includeToQueryParam(include)
-    params.push(includeParam)
+    if (includeParam) params.push(includeParam)
   }
 
-  // todo: wait for backend to fix fields, using fieldsParam does not return an id in each object
+  if (fields) {
+    const fieldsParam = fieldsToQueryParam(
+      schemaMap,
+      allSchemas,
+      schemaName,
+      fields,
+    )
+
+    if (fieldsParam) params.push(fieldsParam)
+  }
 
   if (sort) {
     const sortParam = sortToQueryParam(sort)
-    params.push(sortParam)
+    if (sortParam) params.push(sortParam)
   }
 
   if (filter) {
     const filterParam = filterToQueryParam(filter)
-    params.push(filterParam)
+    if (filterParam) params.push(filterParam)
   }
 
   return params.length ? `?${params.join("&")}` : ""

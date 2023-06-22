@@ -48,7 +48,7 @@ describe("rest-client/services/promise/findAll", () => {
     const spy = vi.spyOn(fakeDataSource, "findAll")
     await findAll(fakeDataSource, schemas, "Article", {})
     const expected = {
-      fields: ["title", "body", "author.name"],
+      fields: { Article: ["title", "body"], author: ["name"] },
       include: ["author"],
     }
 
