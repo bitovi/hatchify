@@ -16,7 +16,7 @@ const schemaMap = {
 const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/findOne", () => {
-  const query = { id: "article-id-1", fields: [], include: [] }
+  const query = { id: "article-id-1", fields: {}, include: [] }
 
   it("works", async () => {
     const expected = [

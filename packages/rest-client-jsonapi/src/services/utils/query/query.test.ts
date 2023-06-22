@@ -54,28 +54,20 @@ describe("rest-client-jsonapi/services/utils/query", () => {
   describe("fieldsToQueryParam", () => {
     it("works", () => {
       expect(
-        fieldsToQueryParam(schemaMap, schemas, "Book", [
-          "title",
-          "body",
-          "author.name",
-          "author.email",
-          "illustrators.name",
-          "illustrators.email",
-        ]),
-      ).toEqual("fields[book_type]=title,body&fields[person_type]=name,email")
+        fieldsToQueryParam(schemaMap, schemas, "Book", {
+          Book: ["title", "body"],
+          author: ["name", "email"],
+          illustrators: ["name", "email"],
+        }),
+      ).toEqual("fields[Book]=title,body&fields[Person]=name,email")
 
       expect(
-        fieldsToQueryParam(schemaMap, schemas, "Person", [
-          "firstName",
-          "age",
-          "authored.title",
-          "authored.year",
-          "illustrated.title",
-          "illustrated.year",
-        ]),
-      ).toEqual(
-        "fields[person_type]=firstName,age&fields[book_type]=title,year",
-      )
+        fieldsToQueryParam(schemaMap, schemas, "Person", {
+          Person: ["firstName", "age"],
+          authored: ["title", "year"],
+          illustrated: ["title", "year"],
+        }),
+      ).toEqual("fields[Person]=firstName,age&fields[Book]=title,year")
     })
   })
 
@@ -86,20 +78,15 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           schemaMap,
           schemas,
           "Book",
-          [
-            "title",
-            "body",
-            "author.name",
-            "author.email",
-            "illustrators.name",
-            "illustrators.email",
-          ],
+          {
+            Book: ["title", "body"],
+            author: ["name", "email"],
+            illustrators: ["name", "email"],
+          },
           ["author", "illustrators"],
         ),
       ).toEqual(
-        // todo: switch to commented out when backend returns id with each resource
-        // "?include=author,illustrators&fields[book_type]=title,body&fields[person_type]=name,email",
-        "?include=author,illustrators&",
+        "?include=author,illustrators&fields[Book]=title,body&fields[Person]=name,email&",
       )
 
       expect(
@@ -107,57 +94,60 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           schemaMap,
           schemas,
           "Person",
-          [
-            "firstName",
-            "age",
-            "illustrated.title",
-            "illustrated.year",
-            "authored.title",
-            "authored.year",
-          ],
+          {
+            Person: ["firstName", "age"],
+            illustrated: ["title", "year"],
+            authored: ["title", "year"],
+          },
           ["illustrated", "authored"],
         ),
       ).toEqual(
-        // todo: switch to commented out when backend returns id with each resource
-        // "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
-        "?include=illustrated,authored&",
+        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&",
       )
     })
 
     it("works for when fields has values and include is empty", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", ["title", "body"], []),
-        // todo: switch to commented out when backend returns id with each resource
-        // ).toEqual("?include=fields[book_type]=title,body")
-      ).toEqual("?include=")
+        getQueryParams(
+          schemaMap,
+          schemas,
+          "Book",
+          { Book: ["title", "body"] },
+          [],
+        ),
+      ).toEqual("?include=fields[Book]=title,body&")
 
-      expect(
-        getQueryParams(schemaMap, schemas, "Person", ["firstName", "age"], []),
-        // todo: switch to commented out when backend returns id with each resource
-        // ).toEqual("?include=fields[person_type]=firstName,age")
-      ).toEqual("?include=")
-    })
-
-    it("works when both fields and include are empty", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
-      expect(getQueryParams(schemaMap, schemas, "Person", [], [])).toEqual("")
-    })
-
-    it("works when sort is a string", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
-      expect(
-        getQueryParams(schemaMap, schemas, "Person", [], [], "-created"),
-      ).toEqual("?sort=-created&")
-    })
-
-    it("works when sort is an array of strings", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
       expect(
         getQueryParams(
           schemaMap,
           schemas,
           "Person",
+          { Person: ["firstName", "age"] },
           [],
+        ),
+      ).toEqual("?include=fields[Person]=firstName,age&")
+    })
+
+    it("works when both fields and include are empty", () => {
+      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
+      expect(getQueryParams(schemaMap, schemas, "Person", {}, [])).toEqual("")
+    })
+
+    it("works when sort is a string", () => {
+      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
+      expect(
+        getQueryParams(schemaMap, schemas, "Person", {}, [], "-created"),
+      ).toEqual("?sort=-created&")
+    })
+
+    it("works when sort is an array of strings", () => {
+      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
+      expect(
+        getQueryParams(
+          schemaMap,
+          schemas,
+          "Person",
+          {},
           [],
           ["-created", "title", "user.name"],
         ),
@@ -165,24 +155,23 @@ describe("rest-client-jsonapi/services/utils/query", () => {
     })
 
     it("works when include, fields, sort have values", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
       expect(
         getQueryParams(
           schemaMap,
           schemas,
           "Person",
-          [
-            "firstName",
-            "age",
-            "illustrated.title",
-            "illustrated.year",
-            "authored.title",
-            "authored.year",
-          ],
+          {
+            Person: ["firstName", "age"],
+            illustrated: ["title", "year"],
+            authored: ["title", "year"],
+          },
           ["illustrated", "authored"],
           ["-created", "title", "user.name"],
         ),
-      ).toEqual("?include=illustrated,authored&sort=-created,title,user.name&")
+      ).toEqual(
+        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&sort=-created,title,user.name&",
+      )
     })
   })
 
