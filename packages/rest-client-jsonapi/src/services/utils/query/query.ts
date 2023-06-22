@@ -64,7 +64,7 @@ export function filterToQueryParam(filter: Filter): string {
     return filter
   }
 
-  let queries: string[] = []
+  const queries: string[] = []
 
   for (const [key, value] of Object.entries(filter)) {
     if (Array.isArray(value)) {
