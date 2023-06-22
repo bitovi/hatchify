@@ -2,6 +2,7 @@ export type {
   Attribute,
   CreateData,
   Fields,
+  Filter,
   Include,
   Meta,
   MetaData,

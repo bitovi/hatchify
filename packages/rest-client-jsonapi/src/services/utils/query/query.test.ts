@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 import type { Schemas } from "@hatchifyjs/rest-client"
 import {
   fieldsToQueryParam,
+  filterToQueryParam,
   getQueryParams,
   includeToQueryParam,
   sortToQueryParam,
@@ -99,7 +100,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual(
         // todo: switch to commented out when backend returns id with each resource
         // "?include=author,illustrators&fields[book_type]=title,body&fields[person_type]=name,email",
-        "?include=author,illustrators&",
+        "?include=author,illustrators",
       )
 
       expect(
@@ -120,7 +121,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual(
         // todo: switch to commented out when backend returns id with each resource
         // "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
-        "?include=illustrated,authored&",
+        "?include=illustrated,authored",
       )
     })
 
@@ -129,13 +130,13 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         getQueryParams(schemaMap, schemas, "Book", ["title", "body"], []),
         // todo: switch to commented out when backend returns id with each resource
         // ).toEqual("?include=fields[book_type]=title,body")
-      ).toEqual("?include=")
+      ).toEqual("")
 
       expect(
         getQueryParams(schemaMap, schemas, "Person", ["firstName", "age"], []),
         // todo: switch to commented out when backend returns id with each resource
         // ).toEqual("?include=fields[person_type]=firstName,age")
-      ).toEqual("?include=")
+      ).toEqual("")
     })
 
     it("works when both fields and include are empty", () => {
@@ -145,13 +146,15 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works when sort is a string", () => {
       expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+
       expect(
         getQueryParams(schemaMap, schemas, "Person", [], [], "-created"),
-      ).toEqual("?sort=-created&")
+      ).toEqual("?sort=-created")
     })
 
     it("works when sort is an array of strings", () => {
       expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+
       expect(
         getQueryParams(
           schemaMap,
@@ -161,11 +164,12 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           [],
           ["-created", "title", "user.name"],
         ),
-      ).toEqual("?sort=-created,title,user.name&")
+      ).toEqual("?sort=-created,title,user.name")
     })
 
-    it("works when include, fields, sort have values", () => {
+    it("works when include, fields, sort, filter have values", () => {
       expect(getQueryParams(schemaMap, schemas, "Book", [], [])).toEqual("")
+
       expect(
         getQueryParams(
           schemaMap,
@@ -181,8 +185,11 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           ],
           ["illustrated", "authored"],
           ["-created", "title", "user.name"],
+          { name: ["John", "Joan"], age: 21, employed: false },
         ),
-      ).toEqual("?include=illustrated,authored&sort=-created,title,user.name&")
+      ).toEqual(
+        "?include=illustrated,authored&sort=-created,title,user.name&filter[name][]=John&filter[name][]=Joan&filter[age]=21&filter[employed]=false",
+      )
     })
   })
 
@@ -205,6 +212,32 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       )
 
       expect(sortToQueryParam("-created")).toEqual("sort=-created")
+    })
+  })
+
+  describe("filterToQueryParam", () => {
+    it("works", () => {
+      expect(filterToQueryParam({})).toEqual("")
+
+      expect(
+        filterToQueryParam("filter[name]=ABC&filter[completed]=true"),
+      ).toEqual("filter[name]=ABC&filter[completed]=true")
+
+      expect(filterToQueryParam({ name: "ABC" })).toEqual("filter[name]=ABC")
+
+      expect(filterToQueryParam({ name: ["ABC", "DEF"] })).toEqual(
+        "filter[name][]=ABC&filter[name][]=DEF",
+      )
+
+      expect(filterToQueryParam({ completed: false })).toEqual(
+        "filter[completed]=false",
+      )
+
+      expect(
+        filterToQueryParam({ name: ["ABC", "DEF"], count: 3, completed: true }),
+      ).toEqual(
+        "filter[name][]=ABC&filter[name][]=DEF&filter[count]=3&filter[completed]=true",
+      )
     })
   })
 })

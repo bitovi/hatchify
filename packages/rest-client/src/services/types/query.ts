@@ -4,10 +4,12 @@ export type Fields = string[] // todo: typed to schema attributes & relationship
 
 export type Selector = { include?: Include; fields?: Fields }
 
+export type Filter = string | Record<string, any>
+
 export type QueryList = Selector & {
   page?: { size: number; number: number }
   sort?: string[] | string
-  filter?: { [key: string]: { [filter: string]: string } }
+  filter?: Filter
 }
 
 export type QueryOne = Selector & { id: string }
