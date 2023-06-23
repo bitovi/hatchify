@@ -1,3 +1,5 @@
+[![@hatchifyjs/koa](https://github.com/bitovi/hatchify/actions/workflows/koa.yml/badge.svg)](https://github.com/bitovi/hatchify/actions/workflows/koa.yml)
+
 # About Hatchify
 
 Hatchify is a web application framework designed to accelerate the development of new, or enhancement of existing, CRUD applications. If all you need is a simple CRUD application Hatchify can provide you with a fully functional system straight from your database schema. If you have more specialized requirements Hatchify makes it easy to customize every part of the application to meet your needs.
