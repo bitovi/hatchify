@@ -68,9 +68,11 @@ export function filterToQueryParam(filter: Filter): string {
 
   for (const [key, value] of Object.entries(filter)) {
     if (Array.isArray(value)) {
-      queries.push(value.map((v) => `filter[${key}][]=${v}`).join("&"))
+      queries.push(
+        value.map((v) => `filter[${key}][]=${encodeURIComponent(v)}`).join("&"),
+      )
     } else {
-      queries.push(`filter[${key}]=${value}`)
+      queries.push(`filter[${key}]=${encodeURIComponent(value)}`)
     }
   }
 
