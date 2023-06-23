@@ -24,6 +24,7 @@ import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
 import type { Schemas, Schema } from "@hatchifyjs/rest-client"
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 
+export type RestSource = Source
 export interface SchemaRecord {
   [schemaName: string]: LegacySchema | Schema
 }
