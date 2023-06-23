@@ -4,6 +4,7 @@ import { renderHook, waitFor } from "@testing-library/react"
 import {
   createStore,
   flattenResourcesIntoRecords,
+  subscribeToAll,
 } from "@hatchifyjs/rest-client"
 import type { Schema, Source, Subscription } from "@hatchifyjs/rest-client"
 import { useAll } from "./useAll"
@@ -65,7 +66,7 @@ describe("react-rest/services/useAll", () => {
   })
 
   it("should subscribe and return latest data", async () => {
-    const store = createStore(["Article"])
+    const store = createStore(["Article", "Person"])
     const query = {}
 
     const { result } = renderHook(() =>
@@ -110,6 +111,32 @@ describe("react-rest/services/useAll", () => {
     await waitFor(() =>
       expect(result.current).toEqual([
         flattenResourcesIntoRecords(schemas, newFakeData, "Article"),
+        {
+          status: "success",
+          meta: undefined,
+          error: undefined,
+          isDone: true,
+          isLoading: false,
+          isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
+        },
+      ]),
+    )
+
+    fakeDataSource.findAll = () => Promise.resolve([])
+
+    // unrelated schema subscribe(mutate) should trigger refetch
+    // todo: remove once subscribe/can-query-logic is properly implemented
+    subscribeToAll("Person", () => [])
+    store.Article.subscribers.forEach((subscriber: Subscription) =>
+      subscriber([]),
+    )
+
+    await waitFor(() =>
+      expect(result.current).toEqual([
+        [],
         {
           status: "success",
           meta: undefined,

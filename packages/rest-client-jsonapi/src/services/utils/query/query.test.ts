@@ -224,6 +224,17 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual(
         "filter[name][]=ABC&filter[name][]=DEF&filter[count]=3&filter[completed]=true",
       )
+
+      expect(
+        filterToQueryParam({
+          name: ["A'bc!*\"", "$()"],
+          count: 3,
+          completed: true,
+          employer: "(test$!)",
+        }),
+      ).toEqual(
+        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[count]=3&filter[completed]=true&filter[employer]=(test%24!)",
+      )
     })
   })
 
