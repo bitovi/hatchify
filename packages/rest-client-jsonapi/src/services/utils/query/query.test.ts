@@ -5,6 +5,7 @@ import {
   filterToQueryParam,
   getQueryParams,
   includeToQueryParam,
+  pageToQueryParam,
   sortToQueryParam,
 } from "./query"
 
@@ -55,7 +56,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
   describe("fieldsToQueryParam", () => {
     it("works", () => {
       expect(
-        fieldsToQueryParam(schemaMap, schemas, "Book", {
+        fieldsToQueryParam(schemas, "Book", {
           Book: ["title", "body"],
           author: ["name", "email"],
           illustrators: ["name", "email"],
@@ -63,7 +64,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual("fields[Book]=title,body&fields[Person]=name,email")
 
       expect(
-        fieldsToQueryParam(schemaMap, schemas, "Person", {
+        fieldsToQueryParam(schemas, "Person", {
           Person: ["firstName", "age"],
           authored: ["title", "year"],
           illustrated: ["title", "year"],
@@ -155,7 +156,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual("?sort=-created,title,user.name")
     })
 
-    it("works when include, fields, sort have values", () => {
+    it("works when include, fields, sort, filter, and page have values", () => {
       expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
       expect(
         getQueryParams(
@@ -170,9 +171,10 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           ["illustrated", "authored"],
           ["-created", "title", "user.name"],
           { name: ["John", "Joan"], age: 21, employed: false },
+          { number: 3, size: 30 },
         ),
       ).toEqual(
-        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&sort=-created,title,user.name&filter[name][]=John&filter[name][]=Joan&filter[age]=21&filter[employed]=false",
+        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&sort=-created,title,user.name&filter[name][]=John&filter[name][]=Joan&filter[age]=21&filter[employed]=false&page[number]=3&page[size]=30",
       )
     })
   })
@@ -222,6 +224,30 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual(
         "filter[name][]=ABC&filter[name][]=DEF&filter[count]=3&filter[completed]=true",
       )
+    })
+  })
+
+  describe("pageToQueryParam", () => {
+    it("works", () => {
+      expect(pageToQueryParam({})).toEqual("")
+
+      expect(pageToQueryParam("page[number]=3&page[size]=30")).toEqual(
+        "page[number]=3&page[size]=30",
+      )
+
+      expect(pageToQueryParam({ number: 3, size: 30 })).toEqual(
+        "page[number]=3&page[size]=30",
+      )
+
+      expect(pageToQueryParam([3, 30])).toEqual("page[number]=3&page[size]=30")
+
+      expect(pageToQueryParam([3])).toEqual("page[number]=3")
+
+      expect(pageToQueryParam([3, 30, 5])).toEqual(
+        "page[number]=3&page[size]=30",
+      )
+
+      expect(pageToQueryParam(3)).toEqual("page[number]=3")
     })
   })
 })
