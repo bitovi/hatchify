@@ -82,5 +82,10 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
       port: 3000,
     },
+    {
+      command: "cd example/react-rest && npm install && npm run dev",
+      reuseExistingServer: !process.env.CI,
+      port: 5174,
+    },
   ],
 })
