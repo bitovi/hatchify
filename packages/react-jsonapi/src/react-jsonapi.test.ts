@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 import type { SchemaRecord } from "@hatchifyjs/react-rest"
 import { reactJsonapi } from "./react-jsonapi"
 
-const TestSchema = {
+const TestSchema: SchemaRecord = {
   Article: {
     name: "Article",
     displayAttribute: "title",
@@ -22,7 +22,7 @@ const TestSchema = {
       },
     },
   },
-} as unknown as SchemaRecord
+}
 
 const ArticleMap = {
   article: {
