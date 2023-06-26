@@ -10,12 +10,10 @@ export type SchemaMap = Record<string, SourceSchema>
 
 export function reactJsonapi(
   schema: SchemaRecord,
+  baseUrl: string,
   schemaMap: SchemaMap,
 ): ReactRest<SchemaRecord> {
-  const jsonapiClient = createJsonapiClient(
-    "http://localhost:3000/api",
-    schemaMap,
-  )
+  const jsonapiClient = createJsonapiClient(baseUrl, schemaMap)
 
   return hatchifyReactRest(schema, jsonapiClient)
 }

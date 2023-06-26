@@ -32,7 +32,11 @@ const ArticleMap = {
 }
 describe("react-jsonapi", () =>
   it("works", () => {
-    const reactRest = reactJsonapi(TestSchema, ArticleMap)
+    const reactRest = reactJsonapi(
+      TestSchema,
+      "http://localhost:3000/api",
+      ArticleMap,
+    )
 
     expect(reactRest).toEqual({
       Article: {
