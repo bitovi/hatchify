@@ -116,13 +116,16 @@ export function getQueryParams(
   schemaMap: RequiredSchemaMap,
   allSchemas: Schemas,
   schemaName: string,
-  fields: Fields,
-  include: Include,
-  sort?: string[] | string,
-  filter?: Filter,
-  page?: unknown,
+  query: {
+    fields: Fields
+    include: Include
+    sort?: string[] | string
+    filter?: Filter
+    page?: unknown
+  },
 ): string {
   const params = []
+  const { fields, include, sort, filter, page } = query
 
   if (include.length) {
     const includeParam = includeToQueryParam(include)
