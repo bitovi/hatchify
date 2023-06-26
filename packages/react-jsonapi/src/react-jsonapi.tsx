@@ -16,5 +16,6 @@ export function reactJsonapi(
     "http://localhost:3000/api",
     schemaMap,
   )
+
   return hatchifyReactRest(schema, jsonapiClient)
 }
