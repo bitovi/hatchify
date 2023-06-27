@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { hatchifyReactRest } from "@hatchifyjs/react-rest"
-import { jsonapi as createClient } from "@hatchifyjs/rest-client-jsonapi"
+import hatchifyReactRest from "@hatchifyjs/react-rest"
+import createClient from "@hatchifyjs/rest-client-jsonapi"
 
 const Todo = {
   name: "Todo",

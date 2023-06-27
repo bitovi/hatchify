@@ -1,5 +1,5 @@
-import { jsonapi as createJsonapiClient } from "@hatchifyjs/rest-client-jsonapi"
-import { hatchifyReactRest } from "@hatchifyjs/react-rest"
+import createClient from "@hatchifyjs/rest-client-jsonapi"
+import hatchifyReactRest from "@hatchifyjs/react-rest"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 
 interface SourceSchema {
@@ -13,7 +13,7 @@ export function reactJsonapi(
   baseUrl: string,
   schemaMap: SchemaMap,
 ): ReactRest<SchemaRecord> {
-  const jsonapiClient = createJsonapiClient(baseUrl, schemaMap)
+  const jsonapiClient = createClient(baseUrl, schemaMap)
 
   return hatchifyReactRest(schema, jsonapiClient)
 }

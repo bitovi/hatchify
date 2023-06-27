@@ -1,3 +1,3 @@
-export * from "./components"
-// export * from "./presentation";
-// export * from "./services";
+import { MuiProvider } from "./components"
+
+export default MuiProvider

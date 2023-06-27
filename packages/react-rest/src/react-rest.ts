@@ -1,10 +1,13 @@
+import { hatchifyReactRest } from "./services"
+
 export type { ReactRest, SchemaRecord } from "./services"
 
 export {
-  hatchifyReactRest,
   useCreateOne,
   useDeleteOne,
   useAll,
   useOne,
   useUpdateOne,
 } from "./services"
+
+export default hatchifyReactRest
