@@ -37,7 +37,7 @@ test("works", async ({ page, request }) => {
         attributes: {
           name: "Walk the dog",
           due_date: "12-12-2024",
-          importance: 0.6,
+          importance: 6,
         },
       },
     },
@@ -87,7 +87,7 @@ test("works", async ({ page, request }) => {
   await page.reload()
   await expect(page.getByText("Walk the dog")).toBeVisible()
   await expect(page.getByText("12-12-2024")).toBeVisible()
-  await expect(page.getByText("0.6")).toBeVisible()
+  await expect(page.getByText("6")).toBeVisible()
   await expect(page.getByText("John Doe")).toBeVisible()
 
   // * validate delete todos endpoint works

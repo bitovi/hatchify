@@ -1,9 +1,56 @@
 import http from "node:http"
 
+import type { HatchifyModel } from "@hatchifyjs/node"
 import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
 import { Deserializer } from "jsonapi-serializer"
-import type Koa from "koa"
+import Koa from "koa"
+import type { Context } from "koa"
 import request from "supertest"
+
+import { Hatchify } from "../koa"
+
+type Method = "get" | "post" | "patch" | "delete"
+type Middleware = (ctx: Context) => void
+
+export async function startServerWith(
+  models: HatchifyModel[],
+  middleware?: Middleware[],
+): Promise<{
+  fetch: (
+    path: string,
+    options?: { method?: Method; headers?: object; body: object },
+  ) => Promise<any>
+  teardown: () => Promise<void>
+}> {
+  const app = new Koa()
+  const hatchify = new Hatchify(models, { prefix: "/api" })
+  app.use(hatchify.middleware.allModels.all)
+
+  const server = http.createServer(app.callback())
+  await hatchify.createDatabase()
+
+  async function fetch(
+    path: string,
+    options?: { method?: Method; headers?: object; body: object },
+  ) {
+    const method = options?.method || "get"
+    const headers = options?.headers || {}
+    const body = options?.body
+    const response = request(server)[method](path)
+
+    Object.entries(headers).forEach(([key, value]) => response.set(key, value))
+
+    if (body) {
+      response.send(body)
+    }
+    return response
+  }
+
+  return {
+    fetch,
+    teardown: async () => hatchify.orm.close(),
+  }
+}
 
 export function createServer(app: Koa) {
   return http.createServer(app.callback())
