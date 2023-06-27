@@ -1,7 +1,7 @@
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type { Source, Schemas } from "@hatchifyjs/rest-client"
-import { hatchifyReactRest } from "@hatchifyjs/react-rest"
+import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { transformSchema } from "@hatchifyjs/rest-client"
 
 import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
