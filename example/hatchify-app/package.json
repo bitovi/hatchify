@@ -16,8 +16,8 @@
     "start:backend": "node dist/backend/backend/index.js"
   },
   "dependencies": {
-    "@hatchifyjs/koa": "file:../../packages/koa",
-    "@hatchifyjs/react": "file:../../packages/react",
+    "@hatchifyjs/koa": "^0.0.8",
+    "@hatchifyjs/react": "^0.0.1-6",
     "@koa/cors": "^4.0.0",
     "koa": "^2.14.2",
     "react": "^18.2.0",
