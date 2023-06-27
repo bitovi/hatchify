@@ -1,8 +1,6 @@
 import type { HatchifyModel } from "@hatchifyjs/node"
-import Koa from "koa"
 
-import { Hatchify } from "./koa"
-import { GET, POST, createServer } from "./testing/utils"
+import { startServerWith } from "./testing/utils"
 
 describe("Relationships", () => {
   const User: HatchifyModel = {
@@ -23,32 +21,30 @@ describe("Relationships", () => {
     belongsTo: [{ target: "User", options: { as: "user" } }],
   }
 
-  let server: any
-  let hatchify: Hatchify
+  let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+  let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    const app = new Koa()
-    hatchify = new Hatchify([Todo, User], { prefix: "/api" })
-    app.use(hatchify.middleware.allModels.all)
-
-    server = createServer(app)
-    await hatchify.createDatabase()
+    ;({ fetch, teardown } = await startServerWith([User, Todo]))
   })
 
   afterAll(async () => {
-    await hatchify.orm.close()
+    await teardown()
   })
 
   it("should always return type and id (HATCH-167)", async () => {
-    const { serialized: user } = await POST(server, "/api/users", {
-      name: "John Doe",
-      todos: [
-        {
-          name: "Walk the dog",
-          due_date: "12-12-2024",
-          importance: 0.6,
-        },
-      ],
+    const { body: user } = await fetch("/api/users", {
+      method: "post",
+      body: {
+        name: "John Doe",
+        todos: [
+          {
+            name: "Walk the dog",
+            due_date: "12-12-2024",
+            importance: 6,
+          },
+        ],
+      },
     })
 
     expect(user).toEqual({
@@ -64,10 +60,7 @@ describe("Relationships", () => {
       },
     })
 
-    const { serialized: todosNoFields } = await GET(
-      server,
-      "/api/todos?include=user",
-    )
+    const { body: todosNoFields } = await fetch("/api/todos?include=user")
 
     expect(todosNoFields).toEqual({
       jsonapi: { version: "1.0" },
@@ -78,7 +71,7 @@ describe("Relationships", () => {
           attributes: {
             name: "Walk the dog",
             due_date: "12-12-2024",
-            importance: 0.6,
+            importance: 6,
           },
           relationships: { user: { data: { type: "User", id: "1" } } },
         },
@@ -86,8 +79,7 @@ describe("Relationships", () => {
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
     })
 
-    const { serialized: todosWithFields } = await GET(
-      server,
+    const { body: todosWithFields } = await fetch(
       "/api/todos?include=user&fields[Todo]=name,due_date&fields[User]=name",
     )
 
@@ -107,8 +99,7 @@ describe("Relationships", () => {
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
     })
 
-    const { serialized: todosWithIdField } = await GET(
-      server,
+    const { body: todosWithIdField } = await fetch(
       "/api/todos?include=user&fields[Todo]=id,name,due_date&fields[User]=name",
     )
 
@@ -131,77 +122,95 @@ describe("Relationships", () => {
 
   describe("should add associations both ways (HATCH-172)", () => {
     it("todo and then user", async () => {
-      const { deserialized: todo } = await POST(server, "/api/todos", {
-        name: "Walk the dog",
-        due_date: "12-12-2024",
-        importance: 0.6,
+      const { body: todo } = await fetch("/api/todos", {
+        method: "post",
+        body: {
+          name: "Walk the dog",
+          due_date: "12-12-2024",
+          importance: 6,
+        },
       })
 
-      const { deserialized: user } = await POST(server, "/api/users", {
-        name: "John Doe",
-        todos: [
-          {
-            id: todo.id,
-          },
-        ],
+      const { body: user } = await fetch("/api/users", {
+        method: "post",
+        body: {
+          name: "John Doe",
+          todos: [
+            {
+              id: todo.data.id,
+            },
+          ],
+        },
       })
 
-      const { serialized: userWithTodo } = await GET(
-        server,
-        `/api/todos/${todo.id}?include=user`,
+      const { body: userWithTodo } = await fetch(
+        `/api/todos/${todo.data.id}?include=user`,
       )
 
       expect(userWithTodo).toEqual({
         jsonapi: { version: "1.0" },
         data: {
           type: "Todo",
-          id: todo.id,
+          id: todo.data.id,
           attributes: {
-            name: todo.name,
-            due_date: todo.due_date,
-            importance: todo.importance,
+            name: todo.data.attributes.name,
+            due_date: todo.data.attributes.due_date,
+            importance: todo.data.attributes.importance,
           },
-          relationships: { user: { data: { type: "User", id: user.id } } },
+          relationships: { user: { data: { type: "User", id: user.data.id } } },
         },
         included: [
-          { type: "User", id: user.id, attributes: { name: user.name } },
+          {
+            type: "User",
+            id: user.data.id,
+            attributes: { name: user.data.attributes.name },
+          },
         ],
       })
     })
 
     it("user and then todo", async () => {
-      const { deserialized: user } = await POST(server, "/api/users", {
-        name: "John Doe",
-      })
-
-      const { deserialized: todo } = await POST(server, "/api/todos", {
-        name: "Walk the dog",
-        due_date: "12-12-2024",
-        importance: 0.7,
-        user: {
-          id: user.id,
+      const { body: user } = await fetch("/api/users", {
+        method: "post",
+        body: {
+          name: "John Doe",
         },
       })
 
-      const { serialized: userWithTodo } = await GET(
-        server,
-        `/api/todos/${todo.id}?include=user`,
+      const { body: todo } = await fetch("/api/todos", {
+        method: "post",
+        body: {
+          name: "Walk the dog",
+          due_date: "12-12-2024",
+          importance: 7,
+          user: {
+            id: user.data.id,
+          },
+        },
+      })
+
+      const { body: userWithTodo } = await fetch(
+        `/api/todos/${todo.data.id}?include=user`,
       )
 
       expect(userWithTodo).toEqual({
         jsonapi: { version: "1.0" },
         data: {
           type: "Todo",
-          id: todo.id,
+          id: todo.data.id,
           attributes: {
-            name: todo.name,
-            due_date: todo.due_date,
-            importance: todo.importance,
+            name: todo.data.attributes.name,
+            due_date: todo.data.attributes.due_date,
+            importance: todo.data.attributes.importance,
           },
-          relationships: { user: { data: { type: "User", id: user.id } } },
+          relationships: { user: { data: { type: "User", id: user.data.id } } },
         },
         included: [
-          { type: "User", id: user.id, attributes: { name: user.name } },
+          {
+            type: "User",
+            id: user.data.id,
+            attributes: { name: user.data.attributes.name },
+          },
         ],
       })
     })

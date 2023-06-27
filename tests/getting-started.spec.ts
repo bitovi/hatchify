@@ -39,7 +39,7 @@ test("works", async ({ page, request }) => {
         attributes: {
           name: "Walk the dog",
           due_date: "12-12-2024",
-          importance: 0.6,
+          importance: 6,
         },
       },
     },
