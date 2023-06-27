@@ -1,9 +1,9 @@
 import type {
   Fields,
-  Include,
-  Schemas,
-  RequiredSchemaMap,
   Filter,
+  Include,
+  RequiredSchemaMap,
+  Schemas,
 } from "@hatchifyjs/rest-client"
 
 /**
@@ -13,7 +13,6 @@ import type {
  * where "book_type" and "person_type" are the JSON:API types for the "Book" and "Person" schemas.
  */
 export function fieldsToQueryParam(
-  schemaMap: RequiredSchemaMap,
   allSchemas: Schemas,
   schemaName: string,
   fields: Fields,
@@ -34,7 +33,10 @@ export function fieldsToQueryParam(
   }
 
   const fieldset = Object.entries(fieldsObj)
-    .map(([key, attributes]) => `fields[${key}]=${[...attributes].join(",")}`)
+    .map(
+      ([key, attributes]) =>
+        `fields[${key}]=${[...(attributes as string[])].join(",")}`,
+    )
     .join("&")
 
   return fieldset
@@ -68,10 +70,40 @@ export function filterToQueryParam(filter: Filter): string {
 
   for (const [key, value] of Object.entries(filter)) {
     if (Array.isArray(value)) {
-      queries.push(value.map((v) => `filter[${key}][]=${v}`).join("&"))
+      queries.push(
+        value.map((v) => `filter[${key}][]=${encodeURIComponent(v)}`).join("&"),
+      )
     } else {
-      queries.push(`filter[${key}]=${value}`)
+      queries.push(`filter[${key}]=${encodeURIComponent(value)}`)
     }
+  }
+
+  return queries.join("&")
+}
+
+/**
+ * Transforms the page variable into page query parameters.
+ * { number: 3, size: 30 } => "page[number]=3&page[size]=30"
+ * [ 3, 30 ] => "page[number]=3&page[size]=30"
+ * "page[number]=3&page[size]=30" => "page[number]=3&page[size]=30"
+ * 3 => "page[number]=3"
+ */
+export function pageToQueryParam(page: unknown): string {
+  const queries: string[] = []
+
+  if (typeof page === "string") {
+    return page
+  } else if (Array.isArray(page)) {
+    queries.push(`page[number]=${page[0]}`)
+    if (page.length > 1) {
+      queries.push(`page[size]=${page[1]}`)
+    }
+  } else if (typeof page === "object" && page !== null) {
+    for (const [key, value] of Object.entries(page)) {
+      queries.push(`page[${key}]=${value}`)
+    }
+  } else if (typeof page === "number") {
+    return `page[number]=${page}`
   }
 
   return queries.join("&")
@@ -84,12 +116,16 @@ export function getQueryParams(
   schemaMap: RequiredSchemaMap,
   allSchemas: Schemas,
   schemaName: string,
-  fields: Fields,
-  include: Include,
-  sort?: string[] | string,
-  filter?: Filter,
+  query: {
+    fields: Fields
+    include: Include
+    sort?: string[] | string
+    filter?: Filter
+    page?: unknown
+  },
 ): string {
   const params = []
+  const { fields, include, sort, filter, page } = query
 
   if (include.length) {
     const includeParam = includeToQueryParam(include)
@@ -97,12 +133,7 @@ export function getQueryParams(
   }
 
   if (fields) {
-    const fieldsParam = fieldsToQueryParam(
-      schemaMap,
-      allSchemas,
-      schemaName,
-      fields,
-    )
+    const fieldsParam = fieldsToQueryParam(allSchemas, schemaName, fields)
 
     if (fieldsParam) params.push(fieldsParam)
   }
@@ -115,6 +146,11 @@ export function getQueryParams(
   if (filter) {
     const filterParam = filterToQueryParam(filter)
     if (filterParam) params.push(filterParam)
+  }
+
+  if (page) {
+    const pageParam = pageToQueryParam(page)
+    if (pageParam) params.push(pageParam)
   }
 
   return params.length ? `?${params.join("&")}` : ""

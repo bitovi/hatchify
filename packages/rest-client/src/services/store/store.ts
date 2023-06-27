@@ -70,7 +70,16 @@ export function insert(
 /**
  * Notifies subscribers whenever a resource is created, updated, or deleted.
  */
-export function notifySubscribers(schemaName: string): void {
+export function notifySubscribers(schemaName?: string): void {
+  // if no schemaName is provided, notify all subscribers for all schemas
+  if (!schemaName) {
+    for (const schemaName in store) {
+      notifySubscribers(schemaName)
+    }
+
+    return
+  }
+
   for (const subscriber of store[schemaName].subscribers) {
     subscriber([]) // todo, future: should notify with can-query-logic results
   }

@@ -21,14 +21,13 @@ export async function findAll(
   schemaName: string,
   query: Required<QueryList>, // todo page, sort, and filter
 ): Promise<Resource[]> {
-  const queryParams = getQueryParams(
-    config.schemaMap,
-    allSchemas,
-    schemaName,
-    query.fields,
-    query.include,
-    query.sort,
-  )
+  const queryParams = getQueryParams(config.schemaMap, allSchemas, schemaName, {
+    fields: query.fields,
+    include: query.include,
+    sort: query.sort,
+    filter: query.filter,
+    page: query.page,
+  })
 
   const json = await fetchJsonApi<JsonApiResource[]>(
     "GET",

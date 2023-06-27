@@ -5,6 +5,7 @@ import {
   filterToQueryParam,
   getQueryParams,
   includeToQueryParam,
+  pageToQueryParam,
   sortToQueryParam,
 } from "./query"
 
@@ -55,7 +56,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
   describe("fieldsToQueryParam", () => {
     it("works", () => {
       expect(
-        fieldsToQueryParam(schemaMap, schemas, "Book", {
+        fieldsToQueryParam(schemas, "Book", {
           Book: ["title", "body"],
           author: ["name", "email"],
           illustrators: ["name", "email"],
@@ -63,7 +64,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual("fields[Book]=title,body&fields[Person]=name,email")
 
       expect(
-        fieldsToQueryParam(schemaMap, schemas, "Person", {
+        fieldsToQueryParam(schemas, "Person", {
           Person: ["firstName", "age"],
           authored: ["title", "year"],
           illustrated: ["title", "year"],
@@ -75,33 +76,27 @@ describe("rest-client-jsonapi/services/utils/query", () => {
   describe("getQueryParams", () => {
     it("works for when include and fields have values", () => {
       expect(
-        getQueryParams(
-          schemaMap,
-          schemas,
-          "Book",
-          {
+        getQueryParams(schemaMap, schemas, "Book", {
+          fields: {
             Book: ["title", "body"],
             author: ["name", "email"],
             illustrators: ["name", "email"],
           },
-          ["author", "illustrators"],
-        ),
+          include: ["author", "illustrators"],
+        }),
       ).toEqual(
         "?include=author,illustrators&fields[Book]=title,body&fields[Person]=name,email",
       )
 
       expect(
-        getQueryParams(
-          schemaMap,
-          schemas,
-          "Person",
-          {
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: {
             Person: ["firstName", "age"],
             illustrated: ["title", "year"],
             authored: ["title", "year"],
           },
-          ["illustrated", "authored"],
-        ),
+          include: ["illustrated", "authored"],
+        }),
       ).toEqual(
         "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year",
       )
@@ -109,70 +104,76 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works for when fields has values and include is empty", () => {
       expect(
-        getQueryParams(
-          schemaMap,
-          schemas,
-          "Book",
-          { Book: ["title", "body"] },
-          [],
-        ),
+        getQueryParams(schemaMap, schemas, "Book", {
+          fields: { Book: ["title", "body"] },
+          include: [],
+        }),
       ).toEqual("?fields[Book]=title,body")
 
       expect(
-        getQueryParams(
-          schemaMap,
-          schemas,
-          "Person",
-          { Person: ["firstName", "age"] },
-          [],
-        ),
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: { Person: ["firstName", "age"] },
+          include: [],
+        }),
       ).toEqual("?fields[Person]=firstName,age")
     })
 
     it("works when both fields and include are empty", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
-      expect(getQueryParams(schemaMap, schemas, "Person", {}, [])).toEqual("")
+      expect(
+        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+      ).toEqual("")
+      expect(
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: {},
+          include: [],
+        }),
+      ).toEqual("")
     })
 
     it("works when sort is a string", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {}, [], "-created"),
+        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+      ).toEqual("")
+      expect(
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: {},
+          include: [],
+          sort: "-created",
+        }),
       ).toEqual("?sort=-created")
     })
 
     it("works when sort is an array of strings", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
       expect(
-        getQueryParams(
-          schemaMap,
-          schemas,
-          "Person",
-          {},
-          [],
-          ["-created", "title", "user.name"],
-        ),
+        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+      ).toEqual("")
+      expect(
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: {},
+          include: [],
+          sort: ["-created", "title", "user.name"],
+        }),
       ).toEqual("?sort=-created,title,user.name")
     })
 
-    it("works when include, fields, sort have values", () => {
-      expect(getQueryParams(schemaMap, schemas, "Book", {}, [])).toEqual("")
+    it("works when include, fields, sort, filter, and page have values", () => {
       expect(
-        getQueryParams(
-          schemaMap,
-          schemas,
-          "Person",
-          {
+        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+      ).toEqual("")
+      expect(
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: {
             Person: ["firstName", "age"],
             illustrated: ["title", "year"],
             authored: ["title", "year"],
           },
-          ["illustrated", "authored"],
-          ["-created", "title", "user.name"],
-          { name: ["John", "Joan"], age: 21, employed: false },
-        ),
+          include: ["illustrated", "authored"],
+          sort: ["-created", "title", "user.name"],
+          filter: { name: ["John", "Joan"], age: 21, employed: false },
+          page: { number: 3, size: 30 },
+        }),
       ).toEqual(
-        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&sort=-created,title,user.name&filter[name][]=John&filter[name][]=Joan&filter[age]=21&filter[employed]=false",
+        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&sort=-created,title,user.name&filter[name][]=John&filter[name][]=Joan&filter[age]=21&filter[employed]=false&page[number]=3&page[size]=30",
       )
     })
   })
@@ -222,6 +223,41 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual(
         "filter[name][]=ABC&filter[name][]=DEF&filter[count]=3&filter[completed]=true",
       )
+
+      expect(
+        filterToQueryParam({
+          name: ["A'bc!*\"", "$()"],
+          count: 3,
+          completed: true,
+          employer: "(test$!)",
+        }),
+      ).toEqual(
+        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[count]=3&filter[completed]=true&filter[employer]=(test%24!)",
+      )
+    })
+  })
+
+  describe("pageToQueryParam", () => {
+    it("works", () => {
+      expect(pageToQueryParam({})).toEqual("")
+
+      expect(pageToQueryParam("page[number]=3&page[size]=30")).toEqual(
+        "page[number]=3&page[size]=30",
+      )
+
+      expect(pageToQueryParam({ number: 3, size: 30 })).toEqual(
+        "page[number]=3&page[size]=30",
+      )
+
+      expect(pageToQueryParam([3, 30])).toEqual("page[number]=3&page[size]=30")
+
+      expect(pageToQueryParam([3])).toEqual("page[number]=3")
+
+      expect(pageToQueryParam([3, 30, 5])).toEqual(
+        "page[number]=3&page[size]=30",
+      )
+
+      expect(pageToQueryParam(3)).toEqual("page[number]=3")
     })
   })
 })

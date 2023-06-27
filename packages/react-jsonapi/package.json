@@ -1,14 +1,14 @@
 {
-  "name": "@hatchifyjs/react",
-  "version": "0.0.1-6",
-  "main": "./dist/react.js",
-  "module": "./dist/react.mjs",
-  "types": "./dist/react.d.ts",
+  "name": "@hatchifyjs/react-jsonapi",
+  "version": "0.0.1-1",
+  "main": "./dist/react-jsonapi.js",
+  "module": "./dist/react-jsonapi.mjs",
+  "types": "./dist/react-jsonapi.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/react.js",
-      "import": "./dist/react.mjs",
-      "types": "./src/react.ts"
+      "require": "./dist/react-jsonapi.js",
+      "import": "./dist/react-jsonapi.mjs",
+      "types": "./src/react-jsonapi.ts"
     },
     "./package.json": "./package.json"
   },
@@ -24,21 +24,19 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/design-mui": "^0.0.1-2",
-    "@hatchifyjs/hatchify-core": "^0.0.1-0",
-    "@hatchifyjs/react-ui": "^0.0.1-2",
+    "@hatchifyjs/react-rest": "^0.0.1-2",
     "@hatchifyjs/rest-client-jsonapi": "^0.0.1-3"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
     "@vitejs/plugin-react": "^4.0.0",
-    "jsdom": "^21.1.1",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
   },
-  "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  }
+  "keywords": [
+    "react",
+    "jsonapi",
+    "react-jsonapi"
+  ]
 }

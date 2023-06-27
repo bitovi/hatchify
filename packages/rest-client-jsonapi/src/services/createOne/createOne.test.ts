@@ -3,7 +3,7 @@ import { rest } from "msw"
 import type { Schema } from "@hatchifyjs/rest-client"
 import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
-import { jsonapi } from "../../rest-client-jsonapi"
+import jsonapi from "../../rest-client-jsonapi"
 import { createOne } from "./createOne"
 
 const ArticleSchema = { name: "Article" } as Schema

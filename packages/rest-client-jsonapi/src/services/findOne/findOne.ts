@@ -21,13 +21,10 @@ export async function findOne(
   schemaName: string,
   query: Required<QueryOne>,
 ): Promise<Resource[]> {
-  const queryParams = getQueryParams(
-    config.schemaMap,
-    allSchemas,
-    schemaName,
-    query.fields,
-    query.include,
-  )
+  const queryParams = getQueryParams(config.schemaMap, allSchemas, schemaName, {
+    fields: query.fields,
+    include: query.include,
+  })
 
   const json = await fetchJsonApi<JsonApiResource>(
     "GET",

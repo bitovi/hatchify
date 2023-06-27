@@ -1,6 +1,13 @@
 import { afterEach, describe, it, expect, vi } from "vitest"
-import { createStore, getRecords, insert, remove } from "./store"
+import {
+  createStore,
+  getRecords,
+  insert,
+  notifySubscribers,
+  remove,
+} from "./store"
 import { schemas } from "../mocks/testData"
+import { subscribeToAll } from "../subscribe"
 
 describe("rest-client/store", () => {
   afterEach(() => {
@@ -195,6 +202,36 @@ describe("rest-client/store", () => {
           body: "body-2",
         },
       ])
+    })
+  })
+
+  describe("nofitySubscribers", () => {
+    it("should notify all subscribers if no schemaName is provided", () => {
+      createStore(["Article", "Person"])
+      const subscriber1 = vi.fn()
+      const subscriber2 = vi.fn()
+
+      subscribeToAll("Article", subscriber1)
+      subscribeToAll("Person", subscriber2)
+
+      notifySubscribers()
+
+      expect(subscriber1).toHaveBeenCalledOnce()
+      expect(subscriber2).toHaveBeenCalledOnce()
+    })
+
+    it("should notify all subscribers for a given schema", () => {
+      createStore(["Article", "Person"])
+      const subscriber1 = vi.fn()
+      const subscriber2 = vi.fn()
+
+      subscribeToAll("Article", subscriber1)
+      subscribeToAll("Person", subscriber2)
+
+      notifySubscribers("Person")
+
+      expect(subscriber1).not.toHaveBeenCalledOnce()
+      expect(subscriber2).toHaveBeenCalledOnce()
     })
   })
 })

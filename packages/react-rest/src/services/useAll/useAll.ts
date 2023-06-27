@@ -14,9 +14,12 @@ import type {
  * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
  */
 const useMemoizedQuery = (query: QueryList) => {
+  const stringifiedQuery = JSON.stringify(query)
+
+  // todo: query (nested objects) are causing infinite re-renders, need a better solution
   return useMemo(() => {
     return query
-  }, [query.sort, query.filter, query.page, query.include, query.fields])
+  }, [stringifiedQuery])
 }
 
 /**
