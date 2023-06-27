@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/rest-client",
-  "version": "0.0.1-1",
+  "version": "0.0.1-2",
   "main": "./dist/rest-client.js",
   "module": "./dist/rest-client.mjs",
   "types": "./dist/rest-client.d.ts",
