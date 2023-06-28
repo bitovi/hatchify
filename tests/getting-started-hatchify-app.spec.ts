@@ -88,7 +88,9 @@ test("works", async ({ page, request }) => {
   await expect(page.getByText("Walk the dog")).toBeVisible()
   // safari and firefox cannot parse `12-12-2024` as a date like chrome, so they
   // just return the value as a string, see: `DefaultDisplayComponents`
-  await expect(page.getByText(/^2024-12-12$|^12-12-2024$/)).toBeVisible()
+  await expect(
+    page.getByText(/^2024-12-12$|^12-12-2024|^12\/12\/2024$/),
+  ).toBeVisible()
   await expect(page.getByText("6")).toBeVisible()
   await expect(page.getByText("John Doe")).toBeVisible()
 
