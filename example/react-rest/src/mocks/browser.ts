@@ -1,4 +1,4 @@
-// src/mocks/browser.js
+// src/mocks/browser.ts
 import { rest, setupWorker } from "msw"
 
 const todos = [
@@ -22,9 +22,9 @@ const handlers = [
     todos.push(newTodo)
     return res(ctx.status(200), ctx.json({ data: newTodo }))
   }),
-  rest.patch("/api/todos/:id", (req, res, ctx) => {
+  rest.patch("/api/todos/:id", async (req, res, ctx) => {
     const { id } = req.params
-    const { name } = req.body
+    const { name } = await req.json()
     const index = todos.findIndex((todo) => todo.id === id)
     todos[index].attributes.name = name
     return res(ctx.status(200), ctx.json(todos[index]))

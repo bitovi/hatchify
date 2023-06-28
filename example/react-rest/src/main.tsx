@@ -1,8 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App.js"
-import "./index.css"
-import { worker } from "./mocks/browser.js"
+import { worker } from "./mocks/browser"
 
 if (process.env.NODE_ENV === "development") {
   worker.start()
