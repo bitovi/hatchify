@@ -9,11 +9,12 @@ export const findOne = async (
   dataSource: Source,
   allSchemas: Schemas,
   schemaName: string,
-  query: QueryOne,
+  query: QueryOne | string,
 ): Promise<Record | undefined> => {
+  const queryObj = typeof query === "string" ? { id: query } : { ...query }
   const updatedQuery = {
-    ...query,
-    fields: getFields(allSchemas, schemaName, query),
+    ...queryObj,
+    fields: getFields(allSchemas, schemaName, queryObj),
   } as Required<QueryOne>
 
   const resources = await dataSource.findOne(
@@ -26,6 +27,6 @@ export const findOne = async (
     allSchemas,
     resources,
     schemaName,
-    query.id,
+    queryObj.id,
   )
 }
