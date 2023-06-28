@@ -86,7 +86,7 @@ test("works", async ({ page, request }) => {
   await page.goto(frontend)
   await page.reload()
   await expect(page.getByText("Walk the dog")).toBeVisible()
-  await expect(page.getByText("12-12-2024")).toBeVisible()
+  await expect(page.getByText("2024-12-12")).toBeVisible()
   await expect(page.getByText("6")).toBeVisible()
   await expect(page.getByText("John Doe")).toBeVisible()
 
