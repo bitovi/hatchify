@@ -35,7 +35,7 @@ export function transformDataType(dataType: string): string {
     return "date"
   }
 
-  // date, time, now, varchar, ...text, uuid, ...
+  // varchar, ...text, uuid, ...
   return "string"
 }
 

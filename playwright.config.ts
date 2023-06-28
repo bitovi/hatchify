@@ -75,12 +75,16 @@ export default defineConfig({
         "cd example/hatchify-app && rm -f example.sqlite && npm install && npm run dev:frontend",
       reuseExistingServer: !process.env.CI,
       port: 5173,
+      stderr: "pipe",
+      stdout: "pipe",
     },
     {
       command:
         "cd example/hatchify-app && rm -f example.sqlite && npm install && npm run dev:backend",
       reuseExistingServer: !process.env.CI,
       port: 3000,
+      stderr: "pipe",
+      stdout: "pipe",
     },
     {
       command: "cd example/react-rest && npm install && npm run dev",

@@ -59,13 +59,14 @@ export const BooleanList: React.FC<{ values: boolean[] }> = ({ values }) => {
 }
 
 export const Date: React.FC<{ value: string }> = ({ value }) => {
-  return (
-    <>
-      {new Intl.DateTimeFormat(navigator.language).format(
-        new window.Date(value),
-      )}
-    </>
-  )
+  // safari and firefox do not support any date format like chrome.
+  // if they cannot parse the date, just return the value.
+  // todo: currently hatchify dates can be any format, need to enforce & parse this in future
+  const formattedDate = isNaN(window.Date.parse(value))
+    ? value
+    : new Intl.DateTimeFormat(navigator.language).format(new window.Date(value))
+
+  return <>{formattedDate}</>
 }
 
 export const DateList: React.FC<{ values: string[] }> = ({ values }) => {
