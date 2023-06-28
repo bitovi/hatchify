@@ -26,6 +26,8 @@ export const HatchifyList: React.FC<HatchifyListProps> = ({
     defaultValueComponents,
     children,
   )
+  console.log("children", children)
+  console.log("displays", displays)
 
   return <List displays={displays} useData={useData} />
 }

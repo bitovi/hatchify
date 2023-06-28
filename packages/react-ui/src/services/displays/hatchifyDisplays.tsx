@@ -39,6 +39,10 @@ export function getDefaultDisplayRender(
   const defaultRender = ({ record }: { record: Record }) => {
     const value = record[attribute]
 
+    // console.log("attribute", attribute)
+    // console.log("value", value)
+    // console.log("attType", attType)
+    // console.log("------")
     if (attType === "date" && typeof value === "string") {
       return <Date value={value} />
     }
@@ -84,7 +88,7 @@ export function getDisplaysFromChildren(
   children: JSX.Element[],
 ): HatchifyDisplay[] {
   const displays = children
-    .filter((child) => child.type.name === HatchifyAttributeDisplay.name)
+    .filter((child) => child.type.name === HatchifyAttributeDisplay.displayName)
     .map((child) => {
       const { props } = child
       const relationship = schema?.relationships?.[props.attribute]
@@ -257,7 +261,7 @@ export function injectExtraDisplays(
   const updatedDisplays = cloneDeep(displays)
 
   for (let i = 0; i < children.length; i++) {
-    if (children[i].type.name !== HatchifyExtraDisplay.name) continue
+    if (children[i].type.name !== HatchifyExtraDisplay.displayName) continue
     const { props } = children[i]
 
     // @todo add according to props.after property
@@ -277,10 +281,10 @@ export function injectExtraDisplays(
 }
 
 export function hasValidChildren(
-  name: string,
+  displayName: string | undefined,
   children: JSX.Element[],
 ): boolean {
-  return children.some((child) => child.type.name === name)
+  return children.some((child) => child.type.name === displayName)
 }
 
 export function getDisplays(
@@ -293,7 +297,10 @@ export function getDisplays(
   // `child.type.name` and `child.props`
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
 
-  let displays = hasValidChildren(HatchifyAttributeDisplay.name, childArray)
+  let displays = hasValidChildren(
+    HatchifyAttributeDisplay.displayName,
+    childArray,
+  )
     ? getDisplaysFromChildren(schema, defaultValueComponents, childArray)
     : getDisplaysFromSchema(
         schema,
@@ -301,7 +308,7 @@ export function getDisplays(
         valueComponents || null,
       )
 
-  if (hasValidChildren(HatchifyExtraDisplay.name, childArray)) {
+  if (hasValidChildren(HatchifyExtraDisplay.displayName, childArray)) {
     displays = injectExtraDisplays(displays, defaultValueComponents, childArray)
   }
 

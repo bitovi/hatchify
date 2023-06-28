@@ -61,9 +61,11 @@ export const BooleanList: React.FC<{ values: boolean[] }> = ({ values }) => {
 export const Date: React.FC<{ value: string }> = ({ value }) => {
   return (
     <>
-      {new Intl.DateTimeFormat(navigator.language).format(
-        new window.Date(value),
-      )}
+      {new Intl.DateTimeFormat(navigator.language, {
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      }).format(new window.Date(value))}
     </>
   )
 }

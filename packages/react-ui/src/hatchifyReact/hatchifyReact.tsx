@@ -5,13 +5,20 @@ import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { transformSchema } from "@hatchifyjs/rest-client"
 
 import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
+import {
+  HatchifyAttributeDisplay,
+  type HatchifyAttributeDisplayProps,
+} from "../components/HatchifyDisplays/HatchifyDisplays"
 import { HatchifyList } from "../components/HatchifyList"
 
 type Components = {
   [schemaName: string]: {
     List: (
       props: Omit<HatchifyListProps, "allSchemas" | "schemaName" | "useData">,
-    ) => any
+    ) => React.ReactElement
+    AttributeDisplay: (
+      props: HatchifyAttributeDisplayProps,
+    ) => React.ReactElement
   }
 }
 
@@ -41,6 +48,7 @@ export function hatchifyReact(
           {...props}
         />
       ),
+      AttributeDisplay: (props) => <HatchifyAttributeDisplay {...props} />,
     }
 
     return acc

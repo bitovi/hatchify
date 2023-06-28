@@ -31,6 +31,10 @@ export function transformDataType(dataType: string): string {
     return "object"
   }
 
+  if (type.includes("date") || type.includes("time")) {
+    return "date"
+  }
+
   // date, time, now, varchar, ...text, uuid, ...
   return "string"
 }
