@@ -165,7 +165,12 @@ Then, if you want to run tests for another package, run the corresponding comman
 - `npx nx test @hatchifyjs/rest-client`
 - `npx nx test @hatchifyjs/rest-client-jsonapi`
 
-There are also the Playwright tests available at [TODO]
+You can also run the Playwright E2E tests:
+
+```bash
+npx playwright install
+npx playwright test
+```
 
 ### 5. Commit your modifications
 
