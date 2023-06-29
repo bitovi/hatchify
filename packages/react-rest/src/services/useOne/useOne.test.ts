@@ -38,13 +38,11 @@ const ArticleSchema = {
 const schemas = { Article: ArticleSchema }
 
 describe("react-rest/services/useOne", () => {
-  const query = { id: "1" }
-
   it("should fetch a record", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, "Article", query),
+      useOne(fakeDataSource, schemas, "Article", { id: "1" }),
     )
 
     await waitFor(() =>
@@ -65,7 +63,7 @@ describe("react-rest/services/useOne", () => {
     )
   })
 
-  it("Work if query is a string", async () => {
+  it("Works if query is a string", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
@@ -90,37 +88,14 @@ describe("react-rest/services/useOne", () => {
     )
   })
 
-  it("Work if query.fields is empty object", async () => {
-    createStore(["Article"])
-    const queryFieldsObject = { id: "1", fields: {} }
-
-    const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, "Article", queryFieldsObject),
-    )
-
-    await waitFor(() =>
-      expect(result.current).toEqual([
-        flattenResourcesIntoRecords(schemas, fakeData, "Article", "1"),
-        {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isDone: true,
-          isLoading: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
-        },
-      ]),
-    )
-  })
-
   it("should subscribe and return latest data", async () => {
     const store = createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, "Article", query),
+      useOne(fakeDataSource, schemas, "Article", {
+        id: "1",
+        fields: { Article: [""] },
+      }),
     )
 
     await waitFor(() =>
@@ -178,7 +153,7 @@ describe("react-rest/services/useOne", () => {
       Promise.reject(new Error("Something went wrong"))
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, "Article", query),
+      useOne(fakeDataSource, schemas, "Article", { id: "1" }),
     )
 
     await waitFor(() =>

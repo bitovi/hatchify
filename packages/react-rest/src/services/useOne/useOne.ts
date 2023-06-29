@@ -10,11 +10,12 @@ import type {
   Source,
 } from "@hatchifyjs/rest-client"
 
-const useMemoizedQuery = (query: QueryOne | string) => {
+const useMemoizedQuery = (query: QueryOne) => {
+  const stringifiedQuery = JSON.stringify(query)
+
   return useMemo(() => {
-    const queryObj = typeof query === "string" ? { id: query } : { ...query }
-    return queryObj
-  }, [query])
+    return query
+  }, [stringifiedQuery])
 }
 
 /**
@@ -27,7 +28,9 @@ export const useOne = (
   schemaName: string,
   query: QueryOne | string,
 ): [Record | undefined, Meta] => {
-  const memoizedQuery = useMemoizedQuery(query)
+  const memoizedQuery = useMemoizedQuery(
+    typeof query === "string" ? { id: query } : { ...query },
+  )
 
   const [data, setData] = useState<Record | undefined>(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
