@@ -38,13 +38,36 @@ const ArticleSchema = {
 const schemas = { Article: ArticleSchema }
 
 describe("react-rest/services/useOne", () => {
-  const query = { id: "1" }
-
   it("should fetch a record", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, "Article", query),
+      useOne(fakeDataSource, schemas, "Article", { id: "1" }),
+    )
+
+    await waitFor(() =>
+      expect(result.current).toEqual([
+        flattenResourcesIntoRecords(schemas, fakeData, "Article", "1"),
+        {
+          status: "success",
+          meta: undefined,
+          error: undefined,
+          isDone: true,
+          isLoading: false,
+          isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
+        },
+      ]),
+    )
+  })
+
+  it("Works if query is a string", async () => {
+    createStore(["Article"])
+
+    const { result } = renderHook(() =>
+      useOne(fakeDataSource, schemas, "Article", "1"),
     )
 
     await waitFor(() =>
@@ -69,7 +92,10 @@ describe("react-rest/services/useOne", () => {
     const store = createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, "Article", query),
+      useOne(fakeDataSource, schemas, "Article", {
+        id: "1",
+        fields: { Article: [""] },
+      }),
     )
 
     await waitFor(() =>
@@ -127,7 +153,7 @@ describe("react-rest/services/useOne", () => {
       Promise.reject(new Error("Something went wrong"))
 
     const { result } = renderHook(() =>
-      useOne(fakeDataSource, schemas, "Article", query),
+      useOne(fakeDataSource, schemas, "Article", { id: "1" }),
     )
 
     await waitFor(() =>

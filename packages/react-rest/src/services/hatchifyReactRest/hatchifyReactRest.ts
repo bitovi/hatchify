@@ -12,6 +12,8 @@ import {
 import type {
   CreateData,
   Meta,
+  Schema,
+  Schemas,
   Source,
   QueryList,
   QueryOne,
@@ -21,7 +23,6 @@ import type {
 } from "@hatchifyjs/rest-client"
 import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
 
-import type { Schemas, Schema } from "@hatchifyjs/rest-client"
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 
 export interface SchemaRecord {
@@ -34,14 +35,14 @@ export type ReactRest<Schema extends SchemaRecord> = {
     // promises
     createOne: (data: CreateData) => Promise<Record>
     deleteOne: (id: string) => Promise<void>
-    findOne: (query: QueryOne) => Promise<Record | undefined>
+    findOne: (query: QueryOne | string) => Promise<Record | undefined>
     findAll: (query: QueryList) => Promise<Record[]>
     updateOne: (data: UpdateData) => Promise<Record>
     // hooks
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     useDeleteOne: () => [(id: string) => void, Meta]
-    useAll: (query: QueryList) => [Record[], Meta]
-    useOne: (query: QueryOne) => [Record | undefined, Meta]
+    useAll: (query?: QueryList) => [Record[], Meta]
+    useOne: (query: QueryOne | string) => [Record | undefined, Meta]
     useUpdateOne: (id: string) => [(data: CreateData) => void, Meta, Record?]
     // subscribes
     subscribeToAll: (callback: (data: Record[]) => void) => Unsubscribe
@@ -80,7 +81,8 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
       // hooks
       useCreateOne: () => useCreateOne(dataSource, newSchemas, schema.name),
       useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schema.name),
-      useAll: (query) => useAll(dataSource, newSchemas, schema.name, query),
+      useAll: (query) =>
+        useAll(dataSource, newSchemas, schema.name, query ?? {}),
       useOne: (query) => useOne(dataSource, newSchemas, schema.name, query),
       useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schema.name),
       // subscribes
