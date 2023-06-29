@@ -90,6 +90,32 @@ describe("react-rest/services/useOne", () => {
     )
   })
 
+  it("Work if query.fields is empty object", async () => {
+    createStore(["Article"])
+    const queryFieldsObject = { id: "1", fields: {} }
+
+    const { result } = renderHook(() =>
+      useOne(fakeDataSource, schemas, "Article", queryFieldsObject),
+    )
+
+    await waitFor(() =>
+      expect(result.current).toEqual([
+        flattenResourcesIntoRecords(schemas, fakeData, "Article", "1"),
+        {
+          status: "success",
+          meta: undefined,
+          error: undefined,
+          isDone: true,
+          isLoading: false,
+          isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
+        },
+      ]),
+    )
+  })
+
   it("should subscribe and return latest data", async () => {
     const store = createStore(["Article"])
 
