@@ -15,6 +15,8 @@ export const hatchedReact = hatchifyReact(
 
 const DocumentList = hatchedReact.components.Document.List
 const DocumentDisplay = hatchedReact.components.Document.AttributeDisplay
+const DocumentExtraDisplay =
+  hatchedReact.components.Document.AttributeExtraDisplay
 
 const App: React.FC = () => {
   return (
@@ -26,6 +28,10 @@ const App: React.FC = () => {
           renderValue={({ value }) => (
             <div style={{ color: "red" }}>{value}</div>
           )}
+        />
+        <DocumentExtraDisplay
+          label="Action"
+          render={({ record }) => <div>{record}</div>}
         />
       </DocumentList>
     </MuiProvider>

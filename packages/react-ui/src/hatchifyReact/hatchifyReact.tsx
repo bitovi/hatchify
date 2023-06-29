@@ -7,7 +7,11 @@ import { transformSchema } from "@hatchifyjs/rest-client"
 import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
 import {
   HatchifyAttributeDisplay,
-  type HatchifyAttributeDisplayProps,
+  HatchifyExtraDisplay,
+} from "../components/HatchifyDisplays/HatchifyDisplays"
+import type {
+  HatchifyAttributeDisplayProps,
+  HatchifyExtraDisplayProps,
 } from "../components/HatchifyDisplays/HatchifyDisplays"
 import { HatchifyList } from "../components/HatchifyList"
 
@@ -18,6 +22,9 @@ type Components = {
     ) => React.ReactElement
     AttributeDisplay: (
       props: HatchifyAttributeDisplayProps,
+    ) => React.ReactElement
+    AttributeExtraDisplay: (
+      props: HatchifyExtraDisplayProps,
     ) => React.ReactElement
   }
 }
@@ -49,6 +56,7 @@ export function hatchifyReact(
         />
       ),
       AttributeDisplay: (props) => <HatchifyAttributeDisplay {...props} />,
+      AttributeExtraDisplay: (props) => <HatchifyExtraDisplay {...props} />,
     }
 
     return acc
