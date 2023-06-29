@@ -94,7 +94,7 @@ Most operating systems provide all the needed tools (including Windows, Linux an
 
   - [Docker](https://docs.docker.com/get-docker/) and [Docker Compose Plugin](https://docs.docker.com/compose/install/)
     - It is not mandatory because you can easily locally run tests against SQLite without it.
-    - It is practically mandatory if you want to locally run tests against any other database engine (MySQL, MariaDB, Postgres,Db2 and MSSQL), unless you happen to have the engine installed and is willing to make some manual configuration.
+    - It is practically mandatory if you want to locally run tests against any other database engine (MySQL, MariaDB, Postgres,Db2 and MSSQL), unless you happen to have the engine installed and are willing to make some manual configuration.
   - [Visual Studio Code](https://code.visualstudio.com/)
     - [EditorConfig extension](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
       - Also run `npm install --global editorconfig` (or `yarn global add editorconfig`) to make sure this extension will work properly
@@ -110,14 +110,23 @@ Run `npm ci` within the cloned repository folder.
 
 ### 3. Prepare local databases to run tests
 
-If you're happy to run tests only against an SQLite database, you can skip this section.
+#### 3.1. With SQLite
 
-#### 3.1. With Docker (recommended)
+No further configuration is required to test Hatchify against a SQLite database.
+
+#### 3.2. With a database engine in a Docker container (recommended)
 
 If you have Docker installed, use any of the following commands to start fresh local databases of the dialect of your choice:
 
-- `docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres`
-- `docker run --name mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag`
+- For PostgreSQL
+    ```bash
+    docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+    ```
+
+- For MySQL
+    ```bash
+    docker run --name mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+    ```
 
 _Note:_ if you're using Windows, make sure you run these from Git Bash (or another MinGW environment), since these commands will execute bash scripts. Recall that [it's very easy to include Git Bash as your default integrated terminal on Visual Studio Code](https://code.visualstudio.com/docs/editor/integrated-terminal).
 
