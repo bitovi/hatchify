@@ -18,13 +18,11 @@ Issues are always very welcome - after all, they are a big part of making Hatchi
 
 If you open an issue, try to be as clear as possible. Don't assume that the maintainers will immediately understand the problem. Write your issue in a way that new contributors can also help (add links to helpful resources when applicable).
 
-Make sure you know what is an [SSCCE](http://sscce.org/)/[MCVE](https://stackoverflow.com/help/minimal-reproducible-example).
-
 Learn to use [GitHub flavored markdown](https://help.github.com/articles/github-flavored-markdown) to write an issue that is nice to read.
 
 ### Opening an issue to report a bug
 
-It is essential that you provide an [SSCCE](http://sscce.org/)/[MCVE](https://stackoverflow.com/help/minimal-reproducible-example) for your issue. You can use the [papb/hatchify-sscce](https://github.com/papb/hatchify-sscce) repository. Tell us what is the actual (incorrect) behavior and what should have happened (do not expect the maintainers to know what should happen!). Make sure you checked the bug persists in the latest Hatchify version.
+It is essential that you provide an [SSCCE](http://sscce.org/)/[MCVE](https://stackoverflow.com/help/minimal-reproducible-example) for your issue. Tell us what is the actual (incorrect) behavior and what should have happened (do not expect the maintainers to know what should happen!). Make sure you checked the bug persists in the latest Hatchify version.
 
 If you can even provide a Pull Request with a failing test (unit test or integration test), that is great! The bug will likely be fixed much faster in this case.
 
