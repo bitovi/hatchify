@@ -5,6 +5,7 @@ import {
   createJsonapiClient,
 } from "@hatchifyjs/react"
 import { Document } from "../schemas/Document"
+import { Primitive } from "@hatchifyjs/react-ui"
 
 export const hatchedReact = hatchifyReact(
   { Document },
@@ -31,7 +32,9 @@ const App: React.FC = () => {
         />
         <DocumentExtraDisplay
           label="Action"
-          render={({ record }) => <div>{record}</div>}
+          render={({ record }) => (
+            <button onClick={() => console.log(record)}></button>
+          )}
         />
       </DocumentList>
     </MuiProvider>
