@@ -1,3 +1,5 @@
+import type { Middleware } from "koa"
+
 export * from "./koa"
 
 export { DataTypes, Op } from "@hatchifyjs/node"
@@ -16,6 +18,6 @@ export type {
   SerializeFunctions,
 } from "@hatchifyjs/node"
 
-export type { KoaMiddleware } from "./types"
+export type KoaMiddleware = Middleware
 
 export type { MiddlewareFunctionsKoa } from "./middleware/koa"
