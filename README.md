@@ -52,11 +52,11 @@ frontend and backend. Our frontend will use React & MUI and our backend
 will be using Koa. We will be setting up our project using Vite so that
 it handles all the React configurations for us.  
   
-[✏️](https://emojipedia.org/pencil/){rel="nofollow"} Perform all the
+[✏️](https://emojipedia.org/pencil/) Perform all the
 following steps:
 
 1.  Ensure you’re using [node 18 and npm
-    9](https://nodejs.org/en/download){rel="nofollow"}
+    9](https://nodejs.org/en/download)
 
     ``` bash
     node -v
@@ -219,7 +219,7 @@ export const Todo = {
 ```
 
 You can find all of the possible [datatypes
-here](https://sequelize.org/docs/v7/other-topics/other-data-types){rel="nofollow"}.
+here](https://sequelize.org/docs/v7/other-topics/other-data-types).
 
 ## Model Relationships
 
@@ -234,7 +234,7 @@ many different todos and that a `Todo` can only have 1 user associated
 with it.
 
 For more information on these relationships and the options available
-check the [documentation for Sequelize](https://sequelize.org/docs/v6/core-concepts/assocs/){rel="nofollow"}.
+check the [documentation for Sequelize](https://sequelize.org/docs/v6/core-concepts/assocs/).
 
 # Backend - The Hatchify Middleware
 
@@ -287,9 +287,9 @@ npm run dev:backend
 You can the browser with the following endpoints to list users and todo
 (will have none at this point):
 
-[http://localhost:3000/api/users](http://localhost:3000/api/users){rel="nofollow"}
+[http://localhost:3000/api/users](http://localhost:3000/api/users)
 
-[http://localhost:3000/api/todos](http://localhost:3000/api/todos){rel="nofollow"}
+[http://localhost:3000/api/todos](http://localhost:3000/api/todos)
 
 Now that we have our basic application up and running we can start
 looking at how to make changes and further develop our example
@@ -343,21 +343,21 @@ curl --request POST 'http://localhost:3000/api/users' \
 You can make GET requests with HatchifyJS middleware and you can make
 your requests even more powerful with query strings. You can check out
 the [querystring
-library](https://github.com/bitovi/querystring-parser){rel="nofollow"}
+library](https://github.com/bitovi/querystring-parser)
 for more information.
 
-[http://localhost:3000/api/users](http://localhost:3000/api/users){rel="nofollow"}  
-[http://localhost:3000/api/users?include=todos](http://localhost:3000/api/users?include=todos){rel="nofollow"}  
-[http://localhost:3000/api/users?include=todos&filter\[name\]=John+Doe](http://localhost:3000/api/users?include=todos&filter%5Bname%5D=John+Doe){rel="nofollow"}
+[http://localhost:3000/api/users](http://localhost:3000/api/users)
+[http://localhost:3000/api/users?include=todos](http://localhost:3000/api/users?include=todos)
+[http://localhost:3000/api/users?include=todos&filter\[name\]=John+Doe](http://localhost:3000/api/users?include=todos&filter%5Bname%5D=John+Doe)
 
 ### Fetching a single resource
 
 Just like fetching a list of resources, we’re able to fetch an
 individual resource with or without its related records.
 
-[http://localhost:3000/api/users/1](http://localhost:3000/api/users/1){rel="nofollow"}
+[http://localhost:3000/api/users/1](http://localhost:3000/api/users/1)
 
-[http://localhost:3000/api/users/1?include=todos](http://localhost:3000/api/users/1?include=todos){rel="nofollow"}
+[http://localhost:3000/api/users/1?include=todos](http://localhost:3000/api/users/1?include=todos)
 
 ### Updating a resource
 
@@ -568,7 +568,7 @@ export default App;
 ```
 
 **✏️**In another terminal, run `npm run dev:frontend` and open
-[http://localhost:5173/](http://localhost:5173/){rel="nofollow"} . You
+[http://localhost:5173/](http://localhost:5173/). You
 should see:
 
 ![](doc/attachments/394592353.png)
@@ -579,13 +579,13 @@ database, and a frontend that handles the JSX and data-fetching for us.
 
 # Need help or have questions?
 
-This project is supported by [Bitovi](https://bitovi.com/){rel="nofollow"}, a Javascript
+This project is supported by [Bitovi](https://bitovi.com/), a Javascript
 consultancy. You can get help or ask questions on our:
 
--   [Discord Community](https://discord.com/invite/J7ejFsZnJ4){rel="nofollow"}
+-   [Discord Community](https://discord.com/invite/J7ejFsZnJ4)
 
--   [Twitter](https://twitter.com/bitovi){rel="nofollow"}
+-   [Twitter](https://twitter.com/bitovi)
 
 Or, you can hire us for training, consulting, or development. [Set up a
-free consultation.](#){rel="nofollow"}
+free consultation.](#)
 
