@@ -234,7 +234,7 @@ many different todos and that a `Todo` can only have 1 user associated
 with it.
 
 For more information on these relationships and the options available
-check the [documentation for Sequelize](https://sequelize.org/docs/v6/core-concepts/assocs/).
+check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/associations/).
 
 # Backend - The Hatchify Middleware
 
