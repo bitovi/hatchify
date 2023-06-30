@@ -307,7 +307,6 @@ export function getDisplays(
         defaultValueComponents,
         valueComponents || null,
       )
-
   if (hasValidChildren(HatchifyExtraDisplay.displayName, childArray)) {
     displays = injectExtraDisplays(displays, defaultValueComponents, childArray)
   }

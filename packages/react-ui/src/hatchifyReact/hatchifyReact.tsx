@@ -23,9 +23,7 @@ type Components = {
     AttributeDisplay: (
       props: HatchifyAttributeDisplayProps,
     ) => React.ReactElement
-    AttributeExtraDisplay: (
-      props: HatchifyExtraDisplayProps,
-    ) => React.ReactElement
+    ExtraDisplay: (props: HatchifyExtraDisplayProps) => React.ReactElement
   }
 }
 
@@ -56,7 +54,7 @@ export function hatchifyReact(
         />
       ),
       AttributeDisplay: (props) => <HatchifyAttributeDisplay {...props} />,
-      AttributeExtraDisplay: (props) => <HatchifyExtraDisplay {...props} />,
+      ExtraDisplay: (props) => <HatchifyExtraDisplay {...props} />,
     }
 
     return acc

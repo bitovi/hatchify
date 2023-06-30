@@ -3,5 +3,6 @@ export const Document = {
   attributes: {
     name: "STRING",
     date: "DATE",
+    action: "STRING"
   },
 }
