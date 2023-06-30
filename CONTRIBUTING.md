@@ -273,10 +273,10 @@ npx nx eslint @hatchifyjs/koa
 ├── package-lock.json
 ├── package.json
 ├── packages
-│   ├── design-mui
+│   ├── design-mui                              # @hatchifyjs/design-mui; Material UI implementation on of Hatcify's React components
 │   │   ├── package.json
 │   │   ├── src
-│   │   │   ├── components
+│   │   │   ├── components                      # Material UI components which implement interfaces provided by `react-ui`
 │   │   │   ├── design-mui.ts
 │   │   │   ├── presentation
 │   │   │   └── services
@@ -342,53 +342,53 @@ npx nx eslint @hatchifyjs/koa
 │   │   │   └── types                           # Exported types, basically what we call the "old schema"
 │   │   ├── tsconfig.json
 │   │   └── tsconfig.tsbuildinfo
-│   ├── react
+│   ├── react                                   # @hatchifyjs/react; Entry point for apps wanting Hatchify's React components and hooks
 │   │   ├── package.json
 │   │   ├── src
 │   │   │   ├── react.test.ts
-│   │   │   └── react.tsx
+│   │   │   └── react.tsx                       # Re-exports from `hatchify-core`, `react-ui`, `design-mui`, and `rest-client-jsonapi`
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
-│   ├── react-jsonapi
+│   ├── react-jsonapi                           # @hatchifyjs/react-jsonapi; Entry point for apps wanting Hatchify's data fetching
 │   │   ├── package.json
 │   │   ├── src
 │   │   │   ├── react-jsonapi.test.ts
-│   │   │   └── react-jsonapi.tsx
+│   │   │   └── react-jsonapi.tsx               # Provides a new function to create an instance of `react-rest` using `rest-client-jsonapi`
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
-│   ├── react-rest
+│   ├── react-rest                              # @hatchifyjs/react-rest; Adds React-specific data fetching (hooks) on top of the `rest-client` functions
 │   │   ├── package.json
 │   │   ├── src
 │   │   │   ├── react-rest.ts
-│   │   │   ├── services
+│   │   │   ├── services                        # Contains React data-fetching hooks
 │   │   │   └── vite-env.d.ts
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
-│   ├── react-ui
+│   ├── react-ui                                # @hatchifyjs/react-ui; React components that tie together `design-*` components with `react-rest` data-fetching
 │   │   ├── package.json
 │   │   ├── src
-│   │   │   ├── components
-│   │   │   ├── hatchifyReact
-│   │   │   ├── presentation
+│   │   │   ├── components                      # Components that pull design components from "presentation context" and implement `react-rest`
+│   │   │   ├── hatchifyReact                   # Function that returns an instance of a Hatchify React "app"
+│   │   │   ├── presentation                    # Types used across `react-ui` and `design-*` packages
 │   │   │   ├── react-ui.ts
-│   │   │   ├── services
-│   │   │   └── services-legacy
+│   │   │   ├── services                        # Helper functions for translating schemas to component props
+│   │   │   └── services-legacy                 # Legacy helper functions for components that have not integrated with `react-rest`
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
-│   ├── rest-client
+│   ├── rest-client                             # @hatchifyjs/rest-client; Data-fetching functions that are not framework-specific
 │   │   ├── package.json
 │   │   ├── src
 │   │   │   ├── rest-client.ts
-│   │   │   ├── services
+│   │   │   ├── services                        # Contains promise-based data-fetching functions, in-memory store implementation, and functions to subscribe to the store
 │   │   │   └── vite-env.d.ts
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
-│   └── rest-client-jsonapi
+│   └── rest-client-jsonapi                     # @hatchifyjs/rest-client-jsonapi; Responsible for making network requests to a JSON:API-compliant backend
 │       ├── package.json
 │       ├── src
 │       │   ├── mocks
 │       │   ├── rest-client-jsonapi.ts
-│       │   ├── services
+│       │   ├── services                        # Contains CRUD functions for interacting with a backend
 │       │   ├── setupTests.ts
 │       │   └── vite-env.d.ts
 │       ├── tsconfig.json
