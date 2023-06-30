@@ -1,7 +1,5 @@
 # hatchify
 
-# Getting Started Hatchify
-
 # About HatchifyJS
 
 HatchifyJS is a web application framework designed to accelerate the
