@@ -577,6 +577,14 @@ That’s it! With minimal code and some HatchifyJS magic, using our
 well-defined schemas we have a backend running with REST endpoints, a
 database, and a frontend that handles the JSX and data-fetching for us.
 
+# Troubleshooting / Known issues
+
+```bash
+TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts" for .../hatchify-app/backend/index.ts
+```
+
+You might be on Node 20. If so, please use Node 18.
+
 # Need help or have questions?
 
 This project is supported by [Bitovi](https://bitovi.com/), a Javascript
@@ -587,5 +595,5 @@ consultancy. You can get help or ask questions on our:
 -   [Twitter](https://twitter.com/bitovi)
 
 Or, you can hire us for training, consulting, or development. [Set up a
-free consultation.](#)
+free consultation.](https://www.bitovi.com/digital-consulting-services)
 

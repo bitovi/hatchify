@@ -404,10 +404,3 @@ npx nx eslint @hatchifyjs/koa
 └── tsconfig.json
 ```
 
-## FAQ
-
-```bash
-TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts" for .../hatchify-app/backend/index.ts
-```
-
-You might be on Node 20. If so, please use Node 18.
