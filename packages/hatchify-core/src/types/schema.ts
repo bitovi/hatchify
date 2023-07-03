@@ -1,5 +1,4 @@
-export type AttributeObject = { type: string }
-export type Attribute = string | AttributeObject
+export type Attribute = string | { type: string }
 
 export interface Relationship {
   target: string
