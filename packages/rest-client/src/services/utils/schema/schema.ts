@@ -1,5 +1,5 @@
 import type { Schema as OldSchema } from "@hatchifyjs/hatchify-core"
-import type { Schema } from "../../types"
+import type { Schema, AttributeObject } from "../../types"
 
 /**
  * The current backend schema attribute types are sequelize datatypes. This function
@@ -50,7 +50,14 @@ export function transformSchema(schema: OldSchema): Schema {
   }
 
   for (const [key, value] of Object.entries(schema.attributes)) {
-    resolved.attributes[key] = transformDataType(value)
+    let stringValue: string
+    if (typeof value === "string") {
+      stringValue = value
+    } else {
+      stringValue = (value as AttributeObject).type as string
+    }
+
+    resolved.attributes[key] = transformDataType(stringValue)
   }
 
   if (
