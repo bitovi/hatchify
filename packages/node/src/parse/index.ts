@@ -6,12 +6,7 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
-import {
-  buildCreateOptions,
-  buildDestroyOptions,
-  buildFindOptions,
-  buildUpdateOptions,
-} from "./builder"
+import { buildDestroyOptions, buildFindOptions } from "./builder"
 import { codes, statusCodes } from "../error/constants"
 import { ValidationError } from "../error/errors"
 import type { Hatchify } from "../node"
@@ -83,22 +78,13 @@ async function createImpl<T extends HatchifyModel = HatchifyModel>(
   model: T,
   body: unknown,
 ) {
-  const serializer = hatchify.serializer
-  const { data, errors } = buildCreateOptions("")
-  if (errors.length > 0) {
-    throw new ValidationError({
-      code: codes.ERR_INVALID_PARAMETER,
-      status: statusCodes.UNPROCESSABLE_ENTITY,
-      title: "Bad Request, Invalid Query String",
-    })
-  }
-  const parsed = await serializer.deserialize(model.name, body as any)
-  // FOR NON-JSON Compliant, it returns an empty object
+  const parsed = await hatchify.serializer.deserialize(model.name, body as any)
+  // FOR NON-JSON:API Compliant, parsed is an empty object
   const parsedBody = Object.keys(parsed).length === 0 ? body : parsed
 
   return {
     body: parsedBody,
-    ops: data,
+    ops: {},
   }
 }
 
@@ -108,27 +94,17 @@ async function updateImpl(
   body: unknown,
   id,
 ) {
-  const serializer = hatchify.serializer
-  const { data, errors } = buildUpdateOptions("", id)
-  if (errors.length > 0) {
-    throw new ValidationError({
-      code: codes.ERR_INVALID_PARAMETER,
-      status: statusCodes.UNPROCESSABLE_ENTITY,
-      title: "Bad Request, Invalid Query String",
-    })
-  }
-
-  const parsed = await serializer.deserialize(model.name, body as any)
-  // FOR NON-JSON Compliant, it returns an empty object
+  const parsed = await hatchify.serializer.deserialize(model.name, body as any)
+  // FOR NON-JSON:API Compliant, parsed is an empty object
   const parsedBody = Object.keys(parsed).length === 0 ? body : parsed
 
   return {
     body: parsedBody,
-    ops: data,
+    ops: { where: id ? { id } : {} },
   }
 }
 
-async function destroyImpl(model: HatchifyModel, querystring: string, id) {
+async function destroyImpl(querystring: string, id?: Identifier) {
   const { data, errors } = buildDestroyOptions(querystring, id)
   if (errors.length > 0) {
     throw new ValidationError({
@@ -151,7 +127,7 @@ export function buildParserForModelStandalone(
     findAndCountAll: async (querystring) =>
       findAndCountAllImpl(model, querystring),
     create: async (body) => createImpl(hatchify, model, body),
-    destroy: async (querystring, id) => destroyImpl(model, querystring, id),
+    destroy: async (querystring, id) => destroyImpl(querystring, id),
     update: async (body, id) => updateImpl(hatchify, model, body, id),
   }
 }
@@ -160,6 +136,5 @@ export function buildParserForModel(
   hatchify: Hatchify,
   modelName: string,
 ): ParseFunctions {
-  const model = hatchify.models[modelName]
-  return buildParserForModelStandalone(hatchify, model)
+  return buildParserForModelStandalone(hatchify, hatchify.models[modelName])
 }

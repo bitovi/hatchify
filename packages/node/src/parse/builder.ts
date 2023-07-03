@@ -1,5 +1,3 @@
-import type { ParsedUrlQuery } from "node:querystring"
-
 import querystringParser from "@bitovi/sequelize-querystring-parser"
 import type {
   CreateOptions,
@@ -7,16 +5,13 @@ import type {
   FindOptions,
   Identifier,
   UpdateOptions,
-  WhereOptions,
 } from "sequelize"
 
-import { codes, statusCodes } from "../error/constants"
-import { ValidationError } from "../error/errors"
-import type { HatchifyModel, SequelizeModelInstance } from "../types"
+import type { HatchifyModel } from "../types"
 
-interface QSP<T> {
+interface QueryStringParser<T> {
   data: T
-  errors: string[]
+  errors: Error[]
   orm: "sequelize"
 }
 
@@ -24,23 +19,21 @@ export function buildFindOptions(
   model: HatchifyModel,
   querystring: string,
   id?: Identifier,
-): QSP<FindOptions> {
-  const ops: QSP<FindOptions> = querystringParser.parse(querystring)
+): QueryStringParser<FindOptions> {
+  const ops: QueryStringParser<FindOptions> =
+    querystringParser.parse(querystring)
 
-  // If we do have an error, fail fast and return it, dont bother checking anything else
-  if (ops.errors.length > 0) {
-    return ops
-  }
+  // If we do have an error, fail fast and return it, don't bother checking anything else
+  if (ops.errors.length > 0) return ops
 
-  // Perform additional checks if needed...
   if (ops.data?.attributes && Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {
-      ops.data.attributes.push("id")
+      ops.data.attributes.unshift("id")
     }
 
     ops.data.attributes.forEach((attr: string) => {
       if (attr !== "id" && !model.attributes[attr]) {
-        ops.errors.push("Unknown attribute " + attr)
+        ops.errors.push(new Error("Unknown attribute " + attr))
       }
     })
   }
@@ -55,28 +48,21 @@ export function buildFindOptions(
   return ops
 }
 
-export function buildCreateOptions(querystring: string): QSP<CreateOptions> {
-  const ops: QSP<CreateOptions> = querystringParser.parse(querystring)
-
-  // If we do have an error, fail fast and return it, don't bother checking anything else
-  if (ops.errors.length > 0) {
-    return ops
-  }
-
-  // Perform additional checks if needed...
-  return ops
+export function buildCreateOptions(
+  querystring: string,
+): QueryStringParser<CreateOptions> {
+  return querystringParser.parse(querystring)
 }
 
 export function buildUpdateOptions(
   querystring: string,
   id?: Identifier,
-): QSP<UpdateOptions> {
-  const ops: QSP<UpdateOptions> = querystringParser.parse(querystring)
+): QueryStringParser<UpdateOptions> {
+  const ops: QueryStringParser<UpdateOptions> =
+    querystringParser.parse(querystring)
 
-  // If we do have an error, fail fast and return it, dont bother checking anything else
-  if (ops.errors.length > 0) {
-    return ops
-  }
+  // If we do have an error, fail fast and return it, don't bother checking anything else
+  if (ops.errors.length > 0) return ops
 
   if (!ops.data.where) {
     ops.data.where = {}
@@ -85,20 +71,18 @@ export function buildUpdateOptions(
     }
   }
 
-  // Perform additional checks if needed...
   return ops
 }
 
 export function buildDestroyOptions(
   querystring: string,
   id?: Identifier,
-): QSP<DestroyOptions> {
-  const ops: QSP<DestroyOptions> = querystringParser.parse(querystring)
+): QueryStringParser<DestroyOptions> {
+  const ops: QueryStringParser<DestroyOptions> =
+    querystringParser.parse(querystring)
 
-  // If we do have an error, fail fast and return it, dont bother checking anything else
-  if (ops.errors.length > 0) {
-    return ops
-  }
+  // If we do have an error, fail fast and return it, don't bother checking anything else
+  if (ops.errors.length > 0) return ops
 
   if (!ops.data.where) {
     ops.data.where = {}
@@ -109,54 +93,4 @@ export function buildDestroyOptions(
 
   // Perform additional checks if needed...
   return ops
-}
-
-export function buildAttributeList(
-  query: ParsedUrlQuery,
-  seqModel: SequelizeModelInstance,
-): string[] {
-  const queryAttributes = query.attributes
-
-  let attributes: string[] = []
-  if (queryAttributes) {
-    if (!Array.isArray(queryAttributes)) {
-      attributes = [queryAttributes]
-    } else {
-      attributes = queryAttributes
-    }
-  }
-
-  // We should always return the pk, which is usually id?
-  if (!attributes.includes("id")) {
-    attributes.push("id")
-  }
-
-  const modelAttributes = seqModel.getAttributes()
-
-  attributes.forEach((attr) => {
-    // Make sure that the requested attributes actually exist on the model
-    if (attr !== "id" && !modelAttributes[attr]) {
-      throw new ValidationError({
-        title: "Bad Attribute:" + attr,
-        code: codes.ERR_INVALID_PARAMETER,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        pointer: attr,
-      })
-    }
-  })
-
-  return attributes
-}
-
-export function buildWhereClause(
-  query: ParsedUrlQuery,
-  id?: Identifier,
-): WhereOptions {
-  if (id) {
-    return {
-      id: id,
-    }
-  }
-
-  return {}
 }

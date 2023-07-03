@@ -20,30 +20,23 @@ import type {
 } from "../types"
 import { HatchifySymbolModel } from "../types"
 
-const splitIncludeToJSONAPiQuery = (include) => {
-  return `include=${include.join(",")}`
-}
-
 export function buildHatchifyModelObject(
   models: SequelizeModelsCollection,
 ): HatchifyModelCollection {
-  const names = Object.keys(models)
-
-  const result: HatchifyModelCollection = {}
-  names.forEach((name) => {
-    result[name] = models[name][HatchifySymbolModel]
-  })
-  return result
+  return Object.entries(models).reduce(
+    (acc, [name, model]) => ({ ...acc, [name]: model[HatchifySymbolModel] }),
+    {},
+  )
 }
 
-export function createSequelizeInstance(options?: Options): Sequelize {
+export function createSequelizeInstance(
+  options: Options = {
+    dialect: "sqlite",
+    storage: ":memory:",
+    logging: false,
+  },
+): Sequelize {
   extendSequelize(Sequelize)
-
-  if (!options) {
-    return new Sequelize("sqlite::memory:", {
-      logging: false,
-    })
-  }
 
   return new Sequelize(options)
 }
@@ -63,7 +56,7 @@ export function convertHatchifyModels(
       let updatedInclude = include
       if (updatedInclude) {
         updatedInclude = Array.isArray(include) ? include : [include]
-        const query = splitIncludeToJSONAPiQuery(updatedInclude)
+        const query = `include=${updatedInclude.join(",")}`
         const parser = querystringParser.parse(query)
         if (parser.errors.length === 0) {
           updatedInclude = parser.data.include
@@ -135,7 +128,7 @@ export function convertHatchifyModels(
           current[relationship](associated, options)
 
           //Get association name for lookup
-          let associationName = options.as
+          let associationName: string = options.as as string
           if (!associationName) {
             associationName = target.toLowerCase()
             if (relationship !== "hasOne" && relationship !== "belongsTo") {
