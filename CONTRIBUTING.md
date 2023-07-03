@@ -112,7 +112,32 @@ Run `npm ci` within the cloned repository folder.
 
 #### 3.1. With SQLite
 
-No further configuration is required to test Hatchify against a SQLite database.
+No further configuration is required to test Hatchify against a SQLite database.  However, if your feature relies on column type constraints from the database, SQLite does not check these by default.  Instead, use validations on your models' columns:
+
+```ts
+// hatchify-app/schemas/Todo.ts
+export const Todo = {
+  name: "Todo",
+  attributes: {
+    name: "STRING",
+    due_date: {
+      type: "DATE",
+      validate: {
+        isDate: true
+      }
+    },
+    importance: {
+      type: "INTEGER",
+      validate: {
+        isInt: true
+      }
+    }
+  },
+  belongsTo: [{ target: "User", options: { as: "user" } }], // 👀
+};
+```
+
+A list of all validations that can be used in an attribute's type configuration can be found [here](https://sequelize.org/docs/v6/core-concepts/validations-and-constraints/).
 
 #### 3.2. With a database engine in a Docker container (recommended)
 
@@ -185,6 +210,25 @@ You can also run the Playwright E2E tests:
 npx playwright install
 npx playwright test
 ```
+
+#### 4.1. Testing aginst a Hatchify app
+
+After creating an app like the example in [the getting started guide](./README.md), you can test it against your hatchify changes by changing the package dependency references to packages in your Hatchify development directory.
+
+```json
+// hatchify-app/package.json
+// assuming hatchify and the hatchify-app are in sibling folders:
+{
+  // ...
+  "dependencies": {
+    "@hatchifyjs/koa": "file:../hatchify/packages/koa",
+    "@hatchifyjs/react": "file:../hatchify/packages/react",
+    // ...
+  }
+  // ...
+}
+```
+
 
 ### 5. Commit your modifications
 
