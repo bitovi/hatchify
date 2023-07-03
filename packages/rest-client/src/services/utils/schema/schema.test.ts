@@ -93,6 +93,5 @@ describe("rest-client/services/utils/schema", () => {
       const result = transformSchema(schema)
       expect(result).toEqual(expected)
     })
-
   })
 })
