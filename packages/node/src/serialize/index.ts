@@ -44,9 +44,7 @@ async function findAllImpl(
   array,
   attributes,
 ) {
-  const virtualsForModel = hatchify.virtuals[name]
-
-  if (virtualsForModel) {
+  if (hatchify.virtuals[name]) {
     return serializeWithoutUnsolicitedVirtuals(
       hatchify,
       array,
@@ -65,9 +63,7 @@ async function findOneImpl(
   instance,
   attributes,
 ) {
-  const virtualsForModel = hatchify.virtuals[name]
-
-  if (virtualsForModel) {
+  if (hatchify.virtuals[name]) {
     return serializeWithoutUnsolicitedVirtuals(
       hatchify,
       instance,
@@ -85,9 +81,7 @@ async function findAndCountAllImpl(
   result,
   attributes,
 ) {
-  const virtualsForModel = hatchify.virtuals[name]
-
-  if (virtualsForModel) {
+  if (hatchify.virtuals[name]) {
     return serializeWithoutUnsolicitedVirtuals(
       hatchify,
       result.rows,
@@ -112,28 +106,6 @@ async function updateImpl(hatchify: Hatchify, name: string, rowCount) {
   return hatchify.serializer.serialize(name, null, { count: rowCount })
 }
 
-// export function buildSerializerForModelStandalone(
-//     serializer: JSONAPISerializer,
-//     model: HatchifyModel
-// ): SerializeFunctions {
-//   return {
-//     findAll: async (array) => findAllImpl(model.name, array),
-//     findOne: async (instance) =>
-//       findOneImpl(model.name, instance),
-//     findAndCountAll: async (result) =>
-//       findAndCountAllImpl(model.name, result),
-//     create: async (instance) =>
-//       createImpl(model.name, instance),
-//     destroy: async (rowCount) =>
-//       destroyImpl(model.name, rowCount),
-//     update: async (rowCount) =>
-//       updateImpl(model.name, rowCount),
-//     error: (options: JSONAPIErrorOptions) => {
-//       throw new Error(options.title);
-//     },
-//   };
-// }
-
 export function buildSerializerForModel(
   hatchify: Hatchify,
   modelName: string,
@@ -151,27 +123,19 @@ export function buildSerializerForModel(
   }
 }
 
-const deserialize = (data: any) => {
-  if (data) {
-    const { id } = data
-    return { id }
-  }
-  return data
-}
-
 export function registerSchema(
   serializer: JSONAPISerializer,
   model: HatchifyModel,
   associations: Record<string, IAssociation>,
   primaryKey: string,
-) {
+): void {
   const relationships: { [key: string]: any } = {}
   const associationsKeys = Object.keys(associations)
   associationsKeys.forEach((associationsKey) => {
     const association = associations[associationsKey]
     relationships[associationsKey] = {
       type: association.model,
-      deserialize,
+      deserialize: (data: any) => (data ? { id: data.id } : data),
     }
   })
   serializer.register(model.name, {

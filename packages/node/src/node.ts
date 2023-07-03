@@ -9,10 +9,7 @@ import { HatchifyError } from "./error/errors"
 import type { EverythingFunctions } from "./everything"
 import { buildEverythingForModel } from "./everything"
 import { buildParserForModel } from "./parse"
-import type {
-  // buildParserForModelStandalone,
-  ParseFunctions,
-} from "./parse"
+import type { ParseFunctions } from "./parse"
 import { buildSchemaForModel } from "./schema"
 import {
   buildHatchifyModelObject,
@@ -20,10 +17,7 @@ import {
   createSequelizeInstance,
 } from "./sequelize"
 import { buildSerializerForModel } from "./serialize"
-import type {
-  // buildSerializerForModelStandalone,
-  SerializeFunctions,
-} from "./serialize"
+import type { SerializeFunctions } from "./serialize"
 import type {
   FunctionsHandler,
   HatchifyModel,
