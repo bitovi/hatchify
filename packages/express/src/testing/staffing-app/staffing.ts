@@ -23,7 +23,6 @@ export function createStaffingAppInstance(): [any, Hatchify] {
   // Create a Hatchify instance containing your Models
   const hatchify = new Hatchify([Assignment, Employee, Project, Role, Skill], {
     prefix: "/api",
-    expose: true,
   })
 
   // Set up your Express app as normal, for example, a logging middleware

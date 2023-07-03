@@ -30,6 +30,7 @@
   "devDependencies": {
     "@types/react": "^18.2.0",
     "@vitejs/plugin-react": "^4.0.0",
+    "@vitest/coverage-c8": "^0.32.2",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"

@@ -26,7 +26,6 @@ export function createStaffingAppInstance(): [Koa, Hatchify] {
   // Create a Hatchify instance containing your Models
   const hatchify = new Hatchify([Assignment, Employee, Project, Role, Skill], {
     prefix: "/api",
-    expose: true,
   })
 
   // Set up your Koa app as normal, for example, a logging middleware

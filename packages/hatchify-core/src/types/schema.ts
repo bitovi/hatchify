@@ -1,3 +1,5 @@
+export type Attribute = string | { type: string }
+
 export interface Relationship {
   target: string
   options: {
@@ -8,7 +10,7 @@ export interface Relationship {
 export interface Schema {
   name: string
   attributes: {
-    [field: string]: string
+    [field: string]: Attribute
   }
   hasOne?: Relationship[]
   hasMany?: Relationship[]
