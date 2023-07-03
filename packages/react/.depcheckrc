@@ -1,0 +1,1 @@
+ignores: ["@types/react", "@vitest/coverage-c8"]
