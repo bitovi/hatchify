@@ -47,7 +47,7 @@ export function createSequelizeInstance(
 }
 
 type Attribute<M extends Model = Model> = ModelAttributeColumnOptions<M> & {
-  include?: any[]
+  include?: any
 }
 
 export function parseAttribute<M extends Model = Model>(
@@ -83,10 +83,7 @@ export function convertHatchifyModels(
         }
       }
 
-      if (
-        type instanceof DataTypes.VIRTUAL ||
-        (type && type.key === "VIRTUAL")
-      ) {
+      if (type instanceof DataTypes.VIRTUAL) {
         if (virtuals[model.name]) {
           virtuals[model.name][attributeKey] = updatedInclude || []
         } else {
