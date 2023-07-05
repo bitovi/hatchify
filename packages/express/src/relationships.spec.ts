@@ -45,7 +45,7 @@ describe("Relationships", () => {
       todos: [
         {
           name: "Walk the dog",
-          due_date: "12-12-2024",
+          due_date: "2024-12-12T00:00:00.000Z",
           importance: 6,
         },
       ],
@@ -77,7 +77,7 @@ describe("Relationships", () => {
           id: "1",
           attributes: {
             name: "Walk the dog",
-            due_date: "12-12-2024",
+            due_date: "2024-12-12T00:00:00.000Z",
             importance: 6,
           },
           relationships: { user: { data: { type: "User", id: "1" } } },
@@ -99,7 +99,7 @@ describe("Relationships", () => {
           id: "1",
           attributes: {
             name: "Walk the dog",
-            due_date: "12-12-2024",
+            due_date: "2024-12-12T00:00:00.000Z",
           },
           relationships: { user: { data: { type: "User", id: "1" } } },
         },
@@ -120,7 +120,7 @@ describe("Relationships", () => {
           id: "1",
           attributes: {
             name: "Walk the dog",
-            due_date: "12-12-2024",
+            due_date: "2024-12-12T00:00:00.000Z",
           },
           relationships: { user: { data: { type: "User", id: "1" } } },
         },
@@ -133,7 +133,7 @@ describe("Relationships", () => {
     it("todo and then user", async () => {
       const { deserialized: todo } = await POST(server, "/api/todos", {
         name: "Walk the dog",
-        due_date: "12-12-2024",
+        due_date: "2024-12-12T00:00:00.000Z",
         importance: 6,
       })
 
@@ -176,7 +176,7 @@ describe("Relationships", () => {
 
       const { deserialized: todo } = await POST(server, "/api/todos", {
         name: "Walk the dog",
-        due_date: "12-12-2024",
+        due_date: "2024-12-12T00:00:00.000Z",
         importance: 7,
         user: {
           id: user.id,
