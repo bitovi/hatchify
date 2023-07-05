@@ -145,7 +145,7 @@ export function registerSchema(
     whitelist: Object.keys(model.attributes),
     relationships,
     topLevelMeta: (_data, { unpaginatedCount }) =>
-      unpaginatedCount
+      unpaginatedCount != null
         ? {
             unpaginatedCount,
           }
