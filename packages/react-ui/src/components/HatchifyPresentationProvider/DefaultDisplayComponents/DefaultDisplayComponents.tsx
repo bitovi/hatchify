@@ -61,7 +61,14 @@ export const BooleanList: React.FC<{ values: boolean[] }> = ({ values }) => {
 export const Date: React.FC<{ value: string }> = ({ value }) => {
   const formattedDate = isNaN(window.Date.parse(value))
     ? undefined
-    : new Intl.DateTimeFormat(navigator.language).format(new window.Date(value))
+    : new Intl.DateTimeFormat(navigator.language, {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      }).format(new window.Date(value))
 
   return <>{formattedDate}</>
 }
