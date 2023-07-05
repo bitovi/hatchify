@@ -41,6 +41,14 @@ export function createSequelizeInstance(
   return new Sequelize(options)
 }
 
+export function parseAttribute(attribute) {
+  if (typeof attribute === "string") return { type: DataTypes[attribute] }
+
+  if (!attribute.type) return { type: attribute }
+
+  return attribute
+}
+
 export function convertHatchifyModels(
   sequelize: Sequelize,
   serializer: JSONAPISerializer,
@@ -51,7 +59,7 @@ export function convertHatchifyModels(
   models.forEach((model) => {
     for (const attributeKey in model.attributes) {
       const attribute = model.attributes[attributeKey]
-      const { type, include } = attribute
+      const { type, include } = parseAttribute(attribute)
 
       let updatedInclude = include
       if (updatedInclude) {
