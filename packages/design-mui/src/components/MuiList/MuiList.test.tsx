@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
-import { describe, it, expect } from "vitest"
+import { describe, it, expect, vi } from "vitest"
 import { MuiList } from "./MuiList"
 import {
   HatchifyPresentationDefaultValueComponents,
@@ -57,8 +57,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
             direction: undefined,
             sortBy: false,
           }}
-          changeSort={() => jest.fn()}
-          formatQueryString={() => ""}
+          changeSort={() => vi.fn()}
         />,
       )
 
