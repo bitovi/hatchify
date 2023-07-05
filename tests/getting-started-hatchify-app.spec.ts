@@ -36,7 +36,7 @@ test("works", async ({ page, request }) => {
         type: "Todo",
         attributes: {
           name: "Walk the dog",
-          due_date: "12-12-2024",
+          due_date: "2023-07-05T20:30:52.767Z",
           importance: 6,
         },
       },
@@ -86,11 +86,7 @@ test("works", async ({ page, request }) => {
   await page.goto(frontend)
   await page.reload()
   await expect(page.getByText("Walk the dog")).toBeVisible()
-  // safari and firefox cannot parse `12-12-2024` as a date like chrome, so they
-  // just return the value as a string, see: `DefaultDisplayComponents`
-  await expect(
-    page.getByText(/^2024-12-12$|^12-12-2024|^12\/12\/2024$/),
-  ).toBeVisible()
+  await expect(page.getByText("2023-07-05")).toBeVisible()
   await expect(page.getByText("6")).toBeVisible()
   await expect(page.getByText("John Doe")).toBeVisible()
 
