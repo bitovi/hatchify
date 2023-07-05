@@ -6,7 +6,12 @@ import type {
 } from "@hatchifyjs/sequelize-create-with-associations"
 import * as inflection from "inflection"
 import type JSONAPISerializer from "json-api-serializer"
-import type { Model, Options } from "sequelize"
+import type {
+  DataType,
+  Model,
+  ModelAttributeColumnOptions,
+  Options,
+} from "sequelize"
 import { DataTypes, Sequelize } from "sequelize"
 
 import { codes, statusCodes } from "../error/constants"
@@ -41,12 +46,18 @@ export function createSequelizeInstance(
   return new Sequelize(options)
 }
 
-export function parseAttribute(attribute) {
+type Attribute<M extends Model = Model> = ModelAttributeColumnOptions<M> & {
+  include?: any[]
+}
+
+export function parseAttribute<M extends Model = Model>(
+  attribute: string | DataType | Attribute<M>,
+): Attribute<M> {
   if (typeof attribute === "string") return { type: DataTypes[attribute] }
 
-  if (!attribute.type) return { type: attribute }
+  if ("type" in attribute) return attribute
 
-  return attribute
+  return { type: attribute }
 }
 
 export function convertHatchifyModels(
