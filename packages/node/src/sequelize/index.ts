@@ -59,7 +59,8 @@ export function convertHatchifyModels(
   models.forEach((model) => {
     for (const attributeKey in model.attributes) {
       const attribute = model.attributes[attributeKey]
-      const { type, include } = parseAttribute(attribute)
+      const parsedAttribute = parseAttribute(attribute)
+      const { type, include } = parsedAttribute
 
       let updatedInclude = include
       if (updatedInclude) {
@@ -85,6 +86,8 @@ export function convertHatchifyModels(
 
         include && delete attribute.include
       }
+
+      model.attributes[attributeKey] = parsedAttribute
     }
 
     const temp = sequelize.define<Model<HatchifyModel["attributes"]>>(
