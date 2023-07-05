@@ -6,7 +6,12 @@ import type {
 } from "@hatchifyjs/sequelize-create-with-associations"
 import * as inflection from "inflection"
 import type JSONAPISerializer from "json-api-serializer"
-import type { Model, Options } from "sequelize"
+import type {
+  DataType,
+  Model,
+  ModelAttributeColumnOptions,
+  Options,
+} from "sequelize"
 import { DataTypes, Sequelize } from "sequelize"
 
 import { codes, statusCodes } from "../error/constants"
@@ -41,6 +46,20 @@ export function createSequelizeInstance(
   return new Sequelize(options)
 }
 
+type Attribute<M extends Model = Model> = ModelAttributeColumnOptions<M> & {
+  include?: any
+}
+
+export function parseAttribute<M extends Model = Model>(
+  attribute: string | DataType | Attribute<M>,
+): Attribute<M> {
+  if (typeof attribute === "string") return { type: DataTypes[attribute] }
+
+  if ("type" in attribute) return attribute
+
+  return { type: attribute }
+}
+
 export function convertHatchifyModels(
   sequelize: Sequelize,
   serializer: JSONAPISerializer,
@@ -51,7 +70,8 @@ export function convertHatchifyModels(
   models.forEach((model) => {
     for (const attributeKey in model.attributes) {
       const attribute = model.attributes[attributeKey]
-      const { type, include } = attribute
+      const parsedAttribute = parseAttribute(attribute)
+      const { type, include } = parsedAttribute
 
       let updatedInclude = include
       if (updatedInclude) {
@@ -63,10 +83,7 @@ export function convertHatchifyModels(
         }
       }
 
-      if (
-        type instanceof DataTypes.VIRTUAL ||
-        (type && type.key === "VIRTUAL")
-      ) {
+      if (type instanceof DataTypes.VIRTUAL) {
         if (virtuals[model.name]) {
           virtuals[model.name][attributeKey] = updatedInclude || []
         } else {
@@ -77,6 +94,8 @@ export function convertHatchifyModels(
 
         include && delete attribute.include
       }
+
+      model.attributes[attributeKey] = parsedAttribute
     }
 
     const temp = sequelize.define<Model<HatchifyModel["attributes"]>>(

@@ -1,8 +1,13 @@
 import JSONAPISerializer from "json-api-serializer"
 
+import { DataTypes } from "../types"
 import type { HatchifyModel } from "../types"
 
-import { convertHatchifyModels, createSequelizeInstance } from "."
+import {
+  convertHatchifyModels,
+  createSequelizeInstance,
+  parseAttribute,
+} from "."
 
 describe("index", () => {
   describe("convertHatchifyModels", () => {
@@ -54,6 +59,29 @@ describe("index", () => {
           User: expect.any(Function),
         },
         virtuals: {},
+      })
+    })
+  })
+
+  describe("parseAttribute", () => {
+    it("parses strings", () => {
+      expect(parseAttribute("STRING")).toEqual({ type: DataTypes.STRING })
+    })
+
+    it("parses integers", () => {
+      expect(parseAttribute("INTEGER")).toEqual({ type: DataTypes.INTEGER })
+    })
+
+    it("parses types", () => {
+      expect(parseAttribute(DataTypes.STRING)).toEqual({
+        type: DataTypes.STRING,
+      })
+    })
+
+    it("parses objects", () => {
+      expect(parseAttribute({ type: DataTypes.STRING, include: [] })).toEqual({
+        type: DataTypes.STRING,
+        include: [],
       })
     })
   })
