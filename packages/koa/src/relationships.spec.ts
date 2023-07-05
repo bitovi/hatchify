@@ -215,4 +215,30 @@ describe("Relationships", () => {
       })
     })
   })
+
+  describe("should handle validation errors", () => {
+    it("should handle non-existing associations", async () => {
+      const { status, body } = await fetch("/api/users", {
+        method: "post",
+        body: {
+          name: "John Doe",
+          todos: [
+            {
+              id: "-1",
+            },
+          ],
+        },
+      })
+
+      expect(status).toEqual(400)
+      expect(body).toEqual([
+        {
+          code: "invalid-parameter",
+          source: {},
+          status: 400,
+          title: "Todo with ID -1 was not found",
+        },
+      ])
+    })
+  })
 })
