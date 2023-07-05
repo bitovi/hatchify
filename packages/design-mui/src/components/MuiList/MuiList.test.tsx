@@ -1,13 +1,14 @@
 import { render, screen } from "@testing-library/react"
-
+import "@testing-library/jest-dom"
+import { describe, it, expect } from "vitest"
 import { MuiList } from "./MuiList"
 import {
   HatchifyPresentationDefaultValueComponents,
   getDefaultDisplayRender,
 } from "@hatchifyjs/react-ui"
 
-describe.skip("hatchifyjs/presentation/mui/MuiList", () => {
-  describe.skip("MuiList", () => {
+describe("hatchifyjs/presentation/mui/MuiList", () => {
+  describe("MuiList", () => {
     it("works", async () => {
       render(
         <MuiList
@@ -52,6 +53,12 @@ describe.skip("hatchifyjs/presentation/mui/MuiList", () => {
               ),
             },
           ]}
+          sort={{
+            direction: undefined,
+            sortBy: false,
+          }}
+          changeSort={() => jest.fn()}
+          formatQueryString={() => ""}
         />,
       )
 

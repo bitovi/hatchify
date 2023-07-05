@@ -2,7 +2,6 @@
 import type {
   Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
   Meta,
-  QueryList,
   Record,
 } from "@hatchifyjs/rest-client"
 import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
@@ -22,9 +21,22 @@ export interface XProviderProps<T> {
   children: React.ReactNode
 }
 
+export interface SortObject {
+  direction: "asc" | "desc" | undefined
+  sortBy: string | false
+}
+
+export type HatchifyListSort = {
+  changeSort: (sort: SortObject) => void
+  sortQueryString: string
+  sort: SortObject
+}
+
 export interface XListProps {
+  changeSort: (sort: SortObject) => void
   displays: HatchifyDisplay[]
-  useData: (query: QueryList) => [Record[], Meta]
+  sort: SortObject
+  useData: () => [Record[], Meta]
 }
 
 export interface XLayoutProps {
