@@ -91,7 +91,9 @@ async function findAndCountAllImpl(
     )
   }
 
-  return hatchify.serializer.serialize(name, result.rows)
+  return hatchify.serializer.serialize(name, result.rows, {
+    unpaginatedCount: result.count,
+  })
 }
 
 async function createImpl(hatchify: Hatchify, name: string, instance) {
@@ -142,6 +144,12 @@ export function registerSchema(
     id: primaryKey,
     whitelist: Object.keys(model.attributes),
     relationships,
+    topLevelMeta: (_data, { unpaginatedCount }) =>
+      unpaginatedCount
+        ? {
+            unpaginatedCount,
+          }
+        : undefined,
   })
 }
 

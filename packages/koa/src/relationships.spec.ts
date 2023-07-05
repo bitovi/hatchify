@@ -77,6 +77,7 @@ describe("Relationships", () => {
         },
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      meta: { unpaginatedCount: 1 },
     })
 
     const { body: todosWithFields } = await fetch(
@@ -97,6 +98,7 @@ describe("Relationships", () => {
         },
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      meta: { unpaginatedCount: 1 },
     })
 
     const { body: todosWithIdField } = await fetch(
@@ -117,6 +119,7 @@ describe("Relationships", () => {
         },
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      meta: { unpaginatedCount: 1 },
     })
   })
 
@@ -239,6 +242,60 @@ describe("Relationships", () => {
           title: "Todo with ID -1 was not found",
         },
       ])
+    })
+  })
+
+  describe("should support pagination meta", () => {
+    it("with pagination", async () => {
+      const [{ body: mrPagination }] = await Promise.all([
+        fetch("/api/users", {
+          method: "post",
+          body: {
+            name: "Mr. Pagination",
+          },
+        }),
+        fetch("/api/users", {
+          method: "post",
+          body: {
+            name: "Mrs. Pagination",
+          },
+        }),
+      ])
+
+      const { body: users } = await fetch(
+        "/api/users?filter[name]=pagination&page[number]=1&page[size]=1",
+      )
+
+      expect(users).toEqual({
+        jsonapi: {
+          version: "1.0",
+        },
+        data: [mrPagination.data],
+        meta: { unpaginatedCount: 2 },
+      })
+    })
+
+    it("without pagination", async () => {
+      const [{ body: mrPagination }] = await Promise.all([
+        fetch("/api/users", {
+          method: "post",
+          body: {
+            name: "Mr. No Pagination",
+          },
+        }),
+      ])
+
+      const { body: users } = await fetch(
+        "/api/users?filter[name]=no+pagination",
+      )
+
+      expect(users).toEqual({
+        jsonapi: {
+          version: "1.0",
+        },
+        data: [mrPagination.data],
+        meta: { unpaginatedCount: 1 },
+      })
     })
   })
 })
