@@ -23,7 +23,7 @@ describe("builder", () => {
     it("works with ID attribute provided", () => {
       const options = buildFindOptions(
         Todo,
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5&sort=-date,name",
       )
 
       expect(options).toEqual({
@@ -33,6 +33,10 @@ describe("builder", () => {
           limit: 5,
           offset: 10,
           where: { name: { [Op.like]: "%laundry%" } },
+          order: [
+            ["date", "DESC"],
+            ["name", "ASC"],
+          ],
         },
         errors: [],
         orm: "sequelize",

@@ -197,7 +197,9 @@ export function handleAllMiddleware(hatchify: Hatchify) {
           }
 
           return {
-            body: await hatchify.everything[params.model].findAll(querystring),
+            body: await hatchify.everything[params.model].findAndCountAll(
+              querystring,
+            ),
           }
         }
 

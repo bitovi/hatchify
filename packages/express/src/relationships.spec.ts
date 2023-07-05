@@ -84,6 +84,7 @@ describe("Relationships", () => {
         },
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      meta: { unpaginatedCount: 1 },
     })
 
     const { serialized: todosWithFields } = await GET(
@@ -105,6 +106,7 @@ describe("Relationships", () => {
         },
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      meta: { unpaginatedCount: 1 },
     })
 
     const { serialized: todosWithIdField } = await GET(
@@ -126,6 +128,7 @@ describe("Relationships", () => {
         },
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      meta: { unpaginatedCount: 1 },
     })
   })
 
