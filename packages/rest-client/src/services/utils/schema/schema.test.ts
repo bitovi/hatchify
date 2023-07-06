@@ -58,5 +58,40 @@ describe("rest-client/services/utils/schema", () => {
       const result = transformSchema(schema)
       expect(result).toEqual(expected)
     })
+    it("works for object attributes", () => {
+      const schema: OldSchema = {
+        name: "Article",
+        attributes: {
+          id: { type: "UUID" },
+          title: { type: "VARCHAR(100)" },
+          body: { type: "LONGTEXT" },
+          wordCount: { type: "INTEGER" },
+        },
+        hasMany: [{ target: "Comment", options: { as: "comments" } }],
+        hasOne: [{ target: "Person", options: { as: "author" } }],
+        belongsTo: [{ target: "Collection", options: { as: "collections" } }],
+        belongsToMany: [{ target: "Websites", options: { as: "website" } }],
+      }
+
+      const expected: Schema = {
+        name: "Article",
+        displayAttribute: "id",
+        attributes: {
+          id: "string",
+          title: "string",
+          body: "string",
+          wordCount: "number",
+        },
+        relationships: {
+          comments: { type: "many", schema: "Comment" },
+          author: { type: "one", schema: "Person" },
+          collections: { type: "one", schema: "Collection" },
+          website: { type: "many", schema: "Websites" },
+        },
+      }
+
+      const result = transformSchema(schema)
+      expect(result).toEqual(expected)
+    })
   })
 })

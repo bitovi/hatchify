@@ -40,7 +40,7 @@ describe("Relationships", () => {
         todos: [
           {
             name: "Walk the dog",
-            due_date: "12-12-2024",
+            due_date: "2024-12-12T00:00:00.000Z",
             importance: 6,
           },
         ],
@@ -70,13 +70,14 @@ describe("Relationships", () => {
           id: "1",
           attributes: {
             name: "Walk the dog",
-            due_date: "12-12-2024",
+            due_date: "2024-12-12T00:00:00.000Z",
             importance: 6,
           },
           relationships: { user: { data: { type: "User", id: "1" } } },
         },
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      meta: { unpaginatedCount: 1 },
     })
 
     const { body: todosWithFields } = await fetch(
@@ -91,12 +92,13 @@ describe("Relationships", () => {
           id: "1",
           attributes: {
             name: "Walk the dog",
-            due_date: "12-12-2024",
+            due_date: "2024-12-12T00:00:00.000Z",
           },
           relationships: { user: { data: { type: "User", id: "1" } } },
         },
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      meta: { unpaginatedCount: 1 },
     })
 
     const { body: todosWithIdField } = await fetch(
@@ -111,12 +113,13 @@ describe("Relationships", () => {
           id: "1",
           attributes: {
             name: "Walk the dog",
-            due_date: "12-12-2024",
+            due_date: "2024-12-12T00:00:00.000Z",
           },
           relationships: { user: { data: { type: "User", id: "1" } } },
         },
       ],
       included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      meta: { unpaginatedCount: 1 },
     })
   })
 
@@ -126,7 +129,7 @@ describe("Relationships", () => {
         method: "post",
         body: {
           name: "Walk the dog",
-          due_date: "12-12-2024",
+          due_date: "2024-12-12T00:00:00.000Z",
           importance: 6,
         },
       })
@@ -181,7 +184,7 @@ describe("Relationships", () => {
         method: "post",
         body: {
           name: "Walk the dog",
-          due_date: "12-12-2024",
+          due_date: "2024-12-12T00:00:00.000Z",
           importance: 7,
           user: {
             id: user.data.id,
@@ -212,6 +215,86 @@ describe("Relationships", () => {
             attributes: { name: user.data.attributes.name },
           },
         ],
+      })
+    })
+  })
+
+  describe("should handle validation errors (HATCH-186)", () => {
+    it("should handle non-existing associations", async () => {
+      const { status, body } = await fetch("/api/users", {
+        method: "post",
+        body: {
+          name: "John Doe",
+          todos: [
+            {
+              id: "-1",
+            },
+          ],
+        },
+      })
+
+      expect(status).toEqual(400)
+      expect(body).toEqual([
+        {
+          code: "invalid-parameter",
+          source: {},
+          status: 400,
+          title: "Todo with ID -1 was not found",
+        },
+      ])
+    })
+  })
+
+  describe("should support pagination meta (HATCH-203)", () => {
+    it("with pagination", async () => {
+      const [{ body: mrPagination }] = await Promise.all([
+        fetch("/api/users", {
+          method: "post",
+          body: {
+            name: "Mr. Pagination",
+          },
+        }),
+        fetch("/api/users", {
+          method: "post",
+          body: {
+            name: "Mrs. Pagination",
+          },
+        }),
+      ])
+
+      const { body: users } = await fetch(
+        "/api/users?filter[name]=pagination&page[number]=1&page[size]=1",
+      )
+
+      expect(users).toEqual({
+        jsonapi: {
+          version: "1.0",
+        },
+        data: [mrPagination.data],
+        meta: { unpaginatedCount: 2 },
+      })
+    })
+
+    it("without pagination", async () => {
+      const [{ body: mrPagination }] = await Promise.all([
+        fetch("/api/users", {
+          method: "post",
+          body: {
+            name: "Mr. No Pagination",
+          },
+        }),
+      ])
+
+      const { body: users } = await fetch(
+        "/api/users?filter[name]=no+pagination",
+      )
+
+      expect(users).toEqual({
+        jsonapi: {
+          version: "1.0",
+        },
+        data: [mrPagination.data],
+        meta: { unpaginatedCount: 1 },
       })
     })
   })

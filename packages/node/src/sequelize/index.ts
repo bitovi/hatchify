@@ -6,7 +6,12 @@ import type {
 } from "@hatchifyjs/sequelize-create-with-associations"
 import * as inflection from "inflection"
 import type JSONAPISerializer from "json-api-serializer"
-import type { Model, Options } from "sequelize"
+import type {
+  DataType,
+  Model,
+  ModelAttributeColumnOptions,
+  Options,
+} from "sequelize"
 import { DataTypes, Sequelize } from "sequelize"
 
 import { codes, statusCodes } from "../error/constants"
@@ -20,32 +25,39 @@ import type {
 } from "../types"
 import { HatchifySymbolModel } from "../types"
 
-const splitIncludeToJSONAPiQuery = (include) => {
-  return `include=${include.join(",")}`
-}
-
 export function buildHatchifyModelObject(
   models: SequelizeModelsCollection,
 ): HatchifyModelCollection {
-  const names = Object.keys(models)
-
-  const result: HatchifyModelCollection = {}
-  names.forEach((name) => {
-    result[name] = models[name][HatchifySymbolModel]
-  })
-  return result
+  return Object.entries(models).reduce(
+    (acc, [name, model]) => ({ ...acc, [name]: model[HatchifySymbolModel] }),
+    {},
+  )
 }
 
-export function createSequelizeInstance(options?: Options): Sequelize {
+export function createSequelizeInstance(
+  options: Options = {
+    dialect: "sqlite",
+    storage: ":memory:",
+    logging: false,
+  },
+): Sequelize {
   extendSequelize(Sequelize)
 
-  if (!options) {
-    return new Sequelize("sqlite::memory:", {
-      logging: false,
-    })
-  }
-
   return new Sequelize(options)
+}
+
+type Attribute<M extends Model = Model> = ModelAttributeColumnOptions<M> & {
+  include?: any
+}
+
+export function parseAttribute<M extends Model = Model>(
+  attribute: string | DataType | Attribute<M>,
+): Attribute<M> {
+  if (typeof attribute === "string") return { type: DataTypes[attribute] }
+
+  if ("type" in attribute) return attribute
+
+  return { type: attribute }
 }
 
 export function convertHatchifyModels(
@@ -58,22 +70,20 @@ export function convertHatchifyModels(
   models.forEach((model) => {
     for (const attributeKey in model.attributes) {
       const attribute = model.attributes[attributeKey]
-      const { type, include } = attribute
+      const parsedAttribute = parseAttribute(attribute)
+      const { type, include } = parsedAttribute
 
       let updatedInclude = include
       if (updatedInclude) {
         updatedInclude = Array.isArray(include) ? include : [include]
-        const query = splitIncludeToJSONAPiQuery(updatedInclude)
+        const query = `include=${updatedInclude.join(",")}`
         const parser = querystringParser.parse(query)
         if (parser.errors.length === 0) {
           updatedInclude = parser.data.include
         }
       }
 
-      if (
-        type instanceof DataTypes.VIRTUAL ||
-        (type && type.key === "VIRTUAL")
-      ) {
+      if (type instanceof DataTypes.VIRTUAL) {
         if (virtuals[model.name]) {
           virtuals[model.name][attributeKey] = updatedInclude || []
         } else {
@@ -84,6 +94,8 @@ export function convertHatchifyModels(
 
         include && delete attribute.include
       }
+
+      model.attributes[attributeKey] = parsedAttribute
     }
 
     const temp = sequelize.define<Model<HatchifyModel["attributes"]>>(
@@ -135,7 +147,7 @@ export function convertHatchifyModels(
           current[relationship](associated, options)
 
           //Get association name for lookup
-          let associationName = options.as
+          let associationName: string = options.as as string
           if (!associationName) {
             associationName = target.toLowerCase()
             if (relationship !== "hasOne" && relationship !== "belongsTo") {

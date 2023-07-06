@@ -32,13 +32,6 @@ export interface HatchifyOptions {
   prefix?: string
 
   /**
-   * This flag will configure error behavior. If true error details
-   * will be exposed to the client. If false only the error code and
-   * high level message will be exposed.
-   */
-  expose?: boolean
-
-  /**
    * This flag should mostly be used for development and will
    * force your Models onto the database schema at startup.
    */

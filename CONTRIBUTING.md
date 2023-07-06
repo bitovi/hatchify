@@ -119,14 +119,15 @@ No further configuration is required to test Hatchify against a SQLite database.
 If you have Docker installed, use any of the following commands to start fresh local databases of the dialect of your choice:
 
 - For PostgreSQL
-    ```bash
-    docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
-    ```
+
+  ```bash
+  docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+  ```
 
 - For MySQL
-    ```bash
-    docker run --name mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
-    ```
+  ```bash
+  docker run --name mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+  ```
 
 _Note:_ if you're using Windows, make sure you run these from Git Bash (or another MinGW environment), since these commands will execute bash scripts. Recall that [it's very easy to include Git Bash as your default integrated terminal on Visual Studio Code](https://code.visualstudio.com/docs/editor/integrated-terminal).
 
@@ -158,7 +159,13 @@ Before starting any work, try to run the tests locally in order to be sure your 
 npx nx test @hatchifyjs/koa
 ```
 
-Then, if you want to run tests for another package, run the corresponding command:
+Then, if you want to run tests for another package, you can run all tests in parallel:
+
+```bash
+npx nx run-many -t test
+```
+
+or individually:
 
 - `npx nx test @hatchifyjs/design-mui`
 - `npx nx test @hatchifyjs/express`
