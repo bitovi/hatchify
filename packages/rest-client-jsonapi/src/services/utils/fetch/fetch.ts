@@ -7,7 +7,11 @@ export async function fetchJsonApi<T>(
   method: "GET" | "POST" | "PATCH" | "DELETE",
   url: string,
   body?: { [key: string]: any },
-): Promise<{ data: T; included?: JsonApiResource[] }> {
+): Promise<{
+  data: T
+  included?: JsonApiResource[]
+  meta?: { unpaginatedCount: number }
+}> {
   const response = await fetch(url, {
     method,
     body: body ? JSON.stringify({ data: body }) : undefined,

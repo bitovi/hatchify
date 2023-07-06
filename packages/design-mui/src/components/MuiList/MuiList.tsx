@@ -3,10 +3,12 @@ import { Suspense } from "react"
 import { css } from "@emotion/react"
 import {
   Box,
+  Pagination,
   Skeleton,
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableRow,
   TableContainer,
@@ -30,8 +32,10 @@ const styles = {
 
 export const MuiList: React.FC<XListProps> = ({
   displays,
+  pagination,
   useData,
   sort,
+  setPagination,
   setSort,
 }) => {
   const { direction, sortBy } = sort
@@ -71,17 +75,31 @@ export const MuiList: React.FC<XListProps> = ({
           </TableBody>
         </Suspense>
       </Table>
+      <TableFooter>
+        <Pagination
+          count={10}
+          shape="rounded"
+          variant="outlined"
+          onChange={(ev: React.ChangeEvent<unknown>, value: number) =>
+            setPagination({ ...pagination, number: value })
+          }
+        />
+      </TableFooter>
     </TableContainer>
   )
 }
 
 export default MuiList
 
-const MuiListRows: React.FC<Omit<XListProps, "setSort" | "sort">> = ({
-  displays,
-  useData,
-}) => {
+const MuiListRows: React.FC<
+  Omit<
+    XListProps,
+    "setSort" | "sort" | "currentPage" | "pagination" | "setPagination"
+  >
+> = ({ displays, useData }) => {
   const [data, meta] = useData()
+  console.log("data ", data)
+  console.log("meta in list", meta)
 
   if (meta.isLoading) {
     return <SkeletonCells displays={displays} />
@@ -104,7 +122,10 @@ const MuiListRows: React.FC<Omit<XListProps, "setSort" | "sort">> = ({
   )
 }
 
-type SkeletonCellsProps = Omit<XListProps, "useData" | "sort" | "setSort">
+type SkeletonCellsProps = Omit<
+  XListProps,
+  "useData" | "sort" | "setSort" | "pagination" | "setPagination"
+>
 
 const SkeletonCells = ({ displays }: SkeletonCellsProps) => {
   return (
