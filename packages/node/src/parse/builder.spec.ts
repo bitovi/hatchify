@@ -70,8 +70,28 @@ describe("builder", () => {
       })
     })
 
-    it("handles non-positive pagination parameters", () => {
+    it("handles zero pagination parameters", () => {
       const options = buildFindOptions(Todo, "page[number]=0&page[size]=0")
+
+      expect(options).toEqual({
+        data: {},
+        errors: [expect.any(Error), expect.any(Error)],
+        orm: "sequelize",
+      })
+
+      const errors = options.errors as unknown as Error[]
+      expect(errors[0].name).toEqual("QuerystringParsingError")
+      expect(errors[0].message).toEqual(
+        "Page number should be a positive integer.",
+      )
+      expect(errors[1].name).toEqual("QuerystringParsingError")
+      expect(errors[1].message).toEqual(
+        "Page size should be a positive integer.",
+      )
+    })
+
+    it("handles negative pagination parameters", () => {
+      const options = buildFindOptions(Todo, "page[number]=-1&page[size]=-1")
 
       expect(options).toEqual({
         data: {},
