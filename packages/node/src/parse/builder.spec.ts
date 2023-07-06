@@ -90,6 +90,26 @@ describe("builder", () => {
       )
     })
 
+    it("handles float pagination parameters", () => {
+      const options = buildFindOptions(Todo, "page[number]=2.1&page[size]=1.1")
+
+      expect(options).toEqual({
+        data: {},
+        errors: [expect.any(Error), expect.any(Error)],
+        orm: "sequelize",
+      })
+
+      const errors = options.errors as unknown as Error[]
+      expect(errors[0].name).toEqual("QuerystringParsingError")
+      expect(errors[0].message).toEqual(
+        "Page number should be a positive integer.",
+      )
+      expect(errors[1].name).toEqual("QuerystringParsingError")
+      expect(errors[1].message).toEqual(
+        "Page size should be a positive integer.",
+      )
+    })
+
     it("handles no attributes", () => {
       const options = buildFindOptions(Todo, "")
 
