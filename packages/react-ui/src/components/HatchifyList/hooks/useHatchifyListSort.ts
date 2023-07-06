@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
-import type { HatchifyListSort, SortObject } from "../../presentation"
+import type { HatchifyListSort, SortObject } from "../../../presentation"
 
-export function useHatchifyListSort(): HatchifyListSort {
+export default function useHatchifyListSort(): HatchifyListSort {
   const [sort, setSort] = useState<SortObject>({
     direction: undefined,
     sortBy: undefined,

@@ -1,6 +1,6 @@
 import type { Meta, QueryList, Record, Schemas } from "@hatchifyjs/rest-client"
 import type { ValueComponent } from "../../presentation/interfaces"
-import { useHatchifyListSort } from "./useHatchifyListSort"
+import useHatchifyListSort from "./hooks/useHatchifyListSort"
 import { getDisplays } from "../../services"
 import { useHatchifyPresentation } from ".."
 import { useCallback } from "react"
