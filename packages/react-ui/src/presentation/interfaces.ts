@@ -23,20 +23,20 @@ export interface XProviderProps<T> {
 
 export interface SortObject {
   direction: "asc" | "desc" | undefined
-  sortBy: string | false
+  sortBy: string | undefined
 }
 
 export type HatchifyListSort = {
-  changeSort: (sort: SortObject) => void
-  sortQueryString: string
   sort: SortObject
+  setSort: (sortBy: string) => void
+  sortQueryString: string
 }
 
 export interface XListProps {
-  changeSort: (sort: SortObject) => void
   displays: HatchifyDisplay[]
-  sort: SortObject
   useData: () => [Record[], Meta]
+  sort: SortObject
+  setSort: (sortBy: string) => void
 }
 
 export interface XLayoutProps {

@@ -31,10 +31,11 @@ const styles = {
 export const MuiList: React.FC<XListProps> = ({
   displays,
   useData,
-  changeSort,
   sort,
+  setSort,
 }) => {
   const { direction, sortBy } = sort
+
   return (
     <TableContainer css={styles.tableContainer}>
       <Table css={styles.table}>
@@ -50,13 +51,7 @@ export const MuiList: React.FC<XListProps> = ({
                   <TableSortLabel
                     active={display.key === sortBy}
                     direction={sortBy === sortBy ? direction : "asc"}
-                    onClick={() =>
-                      changeSort({
-                        direction:
-                          display.key === sortBy ? direction : undefined,
-                        sortBy: display.key,
-                      })
-                    }
+                    onClick={() => setSort(display.key)}
                   >
                     {display.label}
                     {display.key === sortBy ? (
@@ -82,7 +77,7 @@ export const MuiList: React.FC<XListProps> = ({
 
 export default MuiList
 
-const MuiListRows: React.FC<Omit<XListProps, "changeSort" | "sort">> = ({
+const MuiListRows: React.FC<Omit<XListProps, "setSort" | "sort">> = ({
   displays,
   useData,
 }) => {
@@ -109,7 +104,7 @@ const MuiListRows: React.FC<Omit<XListProps, "changeSort" | "sort">> = ({
   )
 }
 
-type SkeletonCellsProps = Omit<XListProps, "useData" | "sort" | "changeSort">
+type SkeletonCellsProps = Omit<XListProps, "useData" | "sort" | "setSort">
 
 const SkeletonCells = ({ displays }: SkeletonCellsProps) => {
   return (

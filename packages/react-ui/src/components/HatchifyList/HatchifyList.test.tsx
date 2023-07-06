@@ -1,9 +1,9 @@
-import { describe, it, vi } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { render, renderHook, waitFor } from "@testing-library/react"
 
 import { HatchifyList } from "./HatchifyList"
 import type { Schema } from "@hatchifyjs/rest-client"
-import { useHatchifyListSort } from "./UseHatchifyListSort"
+import { useHatchifyListSort } from "./useHatchifyListSort"
 
 const TestSchema: Schema = {
   name: "Test",
@@ -24,114 +24,71 @@ describe("hatchifyjs/components/HatchifyList", () => {
     })
   })
 
-  describe("UseHatchifyListSort", () => {
+  describe("useHatchifyListSort", () => {
     it("works", async () => {
-      const checkInitial = () => {
-        expect(result.current.sort).toEqual({
-          direction: undefined,
-          sortBy: false,
-        })
-        expect(result.current.sortQueryString).toEqual("")
-      }
       const { result } = renderHook(() => useHatchifyListSort())
-      checkInitial()
-    })
 
-    it("changes sort direction to asc from undefined", async () => {
-      const checkAsc = () => {
-        expect(result.current.sort).toEqual({
-          direction: "asc",
-          sortBy: "name",
-        })
-        expect(result.current.sortQueryString).toEqual("name")
-      }
-      const { result } = renderHook(() => useHatchifyListSort())
+      // initial state
+      expect(result.current.sort).toEqual({
+        direction: undefined,
+        sortBy: undefined,
+      })
+      expect(result.current.sortQueryString).toEqual("")
 
       await waitFor(() => {
-        result.current.changeSort({
-          direction: undefined,
-          sortBy: "name",
-        })
+        result.current.setSort("name")
       })
 
-      checkAsc()
-    })
-
-    it("changes sort direction to desc from asc", async () => {
-      const checkDesc = () => {
-        expect(result.current.sort).toEqual({
-          direction: "desc",
-          sortBy: "name",
-        })
-        expect(result.current.sortQueryString).toEqual("-name")
-      }
-      const { result } = renderHook(() => useHatchifyListSort())
+      // after first click, undefined -> asc
+      expect(result.current.sort).toEqual({
+        direction: "asc",
+        sortBy: "name",
+      })
+      expect(result.current.sortQueryString).toEqual("name")
 
       await waitFor(() => {
-        result.current.changeSort({
-          direction: "asc",
-          sortBy: "name",
-        })
+        result.current.setSort("name")
       })
 
-      checkDesc()
-    })
-
-    it("changes sort direction to undefined and sortBy to false from desc", async () => {
-      const checkUndefined = () => {
-        expect(result.current.sort).toEqual({
-          direction: undefined,
-          sortBy: false,
-        })
-        expect(result.current.sortQueryString).toEqual("")
-      }
-      const { result } = renderHook(() => useHatchifyListSort())
-
-      await waitFor(() => {
-        result.current.changeSort({
-          direction: "desc",
-          sortBy: "name",
-        })
-      })
-
-      checkUndefined()
-    })
-  })
-
-  it("changes sortBy to new key and direction to asc when the key is changed", async () => {
-    const checkInitial = () => {
+      // after second click, asc -> desc
       expect(result.current.sort).toEqual({
         direction: "desc",
         sortBy: "name",
       })
       expect(result.current.sortQueryString).toEqual("-name")
-    }
 
-    const checkKeyChange = () => {
+      await waitFor(() => {
+        result.current.setSort("name")
+      })
+
+      // after third click, desc -> undefined
+      expect(result.current.sort).toEqual({
+        direction: undefined,
+        sortBy: undefined,
+      })
+      expect(result.current.sortQueryString).toEqual("")
+
+      await waitFor(() => {
+        result.current.setSort("name")
+      })
+
+      // after fourth click, undefined -> asc
+      expect(result.current.sort).toEqual({
+        direction: "asc",
+        sortBy: "name",
+      })
+      expect(result.current.sortQueryString).toEqual("name")
+
+      await waitFor(() => {
+        result.current.setSort("date")
+      })
+
+      // after new column click, asc
       expect(result.current.sort).toEqual({
         direction: "asc",
         sortBy: "date",
       })
       expect(result.current.sortQueryString).toEqual("date")
-    }
-    const { result } = renderHook(() => useHatchifyListSort())
-
-    await waitFor(() => {
-      result.current.changeSort({
-        direction: "asc",
-        sortBy: "name",
-      })
     })
-
-    checkInitial()
-
-    await waitFor(() => {
-      result.current.changeSort({
-        direction: undefined,
-        sortBy: "date",
-      })
-    })
-
-    checkKeyChange()
   })
 })
