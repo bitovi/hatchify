@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { Suspense, useState } from "react"
+import { Suspense } from "react"
 import { css } from "@emotion/react"
 import {
+  Box,
   Skeleton,
   Table,
   TableBody,
@@ -9,7 +10,9 @@ import {
   TableHead,
   TableRow,
   TableContainer,
+  TableSortLabel,
 } from "@mui/material"
+import { visuallyHidden } from "@mui/utils"
 
 import type { XListProps } from "@hatchifyjs/react-ui"
 
@@ -25,7 +28,14 @@ const styles = {
   `,
 }
 
-export const MuiList: React.FC<XListProps> = ({ displays, useData }) => {
+export const MuiList: React.FC<XListProps> = ({
+  displays,
+  useData,
+  sort,
+  setSort,
+}) => {
+  const { direction, sortBy } = sort
+
   return (
     <TableContainer css={styles.tableContainer}>
       <Table css={styles.table}>
@@ -33,8 +43,25 @@ export const MuiList: React.FC<XListProps> = ({ displays, useData }) => {
           <TableHead>
             <TableRow>
               {displays.map((display) => (
-                <TableCell key={display.label} css={styles.th}>
-                  {display.label}
+                <TableCell
+                  key={display.key}
+                  css={styles.th}
+                  sortDirection={display.key === sortBy ? direction : false}
+                >
+                  <TableSortLabel
+                    active={display.key === sortBy}
+                    direction={sortBy === sortBy ? direction : "asc"}
+                    onClick={() => setSort(display.key)}
+                  >
+                    {display.label}
+                    {display.key === sortBy ? (
+                      <Box component="span" sx={visuallyHidden}>
+                        {direction === "desc"
+                          ? "sorted descending"
+                          : "sorted ascending"}
+                      </Box>
+                    ) : null}
+                  </TableSortLabel>
                 </TableCell>
               ))}
             </TableRow>
@@ -50,9 +77,11 @@ export const MuiList: React.FC<XListProps> = ({ displays, useData }) => {
 
 export default MuiList
 
-const MuiListRows: React.FC<XListProps> = ({ displays, useData }) => {
-  const [query] = useState({})
-  const [data, meta] = useData(query)
+const MuiListRows: React.FC<Omit<XListProps, "setSort" | "sort">> = ({
+  displays,
+  useData,
+}) => {
+  const [data, meta] = useData()
 
   if (meta.isLoading) {
     return <SkeletonCells displays={displays} />
@@ -75,7 +104,7 @@ const MuiListRows: React.FC<XListProps> = ({ displays, useData }) => {
   )
 }
 
-type SkeletonCellsProps = Omit<XListProps, "useData">
+type SkeletonCellsProps = Omit<XListProps, "useData" | "sort" | "setSort">
 
 const SkeletonCells = ({ displays }: SkeletonCellsProps) => {
   return (
