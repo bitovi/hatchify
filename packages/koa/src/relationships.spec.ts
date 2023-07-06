@@ -219,7 +219,7 @@ describe("Relationships", () => {
     })
   })
 
-  describe("should handle validation errors", () => {
+  describe("should handle validation errors (HATCH-186)", () => {
     it("should handle non-existing associations", async () => {
       const { status, body } = await fetch("/api/users", {
         method: "post",
@@ -245,7 +245,7 @@ describe("Relationships", () => {
     })
   })
 
-  describe("should support pagination meta", () => {
+  describe("should support pagination meta (HATCH-203)", () => {
     it("with pagination", async () => {
       const [{ body: mrPagination }] = await Promise.all([
         fetch("/api/users", {
