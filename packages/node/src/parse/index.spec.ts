@@ -22,6 +22,10 @@ describe("index", () => {
       name: "STRING",
       due_date: "DATE",
       importance: "INTEGER",
+      status: {
+        type: "ENUM",
+        values: ["Do Today", "Do Soon", "Done"],
+      },
     },
     belongsTo: [{ target: "User", options: { as: "user" } }],
   }
@@ -198,6 +202,7 @@ describe("index", () => {
           name: "Laundry",
           due_date: "2024-12-02",
           importance: 1,
+          status: "Do Today",
         }
         const results = await create(body)
 
@@ -212,6 +217,7 @@ describe("index", () => {
               name: "Laundry",
               due_date: "2024-12-02",
               importance: 1,
+              status: "Do Today",
             },
           },
         }
