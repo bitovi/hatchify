@@ -43,7 +43,7 @@ export const MuiList: React.FC<XListProps> = ({
   setPagination,
   setSort,
 }) => {
-  const [meta, setMeta] = useState<Record<string, any>>({})
+  const [meta, setMeta] = useState<Record<string, any>>({}) // todo: type
   const { direction, sortBy } = sort
 
   return (
