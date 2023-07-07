@@ -20,7 +20,9 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
       ],
       {
         status: "success",
-        meta: undefined,
+        meta: {
+          unpaginatedCount: 30, // 3 pages
+        },
         error: undefined,
         isDone: true,
         isLoading: false,
@@ -63,6 +65,8 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
             sortBy: undefined,
           }}
           setSort={() => vi.fn()}
+          pagination={{ number: 1, size: 10 }}
+          setPagination={() => vi.fn()}
         />,
       )
 
@@ -86,14 +90,43 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
             sortBy: undefined,
           }}
           setSort={setSort}
+          pagination={{ number: 1, size: 10 }}
+          setPagination={() => vi.fn()}
         />,
       )
 
       await screen.findByText("First Name").then((el) => el.click())
-      expect(setSort).toHaveBeenCalledWith("firstName")
-
       await screen.findByText("Last Name").then((el) => el.click())
-      expect(setSort).toHaveBeenCalledWith("lastName")
+
+      expect(setSort.mock.calls).toEqual([["firstName"], ["lastName"]])
+    })
+
+    it("fires pagination callback", async () => {
+      const setPagination = vi.fn()
+
+      render(
+        <MuiList
+          useData={useData}
+          displays={displays}
+          sort={{
+            direction: undefined,
+            sortBy: undefined,
+          }}
+          setSort={() => vi.fn()}
+          pagination={{ number: 1, size: 10 }}
+          setPagination={setPagination}
+        />,
+      )
+
+      await screen.findByText("2").then((el) => el.click())
+      await screen.findByText("3").then((el) => el.click())
+      await screen.findByText("1").then((el) => el.click())
+
+      expect(setPagination.mock.calls).toEqual([
+        [{ number: 2, size: 10 }],
+        [{ number: 3, size: 10 }],
+        [{ number: 1, size: 10 }],
+      ])
     })
   })
 })

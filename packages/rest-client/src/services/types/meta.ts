@@ -1,4 +1,4 @@
-export type MetaData = any // todo + pagination goes here
+export type RequestMetaData = Record<string, any> | undefined
 export type Error = any // todo
 
 export type Meta = MetaLoading | MetaSuccess | MetaError
@@ -12,7 +12,7 @@ export type Meta = MetaLoading | MetaSuccess | MetaError
 
 export interface MetaLoading {
   status: "loading"
-  meta?: MetaData
+  meta?: RequestMetaData
   error: undefined
 
   isDone: false
@@ -24,7 +24,7 @@ export interface MetaLoading {
 }
 export interface MetaSuccess {
   status: "success"
-  meta?: MetaData
+  meta?: RequestMetaData
   error: undefined
 
   isDone: true
@@ -36,7 +36,7 @@ export interface MetaSuccess {
 }
 export interface MetaError {
   status: "error"
-  meta?: MetaData
+  meta?: RequestMetaData
   error: Error
 
   isDone: true

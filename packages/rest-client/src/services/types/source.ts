@@ -1,6 +1,7 @@
 import type { Schemas } from "./schema"
 import type { QueryList, QueryOne } from "./query"
 import type { CreateData, Resource, UpdateData } from "./data"
+import type { RequestMetaData } from "./meta"
 
 interface SourceSchema {
   type?: string
@@ -24,7 +25,7 @@ export interface SourceV0 {
     allSchemas: Schemas,
     schemaName: string,
     query: Required<QueryList>,
-  ) => Promise<Resource[]>
+  ) => Promise<[Resources: Resource[], Meta: RequestMetaData]>
   findOne: (
     allSchemas: Schemas,
     schemaName: string,

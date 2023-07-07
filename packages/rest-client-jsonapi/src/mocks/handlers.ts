@@ -80,13 +80,20 @@ export const testData = {
       },
     },
   ],
+  meta: {
+    unpaginatedCount: 3,
+  },
 }
 
 export const handlers = [
   rest.get(`${baseUrl}/articles`, (req, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.json({ data: testData.data, included: testData.included }),
+      ctx.json({
+        data: testData.data,
+        included: testData.included,
+        meta: testData.meta,
+      }),
     )
   }),
 

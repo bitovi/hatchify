@@ -41,7 +41,8 @@ describe("rest-client/services/promise/findAll", () => {
       },
     ]
 
-    expect(result).toEqual(expected)
+    expect(result[0]).toEqual(expected)
+    expect(result[1]).toEqual({ unpaginatedCount: 2 })
   })
 
   it("should set default query.fields parameters", async () => {

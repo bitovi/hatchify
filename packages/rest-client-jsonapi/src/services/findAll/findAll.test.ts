@@ -34,7 +34,8 @@ describe("rest-client-jsonapi/services/findAll", () => {
 
     const result = await findAll(sourceConfig, schemas, "Article", query)
 
-    expect(result).toEqual(expected)
+    expect(result[0]).toEqual(expected)
+    expect(result[1]).toEqual(testData.meta)
   })
 
   it("throws an error if the request fails", async () => {

@@ -1,3 +1,4 @@
+import type { RequestMetaData } from "@hatchifyjs/rest-client"
 import type { JsonApiResource } from "../../jsonapi"
 
 /**
@@ -10,7 +11,7 @@ export async function fetchJsonApi<T>(
 ): Promise<{
   data: T
   included?: JsonApiResource[]
-  meta?: { unpaginatedCount: number }
+  meta?: RequestMetaData
 }> {
   const response = await fetch(url, {
     method,

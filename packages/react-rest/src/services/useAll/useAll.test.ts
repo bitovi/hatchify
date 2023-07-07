@@ -22,9 +22,13 @@ const fakeData = [
   },
 ]
 
+const fakeMeta = {
+  unpaginatedCount: 2,
+}
+
 const fakeDataSource: Source = {
   version: 0,
-  findAll: () => Promise.resolve(fakeData),
+  findAll: () => Promise.resolve([fakeData, fakeMeta]),
   findOne: () => Promise.resolve([]),
   createOne: () => Promise.resolve([]),
   updateOne: () => Promise.resolve([]),
@@ -52,7 +56,7 @@ describe("react-rest/services/useAll", () => {
         flattenResourcesIntoRecords(schemas, fakeData, "Article"),
         {
           status: "success",
-          meta: undefined,
+          meta: fakeMeta,
           error: undefined,
           isDone: true,
           isLoading: false,
@@ -78,7 +82,7 @@ describe("react-rest/services/useAll", () => {
         flattenResourcesIntoRecords(schemas, fakeData, "Article"),
         {
           status: "success",
-          meta: undefined,
+          meta: fakeMeta,
           error: undefined,
           isDone: true,
           isLoading: false,
@@ -102,7 +106,7 @@ describe("react-rest/services/useAll", () => {
         attributes: { title: "qux", body: "qux-body" },
       },
     ]
-    fakeDataSource.findAll = () => Promise.resolve(newFakeData)
+    fakeDataSource.findAll = () => Promise.resolve([newFakeData, fakeMeta])
 
     store.Article.subscribers.forEach((subscriber: Subscription) =>
       subscriber([]),
@@ -113,7 +117,7 @@ describe("react-rest/services/useAll", () => {
         flattenResourcesIntoRecords(schemas, newFakeData, "Article"),
         {
           status: "success",
-          meta: undefined,
+          meta: fakeMeta,
           error: undefined,
           isDone: true,
           isLoading: false,
@@ -125,7 +129,7 @@ describe("react-rest/services/useAll", () => {
       ]),
     )
 
-    fakeDataSource.findAll = () => Promise.resolve([])
+    fakeDataSource.findAll = () => Promise.resolve([[], {}])
 
     // unrelated schema subscribe(mutate) should trigger refetch
     // todo: remove once subscribe/can-query-logic is properly implemented
@@ -139,7 +143,7 @@ describe("react-rest/services/useAll", () => {
         [],
         {
           status: "success",
-          meta: undefined,
+          meta: {},
           error: undefined,
           isDone: true,
           isLoading: false,

@@ -31,14 +31,12 @@ export interface PageCountObject {
   size: number
 }
 
-export type HatchifyListPagination = {
-  pageCount: number
+export interface HatchifyListPagination {
   pagination: PageCountObject
-  setPageCount: (page: number) => void
   setPagination: (page: PageCountObject) => void
 }
 
-export type HatchifyListSort = {
+export interface HatchifyListSort {
   sort: SortObject
   setSort: (sortBy: string) => void
   sortQueryString: string

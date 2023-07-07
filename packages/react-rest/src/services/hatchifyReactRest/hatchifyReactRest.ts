@@ -20,6 +20,7 @@ import type {
   Record,
   Unsubscribe,
   UpdateData,
+  RequestMetaData,
 } from "@hatchifyjs/rest-client"
 import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
 
@@ -36,7 +37,9 @@ export type ReactRest<Schema extends SchemaRecord> = {
     createOne: (data: CreateData) => Promise<Record>
     deleteOne: (id: string) => Promise<void>
     findOne: (query: QueryOne | string) => Promise<Record | undefined>
-    findAll: (query: QueryList) => Promise<Record[]>
+    findAll: (
+      query: QueryList,
+    ) => Promise<[Records: Record[], Meta: RequestMetaData]>
     updateOne: (data: UpdateData) => Promise<Record>
     // hooks
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]

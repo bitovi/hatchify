@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { Suspense } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { css } from "@emotion/react"
 import {
   Box,
@@ -8,25 +8,30 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableRow,
   TableContainer,
   TableSortLabel,
 } from "@mui/material"
 import { visuallyHidden } from "@mui/utils"
-
 import type { XListProps } from "@hatchifyjs/react-ui"
 
 const styles = {
   tableContainer: css`
     padding: 15px;
+    box-sizing: border-box;
   `,
   table: css`
     background-color: white;
   `,
   th: css`
     font-weight: bold;
+  `,
+  pagination: css`
+    margin-top: 5px;
+    ul {
+      justify-content: flex-end;
+    }
   `,
 }
 
@@ -38,6 +43,7 @@ export const MuiList: React.FC<XListProps> = ({
   setPagination,
   setSort,
 }) => {
+  const [meta, setMeta] = useState<Record<string, any>>({})
   const { direction, sortBy } = sort
 
   return (
@@ -71,35 +77,52 @@ export const MuiList: React.FC<XListProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            <MuiListRows displays={displays} useData={useData} />
+            <MuiListRows
+              displays={displays}
+              useData={useData}
+              setMeta={setMeta}
+            />
           </TableBody>
         </Suspense>
       </Table>
-      <TableFooter>
-        <Pagination
-          count={10}
-          shape="rounded"
-          variant="outlined"
-          onChange={(ev: React.ChangeEvent<unknown>, value: number) =>
-            setPagination({ ...pagination, number: value })
-          }
-        />
-      </TableFooter>
+      <Pagination
+        disabled={meta?.isLoading}
+        css={styles.pagination}
+        count={
+          meta?.meta?.unpaginatedCount
+            ? Math.ceil(meta.meta.unpaginatedCount / pagination.size)
+            : 1
+        }
+        shape="rounded"
+        variant="outlined"
+        onChange={(ev: React.ChangeEvent<unknown>, value: number) =>
+          setPagination({ ...pagination, number: value })
+        }
+      />
     </TableContainer>
   )
 }
 
 export default MuiList
 
-const MuiListRows: React.FC<
-  Omit<
-    XListProps,
-    "setSort" | "sort" | "currentPage" | "pagination" | "setPagination"
-  >
-> = ({ displays, useData }) => {
+type MuiListRowsProps = Omit<
+  XListProps,
+  "setSort" | "sort" | "currentPage" | "pagination" | "setPagination"
+> & {
+  setMeta: (meta: any) => void
+}
+
+const MuiListRows: React.FC<MuiListRowsProps> = ({
+  displays,
+  useData,
+  setMeta,
+}) => {
   const [data, meta] = useData()
-  console.log("data ", data)
-  console.log("meta in list", meta)
+  const stringifiedMeta = JSON.stringify(meta)
+
+  useEffect(() => {
+    setMeta(meta)
+  }, [setMeta, stringifiedMeta])
 
   if (meta.isLoading) {
     return <SkeletonCells displays={displays} />
