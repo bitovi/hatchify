@@ -3,6 +3,7 @@ import type {
   SourceConfig,
   QueryList,
   Resource,
+  RequestMetaData,
 } from "@hatchifyjs/rest-client"
 import type { JsonApiResource } from "../jsonapi"
 import {
@@ -19,8 +20,8 @@ export async function findAll(
   config: SourceConfig,
   allSchemas: Schemas,
   schemaName: string,
-  query: Required<QueryList>, // todo page, sort, and filter
-): Promise<Resource[]> {
+  query: Required<QueryList>,
+): Promise<[Resources: Resource[], Meta: RequestMetaData]> {
   const queryParams = getQueryParams(config.schemaMap, allSchemas, schemaName, {
     fields: query.fields,
     include: query.include,
@@ -34,10 +35,11 @@ export async function findAll(
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}${queryParams}`,
   )
 
-  return Promise.resolve(
+  return Promise.resolve([
     convertToHatchifyResources(
       [...json.data, ...(json.included || [])],
       config.schemaMap,
     ),
-  )
+    json.meta,
+  ])
 }

@@ -23,7 +23,7 @@ const fakeData = [
 
 const fakeDataSource: Source = {
   version: 0,
-  findAll: () => Promise.resolve([]),
+  findAll: () => Promise.resolve([[], {}]),
   findOne: () => Promise.resolve([fakeData[0]]),
   createOne: () => Promise.resolve([]),
   updateOne: () => Promise.resolve([]),

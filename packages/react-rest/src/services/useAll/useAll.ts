@@ -6,6 +6,7 @@ import type {
   MetaError,
   QueryList,
   Record,
+  RequestMetaData,
   Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
@@ -34,6 +35,7 @@ export const useAll = (
 ): [Record[], Meta] => {
   const memoizedQuery = useMemoizedQuery(query)
   const [data, setData] = useState<Record[]>([])
+  const [requestMeta, setRequestMeta] = useState<RequestMetaData>()
 
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
@@ -41,7 +43,10 @@ export const useAll = (
   const fetchAll = useCallback(() => {
     setLoading(true)
     findAll(dataSource, allSchemas, schemaName, memoizedQuery)
-      .then(setData)
+      .then(([data, requestMeta]) => {
+        setData(data)
+        setRequestMeta(requestMeta)
+      })
       .catch(setError)
       .finally(() => setLoading(false))
   }, [dataSource, allSchemas, schemaName, memoizedQuery])
@@ -54,6 +59,6 @@ export const useAll = (
     return subscribeToAll(schemaName, fetchAll)
   }, [schemaName, fetchAll])
 
-  const meta: Meta = getMeta(error, loading, false, undefined)
+  const meta: Meta = getMeta(error, loading, false, requestMeta)
   return [data, meta]
 }

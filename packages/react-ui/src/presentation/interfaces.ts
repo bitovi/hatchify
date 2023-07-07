@@ -26,7 +26,17 @@ export interface SortObject {
   sortBy: string | undefined
 }
 
-export type HatchifyListSort = {
+export interface PageCountObject {
+  number: number
+  size: number
+}
+
+export interface HatchifyListPagination {
+  pagination: PageCountObject
+  setPagination: (page: PageCountObject) => void
+}
+
+export interface HatchifyListSort {
   sort: SortObject
   setSort: (sortBy: string) => void
   sortQueryString: string
@@ -34,8 +44,10 @@ export type HatchifyListSort = {
 
 export interface XListProps {
   displays: HatchifyDisplay[]
+  pagination: PageCountObject
   useData: () => [Record[], Meta]
   sort: SortObject
+  setPagination: (page: PageCountObject) => void
   setSort: (sortBy: string) => void
 }
 

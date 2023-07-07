@@ -1,4 +1,10 @@
-import type { Source, Record, QueryList, Schemas } from "../../types"
+import type {
+  Source,
+  Record,
+  QueryList,
+  Schemas,
+  RequestMetaData,
+} from "../../types"
 import { flattenResourcesIntoRecords, getFields, getInclude } from "../../utils"
 
 /**
@@ -10,18 +16,21 @@ export const findAll = async (
   allSchemas: Schemas,
   schemaName: string,
   query: QueryList,
-): Promise<Record[]> => {
+): Promise<[Records: Record[], RequestMetaData: RequestMetaData]> => {
   const updatedQuery = {
     ...query,
     include: getInclude(allSchemas, schemaName, query),
     fields: getFields(allSchemas, schemaName, query),
   } as Required<QueryList>
 
-  const resources = await dataSource.findAll(
+  const [resources, requestMetaData] = await dataSource.findAll(
     allSchemas,
     schemaName,
     updatedQuery,
   )
 
-  return flattenResourcesIntoRecords(allSchemas, resources, schemaName)
+  return [
+    flattenResourcesIntoRecords(allSchemas, resources, schemaName),
+    requestMetaData,
+  ]
 }

@@ -104,9 +104,13 @@ export const testData = [
   },
 ]
 
+export const testMeta = {
+  unpaginatedCount: 2,
+}
+
 export const fakeDataSource: Source = {
   version: 0,
-  findAll: () => Promise.resolve(testData),
+  findAll: () => Promise.resolve([testData, testMeta]),
   findOne: () =>
     Promise.resolve([testData[0], testData[2], testData[3], testData[4]]),
   createOne: () =>
