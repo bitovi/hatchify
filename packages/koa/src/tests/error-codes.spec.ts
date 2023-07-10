@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import type { HatchifyModel } from "@hatchifyjs/node"
 
 import { startServerWith } from "../testing/utils"
