@@ -57,6 +57,6 @@ describe("Error Code Tests", () => {
 
     expect(create).toBeTruthy()
     expect(create.status).toBe(422)
-    expect(create.deserialized).toContainEqual(ERROR_CODE_MISSING_DATA)
+    expect(create.deserialized.errors).toContainEqual(ERROR_CODE_MISSING_DATA)
   })
 })
