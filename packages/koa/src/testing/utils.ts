@@ -7,7 +7,7 @@ import Koa from "koa"
 import type { Context } from "koa"
 import request from "supertest"
 
-import { Hatchify } from "../koa"
+import { Hatchify, errorHandlerMiddleware } from "../koa"
 
 type Method = "get" | "post" | "patch" | "delete"
 type Middleware = (ctx: Context) => void
@@ -24,6 +24,7 @@ export async function startServerWith(
 }> {
   const app = new Koa()
   const hatchify = new Hatchify(models, { prefix: "/api" })
+  app.use(errorHandlerMiddleware)
   app.use(hatchify.middleware.allModels.all)
 
   const server = http.createServer(app.callback())

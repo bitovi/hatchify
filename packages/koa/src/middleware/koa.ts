@@ -91,6 +91,6 @@ export async function errorMiddleware(
     const { errors, status } = errorResponseHandler(error)
 
     ctx.status = status
-    ctx.body = errors
+    ctx.body = { jsonapi: { version: "1.0" }, errors }
   }
 }

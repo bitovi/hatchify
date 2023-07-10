@@ -1,13 +1,7 @@
 import { codes, statusCodes } from "./constants"
 
-class Source {
-  pointer?: string
-  parameter?: string
-
-  constructor(pointer?: string, parameter?: string) {
-    this.pointer = pointer && "/data/attributes/" + pointer
-    this.parameter = parameter
-  }
+interface Source {
+  pointer: string
 }
 
 interface HatchifyErrorOptions {
@@ -39,8 +33,11 @@ class HatchifyError extends Error {
     this.status = status || statusCodes.INTERNAL_SERVER_ERROR
     this.code = code || codes.ERR_SERVER_ERROR
     this.detail = detail
-    this.source = new Source(pointer, parameter)
     this.title = title || "Server Error ocurred"
+
+    if (pointer) {
+      this.source = { pointer }
+    }
   }
 }
 
@@ -78,6 +75,18 @@ class ConflictError extends HatchifyError {
   }
 }
 
+class MissingDataError extends HatchifyError {
+  constructor() {
+    super({
+      status: statusCodes.UNPROCESSABLE_ENTITY,
+      code: codes.ERR_MISSING_DATA,
+      title: "'data' must be specified for this operation.",
+      detail: "Payload was missing 'data' field. It can not be null/undefined.",
+      pointer: "/data",
+    })
+  }
+}
+
 export type { HatchifyErrorOptions }
 export {
   HatchifyError,
@@ -85,4 +94,5 @@ export {
   NotFoundError,
   UniqueConstraintError,
   ConflictError,
+  MissingDataError,
 }

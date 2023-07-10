@@ -1,3 +1,5 @@
+import type { ErrorObject } from "json-api-serializer"
+
 import { errorResponseHandler } from "../error"
 import { codes, statusCodes } from "../error/constants"
 import { ValidationError } from "../error/errors"
@@ -254,7 +256,10 @@ export function handleAllMiddleware(hatchify: Hatchify) {
     } catch (error) {
       const { errors, status } = errorResponseHandler(error)
 
-      return { status, body: errors }
+      return {
+        status,
+        body: { jsonapi: { version: "1.0" }, errors: errors as ErrorObject[] },
+      }
     }
   }
 }
