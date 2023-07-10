@@ -1,8 +1,6 @@
 import type { HatchifyModel } from "@hatchifyjs/node"
-import Koa from "koa"
 
-import { Hatchify } from "../koa"
-import { POST, createServer } from "../testing/utils"
+import { startServerWith } from "../testing/utils"
 
 const ERROR_CODE_MISSING_DATA = {
   status: 422,
@@ -15,33 +13,40 @@ const ERROR_CODE_MISSING_DATA = {
 }
 
 describe("Error Code Tests", () => {
-  const TodoModel: HatchifyModel = {
+  const User: HatchifyModel = {
+    name: "User",
+    attributes: {
+      name: "STRING",
+    },
+    hasMany: [{ target: "Todo", options: { as: "todos" } }],
+  }
+
+  const Todo: HatchifyModel = {
     name: "Todo",
     attributes: {
       name: "STRING",
       due_date: "DATE",
       importance: "INTEGER",
     },
+    belongsTo: [{ target: "User", options: { as: "user" } }],
   }
+
+  let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+  let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+  beforeAll(async () => {
+    ;({ fetch, teardown } = await startServerWith([User, Todo]))
+  })
+
+  afterAll(async () => {
+    await teardown()
+  })
+
   it("should return error MISSING_DATA error code when invalid data schema is passed", async () => {
-    const app = new Koa()
-    const hatchify = new Hatchify([TodoModel], {
-      prefix: "/api",
-      database: {
-        dialect: "sqlite",
-        storage: "example.sqlite",
-      },
-    })
-
-    app.use(hatchify.middleware.allModels.all)
-    const server = createServer(app)
-    await hatchify.createDatabase()
-
-    const create = await POST(
-      server,
-      "/api/todos",
-      {
-        invalid: {
+    const response = await fetch("/api/todos", {
+      method: "post",
+      body: {
+        dat: {
           type: "Todo",
           attributes: {
             id: "101",
@@ -51,12 +56,13 @@ describe("Error Code Tests", () => {
           },
         },
       },
+    })
 
-      "application/vnd.api+json",
-    )
+    expect(response).toBeTruthy()
+    expect(response.status).toBe(422)
 
-    expect(create).toBeTruthy()
-    expect(create.status).toBe(422)
-    expect(create.deserialized.errors).toContainEqual(ERROR_CODE_MISSING_DATA)
+    const { body } = response
+    expect(body.errors).toBeTruthy()
+    expect(body.errors).toContainEqual(ERROR_CODE_MISSING_DATA)
   })
 })
