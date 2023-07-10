@@ -146,8 +146,7 @@
       ".+\\.ts$": "ts-jest"
     },
     "modulePathIgnorePatterns": [
-      "<rootDir>/src/testing",
-      "<rootDir>/src/tests"
+      "<rootDir>/src/testing"
     ],
     "moduleNameMapper": {
       "@hatchifyjs/node": "<rootDir>/../node/src/exports.ts"
