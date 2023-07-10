@@ -6,6 +6,16 @@ import Koa from "koa"
 import { Hatchify } from "./koa"
 import { GET, POST, createServer } from "./testing/utils"
 
+const ERROR_CODE_MISSING_DATA = {
+  status: 422,
+  code: "missing-data",
+  title: " 'data' must be specified for this operation. ",
+  detail: "payload was missing 'data' field. It can not be null/undefined.",
+  source: {
+    pointer: "/data",
+  },
+}
+
 describe("JSON:API Tests", () => {
   const Model: HatchifyModel = {
     name: "Model",
@@ -126,14 +136,6 @@ describe("JSON:API Tests", () => {
 
     expect(create).toBeTruthy()
     expect(create.status).toBe(422)
-    expect(create.deserialized).toEqual({
-      status: 422,
-      code: "data-cannot-be-null",
-      title: " 'data' cannot be null for this operation ",
-      detail: "payload 'data' field can not be null",
-      source: {
-        pointer: "/data",
-      },
-    })
+    expect(create.deserialized).toContainEqual(ERROR_CODE_MISSING_DATA)
   })
 })
