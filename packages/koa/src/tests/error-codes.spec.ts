@@ -2,16 +2,6 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 
 import { startServerWith } from "../testing/utils"
 
-const ERROR_CODE_MISSING_DATA = {
-  status: 422,
-  code: "missing-data",
-  title: " 'data' must be specified for this operation. ",
-  detail: "payload was missing 'data' field. It can not be null/undefined.",
-  source: {
-    pointer: "/data",
-  },
-}
-
 describe("Error Code Tests", () => {
   const User: HatchifyModel = {
     name: "User",
@@ -43,6 +33,16 @@ describe("Error Code Tests", () => {
   })
 
   it("should return error MISSING_DATA error code when invalid data schema is passed", async () => {
+    const ERROR_CODE_MISSING_DATA = {
+      status: 422,
+      code: "missing-data",
+      title: "'data' must be specified for this operation.",
+      detail: "Payload was missing 'data' field. It can not be null/undefined.",
+      source: {
+        pointer: "/data",
+      },
+    }
+
     const response = await fetch("/api/todos", {
       method: "post",
       body: {
@@ -63,6 +63,9 @@ describe("Error Code Tests", () => {
 
     const { body } = response
     expect(body.errors).toBeTruthy()
-    expect(body.errors).toContainEqual(ERROR_CODE_MISSING_DATA)
+    expect(body.errors).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_MISSING_DATA],
+    })
   })
 })
