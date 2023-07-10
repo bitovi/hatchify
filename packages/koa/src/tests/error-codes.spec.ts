@@ -59,11 +59,11 @@ describe("Error Code Tests", () => {
     })
 
     expect(response).toBeTruthy()
-    expect(response.status).toBe(422)
 
-    const { body } = response
-    expect(body.errors).toBeTruthy()
-    expect(body.errors).toEqual({
+    const { status, body } = response
+
+    expect(status).toBe(422)
+    expect(body).toEqual({
       jsonapi: { version: "1.0" },
       errors: [ERROR_CODE_MISSING_DATA],
     })
