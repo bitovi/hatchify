@@ -30,8 +30,13 @@ describe("Attribute Tests", () => {
     await hatchify.createDatabase()
 
     const create = await POST(server, "/api/models", {
-      firstName: "firstName",
-      lastName: "lastName",
+      data: {
+        type: "Model",
+        attributes: {
+          firstName: "firstName",
+          lastName: "lastName",
+        },
+      },
     })
 
     expect(create).toBeTruthy()
@@ -72,8 +77,13 @@ describe("Attribute Tests", () => {
     await hatchify.createDatabase()
 
     const create = await POST(server, "/api/models", {
-      firstName: "firstName",
-      lastName: "lastName",
+      data: {
+        type: "Model",
+        attributes: {
+          firstName: "firstName",
+          lastName: "lastName",
+        },
+      },
     })
 
     expect(create).toBeTruthy()
@@ -100,18 +110,33 @@ describe("Attribute Tests", () => {
     await hatchify.createDatabase()
 
     await POST(server, "/api/models", {
-      firstName: "firstName1",
-      lastName: "lastName1",
+      data: {
+        type: "Model",
+        attributes: {
+          firstName: "firstName1",
+          lastName: "lastName1",
+        },
+      },
     })
 
     await POST(server, "/api/models", {
-      firstName: "firstName2",
-      lastName: "lastName2",
+      data: {
+        type: "Model",
+        attributes: {
+          firstName: "firstName2",
+          lastName: "lastName2",
+        },
+      },
     })
 
     await POST(server, "/api/models", {
-      firstName: "firstName3",
-      lastName: "lastName3",
+      data: {
+        type: "Model",
+        attributes: {
+          firstName: "firstName3",
+          lastName: "lastName3",
+        },
+      },
     })
 
     const find1 = await GET(server, "/api/models/?fields[Model]=firstName")

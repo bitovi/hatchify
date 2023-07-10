@@ -193,17 +193,6 @@ describe("index", () => {
     })
 
     describe("create", () => {
-      it("works with deserialized body", async () => {
-        const body = {
-          name: "Laundry",
-          due_date: "2024-12-02",
-          importance: 1,
-        }
-        const results = await create(body)
-
-        expect(results).toEqual({ body, ops: {} })
-      })
-
       it("works with serialized body", async () => {
         const body = {
           data: {
@@ -224,27 +213,24 @@ describe("index", () => {
     describe("update", () => {
       it("works with ID", async () => {
         const body = {
-          name: "Laundry",
-          due_date: "2024-12-02",
-          importance: 1,
+          data: {
+            type: "Todo",
+            attributes: {
+              name: "Laundry",
+              due_date: "2024-12-02",
+              importance: 1,
+            },
+          },
         }
         const results = await update(body, 1)
 
-        expect(results).toEqual({ body, ops: { where: { id: 1 } } })
+        expect(results).toEqual({
+          body: body.data.attributes,
+          ops: { where: { id: 1 } },
+        })
       })
 
       it("works without ID", async () => {
-        const body = {
-          name: "Laundry",
-          due_date: "2024-12-02",
-          importance: 1,
-        }
-        const results = await update(body)
-
-        expect(results).toEqual({ body, ops: { where: {} } })
-      })
-
-      it("works with serialized body", async () => {
         const body = {
           data: {
             type: "Todo",

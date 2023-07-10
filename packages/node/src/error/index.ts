@@ -1,5 +1,5 @@
-import { codes, statusCodes } from "./constants"
-import { HatchifyError } from "./errors"
+import { statusCodes } from "./constants"
+import type { HatchifyError } from "./errors"
 import { databaseErrorHandlers } from "./types/database-errors"
 import type { SequelizeError } from "./types/database-errors"
 import { hatchifyErrorHandler } from "./types/general-errors"
@@ -12,24 +12,7 @@ export interface ErrorResponse {
 }
 
 export function errorResponseHandler(error: Error): ErrorResponse {
-  if (error.name === "ValidationError") {
-    return {
-      errors: [
-        new HatchifyError({
-          title: error.message,
-          code: codes.ERR_INVALID_PARAMETER,
-          status: statusCodes.BAD_REQUEST,
-        }),
-      ],
-      status: statusCodes.BAD_REQUEST,
-    }
-  }
-
   const errors: GeneralError[] = []
-
-  let status = statusCodes.INTERNAL_SERVER_ERROR
-
-  console.error("Internal Server Error:", error)
 
   if (
     [
@@ -44,7 +27,8 @@ export function errorResponseHandler(error: Error): ErrorResponse {
     errors.push(hatchifyErrorHandler(error as HatchifyError))
   }
 
-  status = errors[0].status || status
-
-  return { errors, status }
+  return {
+    errors,
+    status: errors[0].status || statusCodes.INTERNAL_SERVER_ERROR,
+  }
 }
