@@ -21,6 +21,15 @@ describe("JSON:API Tests", () => {
     },
   }
 
+  const TodoModel = {
+    name: "Todo",
+    attributes: {
+      name: "STRING",
+      due_date: "DATE",
+      importance: "INTEGER",
+    },
+  }
+
   function serialize(data) {
     const serializer = new Serializer("Model", {
       keyForAttribute: "snake_case",
@@ -81,5 +90,50 @@ describe("JSON:API Tests", () => {
     expect(find.deserialized.id).toBe(create.deserialized.id)
 
     await hatchify.orm.close()
+  })
+
+  it("should return error 422 when invalid data schema is passed", async () => {
+    const app = new Koa()
+    const hatchify = new Hatchify([TodoModel], {
+      prefix: "/api",
+      database: {
+        dialect: "sqlite",
+        storage: "example.sqlite",
+      },
+    })
+
+    app.use(hatchify.middleware.allModels.all)
+    const server = createServer(app)
+    await hatchify.createDatabase()
+
+    const create = await POST(
+      server,
+      "/api/todos",
+      {
+        invalid: {
+          type: "Todo",
+          attributes: {
+            id: "101",
+            name: "Walk the dog",
+            due_date: "2024-12-12",
+            importance: 6,
+          },
+        },
+      },
+
+      "application/vnd.api+json",
+    )
+
+    expect(create).toBeTruthy()
+    expect(create.status).toBe(422)
+    expect(create.deserialized).toEqual({
+      status: 422,
+      code: "data-cannot-be-null",
+      title: " 'data' cannot be null for this operation ",
+      detail: "payload 'data' field can not be null",
+      source: {
+        pointer: "/data",
+      },
+    })
   })
 })
