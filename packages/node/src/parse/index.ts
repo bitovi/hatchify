@@ -7,8 +7,7 @@ import type {
 } from "sequelize"
 
 import { buildDestroyOptions, buildFindOptions } from "./builder"
-import { codes, statusCodes } from "../error/constants"
-import { MissingDataError, ValidationError } from "../error/errors"
+import { MissingDataError, ValidationError, codes, statusCodes } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
 

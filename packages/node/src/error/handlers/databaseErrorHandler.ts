@@ -1,11 +1,7 @@
 import type { Error } from "sequelize"
 
 import { codes, statusCodes } from "../constants"
-import {
-  HatchifyError,
-  UniqueConstraintError,
-  ValidationError,
-} from "../errors"
+import { HatchifyError, UniqueConstraintError, ValidationError } from "../types"
 
 export interface SequelizeError {
   errors?: Array<{
@@ -17,7 +13,7 @@ export interface SequelizeError {
   status?: number
 }
 
-export function databaseErrorHandlers(error: SequelizeError): Error {
+export function databaseErrorHandler(error: SequelizeError): Error {
   const { name, message } = error
   const pointer = error.errors?.[0].path
 

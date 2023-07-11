@@ -1,9 +1,7 @@
 import type { JSONAPIDocument } from "json-api-serializer"
 import type { Identifier } from "sequelize"
 
-// import { JSONObject } from "../types";
-// import { statusCodes } from "../error/constants";
-import { NotFoundError } from "../error/errors"
+import { NotFoundError } from "../error"
 import type { Hatchify } from "../node"
 
 export interface EverythingFunctions {
