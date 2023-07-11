@@ -32,7 +32,7 @@ describe("Error Code Tests", () => {
     await teardown()
   })
 
-  it("should return error MISSING_DATA error code when invalid data schema is passed", async () => {
+  it("should return error MISSING_DATA error code when invalid data schema is passed (HATCH-202)", async () => {
     const ERROR_CODE_MISSING_DATA = {
       status: 422,
       code: "missing-data",
