@@ -13,7 +13,6 @@ import type {
 } from "sequelize"
 import type { ModelHooks } from "sequelize/types/hooks"
 
-import type { GeneralError } from "../error"
 import type { Hatchify } from "../node"
 
 export { DataTypes } from "sequelize"
@@ -215,7 +214,7 @@ export interface MiddlewareRequest {
 }
 
 export interface MiddlewareResponse {
-  body: JSONAPIDocument | GeneralError[]
+  body: JSONAPIDocument
   status?: number
 }
 
