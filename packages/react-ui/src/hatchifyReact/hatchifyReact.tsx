@@ -3,6 +3,8 @@ import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type { Source, Schemas } from "@hatchifyjs/rest-client"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { transformSchema } from "@hatchifyjs/rest-client"
+import { HatchifyEmptyList } from "../components/HatchifyDisplays/HatchifyDisplays"
+import type { HatchifyEmptyListProps } from "../components/HatchifyDisplays/HatchifyDisplays"
 
 import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
 import { HatchifyList } from "../components/HatchifyList"
@@ -12,6 +14,7 @@ type Components = {
     List: (
       props: Omit<HatchifyListProps, "allSchemas" | "schemaName" | "useData">,
     ) => any
+    EmptyList: (props: HatchifyEmptyListProps) => any
   }
 }
 
@@ -41,6 +44,7 @@ export function hatchifyReact(
           {...props}
         />
       ),
+      EmptyList: (props) => <HatchifyEmptyList {...props} />,
     }
 
     return acc

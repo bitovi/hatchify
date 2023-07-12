@@ -16,11 +16,14 @@ export const hatchedReact = hatchifyReact(
 )
 
 const TodoList = hatchedReact.components.Todo.List
+const TodoEmptyList = hatchedReact.components.Todo.EmptyList
 
 const App: React.FC = () => {
   return (
     <MuiProvider>
-      <TodoList />
+      <TodoList>
+        <TodoEmptyList />
+      </TodoList>
     </MuiProvider>
   )
 }

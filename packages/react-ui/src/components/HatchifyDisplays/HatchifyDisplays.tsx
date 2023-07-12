@@ -28,6 +28,12 @@ export const HatchifyExtraDisplay: React.FC<HatchifyExtraDisplayProps> = () => {
   return null
 }
 
+export const HatchifyEmptyList: React.FC = () => {
+  return <div>No rows of data exist</div>
+}
+
+HatchifyEmptyList.displayName = "EmptyList"
+
 export type HatchifyAttributeDisplayProps = {
   attribute: string
   label?: string
