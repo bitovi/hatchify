@@ -319,14 +319,25 @@ export function getEmptyList(children: React.ReactNode | null): () => any {
     childArray,
   )
 
-  const EmptyList = () =>
-    emptyListPresent && childArray ? (
-      childArray.filter(
-        (child) => child.type.name === HatchifyEmptyList.displayName,
-      )[0]
+  const emptyChild = childArray.find(
+    (child) => child.type.name === HatchifyEmptyList.displayName,
+  )
+
+  const emptyDisplay: HatchifyDisplay = {
+    key: uuidv4(),
+    label: emptyChild?.props.label,
+    render: () => null,
+  }
+
+  emptyDisplay.render = emptyChild?.props.render
+
+  const EmptyList = () => {
+    return emptyListPresent && emptyChild ? (
+      emptyDisplay
     ) : (
       <div>There are no rows of data to display</div>
     )
+  }
 
   return EmptyList
 }

@@ -5,6 +5,7 @@ import {
   HatchifyExtraDisplay,
   HatchifyAttributeDisplay,
   HatchifyAttributeField,
+  HatchifyEmptyList,
 } from "./HatchifyDisplays"
 
 describe("hatchifyjs/components/HatchifyColumns", () => {
@@ -23,6 +24,12 @@ describe("hatchifyjs/components/HatchifyColumns", () => {
   describe("HatchifyAttributeField", () => {
     it("works", () => {
       render(<HatchifyAttributeField attribute="field" render={vi.fn()} />)
+    })
+  })
+
+  describe("HatchifyEmptyList", () => {
+    it("works", () => {
+      render(<HatchifyEmptyList label="Empty List" render={() => <div />} />)
     })
   })
 })
