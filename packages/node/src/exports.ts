@@ -18,7 +18,7 @@ export { errorResponseHandler } from "./error"
 
 export { codes, statusCodes } from "./error/constants"
 
-export { ConflictError, HatchifyError, ValidationError } from "./error/errors"
+export * from "./error/types"
 
 export type { EverythingFunctions } from "./everything"
 
