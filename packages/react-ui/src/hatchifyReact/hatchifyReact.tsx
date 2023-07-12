@@ -9,6 +9,7 @@ import type { HatchifyEmptyListProps } from "../components/HatchifyDisplays/Hatc
 import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
 import { HatchifyList } from "../components/HatchifyList"
 
+//TODO: typing instead of any
 type Components = {
   [schemaName: string]: {
     List: (
