@@ -152,7 +152,7 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
 
 type SkeletonCellsProps = Omit<
   XListProps,
-  "useData" | "sort" | "setSort" | "pagination" | "setPagination"
+  "useData" | "sort" | "setSort" | "pagination" | "setPagination" | "emptyList"
 >
 
 const SkeletonCells = ({ displays }: SkeletonCellsProps) => {

@@ -87,6 +87,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          emptyList={EmptyList}
         />,
       )
 
@@ -112,6 +113,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={setSort}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          emptyList={EmptyList}
         />,
       )
 
@@ -135,6 +137,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={setPagination}
+          emptyList={EmptyList}
         />,
       )
 
