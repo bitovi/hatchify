@@ -18,7 +18,7 @@ export async function startServerWith(
 ): Promise<{
   fetch: (
     path: string,
-    options?: { method?: Method; headers?: object; body: object },
+    options?: { method?: Method; headers?: object; body?: object },
   ) => Promise<any>
   teardown: () => Promise<void>
 }> {
