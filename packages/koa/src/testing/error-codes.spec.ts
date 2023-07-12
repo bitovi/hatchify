@@ -32,12 +32,12 @@ describe("Error Code Tests", () => {
     await teardown()
   })
 
-  it("should return error MISSING_DATA error code when invalid data schema is passed (HATCH-202)", async () => {
-    const ERROR_CODE_MISSING_DATA = {
+  it("should return error VALUE_REQUIRED error code when invalid data schema is passed (HATCH-206)", async () => {
+    const ERROR_CODE_VALUE_REQUIRED = {
       status: 422,
-      code: "missing-data",
-      title: "'data' must be specified for this operation.",
-      detail: "Payload was missing 'data' field. It can not be null/undefined.",
+      code: "value-required",
+      title: "Payload is missing a required value.",
+      detail: "Payload must include a value for 'data'.",
       source: {
         pointer: "/data",
       },
@@ -62,10 +62,63 @@ describe("Error Code Tests", () => {
 
     const { status, body } = response
 
-    expect(status).toBe(422)
+    expect(status).toBe(ERROR_CODE_VALUE_REQUIRED.status)
     expect(body).toEqual({
       jsonapi: { version: "1.0" },
-      errors: [ERROR_CODE_MISSING_DATA],
+      errors: [ERROR_CODE_VALUE_REQUIRED],
+    })
+  })
+
+  it("should return error NOT_FOUND error code when trying to delete a non-existing todo (HATCH-212)", async () => {
+    const ERROR_CODE_NOT_FOUND = {
+      status: 404,
+      code: "not-found",
+      title: "Resource not found.",
+      detail: "URL must include an ID of an existing 'Todo'.",
+      source: {
+        parameter: "id",
+      },
+    }
+
+    const response = await fetch("/api/todos/-1", {
+      method: "delete",
+    })
+
+    expect(response).toBeTruthy()
+
+    const { status, body } = response
+
+    expect(status).toBe(ERROR_CODE_NOT_FOUND.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_NOT_FOUND],
+    })
+  })
+
+  it("should return error NOT_FOUND error code when trying to update a non-existing todo (HATCH-211)", async () => {
+    const ERROR_CODE_NOT_FOUND = {
+      status: 404,
+      code: "not-found",
+      title: "Resource not found.",
+      detail: "URL must include an ID of an existing 'Todo'.",
+      source: {
+        parameter: "id",
+      },
+    }
+
+    const response = await fetch("/api/todos/-1", {
+      method: "patch",
+      body: { data: { attributes: { name: "Updated" } } },
+    })
+
+    expect(response).toBeTruthy()
+
+    const { status, body } = response
+
+    expect(status).toBe(ERROR_CODE_NOT_FOUND.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_NOT_FOUND],
     })
   })
 })
