@@ -28,7 +28,12 @@ export const HatchifyExtraDisplay: React.FC<HatchifyExtraDisplayProps> = () => {
   return null
 }
 
-export const HatchifyEmptyList: React.FC = () => {
+export type HatchifyEmptyListProps = {
+  label: string
+  after?: string
+} & ({ render: Render } | { ValueComponent: ValueComponent })
+
+export const HatchifyEmptyList: React.FC<HatchifyEmptyListProps> = () => {
   return <div>No rows of data exist</div>
 }
 
