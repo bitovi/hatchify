@@ -311,7 +311,9 @@ export function getDisplays(
   return displays
 }
 
-export function getEmptyList(children: React.ReactNode | null): () => any {
+export function getEmptyList(
+  children: React.ReactNode | null,
+): () => React.ReactNode {
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
 
   const emptyListPresent = hasValidChildren(
@@ -323,13 +325,7 @@ export function getEmptyList(children: React.ReactNode | null): () => any {
     (child) => child.type.name === HatchifyEmptyList.displayName,
   )
 
-  const emptyDisplay: HatchifyDisplay = {
-    key: uuidv4(),
-    label: emptyChild?.props.label,
-    render: () => null,
-  }
-
-  emptyDisplay.render = emptyChild?.props.render
+  const emptyDisplay: React.ReactNode = emptyChild?.props.children
 
   const EmptyList = () => {
     return emptyListPresent && emptyChild ? (

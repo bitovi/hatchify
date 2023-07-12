@@ -22,12 +22,12 @@ const App: React.FC = () => {
   return (
     <MuiProvider>
       <TodoList>
-        <TodoEmptyList
-          label="Empty List"
-          render={() => {
-            return <div>No records to display</div>
-          }}
-        />
+        <TodoEmptyList >
+          <div>
+            {"No records to display"}
+            <button>click here</button>
+          </div>
+        </TodoEmptyList>
       </TodoList>
     </MuiProvider>
   )

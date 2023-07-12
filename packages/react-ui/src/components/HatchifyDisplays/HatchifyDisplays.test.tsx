@@ -1,6 +1,6 @@
-import { describe, it, vi } from "vitest"
-
-import { render } from "@testing-library/react"
+import "@testing-library/jest-dom"
+import { describe, it, vi, expect } from "vitest"
+import { render, screen } from "@testing-library/react"
 import {
   HatchifyExtraDisplay,
   HatchifyAttributeDisplay,
@@ -22,14 +22,15 @@ describe("hatchifyjs/components/HatchifyColumns", () => {
   })
 
   describe("HatchifyAttributeField", () => {
-    it("works", () => {
+    it("works", async () => {
       render(<HatchifyAttributeField attribute="field" render={vi.fn()} />)
     })
   })
 
   describe("HatchifyEmptyList", () => {
-    it("works", () => {
-      render(<HatchifyEmptyList label="Empty List" render={() => <div />} />)
+    it("works", async () => {
+      render(<HatchifyEmptyList>So empty inside</HatchifyEmptyList>)
+      expect(await screen.findByText("So empty inside")).toBeInTheDocument()
     })
   })
 })
