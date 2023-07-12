@@ -29,7 +29,7 @@ export const HatchifyExtraDisplay: React.FC<HatchifyExtraDisplayProps> = () => {
 }
 
 export type HatchifyEmptyListProps = {
-  children?: React.ReactNode
+  children: React.ReactNode
 }
 
 export const HatchifyEmptyList: React.FC<HatchifyEmptyListProps> = () => {

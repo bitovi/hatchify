@@ -133,8 +133,9 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
 
   return (
     <>
-      {data.length === 0 && <EmptyList />}
-      {data.length > 0 &&
+      {data.length === 0 ? (
+        <EmptyList />
+      ) : (
         data.map((item) => (
           <TableRow key={item.id}>
             {displays.map((display) => (
@@ -145,7 +146,8 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
               </TableCell>
             ))}
           </TableRow>
-        ))}
+        ))
+      )}
     </>
   )
 }

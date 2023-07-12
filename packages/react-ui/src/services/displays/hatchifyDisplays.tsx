@@ -314,23 +314,14 @@ export function getDisplays(
 export function getEmptyList(children: React.ReactNode): () => JSX.Element {
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
 
-  const emptyListPresent = hasValidChildren(
-    HatchifyEmptyList.displayName ?? "",
-    childArray,
-  )
-
   const emptyChild = childArray.find(
     (child) => child.type.name === HatchifyEmptyList.displayName,
   )
 
-  const emptyDisplay: JSX.Element = emptyChild?.props.children
+  const emptyDisplay: JSX.Element = emptyChild?.props.children || undefined
 
   const EmptyList = () => {
-    return emptyListPresent && emptyChild ? (
-      emptyDisplay
-    ) : (
-      <div>There are no rows of data to display</div>
-    )
+    return emptyDisplay || <div>There are no rows of data to display</div>
   }
 
   return EmptyList

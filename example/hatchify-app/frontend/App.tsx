@@ -22,7 +22,7 @@ const App: React.FC = () => {
   return (
     <MuiProvider>
       <TodoList>
-        <TodoEmptyList >
+        <TodoEmptyList>
           <div>
             {"No records to display"}
             <button>click here</button>
