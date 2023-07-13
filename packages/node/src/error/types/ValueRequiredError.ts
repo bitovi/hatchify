@@ -4,10 +4,10 @@ import { codes, statusCodes } from "../constants"
 
 export class ValueRequiredError extends HatchifyError {
   constructor({
+    title,
     detail,
     parameter,
     pointer,
-    title,
   }: Pick<HatchifyErrorOptions, "detail" | "parameter" | "pointer" | "title">) {
     super({
       status: statusCodes.UNPROCESSABLE_ENTITY,

@@ -265,7 +265,7 @@ describe("Relationships", () => {
     })
   })
 
-  describe.skip("should handle validation errors (HATCH-186)", () => {
+  describe("should handle validation errors (HATCH-186)", () => {
     it("should handle non-existing associations", async () => {
       const { status, body } = await fetch("/api/users", {
         method: "post",
@@ -282,6 +282,10 @@ describe("Relationships", () => {
                     type: "Todo",
                     id: -1,
                   },
+                  {
+                    type: "Todo",
+                    id: -2,
+                  },
                 ],
               },
             },
@@ -289,15 +293,30 @@ describe("Relationships", () => {
         },
       })
 
-      expect(status).toEqual(400)
-      expect(body).toEqual([
-        {
-          code: "invalid-parameter",
-          source: {},
-          status: 400,
-          title: "Todo with ID -1 was not found",
-        },
-      ])
+      expect(status).toEqual(404)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [
+          {
+            status: 404,
+            code: "not-found",
+            title: "Resource not found.",
+            detail: "Payload must include an ID of an existing 'Todo'.",
+            source: {
+              pointer: "/data/relationships/todos/0",
+            },
+          },
+          {
+            status: 404,
+            code: "not-found",
+            title: "Resource not found.",
+            detail: "Payload must include an ID of an existing 'Todo'.",
+            source: {
+              pointer: "/data/relationships/todos/1",
+            },
+          },
+        ],
+      })
     })
   })
 
