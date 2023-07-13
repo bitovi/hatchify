@@ -31,6 +31,16 @@ export const HatchifyExtraDisplay: React.FC<HatchifyExtraDisplayProps> = () => {
 // component is exposed to end-user as `ExtraDisplay`
 HatchifyExtraDisplay.displayName = "ExtraDisplay"
 
+export type HatchifyEmptyListProps = {
+  children: React.ReactNode
+}
+
+export const HatchifyEmptyList: React.FC<HatchifyEmptyListProps> = () => {
+  return null
+}
+
+HatchifyEmptyList.displayName = "EmptyList"
+
 export type HatchifyAttributeDisplayProps = {
   attribute: string
   label?: string

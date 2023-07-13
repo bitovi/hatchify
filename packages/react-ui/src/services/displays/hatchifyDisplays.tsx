@@ -6,6 +6,7 @@ import type { Attribute, Record, Schema } from "@hatchifyjs/rest-client"
 import {
   HatchifyAttributeDisplay,
   HatchifyExtraDisplay,
+  HatchifyEmptyList,
 } from "../../components"
 
 import type {
@@ -305,4 +306,20 @@ export function getDisplays(
     displays = injectExtraDisplays(displays, defaultValueComponents, childArray)
   }
   return displays
+}
+
+export function getEmptyList(children: React.ReactNode): () => JSX.Element {
+  const childArray = ReactChildren.toArray(children) as JSX.Element[]
+
+  const emptyChild = childArray.find(
+    (child) => child.type.name === HatchifyEmptyList.displayName,
+  )
+
+  const emptyDisplay: JSX.Element = emptyChild?.props.children || undefined
+
+  const EmptyList = () => {
+    return emptyDisplay || <div>There are no rows of data to display</div>
+  }
+
+  return EmptyList
 }

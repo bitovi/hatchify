@@ -1,10 +1,10 @@
 import { describe, it, vi } from "vitest"
-
 import { render } from "@testing-library/react"
 import {
   HatchifyExtraDisplay,
   HatchifyAttributeDisplay,
   HatchifyAttributeField,
+  HatchifyEmptyList,
 } from "./HatchifyDisplays"
 
 describe("hatchifyjs/components/HatchifyColumns", () => {
@@ -23,6 +23,12 @@ describe("hatchifyjs/components/HatchifyColumns", () => {
   describe("HatchifyAttributeField", () => {
     it("works", () => {
       render(<HatchifyAttributeField attribute="field" render={vi.fn()} />)
+    })
+  })
+
+  describe("HatchifyEmptyList", () => {
+    it("works", () => {
+      render(<HatchifyEmptyList>So empty inside</HatchifyEmptyList>)
     })
   })
 })

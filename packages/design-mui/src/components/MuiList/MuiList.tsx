@@ -37,6 +37,7 @@ const styles = {
 
 export const MuiList: React.FC<XListProps> = ({
   displays,
+  emptyList,
   pagination,
   useData,
   sort,
@@ -81,6 +82,7 @@ export const MuiList: React.FC<XListProps> = ({
               displays={displays}
               useData={useData}
               setMeta={setMeta}
+              emptyList={emptyList}
             />
           </TableBody>
         </Suspense>
@@ -116,6 +118,7 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
   displays,
   useData,
   setMeta,
+  emptyList: EmptyList,
 }) => {
   const [data, meta] = useData()
   const stringifiedMeta = JSON.stringify(meta)
@@ -130,24 +133,28 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
 
   return (
     <>
-      {data.map((item) => (
-        <TableRow key={item.id}>
-          {displays.map((display) => (
-            <TableCell key={`${item.id}-${display.key}`}>
-              {display.render({
-                record: item,
-              })}
-            </TableCell>
-          ))}
-        </TableRow>
-      ))}
+      {data.length === 0 ? (
+        <EmptyList />
+      ) : (
+        data.map((item) => (
+          <TableRow key={item.id}>
+            {displays.map((display) => (
+              <TableCell key={`${item.id}-${display.key}`}>
+                {display.render({
+                  record: item,
+                })}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))
+      )}
     </>
   )
 }
 
 type SkeletonCellsProps = Omit<
   XListProps,
-  "useData" | "sort" | "setSort" | "pagination" | "setPagination"
+  "useData" | "sort" | "setSort" | "pagination" | "setPagination" | "emptyList"
 >
 
 const SkeletonCells = ({ displays }: SkeletonCellsProps) => {
