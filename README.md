@@ -577,6 +577,10 @@ That’s it! With minimal code and some HatchifyJS magic, using our
 well-defined schemas we have a backend running with REST endpoints, a
 database, and a frontend that handles the JSX and data-fetching for us.
 
+# Next Steps
+
+* [Configuring a different database driver](./DATABASES.md)
+
 # Troubleshooting / Known issues
 
 ```bash
