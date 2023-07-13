@@ -33,6 +33,26 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
       },
     ] as any // todo: fix typing
 
+  const useNoData = () =>
+    [
+      [],
+      {
+        status: "success",
+        meta: {
+          unpaginatedCount: 30, // 3 pages
+        },
+        error: undefined,
+        isDone: true,
+        isLoading: false,
+        isRejected: false,
+        isRevalidating: false,
+        isStale: false,
+        isSuccess: true,
+      },
+    ] as any
+
+  const EmptyList = () => <div>so empty inside</div>
+
   const displays = [
     {
       key: "firstName",
@@ -67,6 +87,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          emptyList={EmptyList}
         />,
       )
 
@@ -92,6 +113,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={setSort}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          emptyList={EmptyList}
         />,
       )
 
@@ -115,6 +137,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={setPagination}
+          emptyList={EmptyList}
         />,
       )
 
@@ -127,6 +150,25 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
         [{ number: 3, size: 10 }],
         [{ number: 1, size: 10 }],
       ])
+    })
+
+    it("displays EmptyList component if there is no data", async () => {
+      render(
+        <MuiList
+          useData={useNoData}
+          displays={displays}
+          sort={{
+            direction: undefined,
+            sortBy: undefined,
+          }}
+          setSort={() => vi.fn()}
+          pagination={{ number: 1, size: 10 }}
+          setPagination={() => vi.fn()}
+          emptyList={EmptyList}
+        />,
+      )
+
+      expect(await screen.findByText("so empty inside")).toBeInTheDocument()
     })
   })
 })
