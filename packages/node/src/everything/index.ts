@@ -93,8 +93,14 @@ export function updateEverything(hatchify: Hatchify, modelName: string) {
     id?: Identifier,
   ) {
     const { body, ops } = await hatchify.parse[modelName].update(rawbody, id)
-    const result = await hatchify.model[modelName].update(body, ops)
-    const response = await hatchify.serialize[modelName].update(result[0])
+    const [affectedCount] = await hatchify.model[modelName].update(body, ops)
+    if (!affectedCount) {
+      throw new NotFoundError({
+        detail: `URL must include an ID of an existing '${modelName}'.`,
+        parameter: "id",
+      })
+    }
+    const response = await hatchify.serialize[modelName].update(affectedCount)
     return response
   }
 }
@@ -102,8 +108,14 @@ export function updateEverything(hatchify: Hatchify, modelName: string) {
 export function destroyEverything(hatchify: Hatchify, modelName: string) {
   return async function destroyImpl(querystring: string, id: Identifier) {
     const params = await hatchify.parse[modelName].destroy(querystring, id)
-    const result = await hatchify.model[modelName].destroy(params)
-    const response = await hatchify.serialize[modelName].destroy(result)
+    const affectedCount = await hatchify.model[modelName].destroy(params)
+    if (!affectedCount) {
+      throw new NotFoundError({
+        detail: `URL must include an ID of an existing '${modelName}'.`,
+        parameter: "id",
+      })
+    }
+    const response = await hatchify.serialize[modelName].destroy(affectedCount)
     return response
   }
 }

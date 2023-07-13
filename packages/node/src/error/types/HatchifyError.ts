@@ -1,7 +1,8 @@
 import { codes, statusCodes } from "../constants"
 
 interface Source {
-  pointer: string
+  pointer?: string
+  parameter?: string
 }
 
 export interface HatchifyErrorOptions {
@@ -34,6 +35,10 @@ export class HatchifyError extends Error {
     this.code = code || codes.ERR_SERVER_ERROR
     this.detail = detail
     this.title = title || "Server Error ocurred"
+
+    if (parameter) {
+      this.source = { parameter }
+    }
 
     if (pointer) {
       this.source = { pointer }

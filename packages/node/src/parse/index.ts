@@ -7,7 +7,12 @@ import type {
 } from "sequelize"
 
 import { buildDestroyOptions, buildFindOptions } from "./builder"
-import { MissingDataError, ValidationError, codes, statusCodes } from "../error"
+import {
+  ValidationError,
+  ValueRequiredError,
+  codes,
+  statusCodes,
+} from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
 
@@ -77,7 +82,13 @@ async function createImpl<T extends HatchifyModel = HatchifyModel>(
   model: T,
   body: any,
 ) {
-  if (!body.data) throw new MissingDataError()
+  if (!body.data) {
+    throw new ValueRequiredError({
+      title: "Payload is missing a required value.",
+      detail: "Payload must include a value for 'data'.",
+      pointer: "/data",
+    })
+  }
 
   const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 
@@ -93,7 +104,13 @@ async function updateImpl(
   body: any,
   id,
 ) {
-  if (!body.data) throw new MissingDataError()
+  if (!body.data) {
+    throw new ValueRequiredError({
+      title: "Payload is missing a required value.",
+      detail: "Payload must include a value for 'data'.",
+      pointer: "/data",
+    })
+  }
 
   const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 

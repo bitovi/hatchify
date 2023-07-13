@@ -2,16 +2,17 @@ import { HatchifyError } from "./HatchifyError"
 import type { HatchifyErrorOptions } from "./HatchifyError"
 import { codes, statusCodes } from "../constants"
 
-export class NotFoundError extends HatchifyError {
+export class ValueRequiredError extends HatchifyError {
   constructor({
     detail,
     parameter,
     pointer,
-  }: Pick<HatchifyErrorOptions, "detail" | "parameter" | "pointer">) {
+    title,
+  }: Pick<HatchifyErrorOptions, "detail" | "parameter" | "pointer" | "title">) {
     super({
-      title: "Resource not found.",
-      code: codes.ERR_NOT_FOUND,
-      status: statusCodes.NOT_FOUND,
+      status: statusCodes.UNPROCESSABLE_ENTITY,
+      code: codes.ERR_VALUE_REQUIRED,
+      title,
       detail,
       parameter,
       pointer,
