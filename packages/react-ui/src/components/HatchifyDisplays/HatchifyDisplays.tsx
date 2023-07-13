@@ -28,6 +28,9 @@ export const HatchifyExtraDisplay: React.FC<HatchifyExtraDisplayProps> = () => {
   return null
 }
 
+// component is exposed to end-user as `ExtraDisplay`
+HatchifyExtraDisplay.displayName = "ExtraDisplay"
+
 export type HatchifyAttributeDisplayProps = {
   attribute: string
   label?: string

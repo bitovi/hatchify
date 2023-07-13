@@ -16,11 +16,27 @@ export const hatchedReact = hatchifyReact(
 )
 
 const TodoList = hatchedReact.components.Todo.List
+const TodoExtraDisplay = hatchedReact.components.Todo.ExtraDisplay
 
 const App: React.FC = () => {
   return (
     <MuiProvider>
-      <TodoList />
+      <TodoList>
+        <TodoExtraDisplay
+          label="Action"
+          render={({ record }) => {
+            return (
+              <>
+                <button onClick={() => console.log(record)}>Download</button>
+                <button onClick={() => console.log(record)}>Open</button>
+                <button onClick={() => console.log(record)}>
+                  More Actions
+                </button>
+              </>
+            )
+          }}
+        />
+      </TodoList>
     </MuiProvider>
   )
 }
