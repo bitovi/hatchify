@@ -3,6 +3,7 @@ import type { Error } from "sequelize"
 import { codes, statusCodes } from "../constants"
 import {
   HatchifyError,
+  UnexpectedValueError,
   UniqueConstraintError,
   ValidationError,
 } from "../errors"
@@ -11,6 +12,9 @@ export interface SequelizeError {
   errors?: Array<{
     path: string
     type: string
+    validatorKey: string
+    validatorArgs: string[][]
+    instance: object
   }>
   message: string
   name: string
@@ -26,6 +30,15 @@ export function databaseErrorHandlers(error: SequelizeError): Error {
       error = new ValidationError({
         title: `${error.errors[0].path} is required.`,
         status: statusCodes.UNPROCESSABLE_ENTITY,
+        pointer,
+      })
+    } else if (error.errors?.[0].validatorKey === "isIn") {
+      error = new UnexpectedValueError({
+        title: `${error.errors[0].instance.constructor.name} must have '${
+          error.errors[0].path
+        }' as one of ${error.errors[0].validatorArgs[0]
+          .map((a) => `'${a}'`)
+          .join(", ")}.`,
         pointer,
       })
     }
