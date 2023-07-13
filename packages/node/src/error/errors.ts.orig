@@ -75,6 +75,7 @@ class ConflictError extends HatchifyError {
   }
 }
 
+<<<<<<< HEAD
 class MissingDataError extends HatchifyError {
   constructor() {
     super({
@@ -84,15 +85,14 @@ class MissingDataError extends HatchifyError {
       detail: "Payload was missing 'data' field. It can not be null/undefined.",
       pointer: "/data",
     })
-  }
-}
-
+=======
 class UnexpectedValueError extends HatchifyError {
   constructor(params) {
     super(params)
     this.title = params.title || "Conflict"
     this.code = codes.ERR_UNEXPECTED_VALUE
     this.status = statusCodes.UNPROCESSABLE_ENTITY
+>>>>>>> dffc662 (Add hatchify-appropriate error handling for value not in enum)
   }
 }
 
@@ -103,6 +103,9 @@ export {
   NotFoundError,
   UniqueConstraintError,
   ConflictError,
+<<<<<<< HEAD
   MissingDataError,
+=======
   UnexpectedValueError,
+>>>>>>> dffc662 (Add hatchify-appropriate error handling for value not in enum)
 }

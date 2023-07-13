@@ -49,6 +49,7 @@ export interface XListProps {
   sort: SortObject
   setPagination: (page: PageCountObject) => void
   setSort: (sortBy: string) => void
+  emptyList: () => JSX.Element
 }
 
 export interface XLayoutProps {

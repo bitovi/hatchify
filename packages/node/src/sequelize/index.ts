@@ -14,8 +14,7 @@ import type {
 } from "sequelize"
 import { DataTypes, Sequelize } from "sequelize"
 
-import { codes, statusCodes } from "../error/constants"
-import { HatchifyError } from "../error/errors"
+import { HatchifyError, codes, statusCodes } from "../error"
 import { registerSchema } from "../serialize"
 import type {
   HatchifyModel,

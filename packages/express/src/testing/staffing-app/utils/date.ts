@@ -2,13 +2,12 @@ import Chance from "chance"
 
 const chance = new Chance()
 
-const compareDates = (date1, date2) =>
-  date1 && date2 && new Date(date1) < new Date(date2)
+function compareDates(date1: string, date2: string): boolean {
+  return date1 && date2 ? new Date(date1) < new Date(date2) : false
+}
 
 // Formats the date to 'YYYY-MM-DD' and if the offset parameter is passed in, adds the offset to the day to avoid overlap
-const toDateFormat = (date) => {
-  date = new Date(date)
-
+function toDateFormat(date: Date): string {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
 }
 

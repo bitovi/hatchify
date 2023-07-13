@@ -6,6 +6,7 @@ import type { Attribute, Record, Schema } from "@hatchifyjs/rest-client"
 import {
   HatchifyAttributeDisplay,
   HatchifyExtraDisplay,
+  HatchifyEmptyList,
 } from "../../components"
 
 import type {
@@ -84,7 +85,7 @@ export function getDisplaysFromChildren(
   children: JSX.Element[],
 ): HatchifyDisplay[] {
   const displays = children
-    .filter((child) => child.type.name === HatchifyAttributeDisplay.name)
+    .filter((child) => child.type.name === HatchifyAttributeDisplay.displayName)
     .map((child) => {
       const { props } = child
       const relationship = schema?.relationships?.[props.attribute]
@@ -257,7 +258,7 @@ export function injectExtraDisplays(
   const updatedDisplays = cloneDeep(displays)
 
   for (let i = 0; i < children.length; i++) {
-    if (children[i].type.name !== HatchifyExtraDisplay.name) continue
+    if (children[i].type.name !== HatchifyExtraDisplay.displayName) continue
     const { props } = children[i]
 
     // @todo add according to props.after property
@@ -277,10 +278,10 @@ export function injectExtraDisplays(
 }
 
 export function hasValidChildren(
-  name: string,
+  displayName: string,
   children: JSX.Element[],
 ): boolean {
-  return children.some((child) => child.type.name === name)
+  return children.some((child) => child.type.name === displayName)
 }
 
 export function getDisplays(
@@ -292,8 +293,10 @@ export function getDisplays(
   // casting as JSX.Element because helper functions require access to
   // `child.type.name` and `child.props`
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
-
-  let displays = hasValidChildren(HatchifyAttributeDisplay.name, childArray)
+  let displays = hasValidChildren(
+    HatchifyAttributeDisplay.displayName ?? "",
+    childArray,
+  )
     ? getDisplaysFromChildren(schema, defaultValueComponents, childArray)
     : getDisplaysFromSchema(
         schema,
@@ -301,9 +304,25 @@ export function getDisplays(
         valueComponents || null,
       )
 
-  if (hasValidChildren(HatchifyExtraDisplay.name, childArray)) {
+  if (hasValidChildren(HatchifyExtraDisplay.displayName ?? "", childArray)) {
     displays = injectExtraDisplays(displays, defaultValueComponents, childArray)
   }
 
   return displays
+}
+
+export function getEmptyList(children: React.ReactNode): () => JSX.Element {
+  const childArray = ReactChildren.toArray(children) as JSX.Element[]
+
+  const emptyChild = childArray.find(
+    (child) => child.type.name === HatchifyEmptyList.displayName,
+  )
+
+  const emptyDisplay: JSX.Element = emptyChild?.props.children || undefined
+
+  const EmptyList = () => {
+    return emptyDisplay || <div>There are no rows of data to display</div>
+  }
+
+  return EmptyList
 }

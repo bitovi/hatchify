@@ -2,7 +2,7 @@ import type { Meta, QueryList, Record, Schemas } from "@hatchifyjs/rest-client"
 import type { ValueComponent } from "../../presentation/interfaces"
 import useHatchifyListSort from "./hooks/useHatchifyListSort"
 import useHatchifyListPagination from "./hooks/useHatchifyListPagination"
-import { getDisplays } from "../../services"
+import { getDisplays, getEmptyList } from "../../services"
 import { useHatchifyPresentation } from ".."
 
 export interface HatchifyListProps {
@@ -34,6 +34,8 @@ export const HatchifyList: React.FC<HatchifyListProps> = ({
     children,
   )
 
+  const EmptyList = getEmptyList(children)
+
   return (
     <List
       displays={displays}
@@ -42,6 +44,7 @@ export const HatchifyList: React.FC<HatchifyListProps> = ({
       sort={sort}
       setPagination={setPagination}
       setSort={setSort}
+      emptyList={EmptyList}
     />
   )
 }
