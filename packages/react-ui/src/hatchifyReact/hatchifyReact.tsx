@@ -3,19 +3,25 @@ import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type { Source, Schemas } from "@hatchifyjs/rest-client"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { transformSchema } from "@hatchifyjs/rest-client"
-import { HatchifyEmptyList } from "../components/HatchifyDisplays/HatchifyDisplays"
-import type { HatchifyEmptyListProps } from "../components/HatchifyDisplays/HatchifyDisplays"
 
 import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
+import {
+  HatchifyEmptyList,
+  HatchifyExtraDisplay,
+} from "../components/HatchifyDisplays/HatchifyDisplays"
+import type {
+  HatchifyEmptyListProps,
+  HatchifyExtraDisplayProps,
+} from "../components/HatchifyDisplays/HatchifyDisplays"
 import { HatchifyList } from "../components/HatchifyList"
 
-//TODO: typing instead of any
 type Components = {
   [schemaName: string]: {
     List: (
       props: Omit<HatchifyListProps, "allSchemas" | "schemaName" | "useData">,
-    ) => any
-    EmptyList: (props: HatchifyEmptyListProps) => any
+    ) => React.ReactElement
+    EmptyList: (props: HatchifyEmptyListProps) => React.ReactElement
+    ExtraDisplay: (props: HatchifyExtraDisplayProps) => React.ReactElement
   }
 }
 
@@ -46,6 +52,7 @@ export function hatchifyReact(
         />
       ),
       EmptyList: (props) => <HatchifyEmptyList {...props} />,
+      ExtraDisplay: (props) => <HatchifyExtraDisplay {...props} />,
     }
 
     return acc

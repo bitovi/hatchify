@@ -256,11 +256,9 @@ export function injectExtraDisplays(
   children: JSX.Element[],
 ): HatchifyDisplay[] {
   const updatedDisplays = cloneDeep(displays)
-
   for (let i = 0; i < children.length; i++) {
     if (children[i].type.name !== HatchifyExtraDisplay.displayName) continue
     const { props } = children[i]
-
     // @todo add according to props.after property
     updatedDisplays.push(
       getHatchifyDisplay({
@@ -293,8 +291,9 @@ export function getDisplays(
   // casting as JSX.Element because helper functions require access to
   // `child.type.name` and `child.props`
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
+
   let displays = hasValidChildren(
-    HatchifyAttributeDisplay.displayName ?? "",
+    HatchifyAttributeDisplay.displayName || "",
     childArray,
   )
     ? getDisplaysFromChildren(schema, defaultValueComponents, childArray)
@@ -303,11 +302,9 @@ export function getDisplays(
         defaultValueComponents,
         valueComponents || null,
       )
-
-  if (hasValidChildren(HatchifyExtraDisplay.displayName ?? "", childArray)) {
+  if (hasValidChildren(HatchifyExtraDisplay.displayName || "", childArray)) {
     displays = injectExtraDisplays(displays, defaultValueComponents, childArray)
   }
-
   return displays
 }
 
