@@ -3,6 +3,7 @@ import { Suspense, useEffect, useState } from "react"
 import { css } from "@emotion/react"
 import {
   Box,
+  Checkbox,
   Pagination,
   Skeleton,
   Table,
@@ -42,9 +43,22 @@ export const MuiList: React.FC<XListProps> = ({
   sort,
   setPagination,
   setSort,
+  checked,
+  toggleChecked,
+  setChecked,
+  clearChecked,
 }) => {
   const [meta, setMeta] = useState<Record<string, any>>({}) // todo: type
+  const [data, setData] = useState<any>([]) // todo: type
   const { direction, sortBy } = sort
+
+  const checkAll = () => {
+    if (checked.length === 0) {
+      setChecked(data.map((d: any) => d.id))
+    } else {
+      clearChecked()
+    }
+  }
 
   return (
     <TableContainer css={styles.tableContainer}>
@@ -52,6 +66,19 @@ export const MuiList: React.FC<XListProps> = ({
         <Suspense>
           <TableHead>
             <TableRow>
+              <TableCell css={styles.th}>
+                <Checkbox
+                  aria-label="check all"
+                  checked={checked.length !== 0}
+                  indeterminate={
+                    checked.length &&
+                    checked.length !== meta.meta?.unpaginatedCount
+                      ? true
+                      : false
+                  }
+                  onChange={checkAll}
+                />
+              </TableCell>
               {displays.map((display) => (
                 <TableCell
                   key={display.key}
@@ -81,6 +108,11 @@ export const MuiList: React.FC<XListProps> = ({
               displays={displays}
               useData={useData}
               setMeta={setMeta}
+              checked={checked}
+              toggleChecked={toggleChecked}
+              clearChecked={clearChecked}
+              setChecked={setChecked}
+              setData={setData}
             />
           </TableBody>
         </Suspense>
@@ -110,19 +142,28 @@ type MuiListRowsProps = Omit<
   "setSort" | "sort" | "currentPage" | "pagination" | "setPagination"
 > & {
   setMeta: (meta: any) => void
+  setData: (data: any) => void
 }
 
 const MuiListRows: React.FC<MuiListRowsProps> = ({
   displays,
   useData,
   setMeta,
+  setData,
+  checked,
+  toggleChecked,
 }) => {
   const [data, meta] = useData()
   const stringifiedMeta = JSON.stringify(meta)
+  const stringifiedData = JSON.stringify(data)
 
   useEffect(() => {
     setMeta(meta)
   }, [setMeta, stringifiedMeta])
+
+  useEffect(() => {
+    setData(data)
+  }, [setData, stringifiedData])
 
   if (meta.isLoading) {
     return <SkeletonCells displays={displays} />
@@ -132,6 +173,16 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
     <>
       {data.map((item) => (
         <TableRow key={item.id}>
+          <TableCell>
+            <Checkbox
+              aria-label={`check ${item.id}`}
+              checked={checked.includes(item.id)}
+              onChange={(ev) => {
+                console.log("ev.target.checked", ev.target.checked)
+                toggleChecked(item.id)
+              }}
+            />
+          </TableCell>
           {displays.map((display) => (
             <TableCell key={`${item.id}-${display.key}`}>
               {display.render({
@@ -147,7 +198,15 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
 
 type SkeletonCellsProps = Omit<
   XListProps,
-  "useData" | "sort" | "setSort" | "pagination" | "setPagination"
+  | "useData"
+  | "sort"
+  | "setSort"
+  | "pagination"
+  | "setPagination"
+  | "checked"
+  | "toggleChecked"
+  | "clearChecked"
+  | "setChecked"
 >
 
 const SkeletonCells = ({ displays }: SkeletonCellsProps) => {
