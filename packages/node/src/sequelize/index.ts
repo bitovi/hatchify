@@ -52,11 +52,38 @@ type Attribute<M extends Model = Model> = ModelAttributeColumnOptions<M> & {
 export function parseAttribute<M extends Model = Model>(
   attribute: string | DataType | Attribute<M>,
 ): Attribute<M> {
-  if (typeof attribute === "string") return { type: DataTypes[attribute] }
+  let attributeStringType
+  let attributeObjectType
 
-  if ("type" in attribute) return attribute
+  if (typeof attribute === "string") attributeStringType = attribute
+  else if ("type" in attribute) {
+    if (typeof attribute.type === "string") {
+      attributeStringType = attribute.type
+      attributeObjectType = {
+        ...attribute,
+        type: DataTypes[attributeStringType] || attributeStringType,
+      }
+    } else
+      attributeObjectType = {
+        ...attribute,
+      }
+  } else attributeObjectType = { type: attribute }
 
-  return { type: attribute }
+  if (attributeStringType === "ENUM") {
+    attributeObjectType = {
+      ...attributeObjectType,
+      type: DataTypes.ENUM,
+      validate: {
+        ...(attributeObjectType.validate || {}),
+        isIn: [attributeObjectType.values],
+      },
+    }
+  }
+  return (
+    attributeObjectType || {
+      type: DataTypes[attributeStringType] || attributeStringType,
+    }
+  )
 }
 
 export function convertHatchifyModels(

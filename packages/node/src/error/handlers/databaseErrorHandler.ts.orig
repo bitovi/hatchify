@@ -1,12 +1,16 @@
 import type { Error } from "sequelize"
 
 import { codes, statusCodes } from "../constants"
+<<<<<<< HEAD:packages/node/src/error/types/database-errors.ts
 import {
   HatchifyError,
   UnexpectedValueError,
   UniqueConstraintError,
   ValidationError,
-} from "../types"
+} from "../errors"
+=======
+import { HatchifyError, UniqueConstraintError, ValidationError } from "../types"
+>>>>>>> origin/main:packages/node/src/error/handlers/databaseErrorHandler.ts
 
 export interface SequelizeError {
   errors?: Array<{

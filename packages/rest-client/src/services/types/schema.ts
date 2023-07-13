@@ -1,4 +1,6 @@
-export type AttributeObject = { type: string }
+export type AttributeObject =
+  | { type: string }
+  | { type: "enum"; values: string[] }
 export type Attribute = string | AttributeObject
 
 export interface Schema {
