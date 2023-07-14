@@ -90,10 +90,12 @@ function validateStructure<T extends HatchifyModel = HatchifyModel>(
   body: any,
   model: T,
 ) {
+  const title = "Payload is missing a required value."
+
   if (!body.data) {
     throw [
       new ValueRequiredError({
-        title: "Payload is missing a required value.",
+        title,
         detail: "Payload must include a value for 'data'.",
         pointer: "/data",
       }),
@@ -103,7 +105,7 @@ function validateStructure<T extends HatchifyModel = HatchifyModel>(
   if (!body.data.attributes) {
     throw [
       new ValueRequiredError({
-        title: "Payload is missing a required value.",
+        title,
         detail: "Payload must include a value for 'attributes'.",
         pointer: "/data/attributes",
       }),
@@ -117,7 +119,7 @@ function validateStructure<T extends HatchifyModel = HatchifyModel>(
       return [
         ...acc,
         new ValueRequiredError({
-          title: "Payload is missing a required value.",
+          title,
           detail: `Payload must include a value for '${relationshipName}'.`,
           pointer: `/data/attributes/${relationshipName}`,
         }),
@@ -128,7 +130,7 @@ function validateStructure<T extends HatchifyModel = HatchifyModel>(
       return [
         ...acc,
         new ValueRequiredError({
-          title: "Payload is missing a required value.",
+          title,
           detail: `Payload must include a value for 'data'.`,
           pointer: `/data/attributes/${relationshipName}/data`,
         }),
