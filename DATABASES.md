@@ -6,7 +6,7 @@ You can quickly configure your Hatchify backend to use any of the databases supp
 
 1. Postgres' installation: 
 
--   `Docker` -  There are many different ways to install Postgres (brew, choco, downloading the installer for their website), but we choose Docker in this tutorial for it's simplicity.
+-   `Docker` -  There are many different ways to install Postgres (brew, choco, downloading the installer for their website), but we choose Docker in this tutorial for its simplicity.
     1. If you don't have docker installed in your computer yet, you can download it from [Dockers official website](https://www.docker.com/products/docker-desktop/).
     2. After installing Docker, you can get Postgres official image from [docker hub](https://hub.docker.com/_/postgres). To get a Postgres instance, run the command: 
     `docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres` 
@@ -21,8 +21,8 @@ There are different options for creating a Postgres database; in fact, if you've
   
 * Configure Hatchify to use your database: 
 
-If you followed the getting-started guide and installed sqlite, you may remove it with `npm uninstall sqlite3` and
-install postgres's package with `npm install pg`.
+If you followed the getting-started guide and installed sqlite, you may remove it with `npm uninstall sqlite3` and install postgres's package with `npm install pg`, to get the types for the postgres
+package run `npm install -D @types/pg`.
 
 After that, simply pass the database configurations to Hatchify's constructor: 
 
@@ -38,3 +38,16 @@ const hatchedKoa = hatchifyKoa([Todo, User], {
   }
 })
 ``` 
+
+The following options are allowed within the db options object:
+
+| Property | Type   | Default   | Details                                                            |
+| -------- | ------ | --------- | ------------------------------------------------------------------ |
+| host     | string | localhost | The host of the relational database                                |
+| port     | number | null      | The port of the relational database                                |
+| username | string | null      | The username which is used to authenticate against the database    |
+| password | string | null      | The password which is used to authenticate against the database    |
+| dialect  | string | null      | One of the following: mysql, postgres, sqlite, db2, mariadb, mssql |
+| storage  | string | :memory:  | For sqlite dialect only, specifies the file storage location       |
+
+For a more complete references see the Sequelize documentation [for the instance constructor](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor)
