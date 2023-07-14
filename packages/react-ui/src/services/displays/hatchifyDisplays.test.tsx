@@ -1,25 +1,13 @@
 import "@testing-library/jest-dom"
 import { describe, it, expect, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
-import {
-  getEmptyList,
-  getDisplays,
-  injectExtraDisplays,
-} from "./hatchifyDisplays"
-import type { Schema } from "@hatchifyjs/rest-client"
+import { getEmptyList } from "./hatchifyDisplays"
 import {
   HatchifyList,
   HatchifyEmptyList,
   HatchifyAttributeDisplay,
   HatchifyExtraColumn,
-  HatchifyPresentationDefaultValueComponents,
 } from "../../components"
-
-const TestSchema: Schema = {
-  name: "Test",
-  attributes: { id: "string", name: "string" },
-  displayAttribute: "name",
-}
 
 const testComponents = {
   Test: {
