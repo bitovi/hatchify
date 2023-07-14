@@ -579,7 +579,7 @@ database, and a frontend that handles the JSX and data-fetching for us.
 
 # Next Steps
 
-* [Configuring a different database driver](./DATABASES.md)
+* [Configuring Postgres](./doc/nextSteps/DATABASES.md)
 
 # Troubleshooting / Known issues
 
