@@ -127,7 +127,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
       expect(setSort.mock.calls).toEqual([["firstName"], ["lastName"]])
     })
 
-    it.skip("fires pagination callback", async () => {
+    it("fires pagination callback", async () => {
       const setPagination = vi.fn()
 
       render(
