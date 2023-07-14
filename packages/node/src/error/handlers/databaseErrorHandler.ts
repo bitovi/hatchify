@@ -39,7 +39,7 @@ export function databaseErrorHandler(error: SequelizeError): Error {
         }' as one of ${error.errors[0].validatorArgs[0]
           .map((a) => `'${a}'`)
           .join(", ")}.`,
-        pointer,
+        parameter: pointer,
       })
     }
   } else {
