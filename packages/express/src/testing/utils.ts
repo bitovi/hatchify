@@ -58,11 +58,13 @@ async function parse(result) {
   let status
 
   if (!result) {
-    throw new HatchifyError({
-      title: "Invalid Result",
-      code: codes.ERR_INVALID_RESULT,
-      status: statusCodes.UNPROCESSABLE_ENTITY,
-    })
+    throw [
+      new HatchifyError({
+        title: "Invalid Result",
+        code: codes.ERR_INVALID_RESULT,
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+      }),
+    ]
   }
 
   if (result.statusCode) {

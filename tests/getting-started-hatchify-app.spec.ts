@@ -12,13 +12,13 @@ test("works", async ({ page, request }) => {
 
   // validate todos endpoint exists
   response = await page.goto(`${backend}/api/todos`)
-  if (!response) throw new Error("No response")
+  if (!response) throw [new Error("No response")]
   json = await response.json()
   expect(json.data).toEqual([])
 
   // validate users endpoint exists
   response = await page.goto(`${backend}/api/users`)
-  if (!response) throw new Error("No response")
+  if (!response) throw [new Error("No response")]
   json = await response.json()
   expect(json.data).toEqual([])
 

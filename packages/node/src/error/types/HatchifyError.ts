@@ -23,18 +23,18 @@ export class HatchifyError extends Error {
   title?: string
 
   constructor({
-    title,
-    status,
-    code,
+    status = statusCodes.INTERNAL_SERVER_ERROR,
+    code = codes.ERR_SERVER_ERROR,
+    title = "Server Error ocurred",
     detail,
-    pointer,
     parameter,
+    pointer,
   }: HatchifyErrorOptions) {
     super()
-    this.status = status || statusCodes.INTERNAL_SERVER_ERROR
-    this.code = code || codes.ERR_SERVER_ERROR
+    this.status = status
+    this.code = code
     this.detail = detail
-    this.title = title || "Server Error ocurred"
+    this.title = title
 
     if (parameter) {
       this.source = { parameter }

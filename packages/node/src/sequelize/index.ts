@@ -154,15 +154,17 @@ export function convertHatchifyModels(
         // Grab the array of targets and options
         model[relationship].forEach(({ target, options }) => {
           if (!target || !sequelize.models[target]) {
-            throw new HatchifyError({
-              title:
-                "Unknown Model association for " +
-                model.name +
-                " in " +
-                relationship,
-              status: statusCodes.CONFLICT,
-              code: codes.ERR_CONFLICT,
-            })
+            throw [
+              new HatchifyError({
+                title:
+                  "Unknown Model association for " +
+                  model.name +
+                  " in " +
+                  relationship,
+                status: statusCodes.CONFLICT,
+                code: codes.ERR_CONFLICT,
+              }),
+            ]
           }
 
           // Pull the models off sequelize.models
