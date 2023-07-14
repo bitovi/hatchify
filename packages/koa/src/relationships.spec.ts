@@ -145,6 +145,93 @@ describe("Relationships", () => {
     })
   })
 
+  it("should delete relations included in PATCH request when empty array is sent (HATCH-218)", async () => {
+    // add user
+    const { body: user } = await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: {
+            name: "John Doe",
+          },
+        },
+      },
+    })
+    expect(user).toEqual({
+      jsonapi: {
+        version: "1.0",
+      },
+      data: {
+        type: "User",
+        id: user.data.id,
+        attributes: {
+          name: "John Doe",
+        },
+      },
+    })
+
+    // add todo w/ user relation
+    const { body: todo } = await fetch("/api/todos", {
+      method: "post",
+      body: {
+        data: {
+          type: "Todo",
+          attributes: {
+            name: "Walk the dog",
+            due_date: "2024-12-12T00:00:00.000Z",
+            importance: 6,
+          },
+          relationships: {
+            user: {
+              data: { type: "User", id: user.data.id },
+            },
+          },
+        },
+      },
+    })
+
+    expect(todo).toEqual({
+      jsonapi: { version: "1.0" },
+      data: {
+        type: "Todo",
+        id: todo.data.id,
+        attributes: {
+          name: "Walk the dog",
+          due_date: "2024-12-12T00:00:00.000Z",
+          importance: 6,
+        },
+      },
+    })
+    expect(todo).toBeTruthy()
+
+    const { body: patchUserWTodo } = await fetch(`/api/users/${user.data.id}`, {
+      method: "patch",
+      body: {
+        data: {
+          type: "User",
+          id: user.data.id,
+          attributes: {
+            name: "John Doe Updated",
+          },
+          relationships: {
+            todos: {
+              data: [],
+            },
+          },
+        },
+      },
+    })
+    expect(patchUserWTodo).toBeTruthy()
+
+    // get user with todos
+    const { body: userWTodo } = await fetch(
+      `/api/users/${user.data.id}?include=todos`,
+    )
+    expect(userWTodo.data.attributes.name).toEqual("John Doe Updated")
+    expect(userWTodo.data.relationships.todos.data).toEqual([])
+  })
+
   describe("should add associations both ways (HATCH-172)", () => {
     it("todo and then user", async () => {
       const { body: todo } = await fetch("/api/todos", {
