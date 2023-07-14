@@ -121,4 +121,50 @@ describe("Error Code Tests", () => {
       errors: [ERROR_CODE_NOT_FOUND],
     })
   })
+
+  it("should return error UNEXPECTED_VALUE error code when receiving wrong type for relationship data (HATCH-172)", async () => {
+    const ERROR_CODE_UNEXPECTED_VALUE = {
+      status: 422,
+      code: "unexpected-value",
+      title: "Unexpected value.",
+      detail: "Payload must have 'data' as an object.",
+      source: {
+        pointer: "/data/relationships/user/data",
+      },
+    }
+
+    const { body: user } = await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: {
+            name: "John Doe",
+          },
+        },
+      },
+    })
+
+    const { status, body } = await fetch("/api/todos", {
+      method: "post",
+      body: {
+        data: {
+          attributes: {
+            name: "Something B for user 1",
+            due_date: "2024-12-12",
+            importance: 7,
+          },
+          relationships: {
+            user: { data: [{ type: "User", id: user.data.id }] },
+          },
+        },
+      },
+    })
+
+    expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_UNEXPECTED_VALUE],
+    })
+  })
 })

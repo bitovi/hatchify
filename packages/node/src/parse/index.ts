@@ -1,3 +1,4 @@
+import { capitalize, singularize } from "inflection"
 import type {
   CreateOptions,
   DestroyOptions,
@@ -8,11 +9,13 @@ import type {
 
 import { buildDestroyOptions, buildFindOptions } from "./builder"
 import {
+  UnexpectedValueError,
   ValidationError,
   ValueRequiredError,
   codes,
   statusCodes,
 } from "../error"
+import type { HatchifyError } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
 
@@ -83,21 +86,98 @@ async function findAndCountAllImpl(model: HatchifyModel, querystring: string) {
   return data
 }
 
-async function createImpl<T extends HatchifyModel = HatchifyModel>(
-  hatchify: Hatchify,
-  model: T,
+function validateStructure<T extends HatchifyModel = HatchifyModel>(
   body: any,
+  model: T,
 ) {
+  const title = "Payload is missing a required value."
+
   if (!body.data) {
     throw [
       new ValueRequiredError({
-        title: "Payload is missing a required value.",
+        title,
         detail: "Payload must include a value for 'data'.",
         pointer: "/data",
       }),
     ]
   }
 
+  if (!body.data.attributes) {
+    throw [
+      new ValueRequiredError({
+        title,
+        detail: "Payload must include a value for 'attributes'.",
+        pointer: "/data/attributes",
+      }),
+    ]
+  }
+
+  const relationshipsErrors = Object.entries(
+    body.data.relationships || {},
+  ).reduce((acc, [relationshipName, relationshipValue]: [string, any]) => {
+    if (!relationshipValue) {
+      return [
+        ...acc,
+        new ValueRequiredError({
+          title,
+          detail: `Payload must include a value for '${relationshipName}'.`,
+          pointer: `/data/attributes/${relationshipName}`,
+        }),
+      ]
+    }
+
+    if (!relationshipValue.data) {
+      return [
+        ...acc,
+        new ValueRequiredError({
+          title,
+          detail: `Payload must include a value for 'data'.`,
+          pointer: `/data/attributes/${relationshipName}/data`,
+        }),
+      ]
+    }
+
+    const relationshipErrors: HatchifyError[] = []
+
+    const modelName = capitalize(singularize(relationshipName))
+
+    const expectObject =
+      model.hasOne?.some(({ target }) => target === modelName) ||
+      model.belongsTo?.some(({ target }) => target === modelName)
+    const expectArray =
+      model.hasMany?.some(({ target }) => target === modelName) ||
+      model.belongsToMany?.some(({ target }) => target === modelName)
+
+    if (expectArray && !Array.isArray(relationshipValue.data)) {
+      relationshipErrors.push(
+        new UnexpectedValueError({
+          detail: `Payload must have 'data' as an array.`,
+          pointer: `/data/relationships/${relationshipName}/data`,
+        }),
+      )
+    }
+
+    if (expectObject && Array.isArray(relationshipValue.data)) {
+      relationshipErrors.push(
+        new UnexpectedValueError({
+          detail: `Payload must have 'data' as an object.`,
+          pointer: `/data/relationships/${relationshipName}/data`,
+        }),
+      )
+    }
+
+    return [...acc, ...relationshipErrors]
+  }, [])
+
+  if (relationshipsErrors.length) throw relationshipsErrors
+}
+
+async function createImpl<T extends HatchifyModel = HatchifyModel>(
+  hatchify: Hatchify,
+  model: T,
+  body: any,
+) {
+  validateStructure(body, model)
   const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 
   return {
@@ -112,16 +192,7 @@ async function updateImpl(
   body: any,
   id,
 ) {
-  if (!body.data) {
-    throw [
-      new ValueRequiredError({
-        title: "Payload is missing a required value.",
-        detail: "Payload must include a value for 'data'.",
-        pointer: "/data",
-      }),
-    ]
-  }
-
+  validateStructure(body, model)
   const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 
   return {

@@ -2,12 +2,24 @@ import { HatchifyError } from "./HatchifyError"
 import { codes, statusCodes } from "../constants"
 
 export class UnexpectedValueError extends HatchifyError {
-  constructor({ title, parameter }: { title?: string; parameter?: string }) {
+  constructor({
+    title,
+    detail,
+    parameter,
+    pointer,
+  }: {
+    title?: string
+    detail?: string
+    parameter?: string
+    pointer?: string
+  }) {
     super({
-      title: title || "Unexpected value.",
-      code: codes.ERR_UNEXPECTED_VALUE,
       status: statusCodes.UNPROCESSABLE_ENTITY,
+      code: codes.ERR_UNEXPECTED_VALUE,
+      title: title || "Unexpected value.",
+      detail,
       parameter,
+      pointer,
     })
   }
 }
