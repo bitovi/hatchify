@@ -7,11 +7,11 @@ import { transformSchema } from "@hatchifyjs/rest-client"
 import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
 import {
   HatchifyEmptyList,
-  HatchifyExtraDisplay,
+  HatchifyExtraColumn,
 } from "../components/HatchifyDisplays/HatchifyDisplays"
 import type {
   HatchifyEmptyListProps,
-  HatchifyExtraDisplayProps,
+  HatchifyExtraColumnProps,
 } from "../components/HatchifyDisplays/HatchifyDisplays"
 import { HatchifyList } from "../components/HatchifyList"
 
@@ -21,7 +21,7 @@ type Components = {
       props: Omit<HatchifyListProps, "allSchemas" | "schemaName" | "useData">,
     ) => React.ReactElement
     EmptyList: (props: HatchifyEmptyListProps) => React.ReactElement
-    ExtraDisplay: (props: HatchifyExtraDisplayProps) => React.ReactElement
+    ExtraColumn: (props: HatchifyExtraColumnProps) => React.ReactElement
   }
 }
 
@@ -52,7 +52,7 @@ export function hatchifyReact(
         />
       ),
       EmptyList: (props) => <HatchifyEmptyList {...props} />,
-      ExtraDisplay: (props) => <HatchifyExtraDisplay {...props} />,
+      ExtraColumn: (props) => <HatchifyExtraColumn {...props} />,
     }
 
     return acc

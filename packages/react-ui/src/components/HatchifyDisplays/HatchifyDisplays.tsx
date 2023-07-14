@@ -19,17 +19,17 @@ export type RenderValue = ({
   attributeSchema?: Attribute
 }) => JSX.Element
 
-export type HatchifyExtraDisplayProps = {
+export type HatchifyExtraColumnProps = {
   label: string
   after?: string
 } & ({ render: Render } | { ValueComponent: ValueComponent })
 
-export const HatchifyExtraDisplay: React.FC<HatchifyExtraDisplayProps> = () => {
+export const HatchifyExtraColumn: React.FC<HatchifyExtraColumnProps> = () => {
   return null
 }
 
-// component is exposed to end-user as `ExtraDisplay`
-HatchifyExtraDisplay.displayName = "ExtraDisplay"
+// component is exposed to end-user as `ExtraColumn`
+HatchifyExtraColumn.displayName = "ExtraColumn"
 
 export type HatchifyEmptyListProps = {
   children: React.ReactNode

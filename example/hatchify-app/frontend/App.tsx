@@ -16,7 +16,7 @@ export const hatchedReact = hatchifyReact(
 )
 
 const TodoList = hatchedReact.components.Todo.List
-const TodoExtraDisplay = hatchedReact.components.Todo.ExtraDisplay
+const TodoExtraColumn = hatchedReact.components.Todo.ExtraColumn
 const TodoEmptyList = hatchedReact.components.Todo.EmptyList
 
 const App: React.FC = () => {
@@ -29,7 +29,7 @@ const App: React.FC = () => {
             <button>click here</button>
           </div>
         </TodoEmptyList>
-        <TodoExtraDisplay
+        <TodoExtraColumn
           label="Action"
           render={({ record }) => {
             return (
