@@ -303,7 +303,7 @@ describe("Relationships", () => {
             title: "Resource not found.",
             detail: "Payload must include an ID of an existing 'Todo'.",
             source: {
-              pointer: "/data/relationships/todos/0/data/id",
+              pointer: "/data/relationships/todos/data/0/id",
             },
           },
           {
@@ -312,7 +312,7 @@ describe("Relationships", () => {
             title: "Resource not found.",
             detail: "Payload must include an ID of an existing 'Todo'.",
             source: {
-              pointer: "/data/relationships/todos/1/data/id",
+              pointer: "/data/relationships/todos/data/1/id",
             },
           },
         ],
