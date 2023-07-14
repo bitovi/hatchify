@@ -10,7 +10,6 @@ export enum codes {
   ERR_INVALID_RESULT = "invalid-result",
   ERR_SERVER_ERROR = "server-error",
   ERR_VALUE_REQUIRED = "value-required",
-  ERR_MISSING_DATA = "missing-data",
   ERR_UNEXPECTED_VALUE = "unexpected-value",
 }
 
