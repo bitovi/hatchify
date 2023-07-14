@@ -83,6 +83,11 @@ describe("index", () => {
     })
 
     it("parses objects", () => {
+      expect(parseAttribute({ type: "STRING", include: [] })).toEqual({
+        type: DataTypes.STRING,
+        include: [],
+      })
+
       expect(parseAttribute({ type: DataTypes.STRING, include: [] })).toEqual({
         type: DataTypes.STRING,
         include: [],
