@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { Button } from "@mui/material"
-import { HatchifyExtraDisplay, HatchifyListPage } from "@hatchifyjs/react-ui"
+import { HatchifyExtraColumn, HatchifyListPage } from "@hatchifyjs/react-ui"
 import { User } from "../../types"
 
 const List: React.FC = () => {
@@ -17,7 +17,7 @@ const List: React.FC = () => {
         )
       }}
     >
-      <HatchifyExtraDisplay
+      <HatchifyExtraColumn
         label="Actions"
         render={({ record }) => {
           return (

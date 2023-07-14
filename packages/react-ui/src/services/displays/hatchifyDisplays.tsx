@@ -5,7 +5,7 @@ import type { Attribute, Record, Schema } from "@hatchifyjs/rest-client"
 
 import {
   HatchifyAttributeDisplay,
-  HatchifyExtraDisplay,
+  HatchifyExtraColumn,
   HatchifyEmptyList,
 } from "../../components"
 
@@ -210,8 +210,8 @@ export function getHatchifyDisplay({
 
   /**
    * cell render priority:
-   * 1. `renderValue` prop from `HatchifyExtraDisplay` or `HatchifyAttributeDisplay`
-   * 2. `ValueComponent` prop from `HatchifyExtraDisplay` or `HatchifyAttributeDisplay`
+   * 1. `renderValue` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
+   * 2. `ValueComponent` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
    * 3. `valueComponents` prop from `HatchifyList`
    * 6. default `render` using presentation's defaultvalueComponents
    */
@@ -257,7 +257,7 @@ export function injectExtraDisplays(
 ): HatchifyDisplay[] {
   const updatedDisplays = cloneDeep(displays)
   for (let i = 0; i < children.length; i++) {
-    if (children[i].type.name !== HatchifyExtraDisplay.displayName) continue
+    if (children[i].type.name !== HatchifyExtraColumn.displayName) continue
     const { props } = children[i]
     // @todo add according to props.after property
     updatedDisplays.push(
@@ -302,7 +302,7 @@ export function getDisplays(
         defaultValueComponents,
         valueComponents || null,
       )
-  if (hasValidChildren(HatchifyExtraDisplay.displayName || "", childArray)) {
+  if (hasValidChildren(HatchifyExtraColumn.displayName || "", childArray)) {
     displays = injectExtraDisplays(displays, defaultValueComponents, childArray)
   }
   return displays

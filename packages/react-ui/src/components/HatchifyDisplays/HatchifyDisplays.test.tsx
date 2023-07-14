@@ -8,7 +8,7 @@ import {
 } from "./HatchifyDisplays"
 
 describe("hatchifyjs/components/HatchifyColumns", () => {
-  describe("HatchifyExtraDisplay", () => {
+  describe("HatchifyExtraColumn", () => {
     it("works", () => {
       render(<HatchifyExtraColumn label="Label" render={() => <div />} />)
     })

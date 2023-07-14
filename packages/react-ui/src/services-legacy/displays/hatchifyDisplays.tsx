@@ -4,10 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 // import type { Schema} from "@hatchifyjs/rest-client"
 import type { Schema } from "../api/schemas" //TODO update to the right schema
 
-import {
-  HatchifyAttributeDisplay,
-  HatchifyExtraDisplay,
-} from "../../components"
+import { HatchifyAttributeDisplay, HatchifyExtraColumn } from "../../components"
 
 import type {
   Attribute,
@@ -194,8 +191,8 @@ export function getHatchifyDisplay({
 
   /**
    * cell render priority:
-   * 1. `renderValue` prop from `HatchifyExtraDisplay` or `HatchifyAttributeDisplay`
-   * 2. `ValueComponent` prop from `HatchifyExtraDisplay` or `HatchifyAttributeDisplay`
+   * 1. `renderValue` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
+   * 2. `ValueComponent` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
    * 3. `valueComponents` prop from `HatchifyList`
    * 6. default `render` using presentation's defaultvalueComponents
    */
@@ -242,7 +239,7 @@ export function injectExtraDisplays(
   const updatedDisplays = cloneDeep(displays)
 
   for (let i = 0; i < children.length; i++) {
-    if (children[i].type.name !== HatchifyExtraDisplay.name) continue
+    if (children[i].type.name !== HatchifyExtraColumn.name) continue
     const { props } = children[i]
 
     // @todo add according to props.after property
@@ -286,7 +283,7 @@ export function getDisplays(
         valueComponents || null,
       )
 
-  if (hasValidChildren(HatchifyExtraDisplay.name, childArray)) {
+  if (hasValidChildren(HatchifyExtraColumn.name, childArray)) {
     displays = injectExtraDisplays(displays, defaultValueComponents, childArray)
   }
 
