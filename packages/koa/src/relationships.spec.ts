@@ -164,7 +164,7 @@ describe("Relationships", () => {
       },
       data: {
         type: "User",
-        id: "1",
+        id: user.data.id,
         attributes: {
           name: "John Doe",
         },
@@ -184,7 +184,7 @@ describe("Relationships", () => {
           },
           relationships: {
             user: {
-              data: { type: "User", id: "1" },
+              data: { type: "User", id: user.data.id },
             },
           },
         },
@@ -195,7 +195,7 @@ describe("Relationships", () => {
       jsonapi: { version: "1.0" },
       data: {
         type: "Todo",
-        id: "1",
+        id: todo.data.id,
         attributes: {
           name: "Walk the dog",
           due_date: "2024-12-12T00:00:00.000Z",
@@ -205,12 +205,12 @@ describe("Relationships", () => {
     })
     expect(todo).toBeTruthy()
 
-    const { body: patchUserWTodo } = await fetch("/api/users/1", {
+    const { body: patchUserWTodo } = await fetch(`/api/users/${user.data.id}`, {
       method: "patch",
       body: {
         data: {
           type: "User",
-          id: "1",
+          id: user.data.id,
           attributes: {
             name: "John Doe Updated",
           },
@@ -225,7 +225,9 @@ describe("Relationships", () => {
     expect(patchUserWTodo).toBeTruthy()
 
     // get user with todos
-    const { body: userWTodo } = await fetch("/api/users/1?include=todos")
+    const { body: userWTodo } = await fetch(
+      `/api/users/${user.data.id}?include=todos`,
+    )
     expect(userWTodo.data.attributes.name).toEqual("John Doe Updated")
     expect(userWTodo.data.relationships.todos.data).toEqual([])
   })
