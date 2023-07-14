@@ -11,8 +11,12 @@ interface ErrorResponse {
   status: number
 }
 
-export function errorResponseHandler(error: Error): ErrorResponse {
+export function errorResponseHandler(
+  error: Error | HatchifyError[],
+): ErrorResponse {
   const errors: GeneralError[] = []
+
+  if (Array.isArray(error)) return { errors: error, status: error[0].status }
 
   if (
     [

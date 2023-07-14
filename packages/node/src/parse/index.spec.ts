@@ -64,23 +64,23 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findAll("fields[Todo]=invalid")).rejects.toEqual(
+        await expect(findAll("fields[Todo]=invalid")).rejects.toEqualErrors([
           new ValidationError({
             code: codes.ERR_INVALID_PARAMETER,
             status: statusCodes.UNPROCESSABLE_ENTITY,
             title: "Bad Request, Invalid Query String",
           }),
-        )
+        ])
       })
 
       it("handles invalid query string", async () => {
-        await expect(findAll("fields=name,due_date")).rejects.toEqual(
+        await expect(findAll("fields=name,due_date")).rejects.toEqualErrors([
           new ValidationError({
             code: codes.ERR_INVALID_PARAMETER,
             status: statusCodes.UNPROCESSABLE_ENTITY,
             title: "Bad Request, Invalid Query String",
           }),
-        )
+        ])
       })
     })
 
@@ -117,23 +117,27 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findAndCountAll("fields[Todo]=invalid")).rejects.toEqual(
+        await expect(
+          findAndCountAll("fields[Todo]=invalid"),
+        ).rejects.toEqualErrors([
           new ValidationError({
             code: codes.ERR_INVALID_PARAMETER,
             status: statusCodes.UNPROCESSABLE_ENTITY,
             title: "Bad Request, Invalid Query String",
           }),
-        )
+        ])
       })
 
       it("handles invalid query string", async () => {
-        await expect(findAndCountAll("fields=name,due_date")).rejects.toEqual(
+        await expect(
+          findAndCountAll("fields=name,due_date"),
+        ).rejects.toEqualErrors([
           new ValidationError({
             code: codes.ERR_INVALID_PARAMETER,
             status: statusCodes.UNPROCESSABLE_ENTITY,
             title: "Bad Request, Invalid Query String",
           }),
-        )
+        ])
       })
     })
 
@@ -171,23 +175,23 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findOne("fields[Todo]=invalid", 1)).rejects.toEqual(
+        await expect(findOne("fields[Todo]=invalid", 1)).rejects.toEqualErrors([
           new ValidationError({
             code: codes.ERR_INVALID_PARAMETER,
             status: statusCodes.UNPROCESSABLE_ENTITY,
             title: "Bad Request, Invalid Query String",
           }),
-        )
+        ])
       })
 
       it("handles invalid query string", async () => {
-        await expect(findOne("fields=name,due_date", 1)).rejects.toEqual(
+        await expect(findOne("fields=name,due_date", 1)).rejects.toEqualErrors([
           new ValidationError({
             code: codes.ERR_INVALID_PARAMETER,
             status: statusCodes.UNPROCESSABLE_ENTITY,
             title: "Bad Request, Invalid Query String",
           }),
-        )
+        ])
       })
     })
 
@@ -301,13 +305,13 @@ describe("index", () => {
       })
 
       it("handles invalid query string", async () => {
-        await expect(destroy("fields=name,due_date")).rejects.toEqual(
+        await expect(destroy("fields=name,due_date")).rejects.toEqualErrors([
           new ValidationError({
             code: codes.ERR_INVALID_PARAMETER,
             status: statusCodes.UNPROCESSABLE_ENTITY,
             title: "Bad Request, Invalid Query String",
           }),
-        )
+        ])
       })
     })
   })

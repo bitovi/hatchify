@@ -93,8 +93,8 @@ export async function errorMiddleware(
 ) {
   try {
     await next()
-  } catch (error) {
-    const { errors, status } = errorResponseHandler(error)
+  } catch (ex) {
+    const { errors, status } = errorResponseHandler(ex)
 
     res.status(status).json({ jsonapi: { version: "1.0" }, errors })
   }

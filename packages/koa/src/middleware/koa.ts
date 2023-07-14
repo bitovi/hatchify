@@ -87,8 +87,8 @@ export async function errorMiddleware(
 ): Promise<void> {
   try {
     await next()
-  } catch (error) {
-    const { errors, status } = errorResponseHandler(error)
+  } catch (ex) {
+    const { errors, status } = errorResponseHandler(ex)
 
     ctx.status = status
     ctx.body = { jsonapi: { version: "1.0" }, errors }
