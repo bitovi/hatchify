@@ -27,7 +27,7 @@ install postgres's package with `npm install pg`.
 After that, simply pass the database configurations to Hatchify's constructor: 
 
 ```bash
-const hatchedKoa = hatchifyKoa([Player, Team, User], {
+const hatchedKoa = hatchifyKoa([Todo, User], {
   prefix: "/api",
   database: {
     dialect: "postgres",
