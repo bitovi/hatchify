@@ -1,4 +1,7 @@
-export type Attribute = string | { type: string }
+export type Attribute =
+  | string
+  | { type: string }
+  | { type: "enum"; values: string[] }
 
 export interface Relationship {
   target: string
