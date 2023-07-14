@@ -27,7 +27,7 @@ const validateRoleOverlap = async ({ body, Role }) => {
     const startConfidence = role.start_confidence
     const endConfidence = role.end_confidence
 
-    const isFullyConfident = (confidence) => confidence === 1
+    const isFullyConfident = (confidence: number) => confidence === 1
 
     const assignmentStartBeforeRoleStart =
       compareDates(assignmentStart, roleStart) &&

@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { Suspense, useEffect, useState } from "react"
+import { Suspense } from "react"
 import { css } from "@emotion/react"
 import {
   Box,
@@ -38,27 +38,20 @@ const styles = {
 
 export const MuiList: React.FC<XListProps> = ({
   displays,
+  emptyList,
   pagination,
   useData,
   sort,
   setPagination,
   setSort,
-  checked,
-  toggleChecked,
-  setChecked,
-  clearChecked,
+  selected,
+  setSelected,
 }) => {
-  const [meta, setMeta] = useState<Record<string, any>>({}) // todo: type
-  const [data, setData] = useState<any>([]) // todo: type
+  const [, meta] = useData()
   const { direction, sortBy } = sort
-
-  const checkAll = () => {
-    if (checked.length === 0) {
-      setChecked(data.map((d: any) => d.id))
-    } else {
-      clearChecked()
-    }
-  }
+  const allRowsSelected =
+    selected === true ||
+    Object.keys(selected).length === meta.meta?.unpaginatedCount
 
   return (
     <TableContainer css={styles.tableContainer}>
@@ -68,15 +61,16 @@ export const MuiList: React.FC<XListProps> = ({
             <TableRow>
               <TableCell css={styles.th}>
                 <Checkbox
-                  aria-label="check all"
-                  checked={checked.length !== 0}
+                  aria-label="select all"
+                  checked={allRowsSelected}
                   indeterminate={
-                    checked.length &&
-                    checked.length !== meta.meta?.unpaginatedCount
-                      ? true
-                      : false
+                    !allRowsSelected && Object.keys(selected).length > 0
                   }
-                  onChange={checkAll}
+                  onChange={() => {
+                    if (selected === true || Object.keys(selected).length > 0)
+                      setSelected({})
+                    else setSelected(true)
+                  }}
                 />
               </TableCell>
               {displays.map((display) => (
@@ -107,12 +101,9 @@ export const MuiList: React.FC<XListProps> = ({
             <MuiListRows
               displays={displays}
               useData={useData}
-              setMeta={setMeta}
-              checked={checked}
-              toggleChecked={toggleChecked}
-              clearChecked={clearChecked}
-              setChecked={setChecked}
-              setData={setData}
+              selected={selected}
+              setSelected={setSelected}
+              emptyList={emptyList}
             />
           </TableBody>
         </Suspense>
@@ -140,58 +131,73 @@ export default MuiList
 type MuiListRowsProps = Omit<
   XListProps,
   "setSort" | "sort" | "currentPage" | "pagination" | "setPagination"
-> & {
-  setMeta: (meta: any) => void
-  setData: (data: any) => void
-}
+>
 
 const MuiListRows: React.FC<MuiListRowsProps> = ({
   displays,
   useData,
-  setMeta,
-  setData,
-  checked,
-  toggleChecked,
+  selected,
+  setSelected,
+  emptyList: EmptyList,
 }) => {
   const [data, meta] = useData()
-  const stringifiedMeta = JSON.stringify(meta)
-  const stringifiedData = JSON.stringify(data)
-
-  useEffect(() => {
-    setMeta(meta)
-  }, [setMeta, stringifiedMeta])
-
-  useEffect(() => {
-    setData(data)
-  }, [setData, stringifiedData])
 
   if (meta.isLoading) {
     return <SkeletonCells displays={displays} />
   }
 
+  function onRowSelect(id: string) {
+    if (selected === true) {
+      // if all rows are selected (true), select only visible rows
+      // and deselect the one that was clicked
+      const updated = Object.values(data).reduce((acc, item) => {
+        acc[item.id] = true
+        return acc
+      }, {} as Record<string, true>)
+
+      delete updated[id]
+      setSelected(updated)
+    } else {
+      // othwerise, toggle the row that was clicked
+      const copy = { ...selected }
+      if (copy[id]) delete copy[id]
+      else copy[id] = true
+      setSelected(copy)
+    }
+  }
+
   return (
     <>
-      {data.map((item) => (
-        <TableRow key={item.id}>
-          <TableCell>
-            <Checkbox
-              aria-label={`check ${item.id}`}
-              checked={checked.includes(item.id)}
-              onChange={(ev) => {
-                console.log("ev.target.checked", ev.target.checked)
-                toggleChecked(item.id)
-              }}
-            />
+      {data.length === 0 ? (
+        <TableRow>
+          <TableCell colSpan={displays.length + 1} align="center">
+            <EmptyList />
           </TableCell>
-          {displays.map((display) => (
-            <TableCell key={`${item.id}-${display.key}`}>
-              {display.render({
-                record: item,
-              })}
-            </TableCell>
-          ))}
         </TableRow>
-      ))}
+      ) : (
+        data.map((item) => {
+          return (
+            <TableRow key={item.id}>
+              <TableCell>
+                <Checkbox
+                  aria-label={`select ${item.id}`}
+                  checked={
+                    selected === true || selected[item.id] ? true : false
+                  }
+                  onChange={() => onRowSelect(item.id)}
+                />
+              </TableCell>
+              {displays.map((display) => (
+                <TableCell key={`${item.id}-${display.key}`}>
+                  {display.render({
+                    record: item,
+                  })}
+                </TableCell>
+              ))}
+            </TableRow>
+          )
+        })
+      )}
     </>
   )
 }
@@ -203,10 +209,9 @@ type SkeletonCellsProps = Omit<
   | "setSort"
   | "pagination"
   | "setPagination"
-  | "checked"
-  | "toggleChecked"
-  | "clearChecked"
-  | "setChecked"
+  | "selected"
+  | "setSelected"
+  | "emptyList"
 >
 
 const SkeletonCells = ({ displays }: SkeletonCellsProps) => {

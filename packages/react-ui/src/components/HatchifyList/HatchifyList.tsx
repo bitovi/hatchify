@@ -3,7 +3,7 @@ import type { ValueComponent } from "../../presentation/interfaces"
 import useHatchifyListSort from "./hooks/useHatchifyListSort"
 import useHatchifyListPagination from "./hooks/useHatchifyListPagination"
 import useHatchifyRowSelect from "./hooks/useHatchifyRowSelect"
-import { getDisplays } from "../../services"
+import { getDisplays, getEmptyList } from "../../services"
 import { useHatchifyPresentation } from ".."
 
 export interface HatchifyListProps {
@@ -36,6 +36,8 @@ export const HatchifyList: React.FC<HatchifyListProps> = ({
     children,
   )
 
+  const EmptyList = getEmptyList(children)
+
   return (
     <List
       displays={displays}
@@ -46,6 +48,7 @@ export const HatchifyList: React.FC<HatchifyListProps> = ({
       setSort={setSort}
       selected={selected}
       setSelected={setSelected}
+      emptyList={EmptyList}
     />
   )
 }

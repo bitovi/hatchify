@@ -19,7 +19,7 @@ const validateDateFormat = (body) => {
   ) {
     throw new ValidationError({
       title: "incorrect date format",
-      statusCode: statusCodes.UNPROCESSABLE_ENTITY,
+      status: statusCodes.UNPROCESSABLE_ENTITY,
       pointer: "start_date",
     })
   }

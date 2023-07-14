@@ -9,6 +9,7 @@ export enum codes {
   ERR_DATABASE_ERROR = "database-error",
   ERR_INVALID_RESULT = "invalid-result",
   ERR_SERVER_ERROR = "server-error",
+  ERR_VALUE_REQUIRED = "value-required",
 }
 
 export enum statusCodes {

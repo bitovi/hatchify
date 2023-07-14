@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom"
-import { getByRole, render, screen } from "@testing-library/react"
+import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import { MuiList } from "./MuiList"
 import {
@@ -32,6 +32,26 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
         isSuccess: true,
       },
     ] as any // todo: fix typing
+
+  const useNoData = () =>
+    [
+      [],
+      {
+        status: "success",
+        meta: {
+          unpaginatedCount: 30, // 3 pages
+        },
+        error: undefined,
+        isDone: true,
+        isLoading: false,
+        isRejected: false,
+        isRevalidating: false,
+        isStale: false,
+        isSuccess: true,
+      },
+    ] as any
+
+  const EmptyList = () => <div>so empty inside</div>
 
   const displays = [
     {
@@ -67,10 +87,9 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
-          checked={[]}
-          setChecked={() => vi.fn()}
-          toggleChecked={() => vi.fn()}
-          clearChecked={() => vi.fn()}
+          selected={{}}
+          setSelected={() => vi.fn()}
+          emptyList={EmptyList}
         />,
       )
 
@@ -96,10 +115,9 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={setSort}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
-          checked={[]}
-          setChecked={() => vi.fn()}
-          toggleChecked={() => vi.fn()}
-          clearChecked={() => vi.fn()}
+          selected={{}}
+          setSelected={() => vi.fn()}
+          emptyList={EmptyList}
         />,
       )
 
@@ -123,10 +141,9 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={setPagination}
-          checked={[]}
-          setChecked={() => vi.fn()}
-          toggleChecked={() => vi.fn()}
-          clearChecked={() => vi.fn()}
+          selected={{}}
+          setSelected={() => vi.fn()}
+          emptyList={EmptyList}
         />,
       )
 
@@ -141,15 +158,82 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
       ])
     })
 
-    it("fires checkbox callbacks", async () => {
-      const setChecked = vi.fn()
-      const toggleChecked = vi.fn()
-      const clearChecked = vi.fn()
-      const checked: string[] = []
+    describe("fires checkbox callbacks", async () => {
+      const setSelected = vi.fn()
 
+      const renderWithSelected = (selected: Record<string, true> | true) =>
+        render(
+          <MuiList
+            useData={useData}
+            displays={displays}
+            sort={{
+              direction: undefined,
+              sortBy: undefined,
+            }}
+            setSort={() => vi.fn()}
+            pagination={{ number: 1, size: 10 }}
+            setPagination={() => vi.fn()}
+            selected={selected}
+            setSelected={setSelected}
+            emptyList={EmptyList}
+          />,
+        )
+
+      it("selects all", async () => {
+        renderWithSelected({})
+
+        within(await screen.findByLabelText("select all"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith(true)
+      })
+
+      it("deselects all", async () => {
+        renderWithSelected(true)
+
+        within(await screen.findByLabelText("select all"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith({})
+      })
+
+      it("selects one", async () => {
+        renderWithSelected({})
+
+        within(await screen.findByLabelText("select uuid1"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith({ uuid1: true })
+      })
+
+      it("selects an additional row", async () => {
+        renderWithSelected({ uuid1: true })
+
+        within(await screen.findByLabelText("select uuid2"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith({ uuid1: true, uuid2: true })
+      })
+
+      it("deselects one", async () => {
+        renderWithSelected({ uuid1: true, uuid2: true })
+
+        within(await screen.findByLabelText("select uuid1"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith({ uuid2: true })
+      })
+    })
+
+    it("displays EmptyList component if there is no data", async () => {
       render(
         <MuiList
-          useData={useData}
+          useData={useNoData}
           displays={displays}
           sort={{
             direction: undefined,
@@ -158,32 +242,13 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
-          checked={checked}
-          setChecked={setChecked}
-          toggleChecked={toggleChecked}
-          clearChecked={clearChecked}
+          selected={{}}
+          setSelected={() => vi.fn()}
+          emptyList={EmptyList}
         />,
       )
 
-      const headerCheckContainer = await screen.findByLabelText("check all")
-      const headerCheck = getByRole(headerCheckContainer, "checkbox")
-      const firstCheckContainer = await screen.findByLabelText("check uuid1")
-      const firstCheck = getByRole(firstCheckContainer, "checkbox")
-      const secondCheckContainer = await screen.findByLabelText("check uuid2")
-      const secondCheck = getByRole(secondCheckContainer, "checkbox")
-
-      firstCheck.click()
-      firstCheck.click()
-      secondCheck.click()
-            headerCheck.click()
-      headerCheck.click()
-
-      expect(toggleChecked.mock.calls).toEqual([
-        ["uuid1"],
-        ["uuid1"],
-        ["uuid2"],
-      ])
-      expect(setChecked.mock.calls).toEqual([["uuid1", "uuid2"]])
-      expect(clearChecked.mock.calls).toEqual([])
+      expect(await screen.findByText("so empty inside")).toBeInTheDocument()
+    })
   })
 })

@@ -54,8 +54,10 @@ export interface XListProps {
   sort: SortObject
   setSort: (sortBy: string) => void
   // row select (checkoxes)
-  selected: string[]
-  setSelected: (ids: string[]) => void
+  selected: globalThis.Record<string, true> | true
+  setSelected: (ids: globalThis.Record<string, true> | true) => void
+  // empty list
+  emptyList: () => JSX.Element
 }
 
 export interface XLayoutProps {

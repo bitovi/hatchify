@@ -7,8 +7,12 @@ import type {
 } from "sequelize"
 
 import { buildDestroyOptions, buildFindOptions } from "./builder"
-import { codes, statusCodes } from "../error/constants"
-import { ValidationError } from "../error/errors"
+import {
+  ValidationError,
+  ValueRequiredError,
+  codes,
+  statusCodes,
+} from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
 
@@ -76,11 +80,17 @@ async function findAndCountAllImpl(model: HatchifyModel, querystring: string) {
 async function createImpl<T extends HatchifyModel = HatchifyModel>(
   hatchify: Hatchify,
   model: T,
-  body: unknown,
+  body: any,
 ) {
-  const parsed = await hatchify.serializer.deserialize(model.name, body as any)
-  // FOR NON-JSON:API Compliant, parsed is an empty object
-  const parsedBody = Object.keys(parsed).length === 0 ? body : parsed
+  if (!body.data) {
+    throw new ValueRequiredError({
+      title: "Payload is missing a required value.",
+      detail: "Payload must include a value for 'data'.",
+      pointer: "/data",
+    })
+  }
+
+  const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 
   return {
     body: parsedBody,
@@ -91,12 +101,18 @@ async function createImpl<T extends HatchifyModel = HatchifyModel>(
 async function updateImpl(
   hatchify: Hatchify,
   model: HatchifyModel,
-  body: unknown,
+  body: any,
   id,
 ) {
-  const parsed = await hatchify.serializer.deserialize(model.name, body as any)
-  // FOR NON-JSON:API Compliant, parsed is an empty object
-  const parsedBody = Object.keys(parsed).length === 0 ? body : parsed
+  if (!body.data) {
+    throw new ValueRequiredError({
+      title: "Payload is missing a required value.",
+      detail: "Payload must include a value for 'data'.",
+      pointer: "/data",
+    })
+  }
+
+  const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 
   return {
     body: parsedBody,
