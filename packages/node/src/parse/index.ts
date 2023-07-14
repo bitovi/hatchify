@@ -1,3 +1,4 @@
+import { capitalize, singularize } from "inflection"
 import type {
   CreateOptions,
   DestroyOptions,
@@ -14,9 +15,9 @@ import {
   codes,
   statusCodes,
 } from "../error"
+import type { HatchifyError } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
-import { capitalize, singularize } from "inflection"
 
 /**
  * Provides a set of exported functions, per Model, that
@@ -133,7 +134,7 @@ function validateStructure<T extends HatchifyModel = HatchifyModel>(
         ]
       }
 
-      const errors: Error[] = []
+      const errors: HatchifyError[] = []
 
       const modelName = capitalize(singularize(relationshipName))
 
