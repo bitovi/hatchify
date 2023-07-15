@@ -1,20 +1,42 @@
 import { useState } from "react"
+import type { Schema } from "@hatchifyjs/react-rest"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import createClient from "@hatchifyjs/rest-client-jsonapi"
 
-const Todo = {
+const Todo: Schema = {
   name: "Todo",
   displayAttribute: "name",
   attributes: {
     name: "string",
   },
+  relationships: {
+    user: {
+      type: "one",
+      schema: "User",
+    },
+  },
+}
+
+const User: Schema = {
+  name: "User",
+  displayAttribute: "name",
+  attributes: {
+    name: "string",
+  },
+  relationships: {
+    todos: {
+      type: "many",
+      schema: "Todo",
+    },
+  },
 }
 
 const jsonapi = createClient("/api", {
   Todo: { endpoint: "todos" },
+  User: { endpoint: "users" },
 })
 
-const hatchedReactRest = hatchifyReactRest({ Todo }, jsonapi)
+const hatchedReactRest = hatchifyReactRest({ Todo, User }, jsonapi)
 
 function App() {
   const [todos, listState] = hatchedReactRest.Todo.useAll({})
@@ -37,7 +59,10 @@ function App() {
         <button
           disabled={createState.isLoading}
           type="button"
-          onClick={() => createTodo({ attributes: { name: todoName } })}
+          onClick={() => {
+            createTodo({ attributes: { name: todoName } })
+            setTodoName("")
+          }}
         >
           {createState.isLoading ? "submitting..." : "submit"}
         </button>
@@ -47,6 +72,7 @@ function App() {
           {todos.map((todo) => (
             <tr key={todo.id}>
               <td>{todo.name}</td>
+              <td>{todo.user.name}</td>
               <td>
                 <button
                   disabled={deleteState.isLoading}
