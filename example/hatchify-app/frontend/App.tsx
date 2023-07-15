@@ -1,4 +1,5 @@
 // hatchify-app/src/App.tsx
+import { useState } from "react"
 import {
   hatchifyReact,
   MuiProvider,
@@ -19,9 +20,14 @@ const TodoList = hatchedReact.components.Todo.List
 const TodoEmptyList = hatchedReact.components.Todo.EmptyList
 
 const App: React.FC = () => {
+  const [selected, setSelected] = useState<string[]>([])
+
   return (
     <MuiProvider>
-      <TodoList>
+      <button onClick={() => alert(`action on [${selected.join(",")}]`)}>
+        action
+      </button>
+      <TodoList selectable onSelectionChange={(ids) => setSelected(ids)}>
         <TodoEmptyList>
           <div>
             {"No records to display"}

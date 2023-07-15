@@ -44,14 +44,12 @@ export const MuiList: React.FC<XListProps> = ({
   sort,
   setPagination,
   setSort,
+  selectable,
   selected,
   setSelected,
 }) => {
-  const [, meta] = useData()
+  const [data, meta] = useData()
   const { direction, sortBy } = sort
-  const allRowsSelected =
-    selected === true ||
-    Object.keys(selected).length === meta.meta?.unpaginatedCount
 
   return (
     <TableContainer css={styles.tableContainer}>
@@ -59,20 +57,35 @@ export const MuiList: React.FC<XListProps> = ({
         <Suspense>
           <TableHead>
             <TableRow>
-              <TableCell css={styles.th}>
-                <Checkbox
-                  aria-label="select all"
-                  checked={allRowsSelected}
-                  indeterminate={
-                    !allRowsSelected && Object.keys(selected).length > 0
-                  }
-                  onChange={() => {
-                    if (selected === true || Object.keys(selected).length > 0)
-                      setSelected({})
-                    else setSelected(true)
-                  }}
-                />
-              </TableCell>
+              {selectable && (
+                <TableCell css={styles.th}>
+                  <Checkbox
+                    aria-label="select all"
+                    checked={
+                      data.length > 0 &&
+                      Object.keys(selected).length === data.length
+                    }
+                    indeterminate={
+                      data.length > 0 &&
+                      Object.keys(selected).length > 0 &&
+                      Object.keys(selected).length < data.length
+                    }
+                    onChange={() => {
+                      if (Object.keys(selected).length > 0) setSelected({})
+                      else
+                        setSelected(
+                          data.reduce(
+                            (acc, next) => ({
+                              ...acc,
+                              [next.id]: true,
+                            }),
+                            {} as Record<string, true>,
+                          ),
+                        )
+                    }}
+                  />
+                </TableCell>
+              )}
               {displays.map((display) => (
                 <TableCell
                   key={display.key}
@@ -101,6 +114,7 @@ export const MuiList: React.FC<XListProps> = ({
             <MuiListRows
               displays={displays}
               useData={useData}
+              selectable={selectable}
               selected={selected}
               setSelected={setSelected}
               emptyList={emptyList}
@@ -136,6 +150,7 @@ type MuiListRowsProps = Omit<
 const MuiListRows: React.FC<MuiListRowsProps> = ({
   displays,
   useData,
+  selectable,
   selected,
   setSelected,
   emptyList: EmptyList,
@@ -147,23 +162,11 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
   }
 
   function onRowSelect(id: string) {
-    if (selected === true) {
-      // if all rows are selected (true), select only visible rows
-      // and deselect the one that was clicked
-      const updated = Object.values(data).reduce((acc, item) => {
-        acc[item.id] = true
-        return acc
-      }, {} as Record<string, true>)
-
-      delete updated[id]
-      setSelected(updated)
-    } else {
-      // othwerise, toggle the row that was clicked
-      const copy = { ...selected }
-      if (copy[id]) delete copy[id]
-      else copy[id] = true
-      setSelected(copy)
-    }
+    // toggle the row that was clicked
+    const copy = { ...selected }
+    if (copy[id]) delete copy[id]
+    else copy[id] = true
+    setSelected(copy)
   }
 
   return (
@@ -178,15 +181,15 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
         data.map((item) => {
           return (
             <TableRow key={item.id}>
-              <TableCell>
-                <Checkbox
-                  aria-label={`select ${item.id}`}
-                  checked={
-                    selected === true || selected[item.id] ? true : false
-                  }
-                  onChange={() => onRowSelect(item.id)}
-                />
-              </TableCell>
+              {selectable && (
+                <TableCell>
+                  <Checkbox
+                    aria-label={`select ${item.id}`}
+                    checked={selected[item.id] ? true : false}
+                    onChange={() => onRowSelect(item.id)}
+                  />
+                </TableCell>
+              )}
               {displays.map((display) => (
                 <TableCell key={`${item.id}-${display.key}`}>
                   {display.render({
@@ -209,6 +212,7 @@ type SkeletonCellsProps = Omit<
   | "setSort"
   | "pagination"
   | "setPagination"
+  | "selectable"
   | "selected"
   | "setSelected"
   | "emptyList"

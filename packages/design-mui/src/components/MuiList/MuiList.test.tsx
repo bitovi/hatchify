@@ -87,6 +87,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          selectable={false}
           selected={{}}
           setSelected={() => vi.fn()}
           emptyList={EmptyList}
@@ -115,6 +116,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={setSort}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          selectable={false}
           selected={{}}
           setSelected={() => vi.fn()}
           emptyList={EmptyList}
@@ -141,6 +143,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={setPagination}
+          selectable={false}
           selected={{}}
           setSelected={() => vi.fn()}
           emptyList={EmptyList}
@@ -161,7 +164,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
     describe("fires checkbox callbacks", async () => {
       const setSelected = vi.fn()
 
-      const renderWithSelected = (selected: Record<string, true> | true) =>
+      const renderWithSelected = (selected: Record<string, true>) =>
         render(
           <MuiList
             useData={useData}
@@ -173,6 +176,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
             setSort={() => vi.fn()}
             pagination={{ number: 1, size: 10 }}
             setPagination={() => vi.fn()}
+            selectable
             selected={selected}
             setSelected={setSelected}
             emptyList={EmptyList}
@@ -190,7 +194,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
       })
 
       it("deselects all", async () => {
-        renderWithSelected(true)
+        renderWithSelected({ uuid1: true, uuid2: true })
 
         within(await screen.findByLabelText("select all"))
           .getByRole("checkbox")
@@ -242,6 +246,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          selectable={false}
           selected={{}}
           setSelected={() => vi.fn()}
           emptyList={EmptyList}
