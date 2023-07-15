@@ -190,7 +190,7 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           .getByRole("checkbox")
           .click()
 
-        expect(setSelected).toHaveBeenCalledWith(true)
+        expect(setSelected).toHaveBeenCalledWith({ uuid1: true, uuid2: true })
       })
 
       it("deselects all", async () => {
