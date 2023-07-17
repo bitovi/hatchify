@@ -43,7 +43,7 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
     ]
   }
 
-  if (typeof body.data.type !== model.name) {
+  if (body.data.type !== model.name) {
     throw [
       new UnexpectedValueError({
         detail: `Payload must have 'type' as '${model.name}'.`,
