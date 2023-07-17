@@ -86,13 +86,17 @@ async function findAndCountAllImpl(model: HatchifyModel, querystring: string) {
   return data
 }
 
+function isObject(value: any): boolean {
+  return value && typeof value === "object" && !Array.isArray(value)
+}
+
 function validateStructure<T extends HatchifyModel = HatchifyModel>(
   body: any,
   model: T,
 ) {
   const title = "Payload is missing a required value."
 
-  if (!body.data) {
+  if (body.data === undefined) {
     throw [
       new ValueRequiredError({
         title,
@@ -102,11 +106,48 @@ function validateStructure<T extends HatchifyModel = HatchifyModel>(
     ]
   }
 
-  if (!body.data.attributes) {
+  if (!isObject(body.data)) {
+    throw [
+      new UnexpectedValueError({
+        detail: `Payload must have 'data' as an object.`,
+        pointer: "/data",
+      }),
+    ]
+  }
+
+  if (body.data.type === undefined) {
+    throw [
+      new ValueRequiredError({
+        title,
+        detail: "Payload must include a value for 'type'.",
+        pointer: "/data/type",
+      }),
+    ]
+  }
+
+  if (typeof body.data.type !== "string") {
+    throw [
+      new UnexpectedValueError({
+        detail: `Payload must have 'type' as a string.`,
+        pointer: "/data/type",
+      }),
+    ]
+  }
+
+  if (body.data.attributes === undefined) {
     throw [
       new ValueRequiredError({
         title,
         detail: "Payload must include a value for 'attributes'.",
+        pointer: "/data/attributes",
+      }),
+    ]
+  }
+
+  if (!isObject(body.data.attributes)) {
+    throw [
+      new UnexpectedValueError({
+        detail: `Payload must have 'attributes' as an object.`,
         pointer: "/data/attributes",
       }),
     ]
@@ -126,7 +167,7 @@ function validateStructure<T extends HatchifyModel = HatchifyModel>(
       ]
     }
 
-    if (!relationshipValue.data) {
+    if (relationshipValue.data === undefined) {
       return [
         ...acc,
         new ValueRequiredError({
@@ -157,7 +198,7 @@ function validateStructure<T extends HatchifyModel = HatchifyModel>(
       )
     }
 
-    if (expectObject && Array.isArray(relationshipValue.data)) {
+    if (expectObject && !isObject(relationshipValue.data)) {
       relationshipErrors.push(
         new UnexpectedValueError({
           detail: `Payload must have 'data' as an object.`,
