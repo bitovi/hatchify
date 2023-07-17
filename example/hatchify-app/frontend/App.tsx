@@ -16,6 +16,7 @@ export const hatchedReact = hatchifyReact(
 )
 
 const TodoList = hatchedReact.components.Todo.List
+const TodoExtraColumn = hatchedReact.components.Todo.ExtraColumn
 const TodoEmptyList = hatchedReact.components.Todo.EmptyList
 
 const App: React.FC = () => {
@@ -28,6 +29,20 @@ const App: React.FC = () => {
             <button>click here</button>
           </div>
         </TodoEmptyList>
+        <TodoExtraColumn
+          label="Action"
+          render={({ record }) => {
+            return (
+              <>
+                <button onClick={() => console.log(record)}>Download</button>
+                <button onClick={() => console.log(record)}>Open</button>
+                <button onClick={() => console.log(record)}>
+                  More Actions
+                </button>
+              </>
+            )
+          }}
+        />
       </TodoList>
     </MuiProvider>
   )

@@ -1,6 +1,6 @@
 export {
   HatchifyAttributeDisplay,
-  HatchifyExtraDisplay,
+  HatchifyExtraColumn,
   HatchifyAttributeField,
   HatchifyEmptyList,
 } from "./HatchifyDisplays"
