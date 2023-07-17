@@ -25,6 +25,7 @@ describe("JSON:API Tests", () => {
     const serializer = new Serializer("Model", {
       keyForAttribute: "snake_case",
       attributes: Object.keys(data),
+      pluralizeType: false,
     })
     const serial = serializer.serialize(data)
     return serial
