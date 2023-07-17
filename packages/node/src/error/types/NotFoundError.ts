@@ -9,9 +9,9 @@ export class NotFoundError extends HatchifyError {
     pointer,
   }: Pick<HatchifyErrorOptions, "detail" | "parameter" | "pointer">) {
     super({
-      title: "Resource not found.",
       code: codes.ERR_NOT_FOUND,
       status: statusCodes.NOT_FOUND,
+      title: "Resource not found.",
       detail,
       parameter,
       pointer,

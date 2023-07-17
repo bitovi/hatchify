@@ -215,11 +215,13 @@ export function handleAllMiddleware(hatchify: Hatchify) {
 
         case "PATCH": {
           if (!params.id) {
-            throw new ValidationError({
-              status: statusCodes.UNPROCESSABLE_ENTITY,
-              code: codes.ERR_INVALID_PARAMETER,
-              title: "Invalid ID Provided",
-            })
+            throw [
+              new ValidationError({
+                status: statusCodes.UNPROCESSABLE_ENTITY,
+                code: codes.ERR_INVALID_PARAMETER,
+                title: "Invalid ID Provided",
+              }),
+            ]
           }
 
           return {
@@ -233,11 +235,13 @@ export function handleAllMiddleware(hatchify: Hatchify) {
 
         case "DELETE": {
           if (!params.id) {
-            throw new ValidationError({
-              status: statusCodes.UNPROCESSABLE_ENTITY,
-              code: codes.ERR_INVALID_PARAMETER,
-              title: "Invalid ID Provided",
-            })
+            throw [
+              new ValidationError({
+                status: statusCodes.UNPROCESSABLE_ENTITY,
+                code: codes.ERR_INVALID_PARAMETER,
+                title: "Invalid ID Provided",
+              }),
+            ]
           }
 
           return {
@@ -266,19 +270,23 @@ export function handleAllMiddleware(hatchify: Hatchify) {
 function resolveWildcard(hatchify: Hatchify, path): string {
   const params = hatchify.getHatchifyURLParamsForRoute(path)
   if (!params.model) {
-    throw new ValidationError({
-      status: statusCodes.UNPROCESSABLE_ENTITY,
-      code: codes.ERR_INVALID_PARAMETER,
-      title: "Invalid URL Format",
-    })
+    throw [
+      new ValidationError({
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+        code: codes.ERR_INVALID_PARAMETER,
+        title: "Invalid URL Format",
+      }),
+    ]
   }
 
   if (!hatchify.model[params.model]) {
-    throw new ValidationError({
-      status: statusCodes.UNPROCESSABLE_ENTITY,
-      code: codes.ERR_INVALID_PARAMETER,
-      title: "Bad Model Name: ",
-    })
+    throw [
+      new ValidationError({
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+        code: codes.ERR_INVALID_PARAMETER,
+        title: "Bad Model Name: ",
+      }),
+    ]
   }
 
   return params.model

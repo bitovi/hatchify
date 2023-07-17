@@ -15,9 +15,11 @@ const validateRoleOverlap = async ({ body, Role }) => {
     })
 
     if (!role) {
-      throw new ConflictError({
-        pointer: "role/id",
-      })
+      throw [
+        new ConflictError({
+          pointer: "role/id",
+        }),
+      ]
     }
 
     const assignmentStart = body.start_date
@@ -34,11 +36,13 @@ const validateRoleOverlap = async ({ body, Role }) => {
       isFullyConfident(startConfidence)
 
     if (!assignmentEnd && !roleEnd && assignmentStartBeforeRoleStart) {
-      throw new ValidationError({
-        title: "Assignment start date not in date range of role",
-        status: statusCodes.CONFLICT,
-        pointer: "start_date",
-      })
+      throw [
+        new ValidationError({
+          title: "Assignment start date not in date range of role",
+          status: statusCodes.CONFLICT,
+          pointer: "start_date",
+        }),
+      ]
     } else if (
       assignmentEnd &&
       (assignmentStartBeforeRoleStart ||
@@ -46,22 +50,26 @@ const validateRoleOverlap = async ({ body, Role }) => {
           compareDates(roleEnd, assignmentStart) &&
           isFullyConfident(endConfidence)))
     ) {
-      throw new ValidationError({
-        title: "Assignment start date not in date range of role",
-        status: statusCodes.CONFLICT,
-        pointer: "start_date",
-      })
+      throw [
+        new ValidationError({
+          title: "Assignment start date not in date range of role",
+          status: statusCodes.CONFLICT,
+          pointer: "start_date",
+        }),
+      ]
     } else if (
       !roleEnd &&
       (assignmentStartBeforeRoleStart ||
         (compareDates(assignmentEnd, roleStart) &&
           isFullyConfident(startConfidence)))
     ) {
-      throw new ValidationError({
-        title: "Assignment dates are before role start date",
-        status: statusCodes.CONFLICT,
-        pointer: assignmentStartBeforeRoleStart ? "start_date" : "end_date",
-      })
+      throw [
+        new ValidationError({
+          title: "Assignment dates are before role start date",
+          status: statusCodes.CONFLICT,
+          pointer: assignmentStartBeforeRoleStart ? "start_date" : "end_date",
+        }),
+      ]
     } else if (
       assignmentEnd &&
       roleEnd &&
@@ -69,11 +77,13 @@ const validateRoleOverlap = async ({ body, Role }) => {
         (compareDates(roleEnd, assignmentEnd) &&
           isFullyConfident(endConfidence)))
     ) {
-      throw new ValidationError({
-        title: "Assignment not in date range of role",
-        status: statusCodes.CONFLICT,
-        pointer: assignmentStartBeforeRoleStart ? "start_date" : "end_date",
-      })
+      throw [
+        new ValidationError({
+          title: "Assignment not in date range of role",
+          status: statusCodes.CONFLICT,
+          pointer: assignmentStartBeforeRoleStart ? "start_date" : "end_date",
+        }),
+      ]
     }
   }
 }
