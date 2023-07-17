@@ -3,7 +3,7 @@ import { Button, Link } from "@mui/material"
 
 import {
   HatchifyAttributeDisplay,
-  HatchifyExtraDisplay,
+  HatchifyExtraColumn,
   HatchifyListPage,
 } from "@hatchifyjs/react-ui"
 import type { Render } from "@hatchifyjs/react-ui"
@@ -46,7 +46,7 @@ const List: React.FC = () => {
         attribute="user"
         ValueComponent={ClickableChip}
       />
-      <HatchifyExtraDisplay
+      <HatchifyExtraColumn
         label="Actions"
         render={({ record }) => <ListActions record={record} />}
       />

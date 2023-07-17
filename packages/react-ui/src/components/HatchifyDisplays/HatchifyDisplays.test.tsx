@@ -1,16 +1,16 @@
 import { describe, it, vi } from "vitest"
 import { render } from "@testing-library/react"
 import {
-  HatchifyExtraDisplay,
+  HatchifyExtraColumn,
   HatchifyAttributeDisplay,
   HatchifyAttributeField,
   HatchifyEmptyList,
 } from "./HatchifyDisplays"
 
 describe("hatchifyjs/components/HatchifyColumns", () => {
-  describe("HatchifyExtraDisplay", () => {
+  describe("HatchifyExtraColumn", () => {
     it("works", () => {
-      render(<HatchifyExtraDisplay label="Label" render={() => <div />} />)
+      render(<HatchifyExtraColumn label="Label" render={() => <div />} />)
     })
   })
 

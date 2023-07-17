@@ -533,7 +533,7 @@ export const Employee = {
     startDateBeforeEndDate() {
       const { startDate, endDate } = this as unknown as { startDate: Date; endDate: Date }
       if (startDate && endDate && startDate >= endDate) {
-        throw new Error("START_DATE_MUST_BE_BEFORE_END_DATE")
+        throw [new Error("START_DATE_MUST_BE_BEFORE_END_DATE")]
       }
     },
   },

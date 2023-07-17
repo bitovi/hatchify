@@ -107,6 +107,7 @@ export type AttributeSchema = {
   primaryKey?: boolean
   defaultValue?: string
   unique?: boolean
+  values?: string[]
 }
 
 export type Attribute = string | AttributeSchema

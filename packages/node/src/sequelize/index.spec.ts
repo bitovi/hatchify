@@ -28,6 +28,10 @@ describe("index", () => {
         name: "STRING",
         due_date: "DATE",
         importance: "INTEGER",
+        status: {
+          type: "ENUM",
+          values: ["Do Today", "Do Soon", "Done"],
+        },
       },
       belongsTo: [{ target: "User", options: { as: "user" } }],
     }
@@ -79,9 +83,28 @@ describe("index", () => {
     })
 
     it("parses objects", () => {
+      expect(parseAttribute({ type: "STRING", include: [] })).toEqual({
+        type: DataTypes.STRING,
+        include: [],
+      })
+
       expect(parseAttribute({ type: DataTypes.STRING, include: [] })).toEqual({
         type: DataTypes.STRING,
         include: [],
+      })
+    })
+
+    it("parses enum into values validation", async () => {
+      const enumAttr = {
+        type: "ENUM",
+        values: ["foo", "bar", "baz"],
+      }
+      expect(parseAttribute(enumAttr)).toEqual({
+        type: DataTypes.ENUM,
+        values: ["foo", "bar", "baz"],
+        validate: {
+          isIn: [["foo", "bar", "baz"]],
+        },
       })
     })
   })

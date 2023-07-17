@@ -49,9 +49,11 @@ export function findOneEverything(hatchify: Hatchify, modelName: string) {
     const params = await hatchify.parse[modelName].findOne(querystring, id)
     const result = await hatchify.model[modelName].findByPk(id, params)
     if (!result) {
-      throw new NotFoundError({
-        detail: modelName + " with id " + id + " was not found",
-      })
+      throw [
+        new NotFoundError({
+          detail: modelName + " with id " + id + " was not found",
+        }),
+      ]
     }
     const response = await hatchify.serialize[modelName].findOne(
       result,
@@ -95,10 +97,12 @@ export function updateEverything(hatchify: Hatchify, modelName: string) {
     const { body, ops } = await hatchify.parse[modelName].update(rawbody, id)
     const [affectedCount] = await hatchify.model[modelName].update(body, ops)
     if (!affectedCount) {
-      throw new NotFoundError({
-        detail: `URL must include an ID of an existing '${modelName}'.`,
-        parameter: "id",
-      })
+      throw [
+        new NotFoundError({
+          detail: `URL must include an ID of an existing '${modelName}'.`,
+          parameter: "id",
+        }),
+      ]
     }
     const response = await hatchify.serialize[modelName].update(affectedCount)
     return response
@@ -110,10 +114,12 @@ export function destroyEverything(hatchify: Hatchify, modelName: string) {
     const params = await hatchify.parse[modelName].destroy(querystring, id)
     const affectedCount = await hatchify.model[modelName].destroy(params)
     if (!affectedCount) {
-      throw new NotFoundError({
-        detail: `URL must include an ID of an existing '${modelName}'.`,
-        parameter: "id",
-      })
+      throw [
+        new NotFoundError({
+          detail: `URL must include an ID of an existing '${modelName}'.`,
+          parameter: "id",
+        }),
+      ]
     }
     const response = await hatchify.serialize[modelName].destroy(affectedCount)
     return response

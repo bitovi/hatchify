@@ -7,12 +7,8 @@ import type {
 } from "sequelize"
 
 import { buildDestroyOptions, buildFindOptions } from "./builder"
-import {
-  ValidationError,
-  ValueRequiredError,
-  codes,
-  statusCodes,
-} from "../error"
+import { validateStructure } from "./validateStructure"
+import { ValidationError, codes, statusCodes } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
 
@@ -44,11 +40,13 @@ export interface ParseFunctions {
 async function findAllImpl(model: HatchifyModel, querystring: string) {
   const { data, errors } = buildFindOptions(model, querystring)
   if (errors.length > 0) {
-    throw new ValidationError({
-      code: codes.ERR_INVALID_PARAMETER,
-      status: statusCodes.UNPROCESSABLE_ENTITY,
-      title: "Bad Request, Invalid Query String",
-    })
+    throw [
+      new ValidationError({
+        code: codes.ERR_INVALID_PARAMETER,
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+        title: "Bad Request, Invalid Query String",
+      }),
+    ]
   }
   return data
 }
@@ -56,11 +54,13 @@ async function findAllImpl(model: HatchifyModel, querystring: string) {
 async function findOneImpl(model: HatchifyModel, querystring: string, id) {
   const { data, errors } = buildFindOptions(model, querystring, id)
   if (errors.length > 0) {
-    throw new ValidationError({
-      code: codes.ERR_INVALID_PARAMETER,
-      status: statusCodes.UNPROCESSABLE_ENTITY,
-      title: "Bad Request, Invalid Query String",
-    })
+    throw [
+      new ValidationError({
+        code: codes.ERR_INVALID_PARAMETER,
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+        title: "Bad Request, Invalid Query String",
+      }),
+    ]
   }
   return data
 }
@@ -68,11 +68,13 @@ async function findOneImpl(model: HatchifyModel, querystring: string, id) {
 async function findAndCountAllImpl(model: HatchifyModel, querystring: string) {
   const { data, errors } = buildFindOptions(model, querystring)
   if (errors.length > 0) {
-    throw new ValidationError({
-      code: codes.ERR_INVALID_PARAMETER,
-      status: statusCodes.UNPROCESSABLE_ENTITY,
-      title: "Bad Request, Invalid Query String",
-    })
+    throw [
+      new ValidationError({
+        code: codes.ERR_INVALID_PARAMETER,
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+        title: "Bad Request, Invalid Query String",
+      }),
+    ]
   }
   return data
 }
@@ -82,14 +84,7 @@ async function createImpl<T extends HatchifyModel = HatchifyModel>(
   model: T,
   body: any,
 ) {
-  if (!body.data) {
-    throw new ValueRequiredError({
-      title: "Payload is missing a required value.",
-      detail: "Payload must include a value for 'data'.",
-      pointer: "/data",
-    })
-  }
-
+  validateStructure(body, model)
   const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 
   return {
@@ -104,14 +99,7 @@ async function updateImpl(
   body: any,
   id,
 ) {
-  if (!body.data) {
-    throw new ValueRequiredError({
-      title: "Payload is missing a required value.",
-      detail: "Payload must include a value for 'data'.",
-      pointer: "/data",
-    })
-  }
-
+  validateStructure(body, model)
   const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 
   return {
@@ -123,11 +111,13 @@ async function updateImpl(
 async function destroyImpl(querystring: string, id?: Identifier) {
   const { data, errors } = buildDestroyOptions(querystring, id)
   if (errors.length > 0) {
-    throw new ValidationError({
-      code: codes.ERR_INVALID_PARAMETER,
-      status: statusCodes.UNPROCESSABLE_ENTITY,
-      title: "Bad Request, Invalid Query String",
-    })
+    throw [
+      new ValidationError({
+        code: codes.ERR_INVALID_PARAMETER,
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+        title: "Bad Request, Invalid Query String",
+      }),
+    ]
   }
 
   return data
