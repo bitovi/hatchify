@@ -27,7 +27,7 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
   if (!isObject(body.data)) {
     throw [
       new UnexpectedValueError({
-        detail: `Payload must have 'data' as an object.`,
+        detail: "Payload must have 'data' as an object.",
         pointer: "/data",
       }),
     ]
@@ -65,68 +65,80 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
   if (!isObject(body.data.attributes)) {
     throw [
       new UnexpectedValueError({
-        detail: `Payload must have 'attributes' as an object.`,
+        detail: "Payload must have 'attributes' as an object.",
         pointer: "/data/attributes",
       }),
     ]
   }
 
-  const relationshipsErrors = Object.entries(
-    body.data.relationships || {},
-  ).reduce((acc, [relationshipName, relationshipValue]: [string, any]) => {
-    if (!relationshipValue) {
-      return [
-        ...acc,
-        new ValueRequiredError({
-          title,
-          detail: `Payload must include a value for '${relationshipName}'.`,
-          pointer: `/data/attributes/${relationshipName}`,
-        }),
-      ]
-    }
+  if (!body.data.relationships) return
 
-    if (relationshipValue.data === undefined) {
-      return [
-        ...acc,
-        new ValueRequiredError({
-          title,
-          detail: `Payload must include a value for 'data'.`,
-          pointer: `/data/attributes/${relationshipName}/data`,
-        }),
-      ]
-    }
+  if (!isObject(body.data.relationships)) {
+    throw [
+      new UnexpectedValueError({
+        detail: "Payload must have 'relationships' as an object.",
+        pointer: "/data/relationships",
+      }),
+    ]
+  }
 
-    const relationshipErrors: HatchifyError[] = []
+  const relationshipsErrors = Object.entries(body.data.relationships).reduce(
+    (acc, [relationshipName, relationshipValue]: [string, any]) => {
+      if (!relationshipValue) {
+        return [
+          ...acc,
+          new ValueRequiredError({
+            title,
+            detail: `Payload must include a value for '${relationshipName}'.`,
+            pointer: `/data/attributes/${relationshipName}`,
+          }),
+        ]
+      }
 
-    const modelName = capitalize(singularize(relationshipName))
+      if (relationshipValue.data === undefined) {
+        return [
+          ...acc,
+          new ValueRequiredError({
+            title,
+            detail: "Payload must include a value for 'data'.",
+            pointer: `/data/attributes/${relationshipName}/data`,
+          }),
+        ]
+      }
 
-    const expectObject =
-      model.hasOne?.some(({ target }) => target === modelName) ||
-      model.belongsTo?.some(({ target }) => target === modelName)
-    const expectArray =
-      model.hasMany?.some(({ target }) => target === modelName) ||
-      model.belongsToMany?.some(({ target }) => target === modelName)
+      const relationshipErrors: HatchifyError[] = []
 
-    if (expectArray && !Array.isArray(relationshipValue.data)) {
-      relationshipErrors.push(
-        new UnexpectedValueError({
-          detail: `Payload must have 'data' as an array.`,
-          pointer: `/data/relationships/${relationshipName}/data`,
-        }),
-      )
-    }
+      const modelName = capitalize(singularize(relationshipName))
 
-    if (expectObject && !isObject(relationshipValue.data)) {
-      relationshipErrors.push(
-        new UnexpectedValueError({
-          detail: `Payload must have 'data' as an object.`,
-          pointer: `/data/relationships/${relationshipName}/data`,
-        }),
-      )
-    }
+      const expectObject =
+        model.hasOne?.some(({ target }) => target === modelName) ||
+        model.belongsTo?.some(({ target }) => target === modelName)
+      const expectArray =
+        model.hasMany?.some(({ target }) => target === modelName) ||
+        model.belongsToMany?.some(({ target }) => target === modelName)
 
-    return [...acc, ...relationshipErrors]
-  }, [])
+      if (expectArray && !Array.isArray(relationshipValue.data)) {
+        relationshipErrors.push(
+          new UnexpectedValueError({
+            detail: "Payload must have 'data' as an array.",
+            pointer: `/data/relationships/${relationshipName}/data`,
+          }),
+        )
+      }
+
+      if (expectObject && !isObject(relationshipValue.data)) {
+        relationshipErrors.push(
+          new UnexpectedValueError({
+            detail: "Payload must have 'data' as an object.",
+            pointer: `/data/relationships/${relationshipName}/data`,
+          }),
+        )
+      }
+
+      return [...acc, ...relationshipErrors]
+    },
+    [],
+  )
 
   if (relationshipsErrors.length) throw relationshipsErrors
 }
