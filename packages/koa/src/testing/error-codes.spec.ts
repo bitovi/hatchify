@@ -204,6 +204,43 @@ describe("Error Code Tests", () => {
     })
   })
 
+  it("should return error UNEXPECTED_VALUE error code when type is wrong", async () => {
+    const ERROR_CODE_UNEXPECTED_VALUE = {
+      status: 422,
+      code: "unexpected-value",
+      title: "Unexpected value.",
+      detail: "Payload must have 'type' as 'Todo'.",
+      source: {
+        pointer: "/data/type",
+      },
+    }
+
+    const response = await fetch("/api/todos", {
+      method: "post",
+      body: {
+        data: {
+          type: "todo",
+          attributes: {
+            id: "101",
+            name: "Walk the dog",
+            due_date: "2024-12-12",
+            importance: 6,
+          },
+        },
+      },
+    })
+
+    expect(response).toBeTruthy()
+
+    const { status, body } = response
+
+    expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_UNEXPECTED_VALUE],
+    })
+  })
+
   describe("should return error UNEXPECTED_VALUE error code when receiving non-object for attributes (HATCH-210)", () => {
     const ERROR_CODE_UNEXPECTED_VALUE = {
       status: 422,
