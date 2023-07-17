@@ -238,6 +238,7 @@ describe("Relationships", () => {
         method: "post",
         body: {
           data: {
+            type: "Todo",
             attributes: {
               name: "Walk the dog",
               due_date: "2024-12-12T00:00:00.000Z",
@@ -413,13 +414,23 @@ describe("Relationships", () => {
         fetch("/api/users", {
           method: "post",
           body: {
-            data: { attributes: { name: "Mr. Pagination" } },
+            data: {
+              type: "User",
+              attributes: {
+                name: "Mr. Pagination",
+              },
+            },
           },
         }),
         fetch("/api/users", {
           method: "post",
           body: {
-            data: { attributes: { name: "Mrs. Pagination" } },
+            data: {
+              type: "User",
+              attributes: {
+                name: "Mrs. Pagination",
+              },
+            },
           },
         }),
       ])
@@ -442,7 +453,12 @@ describe("Relationships", () => {
         fetch("/api/users", {
           method: "post",
           body: {
-            data: { attributes: { name: "Mr. No Pagination" } },
+            data: {
+              type: "User",
+              attributes: {
+                name: "Mr. No Pagination",
+              },
+            },
           },
         }),
       ])
