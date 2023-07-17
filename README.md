@@ -42,6 +42,8 @@ as little of HatchifyJS abilities as you require.
 -   [Frontend with React &
     MUI](#GettingStartedHatchify-FrontendwithReact&MUI)
     -   [Rendering a List](#GettingStartedHatchify-RenderingaList)
+- [Next Steps](#GettingStartedHatchify-nextSteps)
+  - [Rendering an empty list](#GettingStartedHatchify-renderingAnEmptyList)
 -   [Need help or have
     questions?](#GettingStartedHatchify-Needhelporhavequestions?)
 
@@ -578,7 +580,50 @@ well-defined schemas we have a backend running with REST endpoints, a
 database, and a frontend that handles the JSX and data-fetching for us.
 
 # Next Steps
+## Rendering an empty List
+By default, the list will render a message in the list when there are no records to display:
+![](doc/attachments/defaultNoRecords.png)
+To customize what is displayed here the `EmptyList` component can be passed into `List`
+``` tsx
+// hatchify-app/src/App.tsx
+import {
+  hatchifyReact,
+  MuiProvider,
+  createJsonapiClient,
+} from "@hatchifyjs/react"
+import { Todo } from "../schemas/todo"
+import { User } from "../schemas/user"
 
+export const hatchedReact = hatchifyReact(
+  { Todo, User },
+  createJsonapiClient("http://localhost:3000/api", {
+    Todo: { endpoint: "todos" },
+    User: { endpoint: "users" },
+  }),
+)
+
+const TodoList = hatchedReact.components.Todo.List
+const TodoEmptyList = hatchedReact.components.Todo.EmptyList
+
+const App: React.FC = () => {
+  return (
+    <MuiProvider>
+      <TodoList>
+        <TodoEmptyList>
+          <div>
+            {"No records to display"}
+            <button>click here</button>
+          </div>
+        </TodoEmptyList>
+      </TodoList>
+    </MuiProvider>
+  )
+}
+
+export default App
+```
+`EmptyList` will accept any custom component that is passed in as its children.
+![Alt text](doc/attachments/customNoRecords.png)
 * [Configuring Postgres](./doc/nextSteps/DATABASES.md)
 
 # Troubleshooting / Known issues
