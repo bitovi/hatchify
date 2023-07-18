@@ -595,7 +595,7 @@ const App: React.FC = () => {
     <MuiProvider>
       <TodoList>
         <TodoEmptyList>
-          <div>No records to display</div>
+          <strong>No records to display</strong>
         </TodoEmptyList>
       </TodoList>
     </MuiProvider>
