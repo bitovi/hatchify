@@ -30,10 +30,7 @@ const App: React.FC = () => {
       </button>
       <TodoList selectable onSelectionChange={(ids) => setSelected(ids)}>
         <TodoEmptyList>
-          <div>
-            {"No records to display"}
-            <button>click here</button>
-          </div>
+          <div>No records to display</div>
         </TodoEmptyList>
         <TodoExtraColumn
           label="Action"
