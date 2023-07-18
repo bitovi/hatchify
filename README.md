@@ -580,7 +580,7 @@ database, and a frontend that handles the JSX and data-fetching for us.
 
 # Next Steps
 
-- [Configuring Postgres](./doc/nextSteps/DATABASES.md)
+* [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
 
 ## Rendering an empty List
 
@@ -627,7 +627,6 @@ const App: React.FC = () => {
   )
 }
 ```
-* [Using Postgres DB](./doc/nextSteps/using-postgres-db.md)
 
 # Troubleshooting / Known issues
 

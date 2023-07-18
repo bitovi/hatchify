@@ -26,13 +26,13 @@ You should see your container details, and the status should be "Up". You can st
  
 ### Create a database: 
 
-There are different options for creating a Postgres database; in fact, if you've run the Docker command above, you'll already have a database called "postgres", but if you want to create a new one, a good option is dbeaver:  
+There are different options for creating a Postgres database; in fact, if you've run the Docker command above, you'll already have a database called "postgres", but if you want to create a new one, a good option is DBeaver:  
 
- -   `dbeaver` - Dbeaver is a cross-platform database tool; you can install it from the [official website](https://dbeaver.io/download/) and create a connection to Postgres as exemplified in [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/). After your connection is set, right-click in your connection, hover over create and select "database" to create a new database. For this tutorial, we created a database called "todos".
+ -   `DBeaver` - DBeaver is a cross-platform database tool; you can install it from the [official website](https://dbeaver.io/download/) and create a connection to Postgres as exemplified in [this tutorial](https:/dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/). After your connection is set, right-click in your connection, hover over create and select "database" to create a new database. For this tutorial, we created a database called "todos".
   
 ### Configure Hatchify's constructor: 
 
-1.  Remove Sqlite:
+1.  Remove SQLite:
 
     ``` bash
     npm uninstall sqlite3
@@ -77,40 +77,39 @@ There are different options for creating a Postgres database; in fact, if you've
 
     ```bash
     // hatchify-app/backend/index.ts
-    import Koa from 'koa';
-    import cors from '@koa/cors';
-    import { hatchifyKoa } from '@hatchifyjs/koa';
-    import { Todo } from '../schemas/Todo';
-    import { User } from '../schemas/User';
-    import dotenv from 'dotenv';
+    import Koa from "koa";
+    import cors from "@koa/cors";
+    import { hatchifyKoa } from "@hatchifyjs/koa";
+    import { Todo } from "../schemas/Todo";
+    import { User } from "../schemas/User";
+    import dotenv from "dotenv";
     dotenv.config();
 
     const app = new Koa();
     const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME } = process.env;
 
     const hatchedKoa = hatchifyKoa([Todo, User], {
-      prefix: '/api',
-      database: {
-        dialect: 'postgres',
+    prefix: "/api",
+    database: {
+        dialect: "postgres",
         host: DB_HOST,
         port: Number(DB_PORT),
         username: DB_USERNAME,
         password: DB_PASSWORD, 
         database: DB_NAME
-      },
+    },
     });
 
     app.use(cors());
     app.use(hatchedKoa.middleware.allModels.all);
 
     (async () => {
-      await hatchedKoa.createDatabase();
+    await hatchedKoa.createDatabase();
 
-      app.listen(3000, () => {
-        console.log('Started on port 3000');
-      });
+    app.listen(3000, () => {
+        console.log("Started on port 3000");
+    });
     })();
-
     ```  
 
 8. Restart your server: 
