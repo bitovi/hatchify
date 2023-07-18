@@ -261,7 +261,7 @@ const hatchedKoa = hatchifyKoa([Todo, User], {
 
 app.use(cors())
 app.use(hatchedKoa.middleware.allModels.all)
-;(async () => {
+(async () => {
   await hatchedKoa.createDatabase()
 
   app.listen(3000, () => {

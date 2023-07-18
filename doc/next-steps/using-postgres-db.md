@@ -75,42 +75,42 @@ There are different options for creating a Postgres database; in fact, if you've
 7. Edit your Hatchify's server (`backend/index.ts`) to use your newly created database:
 
 
-    ```bash
-    // hatchify-app/backend/index.ts
-    import Koa from "koa";
-    import cors from "@koa/cors";
-    import { hatchifyKoa } from "@hatchifyjs/koa";
-    import { Todo } from "../schemas/Todo";
-    import { User } from "../schemas/User";
-    import dotenv from "dotenv";
-    dotenv.config();
+```bash
+// hatchify-app/backend/index.ts
+import Koa from "koa"
+import cors from "@koa/cors"
+import { hatchifyKoa } from "@hatchifyjs/koa"
+import dotenv from "dotenv";
+import { Todo } from "../schemas/Todo"
+import { User } from "../schemas/User"
 
-    const app = new Koa();
-    const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME } = process.env;
+dotenv.config();
 
-    const hatchedKoa = hatchifyKoa([Todo, User], {
-    prefix: "/api",
-    database: {
-        dialect: "postgres",
-        host: DB_HOST,
-        port: Number(DB_PORT),
-        username: DB_USERNAME,
-        password: DB_PASSWORD, 
-        database: DB_NAME
-    },
-    });
+const app = new Koa()
+const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME } = process.env;
 
-    app.use(cors());
-    app.use(hatchedKoa.middleware.allModels.all);
+const hatchedKoa = hatchifyKoa([Todo, User], {
+  prefix: "/api",
+  database: {
+    dialect: "postgres",
+    host: DB_HOST,
+    port: Number(DB_PORT),
+    username: DB_USERNAME,
+    password: DB_PASSWORD, 
+    database: DB_NAME,
+  },
+})
 
-    (async () => {
-    await hatchedKoa.createDatabase();
+app.use(cors())
+app.use(hatchedKoa.middleware.allModels.all);
+(async () => {
+  await hatchedKoa.createDatabase()
 
-    app.listen(3000, () => {
-        console.log("Started on port 3000");
-    });
-    })();
-    ```  
+  app.listen(3000, () => {
+    console.log("Started on port 3000")
+  })
+})()
+```  
 
 8. Restart your server: 
 
