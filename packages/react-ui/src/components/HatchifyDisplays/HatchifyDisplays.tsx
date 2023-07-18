@@ -41,16 +41,16 @@ export const HatchifyEmptyList: React.FC<HatchifyEmptyListProps> = () => {
 
 HatchifyEmptyList.displayName = "EmptyList"
 
-export type HatchifyAttributeDisplayProps = {
+export type HatchifyColumnProps = {
   attribute: string
   label?: string
 } & ({ renderValue?: RenderValue } | { ValueComponent?: ValueComponent })
 
-export const HatchifyAttributeDisplay: React.FC<
-  HatchifyAttributeDisplayProps
-> = () => {
+export const HatchifyColumn: React.FC<HatchifyColumnProps> = () => {
   return null
 }
+
+HatchifyColumn.displayName = "Column"
 
 export type HatchifyAttributeFieldProps = {
   attribute: string

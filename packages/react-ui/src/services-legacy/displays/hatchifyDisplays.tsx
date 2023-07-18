@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 // import type { Schema} from "@hatchifyjs/rest-client"
 import type { Schema } from "../api/schemas" //TODO update to the right schema
 
-import { HatchifyAttributeDisplay, HatchifyExtraColumn } from "../../components"
+import { HatchifyColumn, HatchifyExtraColumn } from "../../components"
 
 import type {
   Attribute,
@@ -75,7 +75,7 @@ export function getDisplaysFromChildren(
   children: JSX.Element[],
 ): HatchifyDisplay[] {
   const displays = children
-    .filter((child) => child.type.name === HatchifyAttributeDisplay.name)
+    .filter((child) => child.type.name === HatchifyColumn.name)
     .map((child) => {
       const { props } = child
       const relationship = [
@@ -275,7 +275,7 @@ export function getDisplays(
   // `child.type.name` and `child.props`
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
 
-  let displays = hasValidChildren(HatchifyAttributeDisplay.name, childArray)
+  let displays = hasValidChildren(HatchifyColumn.name, childArray)
     ? getDisplaysFromChildren(schema, defaultValueComponents, childArray)
     : getDisplaysFromSchema(
         schema,

@@ -10,14 +10,14 @@ import {
 import {
   HatchifyList,
   HatchifyEmptyList,
-  HatchifyAttributeDisplay,
+  HatchifyColumn,
   HatchifyExtraColumn,
   //   HatchifyPresentationDefaultValueComponents,
 } from "../../components"
 import type { HatchifyListProps } from "../../components/HatchifyList/HatchifyList"
 import type { HatchifyEmptyListProps } from "../../components/HatchifyDisplays/HatchifyDisplays"
 import type { HatchifyExtraColumnProps } from "../../components/HatchifyDisplays/HatchifyDisplays"
-import type { HatchifyAttributeDisplayProps } from "../../components/HatchifyDisplays/HatchifyDisplays"
+import type { HatchifyColumnProps } from "../../components/HatchifyDisplays/HatchifyDisplays"
 
 // const TestSchema: Schema = {
 //   name: "Test",
@@ -34,8 +34,8 @@ const testComponents = {
     ExtraColumn: (props: HatchifyExtraColumnProps) => (
       <HatchifyExtraColumn {...props} />
     ),
-    AttributeDisplay: (props: HatchifyAttributeDisplayProps) => (
-      <HatchifyAttributeDisplay {...props} />
+    AttributeDisplay: (props: HatchifyColumnProps) => (
+      <HatchifyColumn {...props} />
     ),
   },
 }

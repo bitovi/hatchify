@@ -2,7 +2,7 @@ import { describe, it, vi } from "vitest"
 import { render } from "@testing-library/react"
 import {
   HatchifyExtraColumn,
-  HatchifyAttributeDisplay,
+  HatchifyColumn,
   HatchifyAttributeField,
   HatchifyEmptyList,
 } from "./HatchifyDisplays"
@@ -14,9 +14,9 @@ describe("hatchifyjs/components/HatchifyColumns", () => {
     })
   })
 
-  describe("HatchifyAttributeDisplay", () => {
+  describe("HatchifyColumn", () => {
     it("works", () => {
-      render(<HatchifyAttributeDisplay attribute="field" />)
+      render(<HatchifyColumn attribute="field" />)
     })
   })
 
