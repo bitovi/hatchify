@@ -43,12 +43,21 @@ export interface HatchifyListSort {
 }
 
 export interface XListProps {
+  // columns
   displays: HatchifyDisplay[]
-  pagination: PageCountObject
+  // data
   useData: () => [Record[], Meta]
-  sort: SortObject
+  // pgaination
+  pagination: PageCountObject
   setPagination: (page: PageCountObject) => void
+  // sort
+  sort: SortObject
   setSort: (sortBy: string) => void
+  // row select (checkoxes)
+  selectable: boolean
+  selected: globalThis.Record<string, true>
+  setSelected: (ids: globalThis.Record<string, true>) => void
+  // empty list
   emptyList: () => JSX.Element
 }
 
