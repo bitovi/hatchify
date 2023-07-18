@@ -19,60 +19,60 @@ HatchifyJS is NOT code generation, it's a system of modular and
 hierarchical libraries that can be consumed piecemeal to use as much or
 as little of HatchifyJS abilities as you require.
 
--   [About HatchifyJS](#GettingStartedHatchify-AboutHatchifyJS)
--   [Project Setup](#GettingStartedHatchify-ProjectSetup)
--   [Schemas](#GettingStartedHatchify-Schemas)
-    -   [Model
-        Relationships](#GettingStartedHatchify-ModelRelationships)
--   [Backend - The Hatchify
-    Middleware](#GettingStartedHatchify-Backend-TheHatchifyMiddleware)
-    -   [Using the server
-        endpoints](#GettingStartedHatchify-Usingtheserverendpoints)
-        -   [Creating a
-            resource](#GettingStartedHatchify-Creatingaresource)
-        -   [Listing
-            resources](#GettingStartedHatchify-Listingresources)
-        -   [Fetching a single
-            resource](#GettingStartedHatchify-Fetchingasingleresource)
-        -   [Updating a
-            resource](#GettingStartedHatchify-Updatingaresource)
-        -   [Deleting a
-            resource](#GettingStartedHatchify-Deletingaresource)
-    -   [Seeding data](#GettingStartedHatchify-Seedingdata)
--   [Frontend with React &
-    MUI](#GettingStartedHatchify-FrontendwithReact&MUI)
-    -   [Rendering a List](#GettingStartedHatchify-RenderingaList)
+- [About HatchifyJS](#GettingStartedHatchify-AboutHatchifyJS)
+- [Project Setup](#GettingStartedHatchify-ProjectSetup)
+- [Schemas](#GettingStartedHatchify-Schemas)
+  - [Model
+    Relationships](#GettingStartedHatchify-ModelRelationships)
+- [Backend - The Hatchify
+  Middleware](#GettingStartedHatchify-Backend-TheHatchifyMiddleware)
+  - [Using the server
+    endpoints](#GettingStartedHatchify-Usingtheserverendpoints)
+    - [Creating a
+      resource](#GettingStartedHatchify-Creatingaresource)
+    - [Listing
+      resources](#GettingStartedHatchify-Listingresources)
+    - [Fetching a single
+      resource](#GettingStartedHatchify-Fetchingasingleresource)
+    - [Updating a
+      resource](#GettingStartedHatchify-Updatingaresource)
+    - [Deleting a
+      resource](#GettingStartedHatchify-Deletingaresource)
+  - [Seeding data](#GettingStartedHatchify-Seedingdata)
+- [Frontend with React &
+  MUI](#GettingStartedHatchify-FrontendwithReact&MUI)
+  - [Rendering a List](#GettingStartedHatchify-RenderingaList)
 - [Next Steps](#GettingStartedHatchify-nextSteps)
   - [Rendering an empty list](#GettingStartedHatchify-renderingAnEmptyList)
--   [Need help or have
-    questions?](#GettingStartedHatchify-Needhelporhavequestions?)
+- [Need help or have
+  questions?](#GettingStartedHatchify-Needhelporhavequestions?)
 
 # Project Setup
 
 In this guide, we will be setting up one project containing a HatchifyJS
 frontend and backend. Our frontend will use React & MUI and our backend
 will be using Koa. We will be setting up our project using Vite so that
-it handles all the React configurations for us.  
-  
+it handles all the React configurations for us.
+
 [✏️](https://emojipedia.org/pencil/) Perform all the
 following steps:
 
 1.  Ensure you’re using [node 18 and npm
     9](https://nodejs.org/en/download)
 
-    ``` bash
+    ```bash
     node -v
     ```
 
 2.  Create a new Vite project titled “hatchify-app”:
 
-    ``` bash
+    ```bash
     npm create vite@latest hatchify-app -- --template react-ts
     ```
 
 3.  Move into the “hatchify-app” directory and install the node modules:
 
-    ``` bash
+    ```bash
     cd hatchify-app
     npm install
     ```
@@ -80,13 +80,13 @@ following steps:
 4.  Install `koa`, `@koa/cors`, and the frontend and backend HatchifyJS
     libraries:
 
-    ``` bash
+    ```bash
     npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/koa @hatchifyjs/react
     ```
 
 5.  Install the following dev packages to run our backend server:
 
-    ``` bash
+    ```bash
     npm install @types/koa @types/koa__cors nodemon ts-node --save-dev
     ```
 
@@ -95,7 +95,7 @@ following steps:
 
 7.  Overwrite the `scripts` in `package.json` with the following:
 
-    ``` bash
+    ```bash
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "dev:frontend": "vite",
     "dev:backend": "nodemon --esm backend/index.ts",
@@ -108,14 +108,14 @@ following steps:
 8.  Create a “backend” directory at the root, this is where we will put
     our backend code:
 
-    ``` bash
+    ```bash
     mkdir backend
     ```
 
 9.  For consistency, we’re going to rename our “src” folder to
     “frontend”:
 
-    ``` bash
+    ```bash
     mv src frontend
     ```
 
@@ -125,7 +125,7 @@ following steps:
 
 10. Update your `tsconfig.json` to:
 
-    ``` json
+    ```json
     {
       "experimentalResolver": true,
       "compilerOptions": {
@@ -159,11 +159,11 @@ following steps:
 11. Rename `tsconfig.node.json` to `tsconfig.backend.json` and update it
     to look like this:
 
-    ``` bash
-    mv tsconfig.node.json tsconfig.backend.json  
+    ```bash
+    mv tsconfig.node.json tsconfig.backend.json
     ```
 
-    ``` json
+    ```json
     {
       "extends": "./tsconfig.json",
       "compilerOptions": {},
@@ -182,7 +182,7 @@ directory at the root directory of our project.
 
 **✏️ Create a** `schemas` **directory:**
 
-``` bash
+```bash
 mkdir schemas
 ```
 
@@ -194,7 +194,7 @@ under the hood to talk to your database.
 
 **✏️ Create a** `schemas/User.ts`**:**
 
-``` ts
+```ts
 // hatchify-app/schemas/User.ts
 export const User = {
   name: "User",
@@ -202,22 +202,22 @@ export const User = {
     name: "STRING",
   },
   hasMany: [{ target: "Todo", options: { as: "todos" } }], // 👀
-};
+}
 ```
 
 **✏️ Create a** `schemas/Todo.ts`**:**
 
-``` ts
+```ts
 // hatchify-app/schemas/Todo.ts
 export const Todo = {
   name: "Todo",
   attributes: {
     name: "STRING",
     due_date: "DATE",
-    importance: "INTEGER"
+    importance: "INTEGER",
   },
   belongsTo: [{ target: "User", options: { as: "user" } }], // 👀
-};
+}
 ```
 
 You can find all of the possible [datatypes
@@ -242,33 +242,32 @@ check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/a
 
 **✏️ Create an** `index.ts` **inside of the “backend” directory:**
 
-``` ts
+```ts
 // hatchify-app/backend/index.ts
-import Koa from "koa";
-import cors from "@koa/cors";
-import { hatchifyKoa } from "@hatchifyjs/koa";
-import { Todo } from "../schemas/Todo";
-import { User } from "../schemas/User";
+import Koa from "koa"
+import cors from "@koa/cors"
+import { hatchifyKoa } from "@hatchifyjs/koa"
+import { Todo } from "../schemas/Todo"
+import { User } from "../schemas/User"
 
-const app = new Koa();
+const app = new Koa()
 const hatchedKoa = hatchifyKoa([Todo, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
     storage: "example.sqlite",
   },
-});
+})
 
-app.use(cors());
+app.use(cors())
 app.use(hatchedKoa.middleware.allModels.all);
-
 (async () => {
-  await hatchedKoa.createDatabase();
+  await hatchedKoa.createDatabase()
 
   app.listen(3000, () => {
-    console.log("Started on port 3000");
-  });
-})();
+    console.log("Started on port 3000")
+  })
+})()
 ```
 
 Now if we run our application, HatchifyJS will create CRUD application
@@ -282,7 +281,7 @@ you.
 
 Next, we can start up the HatchifyJS to see everything in action.
 
-``` bash
+```bash
 npm run dev:backend
 ```
 
@@ -302,7 +301,7 @@ You can now make requests to your endpoint to test your applications.
 
 ### Creating a resource
 
-``` bash
+```bash
 curl 'http://localhost:3000/api/todos' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
@@ -320,7 +319,7 @@ curl 'http://localhost:3000/api/todos' \
 With Hatchify, you can make a POST request and assign its related record
 in a single request following JSON:API.
 
-``` bash
+```bash
 curl --request POST 'http://localhost:3000/api/users' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
@@ -363,7 +362,7 @@ individual resource with or without its related records.
 
 ### Updating a resource
 
-``` bash
+```bash
 curl --request PATCH 'http://localhost:3000/api/users/1' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
@@ -390,7 +389,7 @@ curl --request PATCH 'http://localhost:3000/api/users/1' \
 
 ### Deleting a resource
 
-``` bash
+```bash
 curl --request DELETE 'http://localhost:3000/api/users/1'
 ```
 
@@ -398,7 +397,7 @@ curl --request DELETE 'http://localhost:3000/api/users/1'
 
 **✏️ Run the following commands in your terminal to seed some data**
 
-``` bash
+```bash
 curl 'http://localhost:3000/api/todos' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
@@ -496,18 +495,18 @@ thing we want to do is import `hatchifyReact`, `MuiProvider`, and
 `createJsonapiClient` from the `@hatchify/react` library. Here’s a quick
 overview of what each of these does:
 
--   `createJsonapiClient` - This is our rest client for JSON:API. We
-    pass in the `baseUrl` of our backend to it, as well as a mapping of
-    `schema: { endpoint: <url endpoint>` to it.
+- `createJsonapiClient` - This is our rest client for JSON:API. We
+  pass in the `baseUrl` of our backend to it, as well as a mapping of
+  `schema: { endpoint: <url endpoint>` to it.
 
--   `MuiProvider` - This is an MUI theme provider that we must wrap
-    around our entire app so that our HatchifyJS components will render
-    with the correct design system.
+- `MuiProvider` - This is an MUI theme provider that we must wrap
+  around our entire app so that our HatchifyJS components will render
+  with the correct design system.
 
--   `createReact` - This function takes in our schemas and our rest
-    client, it will then return an object containing components and rest
-    functions for each schema. This returned object represents our
-    entire frontend HatchifyJS app.
+- `createReact` - This function takes in our schemas and our rest
+  client, it will then return an object containing components and rest
+  functions for each schema. This returned object represents our
+  entire frontend HatchifyJS app.
 
 Once we create our HatchifyJS app, we can pull the `List` component from
 the `Todo` key and render it.
@@ -516,20 +515,20 @@ the `Todo` key and render it.
 
 **✏️ Modify the contents of** `frontend/main.tsx`**:**
 
--   Get rid of the default Vite styles by removing line 4:
-    `import './index.css'`
+- Get rid of the default Vite styles by removing line 4:
+  `import './index.css'`
 
--   Remove the extension from line 3, it should be:
-    `import App from './App'`
+- Remove the extension from line 3, it should be:
+  `import App from './App'`
 
-`main.tsx` should look like:  
+`main.tsx` should look like:
 
-``` tsx
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
+```tsx
+import React from "react"
+import ReactDOM from "react-dom/client"
+import App from "./App"
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
@@ -542,21 +541,21 @@ then render the List component for our todos.
 **✏️ Overwrite the contents of** `frontend/App.tsx` **with the
 following:**
 
-``` tsx
+```tsx
 // hatchify-app/frontend/App.tsx
-import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react";
-import { Todo } from "../schemas/Todo";
-import { User } from "../schemas/User";
+import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
+import { Todo } from "../schemas/Todo"
+import { User } from "../schemas/User"
 
 export const hatchedReact = hatchifyReact(
   { Todo, User },
   createJsonapiClient("http://localhost:3000/api", {
     Todo: { endpoint: "todos" },
     User: { endpoint: "users" },
-  })
-);
+  }),
+)
 
-const TodoList = hatchedReact.components.Todo.List;
+const TodoList = hatchedReact.components.Todo.List
 
 const App: React.FC = () => {
   return (
@@ -564,9 +563,9 @@ const App: React.FC = () => {
       <TodoList />
     </MuiProvider>
   )
-};
+}
 
-export default App;
+export default App
 ```
 
 **✏️**In another terminal, run `npm run dev:frontend` and open
@@ -580,31 +579,17 @@ well-defined schemas we have a backend running with REST endpoints, a
 database, and a frontend that handles the JSX and data-fetching for us.
 
 # Next Steps
+
+* [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
+
 ## Rendering an empty List
+
 By default, the list will render a message in the list when there are no records to display:
 ![](doc/attachments/defaultNoRecords.png)
 To customize what is displayed here the `EmptyList` component can be passed into `List`
-``` tsx
+
+```tsx
 // hatchify-app/src/App.tsx
-import {
-  hatchifyReact,
-  MuiProvider,
-  createJsonapiClient,
-} from "@hatchifyjs/react"
-import { Todo } from "../schemas/todo"
-import { User } from "../schemas/user"
-
-export const hatchedReact = hatchifyReact(
-  { Todo, User },
-  createJsonapiClient("http://localhost:3000/api", {
-    Todo: { endpoint: "todos" },
-    User: { endpoint: "users" },
-  }),
-)
-
-const TodoList = hatchedReact.components.Todo.List
-const TodoEmptyList = hatchedReact.components.Todo.EmptyList
-
 const App: React.FC = () => {
   return (
     <MuiProvider>
@@ -616,12 +601,32 @@ const App: React.FC = () => {
     </MuiProvider>
   )
 }
-
-export default App
 ```
+
 `EmptyList` will accept any custom component that is passed in as its children.
 ![Alt text](doc/attachments/customNoRecords.png)
-* [Configuring Postgres](./doc/nextSteps/DATABASES.md)
+
+## Adding checkboxes to the list
+
+To add a checkboxes column to the list, we must pass a `selectable` prop to the `List` component. If we want to extract the selected records, we must also pass a `onSelectionChange` prop. This prop is a callback function that will be called with the selected records whenever the selection changes.
+
+```tsx
+// hatchify-app/src/App.tsx
+const App: React.FC = () => {
+  const [selected, setSelected] = useState<string[]>([])
+
+  return (
+    <MuiProvider>
+      <button onClick={() => alert(`action on [${selected.join(",")}]`)}>action</button>
+      <TodoList selectable onSelectionChange={(ids) => setSelected(ids)}>
+        <TodoEmptyList>
+          <div>No records to display</div>
+        </TodoEmptyList>
+      </TodoList>
+    </MuiProvider>
+  )
+}
+```
 
 # Troubleshooting / Known issues
 
@@ -636,10 +641,9 @@ You might be on Node 20. If so, please use Node 18.
 This project is supported by [Bitovi](https://bitovi.com/), a Javascript
 consultancy. You can get help or ask questions on our:
 
--   [Discord Community](https://discord.com/invite/J7ejFsZnJ4)
+- [Discord Community](https://discord.com/invite/J7ejFsZnJ4)
 
--   [Twitter](https://twitter.com/bitovi)
+- [Twitter](https://twitter.com/bitovi)
 
 Or, you can hire us for training, consulting, or development. [Set up a
 free consultation.](https://www.bitovi.com/digital-consulting-services)
-

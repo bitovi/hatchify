@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { Suspense, useEffect, useState } from "react"
+import { Suspense } from "react"
 import { css } from "@emotion/react"
 import {
   Box,
+  Checkbox,
   Pagination,
   Skeleton,
   Table,
@@ -43,8 +44,11 @@ export const MuiList: React.FC<XListProps> = ({
   sort,
   setPagination,
   setSort,
+  selectable,
+  selected,
+  setSelected,
 }) => {
-  const [meta, setMeta] = useState<Record<string, any>>({}) // todo: type
+  const [data, meta] = useData()
   const { direction, sortBy } = sort
 
   return (
@@ -53,6 +57,35 @@ export const MuiList: React.FC<XListProps> = ({
         <Suspense>
           <TableHead>
             <TableRow>
+              {selectable && (
+                <TableCell css={styles.th}>
+                  <Checkbox
+                    aria-label="select all"
+                    checked={
+                      data.length > 0 &&
+                      Object.keys(selected).length === data.length
+                    }
+                    indeterminate={
+                      data.length > 0 &&
+                      Object.keys(selected).length > 0 &&
+                      Object.keys(selected).length < data.length
+                    }
+                    onChange={() => {
+                      if (Object.keys(selected).length > 0) setSelected({})
+                      else
+                        setSelected(
+                          data.reduce(
+                            (acc, next) => ({
+                              ...acc,
+                              [next.id]: true,
+                            }),
+                            {} as Record<string, true>,
+                          ),
+                        )
+                    }}
+                  />
+                </TableCell>
+              )}
               {displays.map((display) => (
                 <TableCell
                   key={display.key}
@@ -81,7 +114,9 @@ export const MuiList: React.FC<XListProps> = ({
             <MuiListRows
               displays={displays}
               useData={useData}
-              setMeta={setMeta}
+              selectable={selectable}
+              selected={selected}
+              setSelected={setSelected}
               emptyList={emptyList}
             />
           </TableBody>
@@ -110,43 +145,61 @@ export default MuiList
 type MuiListRowsProps = Omit<
   XListProps,
   "setSort" | "sort" | "currentPage" | "pagination" | "setPagination"
-> & {
-  setMeta: (meta: any) => void
-}
+>
 
 const MuiListRows: React.FC<MuiListRowsProps> = ({
   displays,
   useData,
-  setMeta,
+  selectable,
+  selected,
+  setSelected,
   emptyList: EmptyList,
 }) => {
   const [data, meta] = useData()
-  const stringifiedMeta = JSON.stringify(meta)
-
-  useEffect(() => {
-    setMeta(meta)
-  }, [setMeta, stringifiedMeta])
 
   if (meta.isLoading) {
     return <SkeletonCells displays={displays} />
   }
 
+  function onRowSelect(id: string) {
+    // toggle the row that was clicked
+    const copy = { ...selected }
+    if (copy[id]) delete copy[id]
+    else copy[id] = true
+    setSelected(copy)
+  }
+
   return (
     <>
       {data.length === 0 ? (
-        <EmptyList />
+        <TableRow>
+          <TableCell colSpan={displays.length + 1} align="center">
+            <EmptyList />
+          </TableCell>
+        </TableRow>
       ) : (
-        data.map((item) => (
-          <TableRow key={item.id}>
-            {displays.map((display) => (
-              <TableCell key={`${item.id}-${display.key}`}>
-                {display.render({
-                  record: item,
-                })}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))
+        data.map((item) => {
+          return (
+            <TableRow key={item.id}>
+              {selectable && (
+                <TableCell>
+                  <Checkbox
+                    aria-label={`select ${item.id}`}
+                    checked={selected[item.id] ? true : false}
+                    onChange={() => onRowSelect(item.id)}
+                  />
+                </TableCell>
+              )}
+              {displays.map((display) => (
+                <TableCell key={`${item.id}-${display.key}`}>
+                  {display.render({
+                    record: item,
+                  })}
+                </TableCell>
+              ))}
+            </TableRow>
+          )
+        })
       )}
     </>
   )
@@ -154,7 +207,15 @@ const MuiListRows: React.FC<MuiListRowsProps> = ({
 
 type SkeletonCellsProps = Omit<
   XListProps,
-  "useData" | "sort" | "setSort" | "pagination" | "setPagination" | "emptyList"
+  | "useData"
+  | "sort"
+  | "setSort"
+  | "pagination"
+  | "setPagination"
+  | "selectable"
+  | "selected"
+  | "setSelected"
+  | "emptyList"
 >
 
 const SkeletonCells = ({ displays }: SkeletonCellsProps) => {

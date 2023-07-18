@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom"
-import { render, screen } from "@testing-library/react"
+import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import { MuiList } from "./MuiList"
 import {
@@ -87,6 +87,9 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          selectable={false}
+          selected={{}}
+          setSelected={() => vi.fn()}
           emptyList={EmptyList}
         />,
       )
@@ -113,6 +116,9 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={setSort}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          selectable={false}
+          selected={{}}
+          setSelected={() => vi.fn()}
           emptyList={EmptyList}
         />,
       )
@@ -137,6 +143,9 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={setPagination}
+          selectable={false}
+          selected={{}}
+          setSelected={() => vi.fn()}
           emptyList={EmptyList}
         />,
       )
@@ -152,6 +161,79 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
       ])
     })
 
+    describe("fires checkbox callbacks", async () => {
+      const setSelected = vi.fn()
+
+      const renderWithSelected = (selected: Record<string, true>) =>
+        render(
+          <MuiList
+            useData={useData}
+            displays={displays}
+            sort={{
+              direction: undefined,
+              sortBy: undefined,
+            }}
+            setSort={() => vi.fn()}
+            pagination={{ number: 1, size: 10 }}
+            setPagination={() => vi.fn()}
+            selectable
+            selected={selected}
+            setSelected={setSelected}
+            emptyList={EmptyList}
+          />,
+        )
+
+      it("selects all", async () => {
+        renderWithSelected({})
+
+        within(await screen.findByLabelText("select all"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith({ uuid1: true, uuid2: true })
+      })
+
+      it("deselects all", async () => {
+        renderWithSelected({ uuid1: true, uuid2: true })
+
+        within(await screen.findByLabelText("select all"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith({})
+      })
+
+      it("selects one", async () => {
+        renderWithSelected({})
+
+        within(await screen.findByLabelText("select uuid1"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith({ uuid1: true })
+      })
+
+      it("selects an additional row", async () => {
+        renderWithSelected({ uuid1: true })
+
+        within(await screen.findByLabelText("select uuid2"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith({ uuid1: true, uuid2: true })
+      })
+
+      it("deselects one", async () => {
+        renderWithSelected({ uuid1: true, uuid2: true })
+
+        within(await screen.findByLabelText("select uuid1"))
+          .getByRole("checkbox")
+          .click()
+
+        expect(setSelected).toHaveBeenCalledWith({ uuid2: true })
+      })
+    })
+
     it("displays EmptyList component if there is no data", async () => {
       render(
         <MuiList
@@ -164,6 +246,9 @@ describe("hatchifyjs/presentation/mui/MuiList", () => {
           setSort={() => vi.fn()}
           pagination={{ number: 1, size: 10 }}
           setPagination={() => vi.fn()}
+          selectable={false}
+          selected={{}}
+          setSelected={() => vi.fn()}
           emptyList={EmptyList}
         />,
       )
