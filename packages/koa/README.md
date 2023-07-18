@@ -377,7 +377,7 @@ The following options are allowed within the db options object:
 | dialect  | string | null      | One of the following: mysql, postgres, sqlite, db2, mariadb, mssql |
 | storage  | string | :memory:  | For sqlite dialect only, specifies the file storage location       |
 
-For a more complete references see the Sequelize documentation [for the instance constructor](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor)
+For more complete references see the Sequelize documentation [for the instance constructor](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor)
 
 # Additional Endpoints
 
