@@ -5,7 +5,7 @@
 - Model names should be singular and use `PascalCase`
   - `as` should be used for all relationships with a `camelCase` names to be implicit and to override `Sequelize`'s default. This value is used for customizing the relationship name and will help determining the column name in the database.
   - `foreignKey` can be used
-- Table names should be singular and use `snake_case`
+- Table names should be singular and use `snake_case`. Databases like Postgres requires wrapping all non-lower case table and field names with double quotes.
 - URLs should be singular or plural depends on relationships and use `kebab-case` for model names and includes
 - Request payloads and response bodies should be singular or plural depends on relationships and use:
   - `PascalCase` for model names
@@ -41,7 +41,7 @@ const SalesPerson = {
     {
       target: "Account",
       options: {
-        as: "account",
+        as: "accounts",
       },
     },
   ],
