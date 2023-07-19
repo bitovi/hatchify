@@ -22,11 +22,11 @@ type Components = {
     List: (
       props: Omit<HatchifyListProps, "allSchemas" | "schemaName" | "useData">,
     ) => React.ReactElement
-    EmptyList: (props: HatchifyEmptyListProps) => React.ReactElement
-    ExtraColumn: (props: HatchifyExtraColumnProps) => React.ReactElement
     Filter: (
       props: Omit<HatchifyFilterProps, "allSchemas" | "schemaName">,
     ) => React.ReactElement
+    EmptyList: (props: HatchifyEmptyListProps) => React.ReactElement
+    ExtraColumn: (props: HatchifyExtraColumnProps) => React.ReactElement
   }
 }
 
@@ -39,6 +39,7 @@ export function hatchifyReact(
   legacySchemas: Record<string, LegacySchema>,
   dataSource: Source,
 ): HatchifyApp {
+  console.log("ACC🔥asdgf")
   const reactRest = hatchifyReactRest(legacySchemas, dataSource)
 
   const schemas = Object.values(legacySchemas).reduce((acc, schema) => {
@@ -56,8 +57,6 @@ export function hatchifyReact(
           {...props}
         />
       ),
-      EmptyList: (props) => <HatchifyEmptyList {...props} />,
-      ExtraColumn: (props) => <HatchifyExtraColumn {...props} />,
       Filter: (props) => (
         <HatchifyFilter
           allSchemas={schemas}
@@ -65,11 +64,12 @@ export function hatchifyReact(
           {...props}
         />
       ),
+      EmptyList: (props) => <HatchifyEmptyList {...props} />,
+      ExtraColumn: (props) => <HatchifyExtraColumn {...props} />,
     }
-
+    console.log("ACC🔥", acc)
     return acc
   }, {} as HatchifyApp["components"])
-
   return {
     components,
     model: reactRest,

@@ -8,9 +8,9 @@ import {
 } from "@hatchifyjs/react-ui"
 import { MuiLayout } from "../MuiLayout"
 import { MuiList } from "../MuiList"
-import { MuiFilter } from "../MuiFilter"
 import { MuiForm } from "../MuiForm"
 import { MuiDetails } from "../MuiDetails"
+import { MuiFilter } from "../MuiFilter"
 import {
   String as StringInput,
   Number as NumberInput,
@@ -27,7 +27,6 @@ export const MuiProvider: React.FC<XProviderProps<Theme>> = ({
   theme = defaultTheme,
   children,
 }) => {
-  console.log("filters MUI Filter🔥 ")
   return (
     <ThemeProvider theme={theme}>
       <HatchifyPresentationProvider

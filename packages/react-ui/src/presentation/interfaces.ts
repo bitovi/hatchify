@@ -3,7 +3,7 @@ import type {
   Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
   Meta,
   Record,
-  Schemas
+  Schemas,
 } from "@hatchifyjs/rest-client"
 import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
 

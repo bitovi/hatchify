@@ -20,13 +20,13 @@ const TodoList = hatchedReact.components.Todo.List
 const TodoExtraColumn = hatchedReact.components.Todo.ExtraColumn
 const TodoEmptyList = hatchedReact.components.Todo.EmptyList
 const TodoFilter = hatchedReact.components.Todo.Filter
+console.log("COMPONWNNETS", hatchedReact.components.Todo)
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([])
   console.log(selected)
   return (
     <MuiProvider>
-      <TodoFilter />
       <TodoList selectable onSelectionChange={(ids) => setSelected(ids)}>
         <TodoEmptyList>
           <div>No records to display</div>
