@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 import type { Attribute, Record, Schema } from "@hatchifyjs/rest-client"
 
 import {
-  HatchifyAttributeDisplay,
+  HatchifyColumn,
   HatchifyExtraColumn,
   HatchifyEmptyList,
 } from "../../components"
@@ -56,7 +56,7 @@ export function getDefaultDisplayRender(
       return <Number value={value} />
     }
 
-    // @todo <HatchifyAttributeDisplay/> with relationship category|user|filetype is coming through as "extra" rather than "relationship"
+    // @todo <HatchifyColumn/> with relationship category|user|filetype is coming through as "extra" rather than "relationship"
     if (attType === "relationship" || attType === "extra") {
       if (!value) {
         return <String value="" />
@@ -85,7 +85,7 @@ export function getDisplaysFromChildren(
   children: JSX.Element[],
 ): HatchifyDisplay[] {
   const displays = children
-    .filter((child) => child.type.name === HatchifyAttributeDisplay.displayName)
+    .filter((child) => child.type.name === HatchifyColumn.displayName)
     .map((child) => {
       const { props } = child
       const relationship = schema?.relationships?.[props.attribute]
@@ -210,8 +210,8 @@ export function getHatchifyDisplay({
 
   /**
    * cell render priority:
-   * 1. `renderValue` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
-   * 2. `ValueComponent` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
+   * 1. `renderValue` prop from `HatchifyExtraColumn` or `HatchifyColumn`
+   * 2. `ValueComponent` prop from `HatchifyExtraColumn` or `HatchifyColumn`
    * 3. `valueComponents` prop from `HatchifyList`
    * 6. default `render` using presentation's defaultvalueComponents
    */
@@ -292,10 +292,7 @@ export function getDisplays(
   // `child.type.name` and `child.props`
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
 
-  let displays = hasValidChildren(
-    HatchifyAttributeDisplay.displayName || "",
-    childArray,
-  )
+  let displays = hasValidChildren(HatchifyColumn.displayName || "", childArray)
     ? getDisplaysFromChildren(schema, defaultValueComponents, childArray)
     : getDisplaysFromSchema(
         schema,
