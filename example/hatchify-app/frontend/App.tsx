@@ -19,15 +19,14 @@ export const hatchedReact = hatchifyReact(
 const TodoList = hatchedReact.components.Todo.List
 const TodoExtraColumn = hatchedReact.components.Todo.ExtraColumn
 const TodoEmptyList = hatchedReact.components.Todo.EmptyList
+const TodoFilter = hatchedReact.components.Todo.Filter
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([])
-
+  console.log(selected)
   return (
     <MuiProvider>
-      <button onClick={() => alert(`action on [${selected.join(",")}]`)}>
-        action
-      </button>
+      <TodoFilter />
       <TodoList selectable onSelectionChange={(ids) => setSelected(ids)}>
         <TodoEmptyList>
           <div>No records to display</div>
@@ -36,13 +35,9 @@ const App: React.FC = () => {
           label="Action"
           render={({ record }) => {
             return (
-              <>
-                <button onClick={() => console.log(record)}>Download</button>
-                <button onClick={() => console.log(record)}>Open</button>
-                <button onClick={() => console.log(record)}>
-                  More Actions
-                </button>
-              </>
+              <button onClick={() => alert(`action on record ${record.id}`)}>
+                Download
+              </button>
             )
           }}
         />

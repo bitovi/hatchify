@@ -5,6 +5,7 @@ import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { transformSchema } from "@hatchifyjs/rest-client"
 
 import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
+import type { HatchifyFilterProps } from "../components/HatchifyFilter/HatchifyFilter"
 import {
   HatchifyEmptyList,
   HatchifyExtraColumn,
@@ -14,6 +15,7 @@ import type {
   HatchifyExtraColumnProps,
 } from "../components/HatchifyDisplays/HatchifyDisplays"
 import { HatchifyList } from "../components/HatchifyList"
+import { HatchifyFilter } from "../components/HatchifyFilter/HatchifyFilter"
 
 type Components = {
   [schemaName: string]: {
@@ -22,6 +24,9 @@ type Components = {
     ) => React.ReactElement
     EmptyList: (props: HatchifyEmptyListProps) => React.ReactElement
     ExtraColumn: (props: HatchifyExtraColumnProps) => React.ReactElement
+    Filter: (
+      props: Omit<HatchifyFilterProps, "allSchemas" | "schemaName">,
+    ) => React.ReactElement
   }
 }
 
@@ -53,6 +58,13 @@ export function hatchifyReact(
       ),
       EmptyList: (props) => <HatchifyEmptyList {...props} />,
       ExtraColumn: (props) => <HatchifyExtraColumn {...props} />,
+      Filter: (props) => (
+        <HatchifyFilter
+          allSchemas={schemas}
+          schemaName={schema.name}
+          {...props}
+        />
+      ),
     }
 
     return acc

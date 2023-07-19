@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react"
 
 import type {
+  XFilterProps,
   XListProps,
   XLayoutProps,
   XDetailsProps,
@@ -75,6 +76,7 @@ export interface HatchifyPresentationContextProps {
   List: React.FC<XListProps>
   Layout: React.FC<XLayoutProps>
   Details: React.FC<XDetailsProps>
+  Filter: React.FC<XFilterProps>
   Form: React.FC<XFormProps>
   defaultValueComponents: DefaultValueComponentsTypes
   defaultFieldComponents: DefaultFieldComponentsTypes
@@ -104,6 +106,7 @@ export const HatchifyPresentationDefaultFieldComponents = {
 export const HatchifyPresentationContext =
   createContext<HatchifyPresentationContextProps>({
     // @todo default/headless components?
+    Filter: () => null,
     List: () => null,
     Layout: () => null,
     Details: () => null,
@@ -123,6 +126,7 @@ interface HatchifyPresentationProviderProps
 export const HatchifyPresentationProvider: React.FC<
   HatchifyPresentationProviderProps
 > = ({
+  Filter,
   List,
   Layout,
   Details,
@@ -134,6 +138,7 @@ export const HatchifyPresentationProvider: React.FC<
   return (
     <HatchifyPresentationContext.Provider
       value={{
+        Filter,
         List,
         Layout,
         Details,

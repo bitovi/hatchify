@@ -1,6 +1,7 @@
 export * from "./HatchifyDetails"
 export * from "./HatchifyDetailsPage"
 export * from "./HatchifyDisplays"
+export * from "./HatchifyFilter"
 export * from "./HatchifyForm"
 export * from "./HatchifyFormPage"
 export * from "./HatchifyList"

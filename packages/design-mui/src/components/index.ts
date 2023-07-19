@@ -1,5 +1,6 @@
 export * from "./MuiProvider"
 export * from "./MuiDetails"
+export * from "./MuiFilter"
 export * from "./MuiForm"
 export * from "./MuiLayout"
 export * from "./MuiList"
