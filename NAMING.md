@@ -55,14 +55,14 @@ The function `hatchify.createDatabase()` will create the following:
 
 The server will already have the following endpoints for accounts:
 
-1. `GET /api/accounts`
+1. `GET /api/accounts?fields[account]=name&filter[name]=Bitovi`
 1. `GET /api/accounts/:id`
 1. `PATCH /api/accounts/:id`
 1. `DELETE /api/accounts/:id`
 
 And the following endpoints for sales persons:
 
-1. `GET /api/sales-persons`
+1. `GET /api/sales-persons?fields[sales-person]=name&filter[name]=John+Doe`
 1. `GET /api/sales-persons/:id`
 1. `PATCH /api/sales-persons/:id`
 1. `DELETE /api/sales-persons/:id`
