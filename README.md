@@ -260,8 +260,8 @@ const hatchedKoa = hatchifyKoa([Todo, User], {
 })
 
 app.use(cors())
-app.use(hatchedKoa.middleware.allModels.all)
-;(async () => {
+app.use(hatchedKoa.middleware.allModels.all);
+(async () => {
   await hatchedKoa.createDatabase()
 
   app.listen(3000, () => {
@@ -580,7 +580,7 @@ database, and a frontend that handles the JSX and data-fetching for us.
 
 # Next Steps
 
-- [Configuring Postgres](./doc/nextSteps/DATABASES.md)
+* [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
 
 ## Rendering an empty List
 
@@ -595,7 +595,7 @@ const App: React.FC = () => {
     <MuiProvider>
       <TodoList>
         <TodoEmptyList>
-          <div>No records to display</div>
+          <strong>No records to display</strong>
         </TodoEmptyList>
       </TodoList>
     </MuiProvider>
