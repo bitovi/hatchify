@@ -14,6 +14,7 @@ export interface HatchifyListProps {
   selectable?: boolean
   onSelectionChange?: (ids: string[]) => void
   children?: React.ReactNode | null
+  filter: { [key: string]: string }
 }
 
 export const HatchifyList: React.FC<HatchifyListProps> = ({
@@ -24,6 +25,7 @@ export const HatchifyList: React.FC<HatchifyListProps> = ({
   selectable = false,
   onSelectionChange = () => undefined,
   children,
+  filter,
 }) => {
   const { List, defaultValueComponents } = useHatchifyPresentation()
   const { sort, setSort, sortQueryString } = useHatchifyListSort()
@@ -31,7 +33,7 @@ export const HatchifyList: React.FC<HatchifyListProps> = ({
   const { selected, setSelected } = useHatchifyRowSelect(onSelectionChange)
 
   const useDataCallback = () =>
-    useData({ page: pagination, sort: sortQueryString })
+    useData({ page: pagination, sort: sortQueryString, filter: filter })
 
   const displays = getDisplays(
     allSchemas[schemaName],

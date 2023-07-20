@@ -76,7 +76,12 @@ export interface XFilterProps {
   schemas: Schemas
   schemaName: string
   filters: any //todo do this
-  setFilters: (value: string) => void
+  setFilters: (filterBy: { [key: string]: string }) => void
+}
+
+export interface HatchifyListFilter {
+  filter: { [key: string]: string }
+  setFilter: (filterBy: { [key: string]: string }) => void
 }
 
 export interface XFormProps {

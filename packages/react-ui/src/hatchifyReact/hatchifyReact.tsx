@@ -39,7 +39,6 @@ export function hatchifyReact(
   legacySchemas: Record<string, LegacySchema>,
   dataSource: Source,
 ): HatchifyApp {
-  console.log("ACC🔥asdgf")
   const reactRest = hatchifyReactRest(legacySchemas, dataSource)
 
   const schemas = Object.values(legacySchemas).reduce((acc, schema) => {
@@ -67,7 +66,7 @@ export function hatchifyReact(
       EmptyList: (props) => <HatchifyEmptyList {...props} />,
       ExtraColumn: (props) => <HatchifyExtraColumn {...props} />,
     }
-    console.log("ACC🔥", acc)
+
     return acc
   }, {} as HatchifyApp["components"])
   return {
