@@ -8,7 +8,6 @@ import type {
 
 import { buildDestroyOptions, buildFindOptions } from "./builder"
 import { validateStructure } from "./validateStructure"
-import { ValidationError, codes, statusCodes } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
 
@@ -39,43 +38,19 @@ export interface ParseFunctions {
 
 async function findAllImpl(model: HatchifyModel, querystring: string) {
   const { data, errors } = buildFindOptions(model, querystring)
-  if (errors.length > 0) {
-    throw [
-      new ValidationError({
-        code: codes.ERR_INVALID_PARAMETER,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        title: "Bad Request, Invalid Query String",
-      }),
-    ]
-  }
+  if (errors.length) throw errors
   return data
 }
 
 async function findOneImpl(model: HatchifyModel, querystring: string, id) {
   const { data, errors } = buildFindOptions(model, querystring, id)
-  if (errors.length > 0) {
-    throw [
-      new ValidationError({
-        code: codes.ERR_INVALID_PARAMETER,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        title: "Bad Request, Invalid Query String",
-      }),
-    ]
-  }
+  if (errors.length) throw errors
   return data
 }
 
 async function findAndCountAllImpl(model: HatchifyModel, querystring: string) {
   const { data, errors } = buildFindOptions(model, querystring)
-  if (errors.length > 0) {
-    throw [
-      new ValidationError({
-        code: codes.ERR_INVALID_PARAMETER,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        title: "Bad Request, Invalid Query String",
-      }),
-    ]
-  }
+  if (errors.length) throw errors
   return data
 }
 
@@ -110,16 +85,7 @@ async function updateImpl(
 
 async function destroyImpl(querystring: string, id?: Identifier) {
   const { data, errors } = buildDestroyOptions(querystring, id)
-  if (errors.length > 0) {
-    throw [
-      new ValidationError({
-        code: codes.ERR_INVALID_PARAMETER,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        title: "Bad Request, Invalid Query String",
-      }),
-    ]
-  }
-
+  if (errors.length) throw errors
   return data
 }
 

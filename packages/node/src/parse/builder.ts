@@ -1,4 +1,6 @@
+import type QuerystringParsingError from "@bitovi/querystring-parser/lib/errors/querystring-parsing-error"
 import querystringParser from "@bitovi/sequelize-querystring-parser"
+import { noCase } from "no-case"
 import type {
   CreateOptions,
   DestroyOptions,
@@ -7,6 +9,7 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
+import { UnexpectedValueError } from "../error"
 import type { HatchifyModel } from "../types"
 
 interface QueryStringParser<T> {
@@ -23,19 +26,41 @@ export function buildFindOptions(
   const ops: QueryStringParser<FindOptions> =
     querystringParser.parse(querystring)
 
-  // If we do have an error, fail fast and return it, don't bother checking anything else
-  if (ops.errors.length > 0) return ops
-
-  if (ops.data?.attributes && Array.isArray(ops.data.attributes)) {
+  if (
+    !ops.errors?.length &&
+    ops.data?.attributes &&
+    Array.isArray(ops.data.attributes)
+  ) {
     if (!ops.data.attributes.includes("id")) {
       ops.data.attributes.unshift("id")
     }
 
-    ops.data.attributes.forEach((attr: string) => {
-      if (attr !== "id" && !model.attributes[attr]) {
-        ops.errors.push(new Error("Unknown attribute " + attr))
+    const modelName = noCase(model.name, { delimiter: "-" })
+
+    ops.data.attributes.forEach((attribute: string) => {
+      if (attribute !== "id" && !model.attributes[attribute]) {
+        ops.errors.push(
+          new UnexpectedValueError({
+            detail: `URL must have 'fields[${modelName}]' as comma separated values containing one or more of ${Object.keys(
+              model.attributes,
+            )
+              .map((attribute) => `'${attribute}'`)
+              .join(", ")}.`,
+            parameter: `fields[${modelName}]`,
+          }),
+        )
       }
     })
+  }
+
+  if (ops.errors.length) {
+    throw ops.errors.map(
+      (error: QuerystringParsingError) =>
+        new UnexpectedValueError({
+          parameter: error.paramKey,
+          detail: error.message,
+        }),
+    )
   }
 
   if (!ops.data.where) {
@@ -61,8 +86,15 @@ export function buildUpdateOptions(
   const ops: QueryStringParser<UpdateOptions> =
     querystringParser.parse(querystring)
 
-  // If we do have an error, fail fast and return it, don't bother checking anything else
-  if (ops.errors.length > 0) return ops
+  if (ops.errors.length) {
+    throw ops.errors.map(
+      (error: QuerystringParsingError) =>
+        new UnexpectedValueError({
+          parameter: error.paramKey,
+          detail: error.message,
+        }),
+    )
+  }
 
   if (!ops.data.where) {
     ops.data.where = {}
@@ -81,8 +113,15 @@ export function buildDestroyOptions(
   const ops: QueryStringParser<DestroyOptions> =
     querystringParser.parse(querystring)
 
-  // If we do have an error, fail fast and return it, don't bother checking anything else
-  if (ops.errors.length > 0) return ops
+  if (ops.errors.length) {
+    throw ops.errors.map(
+      (error: QuerystringParsingError) =>
+        new UnexpectedValueError({
+          parameter: error.paramKey,
+          detail: error.message,
+        }),
+    )
+  }
 
   if (!ops.data.where) {
     ops.data.where = {}
