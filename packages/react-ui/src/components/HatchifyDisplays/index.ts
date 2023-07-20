@@ -1,5 +1,5 @@
 export {
-  HatchifyAttributeDisplay,
+  HatchifyColumn,
   HatchifyExtraColumn,
   HatchifyAttributeField,
   HatchifyEmptyList,
