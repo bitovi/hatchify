@@ -24,9 +24,12 @@ const TodoFilter = hatchedReact.components.Todo.Filter
 const App: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([])
   const [filter, setFilter] = useState<{ [key: string]: string }>({})
-  console.log(selected)
+
   return (
     <MuiProvider>
+      <button onClick={() => alert(`action on [${selected.join(",")}]`)}>
+        action
+      </button>
       <TodoFilter filters={filter} setFilters={setFilter}>
         <div style={{ cursor: "pointer" }}>Filter</div>
       </TodoFilter>
