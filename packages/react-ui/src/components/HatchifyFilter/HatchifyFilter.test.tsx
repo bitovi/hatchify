@@ -1,4 +1,4 @@
-import { describe, it } from "vitest"
+import { describe, it, vi } from "vitest"
 import { render } from "@testing-library/react"
 
 import { HatchifyFilter } from "./HatchifyFilter"
@@ -12,9 +12,14 @@ const TestSchema: Schema = {
 
 describe("hatchifyjs/components/HatchifyFilter", () => {
   describe("HatchifyFilter", () => {
-    it("works", () => {
+    it("works", async () => {
       render(
-        <HatchifyFilter allSchemas={{ Test: TestSchema }} schemaName="Test" />,
+        <HatchifyFilter
+          allSchemas={{ Test: TestSchema }}
+          schemaName="Test"
+          filters={{}}
+          setFilters={vi.fn()}
+        />,
       )
     })
   })

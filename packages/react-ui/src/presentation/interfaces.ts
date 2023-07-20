@@ -75,7 +75,7 @@ export interface XDetailsProps {
 export interface XFilterProps {
   schemas: Schemas
   schemaName: string
-  filters: any //todo do this
+  filters: { [key: string]: string }
   setFilters: (filterBy: { [key: string]: string }) => void
 }
 

@@ -13,12 +13,13 @@ import {
   Select,
   TextField,
 } from "@mui/material"
-import FilterListIcon from "@mui/icons-material/FilterList"
+import FilterAltIcon from "@mui/icons-material/FilterAlt"
 
 import type { XFilterProps } from "@hatchifyjs/react-ui"
+import type { Attribute } from "@hatchifyjs/rest-client"
 
 interface MuiFilterRowProps {
-  attributes: { [field: string]: any }
+  attributes: { [field: string]: Attribute }
   column: string
   setColumn: (col: string) => void
   operator: string
@@ -171,7 +172,7 @@ export const MuiFilter: React.FC<XFilterProps> = ({
         setFilters={setFilters}
       />
       <Grid item xs={10.5}>
-        <FilterListIcon onClick={() => setOpen(true)} />
+        <FilterAltIcon onClick={() => setOpen(true)} sx={{ color: "grey" }} />
       </Grid>
     </Grid>
   )

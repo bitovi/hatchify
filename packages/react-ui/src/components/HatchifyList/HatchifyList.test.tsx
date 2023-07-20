@@ -18,6 +18,7 @@ describe("hatchifyjs/components/HatchifyList", () => {
           allSchemas={{ Test: TestSchema }}
           schemaName="Test"
           useData={vi.fn()}
+          filter={{}}
         />,
       )
     })
