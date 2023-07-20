@@ -476,4 +476,28 @@ describe("Relationships", () => {
       })
     })
   })
+
+  describe("should handle relationship path errors (HATCH-242)", () => {
+    it("should handle relationship paths that can't be identified", async () => {
+      const { status, body } = await fetch(
+        "/api/todos?include=invalid_relationship_path",
+      )
+
+      expect(status).toEqual(400)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [
+          {
+            status: 400,
+            code: "relationship-path",
+            title: "Relationship path could not be identified",
+            detail: "URL must include an identifiable relationship path",
+            source: {
+              parameter: "include",
+            },
+          },
+        ],
+      })
+    })
+  })
 })

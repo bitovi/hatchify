@@ -11,6 +11,7 @@ export enum codes {
   ERR_SERVER_ERROR = "server-error",
   ERR_VALUE_REQUIRED = "value-required",
   ERR_UNEXPECTED_VALUE = "unexpected-value",
+  ERR_RELATIONSHIP_PATH = "relationship-path",
 }
 
 export enum statusCodes {
