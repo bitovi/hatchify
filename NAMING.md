@@ -53,6 +53,8 @@ And the following endpoints for sales persons:
 1. `PATCH /api/sales-persons/:id`
 1. `DELETE /api/sales-persons/:id`
 
+Other than that, it also:
+
 1. Creates a table `sales_person` with the columns `id` and `first_name` and a table `account` with the columns `id`, `name` and `sales_person_id`.
 1. Once we define relationship to `SalesPerson` they will be named `salesPerson` or `salesPersons`.
 1. Returns `JSONAPI` like:
@@ -102,7 +104,7 @@ For more information, refer to the [Sequelize Docs](https://sequelize.org/docs/v
 
 ### For `BelongsTo` relationships …
 
-`as` is used:
+only `as` is used:
 
 ```js
 const Account = {
@@ -150,7 +152,7 @@ const Account = {
 }
 ```
 
-`as` and `foreignKey` are used:
+only `as` and `foreignKey` are used:
 
 ```js
 const Account = {
@@ -200,7 +202,7 @@ const Account = {
 
 ### For `HasMany` relationships …
 
-`as` is used:
+only `as` is used:
 
 ```js
 const Account = {
@@ -250,7 +252,7 @@ const Account = {
 }
 ```
 
-`as` and `foreignKey` are used:
+only `as` and `foreignKey` are used:
 
 ```js
 const Account = {
@@ -300,7 +302,7 @@ const Account = {
 
 ### For `BelongsToMany` relationships …
 
-`as` is used:
+only `as` is used:
 
 ```js
 const SalesPerson = {
