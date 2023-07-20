@@ -26,11 +26,17 @@ export function buildFindOptions(
   const ops: QueryStringParser<FindOptions> =
     querystringParser.parse(querystring)
 
-  if (
-    !ops.errors?.length &&
-    ops.data?.attributes &&
-    Array.isArray(ops.data.attributes)
-  ) {
+  if (ops.errors.length) {
+    throw ops.errors.map(
+      (error: QuerystringParsingError) =>
+        new UnexpectedValueError({
+          parameter: error.paramKey,
+          detail: error.message,
+        }),
+    )
+  }
+
+  if (ops.data?.attributes && Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {
       ops.data.attributes.unshift("id")
     }
@@ -53,15 +59,7 @@ export function buildFindOptions(
     })
   }
 
-  if (ops.errors.length) {
-    throw ops.errors.map(
-      (error: QuerystringParsingError) =>
-        new UnexpectedValueError({
-          parameter: error.paramKey,
-          detail: error.message,
-        }),
-    )
-  }
+  if (ops.errors.length) throw ops.errors
 
   if (!ops.data.where) {
     ops.data.where = {}

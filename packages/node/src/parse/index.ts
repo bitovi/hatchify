@@ -43,8 +43,7 @@ async function findAllImpl(model: HatchifyModel, querystring: string) {
 }
 
 async function findOneImpl(model: HatchifyModel, querystring: string, id) {
-  const { data, errors } = buildFindOptions(model, querystring, id)
-  if (errors.length) throw errors
+  const { data } = buildFindOptions(model, querystring, id)
   return data
 }
 
