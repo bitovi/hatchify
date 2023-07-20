@@ -19,7 +19,9 @@ describe("hatchifyjs/components/HatchifyFilter", () => {
           schemaName="Test"
           filters={{}}
           setFilters={vi.fn()}
-        />,
+        >
+          <div data-testid="FilterButton">filter</div>
+        </HatchifyFilter>,
       )
     })
   })

@@ -1,19 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from "react"
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   InputLabel,
   Grid,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material"
-import FilterAltIcon from "@mui/icons-material/FilterAlt"
 
 import type { XFilterProps } from "@hatchifyjs/react-ui"
 import type { Attribute } from "@hatchifyjs/rest-client"
@@ -47,10 +44,11 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
   const columnsList = Object.keys(attributes)
 
   return (
-    <Grid container spacing={2} paddingTop={"20px"}>
-      <Box>
+    <Grid container spacing={2} padding={"1.25rem"} width={"31.25rem"}>
+      <Grid item xs={4}>
         <InputLabel id="select-column-label">Columns</InputLabel>
         <Select
+          fullWidth
           labelId="select-column-label"
           id="simple-select"
           value={column}
@@ -64,10 +62,11 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
             )
           })}
         </Select>
-      </Box>
-      <Box>
+      </Grid>
+      <Grid item xs={4}>
         <InputLabel id="select-operator-label">Operator</InputLabel>
         <Select
+          fullWidth
           labelId="select-operator-label"
           id="simple-select"
           value={operator}
@@ -76,16 +75,17 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
           <MenuItem value="equals">equals</MenuItem>
           <MenuItem value="contains">contains</MenuItem>
         </Select>
-      </Box>
-      <Box>
+      </Grid>
+      <Grid item xs={4}>
         <InputLabel id="value-field-label">Value</InputLabel>
         <TextField
+          placeholder="Filter Value"
           id="value-field"
           variant="outlined"
           onChange={(ev) => setValue(ev.target.value)}
           value={value}
         />
-      </Box>
+      </Grid>
     </Grid>
   )
 }
@@ -122,7 +122,6 @@ const MuiFilterDialog: React.FC<DialogProps> = ({
 
   return (
     <Dialog open={open}>
-      <DialogTitle>Filter</DialogTitle>
       <DialogContent>
         <MuiFilterRow
           column={column}
@@ -135,7 +134,7 @@ const MuiFilterDialog: React.FC<DialogProps> = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setOpen(false)}>Close</Button>
+        <Button onClick={() => setOpen(false)}>Cancel</Button>
         <Button onClick={clearFilter}>Clear Filter</Button>
         <Button onClick={applyFilter} disabled={column === ""}>
           Apply Filter
@@ -146,6 +145,7 @@ const MuiFilterDialog: React.FC<DialogProps> = ({
 }
 
 export const MuiFilter: React.FC<XFilterProps> = ({
+  children,
   schemas,
   schemaName,
   filters,
@@ -171,8 +171,8 @@ export const MuiFilter: React.FC<XFilterProps> = ({
         filters={filters}
         setFilters={setFilters}
       />
-      <Grid item xs={10.5}>
-        <FilterAltIcon onClick={() => setOpen(true)} sx={{ color: "grey" }} />
+      <Grid item onClick={() => setOpen(true)}>
+        {children}
       </Grid>
     </Grid>
   )

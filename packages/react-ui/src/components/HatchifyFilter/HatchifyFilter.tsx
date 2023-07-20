@@ -3,6 +3,7 @@ import { useHatchifyPresentation } from ".."
 
 export interface HatchifyFilterProps {
   allSchemas: Schemas
+  children: React.ReactElement
   schemaName: string
   filters: { [key: string]: string }
   setFilters: (filterBy: { [key: string]: string }) => void
@@ -10,6 +11,7 @@ export interface HatchifyFilterProps {
 
 export const HatchifyFilter: React.FC<HatchifyFilterProps> = ({
   allSchemas,
+  children,
   schemaName,
   filters,
   setFilters,
@@ -22,6 +24,8 @@ export const HatchifyFilter: React.FC<HatchifyFilterProps> = ({
       schemaName={schemaName}
       filters={filters}
       setFilters={(value: { [key: string]: string }) => setFilters(value)}
-    />
+    >
+      {children}
+    </Filter>
   )
 }

@@ -73,6 +73,7 @@ export interface XDetailsProps {
   useData: () => FlatRecord
 }
 export interface XFilterProps {
+  children: React.ReactElement
   schemas: Schemas
   schemaName: string
   filters: { [key: string]: string }

@@ -27,7 +27,9 @@ const App: React.FC = () => {
   console.log(selected)
   return (
     <MuiProvider>
-      <TodoFilter filters={filter} setFilters={setFilter} />
+      <TodoFilter filters={filter} setFilters={setFilter}>
+        <div style={{ cursor: "pointer" }}>Filter</div>
+      </TodoFilter>
       <TodoList
         selectable
         onSelectionChange={(ids) => setSelected(ids)}
