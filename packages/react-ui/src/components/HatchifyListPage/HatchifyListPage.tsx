@@ -11,6 +11,7 @@ interface HatchifyListPageProps extends XLayoutProps {
   useData: (query: QueryList) => [Record[], Meta]
   valueComponents?: { [attribute: string]: ValueComponent }
   children?: React.ReactNode | null
+  filter: { [key: string]: string }
 }
 
 export const HatchifyListPage: React.FC<HatchifyListPageProps> = ({
@@ -21,6 +22,7 @@ export const HatchifyListPage: React.FC<HatchifyListPageProps> = ({
   renderActions,
   children,
   useData,
+  filter,
 }) => {
   const { Layout } = useHatchifyPresentation()
 
@@ -31,6 +33,7 @@ export const HatchifyListPage: React.FC<HatchifyListPageProps> = ({
         schemaName={schemaName}
         valueComponents={valueComponents}
         useData={useData}
+        filter={filter}
       >
         {children}
       </HatchifyList>

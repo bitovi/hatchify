@@ -27,6 +27,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.2.0",
+    "@hatchifyjs/rest-client": "^0.0.1-6",
     "@types/react": "^18.0.28",
     "@vitejs/plugin-react": "^4.0.0",
     "@vitest/coverage-c8": "^0.32.2",
