@@ -22,20 +22,13 @@ const TodoEmptyList = hatchedReact.components.Todo.Empty
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([])
-  const collectionState = hatchedReact.state.Todo.useCollectionState()
-  console.log("collectionState", collectionState)
 
   return (
     <MuiProvider>
       <button onClick={() => alert(`action on [${selected.join(",")}]`)}>
         action
       </button>
-      <TodoList
-        onSelectedChange={(ids: string[]) => {
-          console.log("ids", ids)
-          setSelected(ids)
-        }}
-      >
+      <TodoList onSelectedChange={(ids: string[]) => setSelected(ids)}>
         <TodoEmptyList>
           <div>No records to display</div>
         </TodoEmptyList>

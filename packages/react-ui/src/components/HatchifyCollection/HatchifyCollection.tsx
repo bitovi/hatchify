@@ -10,8 +10,6 @@ export interface HatchifyCollectionProps {
   children?: React.ReactNode | null
   defaultSelected?: string[]
   onSelectedChange?: (ids: string[]) => void
-  // extra props
-  [key: string]: any
 }
 
 export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
