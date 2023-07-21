@@ -6,6 +6,7 @@ import {
   buildFindOptions,
   buildUpdateOptions,
 } from "./builder"
+import { UnexpectedValueError } from "../error"
 import type { HatchifyModel } from "../types"
 
 describe("builder", () => {
@@ -23,7 +24,7 @@ describe("builder", () => {
     it("works with ID attribute provided", () => {
       const options = buildFindOptions(
         Todo,
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5&sort=-date,name",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5&sort=-date,name",
       )
 
       expect(options).toEqual({
@@ -44,7 +45,7 @@ describe("builder", () => {
     })
 
     it("adds ID attribute if not specified", () => {
-      const options = buildFindOptions(Todo, "fields[Todo]=name,due_date")
+      const options = buildFindOptions(Todo, "fields[todo]=name,due_date")
 
       expect(options).toEqual({
         data: {
@@ -70,64 +71,49 @@ describe("builder", () => {
       })
     })
 
-    it("handles zero pagination parameters", () => {
-      const options = buildFindOptions(Todo, "page[number]=0&page[size]=0")
-
-      expect(options).toEqual({
-        data: {},
-        errors: [expect.any(Error), expect.any(Error)],
-        orm: "sequelize",
-      })
-
-      const errors = options.errors as unknown as Error[]
-      expect(errors[0].name).toEqual("QuerystringParsingError")
-      expect(errors[0].message).toEqual(
-        "Page number should be a positive integer.",
-      )
-      expect(errors[1].name).toEqual("QuerystringParsingError")
-      expect(errors[1].message).toEqual(
-        "Page size should be a positive integer.",
-      )
+    it("handles zero pagination parameters", async () => {
+      await expect(async () =>
+        buildFindOptions(Todo, "page[number]=0&page[size]=0"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: "Page number should be a positive integer.",
+          parameter: "page[number]",
+        }),
+        new UnexpectedValueError({
+          detail: "Page size should be a positive integer.",
+          parameter: "page[size]",
+        }),
+      ])
     })
 
-    it("handles negative pagination parameters", () => {
-      const options = buildFindOptions(Todo, "page[number]=-1&page[size]=-1")
-
-      expect(options).toEqual({
-        data: {},
-        errors: [expect.any(Error), expect.any(Error)],
-        orm: "sequelize",
-      })
-
-      const errors = options.errors as unknown as Error[]
-      expect(errors[0].name).toEqual("QuerystringParsingError")
-      expect(errors[0].message).toEqual(
-        "Page number should be a positive integer.",
-      )
-      expect(errors[1].name).toEqual("QuerystringParsingError")
-      expect(errors[1].message).toEqual(
-        "Page size should be a positive integer.",
-      )
+    it("handles negative pagination parameters", async () => {
+      await expect(async () =>
+        buildFindOptions(Todo, "page[number]=-1&page[size]=-1"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: "Page number should be a positive integer.",
+          parameter: "page[number]",
+        }),
+        new UnexpectedValueError({
+          detail: "Page size should be a positive integer.",
+          parameter: "page[size]",
+        }),
+      ])
     })
 
-    it("handles float pagination parameters", () => {
-      const options = buildFindOptions(Todo, "page[number]=2.1&page[size]=1.1")
-
-      expect(options).toEqual({
-        data: {},
-        errors: [expect.any(Error), expect.any(Error)],
-        orm: "sequelize",
-      })
-
-      const errors = options.errors as unknown as Error[]
-      expect(errors[0].name).toEqual("QuerystringParsingError")
-      expect(errors[0].message).toEqual(
-        "Page number should be a positive integer.",
-      )
-      expect(errors[1].name).toEqual("QuerystringParsingError")
-      expect(errors[1].message).toEqual(
-        "Page size should be a positive integer.",
-      )
+    it("handles float pagination parameters", async () => {
+      await expect(async () =>
+        buildFindOptions(Todo, "page[number]=2.1&page[size]=1.1"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: "Page number should be a positive integer.",
+          parameter: "page[number]",
+        }),
+        new UnexpectedValueError({
+          detail: "Page size should be a positive integer.",
+          parameter: "page[size]",
+        }),
+      ])
     })
 
     it("handles no attributes", () => {
@@ -140,35 +126,33 @@ describe("builder", () => {
       })
     })
 
-    it("handles unknown attributes", () => {
-      const options = buildFindOptions(Todo, "fields[Todo]=invalid")
-
-      expect(options).toEqual({
-        data: { attributes: ["id", "invalid"], where: {} },
-        errors: [new Error("Unknown attribute invalid")],
-        orm: "sequelize",
-      })
+    it("handles unknown attributes", async () => {
+      await expect(async () =>
+        buildFindOptions(Todo, "fields[todo]=invalid"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance'.`,
+          parameter: `fields[todo]`,
+        }),
+      ])
     })
 
-    it("handles invalid query string", () => {
-      const options = buildFindOptions(Todo, "fields=name,due_date")
-
-      expect(options).toEqual({
-        data: {},
-        errors: [expect.any(Error)],
-        orm: "sequelize",
-      })
-
-      const error = options.errors[0] as unknown as Error
-      expect(error.name).toEqual("QuerystringParsingError")
-      expect(error.message).toEqual("Incorrect format was provided for fields.")
+    it("handles invalid query string", async () => {
+      await expect(async () =>
+        buildFindOptions(Todo, "fields=name,due_date"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: "Incorrect format was provided for fields.",
+          parameter: "fields",
+        }),
+      ])
     })
   })
 
   describe("buildCreateOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildCreateOptions(
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(options).toEqual({
@@ -202,7 +186,7 @@ describe("builder", () => {
   describe("buildUpdateOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildUpdateOptions(
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(options).toEqual({
@@ -219,7 +203,7 @@ describe("builder", () => {
     })
 
     it("does not add ID attribute if not specified", () => {
-      const options = buildUpdateOptions("fields[Todo]=name,due_date")
+      const options = buildUpdateOptions("fields[todo]=name,due_date")
 
       expect(options).toEqual({
         data: {
@@ -256,7 +240,7 @@ describe("builder", () => {
     })
 
     it("does not error on unknown attributes", () => {
-      const options = buildUpdateOptions("fields[Todo]=invalid")
+      const options = buildUpdateOptions("fields[todo]=invalid")
 
       expect(options).toEqual({
         data: { attributes: ["invalid"], where: {} },
@@ -265,25 +249,22 @@ describe("builder", () => {
       })
     })
 
-    it("handles invalid query string", () => {
-      const options = buildUpdateOptions("fields=name,due_date")
-
-      expect(options).toEqual({
-        data: {},
-        errors: [expect.any(Error)],
-        orm: "sequelize",
-      })
-
-      const error = options.errors[0] as unknown as Error
-      expect(error.name).toEqual("QuerystringParsingError")
-      expect(error.message).toEqual("Incorrect format was provided for fields.")
+    it("handles invalid query string", async () => {
+      await expect(async () =>
+        buildUpdateOptions("fields=name,due_date"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: "Incorrect format was provided for fields.",
+          parameter: "fields",
+        }),
+      ])
     })
   })
 
   describe("buildDestroyOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildDestroyOptions(
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(options).toEqual({
@@ -300,7 +281,7 @@ describe("builder", () => {
     })
 
     it("does not add ID attribute if not specified", () => {
-      const options = buildDestroyOptions("fields[Todo]=name,due_date")
+      const options = buildDestroyOptions("fields[todo]=name,due_date")
 
       expect(options).toEqual({
         data: {
@@ -337,7 +318,7 @@ describe("builder", () => {
     })
 
     it("does not error on unknown attributes", () => {
-      const options = buildDestroyOptions("fields[Todo]=invalid")
+      const options = buildDestroyOptions("fields[todo]=invalid")
 
       expect(options).toEqual({
         data: { attributes: ["invalid"], where: {} },
@@ -346,18 +327,15 @@ describe("builder", () => {
       })
     })
 
-    it("handles invalid query string", () => {
-      const options = buildDestroyOptions("fields=name,due_date")
-
-      expect(options).toEqual({
-        data: {},
-        errors: [expect.any(Error)],
-        orm: "sequelize",
-      })
-
-      const error = options.errors[0] as unknown as Error
-      expect(error.name).toEqual("QuerystringParsingError")
-      expect(error.message).toEqual("Incorrect format was provided for fields.")
+    it("handles invalid query string", async () => {
+      await expect(async () =>
+        buildDestroyOptions("fields=name,due_date"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: "Incorrect format was provided for fields.",
+          parameter: "fields",
+        }),
+      ])
     })
   })
 })
