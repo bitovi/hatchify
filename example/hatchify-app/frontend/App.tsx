@@ -29,9 +29,7 @@ const App: React.FC = () => {
         action
       </button>
       <TodoList onSelectedChange={(ids: string[]) => setSelected(ids)}>
-        <TodoEmptyList>
-          <div>No records to display</div>
-        </TodoEmptyList>
+        <TodoEmptyList>No records to display</TodoEmptyList>
         <TodoColumn
           type="append"
           label="Action"

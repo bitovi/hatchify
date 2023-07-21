@@ -508,7 +508,7 @@ overview of what each of these does:
   functions for each schema. This returned object represents our
   entire frontend HatchifyJS app.
 
-Once we create our HatchifyJS app, we can pull the `List` component from
+Once we create our HatchifyJS app, we can pull the `Collection` component from
 the `Todo` key and render it.
 
 ## Rendering a List
@@ -536,7 +536,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 ```
 
 Now we can go ahead and create an instance of a HatchifyJS react app and
-then render the List component for our todos.
+then render the Collection component for our todos.
 
 **✏️ Overwrite the contents of** `frontend/App.tsx` **with the
 following:**
@@ -555,7 +555,7 @@ export const hatchedReact = hatchifyReact(
   }),
 )
 
-const TodoList = hatchedReact.components.Todo.List
+const TodoList = hatchedReact.components.Todo.Collection
 
 const App: React.FC = () => {
   return (
@@ -603,7 +603,7 @@ const App: React.FC = () => {
 }
 ```
 
-`EmptyList` will accept any custom component that is passed in as its children.
+`Empty` will accept any custom component that is passed in as its children.
 ![Alt text](doc/attachments/customNoRecords.png)
 
 ## Adding checkboxes to the list
@@ -618,7 +618,7 @@ const App: React.FC = () => {
   return (
     <MuiProvider>
       <button onClick={() => alert(`action on [${selected.join(",")}]`)}>action</button>
-      <TodoList selectable onSelectionChange={(ids) => setSelected(ids)}>
+      <TodoList selected={selected} onSelectionChange={(ids) => setSelected(ids)}>
         <TodoEmptyList>
           <div>No records to display</div>
         </TodoEmptyList>

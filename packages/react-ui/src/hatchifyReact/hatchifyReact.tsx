@@ -2,7 +2,7 @@ import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type { Source, Schemas } from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
-import type { HatchifyEmptyListProps } from "../components/HatchifyEmptyList"
+import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
 import type { CollectionState } from "../hooks/useCollectionState"
 import type {
   AdditionalColumnProps,
@@ -13,7 +13,7 @@ import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { transformSchema } from "@hatchifyjs/rest-client"
 import { HatchifyCollection } from "../components/HatchifyCollection"
 import { HatchifyColumn } from "../components/HatchifyColumn"
-import { HatchifyEmptyList } from "../components/HatchifyEmptyList"
+import { HatchifyEmpty } from "../components/HatchifyEmpty"
 import useCollectionState from "../hooks/useCollectionState"
 
 type HatchifyCollectionProps = Omit<
@@ -32,7 +32,7 @@ type Components = {
     Collection: (props: HatchifyCollectionProps) => React.ReactElement
     // compound
     Column: (props: HatchifyColumnProps) => React.ReactElement
-    Empty: (props: HatchifyEmptyListProps) => React.ReactElement
+    Empty: (props: HatchifyEmptyProps) => React.ReactElement
   }
 }
 
@@ -72,14 +72,13 @@ export function hatchifyReact(
       ),
       Column: (props) => (
         // todo fix ts!!!
-        // @ts-expect-error
         <HatchifyColumn
           allSchemas={schemas}
           schemaName={schema.name}
           {...props}
         />
       ),
-      Empty: (props) => <HatchifyEmptyList {...props} />,
+      Empty: (props) => <HatchifyEmpty {...props} />,
     }
 
     return acc

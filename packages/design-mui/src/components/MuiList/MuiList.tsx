@@ -2,10 +2,7 @@
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import { css } from "@emotion/react"
 import { Table, TableContainer } from "@mui/material"
-import {
-  useCompoundComponents,
-  useHatchifyPresentation,
-} from "@hatchifyjs/react-ui"
+import { useCompoundComponents } from "@hatchifyjs/react-ui"
 import { MuiBody, MuiHeaders } from "./components"
 
 const styles = {
@@ -21,7 +18,6 @@ const styles = {
 export const MuiList: React.FC<XCollectionProps> = (props) => {
   const { columns, Empty } = useCompoundComponents(
     props.allSchemas[props.schemaName],
-    useHatchifyPresentation().defaultValueComponents,
     props.children,
   )
 

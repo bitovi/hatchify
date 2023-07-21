@@ -1,6 +1,7 @@
 import type { Schema } from "@hatchifyjs/rest-client"
-import type { DefaultValueComponentsTypes } from "../components"
 import type { HatchifyDisplay } from "../services"
+import type { DefaultValueComponentsTypes } from "../components"
+import { useHatchifyPresentation } from "../components"
 import { Children as ReactChildren } from "react"
 import { getDisplaysFromSchema, getHatchifyDisplay } from "../services"
 
@@ -11,10 +12,10 @@ interface CompoundComponents {
 
 export default function useCompoundComponents(
   schema: Schema,
-  valueComponents: DefaultValueComponentsTypes,
   children: React.ReactNode | null,
 ): CompoundComponents {
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
+  const valueComponents = useHatchifyPresentation().defaultValueComponents
 
   return {
     columns: getColumns(schema, valueComponents, childArray),
@@ -121,7 +122,7 @@ export function getColumns(
 }
 
 export function getEmptyList(childArray: JSX.Element[]): () => JSX.Element {
-  const emptyComponent = childArray.find((c) => c.type.name === "EmptyList")
+  const emptyComponent = childArray.find((c) => c.type.name === "Empty")
   const emptyDisplay: JSX.Element = emptyComponent?.props.children || undefined
   const EmptyList = () => emptyDisplay || <div>No records found</div>
   return EmptyList
