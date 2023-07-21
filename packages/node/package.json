@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
-    "@bitovi/querystring-parser": "^0.6.7",
-    "@bitovi/sequelize-querystring-parser": "^0.1.11",
+    "@bitovi/querystring-parser": "^0.6.8",
+    "@bitovi/sequelize-querystring-parser": "^0.1.12",
     "@hatchifyjs/sequelize-create-with-associations": "^0.6.2",
     "co-body": "^6.1.0",
     "inflection": "^2.0.1",
