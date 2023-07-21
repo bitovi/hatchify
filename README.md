@@ -1,6 +1,6 @@
-# hatchify
+# HatchifyJS
 
-# About HatchifyJS
+<img align="left" src="https://github.com/bitovi/hatchify/assets/78602/119af4d1-d9ac-439d-aee5-8b9759cf8915">
 
 HatchifyJS is a web application framework designed to accelerate the
 development of new, or enhancement of existing, CRUD applications. If
