@@ -19,7 +19,6 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
   children,
   defaultSelected,
   onSelectedChange,
-  ...extraProps
 }) => {
   const { Collection } = useHatchifyPresentation()
   const collectionState = useCollectionState(
@@ -30,11 +29,7 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
     onSelectedChange,
   )
 
-  return (
-    <Collection {...collectionState} {...extraProps}>
-      {children}
-    </Collection>
-  )
+  return <Collection {...collectionState}>{children}</Collection>
 }
 
 export default HatchifyCollection
