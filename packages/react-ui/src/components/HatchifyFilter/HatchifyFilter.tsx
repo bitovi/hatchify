@@ -1,12 +1,12 @@
-import type { Schemas } from "@hatchifyjs/rest-client"
+import type { Filter, Schemas } from "@hatchifyjs/rest-client"
 import { useHatchifyPresentation } from ".."
 
 export interface HatchifyFilterProps {
   allSchemas: Schemas
   children: React.ReactElement
   schemaName: string
-  filters: { [key: string]: string }
-  setFilters: (filterBy: { [key: string]: string }) => void
+  filters: Filter
+  setFilters: (filterBy: Filter) => void
 }
 
 export const HatchifyFilter: React.FC<HatchifyFilterProps> = ({
@@ -23,7 +23,7 @@ export const HatchifyFilter: React.FC<HatchifyFilterProps> = ({
       schemas={allSchemas}
       schemaName={schemaName}
       filters={filters}
-      setFilters={(value: { [key: string]: string }) => setFilters(value)}
+      setFilters={(value: Filter) => setFilters(value)}
     >
       {children}
     </Filter>

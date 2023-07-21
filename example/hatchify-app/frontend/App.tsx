@@ -7,6 +7,7 @@ import {
 } from "@hatchifyjs/react"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
+import type { Filter } from "@hatchifyjs/rest-client"
 
 export const hatchedReact = hatchifyReact(
   { Todo, User },
@@ -23,7 +24,7 @@ const TodoFilter = hatchedReact.components.Todo.Filter
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([])
-  const [filter, setFilter] = useState<{ [key: string]: string }>({})
+  const [filter, setFilter] = useState<Filter>(undefined)
 
   return (
     <MuiProvider>

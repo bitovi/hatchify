@@ -59,22 +59,36 @@ export function sortToQueryParam(sort: string[] | string): string {
 /**
  * Transforms the filter object into filter query parameters.
  * { name: "John", age: 30 } => "filter[name]=John&filter[age]=30"
- * { name: ["John", "Jane"] } => "filter[name][]=John&filter[name][]=Jane"
+ * { name: ["John", "Jane"], operator: "$eq" } => "filter[name][$eq]=John&filter[name][$eq]=Jane"
+ * [{name: "John", operator: "$eq"}, {age: 30, operator: "$gte"}] => "filter[name][$eq]=John&filter[age][$gte]=30"
  */
-export function filterToQueryParam(filter: Filter): string {
-  if (typeof filter === "string") {
-    return filter
+
+export function filterToQueryParam(filterArr: Filter): string {
+  if (filterArr === undefined) {
+    return ""
+  }
+  if (typeof filterArr === "string") {
+    return filterArr
   }
 
   const queries: string[] = []
 
-  for (const [key, value] of Object.entries(filter)) {
-    if (Array.isArray(value)) {
-      queries.push(
-        value.map((v) => `filter[${key}][]=${encodeURIComponent(v)}`).join("&"),
-      )
-    } else {
-      queries.push(`filter[${key}]=${encodeURIComponent(value)}`)
+  for (let i = 0; i < filterArr.length; i++) {
+    const { operator, ...filterKeys } = filterArr[i]
+    for (const [key, value] of Object.entries(filterKeys)) {
+      if (Array.isArray(value)) {
+        queries.push(
+          value
+            .map((v) => `filter[${key}][]=${encodeURIComponent(v)}`)
+            .join("&"),
+        )
+      } else {
+        queries.push(
+          `filter[${key}]${operator === "empty" ? "" : `[${operator}]`}=${
+            operator !== "empty" ? encodeURIComponent(value) : null
+          }`,
+        )
+      }
     }
   }
 

@@ -18,7 +18,7 @@ describe("hatchifyjs/presentation/mui/MuiFilter", () => {
         <MuiFilter
           schemas={{ Test: TestSchema }}
           schemaName="Test"
-          filters={{ name: "butts" }}
+          filters={[{ name: "wash car", operator: "equals" }]}
           setFilters={vi.fn()}
         >
           <div data-testid="FilterButton">filter</div>
@@ -42,7 +42,7 @@ describe("hatchifyjs/presentation/mui/MuiFilter", () => {
         <MuiFilter
           schemas={{ Test: TestSchema }}
           schemaName="Test"
-          filters={{ name: "butts" }}
+          filters={[{ name: "wash car", operator: "equals" }]}
           setFilters={vi.fn()}
         >
           <div data-testid="FilterButton">filter</div>

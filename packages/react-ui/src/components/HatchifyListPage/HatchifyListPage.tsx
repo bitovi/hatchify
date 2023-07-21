@@ -3,7 +3,13 @@ import type {
   ValueComponent,
   XLayoutProps,
 } from "../../presentation/interfaces"
-import type { Meta, QueryList, Record, Schemas } from "@hatchifyjs/rest-client"
+import type {
+  Filter,
+  Meta,
+  QueryList,
+  Record,
+  Schemas,
+} from "@hatchifyjs/rest-client"
 
 interface HatchifyListPageProps extends XLayoutProps {
   allSchemas: Schemas
@@ -11,7 +17,7 @@ interface HatchifyListPageProps extends XLayoutProps {
   useData: (query: QueryList) => [Record[], Meta]
   valueComponents?: { [attribute: string]: ValueComponent }
   children?: React.ReactNode | null
-  filter: { [key: string]: string }
+  filter: Filter
 }
 
 export const HatchifyListPage: React.FC<HatchifyListPageProps> = ({

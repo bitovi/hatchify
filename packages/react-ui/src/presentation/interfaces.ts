@@ -1,6 +1,7 @@
 // import type { Schema } from "@hatchifyjs/rest-client"
 import type {
   Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
+  Filter,
   Meta,
   Record,
   Schemas,
@@ -76,13 +77,13 @@ export interface XFilterProps {
   children: React.ReactElement
   schemas: Schemas
   schemaName: string
-  filters: { [key: string]: string }
-  setFilters: (filterBy: { [key: string]: string }) => void
+  filters: Filter
+  setFilters: (filterBy: Filter) => void
 }
 
 export interface HatchifyListFilter {
-  filter: { [key: string]: string }
-  setFilter: (filterBy: { [key: string]: string }) => void
+  filter: Filter
+  setFilter: (filterBy: Filter) => void
 }
 
 export interface XFormProps {

@@ -13,7 +13,7 @@ import {
 } from "@mui/material"
 
 import type { XFilterProps } from "@hatchifyjs/react-ui"
-import type { Attribute } from "@hatchifyjs/rest-client"
+import type { Attribute, Filter } from "@hatchifyjs/rest-client"
 
 interface MuiFilterRowProps {
   attributes: { [field: string]: Attribute }
@@ -28,8 +28,8 @@ interface MuiFilterRowProps {
 interface DialogProps extends MuiFilterRowProps {
   open: boolean
   setOpen: (open: boolean) => void
-  filters: { [key: string]: string }
-  setFilters: (filterBy: { [key: string]: string }) => void
+  filters: Filter
+  setFilters: (filterBy: Filter) => void
 }
 
 const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
@@ -72,8 +72,9 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
           value={operator}
           onChange={(ev) => setOperator(ev.target.value)}
         >
-          <MenuItem value="equals">equals</MenuItem>
-          <MenuItem value="contains">contains</MenuItem>
+          <MenuItem value="empty">empty</MenuItem>
+          <MenuItem value="$eq">equals</MenuItem>
+          <MenuItem value="ilike">contains</MenuItem>
         </Select>
       </Grid>
       <Grid item xs={4}>
@@ -107,16 +108,18 @@ const MuiFilterDialog: React.FC<DialogProps> = ({
     setColumn("")
     setOperator("")
     setValue("")
-    setFilters({})
+    setFilters(undefined)
     setOpen(false)
   }
 
   const applyFilter = () => {
-    //our filter query functions don't currently handle anything but "="
-    setFilters({
-      ...filters,
-      [column]: value,
-    })
+    //On first pass, we are only supporting one filter row.
+    setFilters([
+      {
+        [column]: value,
+        operator: operator,
+      },
+    ])
     setOpen(false)
   }
 

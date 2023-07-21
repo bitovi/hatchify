@@ -26,7 +26,7 @@ describe("hatchifyjs/components/HatchifyListPage", () => {
           allSchemas={{ Test: FutureSchema }}
           schemaName="Test"
           useData={vi.fn()}
-          filter={{}}
+          filter={undefined}
         />,
       )
     })

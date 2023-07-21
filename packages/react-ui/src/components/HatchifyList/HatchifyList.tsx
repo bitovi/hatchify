@@ -1,4 +1,10 @@
-import type { Meta, QueryList, Record, Schemas } from "@hatchifyjs/rest-client"
+import type {
+  Filter,
+  Meta,
+  QueryList,
+  Record,
+  Schemas,
+} from "@hatchifyjs/rest-client"
 import type { ValueComponent } from "../../presentation/interfaces"
 import useHatchifyListSort from "./hooks/useHatchifyListSort"
 import useHatchifyListPagination from "./hooks/useHatchifyListPagination"
@@ -14,7 +20,7 @@ export interface HatchifyListProps {
   selectable?: boolean
   onSelectionChange?: (ids: string[]) => void
   children?: React.ReactNode | null
-  filter: { [key: string]: string }
+  filter: Filter
 }
 
 export const HatchifyList: React.FC<HatchifyListProps> = ({
