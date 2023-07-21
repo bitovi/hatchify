@@ -16,25 +16,33 @@ export const hatchedReact = hatchifyReact(
   }),
 )
 
-const TodoList = hatchedReact.components.Todo.List
-const TodoExtraColumn = hatchedReact.components.Todo.ExtraColumn
-const TodoEmptyList = hatchedReact.components.Todo.EmptyList
+const TodoList = hatchedReact.components.Todo.Collection
+const TodoColumn = hatchedReact.components.Todo.Column
+const TodoEmptyList = hatchedReact.components.Todo.Empty
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([])
+  const collectionState = hatchedReact.state.Todo.useCollectionState()
+  console.log("collectionState", collectionState)
 
   return (
     <MuiProvider>
       <button onClick={() => alert(`action on [${selected.join(",")}]`)}>
         action
       </button>
-      <TodoList selectable onSelectionChange={(ids) => setSelected(ids)}>
+      <TodoList
+        onSelectedChange={(ids: string[]) => {
+          console.log("ids", ids)
+          setSelected(ids)
+        }}
+      >
         <TodoEmptyList>
           <div>No records to display</div>
         </TodoEmptyList>
-        <TodoExtraColumn
+        <TodoColumn
+          type="append"
           label="Action"
-          render={({ record }) => {
+          renderValue={({ record }) => {
             return (
               <>
                 <button onClick={() => console.log(record)}>Download</button>
