@@ -172,8 +172,8 @@ describe("components/MuiList", () => {
     })
   })
 
-  it("displays EmptyList component if there is no data", async () => {
-    const EmptyList = () => <div>so empty inside</div>
+  it("displays Empty component if there is no data", async () => {
+    const Empty = () => <div>so empty inside</div>
 
     render(
       <MuiList
@@ -193,7 +193,7 @@ describe("components/MuiList", () => {
         fields={[]}
         include={[]}
       >
-        {createElement(EmptyList, {}, <div>so empty inside</div>)}
+        {createElement(Empty, {}, <div>so empty inside</div>)}
       </MuiList>,
     )
 
