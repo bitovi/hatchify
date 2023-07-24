@@ -11,18 +11,44 @@ const TestSchema: Schema = {
   attributes: { id: "string", name: "string" },
   displayAttribute: "name",
 }
+
+const meta = {
+  status: "success",
+  meta: {
+    unpaginatedCount: 30, // 3 pages
+  },
+  error: undefined,
+  isDone: true,
+  isLoading: false,
+  isRejected: false,
+  isRevalidating: false,
+  isStale: false,
+  isSuccess: true,
+} as any
+
 describe("hatchifyjs/presentation/mui/MuiFilter", () => {
   describe("MuiFilter", () => {
     it("works", async () => {
       render(
         <MuiFilter
-          schemas={{ Test: TestSchema }}
+          allSchemas={{ Test: TestSchema }}
           schemaName="Test"
-          filters={[{ name: "wash car", operator: "equals" }]}
-          setFilters={vi.fn()}
-        >
-          <div data-testid="FilterButton">filter</div>
-        </MuiFilter>,
+          data={[]}
+          meta={meta}
+          sort={{
+            direction: undefined,
+            sortBy: undefined,
+          }}
+          page={{ number: 1, size: 10 }}
+          fields={[]}
+          include={[]}
+          setSort={vi.fn()}
+          setPage={vi.fn()}
+          selected={[]}
+          setSelected={vi.fn()}
+          filter={[{ name: "wash car", operator: "equals" }]}
+          setFilter={vi.fn()}
+        />,
       )
 
       const filter = await screen.findByTestId("FilterButton")
@@ -36,33 +62,6 @@ describe("hatchifyjs/presentation/mui/MuiFilter", () => {
       expect(await screen.findByText("Columns")).toBeInTheDocument()
       expect(await screen.findByText("Operator")).toBeInTheDocument()
       expect(await screen.findByText("Value")).toBeInTheDocument()
-    })
-    it("closes when the close button is clicked", async () => {
-      render(
-        <MuiFilter
-          schemas={{ Test: TestSchema }}
-          schemaName="Test"
-          filters={[{ name: "wash car", operator: "equals" }]}
-          setFilters={vi.fn()}
-        >
-          <div data-testid="FilterButton">filter</div>
-        </MuiFilter>,
-      )
-      const filter = await screen.findByTestId("FilterButton")
-
-      await userEvent.click(filter)
-
-      expect(await screen.findByText("Columns")).toBeInTheDocument()
-      expect(await screen.findByText("Operator")).toBeInTheDocument()
-      expect(await screen.findByText("Value")).toBeInTheDocument()
-
-      //   const closeButton = await screen.findByText("Close")
-
-      //   await userEvent.click(closeButton)
-
-      //   expect(screen.queryByText("Columns")).not.toBeInTheDocument()
-      //   expect(screen.queryByText("Operator")).not.toBeInTheDocument()
-      //   expect(screen.queryByText("Value")).not.toBeInTheDocument()
     })
   })
 })

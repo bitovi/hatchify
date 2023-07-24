@@ -31,7 +31,6 @@ export const MuiProvider: React.FC<XProviderProps<Theme>> = ({
         Collection={MuiDataGrid}
         Layout={MuiLayout}
         Details={MuiDetails}
-        Filter={MuiFilter}
         Form={MuiForm}
         defaultValueComponents={{
           ...HatchifyPresentationDefaultValueComponents,

@@ -1,5 +1,6 @@
 // import type { Schema } from "@hatchifyjs/rest-client"
 import type {
+  Filter,
   Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
 } from "@hatchifyjs/rest-client"
 import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
@@ -44,6 +45,11 @@ export interface HatchifyCollectionSelected {
   setSelected: (ids: string[]) => void
 }
 
+export interface HatchifyCollectionFilter {
+  filter: Filter
+  setFilter: (filterBy: Filter) => void
+}
+
 export interface XCollectionProps extends CollectionState {
   children?: React.ReactNode
 }
@@ -57,18 +63,6 @@ export interface XLayoutProps {
 export interface XDetailsProps {
   displays: LegacyHatchifyDisplay[]
   useData: () => FlatRecord
-}
-export interface XFilterProps {
-  children: React.ReactElement
-  schemas: Schemas
-  schemaName: string
-  filters: Filter
-  setFilters: (filterBy: Filter) => void
-}
-
-export interface HatchifyListFilter {
-  filter: Filter
-  setFilter: (filterBy: Filter) => void
 }
 
 export interface XFormProps {

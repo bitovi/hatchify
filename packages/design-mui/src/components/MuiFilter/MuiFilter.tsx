@@ -12,8 +12,9 @@ import {
   TextField,
 } from "@mui/material"
 
-import type { XFilterProps } from "@hatchifyjs/react-ui"
+import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import type { Attribute, Filter } from "@hatchifyjs/rest-client"
+import FilterAltIcon from "@mui/icons-material/FilterAlt"
 
 interface MuiFilterRowProps {
   attributes: { [field: string]: Attribute }
@@ -28,8 +29,8 @@ interface MuiFilterRowProps {
 interface DialogProps extends MuiFilterRowProps {
   open: boolean
   setOpen: (open: boolean) => void
-  filters: Filter
-  setFilters: (filterBy: Filter) => void
+  filter: Filter
+  setFilter: (filterBy: Filter) => void
 }
 
 const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
@@ -97,24 +98,23 @@ const MuiFilterDialog: React.FC<DialogProps> = ({
   open,
   operator,
   value,
-  filters,
   setColumn,
   setOpen,
   setOperator,
   setValue,
-  setFilters,
+  setFilter,
 }) => {
   const clearFilter = () => {
     setColumn("")
     setOperator("")
     setValue("")
-    setFilters(undefined)
+    setFilter(undefined)
     setOpen(false)
   }
 
   const applyFilter = () => {
     //On first pass, we are only supporting one filter row.
-    setFilters([
+    setFilter([
       {
         [column]: value,
         operator: operator,
@@ -147,12 +147,11 @@ const MuiFilterDialog: React.FC<DialogProps> = ({
   )
 }
 
-export const MuiFilter: React.FC<XFilterProps> = ({
-  children,
-  schemas,
+export const MuiFilter: React.FC<XCollectionProps> = ({
+  allSchemas,
   schemaName,
-  filters,
-  setFilters,
+  filter,
+  setFilter,
 }) => {
   const [open, setOpen] = useState<boolean>(false)
   const [operator, setOperator] = useState<string>("")
@@ -168,14 +167,14 @@ export const MuiFilter: React.FC<XFilterProps> = ({
         setOpen={setOpen}
         operator={operator}
         setOperator={setOperator}
-        attributes={schemas[schemaName].attributes}
+        attributes={allSchemas[schemaName].attributes}
         value={value}
         setValue={setValue}
-        filters={filters}
-        setFilters={setFilters}
+        filter={filter}
+        setFilter={setFilter}
       />
       <Grid item onClick={() => setOpen(true)}>
-        {children}
+        <FilterAltIcon sx={{ color: "grey", cursor: "pointer" }} />
       </Grid>
     </Grid>
   )

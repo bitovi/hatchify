@@ -75,7 +75,6 @@ export interface HatchifyPresentationContextProps {
   Collection: React.FC<XCollectionProps>
   Layout: React.FC<XLayoutProps>
   Details: React.FC<XDetailsProps>
-  Filter: React.FC<XFilterProps>
   Form: React.FC<XFormProps>
   defaultValueComponents: DefaultValueComponentsTypes
   defaultFieldComponents: DefaultFieldComponentsTypes
