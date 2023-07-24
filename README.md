@@ -9,50 +9,34 @@ with a fully functional system straight from your database schema. If
 you have more specialized requirements, HatchifyJS makes it easy to
 customize every part of the application to meet your needs.
 
-HatchifyJS enables you to make changes to your database schema and
-customize app behavior independently. When using code generation tools
-you have to write your schema and then generate your code, but once you
-start making customizations you cant re-run the generator without losing
-your customizations.
+Unlike code generation tools—which allow you to write your schema and then generate your code, but once you start making customizations you can't re-run the generator without losing your customizations—HatchifyJS enables you to make changes to your database schema and customize app behavior **independently**. This is because HatchifyJS is **not** code generation—it's a system of modular and hierarchical libraries that can be consumed piecemeal to use as much or as little of HatchifyJS abilities as you require.
 
-HatchifyJS is NOT code generation, it's a system of modular and
-hierarchical libraries that can be consumed piecemeal to use as much or
-as little of HatchifyJS abilities as you require.
-
-- [About HatchifyJS](#GettingStartedHatchify-AboutHatchifyJS)
-- [Project Setup](#GettingStartedHatchify-ProjectSetup)
-- [Schemas](#GettingStartedHatchify-Schemas)
-  - [Model
-    Relationships](#GettingStartedHatchify-ModelRelationships)
-- [Backend - The Hatchify
-  Middleware](#GettingStartedHatchify-Backend-TheHatchifyMiddleware)
-  - [Using the server
-    endpoints](#GettingStartedHatchify-Usingtheserverendpoints)
-    - [Creating a
-      resource](#GettingStartedHatchify-Creatingaresource)
-    - [Listing
-      resources](#GettingStartedHatchify-Listingresources)
-    - [Fetching a single
-      resource](#GettingStartedHatchify-Fetchingasingleresource)
-    - [Updating a
-      resource](#GettingStartedHatchify-Updatingaresource)
-    - [Deleting a
-      resource](#GettingStartedHatchify-Deletingaresource)
-  - [Seeding data](#GettingStartedHatchify-Seedingdata)
-- [Frontend with React &
-  MUI](#GettingStartedHatchify-FrontendwithReact&MUI)
-  - [Rendering a List](#GettingStartedHatchify-RenderingaList)
-- [Next Steps](#GettingStartedHatchify-nextSteps)
-  - [Rendering an empty list](#GettingStartedHatchify-renderingAnEmptyList)
-- [Need help or have
-  questions?](#GettingStartedHatchify-Needhelporhavequestions?)
+- [HatchifyJS](#hatchifyjs)
+- [Project Setup](#project-setup)
+- [Schemas](#schemas)
+  - [Model Relationships](#model-relationships)
+- [Backend - The Hatchify Middleware](#backend---the-hatchify-middleware)
+  - [Using the server endpoints](#using-the-server-endpoints)
+    - [Creating a resource](#creating-a-resource)
+    - [Listing resources](#listing-resources)
+    - [Fetching a single resource](#fetching-a-single-resource)
+    - [Updating a resource](#updating-a-resource)
+    - [Deleting a resource](#deleting-a-resource)
+  - [Seeding data](#seeding-data)
+- [Frontend with React & MUI](#frontend-with-react--mui)
+  - [Rendering a List](#rendering-a-list)
+- [Next Steps](#next-steps)
+  - [Rendering an empty list](#rendering-an-empty-list)
+- [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
 
-In this guide, we will be setting up one project containing a HatchifyJS
-frontend and backend. Our frontend will use React & MUI and our backend
+In this guide, we will be setting up a project containing a HatchifyJS
+frontend and backend. Our frontend will use React and MUI and our backend
 will be using Koa. We will be setting up our project using Vite so that
 it handles all the React configurations for us.
+
+> Note: The ✏️ icon indicates when to follow along!
 
 [✏️](https://emojipedia.org/pencil/) Perform all the
 following steps:
@@ -93,7 +77,7 @@ following steps:
 6.  Remove `"type": "module"` from `package.json` so that we can have
     consistent TS imports across our backend and frontend apps
 
-7.  Overwrite the `scripts` in `package.json` with the following:
+7.  Overwrite the value of the `scripts` property in `package.json` with the following:
 
     ```bash
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -105,7 +89,7 @@ following steps:
     "start:backend": "node dist/backend/backend/index.js"
     ```
 
-8.  Create a “backend” directory at the root, this is where we will put
+8.  Create a “backend” directory at the root. This is where we will put
     our backend code:
 
     ```bash
@@ -119,11 +103,11 @@ following steps:
     mv src frontend
     ```
 
-    1.  With this, we will also have to update line 11 in our
+    1. Additionally, we will also have to update line 11 in our
         `index.html` from `src="/src/main.tsx"` to
         `src="/frontend/main.tsx"`
 
-10. Update your `tsconfig.json` to:
+10. Replace the contents of your `tsconfig.json` with:
 
     ```json
     {
@@ -156,12 +140,13 @@ following steps:
     }
     ```
 
-11. Rename `tsconfig.node.json` to `tsconfig.backend.json` and update it
-    to look like this:
+11. Rename `tsconfig.node.json` to `tsconfig.backend.json`:
 
     ```bash
     mv tsconfig.node.json tsconfig.backend.json
     ```
+
+    Then, replace its contents with:
 
     ```json
     {
@@ -177,7 +162,7 @@ A schema is a definition of a resource used in our HatchifyJS system. We
 use these shared schemas across our backend and frontend to create
 database tables, generate REST endpoints, and create React components
 and data fetchers. Because these schemas are the backbone of our
-frontend and backend HatchifyJS, we will place them in a `schemas/`
+frontend and backend, we will place them in a `schemas/`
 directory at the root directory of our project.
 
 **✏️ Create a** `schemas` **directory:**
@@ -189,7 +174,7 @@ mkdir schemas
 The required fields of the schema are a `name` for your model and the
 `attributes` that will be held within it. If you have written ORM models
 before, specifically Sequelize, this should look pretty familiar to you.
-HatchifyJS uses Sequelize, a Node.js and TypeScript compatible ORM,
+HatchifyJS uses Sequelize, a Node.js- and TypeScript-compatible ORM,
 under the hood to talk to your database.
 
 **✏️ Create a** `schemas/User.ts`**:**
@@ -201,7 +186,7 @@ export const User = {
   attributes: {
     name: "STRING",
   },
-  hasMany: [{ target: "Todo", options: { as: "todos" } }], // 👀
+  hasMany: [{ target: "Todo", options: { as: "todos" } }],
 }
 ```
 
@@ -216,17 +201,17 @@ export const Todo = {
     due_date: "DATE",
     importance: "INTEGER",
   },
-  belongsTo: [{ target: "User", options: { as: "user" } }], // 👀
+  belongsTo: [{ target: "User", options: { as: "user" } }],
 }
 ```
 
-You can find all of the possible [datatypes
-here](https://sequelize.org/docs/v7/other-topics/other-data-types).
+You can find all of the possible data types for a schema's `attributes`
+[here](https://sequelize.org/docs/v7/other-topics/other-data-types).
 
 ## Model Relationships
 
 HatchifyJS can help you define and build complex relationships between
-different models within your application. In the previous code snippet,
+different models within your application. In the previous code snippets,
 you may have noticed we added a `belongsTo` and `hasMany` to our
 schemas. A model can have a relationship, linking it to another model.
 These relationships can be defined using `hasMany`, `hasOne`,
@@ -260,8 +245,8 @@ const hatchedKoa = hatchifyKoa([Todo, User], {
 })
 
 app.use(cors())
-app.use(hatchedKoa.middleware.allModels.all);
-(async () => {
+app.use(hatchedKoa.middleware.allModels.all)
+;(async () => {
   await hatchedKoa.createDatabase()
 
   app.listen(3000, () => {
@@ -279,25 +264,25 @@ This step will take care of not only adding your schema files, but also
 validating them against each other, and setting up relationships for
 you.
 
-Next, we can start up the HatchifyJS to see everything in action.
+Next, we can start up the backend to see everything in action.
 
 ```bash
 npm run dev:backend
 ```
 
-You can the browser with the following endpoints to list users and todo
-(will have none at this point):
+You can navigate to the following endpoints to get a list of users and todos
+(but we don't have any yet):
 
 [http://localhost:3000/api/users](http://localhost:3000/api/users)
 
 [http://localhost:3000/api/todos](http://localhost:3000/api/todos)
 
-Now that we have our basic application up and running we can start
-looking at how to make changes and further develop our example
+Now that we have our basic backend up and running we can start
+looking at how to make changes and further develop our example.
 
 ## Using the server endpoints
 
-You can now make requests to your endpoint to test your applications.
+You can now make requests to your endpoint to test your applications. The following are examples of how to do this with `curl`, but you don't need to follow along just yet—we'll seed the database in our example later on.
 
 ### Creating a resource
 
@@ -317,7 +302,7 @@ curl 'http://localhost:3000/api/todos' \
 ```
 
 With Hatchify, you can make a POST request and assign its related record
-in a single request following JSON:API.
+in a single request, per the JSON:API spec.
 
 ```bash
 curl --request POST 'http://localhost:3000/api/users' \
@@ -341,24 +326,22 @@ curl --request POST 'http://localhost:3000/api/users' \
 
 ### Listing resources
 
-You can make GET requests with HatchifyJS middleware and you can make
-your requests even more powerful with query strings. You can check out
-the [querystring
-library](https://github.com/bitovi/querystring-parser)
-for more information.
+You can make GET requests with HatchifyJS middleware, and you can make
+your requests even more powerful with query strings. For example:
 
-[http://localhost:3000/api/users](http://localhost:3000/api/users)
-[http://localhost:3000/api/users?include=todos](http://localhost:3000/api/users?include=todos)
-[http://localhost:3000/api/users?include=todos&filter\[name\]=John+Doe](http://localhost:3000/api/users?include=todos&filter%5Bname%5D=John+Doe)
+- [http://localhost:3000/api/users](http://localhost:3000/api/users)
+- [http://localhost:3000/api/users?include=todos](http://localhost:3000/api/users?include=todos)
+- [http://localhost:3000/api/users?include=todos&filter\[name\]=John+Doe](http://localhost:3000/api/users?include=todos&filter%5Bname%5D=John+Doe)
+
+You can check out the [querystring library](https://github.com/bitovi/querystring-parser), which HatchifyJS uses under the hood, for more information.
 
 ### Fetching a single resource
 
 Just like fetching a list of resources, we’re able to fetch an
-individual resource with or without its related records.
+individual resource with or without its related records. For example:
 
-[http://localhost:3000/api/users/1](http://localhost:3000/api/users/1)
-
-[http://localhost:3000/api/users/1?include=todos](http://localhost:3000/api/users/1?include=todos)
+- [http://localhost:3000/api/users/1](http://localhost:3000/api/users/1)
+- [http://localhost:3000/api/users/1?include=todos](http://localhost:3000/api/users/1?include=todos)
 
 ### Updating a resource
 
@@ -487,24 +470,24 @@ curl 'http://localhost:3000/api/users' \
 }'
 ```
 
-# Frontend with React & MUI
+# Frontend with React and MUI
 
-Now that our backend is configured and running, we can now use the same
-schemas as defined earlier to quickly hatch our frontend. The first
+Now that our backend is configured and running we can use the same
+schemas that we defined earlier to quickly _hatch_—see what we did there?—our frontend. The first
 thing we want to do is import `hatchifyReact`, `MuiProvider`, and
 `createJsonapiClient` from the `@hatchify/react` library. Here’s a quick
 overview of what each of these does:
 
 - `createJsonapiClient` - This is our rest client for JSON:API. We
   pass in the `baseUrl` of our backend to it, as well as a mapping of
-  `schema: { endpoint: <url endpoint>` to it.
+  `schema: { endpoint: <url endpoint>`.
 
 - `MuiProvider` - This is an MUI theme provider that we must wrap
   around our entire app so that our HatchifyJS components will render
   with the correct design system.
 
 - `createReact` - This function takes in our schemas and our rest
-  client, it will then return an object containing components and rest
+  client and returns an object containing components and rest
   functions for each schema. This returned object represents our
   entire frontend HatchifyJS app.
 
@@ -574,17 +557,16 @@ should see:
 
 ![](doc/attachments/394592353.png)
 
-That’s it! With minimal code and some HatchifyJS magic, using our
-well-defined schemas we have a backend running with REST endpoints, a
-database, and a frontend that handles the JSX and data-fetching for us.
+And that’s it! With minimal code and some HatchifyJS magic, we've used our
+well-defined schemas to create a databse, a running backend with REST endpoints, and a frontend that handles the JSX and data-fetching for us.
 
 # Next Steps
 
-* [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
+- [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
 
 ## Rendering an empty List
 
-By default, the list will render a message in the list when there are no records to display:
+By default, the list will render a message when there are no records to display:
 ![](doc/attachments/defaultNoRecords.png)
 To customize what is displayed here the `EmptyList` component can be passed into `List`
 
@@ -608,7 +590,7 @@ const App: React.FC = () => {
 
 ## Adding checkboxes to the list
 
-To add a checkboxes column to the list, we must pass a `selectable` prop to the `List` component. If we want to extract the selected records, we must also pass a `onSelectionChange` prop. This prop is a callback function that will be called with the selected records whenever the selection changes.
+To add a checkboxes column to the list, we must pass a `selectable` prop to the `List` component. If we want to extract the selected records, we must also pass a `onSelectionChange` prop. This prop is a callback function that will be called with the selected records' IDs whenever the selection changes.
 
 ```tsx
 // hatchify-app/src/App.tsx

@@ -1,16 +1,16 @@
 # Using Postgres
 
-This guide is a continuation of Hatchify's getting started guide and will teach you how to set Postgres as your database. You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but this tutorial will focus on Postgres.
+This guide is a continuation of Hatchify's [getting started guide](../../README.md#project-setup) and will teach you how to set Postgres as your database. You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but this tutorial will focus on Postgres.
 
  ## ✏️ Perform the following steps:
   
 ### Install Postgres: 
 
-You will usually need to install Postgres before you use it in your project, but that process may be hard: there are many different ways to install Postgres (brew, choco, downloading the installer for their website), in order to simplify this tutorial, we will be using Docker to get Postgres. 
+You will usually need to install Postgres before you use it in your project, but that process may be hard: there are many different ways to install Postgres (brew, choco, downloading the installer for their website). In order to simplify this tutorial, we will be using Docker to get Postgres.
 
-1. If you don't have Docker installed on your computer yet, you can download it from [Dockers official website](https://www.docker.com/products/docker-desktop/).
+1. If you don't have Docker installed on your computer yet, you can download it from [Docker's official website](https://www.docker.com/products/docker-desktop/).
   
-2. After installing Docker, you can get Postgres official image from [docker hub](https://hub.docker.com/_/postgres). To get a Postgres instance running, in your terminal, run the command: 
+2. After installing Docker, you can get the Postgres official image from [docker hub](https://hub.docker.com/_/postgres). To get a Postgres instance running, in your terminal, run the command: 
     
     ``` bash
     docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
@@ -28,7 +28,7 @@ You should see your container details, and the status should be "Up". You can st
 
 There are different options for creating a Postgres database; in fact, if you've run the Docker command above, you'll already have a database called "postgres", but if you want to create a new one, a good option is DBeaver:  
 
- -   `DBeaver` - DBeaver is a cross-platform database tool; you can install it from the [official website](https://dbeaver.io/download/) and create a connection to Postgres as exemplified in [this tutorial](https:/dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/). After your connection is set, right-click in your connection, hover over create and select "database" to create a new database. For this tutorial, we created a database called "todos".
+ -   `DBeaver` - DBeaver is a cross-platform database tool; you can install it from the [official website](https://dbeaver.io/download/) and create a connection to Postgres as exemplified in [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/) (make sure you use the username and password that we set above, i.e. `example_user` and `example_password`). After your connection is set, right-click in your connection, hover over create and select "database" to create a new database. For this tutorial, we created a database called "todos".
   
 ### Configure Hatchify's constructor: 
 
@@ -118,7 +118,9 @@ app.use(hatchedKoa.middleware.allModels.all);
     npm run dev:backend
     ```
     
-#### The following options are allowed within the db options object:
+> Note: the new Postgres db we just created is empty, so you'll need to seed it, just like we did in the [getting started guide](../../README.md#seeding-data)
+
+#### The following options are allowed within the db options object
 
 | Property | Type   | Default   | Details                                                            |
 | -------- | ------ | --------- | ------------------------------------------------------------------ |
