@@ -8,7 +8,6 @@ import type {
 
 import { buildDestroyOptions, buildFindOptions } from "./builder"
 import { validateFindOptions, validateStructure } from "./validator"
-import { ValidationError, codes, statusCodes } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
 
@@ -43,15 +42,7 @@ async function findAllImpl(
   querystring: string,
 ) {
   const { data, errors } = buildFindOptions(model, querystring)
-  if (errors.length > 0) {
-    throw [
-      new ValidationError({
-        code: codes.ERR_INVALID_PARAMETER,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        title: "Bad Request, Invalid Query String",
-      }),
-    ]
-  }
+  if (errors.length) throw errors
   validateFindOptions(data, hatchify)
   return data
 }
@@ -63,15 +54,7 @@ async function findOneImpl(
   id,
 ) {
   const { data, errors } = buildFindOptions(model, querystring, id)
-  if (errors.length > 0) {
-    throw [
-      new ValidationError({
-        code: codes.ERR_INVALID_PARAMETER,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        title: "Bad Request, Invalid Query String",
-      }),
-    ]
-  }
+  if (errors.length) throw errors
   validateFindOptions(data, hatchify)
   return data
 }
@@ -82,15 +65,7 @@ async function findAndCountAllImpl(
   querystring: string,
 ) {
   const { data, errors } = buildFindOptions(model, querystring)
-  if (errors.length > 0) {
-    throw [
-      new ValidationError({
-        code: codes.ERR_INVALID_PARAMETER,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        title: "Bad Request, Invalid Query String",
-      }),
-    ]
-  }
+  if (errors.length) throw errors
   validateFindOptions(data, hatchify)
   return data
 }
@@ -126,16 +101,7 @@ async function updateImpl(
 
 async function destroyImpl(querystring: string, id?: Identifier) {
   const { data, errors } = buildDestroyOptions(querystring, id)
-  if (errors.length > 0) {
-    throw [
-      new ValidationError({
-        code: codes.ERR_INVALID_PARAMETER,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        title: "Bad Request, Invalid Query String",
-      }),
-    ]
-  }
-
+  if (errors.length) throw errors
   return data
 }
 

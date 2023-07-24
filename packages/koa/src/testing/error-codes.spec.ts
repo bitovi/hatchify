@@ -304,6 +304,189 @@ describe("Error Code Tests", () => {
     })
   })
 
+  describe("should return error UNEXPECTED_VALUE error code when receiving zeros for pagination (HATCH-213)", () => {
+    it("valid page number and valid page size", async () => {
+      const { status } = await fetch("/api/todos?page[number]=1&page[size]=1")
+
+      expect(status).toBe(200)
+    })
+
+    it("valid page number and missing page size", async () => {
+      const ERROR_CODE_UNEXPECTED_VALUE = {
+        status: 422,
+        code: "unexpected-value",
+        title: "Unexpected value.",
+        detail: "Page number was provided but page size was not provided.",
+        source: {
+          parameter: "page[size]",
+        },
+      }
+
+      const { status, body } = await fetch("/api/todos?page[number]=1")
+
+      expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [ERROR_CODE_UNEXPECTED_VALUE],
+      })
+    })
+
+    it("valid page number and page size of zero", async () => {
+      const ERROR_CODE_UNEXPECTED_VALUE = {
+        status: 422,
+        code: "unexpected-value",
+        title: "Unexpected value.",
+        detail: "Page size should be a positive integer.",
+        source: {
+          parameter: "page[size]",
+        },
+      }
+
+      const { status, body } = await fetch(
+        "/api/todos?page[number]=1&page[size]=0",
+      )
+
+      expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [ERROR_CODE_UNEXPECTED_VALUE],
+      })
+    })
+
+    it("missing page number and valid page size", async () => {
+      const ERROR_CODE_UNEXPECTED_VALUE = {
+        status: 422,
+        code: "unexpected-value",
+        title: "Unexpected value.",
+        detail: "Page size was provided but page number was not provided.",
+        source: {
+          parameter: "page[number]",
+        },
+      }
+
+      const { status, body } = await fetch("/api/todos?page[size]=1")
+
+      expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [ERROR_CODE_UNEXPECTED_VALUE],
+      })
+    })
+
+    it("missing page number and missing page size", async () => {
+      const { status } = await fetch("/api/todos")
+
+      expect(status).toBe(200)
+    })
+
+    it("missing page number and page size of zero", async () => {
+      const { status, body } = await fetch("/api/todos?page[size]=0")
+
+      expect(status).toBe(422)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [
+          {
+            status: 422,
+            code: "unexpected-value",
+            title: "Unexpected value.",
+            detail: "Page size was provided but page number was not provided.",
+            source: {
+              parameter: "page[number]",
+            },
+          },
+          {
+            status: 422,
+            code: "unexpected-value",
+            title: "Unexpected value.",
+            detail: "Page size should be a positive integer.",
+            source: {
+              parameter: "page[size]",
+            },
+          },
+        ],
+      })
+    })
+
+    it("page number of zero and valid page size", async () => {
+      const ERROR_CODE_UNEXPECTED_VALUE = {
+        status: 422,
+        code: "unexpected-value",
+        title: "Unexpected value.",
+        detail: "Page number should be a positive integer.",
+        source: {
+          parameter: "page[number]",
+        },
+      }
+
+      const { status, body } = await fetch(
+        "/api/todos?page[number]=0&page[size]=1",
+      )
+
+      expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [ERROR_CODE_UNEXPECTED_VALUE],
+      })
+    })
+
+    it("page number of zero and missing page size", async () => {
+      const { status, body } = await fetch("/api/todos?page[number]=0")
+
+      expect(status).toBe(422)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [
+          {
+            status: 422,
+            code: "unexpected-value",
+            title: "Unexpected value.",
+            detail: "Page number should be a positive integer.",
+            source: {
+              parameter: "page[number]",
+            },
+          },
+          {
+            status: 422,
+            code: "unexpected-value",
+            title: "Unexpected value.",
+            detail: "Page number was provided but page size was not provided.",
+            source: {
+              parameter: "page[size]",
+            },
+          },
+        ],
+      })
+    })
+
+    it("page number of zero and page size of zero", async () => {
+      const { status, body } = await fetch(
+        "/api/todos?page[number]=0&page[size]=0",
+      )
+
+      expect(status).toBe(422)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [
+          {
+            status: 422,
+            code: "unexpected-value",
+            title: "Unexpected value.",
+            detail: "Page number should be a positive integer.",
+            source: { parameter: "page[number]" },
+          },
+          {
+            status: 422,
+            code: "unexpected-value",
+            title: "Unexpected value.",
+            detail: "Page size should be a positive integer.",
+            source: { parameter: "page[size]" },
+          },
+        ],
+      })
+    })
+  })
+
   it("should return error VALUE_REQUIRED error code when receiving no data for relationships (HATCH-215)", async () => {
     const ERROR_CODE_VALUE_REQUIRED = {
       status: 422,
@@ -338,6 +521,27 @@ describe("Error Code Tests", () => {
     expect(body).toEqual({
       jsonapi: { version: "1.0" },
       errors: [ERROR_CODE_VALUE_REQUIRED],
+    })
+  })
+
+  it("should return error UNEXPECTED_VALUE error code when receiving non-existing filter (HATCH-243)", async () => {
+    const ERROR_CODE_UNEXPECTED_VALUE = {
+      status: 422,
+      code: "unexpected-value",
+      title: "Unexpected value.",
+      detail:
+        "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance'.",
+      source: {
+        parameter: "fields[todo]",
+      },
+    }
+
+    const { status, body } = await fetch("/api/todos?fields[todo]=nam")
+
+    expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_UNEXPECTED_VALUE],
     })
   })
 })

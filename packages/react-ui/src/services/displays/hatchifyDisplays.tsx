@@ -22,6 +22,7 @@ import type {
 } from "../../components"
 
 export interface HatchifyDisplay {
+  sortable: boolean
   key: string
   label: string
   render: ({ record }: { record: Record }) => React.ReactNode
@@ -114,6 +115,7 @@ export function getDisplaysFromSchema(
   const attributesDisplays = Object.entries(schema.attributes).map(
     ([key, value]) => {
       return getHatchifyDisplay({
+        sortable: true,
         attribute: key,
         attributeSchema: value,
         valueComponents,
@@ -164,6 +166,7 @@ export function getDisplaysFromSchema(
 // @todo refactor the logic around render in this function
 export function getHatchifyDisplay({
   attribute,
+  sortable = true,
   isRelationship = false,
   isExtraDisplay = false, // @todo necessary? should always be covered by `render` or `ValueComponent` case!
   label = null,
@@ -175,6 +178,7 @@ export function getHatchifyDisplay({
   renderValue = null,
 }: {
   isRelationship?: boolean
+  sortable?: boolean
   isExtraDisplay?: boolean
   attribute: string
   label?: string | null
@@ -198,6 +202,7 @@ export function getHatchifyDisplay({
   }
 
   const display: HatchifyDisplay = {
+    sortable,
     key: attribute || uuidv4(),
     label:
       label ||

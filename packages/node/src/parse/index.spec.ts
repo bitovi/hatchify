@@ -2,6 +2,7 @@ import { Op } from "sequelize"
 
 import {
   RelationshipPathError,
+  UnexpectedValueError,
   ValidationError,
   codes,
   statusCodes,
@@ -46,7 +47,7 @@ describe("index", () => {
     describe("findAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAll(
-          "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
@@ -59,7 +60,7 @@ describe("index", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findAll("fields[Todo]=name,due_date")
+        const results = await findAll("fields[todo]=name,due_date")
 
         expect(results).toEqual({
           attributes: ["id", "name", "due_date"],
@@ -76,21 +77,20 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findAll("fields[Todo]=invalid")).rejects.toEqualErrors([
-          new ValidationError({
-            code: codes.ERR_INVALID_PARAMETER,
-            status: statusCodes.UNPROCESSABLE_ENTITY,
-            title: "Bad Request, Invalid Query String",
+        await expect(findAll("fields[todo]=invalid")).rejects.toEqualErrors([
+          new UnexpectedValueError({
+            detail:
+              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance', 'status'.",
+            parameter: "fields[todo]",
           }),
         ])
       })
 
       it("handles invalid query string", async () => {
         await expect(findAll("fields=name,due_date")).rejects.toEqualErrors([
-          new ValidationError({
-            code: codes.ERR_INVALID_PARAMETER,
-            status: statusCodes.UNPROCESSABLE_ENTITY,
-            title: "Bad Request, Invalid Query String",
+          new UnexpectedValueError({
+            detail: "Incorrect format was provided for fields.",
+            parameter: "fields",
           }),
         ])
       })
@@ -108,7 +108,7 @@ describe("index", () => {
     describe("findAndCountAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAndCountAll(
-          "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
@@ -121,7 +121,7 @@ describe("index", () => {
       })
 
       it("adds attribute if not specified", async () => {
-        const results = await findAndCountAll("fields[Todo]=name,due_date")
+        const results = await findAndCountAll("fields[todo]=name,due_date")
 
         expect(results).toEqual({
           attributes: ["id", "name", "due_date"],
@@ -139,12 +139,12 @@ describe("index", () => {
 
       it("handles unknown attributes", async () => {
         await expect(
-          findAndCountAll("fields[Todo]=invalid"),
+          findAndCountAll("fields[todo]=invalid"),
         ).rejects.toEqualErrors([
-          new ValidationError({
-            code: codes.ERR_INVALID_PARAMETER,
-            status: statusCodes.UNPROCESSABLE_ENTITY,
-            title: "Bad Request, Invalid Query String",
+          new UnexpectedValueError({
+            detail:
+              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance', 'status'.",
+            parameter: "fields[todo]",
           }),
         ])
       })
@@ -153,10 +153,9 @@ describe("index", () => {
         await expect(
           findAndCountAll("fields=name,due_date"),
         ).rejects.toEqualErrors([
-          new ValidationError({
-            code: codes.ERR_INVALID_PARAMETER,
-            status: statusCodes.UNPROCESSABLE_ENTITY,
-            title: "Bad Request, Invalid Query String",
+          new UnexpectedValueError({
+            detail: "Incorrect format was provided for fields.",
+            parameter: "fields",
           }),
         ])
       })
@@ -176,7 +175,7 @@ describe("index", () => {
     describe("findOne", () => {
       it("works with ID attribute provided", async () => {
         const results = await findOne(
-          "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
           1,
         )
 
@@ -190,7 +189,7 @@ describe("index", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findOne("fields[Todo]=name,due_date", 1)
+        const results = await findOne("fields[todo]=name,due_date", 1)
 
         expect(results).toEqual({
           attributes: ["id", "name", "due_date"],
@@ -207,21 +206,20 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findOne("fields[Todo]=invalid", 1)).rejects.toEqualErrors([
-          new ValidationError({
-            code: codes.ERR_INVALID_PARAMETER,
-            status: statusCodes.UNPROCESSABLE_ENTITY,
-            title: "Bad Request, Invalid Query String",
+        await expect(findOne("fields[todo]=invalid", 1)).rejects.toEqualErrors([
+          new UnexpectedValueError({
+            detail:
+              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance', 'status'.",
+            parameter: "fields[todo]",
           }),
         ])
       })
 
       it("handles invalid query string", async () => {
         await expect(findOne("fields=name,due_date", 1)).rejects.toEqualErrors([
-          new ValidationError({
-            code: codes.ERR_INVALID_PARAMETER,
-            status: statusCodes.UNPROCESSABLE_ENTITY,
-            title: "Bad Request, Invalid Query String",
+          new UnexpectedValueError({
+            detail: "Incorrect format was provided for fields.",
+            parameter: "fields",
           }),
         ])
       })
@@ -300,7 +298,7 @@ describe("index", () => {
     describe("destroy", () => {
       it("works with ID attribute provided", async () => {
         const results = await destroy(
-          "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
@@ -313,7 +311,7 @@ describe("index", () => {
       })
 
       it("does not add ID attribute if not specified", async () => {
-        const results = await destroy("fields[Todo]=name,due_date")
+        const results = await destroy("fields[todo]=name,due_date")
 
         expect(results).toEqual({
           attributes: ["name", "due_date"],
@@ -340,7 +338,7 @@ describe("index", () => {
       })
 
       it("does not error on unknown attributes", async () => {
-        const results = await destroy("fields[Todo]=invalid")
+        const results = await destroy("fields[todo]=invalid")
 
         expect(results).toEqual({
           attributes: ["invalid"],
@@ -350,10 +348,9 @@ describe("index", () => {
 
       it("handles invalid query string", async () => {
         await expect(destroy("fields=name,due_date")).rejects.toEqualErrors([
-          new ValidationError({
-            code: codes.ERR_INVALID_PARAMETER,
-            status: statusCodes.UNPROCESSABLE_ENTITY,
-            title: "Bad Request, Invalid Query String",
+          new UnexpectedValueError({
+            detail: "Incorrect format was provided for fields.",
+            parameter: "fields",
           }),
         ])
       })
@@ -372,7 +369,7 @@ describe("index", () => {
       expect(parser.destroy).toEqual(expect.any(Function))
 
       const results = await parser.findAll(
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,due_date&fields[User]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(results).toEqual({
