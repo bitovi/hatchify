@@ -7,6 +7,7 @@ describe("Error Code Tests", () => {
     name: "User",
     attributes: {
       name: "STRING",
+      role: { type: "ENUM", values: ["user", "admin"] },
     },
     hasMany: [{ target: "Todo", options: { as: "todos" } }],
   }
@@ -14,7 +15,7 @@ describe("Error Code Tests", () => {
   const Todo: HatchifyModel = {
     name: "Todo",
     attributes: {
-      name: "STRING",
+      name: { type: "STRING", allowNull: false },
       due_date: "DATE",
       importance: "INTEGER",
     },
@@ -30,6 +31,76 @@ describe("Error Code Tests", () => {
 
   afterAll(async () => {
     await teardown()
+  })
+
+  it("should return error VALUE_REQUIRED error code when required field is not passed (HATCH-124)", async () => {
+    const ERROR_CODE_VALUE_REQUIRED = {
+      status: 422,
+      code: "value-required",
+      title: "Payload is missing a required value.",
+      detail: "Payload must include a value for 'name'.",
+      source: {
+        pointer: "/data/attributes/name",
+      },
+    }
+
+    const response = await fetch("/api/todos", {
+      method: "post",
+      body: {
+        data: {
+          type: "Todo",
+          attributes: {
+            due_date: "2024-12-12",
+            importance: 6,
+          },
+        },
+      },
+    })
+
+    expect(response).toBeTruthy()
+
+    const { status, body } = response
+
+    expect(status).toBe(ERROR_CODE_VALUE_REQUIRED.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_VALUE_REQUIRED],
+    })
+  })
+
+  it("should return error UNEXPECTED_VALUE error code when enum is violated (HATCH-199)", async () => {
+    const ERROR_CODE_UNEXPECTED_VALUE = {
+      status: 422,
+      code: "unexpected-value",
+      title: "Unexpected value.",
+      detail: "User must have 'role' as one of 'user', 'admin'.",
+      source: {
+        pointer: "/data/attributes/role",
+      },
+    }
+
+    const response = await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: {
+            name: "John Doe",
+            role: "invalid",
+          },
+        },
+      },
+    })
+
+    expect(response).toBeTruthy()
+
+    const { status, body } = response
+
+    expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_UNEXPECTED_VALUE],
+    })
   })
 
   it("should return error VALUE_REQUIRED error code when invalid data schema is passed (HATCH-206)", async () => {
@@ -108,7 +179,12 @@ describe("Error Code Tests", () => {
 
     const response = await fetch("/api/todos/-1", {
       method: "patch",
-      body: { data: { attributes: { name: "Updated" } } },
+      body: {
+        data: {
+          type: "Todo",
+          attributes: { name: "Updated" },
+        },
+      },
     })
 
     expect(response).toBeTruthy()
@@ -149,6 +225,7 @@ describe("Error Code Tests", () => {
       method: "post",
       body: {
         data: {
+          type: "Todo",
           attributes: {
             name: "Something B for user 1",
             due_date: "2024-12-12",
@@ -257,6 +334,7 @@ describe("Error Code Tests", () => {
         method: "post",
         body: {
           data: {
+            type: "Todo",
             attributes: "I am trouble",
           },
         },
@@ -274,6 +352,7 @@ describe("Error Code Tests", () => {
         method: "post",
         body: {
           data: {
+            type: "Todo",
             attributes: [],
           },
         },
@@ -291,6 +370,7 @@ describe("Error Code Tests", () => {
         method: "post",
         body: {
           data: {
+            type: "Todo",
             attributes: null,
           },
         },
