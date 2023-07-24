@@ -496,15 +496,7 @@ the `Todo` key and render it.
 
 ## Rendering a List
 
-**✏️ Modify the contents of** `frontend/main.tsx`**:**
-
-- Get rid of the default Vite styles by removing line 4:
-  `import './index.css'`
-
-- Remove the extension from line 3, it should be:
-  `import App from './App'`
-
-`main.tsx` should look like:
+**✏️ Replace the contents of `frontend/main.tsx` with the following:**
 
 ```tsx
 import React from "react"
@@ -521,7 +513,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 Now we can go ahead and create an instance of a HatchifyJS react app and
 then render the List component for our todos.
 
-**✏️ Overwrite the contents of** `frontend/App.tsx` **with the
+**✏️ Replace the contents of `frontend/App.tsx` with the
 following:**
 
 ```tsx
