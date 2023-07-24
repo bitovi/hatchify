@@ -5,7 +5,7 @@ import {
   HatchifyError,
   UnexpectedValueError,
   UniqueConstraintError,
-  ValidationError,
+  ValueRequiredError,
 } from "../types"
 
 export interface SequelizeError {
@@ -27,19 +27,19 @@ export function databaseErrorHandler(error: SequelizeError): Error {
 
   if (name === "SequelizeValidationError") {
     if (error.errors?.[0].type === "notNull Violation") {
-      error = new ValidationError({
-        title: `${error.errors[0].path} is required.`,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        pointer,
+      error = new ValueRequiredError({
+        title: "Payload is missing a required value.",
+        detail: `Payload must include a value for '${error.errors[0].path}'.`,
+        pointer: `/data/attributes/${pointer}`,
       })
     } else if (error.errors?.[0].validatorKey === "isIn") {
       error = new UnexpectedValueError({
-        title: `${error.errors[0].instance.constructor.name} must have '${
+        detail: `${error.errors[0].instance.constructor.name} must have '${
           error.errors[0].path
         }' as one of ${error.errors[0].validatorArgs[0]
           .map((a) => `'${a}'`)
           .join(", ")}.`,
-        parameter: pointer,
+        pointer: `/data/attributes/${pointer}`,
       })
     }
   } else {
