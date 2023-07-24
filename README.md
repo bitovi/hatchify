@@ -9,7 +9,7 @@ with a fully functional system straight from your database schema. If
 you have more specialized requirements, HatchifyJS makes it easy to
 customize every part of the application to meet your needs.
 
-Unlike code generation tools—which allow you to write your schema and then generate your code, but once you start making customizations you can't re-run the generator without losing your customizations—HatchifyJS enables you to make changes to your database schema and customize app behavior **independently**. This is because HatchifyJS is **not** code generation—it's a system of modular and hierarchical libraries that can be consumed piecemeal to use as much or as little of HatchifyJS abilities as you require.
+Unlike code generation tools—which allow you to write your schema and then generate your code, but can't preserve any customizations you may have made if you ever need to re-run the generator—HatchifyJS enables you to make changes to your database schema and customize app behavior **independently**. This is because HatchifyJS is **not** code generation. It's a system of modular and hierarchical libraries that can be consumed piecemeal to use as much or as little of HatchifyJS abilities as you require.
 
 - [HatchifyJS](#hatchifyjs)
 - [Project Setup](#project-setup)
@@ -32,7 +32,7 @@ Unlike code generation tools—which allow you to write your schema and then gen
 # Project Setup
 
 In this guide, we will be setting up a project containing a HatchifyJS
-frontend and backend. Our frontend will use React and MUI and our backend
+frontend and backend. Our frontend will use React and MUI, and our backend
 will be using Koa. We will be setting up our project using Vite so that
 it handles all the React configurations for us.
 
@@ -271,7 +271,7 @@ npm run dev:backend
 ```
 
 You can navigate to the following endpoints to get a list of users and todos
-(but we don't have any yet):
+(but we won't have any just yet):
 
 [http://localhost:3000/api/users](http://localhost:3000/api/users)
 
@@ -282,7 +282,7 @@ looking at how to make changes and further develop our example.
 
 ## Using the server endpoints
 
-You can now make requests to your endpoint to test your applications. The following are examples of how to do this with `curl`, but you don't need to follow along just yet—we'll seed the database in our example later on.
+You can now make requests to your endpoint to test your applications. The following are examples of how to do this with `curl`, but you don't need to follow along just yet—we'll seed the database for our example app later on.
 
 ### Creating a resource
 

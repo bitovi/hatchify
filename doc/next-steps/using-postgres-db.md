@@ -10,7 +10,7 @@ You will usually need to install Postgres before you use it in your project, but
 
 1. If you don't have Docker installed on your computer yet, you can download it from [Docker's official website](https://www.docker.com/products/docker-desktop/).
   
-2. After installing Docker, you can get the Postgres official image from [docker hub](https://hub.docker.com/_/postgres). To get a Postgres instance running, in your terminal, run the command: 
+2. After installing Docker, you can get the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). To get a Postgres instance running, in your terminal, run the command: 
     
     ``` bash
     docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
@@ -118,9 +118,9 @@ app.use(hatchedKoa.middleware.allModels.all);
     npm run dev:backend
     ```
     
-> Note: the new Postgres db we just created is empty, so you'll need to seed it, just like we did in the [getting started guide](../../README.md#seeding-data)
+> Note: the new Postgres db we just created is empty, so you'll need to seed it just like we did in the [getting started guide](../../README.md#seeding-data)
 
-#### The following options are allowed within the db options object
+#### The following options are allowed within the db options object:
 
 | Property | Type   | Default   | Details                                                            |
 | -------- | ------ | --------- | ------------------------------------------------------------------ |
