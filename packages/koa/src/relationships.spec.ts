@@ -476,4 +476,114 @@ describe("Relationships", () => {
       })
     })
   })
+
+  describe("should handle relationship path errors (HATCH-242)", () => {
+    it("should handle relationship parameters that can't be identified", async () => {
+      const { status, body } = await fetch(
+        "/api/todos?include=invalid_relationship_path",
+      )
+
+      expect(status).toEqual(400)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [
+          {
+            status: 400,
+            code: "relationship-path",
+            title: "Relationship path could not be identified.",
+            detail: "URL must have 'include' as one or more of 'user'.",
+            source: {
+              parameter: "include",
+            },
+          },
+        ],
+      })
+    })
+
+    it("should handle relationship associations that can't be identified", async () => {
+      const { status, body } = await fetch("/api/users", {
+        method: "post",
+        body: {
+          data: {
+            type: "User",
+            attributes: {
+              name: "John Doe",
+            },
+            relationships: {
+              todonts: {
+                data: [
+                  {
+                    type: "Todo",
+                    id: 1,
+                  },
+                ],
+              },
+            },
+          },
+        },
+      })
+
+      expect(status).toEqual(400)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [
+          {
+            status: 400,
+            code: "relationship-path",
+            title: "Relationship path could not be identified.",
+            detail: "Payload must include an identifiable relationship path.",
+            source: {
+              pointer: "/data/relationships/todonts",
+            },
+          },
+        ],
+      })
+    })
+  })
+})
+
+describe("No Relationships", () => {
+  const Todo: HatchifyModel = {
+    name: "Todo",
+    attributes: {
+      name: "STRING",
+      due_date: "DATE",
+      importance: "INTEGER",
+    },
+  }
+
+  let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+  let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+  beforeAll(async () => {
+    ;({ fetch, teardown } = await startServerWith([Todo]))
+  })
+
+  afterAll(async () => {
+    await teardown()
+  })
+
+  describe("should handle relationship path errors (HATCH-242)", () => {
+    it("should handle relationship paths when model has no relationships", async () => {
+      const { status, body } = await fetch(
+        "/api/todos?include=invalid_relationship_path",
+      )
+
+      expect(status).toEqual(400)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [
+          {
+            status: 400,
+            code: "relationship-path",
+            title: "Relationship path could not be identified.",
+            detail: "URL must not have 'include' as a parameter.",
+            source: {
+              parameter: "include",
+            },
+          },
+        ],
+      })
+    })
+  })
 })

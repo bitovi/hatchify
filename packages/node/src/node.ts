@@ -1,5 +1,5 @@
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
-import { capitalize, singularize } from "inflection"
+import { pluralize } from "inflection"
 import JSONAPISerializer from "json-api-serializer"
 import { match } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
@@ -74,6 +74,7 @@ export class Hatchify {
   private _serializer: JSONAPISerializer
   private _allowedMethods: ["GET", "POST", "PATCH", "DELETE"]
   private _sequelizeModelNames: string[]
+  private _pluralToSingularModelNames: Map<string, string>
   private _prefix: string
 
   virtuals: Virtuals
@@ -111,6 +112,14 @@ export class Hatchify {
 
     // Do some quick work up front to get the list of model names
     this._sequelizeModelNames = Object.keys(this._sequelizeModels)
+    this._pluralToSingularModelNames = new Map<string, string>()
+
+    this._sequelizeModelNames.forEach((singular) => {
+      this._pluralToSingularModelNames.set(
+        pluralize(singular.toLowerCase()),
+        singular,
+      )
+    })
 
     // Store the route prefix if the user set one
     this._prefix = options.prefix || ""
@@ -297,18 +306,14 @@ export class Hatchify {
 
     const isPathWithModelIdResult = isPathWithModelId(path)
     if (isPathWithModelIdResult) {
-      const endpointName = isPathWithModelIdResult.params.model
+      const endpointName = this.getHatchifyModelNameForEndpointName(
+        isPathWithModelIdResult.params.model,
+      )
 
-      // Validate if endpoint name is lowercase
-      if (endpointName === endpointName.toLowerCase()) {
-        const singular = singularize(endpointName)
+      if (endpointName) {
+        isPathWithModelIdResult.params.model = endpointName
 
-        // Validate if endpoint name is plural
-        if (endpointName !== singular) {
-          isPathWithModelIdResult.params.model = capitalize(singular)
-
-          return isPathWithModelIdResult.params
-        }
+        return isPathWithModelIdResult.params
       }
     }
 
@@ -321,22 +326,39 @@ export class Hatchify {
 
     const isPathWithModelResult = isPathWithModel(path)
     if (isPathWithModelResult) {
-      const endpointName = isPathWithModelResult.params.model
+      const endpointName = this.getHatchifyModelNameForEndpointName(
+        isPathWithModelResult.params.model,
+      )
 
-      // Validate if endpoint is lowercase
-      if (endpointName === endpointName.toLowerCase()) {
-        const singular = singularize(endpointName)
+      if (endpointName) {
+        isPathWithModelResult.params.model = endpointName
 
-        // Validate if endpoint name is plural
-        if (endpointName !== singular) {
-          isPathWithModelResult.params.model = capitalize(singular)
-
-          return isPathWithModelResult.params
-        }
+        return isPathWithModelResult.params
       }
     }
 
     return {}
+  }
+
+  /**
+   * This function will take a plural, lowercase endpoint name and attempt to find the
+   * corresponding Hatchify Model name for it.
+   *
+   * @param path the endpoint or include name for a Hatchify model
+   * @returns the endpoint's singular capitalized Model name if found, otherwise false
+   */
+  getHatchifyModelNameForEndpointName(endpointName: string): false | string {
+    // Validate if endpoint name is lowercase
+    if (endpointName === endpointName.toLowerCase()) {
+      const singular = this._pluralToSingularModelNames.get(endpointName)
+
+      // Validate if endpoint name is plural
+      if (singular && endpointName !== singular) {
+        return singular
+      }
+    }
+
+    return false
   }
 
   /**
