@@ -23,7 +23,7 @@ describe("rest-client-jsonapi/services/findAll", () => {
     include: [],
     page: { size: 0, number: 0 },
     sort: "",
-    filter: {},
+    filter: "",
   }
 
   it("works", async () => {

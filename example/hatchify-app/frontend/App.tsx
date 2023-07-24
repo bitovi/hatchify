@@ -35,9 +35,13 @@ const App: React.FC = () => {
           label="Action"
           renderValue={({ record }) => {
             return (
-              <button onClick={() => alert(`action on record ${record.id}`)}>
-                Download
-              </button>
+              <>
+                <button onClick={() => console.log(record)}>Download</button>
+                <button onClick={() => console.log(record)}>Open</button>
+                <button onClick={() => console.log(record)}>
+                  More Actions
+                </button>
+              </>
             )
           }}
         />
