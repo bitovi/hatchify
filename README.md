@@ -1,6 +1,6 @@
-# hatchify
+# HatchifyJS
 
-# About HatchifyJS
+<img align="left" src="https://github.com/bitovi/hatchify/assets/78602/119af4d1-d9ac-439d-aee5-8b9759cf8915">
 
 HatchifyJS is a web application framework designed to accelerate the
 development of new, or enhancement of existing, CRUD applications. If
@@ -508,7 +508,7 @@ overview of what each of these does:
   functions for each schema. This returned object represents our
   entire frontend HatchifyJS app.
 
-Once we create our HatchifyJS app, we can pull the `List` component from
+Once we create our HatchifyJS app, we can pull the `Collection` component from
 the `Todo` key and render it.
 
 ## Rendering a List
@@ -536,7 +536,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 ```
 
 Now we can go ahead and create an instance of a HatchifyJS react app and
-then render the List component for our todos.
+then render the Collection component for our todos.
 
 **✏️ Overwrite the contents of** `frontend/App.tsx` **with the
 following:**
@@ -555,7 +555,7 @@ export const hatchedReact = hatchifyReact(
   }),
 )
 
-const TodoList = hatchedReact.components.Todo.List
+const TodoList = hatchedReact.components.Todo.Collection
 
 const App: React.FC = () => {
   return (
@@ -586,10 +586,14 @@ database, and a frontend that handles the JSX and data-fetching for us.
 
 By default, the list will render a message in the list when there are no records to display:
 ![](doc/attachments/defaultNoRecords.png)
-To customize what is displayed here the `EmptyList` component can be passed into `List`
+To customize what is displayed here the `Empty` component can be passed into `Collection`
 
 ```tsx
 // hatchify-app/src/App.tsx
+
+const TodoList = hatchedReact.components.Todo.Collection
+const TodoEmpty = hatchedReact.components.Todo.Empty
+
 const App: React.FC = () => {
   return (
     <MuiProvider>
@@ -603,12 +607,12 @@ const App: React.FC = () => {
 }
 ```
 
-`EmptyList` will accept any custom component that is passed in as its children.
+`Empty` will accept any custom component that is passed in as its children.
 ![Alt text](doc/attachments/customNoRecords.png)
 
 ## Adding checkboxes to the list
 
-To add a checkboxes column to the list, we must pass a `selectable` prop to the `List` component. If we want to extract the selected records, we must also pass a `onSelectionChange` prop. This prop is a callback function that will be called with the selected records whenever the selection changes.
+To add a checkboxes column to the list, we must pass an `onSelectedChange` prop to the `TodosList` component. If we want some rows to checked by default then we can pass them as an array of ids to the `selected` prop. Whenever a checkbox is clicked, the `onSelectedChange` callback will fire and update our `App` state.
 
 ```tsx
 // hatchify-app/src/App.tsx
@@ -618,7 +622,7 @@ const App: React.FC = () => {
   return (
     <MuiProvider>
       <button onClick={() => alert(`action on [${selected.join(",")}]`)}>action</button>
-      <TodoList selectable onSelectionChange={(ids) => setSelected(ids)}>
+      <TodoList selected={selected} onSelectionChange={(ids) => setSelected(ids)}>
         <TodoEmptyList>
           <div>No records to display</div>
         </TodoEmptyList>

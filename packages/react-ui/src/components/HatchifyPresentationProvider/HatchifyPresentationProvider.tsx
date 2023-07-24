@@ -1,12 +1,11 @@
 import { createContext, useContext } from "react"
 
 import type {
-  XFilterProps,
-  XListProps,
   XLayoutProps,
   XDetailsProps,
   Relationship as RelationshipType,
   XFormProps,
+  XCollectionProps,
 } from "../../presentation/interfaces"
 
 import {
@@ -73,7 +72,7 @@ export interface DefaultFieldComponentsTypes {
 }
 
 export interface HatchifyPresentationContextProps {
-  List: React.FC<XListProps>
+  Collection: React.FC<XCollectionProps>
   Layout: React.FC<XLayoutProps>
   Details: React.FC<XDetailsProps>
   Filter: React.FC<XFilterProps>
@@ -106,8 +105,7 @@ export const HatchifyPresentationDefaultFieldComponents = {
 export const HatchifyPresentationContext =
   createContext<HatchifyPresentationContextProps>({
     // @todo default/headless components?
-    Filter: () => null,
-    List: () => null,
+    Collection: () => null,
     Layout: () => null,
     Details: () => null,
     Form: () => null,
@@ -126,8 +124,7 @@ interface HatchifyPresentationProviderProps
 export const HatchifyPresentationProvider: React.FC<
   HatchifyPresentationProviderProps
 > = ({
-  Filter,
-  List,
+  Collection,
   Layout,
   Details,
   Form,
@@ -138,8 +135,7 @@ export const HatchifyPresentationProvider: React.FC<
   return (
     <HatchifyPresentationContext.Provider
       value={{
-        Filter,
-        List,
+        Collection,
         Layout,
         Details,
         Form,

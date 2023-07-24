@@ -7,7 +7,7 @@ import {
 } from "@hatchifyjs/react"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
-import type { Filter } from "@hatchifyjs/rest-client"
+// import type { Filter } from "@hatchifyjs/rest-client"
 
 export const hatchedReact = hatchifyReact(
   { Todo, User },
@@ -17,34 +17,25 @@ export const hatchedReact = hatchifyReact(
   }),
 )
 
-const TodoList = hatchedReact.components.Todo.List
-const TodoExtraColumn = hatchedReact.components.Todo.ExtraColumn
-const TodoEmptyList = hatchedReact.components.Todo.EmptyList
-const TodoFilter = hatchedReact.components.Todo.Filter
+const TodoList = hatchedReact.components.Todo.Collection
+const TodoColumn = hatchedReact.components.Todo.Column
+const TodoEmptyList = hatchedReact.components.Todo.Empty
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([])
-  const [filter, setFilter] = useState<Filter>(undefined)
+  // const [filter, setFilter] = useState<Filter>(undefined)
 
   return (
     <MuiProvider>
       <button onClick={() => alert(`action on [${selected.join(",")}]`)}>
         action
       </button>
-      <TodoFilter filters={filter} setFilters={setFilter}>
-        <div style={{ cursor: "pointer" }}>Filter</div>
-      </TodoFilter>
-      <TodoList
-        selectable
-        onSelectionChange={(ids) => setSelected(ids)}
-        filter={filter}
-      >
-        <TodoEmptyList>
-          <div>No records to display</div>
-        </TodoEmptyList>
-        <TodoExtraColumn
+      <TodoList onSelectedChange={(ids: string[]) => setSelected(ids)}>
+        <TodoEmptyList>No records to display</TodoEmptyList>
+        <TodoColumn
+          type="append"
           label="Action"
-          render={({ record }) => {
+          renderValue={({ record }) => {
             return (
               <button onClick={() => alert(`action on record ${record.id}`)}>
                 Download

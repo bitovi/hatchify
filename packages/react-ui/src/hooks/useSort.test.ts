@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import useHatchifyListSort from "./useHatchifyListSort"
+import useSort from "./useSort"
 
-describe("useHatchifyListSort", () => {
+describe("useSort", () => {
   it("works", async () => {
-    const { result } = renderHook(() => useHatchifyListSort())
+    const { result } = renderHook(() => useSort())
 
     // initial state
     expect(result.current.sort).toEqual({

@@ -1,41 +1,52 @@
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type { Source, Schemas } from "@hatchifyjs/rest-client"
+import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
+import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
+import type { CollectionState } from "../hooks/useCollectionState"
+import type {
+  AdditionalColumnProps,
+  ReplaceColumnProps,
+  OverwriteColumnProps,
+} from "../components/HatchifyColumn"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { transformSchema } from "@hatchifyjs/rest-client"
+import { HatchifyCollection } from "../components/HatchifyCollection"
+import { HatchifyColumn } from "../components/HatchifyColumn"
+import { HatchifyEmpty } from "../components/HatchifyEmpty"
+import useCollectionState from "../hooks/useCollectionState"
 
-import type { HatchifyListProps } from "../components/HatchifyList/HatchifyList"
-import type { HatchifyFilterProps } from "../components/HatchifyFilter/HatchifyFilter"
-import {
-  HatchifyColumn,
-  HatchifyEmptyList,
-  HatchifyExtraColumn,
-} from "../components/HatchifyDisplays/HatchifyDisplays"
-import type {
-  HatchifyColumnProps,
-  HatchifyEmptyListProps,
-  HatchifyExtraColumnProps,
-} from "../components/HatchifyDisplays/HatchifyDisplays"
-import { HatchifyList } from "../components/HatchifyList"
-import { HatchifyFilter } from "../components/HatchifyFilter/HatchifyFilter"
+type HatchifyCollectionProps = Omit<
+  InternalHatchifyCollectionProps,
+  "allSchemas" | "schemaName" | "restClient"
+>
+
+type HatchifyColumnProps =
+  | Omit<AdditionalColumnProps, "allSchemas" | "schemaName">
+  | Omit<ReplaceColumnProps, "allSchemas" | "schemaName">
+  | Omit<OverwriteColumnProps, "allSchemas" | "schemaName">
 
 type Components = {
   [schemaName: string]: {
-    List: (
-      props: Omit<HatchifyListProps, "allSchemas" | "schemaName" | "useData">,
-    ) => React.ReactElement
-    Filter: (
-      props: Omit<HatchifyFilterProps, "allSchemas" | "schemaName">,
-    ) => React.ReactElement
-    EmptyList: (props: HatchifyEmptyListProps) => React.ReactElement
+    // core
+    Collection: (props: HatchifyCollectionProps) => React.ReactElement
+    // compound
     Column: (props: HatchifyColumnProps) => React.ReactElement
-    ExtraColumn: (props: HatchifyExtraColumnProps) => React.ReactElement
+    Empty: (props: HatchifyEmptyProps) => React.ReactElement
   }
 }
 
 type HatchifyApp = {
   components: Components
   model: ReactRest<SchemaRecord>
+  state: {
+    [schemaName: string]: {
+      useCollectionState: (
+        selectedDefault?: string[],
+        onSelectedChange?: (ids: string[]) => void,
+      ) => CollectionState
+    }
+  }
 }
 
 export function hatchifyReact(
@@ -51,30 +62,45 @@ export function hatchifyReact(
 
   const components = Object.values(schemas).reduce((acc, schema) => {
     acc[schema.name] = {
-      List: (props) => (
-        <HatchifyList
+      Collection: (props) => (
+        <HatchifyCollection
           allSchemas={schemas}
           schemaName={schema.name}
-          useData={reactRest[schema.name].useAll}
+          restClient={reactRest}
           {...props}
         />
       ),
-      Filter: (props) => (
-        <HatchifyFilter
+      Column: (props) => (
+        // todo fix ts!!!
+        <HatchifyColumn
           allSchemas={schemas}
           schemaName={schema.name}
           {...props}
         />
       ),
-      EmptyList: (props) => <HatchifyEmptyList {...props} />,
-      Column: (props) => <HatchifyColumn {...props} />,
-      ExtraColumn: (props) => <HatchifyExtraColumn {...props} />,
+      Empty: (props) => <HatchifyEmpty {...props} />,
     }
 
     return acc
   }, {} as HatchifyApp["components"])
+
+  const state = Object.values(schemas).reduce((acc, schema) => {
+    acc[schema.name] = {
+      useCollectionState: (selectedDefault, onSelectedChange) =>
+        useCollectionState(
+          schemas,
+          schema.name,
+          reactRest,
+          selectedDefault,
+          onSelectedChange,
+        ),
+    }
+    return acc
+  }, {} as HatchifyApp["state"])
+
   return {
     components,
     model: reactRest,
+    state,
   }
 }
