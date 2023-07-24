@@ -550,15 +550,17 @@ should see:
 ![](doc/attachments/394592353.png)
 
 And that’s it! With minimal code and some HatchifyJS magic, we've used our
-well-defined schemas to create a databse, a running backend with REST endpoints, and a frontend that handles the JSX and data-fetching for us.
+well-defined schemas to create a database, a running backend with REST endpoints, and a frontend that handles the JSX and data-fetching for us.
 
 # Next Steps
 
-- [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
+## Using Postgres DB
+You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but we've created a tutorial specifically for using Postgres: [Using Postgres DB](./doc/next-steps/using-postgres-db.md).
 
 ## Rendering an empty List
 
-By default, the list will render a message when there are no records to display:
+By default, a model's `List` component will render a message when there are no records to display:
+
 ![](doc/attachments/defaultNoRecords.png)
 To customize what is displayed here the `EmptyList` component can be passed into `List`
 
@@ -578,6 +580,7 @@ const App: React.FC = () => {
 ```
 
 `EmptyList` will accept any custom component that is passed in as its children.
+
 ![Alt text](doc/attachments/customNoRecords.png)
 
 ## Adding checkboxes to the list
