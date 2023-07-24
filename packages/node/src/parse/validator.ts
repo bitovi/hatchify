@@ -1,16 +1,56 @@
-import { capitalize, singularize } from "inflection"
+import { capitalize } from "inflection"
+import type { FindOptions } from "sequelize"
 
-import { UnexpectedValueError, ValueRequiredError } from "../error"
+import {
+  RelationshipPathError,
+  UnexpectedValueError,
+  ValueRequiredError,
+} from "../error"
 import type { HatchifyError } from "../error"
+import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
 function isObject(value: any): boolean {
   return value && typeof value === "object" && !Array.isArray(value)
 }
 
+export function validateFindOptions(
+  options: FindOptions,
+  hatchify: Hatchify,
+): void {
+  if (options.include) {
+    const include = Array.isArray(options.include)
+      ? options.include
+      : [options.include]
+
+    const includeErrors: Error[] = []
+
+    include.forEach((incl: unknown) => {
+      const includeName = (incl as { association: string }).association
+      if (!(capitalize(includeName) in hatchify.models)) {
+        const singular =
+          hatchify.getHatchifyModelNameForEndpointName(includeName)
+
+        if (!singular) {
+          includeErrors.push(
+            new RelationshipPathError({
+              pointer: `${includeName}`,
+            }),
+          )
+        }
+      }
+    })
+
+    if (includeErrors.length) {
+      throw includeErrors
+    }
+  }
+}
+
 export function validateStructure<T extends HatchifyModel = HatchifyModel>(
   body: any,
   model: T,
+  hatchify: Hatchify,
 ): void {
   const title = "Payload is missing a required value."
 
@@ -108,29 +148,38 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
 
       const relationshipErrors: HatchifyError[] = []
 
-      const modelName = capitalize(singularize(relationshipName))
+      const modelName =
+        hatchify.getHatchifyModelNameForEndpointName(relationshipName)
 
-      const expectObject =
-        model.hasOne?.some(({ target }) => target === modelName) ||
-        model.belongsTo?.some(({ target }) => target === modelName)
-      const expectArray =
-        model.hasMany?.some(({ target }) => target === modelName) ||
-        model.belongsToMany?.some(({ target }) => target === modelName)
+      if (modelName) {
+        const expectObject =
+          model.hasOne?.some(({ target }) => target === modelName) ||
+          model.belongsTo?.some(({ target }) => target === modelName)
+        const expectArray =
+          model.hasMany?.some(({ target }) => target === modelName) ||
+          model.belongsToMany?.some(({ target }) => target === modelName)
 
-      if (expectArray && !Array.isArray(relationshipValue.data)) {
+        if (expectArray && !Array.isArray(relationshipValue.data)) {
+          relationshipErrors.push(
+            new UnexpectedValueError({
+              detail: "Payload must have 'data' as an array.",
+              pointer: `/data/relationships/${relationshipName}/data`,
+            }),
+          )
+        }
+
+        if (expectObject && !isObject(relationshipValue.data)) {
+          relationshipErrors.push(
+            new UnexpectedValueError({
+              detail: "Payload must have 'data' as an object.",
+              pointer: `/data/relationships/${relationshipName}/data`,
+            }),
+          )
+        }
+      } else {
         relationshipErrors.push(
-          new UnexpectedValueError({
-            detail: "Payload must have 'data' as an array.",
-            pointer: `/data/relationships/${relationshipName}/data`,
-          }),
-        )
-      }
-
-      if (expectObject && !isObject(relationshipValue.data)) {
-        relationshipErrors.push(
-          new UnexpectedValueError({
-            detail: "Payload must have 'data' as an object.",
-            pointer: `/data/relationships/${relationshipName}/data`,
+          new RelationshipPathError({
+            pointer: `/data/relationships/${relationshipName}`,
           }),
         )
       }

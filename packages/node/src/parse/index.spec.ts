@@ -1,10 +1,18 @@
 import { Op } from "sequelize"
 
-import { ValidationError, codes, statusCodes } from "../error"
+import {
+  RelationshipPathError,
+  ValidationError,
+  codes,
+  statusCodes,
+} from "../error"
 import { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
 import { buildParserForModel, buildParserForModelStandalone } from "."
+
+const RelationshipPathDetail =
+  "URL must include an identifiable relationship path"
 
 describe("index", () => {
   const User: HatchifyModel = {
@@ -86,6 +94,15 @@ describe("index", () => {
           }),
         ])
       })
+
+      it("handles invalid include", async () => {
+        await expect(findAll("include=notrealincludes")).rejects.toEqualErrors([
+          new RelationshipPathError({
+            detail: RelationshipPathDetail,
+            pointer: "notrealincludes",
+          }),
+        ])
+      })
     })
 
     describe("findAndCountAll", () => {
@@ -143,6 +160,17 @@ describe("index", () => {
           }),
         ])
       })
+
+      it("handles invalid include", async () => {
+        await expect(
+          findAndCountAll("include=notrealincludes"),
+        ).rejects.toEqualErrors([
+          new RelationshipPathError({
+            detail: RelationshipPathDetail,
+            pointer: "notrealincludes",
+          }),
+        ])
+      })
     })
 
     describe("findOne", () => {
@@ -194,6 +222,17 @@ describe("index", () => {
             code: codes.ERR_INVALID_PARAMETER,
             status: statusCodes.UNPROCESSABLE_ENTITY,
             title: "Bad Request, Invalid Query String",
+          }),
+        ])
+      })
+
+      it("handles invalid include", async () => {
+        await expect(
+          findOne("include=notrealincludes", 1),
+        ).rejects.toEqualErrors([
+          new RelationshipPathError({
+            detail: RelationshipPathDetail,
+            pointer: "notrealincludes",
           }),
         ])
       })

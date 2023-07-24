@@ -7,7 +7,7 @@ import type {
 } from "sequelize"
 
 import { buildDestroyOptions, buildFindOptions } from "./builder"
-import { validateStructure } from "./validateStructure"
+import { validateFindOptions, validateStructure } from "./validator"
 import { ValidationError, codes, statusCodes } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
@@ -37,7 +37,11 @@ export interface ParseFunctions {
   destroy: (querystring: string, id?: Identifier) => Promise<DestroyOptions>
 }
 
-async function findAllImpl(model: HatchifyModel, querystring: string) {
+async function findAllImpl(
+  hatchify: Hatchify,
+  model: HatchifyModel,
+  querystring: string,
+) {
   const { data, errors } = buildFindOptions(model, querystring)
   if (errors.length > 0) {
     throw [
@@ -48,10 +52,16 @@ async function findAllImpl(model: HatchifyModel, querystring: string) {
       }),
     ]
   }
+  validateFindOptions(data, hatchify)
   return data
 }
 
-async function findOneImpl(model: HatchifyModel, querystring: string, id) {
+async function findOneImpl(
+  hatchify: Hatchify,
+  model: HatchifyModel,
+  querystring: string,
+  id,
+) {
   const { data, errors } = buildFindOptions(model, querystring, id)
   if (errors.length > 0) {
     throw [
@@ -62,10 +72,15 @@ async function findOneImpl(model: HatchifyModel, querystring: string, id) {
       }),
     ]
   }
+  validateFindOptions(data, hatchify)
   return data
 }
 
-async function findAndCountAllImpl(model: HatchifyModel, querystring: string) {
+async function findAndCountAllImpl(
+  hatchify: Hatchify,
+  model: HatchifyModel,
+  querystring: string,
+) {
   const { data, errors } = buildFindOptions(model, querystring)
   if (errors.length > 0) {
     throw [
@@ -76,6 +91,7 @@ async function findAndCountAllImpl(model: HatchifyModel, querystring: string) {
       }),
     ]
   }
+  validateFindOptions(data, hatchify)
   return data
 }
 
@@ -84,7 +100,7 @@ async function createImpl<T extends HatchifyModel = HatchifyModel>(
   model: T,
   body: any,
 ) {
-  validateStructure(body, model)
+  validateStructure(body, model, hatchify)
   const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 
   return {
@@ -99,7 +115,7 @@ async function updateImpl(
   body: any,
   id,
 ) {
-  validateStructure(body, model)
+  validateStructure(body, model, hatchify)
   const parsedBody = await hatchify.serializer.deserialize(model.name, body)
 
   return {
@@ -128,10 +144,11 @@ export function buildParserForModelStandalone(
   model: HatchifyModel,
 ): ParseFunctions {
   return {
-    findAll: async (querystring) => findAllImpl(model, querystring),
-    findOne: async (querystring, id) => findOneImpl(model, querystring, id),
+    findAll: async (querystring) => findAllImpl(hatchify, model, querystring),
+    findOne: async (querystring, id) =>
+      findOneImpl(hatchify, model, querystring, id),
     findAndCountAll: async (querystring) =>
-      findAndCountAllImpl(model, querystring),
+      findAndCountAllImpl(hatchify, model, querystring),
     create: async (body) => createImpl(hatchify, model, body),
     destroy: async (querystring, id) => destroyImpl(querystring, id),
     update: async (body, id) => updateImpl(hatchify, model, body, id),

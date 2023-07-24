@@ -60,6 +60,28 @@ describe("Internal Tests", () => {
     await hatchify.orm.close()
   })
 
+  it("only has one valid endpoint name per model name", async () => {
+    const hatchify = new Hatchify(
+      [
+        {
+          ...Model,
+          name: "Person",
+        },
+      ],
+      { prefix: "/api" },
+    )
+
+    // Test actual vs false pluralization
+    expect(hatchify.getHatchifyModelNameForRoute("/api/people")).toBe("Person")
+    expect(hatchify.getHatchifyModelNameForRoute("/api/persons")).toBe(false)
+
+    expect(hatchify.getHatchifyModelNameForRoute("/api/people/1")).toBe(
+      "Person",
+    )
+    expect(hatchify.getHatchifyModelNameForRoute("/api/persons/1")).toBe(false)
+    await hatchify.orm.close()
+  })
+
   it("should test return false for unknown model names in url", async () => {
     const hatchify = new Hatchify([Model], { prefix: "/api" })
 
