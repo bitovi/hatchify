@@ -1,9 +1,6 @@
 import { Op } from "sequelize"
 
-import {
-  RelationshipPathError,
-  UnexpectedValueError,
-} from "../error"
+import { RelationshipPathError, UnexpectedValueError } from "../error"
 import { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
