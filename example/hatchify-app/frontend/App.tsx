@@ -16,9 +16,9 @@ export const hatchedReact = hatchifyReact(
   }),
 )
 
-const TodoList = hatchedReact.components.Todo.List
-const TodoExtraColumn = hatchedReact.components.Todo.ExtraColumn
-const TodoEmptyList = hatchedReact.components.Todo.EmptyList
+const TodoList = hatchedReact.components.Todo.Collection
+const TodoColumn = hatchedReact.components.Todo.Column
+const TodoEmptyList = hatchedReact.components.Todo.Empty
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([])
@@ -28,13 +28,12 @@ const App: React.FC = () => {
       <button onClick={() => alert(`action on [${selected.join(",")}]`)}>
         action
       </button>
-      <TodoList selectable onSelectionChange={(ids) => setSelected(ids)}>
-        <TodoEmptyList>
-          <div>No records to display</div>
-        </TodoEmptyList>
-        <TodoExtraColumn
+      <TodoList onSelectedChange={(ids: string[]) => setSelected(ids)}>
+        <TodoEmptyList>No records to display</TodoEmptyList>
+        <TodoColumn
+          type="append"
           label="Action"
-          render={({ record }) => {
+          renderValue={({ record }) => {
             return (
               <>
                 <button onClick={() => console.log(record)}>Download</button>

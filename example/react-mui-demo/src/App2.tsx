@@ -15,7 +15,7 @@ const hatchedReact = hatchifyReact(
   }),
 )
 
-const DocumentList = hatchedReact.components.Document.List
+const DocumentList = hatchedReact.components.Document.Collection
 
 // @ts-expect-error
 const baseUrl = import.meta.env.BASE_URL

@@ -8,13 +8,13 @@ import {
 } from "./hatchifyDisplays"
 // import type { Schema } from "@hatchifyjs/rest-client"
 import {
-  HatchifyList,
+  HatchifyCollection,
   HatchifyEmptyList,
   HatchifyColumn,
   HatchifyExtraColumn,
   //   HatchifyPresentationDefaultValueComponents,
 } from "../../components"
-import type { HatchifyListProps } from "../../components/HatchifyList/HatchifyList"
+import type { HatchifyCollectionProps } from "../../components/HatchifyCollection/HatchifyCollection"
 import type { HatchifyEmptyListProps } from "../../components/HatchifyDisplays/HatchifyDisplays"
 import type { HatchifyExtraColumnProps } from "../../components/HatchifyDisplays/HatchifyDisplays"
 import type { HatchifyColumnProps } from "../../components/HatchifyDisplays/HatchifyDisplays"
@@ -27,7 +27,7 @@ import type { HatchifyColumnProps } from "../../components/HatchifyDisplays/Hatc
 
 const testComponents = {
   Test: {
-    List: (props: HatchifyListProps) => <HatchifyList {...props} />,
+    List: (props: HatchifyCollectionProps) => <HatchifyCollection {...props} />,
     EmptyList: (props: HatchifyEmptyListProps) => (
       <HatchifyEmptyList {...props} />
     ),
