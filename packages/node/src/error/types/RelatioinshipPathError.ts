@@ -3,10 +3,12 @@ import { codes, statusCodes } from "../constants"
 
 export class RelationshipPathError extends HatchifyError {
   constructor({
-    detail = "URL must include an identifiable relationship path",
+    detail = "URL must include an identifiable relationship path.",
+    parameter,
     pointer,
   }: {
     detail?: string
+    parameter?: string
     pointer?: string
   } = {}) {
     super({
@@ -14,7 +16,7 @@ export class RelationshipPathError extends HatchifyError {
       code: codes.ERR_RELATIONSHIP_PATH,
       title: "Relationship path could not be identified.",
       detail,
-      parameter: "include",
+      parameter,
       pointer,
     })
   }

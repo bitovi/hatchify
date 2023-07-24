@@ -1,4 +1,3 @@
-import { capitalize } from "inflection"
 import type { FindOptions } from "sequelize"
 
 import {
@@ -14,8 +13,9 @@ function isObject(value: any): boolean {
   return value && typeof value === "object" && !Array.isArray(value)
 }
 
-export function validateFindOptions(
+export function validateFindOptions<T extends HatchifyModel = HatchifyModel>(
   options: FindOptions,
+  model: T,
   hatchify: Hatchify,
 ): void {
   if (options.include) {
@@ -23,21 +23,37 @@ export function validateFindOptions(
       ? options.include
       : [options.include]
 
+    const associations = hatchify.associationsLookup[model.name] || {}
     const includeErrors: Error[] = []
+
+    if (include.length && !Object.keys(associations).length) {
+      throw [
+        new RelationshipPathError({
+          detail: "URL must not have 'include' as a parameter.",
+          parameter: `include`,
+        }),
+      ]
+    }
 
     include.forEach((incl: unknown) => {
       const includeName = (incl as { association: string }).association
-      if (!(capitalize(includeName) in hatchify.models)) {
-        const singular =
-          hatchify.getHatchifyModelNameForEndpointName(includeName)
 
-        if (!singular) {
-          includeErrors.push(
-            new RelationshipPathError({
-              pointer: `${includeName}`,
-            }),
-          )
-        }
+      let modelAssociation
+      if (associations) {
+        modelAssociation = associations[includeName]
+      }
+
+      if (!(modelAssociation && modelAssociation.model in hatchify.models)) {
+        includeErrors.push(
+          new RelationshipPathError({
+            detail: `URL must have 'include' as one or more of ${Object.keys(
+              associations,
+            )
+              .map((assoc) => `'${assoc}'`)
+              .join(", ")}.`,
+            parameter: `include`,
+          }),
+        )
       }
     })
 
@@ -148,10 +164,15 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
 
       const relationshipErrors: HatchifyError[] = []
 
-      const modelName =
-        hatchify.getHatchifyModelNameForEndpointName(relationshipName)
+      const associations = hatchify.associationsLookup[model.name]
 
-      if (modelName) {
+      let modelAssociation
+      if (associations) {
+        modelAssociation = associations[relationshipName]
+      }
+
+      if (modelAssociation) {
+        const modelName = modelAssociation.model
         const expectObject =
           model.hasOne?.some(({ target }) => target === modelName) ||
           model.belongsTo?.some(({ target }) => target === modelName)

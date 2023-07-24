@@ -490,8 +490,8 @@ describe("Relationships", () => {
           {
             status: 400,
             code: "relationship-path",
-            title: "Relationship path could not be identified",
-            detail: "URL must include an identifiable relationship path",
+            title: "Relationship path could not be identified.",
+            detail: "URL must have 'include' as one or more of 'user'.",
             source: {
               parameter: "include",
             },

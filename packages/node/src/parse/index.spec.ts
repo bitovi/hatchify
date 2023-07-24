@@ -7,7 +7,7 @@ import type { HatchifyModel } from "../types"
 import { buildParserForModel, buildParserForModelStandalone } from "."
 
 const RelationshipPathDetail =
-  "URL must include an identifiable relationship path"
+  "URL must have 'include' as one or more of 'user'."
 
 describe("index", () => {
   const User: HatchifyModel = {
@@ -93,7 +93,7 @@ describe("index", () => {
         await expect(findAll("include=notrealincludes")).rejects.toEqualErrors([
           new RelationshipPathError({
             detail: RelationshipPathDetail,
-            pointer: "notrealincludes",
+            parameter: "include",
           }),
         ])
       })
@@ -160,7 +160,7 @@ describe("index", () => {
         ).rejects.toEqualErrors([
           new RelationshipPathError({
             detail: RelationshipPathDetail,
-            pointer: "notrealincludes",
+            parameter: "include",
           }),
         ])
       })
@@ -224,7 +224,7 @@ describe("index", () => {
         ).rejects.toEqualErrors([
           new RelationshipPathError({
             detail: RelationshipPathDetail,
-            pointer: "notrealincludes",
+            parameter: "include",
           }),
         ])
       })
@@ -348,6 +348,33 @@ describe("index", () => {
           }),
         ])
       })
+    })
+  })
+
+  describe("no relationships case", () => {
+    const Todo: HatchifyModel = {
+      name: "Todo",
+      attributes: {
+        name: "STRING",
+        due_date: "DATE",
+        importance: "INTEGER",
+        status: {
+          type: "ENUM",
+          values: ["Do Today", "Do Soon", "Done"],
+        },
+      },
+    }
+
+    const hatchedNode = new Hatchify([Todo])
+    const { findAll } = buildParserForModelStandalone(hatchedNode, Todo)
+
+    it("handles invalid include", async () => {
+      await expect(findAll("include=user")).rejects.toEqualErrors([
+        new RelationshipPathError({
+          detail: "URL must not have 'include' as a parameter.",
+          parameter: "include",
+        }),
+      ])
     })
   })
 
