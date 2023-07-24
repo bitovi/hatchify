@@ -200,6 +200,7 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
       } else {
         relationshipErrors.push(
           new RelationshipPathError({
+            detail: "Payload must include an identifiable relationship path.",
             pointer: `/data/relationships/${relationshipName}`,
           }),
         )
