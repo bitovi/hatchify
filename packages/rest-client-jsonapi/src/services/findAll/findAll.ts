@@ -22,7 +22,6 @@ export async function findAll(
   schemaName: string,
   query: Required<QueryList>,
 ): Promise<[Resources: Resource[], Meta: RequestMetaData]> {
-  console.log("findAll.query", query)
   const queryParams = getQueryParams(config.schemaMap, allSchemas, schemaName, {
     fields: query.fields,
     include: query.include,
@@ -30,19 +29,10 @@ export async function findAll(
     filter: query.filter,
     page: query.page,
   })
-  console.log("findAll.queryParams", queryParams)
 
   const json = await fetchJsonApi<JsonApiResource[]>(
     "GET",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}${queryParams}`,
-  )
-
-  console.log(
-    "convertToHatchifyResources",
-    convertToHatchifyResources(
-      [...json.data, ...(json.included || [])],
-      config.schemaMap,
-    ),
   )
 
   return Promise.resolve([
