@@ -39,10 +39,13 @@ const jsonapi = createClient("/api", {
 const hatchedReactRest = hatchifyReactRest({ Todo, User }, jsonapi)
 
 function App() {
-  const [todos, listState] = hatchedReactRest.Todo.useAll({})
+  const [todos, listState] = hatchedReactRest.Todo.useAll({ include: ["user"] })
   const [createTodo, createState] = hatchedReactRest.Todo.useCreateOne()
   const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
   const [todoName, setTodoName] = useState("")
+
+  const [users, usersState] = hatchedReactRest.User.useAll()
+  const [selectedUser, setSelectedUser] = useState("")
 
   if (listState.isLoading) {
     return <div>loading...</div>
@@ -56,12 +59,28 @@ function App() {
           value={todoName}
           onChange={(e) => setTodoName(e.target.value)}
         />
+        <select
+          disabled={usersState.isLoading}
+          value={selectedUser}
+          onChange={(e) => setSelectedUser(e.target.value)}
+        >
+          <option value="">select user</option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </select>
         <button
           disabled={createState.isLoading}
           type="button"
           onClick={() => {
-            createTodo({ attributes: { name: todoName } })
+            createTodo({
+              attributes: { name: todoName },
+              relationships: { user: { id: selectedUser } },
+            })
             setTodoName("")
+            setSelectedUser("")
           }}
         >
           {createState.isLoading ? "submitting..." : "submit"}

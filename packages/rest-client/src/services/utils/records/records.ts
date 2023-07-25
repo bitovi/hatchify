@@ -50,6 +50,14 @@ export function resourceToRecordRelationship(
   resourcesById: globalThis.Record<string, Resource>,
   resource: ResourceRelationship,
 ): RecordRelationship {
+  // if the related record is not included, return the relationship as-is
+  if (resourcesById[resource.id] === undefined) {
+    return {
+      ...resource,
+      __label: resource.id,
+    }
+  }
+
   const attributes = resourcesById[resource.id].attributes
   const displayAttribute = allSchemas[resource.__schema].displayAttribute
 
