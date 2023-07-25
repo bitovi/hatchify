@@ -88,6 +88,8 @@ describe("useCollectionState", () => {
       setSelected: expect.any(Function),
       allSchemas: schemas,
       schemaName: "Todo",
+      filter: undefined,
+      setFilter: expect.any(Function),
     }
 
     await waitFor(() => {

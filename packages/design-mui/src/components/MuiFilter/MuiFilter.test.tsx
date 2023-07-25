@@ -51,7 +51,7 @@ describe("hatchifyjs/presentation/mui/MuiFilter", () => {
         />,
       )
 
-      const filter = await screen.findByTestId("FilterButton")
+      const filter = await screen.findByTestId("FilterAltIcon")
 
       expect(screen.queryByText("Columns")).not.toBeInTheDocument()
       expect(screen.queryByText("Operator")).not.toBeInTheDocument()
