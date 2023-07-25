@@ -6,7 +6,7 @@
   - `as` should be used for all relationships with a `camelCase` names to be implicit and to override `Sequelize`'s default. This value is used for customizing the relationship name and will help determining the column name in the database.
   - `foreignKey` can be used
 - Table names should be singular and use `snake_case`. Databases like Postgres requires wrapping all non-lower case table and field names with double quotes.
-- URLs should be singular or plural depends on relationships and use `kebab-case` for the path but `camelCase` for model names and includes: `/sales-persons?include=customerData`
+- URLs should be singular or plural depends on relationships and use `kebab-case` for the path but `camelCase` for model names and includes: `/sales-persons?fields[salesPerson]=name&include=customerData`
 - Request payloads and response bodies should be singular or plural depends on relationships and use:
   - `PascalCase` for model names
   - `camelCase` for relationships
