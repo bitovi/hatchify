@@ -18,8 +18,13 @@ describe("Internal Tests", () => {
     },
   }
 
+  let hatchify
+  afterEach(async () => {
+    await hatchify.orm.close()
+  })
+
   it("should test url is valid hatchify shape", async () => {
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify([Model], { prefix: "/api" })
 
     // Test expected good paths
     expect(hatchify.isValidHatchifyRoute("GET", "/api/models/1")).toBe(true)
@@ -34,12 +39,10 @@ describe("Internal Tests", () => {
     expect(hatchify.isValidHatchifyRoute("GET", "/api/model/1")).toBe(false)
     expect(hatchify.isValidHatchifyRoute("GET", "/api/Unknown")).toBe(false)
     expect(hatchify.isValidHatchifyRoute("GET", "/api/Unknown/1")).toBe(false)
-
-    await hatchify.orm.close()
   })
 
   it("should test case difference for model name in url", async () => {
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify([Model], { prefix: "/api" })
 
     // Test some with all lowercase
     expect(hatchify.getHatchifyModelNameForRoute("/api/models")).toBe("Model")
@@ -56,28 +59,43 @@ describe("Internal Tests", () => {
       hatchify.getHatchifyModelNameForRoute("/api/MODELS/1?params=true"),
     ).toBe(false)
     expect(hatchify.getHatchifyModelNameForRoute("/api/MODELS")).toBe(false)
+  })
 
-    await hatchify.orm.close()
+  it("only has one valid endpoint name per model name", async () => {
+    hatchify = new Hatchify(
+      [
+        {
+          ...Model,
+          name: "Person",
+        },
+      ],
+      { prefix: "/api" },
+    )
+
+    // Test actual vs false pluralization
+    expect(hatchify.getHatchifyModelNameForRoute("/api/people")).toBe("Person")
+    expect(hatchify.getHatchifyModelNameForRoute("/api/persons")).toBe(false)
+
+    expect(hatchify.getHatchifyModelNameForRoute("/api/people/1")).toBe(
+      "Person",
+    )
+    expect(hatchify.getHatchifyModelNameForRoute("/api/persons/1")).toBe(false)
   })
 
   it("should test return false for unknown model names in url", async () => {
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify([Model], { prefix: "/api" })
 
     // Test expected bad paths
     expect(hatchify.getHatchifyModelNameForRoute("/api/Unknown")).toBe(false)
     expect(hatchify.getHatchifyModelNameForRoute("/api/Unknown/1")).toBe(false)
-
-    await hatchify.orm.close()
   })
 
   it("should test the existance of hatchify symbol on models", async () => {
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify([Model], { prefix: "/api" })
 
     const model2 = hatchify.model.Model[HatchifySymbolModel]
     expect(model2).toBeTruthy()
     expect(model2).toHaveProperty("attributes")
     expect(model2).toHaveProperty("name")
-
-    await hatchify.orm.close()
   })
 })
