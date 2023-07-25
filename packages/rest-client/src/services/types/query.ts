@@ -4,7 +4,13 @@ export type Fields = { [key: string]: string[] } // todo: typed to schema attrib
 
 export type Selector = { include?: Include; fields?: Fields }
 
-export type Filter = string | Record<string, any>
+export type FilterRecord = Record<string, any>
+
+export type FilterObj = {
+  operator: string
+} & FilterRecord
+
+export type Filter = FilterObj[] | string | undefined
 
 export type QueryList = Selector & {
   page?: unknown
