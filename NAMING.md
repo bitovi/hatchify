@@ -6,7 +6,7 @@
   - `as` should be used for all relationships with a `camelCase` names to be implicit and to override `Sequelize`'s default. This value is used for customizing the relationship name and will help determining the column name in the database.
   - `foreignKey` can be used
 - Table names should be singular and use `snake_case`. Databases like Postgres requires wrapping all non-lower case table and field names with double quotes.
-- URLs should be singular or plural depends on relationships and use `kebab-case` for model names and includes
+- URLs should be singular or plural depends on relationships and use `kebab-case` for the path but `camelCase` for model names and includes: `/sales-persons?include=customerData`
 - Request payloads and response bodies should be singular or plural depends on relationships and use:
   - `PascalCase` for model names
   - `camelCase` for relationships
@@ -41,14 +41,14 @@ const SalesPerson = {
 
 The server will already have the following endpoints for accounts:
 
-1. `GET /api/accounts?fields[accounts]=name&filter[name]=Bitovi`
+1. `GET /api/accounts?fields[account]=name&filter[name]=Bitovi`
 1. `GET /api/accounts/:id`
 1. `PATCH /api/accounts/:id`
 1. `DELETE /api/accounts/:id`
 
 And the following endpoints for sales persons:
 
-1. `GET /api/sales-persons?fields[sales-persons]=name&filter[name]=John+Doe` (appending `s` regardless of the model name)
+1. `GET /api/sales-persons?fields[salesPerson]=name&filter[name]=John+Doe` (appending `s` regardless of the model name)
 1. `GET /api/sales-persons/:id`
 1. `PATCH /api/sales-persons/:id`
 1. `DELETE /api/sales-persons/:id`
@@ -112,13 +112,13 @@ const Account = {
   attributes: {
     name: "STRING",
   },
-  belongsTo: [{ as: "closerPerson", target: "SalesPerson" }],
+  belongsTo: [{ target: "SalesPerson", options: { as: "closerPerson" } }],
 }
 ```
 
-1. Creates a table `sales_person` with the columns `id` and `first_name` and a table `account` with the columns `id`, `name` and `closer_person_id`.
+1. Creates a table `account` with the columns `id`, `name` and `closer_person_id`.
 1. Creates relationships as `closerPerson`.
-1. Returns `JSONAPI` from `GET /account/1?include=closer-person` like:
+1. Returns `JSONAPI` from `GET /account/1?include=closerPerson` like:
 
 ```json
 {
@@ -160,7 +160,7 @@ const Account = {
   attributes: {
     name: "STRING",
   },
-  belongsTo: [{ as: "closer", foreignKey: "finisher_id", target: "SalesPerson" }],
+  belongsTo: [{ target: "SalesPerson", options: { as: "closer", foreignKey: "finisher_id" } }],
 }
 ```
 
@@ -210,7 +210,7 @@ const Account = {
   attributes: {
     name: "STRING",
   },
-  hasMany: [{ as: "managers", target: "SalesPerson" }],
+  hasMany: [{ target: "SalesPerson", options: { as: "managers" } }],
 }
 ```
 
@@ -260,7 +260,7 @@ const Account = {
   attributes: {
     name: "STRING",
   },
-  hasMany: [{ as: "closer", foreignKey: "finisher_id", target: "SalesPerson" }],
+  hasMany: [{ target: "SalesPerson", options: { as: "closer", foreignKey: "finisher_id" } }],
 }
 ```
 
@@ -302,7 +302,7 @@ const Account = {
 
 ### For `BelongsToMany` relationships …
 
-only `as` is used:
+only `as` and `through` are used:
 
 ```js
 const SalesPerson = {
@@ -312,10 +312,11 @@ const SalesPerson = {
   },
   belongsToMany: [
     {
-      as: "accounts",
       target: "Account",
-      through: "account_sales_person",
-      targetKey: "participant_id",
+      options: {
+        as: "accounts",
+        through: "AccountSalesPerson",
+      },
     },
   ],
 }
@@ -327,10 +328,89 @@ const Account = {
   },
   belongsToMany: [
     {
-      as: "participants",
       target: "SalesPerson",
-      through: "account_sales_person",
-      targetKey: "managed_account_id",
+      options: {
+        as: "participants",
+        through: "AccountSalesPerson",
+      },
+    },
+  ],
+}
+```
+
+1. Creates a table `sales_person` with the columns `id`, `first_name` and a table `account` with the columns `id` and `name` and a junction table with the columns `sales_person_id` and `account_id`.
+1. Creates relationships as `accounts` and `participants`.
+1. Returns `JSONAPI` from `GET /account/1?include=participants` like:
+
+```json
+{
+  "jsonapi": {
+    "version": "1.0"
+  },
+  "data": {
+    "type": "Account",
+    "id": "12-22",
+    "attributes": {
+      "name": "Bitovi"
+    },
+    "relationships": {
+      "participants": [
+        {
+          "data": {
+            "type": "SalesPerson",
+            "id": "332-222"
+          }
+        }
+      ]
+    },
+    "included": [
+      {
+        "type": "SalesPerson",
+        "id": "332-222",
+        "attributes": {
+          "firstName": "John"
+        }
+      }
+    ]
+  }
+}
+```
+
+`as`, `through`, `foreignKey` and `targetKey` are used:
+
+```js
+const SalesPerson = {
+  name: "SalesPerson",
+  attributes: {
+    firstName: "STRING",
+  },
+  belongsToMany: [
+    {
+      target: "Account",
+      options: {
+        as: "accounts",
+        through: "AccountSalesPerson",
+        foreignKey: "participant_id",
+        otherKey: "managed_account_id",
+      },
+    },
+  ],
+}
+
+const Account = {
+  name: "Account",
+  attributes: {
+    name: "STRING",
+  },
+  belongsToMany: [
+    {
+      target: "SalesPerson",
+      options: {
+        as: "participants",
+        through: "AccountSalesPerson",
+        foreignKey: "managed_account_id",
+        otherKey: "participant_id",
+      },
     },
   ],
 }
