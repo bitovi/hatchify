@@ -97,7 +97,8 @@ Other than the required `target` field, you can leverage `as` to set the relatio
 
 - `foreignKey` to set the name of the foreign key. By default it is `${model}Id`
 - `sourceKey` to set the other table's foreign key column name for `hasOne` and `hasMany`
-- `targetKey` to set the other table's foreign key column name for `belongsTo` and `belongsToMany`
+- `targetKey` to set the other table's foreign key column name for `belongsTo`
+- `otherKey` to set the other table's foreign key column name for `belongsToMany`
 - `through` is used for `belongsToMany` to control the name of the junction table
 
 For more information, refer to the [Sequelize Docs](https://sequelize.org/docs/v6/core-concepts/assocs/)
@@ -376,7 +377,7 @@ const Account = {
 }
 ```
 
-`as`, `through`, `foreignKey` and `targetKey` are used:
+`as`, `through`, `foreignKey` and `otherKey` are used:
 
 ```js
 const SalesPerson = {
