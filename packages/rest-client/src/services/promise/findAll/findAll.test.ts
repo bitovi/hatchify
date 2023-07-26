@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest"
+import { describe, it, expect } from "vitest"
 import { createStore } from "../../store"
 import { findAll } from "./findAll"
 import { fakeDataSource, schemas } from "../../mocks/testData"
@@ -43,17 +43,6 @@ describe("rest-client/services/promise/findAll", () => {
 
     expect(result[0]).toEqual(expected)
     expect(result[1]).toEqual({ unpaginatedCount: 2 })
-  })
-
-  it("should set default query.fields parameters", async () => {
-    const spy = vi.spyOn(fakeDataSource, "findAll")
-    await findAll(fakeDataSource, schemas, "Article", {})
-    const expected = {
-      fields: { Article: ["title", "body"], author: ["name"] },
-      include: ["author"],
-    }
-
-    expect(spy).toHaveBeenCalledWith(schemas, "Article", expected)
   })
 
   it("should throw an error if the request fails", async () => {

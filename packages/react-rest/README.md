@@ -145,6 +145,7 @@ The following makes a simple todo app that loads todos from `/api/todos` and all
 **✏️ Copy the following code into your `src/App.tsx`:**
 
 ```tsx
+// App.tsx
 import { useState } from "react"
 import type { Schema } from "@hatchifyjs/react-rest"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
@@ -231,6 +232,7 @@ react-rest is powered by **schema-driven development**. A schema is an object re
 - an object containing all the attributes of our Todo, currently only “name”
 
 ```tsx
+// App.tsx
 import type { Schema } from "@hatchifyjs/react-rest"
 
 // ...
@@ -251,6 +253,7 @@ const Todo: Schema = {
 react-rest expects a client to be passed into it. HatchifyJS provides a JSON:API rest client to use which takes in a baseURL, and a mapping of schemas to endpoints. The response from the createClient call is what we will pass into our react-rest app.
 
 ```tsx
+// App.tsx
 import createClient from "@hatchifyjs/rest-client-jsonapi"
 
 // ...
@@ -265,6 +268,7 @@ const jsonapi = createClient("/api", {
 ##### hatchifyReactRest
 
 ```tsx
+// App.tsx
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 
 // ...
@@ -406,7 +410,7 @@ To fetch todos with their related users, we need to make a few changes to our `A
 **✏️ Modify the Todo schema to have a relationships property:**
 
 ```ts
-// inside of the App.tsx file
+// App.tsx
 const Todo: Schema = {
   name: "Todo",
   displayAttribute: "name",
@@ -426,7 +430,7 @@ const Todo: Schema = {
 **✏️ Create a new User schema:**
 
 ```ts
-// inside of the App.tsx file
+// App.tsx
 // 👀
 const User: Schema = {
   name: "User",
@@ -446,7 +450,7 @@ const User: Schema = {
 **✏️ Pass the new schema into `createClient` and `hatchifyReactRest`:**
 
 ```ts
-// inside of the App.tsx file
+// App.tsx
 const jsonapi = createClient("/api", {
   Todo: { endpoint: "todos" },
   // 👀
@@ -460,19 +464,20 @@ const hatchedReactRest = hatchifyReactRest({ Todo, User }, jsonapi)
 **✏️ Update the `useAll` hook to include user data:**
 
 ```tsx
-// inside of the App component
+// App.tsx: App component
 const [todos, listState] = hatchedReactRest.Todo.useAll({ include: ["user"] }) // 👀
 ```
 
 **✏️ Update the list to print a user name for each todo:**
 
 ```tsx
+// App.tsx: App component
 {
   todos.map((todo) => (
     <tr key={todo.id}>
       <td>{todo.name}</td>
       {/* 👀 */}
-      <td>{todo.user.name}</td>
+      <td>{todo.user?.name}</td>
       <td>
         <button disabled={deleteState.isLoading} type="button" onClick={() => deleteTodo(todo.id)}>
           delete
@@ -492,19 +497,19 @@ Now that we've added the User schema into our `createClient` and `hatchifyReactR
 **✏️ Add a new `useAll` hook to fetch users:**
 
 ```tsx
-// inside of the App component
+// App.tsx: App component
 const [users, usersState] = hatchedReactRest.User.useAll()
 ```
 
 **✏️ Add a stateful select input that has users as options:**
 
 ```tsx
-// inside of the App component
+// App.tsx: App component
 const [selectedUser, setSelectedUser] = useState("")
 ```
 
 ```tsx
-// inse of the App component's return
+// App.tsx: App component
 <input
   type="text"
   value={todoName}
@@ -546,7 +551,7 @@ Now that we have a select populated with users, we can create a todo with a user
 **✏️ Update `createTodo` to pass in the selected user id:**
 
 ```tsx
-// inse of the App component's return
+// App.tsx: App component
 <input
   type="text"
   value={todoName}
@@ -585,6 +590,7 @@ Now that we have a select populated with users, we can create a todo with a user
 **👀 Altogether, our App.tsx should look like this:**
 
 ```tsx
+// App.tsx
 import { useState } from "react"
 import type { Schema } from "@hatchifyjs/react-rest"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
@@ -670,7 +676,7 @@ function App() {
           {todos.map((todo) => (
             <tr key={todo.id}>
               <td>{todo.name}</td>
-              <td>{todo.user.name}</td>
+              <td>{todo.user?.name}</td>
               <td>
                 <button disabled={deleteState.isLoading} type="button" onClick={() => deleteTodo(todo.id)}>
                   delete

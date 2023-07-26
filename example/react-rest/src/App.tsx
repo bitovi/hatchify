@@ -91,7 +91,7 @@ function App() {
           {todos.map((todo) => (
             <tr key={todo.id}>
               <td>{todo.name}</td>
-              <td>{todo.user.name}</td>
+              <td>{todo.user?.name}</td>
               <td>
                 <button
                   disabled={deleteState.isLoading}

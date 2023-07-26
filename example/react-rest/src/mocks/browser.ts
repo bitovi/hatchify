@@ -40,13 +40,17 @@ const handlers = [
   rest.post("/api/todos", async (req, res, ctx) => {
     const json = await req.json()
     const { data } = json
-    const newTodo = {
+    const newTodo: any = {
       id: `todo-${id++}`,
       type: "Todo",
       attributes: data.attributes,
-      relationships: {
-        user: { data: { id: data.relationships.user.id, type: "User" } },
-      },
+    }
+    if (data.relationships?.user?.id) {
+      newTodo.relationships = {
+        user: {
+          data: { id: data.relationships.user.id, type: "User" },
+        },
+      }
     }
     todos.push(newTodo)
     return res(ctx.status(200), ctx.json({ data: newTodo }))
