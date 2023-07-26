@@ -1,4 +1,11 @@
-import type { Filter, Meta, Record, Schemas } from "@hatchifyjs/rest-client"
+import type {
+  Fields,
+  Filter,
+  Include,
+  Meta,
+  Record,
+  Schemas,
+} from "@hatchifyjs/rest-client"
 import type { ReactRest } from "@hatchifyjs/react-rest"
 import type {
   HatchifyCollectionPage,
@@ -13,8 +20,8 @@ import useFilter from "./useFilter"
 export interface CollectionState {
   data: Record[]
   meta: Meta
-  fields: string[]
-  include: string[]
+  fields?: Fields
+  include?: Include
   filter: Filter
   setFilter: (filterBy: Filter) => void
   page: HatchifyCollectionPage["page"]
@@ -31,8 +38,17 @@ export default function useCollectionState(
   allSchemas: Schemas,
   schemaName: string,
   restClient: ReactRest<Schemas>,
-  selectedDefault?: string[],
-  onSelectedChange?: (ids: string[]) => void,
+  {
+    selectedDefault,
+    onSelectedChange,
+    fields,
+    include,
+  }: {
+    selectedDefault?: string[]
+    onSelectedChange?: (ids: string[]) => void
+    fields?: Fields
+    include?: Include
+  } = {},
 ): CollectionState {
   const { page, setPage } = usePage()
   const { sort, sortQueryString, setSort } = useSort()
@@ -46,13 +62,15 @@ export default function useCollectionState(
     page,
     sort: sortQueryString,
     filter,
+    fields,
+    include,
   })
 
   return {
     data,
     meta,
-    fields: [],
-    include: [],
+    fields,
+    include,
     filter,
     setFilter,
     page,

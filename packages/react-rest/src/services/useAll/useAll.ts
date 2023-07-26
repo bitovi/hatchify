@@ -36,7 +36,6 @@ export const useAll = (
   const memoizedQuery = useMemoizedQuery(query)
   const [data, setData] = useState<Record[]>([])
   const [requestMeta, setRequestMeta] = useState<RequestMetaData>()
-
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 

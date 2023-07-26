@@ -1,6 +1,6 @@
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
-import type { Source, Schemas } from "@hatchifyjs/rest-client"
+import type { Source, Schemas, Fields, Include } from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
 import type { CollectionState } from "../hooks/useCollectionState"
@@ -41,10 +41,17 @@ type HatchifyApp = {
   model: ReactRest<SchemaRecord>
   state: {
     [schemaName: string]: {
-      useCollectionState: (
-        selectedDefault?: string[],
-        onSelectedChange?: (ids: string[]) => void,
-      ) => CollectionState
+      useCollectionState: ({
+        selectedDefault,
+        onSelectedChange,
+        fields,
+        include,
+      }: {
+        selectedDefault?: string[]
+        onSelectedChange?: (ids: string[]) => void
+        fields?: Fields
+        include?: Include
+      }) => CollectionState
     }
   }
 }
@@ -86,14 +93,18 @@ export function hatchifyReact(
 
   const state = Object.values(schemas).reduce((acc, schema) => {
     acc[schema.name] = {
-      useCollectionState: (selectedDefault, onSelectedChange) =>
-        useCollectionState(
-          schemas,
-          schema.name,
-          reactRest,
+      useCollectionState: ({
+        selectedDefault,
+        onSelectedChange,
+        fields,
+        include,
+      } = {}) =>
+        useCollectionState(schemas, schema.name, reactRest, {
           selectedDefault,
           onSelectedChange,
-        ),
+          fields,
+          include,
+        }),
     }
     return acc
   }, {} as HatchifyApp["state"])
