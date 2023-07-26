@@ -1,5 +1,5 @@
 import type { Schemas } from "@hatchifyjs/rest-client"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import useCollectionState from "./useCollectionState"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
@@ -40,7 +40,10 @@ const fakeRestClient = hatchifyReactRest(schemas, {
 describe("useCollectionState", () => {
   it("works", async () => {
     const { result } = renderHook(() =>
-      useCollectionState(schemas, schemas.Todo.name, fakeRestClient),
+      useCollectionState(schemas, schemas.Todo.name, fakeRestClient, {
+        selectedDefault: [],
+        onSelectedChange: vi.fn(),
+      }),
     )
 
     const expected = {
@@ -66,8 +69,8 @@ describe("useCollectionState", () => {
         },
         status: "success",
       },
-      fields: [],
-      include: [],
+      fields: undefined,
+      include: undefined,
       page: {
         size: 10,
         number: 1,
