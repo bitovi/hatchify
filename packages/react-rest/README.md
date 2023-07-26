@@ -215,6 +215,9 @@ export default App
 
 Let's see how each part works. First, we need to configure react-rest to understand the data it’s loading, where it’s loading it from, and that it’s using a JSONAPI data format.
 
+> **Note**
+> If you noticed the duplicated GET requests in the network tab, this is because React is running in strict mode in development. In strict mode, React is running hooks twice to help catch bugs in our code. You can read more about it [here](https://react.dev/reference/react/StrictMode).
+
 <a id="configuration"></a>
 
 #### Configuration
