@@ -1,5 +1,5 @@
 import type { Schemas } from "@hatchifyjs/rest-client"
-import { describe, expect, it, vi } from "vitest"
+import { describe, expect, it } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import useCollectionState from "./useCollectionState"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
@@ -40,13 +40,7 @@ const fakeRestClient = hatchifyReactRest(schemas, {
 describe("useCollectionState", () => {
   it("works", async () => {
     const { result } = renderHook(() =>
-      useCollectionState(
-        schemas,
-        schemas.Todo.name,
-        fakeRestClient,
-        [],
-        vi.fn(),
-      ),
+      useCollectionState(schemas, schemas.Todo.name, fakeRestClient),
     )
 
     const expected = {

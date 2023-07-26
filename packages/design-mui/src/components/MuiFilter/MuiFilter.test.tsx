@@ -40,7 +40,7 @@ describe("hatchifyjs/presentation/mui/MuiFilter", () => {
             sortBy: undefined,
           }}
           page={{ number: 1, size: 10 }}
-          fields={[]}
+          fields={{}}
           include={[]}
           setSort={vi.fn()}
           setPage={vi.fn()}

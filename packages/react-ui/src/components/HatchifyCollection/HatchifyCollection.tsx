@@ -21,15 +21,25 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
   onSelectedChange,
 }) => {
   const { Collection } = useHatchifyPresentation()
+  const defaultInclude = getDefaultInclude(allSchemas, schemaName)
   const collectionState = useCollectionState(
     allSchemas,
     schemaName,
     restClient,
-    defaultSelected,
-    onSelectedChange,
+    {
+      selectedDefault: defaultSelected,
+      onSelectedChange,
+      include: defaultInclude,
+    },
   )
 
   return <Collection {...collectionState}>{children}</Collection>
 }
 
 export default HatchifyCollection
+
+function getDefaultInclude(allSchemas: Schemas, schemaName: string) {
+  return Object.entries(allSchemas[schemaName]?.relationships || [])
+    .filter(([_, value]) => value.type === "one")
+    .map(([key, _]) => key)
+}
