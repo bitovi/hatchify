@@ -122,9 +122,10 @@ todo: picture
    import App from "./App.tsx"
 
    // 👀
-   import { worker } from "./mocks/browser"
    if (process.env.NODE_ENV === "development") {
-     worker.start()
+     await import("./mocks/browser").then(({ worker }) => {
+       worker.start()
+     })
    }
 
    ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
