@@ -32,7 +32,7 @@ react-rest is a model-driven library for interacting with your backend. By defin
 
 ### TypeScript
 
-todo: gif
+![react-rest TypeScript](doc/attachments/ts.gif)
 
 <a id="relationships"></a>
 
@@ -40,7 +40,7 @@ todo: gif
 
 By providing react-rest your schemas, it will be able to fetch related data from your JSON:API backend.
 
-todo: snippet
+![Data with relationships](doc/attachments/relationships.png)
 
 <a id="focus-on-ui"></a>
 
@@ -48,7 +48,7 @@ todo: snippet
 
 react-rest allows you to keep your focus on your UI. By defining your schemas ahead of time, you will not have to worry about your REST layer. Any changes you make to your data will trigger re-fetches in react-rest so that you’re always up to date.
 
-todo: snipept
+![Creating a todo and updating list](doc/attachments/ui.gif)
 
 <a id="building-a-simple-todo-app-with-react-rest"></a>
 
@@ -56,11 +56,11 @@ todo: snipept
 
 The following guide creates a simple Todo app from scratch.
 
-todo: picture
+![Todo app without relationships](doc/attachments/todo-app.png)
 
 Then we extend the app with relationships.
 
-todo: picture
+![Todo app with relationships](doc/attachments/todo-app-with-relationships.png)
 
 <a id="project-setup"></a>
 
