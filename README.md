@@ -41,71 +41,72 @@ it handles all the React configurations for us.
 [✏️](https://emojipedia.org/pencil/) Perform all the
 following steps:
 
-1.  Ensure you’re using [node 18 and npm
-    9](https://nodejs.org/en/download)
+1. Ensure you’re using [node 18 and npm
+   9](https://nodejs.org/en/download)
 
-    ```bash
-    node -v
-    ```
+   ```bash
+   node -v
+   ```
 
-2.  Create a new Vite project titled “hatchify-app”:
+2. Create a new Vite project titled “hatchify-app”:
 
-    ```bash
-    npm create vite@latest hatchify-app -- --template react-ts
-    ```
+   ```bash
+   npm create vite@latest hatchify-app -- --template react-ts
+   ```
 
-3.  Move into the “hatchify-app” directory and install the node modules:
+3. Move into the “hatchify-app” directory and install the node modules:
 
-    ```bash
-    cd hatchify-app
-    npm install
-    ```
+   ```bash
+   cd hatchify-app
 
-4.  Install `koa`, `@koa/cors`, and the frontend and backend HatchifyJS
-    libraries:
+   npm install
+   ```
 
-    ```bash
-    npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/koa @hatchifyjs/react
-    ```
+4. Install `koa`, `@koa/cors`, and the frontend and backend HatchifyJS
+   libraries:
 
-5.  Install the following dev packages to run our backend server:
+   ```bash
+   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/koa @hatchifyjs/react
+   ```
 
-    ```bash
-    npm install @types/koa @types/koa__cors nodemon ts-node --save-dev
-    ```
+5. Install the following dev packages to run our backend server:
 
-6.  Remove `"type": "module"` from `package.json` so that we can have
-    consistent TS imports across our backend and frontend apps
+   ```bash
+   npm install @types/koa @types/koa__cors nodemon ts-node --save-dev
+   ```
 
-7.  Overwrite the value of the `scripts` property in `package.json` with the following:
+6. Remove `"type": "module"` from `package.json` so that we can have
+   consistent TS imports across our backend and frontend apps
 
-    ```bash
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "dev:frontend": "vite",
-    "dev:backend": "nodemon --esm backend/index.ts",
-    "build:frontend": "tsc && vite build --outDir dist/frontend",
-    "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
-    "start:frontend": "vite preview --outDir dist/frontend",
-    "start:backend": "node dist/backend/backend/index.js"
-    ```
+7. Overwrite the value of the `scripts` property in `package.json` with the following:
 
-8.  Create a “backend” directory at the root. This is where we will put
-    our backend code:
+   ```bash
+   "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+   "dev:frontend": "vite",
+   "dev:backend": "nodemon --esm backend/index.ts",
+   "build:frontend": "tsc && vite build --outDir dist/frontend",
+   "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
+   "start:frontend": "vite preview --outDir dist/frontend",
+   "start:backend": "node dist/backend/backend/index.js"
+   ```
 
-    ```bash
-    mkdir backend
-    ```
+8. Create a “backend” directory at the root. This is where we will put
+   our backend code:
 
-9.  For consistency, we’re going to rename our “src” folder to
-    “frontend”:
+   ```bash
+   mkdir backend
+   ```
 
-    ```bash
-    mv src frontend
-    ```
+9. For consistency, we’re going to rename our “src” folder to
+   “frontend”:
 
-    1. Additionally, we will also have to update line 11 in our
-        `index.html` from `src="/src/main.tsx"` to
-        `src="/frontend/main.tsx"`
+   ```bash
+   mv src frontend
+   ```
+
+   1. Additionally, we will also have to update line 11 in our
+      `index.html` from `src="/src/main.tsx"` to
+      `src="/frontend/main.tsx"`
 
 10. Replace the contents of your `tsconfig.json` with:
 
@@ -162,7 +163,7 @@ A schema is a definition of a resource used in our HatchifyJS system. We
 use these shared schemas across our backend and frontend to create
 database tables, generate REST endpoints, and create React components
 and data fetchers. Because these schemas are the backbone of our
-frontend and backend, we will place them in a `schemas/`
+frontend and backend, we will place them in a `/schemas`
 directory at the root directory of our project.
 
 **✏️ Create a** `schemas` **directory:**
@@ -206,7 +207,7 @@ export const Todo = {
 ```
 
 You can find all of the possible data types for a schema's `attributes`
-[here](https://sequelize.org/docs/v7/other-topics/other-data-types).
+[here](https://sequelize.org/docs/v6/other-topics/other-data-types/).
 
 ## Model Relationships
 
@@ -473,7 +474,7 @@ curl 'http://localhost:3000/api/users' \
 # Frontend with React and MUI
 
 Now that our backend is configured and running we can use the same
-schemas that we defined earlier to quickly _hatch_—see what we did there?—our frontend. The first
+schemas that we defined earlier to quickly "hatch" our frontend. The first
 thing we want to do is import `hatchifyReact`, `MuiProvider`, and
 `createJsonapiClient` from the `@hatchify/react` library. Here’s a quick
 overview of what each of these does:
@@ -496,7 +497,17 @@ the `Todo` key and render it.
 
 ## Rendering a List
 
-**✏️ Replace the contents of `frontend/main.tsx` with the following:**
+**✏️ Modify the contents of `frontend/main.tsx`:**
+
+- Remove the extension from line 3. Now it should look like this:
+
+  `import App from './App'`
+
+- Get rid of the default Vite styles by removing line 4:
+
+  `import './index.css'`
+
+Your `main.tsx` should now look like this:
 
 ```tsx
 import React from "react"
@@ -555,6 +566,7 @@ well-defined schemas to create a database, a running backend with REST endpoints
 # Next Steps
 
 ## Using Postgres DB
+
 You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but we've created a tutorial specifically for using Postgres: [Using Postgres DB](./doc/next-steps/using-postgres-db.md).
 
 ## Rendering an empty List
