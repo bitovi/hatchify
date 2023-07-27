@@ -1,18 +1,16 @@
 // import type { Schema } from "@hatchifyjs/rest-client"
 import type {
+  Filter,
   Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
-  Meta,
-  Record,
 } from "@hatchifyjs/rest-client"
 import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
-
 import type {
   HatchifyDisplay as LegacyHatchifyDisplay,
   HatchifyFormField,
   FormFieldValueType,
 } from "../services-legacy"
-import type { HatchifyDisplay } from "../services"
 import type { FormState } from "../components/HatchifyForm"
+import type { CollectionState } from "../hooks/useCollectionState"
 
 export type Primitive = string | boolean | number
 
@@ -31,34 +29,29 @@ export interface PageCountObject {
   size: number
 }
 
-export interface HatchifyListPagination {
-  pagination: PageCountObject
-  setPagination: (page: PageCountObject) => void
+export interface HatchifyCollectionPage {
+  page: PageCountObject
+  setPage: (page: PageCountObject) => void
 }
 
-export interface HatchifyListSort {
+export interface HatchifyCollectionSort {
   sort: SortObject
   setSort: (sortBy: string) => void
   sortQueryString: string
 }
 
-export interface XListProps {
-  // columns
-  displays: HatchifyDisplay[]
-  // data
-  useData: () => [Record[], Meta]
-  // pgaination
-  pagination: PageCountObject
-  setPagination: (page: PageCountObject) => void
-  // sort
-  sort: SortObject
-  setSort: (sortBy: string) => void
-  // row select (checkoxes)
-  selectable: boolean
-  selected: globalThis.Record<string, true>
-  setSelected: (ids: globalThis.Record<string, true>) => void
-  // empty list
-  emptyList: () => JSX.Element
+export interface HatchifyCollectionSelected {
+  selected: string[]
+  setSelected: (ids: string[]) => void
+}
+
+export interface HatchifyCollectionFilter {
+  filter: Filter
+  setFilter: (filterBy: Filter) => void
+}
+
+export interface XCollectionProps extends CollectionState {
+  children?: React.ReactNode
 }
 
 export interface XLayoutProps {

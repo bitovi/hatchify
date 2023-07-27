@@ -49,41 +49,44 @@ type Attribute<M extends Model = Model> = ModelAttributeColumnOptions<M> & {
   include?: any
 }
 
+function getAttributeAsObject<M extends Model = Model>(
+  attribute: string | DataType | Attribute<M>,
+): Attribute<M> {
+  if (typeof attribute === "string") {
+    return { type: DataTypes[attribute] }
+  }
+
+  if (typeof attribute === "function") {
+    return { type: attribute }
+  }
+
+  if ("type" in attribute) {
+    if (typeof attribute.type === "string") {
+      return { ...attribute, type: DataTypes[attribute.type] }
+    }
+
+    return attribute
+  }
+
+  throw new Error("Unexpected type")
+}
+
 export function parseAttribute<M extends Model = Model>(
   attribute: string | DataType | Attribute<M>,
 ): Attribute<M> {
-  let attributeStringType
-  let attributeObjectType
+  const attributeObjectType = getAttributeAsObject(attribute)
 
-  if (typeof attribute === "string") attributeStringType = attribute
-  else if ("type" in attribute) {
-    if (typeof attribute.type === "string") {
-      attributeStringType = attribute.type
-      attributeObjectType = {
-        ...attribute,
-        type: DataTypes[attributeStringType] || attributeStringType,
-      }
-    } else
-      attributeObjectType = {
-        ...attribute,
-      }
-  } else attributeObjectType = { type: attribute }
-
-  if (attributeStringType === "ENUM") {
-    attributeObjectType = {
+  if (attributeObjectType.type.toString({}) === "ENUM") {
+    return {
       ...attributeObjectType,
-      type: DataTypes.ENUM,
       validate: {
         ...(attributeObjectType.validate || {}),
-        isIn: [attributeObjectType.values],
+        isIn: [attributeObjectType.values as string[]],
       },
     }
   }
-  return (
-    attributeObjectType || {
-      type: DataTypes[attributeStringType] || attributeStringType,
-    }
-  )
+
+  return attributeObjectType
 }
 
 export function convertHatchifyModels(

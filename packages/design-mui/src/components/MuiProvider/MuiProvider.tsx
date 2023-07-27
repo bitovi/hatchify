@@ -1,15 +1,15 @@
-import { createTheme, ThemeProvider } from "@mui/material"
 import type { Theme } from "@mui/material"
-
+import type { XProviderProps } from "@hatchifyjs/react-ui"
+import { createTheme, ThemeProvider } from "@mui/material"
 import {
   HatchifyPresentationProvider,
   HatchifyPresentationDefaultValueComponents,
   HatchifyPresentationDefaultFieldComponents,
 } from "@hatchifyjs/react-ui"
 import { MuiLayout } from "../MuiLayout"
-import { MuiList } from "../MuiList"
 import { MuiForm } from "../MuiForm"
 import { MuiDetails } from "../MuiDetails"
+import MuiDataGrid from "../MuiDataGrid/MuiDataGrid"
 import {
   String as StringInput,
   Number as NumberInput,
@@ -18,7 +18,6 @@ import {
   Relationship as RelationshipInput,
 } from "./DefaultFieldComponents"
 import { Relationship, RelationshipList } from "./DefaultDisplayComponents"
-import type { XProviderProps } from "@hatchifyjs/react-ui"
 
 const defaultTheme = createTheme()
 
@@ -29,7 +28,7 @@ export const MuiProvider: React.FC<XProviderProps<Theme>> = ({
   return (
     <ThemeProvider theme={theme}>
       <HatchifyPresentationProvider
-        List={MuiList}
+        Collection={MuiDataGrid}
         Layout={MuiLayout}
         Details={MuiDetails}
         Form={MuiForm}

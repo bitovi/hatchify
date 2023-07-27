@@ -5,7 +5,7 @@ import type {
   Schemas,
   RequestMetaData,
 } from "../../types"
-import { flattenResourcesIntoRecords, getFields, getInclude } from "../../utils"
+import { flattenResourcesIntoRecords } from "../../utils"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,
@@ -19,8 +19,10 @@ export const findAll = async (
 ): Promise<[Records: Record[], RequestMetaData: RequestMetaData]> => {
   const updatedQuery = {
     ...query,
-    include: getInclude(allSchemas, schemaName, query),
-    fields: getFields(allSchemas, schemaName, query),
+    // todo: arthur, the include & field should be inferred from each other at the rest-client-* level
+    // otherwise both will be used in the query, which is not correct
+    include: query.include || [],
+    fields: query.fields || [],
   } as Required<QueryList>
 
   const [resources, requestMetaData] = await dataSource.findAll(

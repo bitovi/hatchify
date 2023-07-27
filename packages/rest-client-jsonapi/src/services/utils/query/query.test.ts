@@ -169,11 +169,15 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           },
           include: ["illustrated", "authored"],
           sort: ["-created", "title", "user.name"],
-          filter: { name: ["John", "Joan"], age: 21, employed: false },
+          filter: [
+            { name: ["John", "Joan"], operator: "$eq" },
+            { age: 21, operator: "$eq" },
+            { employed: false, operator: "$eq" },
+          ],
           page: { number: 3, size: 30 },
         }),
       ).toEqual(
-        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&sort=-created,title,user.name&filter[name][]=John&filter[name][]=Joan&filter[age]=21&filter[employed]=false&page[number]=3&page[size]=30",
+        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&sort=-created,title,user.name&filter[name][]=John&filter[name][]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
       )
     })
   })
@@ -202,37 +206,46 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
   describe("filterToQueryParam", () => {
     it("works", () => {
-      expect(filterToQueryParam({})).toEqual("")
+      expect(filterToQueryParam(undefined)).toEqual("")
 
       expect(
         filterToQueryParam("filter[name]=ABC&filter[completed]=true"),
       ).toEqual("filter[name]=ABC&filter[completed]=true")
 
-      expect(filterToQueryParam({ name: "ABC" })).toEqual("filter[name]=ABC")
-
-      expect(filterToQueryParam({ name: ["ABC", "DEF"] })).toEqual(
-        "filter[name][]=ABC&filter[name][]=DEF",
-      )
-
-      expect(filterToQueryParam({ completed: false })).toEqual(
-        "filter[completed]=false",
+      expect(filterToQueryParam([{ name: "ABC", operator: "$eq" }])).toEqual(
+        "filter[name][$eq]=ABC",
       )
 
       expect(
-        filterToQueryParam({ name: ["ABC", "DEF"], count: 3, completed: true }),
+        filterToQueryParam([{ name: ["ABC", "DEF"], operator: "$eq" }]),
+      ).toEqual("filter[name][]=ABC&filter[name][]=DEF")
+
+      expect(
+        filterToQueryParam([{ completed: false, operator: "$eq" }]),
+      ).toEqual("filter[completed][$eq]=false")
+
+      expect(
+        filterToQueryParam([
+          { name: ["ABC", "DEF"], operator: "$eq" },
+          { count: 3, operator: "$eq" },
+          { completed: true, operator: "$eq" },
+        ]),
       ).toEqual(
-        "filter[name][]=ABC&filter[name][]=DEF&filter[count]=3&filter[completed]=true",
+        "filter[name][]=ABC&filter[name][]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
       )
 
       expect(
-        filterToQueryParam({
-          name: ["A'bc!*\"", "$()"],
-          count: 3,
-          completed: true,
-          employer: "(test$!)",
-        }),
+        filterToQueryParam([
+          {
+            name: ["A'bc!*\"", "$()"],
+            operator: "$eq",
+          },
+          { count: 3, operator: "$eq" },
+          { completed: true, operator: "$eq" },
+          { employer: "(test$!)", operator: "$eq" },
+        ]),
       ).toEqual(
-        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[count]=3&filter[completed]=true&filter[employer]=(test%24!)",
+        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",
       )
     })
   })
