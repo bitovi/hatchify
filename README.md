@@ -180,6 +180,8 @@ under the hood to talk to your database.
 
 **✏️ Create a** `schemas/User.ts`**:**
 
+> Note: Take note of lines commented with the 👀 emoji.
+
 ```ts
 // hatchify-app/schemas/User.ts
 export const User = {
@@ -187,7 +189,7 @@ export const User = {
   attributes: {
     name: "STRING",
   },
-  hasMany: [{ target: "Todo", options: { as: "todos" } }],
+  hasMany: [{ target: "Todo", options: { as: "todos" } }], // 👀
 }
 ```
 
@@ -202,7 +204,7 @@ export const Todo = {
     due_date: "DATE",
     importance: "INTEGER",
   },
-  belongsTo: [{ target: "User", options: { as: "user" } }],
+  belongsTo: [{ target: "User", options: { as: "user" } }], // 👀
 }
 ```
 
