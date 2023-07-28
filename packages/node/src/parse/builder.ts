@@ -60,8 +60,9 @@ export function buildFindOptions(
   }
 
   if (ops.data?.order && Array.isArray(ops.data.order)) {
-    for (const orderField in ops.data.order) {
-      const [attribute] = orderField
+    for (const orderItem of ops.data.order) {
+      const attribute = orderItem[0]
+
       if (attribute !== "id" && !model.attributes[attribute]) {
         ops.errors.push(
           new UnexpectedValueError({
