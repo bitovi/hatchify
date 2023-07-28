@@ -12,6 +12,7 @@ This guide explains the relationship between names in the schema and the resulti
   * [relationships.belongsTo](#relationshipsbelongsto)
   * [relationships.belongsTo.foreignKey](#relationshipsbelongstoforeignkey)
   * [relationships.hasMany](#relationshipshasmany)
+  * [relationships.hasMany.as]
   * [relationships.hasMany.foreignKey](#relationshipshasmanyforeignkey)
   * [relationships.belongsToMany](#relationshipsbelongstomany)
   * [relationships.belongsToMany.options.through](#relationshipsbelongstomanyoptionsthrough)
