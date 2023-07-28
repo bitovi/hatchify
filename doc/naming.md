@@ -51,6 +51,11 @@ The following are __plural__:
 
 This section shows how each part of the schema relates to the Database or service API design.  
 
+### Terms 
+
+- Source schema - The schema the definition is written in.
+- Target schema - The schema the Source schema is establishing a relationship with.
+
 
 ### Schema.name
 
@@ -69,7 +74,7 @@ const Account = {
 **API Implications:**
 
 - This will create a `/sales-persons` API.
-- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /sales-people?fields[SalesPerson]=name`
+- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /sales-persons?fields[SalesPerson]=name`
 - `SalesPerson` will be used as the response `type`: `{data: {type: "SalesPerson"}}`
 
 ### Schema.pluralName
@@ -107,7 +112,7 @@ const Account = {
 **API Implications**
 
 - `firstName` will be used in query parameters like
-  `GET /sales-persons?filter[firstName]=Roye`
+  `GET /sales-persons?filter[firstName]=Roye&fields[SalePerson]=firstName`
 - `firstName` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -166,6 +171,9 @@ const Account = {
 
 `foreignKey` sets the name of the relationship column. `foreignKey` should be _snake_case_.
 
+> NOTE: `foreignKey` could reference a _camelCase_ attribute in the source schema.  
+
+
 ```js
 const Account = {
   name: "Account",
@@ -174,7 +182,7 @@ const Account = {
   },
   belongsTo: [{
     target: "SalesPerson",
-    options: { as: "closer", foreignKey: "finisher_id" } //👀
+    options: { as: "closerPerson", foreignKey: "finisher_id" } //👀
   }],
 }
 ```
@@ -183,13 +191,14 @@ const Account = {
 
 - Creates a column `finisher_id` in the `account` table.
 
+**API Implications**
+
+There are no changes to the API.
+
+
 ### relationships.hasMany
 
-A `target` and `as` option are required.
-
-- `target` must match a `Schema.name` and be _Singular PascalCase_.
-- `as` should be _Singular camelCase_.
-
+`target`is required. `target` must match a `Schema.name` and be _Singular PascalCase_.
 
 
 ```js
@@ -199,14 +208,14 @@ const SalesPerson = {
     firstName: "STRING",
   },
   hasMany: [
-    { target: "Account", options: { as: "accounts" } } //👀
+    { target: "Account" } //👀
   ],
 }
 ```
 
 **Database Implications**
 
-- Assumes a column `sales_person_id` in the `Account` table.
+- Assumes a column `sales_person_id` in the `account` table.
 
 **API Implications**
 
@@ -226,11 +235,54 @@ const SalesPerson = {
   }
   ```
 
+### relationships.hasMany.as
+
+`as` should be _Plural camelCase_.
+
+
+
+```js
+const SalesPerson = {
+  name: "SalesPerson",
+  attributes: {
+    firstName: "STRING",
+  },
+  hasMany: [
+    { target: "Account", options: { as: "managingAccounts" } } //👀
+  ],
+}
+```
+
+**Database Implications**
+
+- Assumes a column `sales_person_id` in the `account` table.
+
+**API Implications**
+
+- `managingAccounts` will be used in the include query parameter like
+  `GET /sales-persons?include=managingAccounts`
+- `managingAccounts` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "SalesPerson",
+      id: "1",
+      attributes: { firstName: "Roye" },
+      relationships: {
+        managingAccounts: [{type: "Account", id: "456"}] //👀
+      }
+    }
+  }
+  ```
+
 ### relationships.hasMany.foreignKey
 
-`foreignKey` specifies the column in used in the target table that references either:
+`foreignKey` specifies the column used in the target schema that references:
+
 - a _snake_case_ column name in the target table
-- a _camelCase_ attribute name in the target schema
+
+
+> A _camelCase_ attribute name in the target schema can also be specified.
 
 The following shows specifying a column name.
 
@@ -250,25 +302,11 @@ const SalesPerson = {
 
 **Database Implications**
 
-- Assumes a column `opening_sales_person_id` in the `account` table❗
+- Assumes a column `opening_sales_person_id` in the `account` table.
 
 **API Implications**
 
-- `openedAccounts` will be used in the include query parameter like
-  `GET /sales-persons?include=openedAccounts`
-- `openedAccounts` will be used in mutation payloads and response payloads like:
-  ```js
-  {
-    data: {
-      type: "SalesPerson",
-      id: "1",
-      attributes: { firstName: "Roye" },
-      relationships: {
-        openedAccounts: [{type: "Account", id: "456"}] //👀
-      }
-    }
-  }
-  ```
+This has no effect on the API.
 
 
 ### relationships.belongsToMany
@@ -314,24 +352,6 @@ const SalesPerson = {
   }
   ```
 
-The implied through table will also be available.
-
-- `accounts` will be available in the include query parameter like
-  `GET /sales-persons?include=accounts`
-- `accounts` will be used in mutation payloads and response payloads like:
-  ```js
-  {
-    data: {
-      type: "SalesPerson",
-      id: "1",
-      attributes: { firstName: "Roye" },
-      relationships: {
-        accounts: [{type: "Account", id: "456"}] //👀
-      }
-    }
-  }
-  ```
-
 
 ### relationships.belongsToMany.options.through
 
@@ -346,7 +366,7 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {through: "SalesAccounts"}
+      options: {through: "SalesAccount"}
     }
   ],
 }
@@ -354,7 +374,7 @@ const SalesPerson = {
 
 **Database Implications**
 
-- Assumes a `sales_accounts` table exists with `sales_person_id` and `account_id` columns.  
+- Assumes a `sales_account` table exists with `sales_person_id` and `account_id` columns.  
 
 **API Implications**
 
@@ -404,6 +424,8 @@ This does not change the Database behavior.
 ### relationships.belongsToMany.options.foreignKey
 
 `foreignKey` must be _singular snake_case_.
+
+> `foreignKey` can also reference an attribute in the "Join" schema.
 
 ```js
 const SalesPerson = {
