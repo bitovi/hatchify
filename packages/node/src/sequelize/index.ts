@@ -4,6 +4,7 @@ import type {
   IAssociation,
   ICreateHatchifyModel,
 } from "@hatchifyjs/sequelize-create-with-associations"
+import { camelCase } from "camel-case"
 import * as inflection from "inflection"
 import type JSONAPISerializer from "json-api-serializer"
 import type {
@@ -148,14 +149,19 @@ export function convertHatchifyModels(
   const associationsLookup: Record<string, Record<string, IAssociation>> = {}
 
   models.forEach((model) => {
-    const relationships = ["belongsTo", "belongsToMany", "hasOne", "hasMany"]
+    const relationshipTypes = [
+      "belongsTo",
+      "belongsToMany",
+      "hasOne",
+      "hasMany",
+    ]
     const associations: Record<string, IAssociation> = {}
 
-    relationships.forEach((relationship) => {
+    relationshipTypes.forEach((relationshipType) => {
       // For each relationship type, check if we have definitions for it:
-      if (model[relationship]) {
+      if (model[relationshipType]) {
         // Grab the array of targets and options
-        model[relationship].forEach(({ target, options }) => {
+        model[relationshipType].forEach(({ target, options }) => {
           if (!target || !sequelize.models[target]) {
             throw [
               new HatchifyError({
@@ -163,36 +169,39 @@ export function convertHatchifyModels(
                   "Unknown Model association for " +
                   model.name +
                   " in " +
-                  relationship,
+                  relationshipType,
                 status: statusCodes.CONFLICT,
                 code: codes.ERR_CONFLICT,
               }),
             ]
           }
 
+          //Get association name for lookup
+          const associationName =
+            options.as ||
+            camelCase(
+              ["belongsToMany", "hasMany"].includes(relationshipType)
+                ? inflection.pluralize(target)
+                : target,
+            )
+
           // Pull the models off sequelize.models
           const current = sequelize.models[model.name]
           const associated = sequelize.models[target]
 
           // Create the relationship
-          current[relationship](associated, options)
-
-          //Get association name for lookup
-          let associationName: string = options.as as string
-          if (!associationName) {
-            associationName = target.toLowerCase()
-            if (relationship !== "hasOne" && relationship !== "belongsTo") {
-              associationName = inflection.pluralize("target") // TODO: what is happening here?
-            }
-          }
+          current[relationshipType](associated, {
+            ...options,
+            as: associationName,
+          })
 
           // Add association details to a lookup for each model
           const modelAssociation = {
-            type: relationship,
+            type: relationshipType,
             model: target,
             key: options.foreignKey ?? `${target.toLowerCase()}_id`,
             joinTable:
-              relationship === "belongsToMany"
+              relationshipType === "belongsToMany"
                 ? typeof options.through === "string"
                   ? options.through
                   : options.through.model

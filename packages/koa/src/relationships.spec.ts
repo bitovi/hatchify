@@ -2,7 +2,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 
 import { startServerWith } from "./testing/utils"
 
-describe("Relationships", () => {
+describe("Users and Todos", () => {
   const User: HatchifyModel = {
     name: "User",
     attributes: {
@@ -584,6 +584,114 @@ describe("No Relationships", () => {
           },
         ],
       })
+    })
+  })
+})
+
+describe("Accounts and Sales People", () => {
+  const SalesPerson: HatchifyModel = {
+    name: "SalesPerson",
+    attributes: {
+      firstName: "STRING",
+    },
+    belongsToMany: [
+      {
+        target: "Account",
+        options: {
+          through: "AccountSalesPerson",
+        },
+      },
+    ],
+  }
+
+  const Account: HatchifyModel = {
+    name: "Account",
+    attributes: {
+      name: "STRING",
+    },
+    belongsToMany: [
+      {
+        target: "SalesPerson",
+        options: {
+          through: "AccountSalesPerson",
+        },
+      },
+    ],
+  }
+
+  let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+  let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+  beforeAll(async () => {
+    ;({ fetch, teardown } = await startServerWith([SalesPerson, Account]))
+  })
+
+  afterAll(async () => {
+    await teardown()
+  })
+
+  it("assumes camelCase when 'as' is not provided", async () => {
+    const { body: account } = await fetch("/api/accounts", {
+      method: "post",
+      body: {
+        data: {
+          type: "Account",
+          attributes: {
+            name: "Bitovi",
+          },
+        },
+      },
+    })
+
+    const { body: salesPerson } = await fetch("/api/salespeople", {
+      method: "post",
+      body: {
+        data: {
+          type: "SalesPerson",
+          attributes: {
+            firstName: "John",
+          },
+          relationships: {
+            accounts: {
+              data: [
+                {
+                  type: "Account",
+                  id: account.data.id,
+                },
+              ],
+            },
+          },
+        },
+      },
+    })
+
+    const { body: accountWithSalesPeople } = await fetch(
+      `/api/accounts/${account.data.id}?include=salesPeople`,
+    )
+
+    expect(accountWithSalesPeople).toEqual({
+      jsonapi: { version: "1.0" },
+      data: {
+        type: "Account",
+        id: account.data.id,
+        attributes: {
+          name: account.data.attributes.name,
+        },
+        relationships: {
+          salesPeople: {
+            data: [{ type: "SalesPerson", id: salesPerson.data.id }],
+          },
+        },
+      },
+      included: [
+        {
+          type: "SalesPerson",
+          id: salesPerson.data.id,
+          attributes: {
+            firstName: salesPerson.data.attributes.firstName,
+          },
+        },
+      ],
     })
   })
 })
