@@ -137,6 +137,17 @@ describe("builder", () => {
       ])
     })
 
+    it("handles unknown filter fields", async () => {
+      await expect(async () =>
+        buildFindOptions(Todo, "filter[namee][]=test"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'filter[x]' where 'x' is one of 'name', 'due_date', 'importance'.`,
+          parameter: "filter[namee]",
+        }),
+      ])
+    })
+
     it("handles unknown sort fields", async () => {
       await expect(async () =>
         buildFindOptions(Todo, "sort=invalid"),

@@ -625,6 +625,27 @@ describe("Error Code Tests", () => {
     })
   })
 
+  it("should return error UNEXPECTED_VALUE error code when receiving non existing fields for filter (HATCH-223)", async () => {
+    const ERROR_CODE_UNEXPECTED_VALUE = {
+      status: 422,
+      code: "unexpected-value",
+      title: "Unexpected value.",
+      detail:
+        "URL must have 'filter[x]' where 'x' is one of 'name', 'due_date', 'importance'.",
+      source: {
+        parameter: "filter[namee]",
+      },
+    }
+
+    const { status, body } = await fetch("/api/todos?filter[namee][]=John+Doe")
+
+    expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_UNEXPECTED_VALUE],
+    })
+  })
+
   it("should return error UNEXPECTED_VALUE error code when receiving non-existing filter (HATCH-243)", async () => {
     const ERROR_CODE_UNEXPECTED_VALUE = {
       status: 422,
