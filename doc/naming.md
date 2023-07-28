@@ -64,7 +64,7 @@ const Account = {
 
 **Database Implications:**
 
-- Creates a table `sales_persons`.
+- Creates a table `sales_person`.
 
 **API Implications:**
 
