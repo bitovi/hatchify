@@ -24,7 +24,7 @@ describe("builder", () => {
     it("works with ID attribute provided", () => {
       const options = buildFindOptions(
         Todo,
-        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5&sort=-date,name",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5&sort=-due_date,name",
       )
 
       expect(options).toEqual({
