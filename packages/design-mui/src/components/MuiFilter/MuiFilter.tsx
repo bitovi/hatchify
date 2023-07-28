@@ -1,23 +1,21 @@
-/** @jsxImportSource @emotion/react */
-import { useState } from "react"
+import { forwardRef, useEffect, useRef, useState } from "react"
 import {
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
   InputLabel,
   Grid,
   MenuItem,
   Select,
   TextField,
+  Popover,
+  debounce,
 } from "@mui/material"
-
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
-import type { Attribute, Filter } from "@hatchifyjs/rest-client"
-import FilterAltIcon from "@mui/icons-material/FilterAlt"
+import type { Filter } from "@hatchifyjs/rest-client"
+import FilterListIcon from "@mui/icons-material/FilterList"
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 
 interface MuiFilterRowProps {
-  attributes: { [field: string]: Attribute }
+  columnOptions: string[]
   column: string
   setColumn: (col: string) => void
   operator: string
@@ -26,7 +24,7 @@ interface MuiFilterRowProps {
   setValue: (value: string) => void
 }
 
-interface DialogProps extends MuiFilterRowProps {
+interface PopoverProps extends MuiFilterRowProps {
   open: boolean
   setOpen: (open: boolean) => void
   filter: Filter
@@ -34,7 +32,7 @@ interface DialogProps extends MuiFilterRowProps {
 }
 
 const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
-  attributes,
+  columnOptions,
   column,
   setColumn,
   operator,
@@ -42,110 +40,122 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
   value,
   setValue,
 }) => {
-  const columnsList = Object.keys(attributes)
-
   return (
     <Grid container spacing={2} padding={"1.25rem"} width={"31.25rem"}>
       <Grid item xs={4}>
         <InputLabel id="select-column-label">Columns</InputLabel>
         <Select
           fullWidth
+          variant="standard"
           labelId="select-column-label"
           id="simple-select"
           value={column}
           onChange={(ev) => setColumn(ev.target.value)}
         >
-          {columnsList.map((item) => {
-            return (
-              <MenuItem key={item} value={item}>
-                {item}
-              </MenuItem>
-            )
-          })}
+          {columnOptions.map((item) => (
+            <MenuItem key={item} value={item}>
+              {item}
+            </MenuItem>
+          ))}
         </Select>
       </Grid>
       <Grid item xs={4}>
         <InputLabel id="select-operator-label">Operator</InputLabel>
         <Select
+          variant="standard"
           fullWidth
           labelId="select-operator-label"
           id="simple-select"
           value={operator}
           onChange={(ev) => setOperator(ev.target.value)}
         >
-          <MenuItem value="empty">empty</MenuItem>
           <MenuItem value="$eq">equals</MenuItem>
           <MenuItem value="ilike">contains</MenuItem>
+          <MenuItem value="empty">empty</MenuItem>
         </Select>
       </Grid>
       <Grid item xs={4}>
-        <InputLabel id="value-field-label">Value</InputLabel>
-        <TextField
-          placeholder="Filter Value"
-          id="value-field"
-          variant="outlined"
-          onChange={(ev) => setValue(ev.target.value)}
-          value={value}
-        />
+        {operator !== "empty" && (
+          <>
+            <InputLabel id="value-field-label">Value</InputLabel>
+            <TextField
+              placeholder="Filter Value"
+              id="value-field"
+              variant="standard"
+              onChange={(ev) => setValue(ev.target.value)}
+              value={value}
+            />
+          </>
+        )}
       </Grid>
     </Grid>
   )
 }
 
-const MuiFilterDialog: React.FC<DialogProps> = ({
-  attributes,
-  column,
-  open,
-  operator,
-  value,
-  setColumn,
-  setOpen,
-  setOperator,
-  setValue,
-  setFilter,
-}) => {
-  const clearFilter = () => {
-    setColumn("")
-    setOperator("")
-    setValue("")
-    setFilter(undefined)
-    setOpen(false)
-  }
+// eslint-disable-next-line react/display-name
+const MuiFilterPopover = forwardRef<HTMLButtonElement, PopoverProps>(
+  (
+    {
+      columnOptions,
+      column,
+      open,
+      operator,
+      value,
+      setColumn,
+      setOpen,
+      setOperator,
+      setValue,
+      setFilter,
+    },
+    ref,
+  ) => {
+    const clearFilter = () => {
+      setOpen(false)
+      setColumn("")
+      setOperator("")
+      setValue("")
+      setFilter(undefined)
+    }
 
-  const applyFilter = () => {
-    //On first pass, we are only supporting one filter row.
-    setFilter([
-      {
-        [column]: value,
-        operator: operator,
-      },
-    ])
-    setOpen(false)
-  }
-
-  return (
-    <Dialog open={open}>
-      <DialogContent>
+    return (
+      <Popover
+        anchorEl={
+          (ref != null && typeof ref !== "function" && ref.current) || null
+        }
+        open={open}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        slotProps={{
+          paper: {
+            sx: {
+              alignItems: "flex-end",
+              display: "flex",
+              flexDirection: "column",
+            },
+          },
+        }}
+      >
         <MuiFilterRow
           column={column}
           setColumn={setColumn}
           operator={operator}
           setOperator={setOperator}
-          attributes={attributes}
+          columnOptions={columnOptions}
           value={value}
           setValue={setValue}
         />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setOpen(false)}>Cancel</Button>
-        <Button onClick={clearFilter}>Clear Filter</Button>
-        <Button onClick={applyFilter} disabled={column === ""}>
-          Apply Filter
+        <Button
+          variant="text"
+          startIcon={<DeleteForeverIcon />}
+          onClick={clearFilter}
+        >
+          Remove All
         </Button>
-      </DialogActions>
-    </Dialog>
-  )
-}
+      </Popover>
+    )
+  },
+)
 
 export const MuiFilter: React.FC<XCollectionProps> = ({
   allSchemas,
@@ -153,29 +163,55 @@ export const MuiFilter: React.FC<XCollectionProps> = ({
   filter,
   setFilter,
 }) => {
+  const stringAttributes = Object.entries(allSchemas[schemaName].attributes)
+    .filter(([, attr]) =>
+      typeof attr === "object" ? attr.type === "string" : attr === "string",
+    )
+    .map(([key]) => key)
+
+  const isMounted = useRef<boolean>(false)
+  const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)
-  const [operator, setOperator] = useState<string>("")
-  const [column, setColumn] = useState<string>("")
+  const [operator, setOperator] = useState<string>("$eq")
+  const [column, setColumn] = useState<string>(stringAttributes[0])
   const [value, setValue] = useState<string>("")
 
+  useEffect(() => {
+    if (isMounted.current) {
+      applyFilter(setFilter, column, value, operator)
+    } else {
+      isMounted.current = true
+    }
+  }, [setFilter, column, value, operator])
+
   return (
-    <Grid container spacing={2}>
-      <MuiFilterDialog
+    <>
+      <MuiFilterPopover
+        ref={buttonRef}
         column={column}
         setColumn={setColumn}
         open={open}
         setOpen={setOpen}
         operator={operator}
         setOperator={setOperator}
-        attributes={allSchemas[schemaName].attributes}
+        columnOptions={stringAttributes}
         value={value}
         setValue={setValue}
         filter={filter}
         setFilter={setFilter}
       />
-      <Grid item onClick={() => setOpen(true)}>
-        <FilterAltIcon sx={{ color: "grey", cursor: "pointer" }} />
-      </Grid>
-    </Grid>
+      <Button
+        ref={buttonRef}
+        variant="text"
+        startIcon={<FilterListIcon />}
+        onClick={() => setOpen(true)}
+      >
+        Filters
+      </Button>
+    </>
   )
 }
+
+const applyFilter = debounce((setFilter, column, value, operator) => {
+  setFilter([{ [column]: value, operator: operator }])
+}, 500)
