@@ -137,6 +137,17 @@ describe("builder", () => {
       ])
     })
 
+    it("handles unknown sort fields", async () => {
+      await expect(async () =>
+        buildFindOptions(Todo, "sort=invalid"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'sort' as comma separated values containing one or more of 'name', 'due_date', 'importance'.`,
+          parameter: `sort`,
+        }),
+      ])
+    })
+
     it("handles invalid query string", async () => {
       await expect(async () =>
         buildFindOptions(Todo, "fields=name,due_date"),
