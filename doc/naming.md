@@ -94,7 +94,6 @@ An attribute name should be `Singular camelCase`.
 ```js
 const Account = {
   name: "SalesPerson",
-  pluralName: "SalesPeople",
   attributes: {
     firstName: "STRING" //👀
   }
