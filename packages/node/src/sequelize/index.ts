@@ -177,14 +177,13 @@ export function convertHatchifyModels(
           }
 
           //Get association name for lookup
-          let associationName: string = options.as as string
-          if (!associationName) {
-            associationName = camelCase(
-              relationshipType !== "hasOne" && relationshipType !== "belongsTo"
+          const associationName =
+            options.as ||
+            camelCase(
+              ["belongsToMany", "hasMany"].includes(relationshipType)
                 ? inflection.pluralize(target)
                 : target,
             )
-          }
 
           // Pull the models off sequelize.models
           const current = sequelize.models[model.name]
