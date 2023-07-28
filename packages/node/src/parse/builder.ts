@@ -36,7 +36,24 @@ export function buildFindOptions(
     )
   }
 
-  if (ops.data?.attributes && Array.isArray(ops.data.attributes)) {
+  if (!ops.data) return ops
+
+  Object.keys(ops.data.where || {}).forEach((attribute) => {
+    if (attribute !== "id" && !model.attributes[attribute]) {
+      ops.errors.push(
+        new UnexpectedValueError({
+          detail: `URL must have 'filter[x]' where 'x' is one of ${Object.keys(
+            model.attributes,
+          )
+            .map((attribute) => `'${attribute}'`)
+            .join(", ")}.`,
+          parameter: `filter[${attribute}]`,
+        }),
+      )
+    }
+  })
+
+  if (Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {
       ops.data.attributes.unshift("id")
     }
@@ -59,7 +76,7 @@ export function buildFindOptions(
     })
   }
 
-  if (ops.data?.order && Array.isArray(ops.data.order)) {
+  if (Array.isArray(ops.data.order)) {
     for (const orderItem of ops.data.order) {
       const attribute = orderItem[0]
 
