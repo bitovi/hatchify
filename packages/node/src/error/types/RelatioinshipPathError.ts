@@ -3,7 +3,7 @@ import { codes, statusCodes } from "../constants"
 
 export class RelationshipPathError extends HatchifyError {
   constructor({
-    detail = "URL must include an identifiable relationship path.",
+    detail,
     parameter,
     pointer,
   }: {
