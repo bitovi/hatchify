@@ -1,309 +1,342 @@
-# Customizing schema, table, relationship, and service API naming
+# Schema, database, and service API naming
 
-## Guidelines
+This guide explains the relationship between names in the schema and the resulting names used in the database and service APIs. We will first go over the general guidelines and then how specific parts in the schema relate to names in the database and service API.
 
-- Model names should be singular and use `PascalCase`
-  - `as` should be used for all relationships with a `camelCase` names to be implicit and to override `Sequelize`'s default. This value is used for customizing the relationship name and will help determining the column name in the database.
-  - `foreignKey` can be used
-- Table names should be singular and use `snake_case`. Databases like Postgres requires wrapping all non-lower case table and field names with double quotes.
-- URLs should be singular or plural depends on relationships and use `kebab-case` for the path but `camelCase` for model names and includes: `/sales-persons?fields[salesPerson]=name&include=customerData`
-- Request payloads and response bodies should be singular or plural depends on relationships and use:
-  - `PascalCase` for model names
-  - `camelCase` for relationships
-- Hatchify backend as well as [Sequelize](https://www.npmjs.com/package/sequelize) are using [Inflection](https://www.npmjs.com/package/inflection) for pluralization of names. It takes care of irregular nouns for us.
+- [General Guidelines](#general-guidelines)
+  * [Casing](#casing)
+  * [Singular vs Plural](#singular-vs-plural)
+- [Schema Naming](#schema-naming)
+  * [Schema.name](#schemaname)
+  * [Schema.pluralName](#schemapluralname)
+  * [Schema.attributes.ATTRIBUTE_NAME](#schemaattributesattribute_name)
+  * [relationships.belongsTo](#relationshipsbelongsto)
+  * [relationships.belongsTo.foreignKey](#relationshipsbelongstoforeignkey)
+  * [relationships.hasMany](#relationshipshasmany)
+  * [relationships.hasMany.foreignKey](#relationshipshasmanyforeignkey)
+  * [relationships.belongsToMany](#relationshipsbelongstomany)
+  * [relationships.belongsToMany.options.through](#relationshipsbelongstomanyoptionsthrough)
+  * [relationships.belongsToMany.options.as](#relationshipsbelongstomanyoptionsas)
+  * [relationships.belongsToMany.options.foreignKey](#relationshipsbelongstomanyoptionsforeignkey)
+  * [relationships.belongsToMany.options.otherKey](#relationshipsbelongstomanyoptionsotherkey)
+- [To Be Defined](#to-be-defined)
 
-## Examples
 
-### Base Example
+## General Guidelines
 
-Given a pre-existing model
+Hatchify attempts to adhere to the most common naming pattern conventions. The following are the casing and pluralization guidelines that Hatchify uses.  
+
+### Casing
+
+By default, Hatchify uses `PascalCase` (Ex: `SalesPerson`) for type names and use `camelCase` names for member names (Ex: `firstName`). The following are the exceptions:
+
+- Tables and table column names use `snake_case` (Ex: `sales_person` table, and `first_name` field).
+- Service URL path names are `kebab-case`.  (Ex: `/sales-people`) _Note: Query parameters are `camelCase`._
+
+### Singular vs Plural
+
+Hatchify simply adds an "s" to make values names plural. We will show how to customize this below.
+
+The following are __singular__:
+
+- Schema model names (Ex: `SalesPerson`)
+- Table names (Ex: `sales_person`)
+- BelongsTo relationship names (Ex: `{ as: "manager" }`)
+
+The following are __plural__:
+
+- Service URL path names (Ex: `/sales-persons`)
+- HasMany relationship names (Ex: `{ as: "managers" }`)
+
+## Schema Naming
+
+This section shows how each part of the schema relates to the Database or service API design.  
+
+
+### Schema.name
+
+The schema name should be `Singular PascalCase` as follows:
 
 ```js
 const Account = {
-  name: "Account",
-  attributes: {
-    name: "STRING",
-  },
-  belongsTo: [{ target: "SalesPerson" }],
+  name: "SalesPerson", //👀
 }
 ```
 
-A name like `SalesPerson` in the schema:
+**Database Implications:**
+
+- Creates a table `SalesPerson`.
+
+**API Implications:**
+
+- This will create a `/sales-persons` API.
+- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /sales-people?fields[SalesPerson]=name`
+- `SalesPerson` will be used as the response `type`: `{data: {type: "SalesPerson"}}`
+
+### Schema.pluralName
+
+Set `pluralName` to configure plural naming for that type.  
 
 ```js
-const SalesPerson = {
+const Account = {
   name: "SalesPerson",
-  attributes: {
-    firstName: "STRING",
-  },
+  pluralName: "SalesPeople" //👀
 }
 ```
 
-The server will already have the following endpoints for accounts:
+**API Implications**
 
-1. `GET /api/accounts?fields[account]=name&filter[name]=Bitovi`
-1. `GET /api/accounts/:id`
-1. `PATCH /api/accounts/:id`
-1. `DELETE /api/accounts/:id`
+- Create a `/sales-people` API.
 
-And the following endpoints for sales persons:
+### Schema.attributes.ATTRIBUTE_NAME
 
-1. `GET /api/sales-persons?fields[salesPerson]=name&filter[name]=John+Doe` (appending `s` regardless of the model name)
-1. `GET /api/sales-persons/:id`
-1. `PATCH /api/sales-persons/:id`
-1. `DELETE /api/sales-persons/:id`
+An attribute name should be `Singular camelCase`.
 
-Other than that, it also:
+```js
+const Account = {
+  name: "SalesPerson",
+  pluralName: "SalesPeople",
+  attributes: {
+    firstName: "STRING" //👀
+  }
+}
+```
 
-1. Creates a table `sales_person` with the columns `id` and `first_name` and a table `account` with the columns `id`, `name` and `sales_person_id`.
-1. Once we define relationship to `SalesPerson` they will be named `salesPerson` or `salesPersons`.
-1. Returns `JSONAPI` like:
+**Database Implications**
 
-```json
-{
-  "jsonapi": {
-    "version": "1.0"
-  },
-  "data": {
-    "type": "SalesPerson",
-    "id": "11-22",
-    "attributes": {
-      "firstName": "John"
+- Creates a column `first_name` in the `sales_person` table.
+
+**API Implications**
+
+- `firstName` will be used in query parameters like
+  `GET /sales-persons?filter[firstName]=Roye`
+- `firstName` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "SalesPerson",
+      id: "1",
+      attributes: { firstName: "Roye" } //👀
     }
   }
+  ```
+
+### relationships.belongsTo
+
+A `target` and `as` option are required.
+
+- `target` should match a `Schema.name` and be _Singular PascalCase_.
+- `as` should be _Singular camelCase_.
+
+```js
+const Account = {
+  name: "Account",
+  attributes: {
+    name: "STRING",
+  },
+  belongsTo: [{ target: "SalesPerson", options: { as: "closerPerson" } }], //👀
 }
 ```
 
-### Changing Pluralization
+**Database Implications**
 
-Setting `pluralName` for `SalesPerson`:
+- Creates a column `closer_person_id` in the `account` table.
+
+**API Implications**
+
+- `closerPerson` will be used in the include query parameter like
+  `GET /accounts?include=closerPerson`
+- `closerPerson` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "Account",
+      id: "1",
+      attributes: { firstName: "Acme" },
+      relationships: {
+        closerPerson: {type: "SalesPerson", id: "322"} //👀
+      }
+    }
+  }
+  ```
+
+
+
+
+
+### relationships.belongsTo.foreignKey
+
+`foreignKey` sets the name of the relationship column. `foreignKey` should be _snake_case_.
+
+```js
+const Account = {
+  name: "Account",
+  attributes: {
+    name: "STRING",
+  },
+  belongsTo: [{
+    target: "SalesPerson",
+    options: { as: "closer", foreignKey: "finisher_id" } //👀
+  }],
+}
+```
+
+**Database Implications**
+
+- Creates a column `finisher_id` in the `account` table.
+
+### relationships.hasMany
+
+A `target` and `as` option are required.
+
+- `target` must match a `Schema.name` and be _Singular PascalCase_.
+- `as` should be _Singular camelCase_.
+
+
 
 ```js
 const SalesPerson = {
   name: "SalesPerson",
-  pluralName: "SalesPeople"
   attributes: {
     firstName: "STRING",
   },
+  hasMany: [
+    { target: "Account", options: { as: "accounts" } } //👀
+  ],
 }
 ```
 
-1. Creates a service layer `sales-people`.
-1. Creates relationships as `salesPerson` or `salesPeople` (`snakeCase` of `name` or `pluralName`).
+**Database Implications**
 
-### Relationships
+- Assumes a column `sales_person_id` in the `Account` table.
 
-Other than the required `target` field, you can leverage `as` to set the relationship name for service layer, URLs and database, or any of the below to control the naming in the database layer:
+**API Implications**
 
-- `foreignKey` to set the name of the foreign key. By default it is `${model}Id`
-- `sourceKey` to set the other table's foreign key column name for `hasOne` and `hasMany`
-- `targetKey` to set the other table's foreign key column name for `belongsTo`
-- `otherKey` to set the other table's foreign key column name for `belongsToMany`
-- `through` is used for `belongsToMany` to control the name of the junction table
+- `accounts` will be used in the include query parameter like
+  `GET /sales-persons?include=accounts`
+- `accounts` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "SalesPerson",
+      id: "1",
+      attributes: { firstName: "Roye" },
+      relationships: {
+        accounts: [{type: "Account", id: "456"}] //👀
+      }
+    }
+  }
+  ```
 
-For more information, refer to the [Sequelize Docs](https://sequelize.org/docs/v6/core-concepts/assocs/)
+### relationships.hasMany.foreignKey
 
-### For `BelongsTo` relationships …
+`foreignKey` specifies the column in used in the target table that references either:
+- a _snake_case_ column name in the target table
+- a _camelCase_ attribute name in the target schema
 
-only `as` is used:
+The following shows specifying a column name.
 
 ```js
-const Account = {
-  name: "Account",
+const SalesPerson = {
+  name: "SalesPerson",
   attributes: {
-    name: "STRING",
+    firstName: "STRING",
   },
-  belongsTo: [{ target: "SalesPerson", options: { as: "closerPerson" } }],
+  hasMany: [
+    { target: "Account",
+      options: {
+        as: "openedAccounts", foreignKey: "opening_sales_person_id" } } //👀
+  ],
 }
 ```
 
-1. Creates a table `account` with the columns `id`, `name` and `closer_person_id`.
-1. Creates relationships as `closerPerson`.
-1. Returns `JSONAPI` from `GET /account/1?include=closerPerson` like:
+**Database Implications**
 
-```json
-{
-  "jsonapi": {
-    "version": "1.0"
-  },
-  "data": {
-    "type": "Account",
-    "id": "12-22",
-    "attributes": {
-      "name": "Bitovi"
-    },
-    "relationships": {
-      "closerPerson": {
-        "data": {
-          "type": "SalesPerson",
-          "id": "332-222"
-        }
+- Assumes a column `opening_sales_person_id` in the `account` table❗
+
+**API Implications**
+
+- `openedAccounts` will be used in the include query parameter like
+  `GET /sales-persons?include=openedAccounts`
+- `openedAccounts` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "SalesPerson",
+      id: "1",
+      attributes: { firstName: "Roye" },
+      relationships: {
+        openedAccounts: [{type: "Account", id: "456"}] //👀
       }
-    },
-    "included": [
-      {
-        "type": "SalesPerson",
-        "id": "332-222",
-        "attributes": {
-          "firstName": "John"
-        }
-      }
-    ]
+    }
   }
-}
-```
+  ```
 
-only `as` and `foreignKey` are used:
+
+### relationships.belongsToMany
+
+`target` must match a `Schema.name` and be _singular PascalCase_.
+
+The following creates a belongsToMany relationship
+that acts similar to `hasMany`.
 
 ```js
-const Account = {
-  name: "Account",
+const SalesPerson = {
+  name: "SalesPerson",
   attributes: {
-    name: "STRING",
+    firstName: "STRING",
   },
-  belongsTo: [{ target: "SalesPerson", options: { as: "closer", foreignKey: "finisher_id" } }],
+  belongsToMany: [
+    {
+      target: "Account" //👀
+    }
+  ],
 }
 ```
 
-1. Creates a table `sales_person` with the columns `id` and `first_name` and a table `account` with the columns `id`, `name` and `finisher_id`.
-1. Creates relationships as `closerPerson`.
-1. Returns `JSONAPI` from `GET /account/1?include=closer` like:
+**Database Implications**
 
-```json
-{
-  "jsonapi": {
-    "version": "1.0"
-  },
-  "data": {
-    "type": "Account",
-    "id": "12-22",
-    "attributes": {
-      "name": "Bitovi"
-    },
-    "relationships": {
-      "closer": {
-        "data": {
-          "type": "SalesPerson",
-          "id": "332-222"
-        }
+- Assumes a table `account_sales_person` exists with `sales_person_id` and `account_id` columns.  The table is `account_sales_person` because account is first alphabetically.
+
+**API Implications**
+
+- `accounts` will be available in the include query parameter like
+  `GET /sales-persons?include=accounts`
+- `accounts` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "SalesPerson",
+      id: "1",
+      attributes: { firstName: "Roye" },
+      relationships: {
+        accounts: [{type: "Account", id: "456"}] //👀
       }
-    },
-    "included": [
-      {
-        "type": "SalesPerson",
-        "id": "332-222",
-        "attributes": {
-          "firstName": "John"
-        }
-      }
-    ]
+    }
   }
-}
-```
+  ```
 
-### For `HasMany` relationships …
+The implied through table will also be available.
 
-only `as` is used:
-
-```js
-const Account = {
-  name: "Account",
-  attributes: {
-    name: "STRING",
-  },
-  hasMany: [{ target: "SalesPerson", options: { as: "managers" } }],
-}
-```
-
-1. Creates a table `sales_person` with the columns `id`, `first_name` and `account_id`, and a table `account` with the columns `id` and `name`.
-1. Creates relationships as `managers`.
-1. Returns `JSONAPI` from `GET /account/1?include=managers` like:
-
-```json
-{
-  "jsonapi": {
-    "version": "1.0"
-  },
-  "data": {
-    "type": "Account",
-    "id": "12-22",
-    "attributes": {
-      "name": "Bitovi"
-    },
-    "relationships": {
-      "managers": [
-        {
-          "data": {
-            "type": "SalesPerson",
-            "id": "332-222"
-          }
-        }
-      ]
-    },
-    "included": [
-      {
-        "type": "SalesPerson",
-        "id": "332-222",
-        "attributes": {
-          "firstName": "John"
-        }
+- `accounts` will be available in the include query parameter like
+  `GET /sales-persons?include=accounts`
+- `accounts` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "SalesPerson",
+      id: "1",
+      attributes: { firstName: "Roye" },
+      relationships: {
+        accounts: [{type: "Account", id: "456"}] //👀
       }
-    ]
+    }
   }
-}
-```
+  ```
 
-only `as` and `foreignKey` are used:
 
-```js
-const Account = {
-  name: "Account",
-  attributes: {
-    name: "STRING",
-  },
-  hasMany: [{ target: "SalesPerson", options: { as: "closer", foreignKey: "finisher_id" } }],
-}
-```
+### relationships.belongsToMany.options.through
 
-1. Creates a table `sales_person` with the columns `id` and `first_name` and a table `account` with the columns `id`, `name` and `finisher_id`.
-1. Creates relationships as `closerPerson`.
-1. Returns `JSONAPI` from `GET /account/1?include=closer` like:
-
-```json
-{
-  "jsonapi": {
-    "version": "1.0"
-  },
-  "data": {
-    "type": "Account",
-    "id": "12-22",
-    "attributes": {
-      "name": "Bitovi"
-    },
-    "relationships": {
-      "closer": {
-        "data": {
-          "type": "SalesPerson",
-          "id": "332-222"
-        }
-      }
-    },
-    "included": [
-      {
-        "type": "SalesPerson",
-        "id": "332-222",
-        "attributes": {
-          "firstName": "John"
-        }
-      }
-    ]
-  }
-}
-```
-
-### For `BelongsToMany` relationships …
-
-only `as` and `through` are used:
+`through` must be _singular PascalCase_.
 
 ```js
 const SalesPerson = {
@@ -314,70 +347,23 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {
-        as: "accounts",
-        through: "AccountSalesPerson",
-      },
-    },
-  ],
-}
-
-const Account = {
-  name: "Account",
-  attributes: {
-    name: "STRING",
-  },
-  belongsToMany: [
-    {
-      target: "SalesPerson",
-      options: {
-        as: "participants",
-        through: "AccountSalesPerson",
-      },
-    },
+      options: {through: "SalesAccounts"}
+    }
   ],
 }
 ```
 
-1. Creates a table `sales_person` with the columns `id`, `first_name` and a table `account` with the columns `id` and `name` and a junction table with the columns `sales_person_id` and `account_id`.
-1. Creates relationships as `accounts` and `participants`.
-1. Returns `JSONAPI` from `GET /account/1?include=participants` like:
+**Database Implications**
 
-```json
-{
-  "jsonapi": {
-    "version": "1.0"
-  },
-  "data": {
-    "type": "Account",
-    "id": "12-22",
-    "attributes": {
-      "name": "Bitovi"
-    },
-    "relationships": {
-      "participants": [
-        {
-          "data": {
-            "type": "SalesPerson",
-            "id": "332-222"
-          }
-        }
-      ]
-    },
-    "included": [
-      {
-        "type": "SalesPerson",
-        "id": "332-222",
-        "attributes": {
-          "firstName": "John"
-        }
-      }
-    ]
-  }
-}
-```
+- Assumes a `sales_accounts` table exists with `sales_person_id` and `account_id` columns.  
 
-`as`, `through`, `foreignKey` and `otherKey` are used:
+**API Implications**
+
+This does not change the API behavior.
+
+### relationships.belongsToMany.options.as
+
+`as` must be _plural camelCase_.
 
 ```js
 const SalesPerson = {
@@ -388,69 +374,88 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {
-        as: "accounts",
-        through: "AccountSalesPerson",
-        foreignKey: "participant_id",
-        otherKey: "managed_account_id",
-      },
-    },
+      options: {as: "salesAccounts"}
+    }
   ],
 }
+```
 
-const Account = {
-  name: "Account",
+**Database Implications**
+
+This does not change the Database behavior.
+
+**API Implications**
+
+- `salesAccounts` will be available in the include query parameter like
+  `GET /sales-persons?include=salesAccounts`
+- `salesAccounts` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "SalesPerson",
+      id: "1",
+      attributes: { firstName: "Roye" },
+      relationships: {
+        salesAccounts: [{type: "Account", id: "456"}] //👀
+      }
+    }
+  }
+  ```
+
+### relationships.belongsToMany.options.foreignKey
+
+`foreignKey` must be _singular snake_case_.
+
+```js
+const SalesPerson = {
+  name: "SalesPerson",
   attributes: {
-    name: "STRING",
+    firstName: "STRING",
   },
   belongsToMany: [
     {
-      target: "SalesPerson",
-      options: {
-        as: "participants",
-        through: "AccountSalesPerson",
-        foreignKey: "managed_account_id",
-        otherKey: "participant_id",
-      },
-    },
+      target: "Account",
+      options: {foreignKey: "seller_id"}
+    }
   ],
 }
 ```
 
-1. Creates a table `sales_person` with the columns `id`, `first_name` and a table `account` with the columns `id` and `name` and a junction table with the columns `participant_id` and `managed_account_id`.
-1. Creates relationships as `accounts` and `participants`.
-1. Returns `JSONAPI` from `GET /account/1?include=participants` like:
+**Database Implications**
 
-```json
-{
-  "jsonapi": {
-    "version": "1.0"
+- Assumes a table `account_sales_person` exists with `seller_id` and `account_id` columns.  
+
+**API Implications**
+
+This does not change the API behavior.
+
+### relationships.belongsToMany.options.otherKey
+
+`otherKey` must be _singular snake_case_.
+
+```js
+const SalesPerson = {
+  name: "SalesPerson",
+  attributes: {
+    firstName: "STRING",
   },
-  "data": {
-    "type": "Account",
-    "id": "12-22",
-    "attributes": {
-      "name": "Bitovi"
-    },
-    "relationships": {
-      "participants": [
-        {
-          "data": {
-            "type": "SalesPerson",
-            "id": "332-222"
-          }
-        }
-      ]
-    },
-    "included": [
-      {
-        "type": "SalesPerson",
-        "id": "332-222",
-        "attributes": {
-          "firstName": "John"
-        }
-      }
-    ]
-  }
+  belongsToMany: [
+    {
+      target: "Account",
+      options: {otherKey: "sold_account_id"}
+    }
+  ],
 }
 ```
+
+**Database Implications**
+
+- Assumes a table `account_sales_person` exists with `sales_person_id` and `sold_account_id` columns.  
+
+**API Implications**
+
+This does not change the API behavior.
+
+## To Be Defined 
+
+- How to load through tables
