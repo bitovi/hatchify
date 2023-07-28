@@ -59,6 +59,24 @@ export function buildFindOptions(
     })
   }
 
+  if (ops.data?.order && Array.isArray(ops.data.order)) {
+    for (const orderField in ops.data.order) {
+      const [attribute] = orderField
+      if (attribute !== "id" && !model.attributes[attribute]) {
+        ops.errors.push(
+          new UnexpectedValueError({
+            detail: `URL must have 'sort' as comma separated values containing one or more of ${Object.keys(
+              model.attributes,
+            )
+              .map((attribute) => `'${attribute}'`)
+              .join(", ")}.`,
+            parameter: "sort",
+          }),
+        )
+      }
+    }
+  }
+
   if (ops.errors.length) throw ops.errors
 
   if (!ops.data.where) {
