@@ -35,7 +35,7 @@ describe("builder", () => {
           offset: 10,
           where: { name: { [Op.like]: "%laundry%" } },
           order: [
-            ["date", "DESC"],
+            ["due_date", "DESC"],
             ["name", "ASC"],
           ],
         },
