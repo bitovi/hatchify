@@ -129,14 +129,14 @@ Then, we'll extend the app to handle relationships:
    import React from "react"
    import ReactDOM from "react-dom/client"
    import App from "./App.tsx"
-   
+
    // 👀
    if (process.env.NODE_ENV === "development") {
      await import("./mocks/browser").then(({ worker }) => {
        worker.start()
      })
    }
-   
+
    ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
      <React.StrictMode>
        <App />
@@ -150,7 +150,7 @@ Now we're ready to start utilizing react-rest.
 
 <a id="listing-creating-and-deleting-todos"></a>
 
-### 👉Listing, creating, and deleting todos
+### Listing, creating, and deleting todos
 
 The following makes a simple todo app that loads todos from `/api/todos` and allows the user to create and delete todos.
 
@@ -323,7 +323,7 @@ return (
 )
 ```
 
-> Note: You might be unfamiliar with calling a hook as a method on an object (like we're doing above) but it's perfectly valid! A hook is a hook, and must follow the rules of hooks, even when it's a method.
+> Note: You might be unfamiliar with calling a hook as a method on an object (like we're doing above) but it's perfectly valid! A hook is a hook, and it still follows the rules of hooks, even when it's a method.
 
 <a id="creating"></a>
 
@@ -353,7 +353,6 @@ return (
       <button disabled={createState.isLoading} type="button" onClick={() => createTodo({ attributes: { name: todoName } })}>
         {createState.isLoading ? "submitting..." : "submit"}
       </button>
-      {/* maybe draw attention to this function call ^ */}
     </div>
     <table>
       <thead>
@@ -514,11 +513,98 @@ const [todos, todosMeta] = hatchedReactRest.Todo.useAll({ include: ["user"] }) /
 
 Your `App.tsx` should now look like this:
 
-[ADD CODE BLOCK]
+```tsx
+// App.tsx
+import { useState } from "react"
+import type { Schema } from "@hatchifyjs/react-rest"
+import hatchifyReactRest from "@hatchifyjs/react-rest"
+import createClient from "@hatchifyjs/rest-client-jsonapi"
+
+const Todo: Schema = {
+  name: "Todo",
+  displayAttribute: "name",
+  attributes: {
+    name: "string",
+  },
+  relationships: {
+    user: {
+      type: "one",
+      schema: "User",
+    },
+  },
+}
+
+const User: Schema = {
+  name: "User",
+  displayAttribute: "name",
+  attributes: {
+    name: "string",
+  },
+  relationships: {
+    todos: {
+      type: "many",
+      schema: "Todo",
+    },
+  },
+}
+
+const jsonapi = createClient("/api", {
+  Todo: { endpoint: "todos" },
+  User: { endpoint: "users" },
+})
+
+const hatchedReactRest = hatchifyReactRest({ Todo, User }, jsonapi)
+
+function App() {
+  const [todos, todosMeta] = hatchedReactRest.Todo.useAll({ include: ["user"] })
+  const [createTodo, createState] = hatchedReactRest.Todo.useCreateOne()
+  const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
+  const [todoName, setTodoName] = useState("")
+
+  if (todosMeta.isLoading) {
+    return <div>loading...</div>
+  }
+
+  return (
+    <div>
+      <div>
+        <input type="text" value={todoName} onChange={(e) => setTodoName(e.target.value)} />
+        <button
+          disabled={createState.isLoading}
+          type="button"
+          onClick={() => {
+            createTodo({ attributes: { name: todoName } })
+            setTodoName("")
+          }}
+        >
+          {createState.isLoading ? "submitting..." : "submit"}
+        </button>
+      </div>
+      <table>
+        <thead>
+          {todos.map((todo) => (
+            <tr key={todo.id}>
+              <td>{todo.name}</td>
+              <td>{todo.user?.name}</td>
+              <td>
+                <button disabled={deleteState.isLoading} type="button" onClick={() => deleteTodo(todo.id)}>
+                  delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </thead>
+      </table>
+    </div>
+  )
+}
+
+export default App
+```
 
 And your app should now look like this:
 
-[ADD SCREENSHOT]
+[👉ADD SCREENSHOT]
 
 <a id="fetching-users-and-populating-a-select"></a>
 
@@ -530,7 +616,7 @@ Now that we've added the User schema into our `createClient` and `hatchifyReactR
 
 ```tsx
 // App.tsx: App component
-const [users, usersState] = hatchedReactRest.User.useAll()
+const [users, usersMeta] = hatchedReactRest.User.useAll()
 ```
 
 **✏️ Add a stateful select input that has users as options:**
@@ -756,7 +842,6 @@ Sometimes we need to fetch data outside of our React components. For these cases
 **Subscriptions**
 
 To fire a callback whenever data is manipulated, you can use the subscribe functions:
-why are we naming this 'unsubscribe'?
 
 ```ts
 const unsubscribe = hatchedReactRest.Todo.subscribeToAll((data) => {
@@ -769,3 +854,5 @@ const unsubscribe = hatchedReactRest.Todo.subscribeToOne((data) => {
   console.log("changes:", data)
 }, id)
 ```
+
+> Note: we named the return of the subscription method `unsubscribe` above because it's a function that can be called to do just that; i.e. `unsubscribe()`
