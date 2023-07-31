@@ -25,7 +25,10 @@ const App: React.FC = () => {
 
   return (
     <MuiProvider>
-      <button onClick={() => alert(`action on [${selected.join(",")}]`)}>
+      <button
+        onClick={() => alert(`action on [${selected.join(",")}]`)}
+        style={{ margin: 10 }}
+      >
         action
       </button>
       <TodoList onSelectedChange={(ids: string[]) => setSelected(ids)}>

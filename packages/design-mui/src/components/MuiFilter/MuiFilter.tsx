@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef, useState } from "react"
+import { forwardRef, useRef, useState } from "react"
 import {
   Button,
   InputLabel,
@@ -22,6 +22,7 @@ interface MuiFilterRowProps {
   setOperator: (op: string) => void
   value: string
   setValue: (value: string) => void
+  setFilter: (filterBy: Filter) => void
 }
 
 interface PopoverProps extends MuiFilterRowProps {
@@ -29,6 +30,7 @@ interface PopoverProps extends MuiFilterRowProps {
   setOpen: (open: boolean) => void
   filter: Filter
   setFilter: (filterBy: Filter) => void
+  clearFilter: () => void
 }
 
 const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
@@ -39,6 +41,7 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
   setOperator,
   value,
   setValue,
+  setFilter,
 }) => {
   return (
     <Grid container spacing={2} padding={"1.25rem"} width={"31.25rem"}>
@@ -50,7 +53,10 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
           labelId="select-column-label"
           id="simple-select"
           value={column}
-          onChange={(ev) => setColumn(ev.target.value)}
+          onChange={(ev) => {
+            applyFilter(setFilter, ev.target.value, value, operator)
+            setColumn(ev.target.value)
+          }}
         >
           {columnOptions.map((item) => (
             <MenuItem key={item} value={item}>
@@ -67,10 +73,13 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
           labelId="select-operator-label"
           id="simple-select"
           value={operator}
-          onChange={(ev) => setOperator(ev.target.value)}
+          onChange={(ev) => {
+            applyFilter(setFilter, column, value, ev.target.value)
+            setOperator(ev.target.value)
+          }}
         >
-          <MenuItem value="$eq">equals</MenuItem>
           <MenuItem value="ilike">contains</MenuItem>
+          <MenuItem value="$eq">equals</MenuItem>
           <MenuItem value="empty">empty</MenuItem>
         </Select>
       </Grid>
@@ -82,7 +91,10 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
               placeholder="Filter Value"
               id="value-field"
               variant="standard"
-              onChange={(ev) => setValue(ev.target.value)}
+              onChange={(ev) => {
+                applyFilter(setFilter, column, ev.target.value, operator)
+                setValue(ev.target.value)
+              }}
               value={value}
             />
           </>
@@ -106,17 +118,10 @@ const MuiFilterPopover = forwardRef<HTMLButtonElement, PopoverProps>(
       setOperator,
       setValue,
       setFilter,
+      clearFilter,
     },
     ref,
   ) => {
-    const clearFilter = () => {
-      setOpen(false)
-      setColumn("")
-      setOperator("")
-      setValue("")
-      setFilter(undefined)
-    }
-
     return (
       <Popover
         anchorEl={
@@ -144,6 +149,7 @@ const MuiFilterPopover = forwardRef<HTMLButtonElement, PopoverProps>(
           columnOptions={columnOptions}
           value={value}
           setValue={setValue}
+          setFilter={setFilter}
         />
         <Button
           variant="text"
@@ -169,20 +175,19 @@ export const MuiFilter: React.FC<XCollectionProps> = ({
     )
     .map(([key]) => key)
 
-  const isMounted = useRef<boolean>(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)
-  const [operator, setOperator] = useState<string>("$eq")
+  const [operator, setOperator] = useState<string>("ilike")
   const [column, setColumn] = useState<string>(stringAttributes[0])
   const [value, setValue] = useState<string>("")
 
-  useEffect(() => {
-    if (isMounted.current) {
-      applyFilter(setFilter, column, value, operator)
-    } else {
-      isMounted.current = true
-    }
-  }, [setFilter, column, value, operator])
+  const clearFilter = () => {
+    setOpen(false)
+    setColumn(stringAttributes[0])
+    setOperator("ilike")
+    setValue("")
+    setFilter(undefined)
+  }
 
   return (
     <>
@@ -199,6 +204,7 @@ export const MuiFilter: React.FC<XCollectionProps> = ({
         setValue={setValue}
         filter={filter}
         setFilter={setFilter}
+        clearFilter={clearFilter}
       />
       <Button
         ref={buttonRef}
@@ -212,6 +218,17 @@ export const MuiFilter: React.FC<XCollectionProps> = ({
   )
 }
 
-const applyFilter = debounce((setFilter, column, value, operator) => {
-  setFilter([{ [column]: value, operator: operator }])
-}, 500)
+const applyFilter = debounce(
+  (
+    setFilter: (filterBy: Filter) => void,
+    column: string,
+    value: string,
+    operator: string,
+  ) => {
+    if (operator !== "empty" && !value) setFilter(undefined)
+    if (operator === "empty") setFilter([{ [column]: null, operator }])
+    if (value === "") setFilter(undefined)
+    else setFilter([{ [column]: value, operator: operator }])
+  },
+  500,
+)
