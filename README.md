@@ -30,7 +30,7 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Rendering an empty list](#rendering-an-empty-list)
   - [Adding checkboxes to the list](#adding-checkboxes-to-the-list)
   - [Learning more features of the Hatchify API](#learning-more-features-of-the-hatchify-api)
-- [Troubleshooting / Known issues](#troubleshooting-Known-issues)
+- [Troubleshooting / Known issues](#troubleshooting--known-issues)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
