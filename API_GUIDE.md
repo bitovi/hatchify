@@ -10,7 +10,7 @@ Just like Sequelize, Hatchify supports the creating of virtual fields through th
 
 1. Update the file "User.ts" inside of the schemas directory to have a virtual field `hasTodos`, which uses Sequelize's `VIRTUAL` type and `include`s any related data necessary to compute the field's value:
 
-```bash
+```js
 // hatchify-app/schemas/User.ts
 import { DataTypes } from "@hatchifyjs/koa"
 import type { Model } from "sequelize"
@@ -37,7 +37,7 @@ export const User = {
 3. Create a new Todo
 
 ```bash
-curl 'http://localhost:3000/api/todos' \
+$ curl 'http://localhost:3000/api/todos' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
   "data": {
@@ -55,7 +55,7 @@ curl 'http://localhost:3000/api/todos' \
 4. Create a new User that owns the Todo
 
 ```bash
-curl 'http://localhost:3000/api/users' \
+$ curl 'http://localhost:3000/api/users' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
   "data": {
@@ -77,12 +77,14 @@ curl 'http://localhost:3000/api/users' \
 }'
 ```
 
+```bash
 { "data": { "type": "User", "attributes": {}, "relationships": { "todos": { "data": [{ "type": "Todo", "id": "101" }] } } } }
+```
 
 5. Create a new User that does not own a Todo
 
 ```bash
-curl 'http://localhost:3000/api/users' \
+$ curl 'http://localhost:3000/api/users' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
   "data": {
@@ -98,7 +100,7 @@ curl 'http://localhost:3000/api/users' \
    Virtual fields are not included by default, you'll need to explicitly request them in your URL.
 
 ```bash
-curl 'http://localhost:3000/api/users?fields%5BUser%5D=name,hasTodos&include=todos' --header 'Content-Type: application/vnd.api+json'
+$ curl 'http://localhost:3000/api/users?fields%5BUser%5D=name,hasTodos&include=todos' --header 'Content-Type: application/vnd.api+json'
 ```
 
 You will get the appropriate data for each user.
