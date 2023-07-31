@@ -19,6 +19,7 @@
     - [Fetching users and populating a select](#fetching-users-and-populating-a-select)
     - [Creating a todo with a user](#creating-a-todo-with-a-user)
 - [Alternatives to hooks](#alternatives-to-hooks)
+  - [Subscriptions](#subscriptions)
 
 <a id="what-is-react-rest?"></a>
 
@@ -123,7 +124,7 @@ Then, we'll extend the app to handle relationships:
    curl -o src/mocks/browser.ts https://raw.githubusercontent.com/bitovi/hatchify/main/example/react-rest/src/mocks/browser.ts
    ```
 
-6. To start the mock service worker, replace the contents of `src/main.tsx` with:
+6. To start the mock service worker, replace the contents of `src/main.tsx` with the following:
 
    ```tsx
    import React from "react"
@@ -295,7 +296,7 @@ const hatchedReactRest = hatchifyReactRest({ Todo }, jsonapi)
 
 #### Fetching a list
 
-To fetch a list of todos we are using the `useAll` hook from react-rest inside of our `App.tsx`. The object returned from `hatchifyReactRest` will contain a key for each schema passed into it. Off of that key we can pull the `useAll` hook which will fetch us a list of todos. Any time a user mutates a todo (by creating, updating, or deleting), our `useAll` hook will re-fetch the latest data.
+To fetch a list of todos we are using the `useAll` hook from react-rest inside of our `App.tsx`. The object returned from `hatchifyReactRest` will contain a key for each schema passed into it. Off of that key we can call the `useAll` hook which will fetch us a list of todos. Any time a user mutates a todo (by creating, updating, or deleting), our `useAll` hook will re-fetch the latest data.
 
 The return from `useAll` is an array where the first index contains an array of todos and the second index contains any metadata about our request, such as whether we’re fetching data or if we received an error.
 
@@ -639,7 +640,7 @@ const [selectedUser, setSelectedUser] = useState("")
 
 {/* 👀 */}
 <select
-  disabled={usersState.isLoading}
+  disabled={usersMeta.isLoading}
   value={selectedUser}
   onChange={(e) => setSelectedUser(e.target.value)}
 >
@@ -683,7 +684,7 @@ Now that we have a `select` populated with users, we can create a todo with a us
   onChange={(e) => setTodoName(e.target.value)}
 />
 <select
-  disabled={usersState.isLoading}
+  disabled={usersMeta.isLoading}
   value={selectedUser}
   onChange={(e) => setSelectedUser(e.target.value)}
 >
@@ -762,7 +763,7 @@ function App() {
   const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
   const [todoName, setTodoName] = useState("")
 
-  const [users, usersState] = hatchedReactRest.User.useAll()
+  const [users, usersMeta] = hatchedReactRest.User.useAll()
   const [selectedUser, setSelectedUser] = useState("")
 
   if (todosMeta.isLoading) {
@@ -773,7 +774,7 @@ function App() {
     <div>
       <div>
         <input type="text" value={todoName} onChange={(e) => setTodoName(e.target.value)} />
-        <select disabled={usersState.isLoading} value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+        <select disabled={usersMeta.isLoading} value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
           <option value="">select user</option>
           {users.map((user) => (
             <option key={user.id} value={user.id}>
@@ -839,7 +840,9 @@ Sometimes we need to fetch data outside of our React components. For these cases
 | useAll       | findAll   |
 | useOne       | findOne   |
 
-**Subscriptions**
+<a id="subscriptions"></a>
+
+### Subscriptions
 
 To fire a callback whenever data is manipulated, you can use the subscribe functions:
 
