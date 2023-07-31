@@ -604,7 +604,7 @@ export default App
 
 And your app should now look like this:
 
-[👉ADD SCREENSHOT]
+<img width="328" alt="Screenshot 2023-07-31 at 3 17 19 PM" src="https://github.com/bitovi/hatchify/assets/60432429/9e01e21b-9f8c-49ce-a2e0-1248ce63693b">
 
 <a id="fetching-users-and-populating-a-select"></a>
 
