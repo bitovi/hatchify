@@ -629,15 +629,11 @@ const [selectedUser, setSelectedUser] = useState("")
 
 ```tsx
 // App.tsx: App component
-
-...
-
 <input
   type="text"
   value={todoName}
   onChange={(e) => setTodoName(e.target.value)}
 />
-
 {/* 👀 */}
 <select
   disabled={usersMeta.isLoading}
@@ -651,7 +647,6 @@ const [selectedUser, setSelectedUser] = useState("")
     </option>
   ))}
 </select>
-
 <button
   disabled={createState.isLoading}
   type="button"
@@ -664,8 +659,6 @@ const [selectedUser, setSelectedUser] = useState("")
 >
   {createState.isLoading ? "submitting..." : "submit"}
 </button>
-
-...
 ```
 
 <a id="creating-a-todo-with-a-user"></a>
