@@ -26,7 +26,11 @@ Unlike code generation tools—which allow you to write your schema and then gen
 - [Frontend with React & MUI](#frontend-with-react--mui)
   - [Rendering a List](#rendering-a-list)
 - [Next Steps](#next-steps)
+  - [Using PostgresQL DB](#using-postgresql-db)
   - [Rendering an empty list](#rendering-an-empty-list)
+  - [Adding checkboxes to the list](#adding-checkboxes-to-the-list)
+  - [Learning more features of the Hatchify API](#learning-more-features-of-the-hatchify-api)
+- [Troubleshooting / Known issues](#troubleshooting-Known-issues)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -567,7 +571,7 @@ well-defined schemas to create a database, a running backend with REST endpoints
 
 # Next Steps
 
-## Using Postgres DB
+## Using PostgresQL DB
 
 You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but we've created a tutorial specifically for using Postgres: [Using Postgres DB](./doc/next-steps/using-postgres-db.md).
 
@@ -621,6 +625,10 @@ const App: React.FC = () => {
   )
 }
 ```
+
+## Learning more features of the Hatchify API
+
+See the [API Guide](./API_GUIDE.md) for more API topics.
 
 # Troubleshooting / Known issues
 
