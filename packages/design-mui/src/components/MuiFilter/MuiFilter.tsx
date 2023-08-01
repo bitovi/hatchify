@@ -13,7 +13,6 @@ import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import type { Attribute, Filter } from "@hatchifyjs/rest-client"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
-import { MuiDatePicker } from "../MuiDatePicker/MuiDatePicker"
 
 interface MuiFilterRowProps {
   attributes: { [field: string]: Attribute }
@@ -35,7 +34,16 @@ interface PopoverProps extends MuiFilterRowProps {
   clearFilter: () => void
 }
 
-const operatorOptions = {
+interface Option {
+  operator: string
+  text: string
+}
+
+interface OperatorOption {
+  [key: string]: Option[]
+}
+
+const operatorOptions: OperatorOption = {
   string: [
     { operator: "ilike", text: "contains" },
     { operator: "$eq", text: "equals" },
@@ -53,6 +61,26 @@ const operatorOptions = {
   ],
 }
 
+//change the operator if the selected operator is not compatible with the new column type
+const checkOperator = (
+  col: string,
+  op: string,
+  attributes: {
+    [field: string]: Attribute
+  },
+) => {
+  const proposedType = attributes[col] as string
+
+  const availableOptions = operatorOptions[proposedType]
+  const optionAvailable = availableOptions.find((option) => {
+    if (option.operator === op) {
+      return option
+    }
+  })
+
+  return optionAvailable ?? availableOptions[0]
+}
+
 const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
   attributes,
   columnOptions,
@@ -67,20 +95,6 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
   const selectedType = attributes[column] as string
   //when selectedtype changes, need to change the Operator value to the first operator in OperatorOptions types
 
-  //change the operator if the selected operator is not compatible with the new column type
-  const checkOperator = (col: string, op: string) => {
-    const proposedType = attributes[col] as string
-
-    const availableOptions = operatorOptions[proposedType]
-    const optionAvailable = availableOptions.find((option) => {
-      if (option.operator === op) {
-        return option
-      }
-    })
-
-    return optionAvailable ?? availableOptions[0]
-  }
-
   return (
     <Grid container spacing={2} padding={"1.25rem"} width={"43.25rem"}>
       <Grid item xs={4}>
@@ -92,7 +106,7 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
           id="simple-select"
           value={column}
           onChange={(ev) => {
-            const op = checkOperator(ev.target.value, operator)
+            const op = checkOperator(ev.target.value, operator, attributes)
             applyFilter(setFilter, ev.target.value, value, "")
             setOperator(op.operator)
             setColumn(ev.target.value)
@@ -222,17 +236,22 @@ export const MuiFilter: React.FC<XCollectionProps> = ({
     )
     .map(([key]) => key)
 
+  const defaultOperator = checkOperator(
+    stringDateAttributes[0],
+    "ilike",
+    allSchemas[schemaName].attributes,
+  )
+
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)
-  const [operator, setOperator] = useState<string>("ilike")
+  const [operator, setOperator] = useState<string>(defaultOperator.operator)
   const [column, setColumn] = useState<string>(stringDateAttributes[0])
   const [value, setValue] = useState<string>("")
 
-  //TODO probably need to check the type before setting operator here.
   const clearFilter = () => {
     setOpen(false)
     setColumn(stringDateAttributes[0])
-    setOperator("ilike")
+    setOperator(defaultOperator.operator)
     setValue("")
     setFilter(undefined)
   }
@@ -275,8 +294,10 @@ const applyFilter = debounce(
     operator: string,
   ) => {
     if (operator !== "empty" && !value) setFilter(undefined)
-    if (operator === "empty") setFilter([{ [column]: null, operator }])
-    if (value === "") setFilter(undefined)
+    if (operator === "empty" || operator === "nempty")
+      setFilter([{ [column]: null, operator }])
+    if (value === "" && operator !== "empty" && operator !== "nempty")
+      setFilter(undefined)
     else setFilter([{ [column]: value, operator: operator }])
   },
   500,
