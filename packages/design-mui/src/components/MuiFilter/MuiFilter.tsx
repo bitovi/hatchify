@@ -39,13 +39,11 @@ const operatorOptions = {
   string: [
     { operator: "ilike", text: "contains" },
     { operator: "$eq", text: "equals" },
-    { operator: "$ne", text: "does not equal" },
     { operator: "empty", text: "is empty" },
     { operator: "nempty", text: "is not empty" },
   ],
   date: [
     { operator: "$eq", text: "is" },
-    { operator: "$ne", text: "is not" },
     { operator: "$gt", text: "is after" },
     { operator: "$gte", text: "is on or after" },
     { operator: "$lt", text: "is before" },
@@ -131,26 +129,17 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
         {operator !== "empty" && operator !== "nempty" && (
           <>
             <InputLabel id="value-field-label">Value</InputLabel>
-            {selectedType === "date" ? (
-              <MuiDatePicker
-                value={value}
-                handleChange={(ev) => {
-                  applyFilter(setFilter, column, ev.target.value, operator)
-                  setValue(ev.target.value)
-                }}
-              />
-            ) : (
-              <TextField
-                placeholder="Filter Value"
-                id="value-field"
-                variant="standard"
-                onChange={(ev) => {
-                  applyFilter(setFilter, column, ev.target.value, operator)
-                  setValue(ev.target.value)
-                }}
-                value={value}
-              />
-            )}
+            <TextField
+              placeholder="Filter Value"
+              id="value-field"
+              variant="standard"
+              type={selectedType === "date" ? "datetime-local" : "text"}
+              onChange={(ev) => {
+                applyFilter(setFilter, column, ev.target.value, operator)
+                setValue(ev.target.value)
+              }}
+              value={value}
+            />
           </>
         )}
       </Grid>
