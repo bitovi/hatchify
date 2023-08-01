@@ -10,11 +10,13 @@ import {
   debounce,
 } from "@mui/material"
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
-import type { Filter } from "@hatchifyjs/rest-client"
+import type { Attribute, Filter } from "@hatchifyjs/rest-client"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
+import { MuiDatePicker } from "../MuiDatePicker/MuiDatePicker"
 
 interface MuiFilterRowProps {
+  attributes: { [field: string]: Attribute }
   columnOptions: string[]
   column: string
   setColumn: (col: string) => void
@@ -33,7 +35,28 @@ interface PopoverProps extends MuiFilterRowProps {
   clearFilter: () => void
 }
 
+const operatorOptions = {
+  string: [
+    { operator: "ilike", text: "contains" },
+    { operator: "$eq", text: "equals" },
+    { operator: "$ne", text: "does not equal" },
+    { operator: "empty", text: "is empty" },
+    { operator: "nempty", text: "is not empty" },
+  ],
+  date: [
+    { operator: "$eq", text: "is" },
+    { operator: "$ne", text: "is not" },
+    { operator: "$gt", text: "is after" },
+    { operator: "$gte", text: "is on or after" },
+    { operator: "$lt", text: "is before" },
+    { operator: "$lte", text: "is on or before" },
+    { operator: "empty", text: "is empty" },
+    { operator: "nempty", text: "is not empty" },
+  ],
+}
+
 const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
+  attributes,
   columnOptions,
   column,
   setColumn,
@@ -43,8 +66,25 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
   setValue,
   setFilter,
 }) => {
+  const selectedType = attributes[column] as string
+  //when selectedtype changes, need to change the Operator value to the first operator in OperatorOptions types
+
+  //change the operator if the selected operator is not compatible with the new column type
+  const checkOperator = (col: string, op: string) => {
+    const proposedType = attributes[col] as string
+
+    const availableOptions = operatorOptions[proposedType]
+    const optionAvailable = availableOptions.find((option) => {
+      if (option.operator === op) {
+        return option
+      }
+    })
+
+    return optionAvailable ?? availableOptions[0]
+  }
+
   return (
-    <Grid container spacing={2} padding={"1.25rem"} width={"31.25rem"}>
+    <Grid container spacing={2} padding={"1.25rem"} width={"43.25rem"}>
       <Grid item xs={4}>
         <InputLabel id="select-column-label">Columns</InputLabel>
         <Select
@@ -54,7 +94,9 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
           id="simple-select"
           value={column}
           onChange={(ev) => {
-            applyFilter(setFilter, ev.target.value, value, operator)
+            const op = checkOperator(ev.target.value, operator)
+            applyFilter(setFilter, ev.target.value, value, "")
+            setOperator(op.operator)
             setColumn(ev.target.value)
           }}
         >
@@ -78,25 +120,37 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
             setOperator(ev.target.value)
           }}
         >
-          <MenuItem value="ilike">contains</MenuItem>
-          <MenuItem value="$eq">equals</MenuItem>
-          <MenuItem value="empty">empty</MenuItem>
+          {operatorOptions[selectedType].map((item) => (
+            <MenuItem key={item.operator} value={item.operator}>
+              {item.text}
+            </MenuItem>
+          ))}
         </Select>
       </Grid>
       <Grid item xs={4}>
-        {operator !== "empty" && (
+        {operator !== "empty" && operator !== "nempty" && (
           <>
             <InputLabel id="value-field-label">Value</InputLabel>
-            <TextField
-              placeholder="Filter Value"
-              id="value-field"
-              variant="standard"
-              onChange={(ev) => {
-                applyFilter(setFilter, column, ev.target.value, operator)
-                setValue(ev.target.value)
-              }}
-              value={value}
-            />
+            {selectedType === "date" ? (
+              <MuiDatePicker
+                value={value}
+                handleChange={(ev) => {
+                  applyFilter(setFilter, column, ev.target.value, operator)
+                  setValue(ev.target.value)
+                }}
+              />
+            ) : (
+              <TextField
+                placeholder="Filter Value"
+                id="value-field"
+                variant="standard"
+                onChange={(ev) => {
+                  applyFilter(setFilter, column, ev.target.value, operator)
+                  setValue(ev.target.value)
+                }}
+                value={value}
+              />
+            )}
           </>
         )}
       </Grid>
@@ -108,6 +162,7 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
 const MuiFilterPopover = forwardRef<HTMLButtonElement, PopoverProps>(
   (
     {
+      attributes,
       columnOptions,
       column,
       open,
@@ -142,6 +197,7 @@ const MuiFilterPopover = forwardRef<HTMLButtonElement, PopoverProps>(
         }}
       >
         <MuiFilterRow
+          attributes={attributes}
           column={column}
           setColumn={setColumn}
           operator={operator}
@@ -169,21 +225,24 @@ export const MuiFilter: React.FC<XCollectionProps> = ({
   filter,
   setFilter,
 }) => {
-  const stringAttributes = Object.entries(allSchemas[schemaName].attributes)
+  const stringDateAttributes = Object.entries(allSchemas[schemaName].attributes)
     .filter(([, attr]) =>
-      typeof attr === "object" ? attr.type === "string" : attr === "string",
+      typeof attr === "object"
+        ? attr.type === "string" || attr.type === "date"
+        : attr === "string" || attr === "date",
     )
     .map(([key]) => key)
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)
   const [operator, setOperator] = useState<string>("ilike")
-  const [column, setColumn] = useState<string>(stringAttributes[0])
+  const [column, setColumn] = useState<string>(stringDateAttributes[0])
   const [value, setValue] = useState<string>("")
 
+  //TODO probably need to check the type before setting operator here.
   const clearFilter = () => {
     setOpen(false)
-    setColumn(stringAttributes[0])
+    setColumn(stringDateAttributes[0])
     setOperator("ilike")
     setValue("")
     setFilter(undefined)
@@ -192,6 +251,7 @@ export const MuiFilter: React.FC<XCollectionProps> = ({
   return (
     <>
       <MuiFilterPopover
+        attributes={allSchemas[schemaName].attributes}
         ref={buttonRef}
         column={column}
         setColumn={setColumn}
@@ -199,7 +259,7 @@ export const MuiFilter: React.FC<XCollectionProps> = ({
         setOpen={setOpen}
         operator={operator}
         setOperator={setOperator}
-        columnOptions={stringAttributes}
+        columnOptions={stringDateAttributes}
         value={value}
         setValue={setValue}
         filter={filter}
