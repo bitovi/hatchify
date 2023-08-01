@@ -83,11 +83,15 @@ export function filterToQueryParam(filterArr: Filter): string {
             .join("&"),
         )
       } else {
-        queries.push(
-          `filter[${key}]${operator === "empty" ? "" : `[${operator}]`}=${
-            operator !== "empty" ? encodeURIComponent(value) : null
-          }`,
-        )
+        if (operator === "empty") {
+          queries.push(`filter[${key}][$eq]=${null}`)
+        } else if (operator === "nempty") {
+          queries.push(`filter[${key}][$ne]=${null}`)
+        } else {
+          queries.push(
+            `filter[${key}][${operator}]=${encodeURIComponent(value)}`,
+          )
+        }
       }
     }
   }
