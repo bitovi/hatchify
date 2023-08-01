@@ -93,7 +93,6 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
   setFilter,
 }) => {
   const selectedType = attributes[column] as string
-  //when selectedtype changes, need to change the Operator value to the first operator in OperatorOptions types
 
   return (
     <Grid container spacing={2} padding={"1.25rem"} width={"43.25rem"}>
