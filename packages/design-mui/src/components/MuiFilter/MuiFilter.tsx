@@ -39,8 +39,8 @@ interface Option {
   text: string
 }
 
-interface OperatorOption {
-  [key: string]: Option[]
+type OperatorOption = {
+  [key in "string" | "date"]: Option[]
 }
 
 const operatorOptions: OperatorOption = {
@@ -62,20 +62,20 @@ const operatorOptions: OperatorOption = {
 }
 
 //change the operator if the selected operator is not compatible with the new column type
-const checkOperator = (
+const getOperator = (
   col: string,
   op: string,
   attributes: {
     [field: string]: Attribute
   },
-) => {
+): Option => {
   const proposedType = attributes[col] as string
 
-  const availableOptions = operatorOptions[proposedType]
+  const availableOptions = operatorOptions[proposedType as keyof OperatorOption]
   const optionAvailable = availableOptions.find((option) => {
     if (option.operator === op) {
       return option
-    }
+    } else return undefined
   })
 
   return optionAvailable ?? availableOptions[0]
@@ -105,7 +105,7 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
           id="simple-select"
           value={column}
           onChange={(ev) => {
-            const op = checkOperator(ev.target.value, operator, attributes)
+            const op = getOperator(ev.target.value, operator, attributes)
             applyFilter(setFilter, ev.target.value, value, "")
             setOperator(op.operator)
             setColumn(ev.target.value)
@@ -131,7 +131,7 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
             setOperator(ev.target.value)
           }}
         >
-          {operatorOptions[selectedType].map((item) => (
+          {operatorOptions[selectedType as keyof OperatorOption].map((item) => (
             <MenuItem key={item.operator} value={item.operator}>
               {item.text}
             </MenuItem>
@@ -235,7 +235,7 @@ export const MuiFilter: React.FC<XCollectionProps> = ({
     )
     .map(([key]) => key)
 
-  const defaultOperator = checkOperator(
+  const defaultOperator = getOperator(
     stringDateAttributes[0],
     "ilike",
     allSchemas[schemaName].attributes,
