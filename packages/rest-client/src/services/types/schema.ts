@@ -1,6 +1,6 @@
 export type AttributeObject =
-  | { type: string }
-  | { type: "enum"; values: string[] }
+  | { type: string; allowNull?: boolean }
+  | { type: "enum"; allowNull?: boolean; values: string[] }
 export type Attribute = string | AttributeObject
 
 export interface Schema {

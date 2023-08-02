@@ -61,6 +61,31 @@ const operatorOptions: OperatorOption = {
   ],
 }
 
+const removeEmptyOptions = (
+  col: string,
+  attributes: {
+    [field: string]: Attribute
+  },
+): Option[] => {
+  const proposedType =
+    typeof attributes[col] === "string" ? attributes[col] : attributes[col].type
+
+  const required =
+    typeof attributes[col] === "string" ? false : !attributes[col].allowNull
+
+  const availableOptions = operatorOptions[
+    proposedType as keyof OperatorOption
+  ].filter((option) => {
+    if (required) {
+      return option.operator !== "empty" && option.operator !== "nempty"
+    } else {
+      return option
+    }
+  })
+
+  return availableOptions
+}
+
 //change the operator if the selected operator is not compatible with the new column type
 const getOperator = (
   col: string,
@@ -69,9 +94,8 @@ const getOperator = (
     [field: string]: Attribute
   },
 ): Option => {
-  const proposedType = attributes[col] as string
+  const availableOptions = removeEmptyOptions(col, attributes)
 
-  const availableOptions = operatorOptions[proposedType as keyof OperatorOption]
   const optionAvailable = availableOptions.find((option) => {
     if (option.operator === op) {
       return option
@@ -92,7 +116,11 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
   setValue,
   setFilter,
 }) => {
-  const selectedType = attributes[column] as string
+  const selectedType =
+    typeof attributes[column] === "string"
+      ? attributes[column]
+      : attributes[column].type
+  const availableOptions = removeEmptyOptions(column, attributes)
 
   return (
     <Grid container spacing={2} padding={"1.25rem"} width={"43.25rem"}>
@@ -131,7 +159,7 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
             setOperator(ev.target.value)
           }}
         >
-          {operatorOptions[selectedType as keyof OperatorOption].map((item) => (
+          {availableOptions.map((item) => (
             <MenuItem key={item.operator} value={item.operator}>
               {item.text}
             </MenuItem>
