@@ -137,7 +137,6 @@ Then we extend the app with relationships.
 
 7. Run `npm run dev`, and open http://localhost:5173/ to see the starter app in action.
 
-
 ![image](https://github.com/bitovi/hatchify/assets/78602/c7445b31-534f-4e03-868a-5ea28b0eabbf)
 
 
@@ -556,27 +555,10 @@ const [selectedUser, setSelectedUser] = useState("")
 
 Now that we have a select populated with users, we can create a todo with a user.
 
-**✏️ Update `createTodo` to pass in the selected user id:**
+**✏️ Update `createTodo` to pass in the selected user id and set the selectedUser back to its default state:**
 
 ```tsx
 // App.tsx: App component
-<input
-  type="text"
-  value={todoName}
-  onChange={(e) => setTodoName(e.target.value)}
-/>
-<select
-  disabled={usersState.isLoading}
-  value={selectedUser}
-  onChange={(e) => setSelectedUser(e.target.value)}
->
-  <option value="">select user</option>
-  {users.map((user) => (
-    <option key={user.id} value={user.id}>
-      {user.name}
-    </option>
-  ))}
-</select>
 <button
   disabled={createState.isLoading}
   type="button"
