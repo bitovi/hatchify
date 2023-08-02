@@ -68,6 +68,53 @@ describe("Error Code Tests", () => {
     })
   })
 
+  it("should return error UNEXPECTED_VALUE error code when receiving wrong type for relationship data (HATCH-172)", async () => {
+    const ERROR_CODE_UNEXPECTED_VALUE = {
+      status: 422,
+      code: "unexpected-value",
+      title: "Unexpected value.",
+      detail: "Payload must have 'data' as an object.",
+      source: {
+        pointer: "/data/relationships/user/data",
+      },
+    }
+
+    const { body: user } = await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: {
+            name: "John Doe",
+          },
+        },
+      },
+    })
+
+    const { status, body } = await fetch("/api/todos", {
+      method: "post",
+      body: {
+        data: {
+          type: "Todo",
+          attributes: {
+            name: "Something B for user 1",
+            due_date: "2024-12-12",
+            importance: 7,
+          },
+          relationships: {
+            user: { data: [{ type: "User", id: user.data.id }] },
+          },
+        },
+      },
+    })
+
+    expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_UNEXPECTED_VALUE],
+    })
+  })
+
   it("should return error UNEXPECTED_VALUE error code when enum is violated (HATCH-199)", async () => {
     const ERROR_CODE_UNEXPECTED_VALUE = {
       status: 422,
@@ -140,111 +187,6 @@ describe("Error Code Tests", () => {
     })
   })
 
-  it("should return error NOT_FOUND error code when trying to delete a non-existing todo (HATCH-212)", async () => {
-    const ERROR_CODE_NOT_FOUND = {
-      status: 404,
-      code: "not-found",
-      title: "Resource not found.",
-      detail: "URL must include an ID of an existing 'Todo'.",
-      source: {
-        parameter: "id",
-      },
-    }
-
-    const response = await fetch("/api/todos/-1", {
-      method: "delete",
-    })
-
-    expect(response).toBeTruthy()
-
-    const { status, body } = response
-
-    expect(status).toBe(ERROR_CODE_NOT_FOUND.status)
-    expect(body).toEqual({
-      jsonapi: { version: "1.0" },
-      errors: [ERROR_CODE_NOT_FOUND],
-    })
-  })
-
-  it("should return error NOT_FOUND error code when trying to update a non-existing todo (HATCH-211)", async () => {
-    const ERROR_CODE_NOT_FOUND = {
-      status: 404,
-      code: "not-found",
-      title: "Resource not found.",
-      detail: "URL must include an ID of an existing 'Todo'.",
-      source: {
-        parameter: "id",
-      },
-    }
-
-    const response = await fetch("/api/todos/-1", {
-      method: "patch",
-      body: {
-        data: {
-          type: "Todo",
-          attributes: { name: "Updated" },
-        },
-      },
-    })
-
-    expect(response).toBeTruthy()
-
-    const { status, body } = response
-
-    expect(status).toBe(ERROR_CODE_NOT_FOUND.status)
-    expect(body).toEqual({
-      jsonapi: { version: "1.0" },
-      errors: [ERROR_CODE_NOT_FOUND],
-    })
-  })
-
-  it("should return error UNEXPECTED_VALUE error code when receiving wrong type for relationship data (HATCH-172)", async () => {
-    const ERROR_CODE_UNEXPECTED_VALUE = {
-      status: 422,
-      code: "unexpected-value",
-      title: "Unexpected value.",
-      detail: "Payload must have 'data' as an object.",
-      source: {
-        pointer: "/data/relationships/user/data",
-      },
-    }
-
-    const { body: user } = await fetch("/api/users", {
-      method: "post",
-      body: {
-        data: {
-          type: "User",
-          attributes: {
-            name: "John Doe",
-          },
-        },
-      },
-    })
-
-    const { status, body } = await fetch("/api/todos", {
-      method: "post",
-      body: {
-        data: {
-          type: "Todo",
-          attributes: {
-            name: "Something B for user 1",
-            due_date: "2024-12-12",
-            importance: 7,
-          },
-          relationships: {
-            user: { data: [{ type: "User", id: user.data.id }] },
-          },
-        },
-      },
-    })
-
-    expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
-    expect(body).toEqual({
-      jsonapi: { version: "1.0" },
-      errors: [ERROR_CODE_UNEXPECTED_VALUE],
-    })
-  })
-
   it("should return error VALUE_REQUIRED error code when type is missing (HATCH-208)", async () => {
     const ERROR_CODE_VALUE_REQUIRED = {
       status: 422,
@@ -281,7 +223,7 @@ describe("Error Code Tests", () => {
     })
   })
 
-  it("should return error UNEXPECTED_VALUE error code when type is wrong", async () => {
+  it("should return error UNEXPECTED_VALUE error code when type is wrong (HATCH-210)", async () => {
     const ERROR_CODE_UNEXPECTED_VALUE = {
       status: 422,
       code: "unexpected-value",
@@ -381,6 +323,64 @@ describe("Error Code Tests", () => {
         jsonapi: { version: "1.0" },
         errors: [ERROR_CODE_UNEXPECTED_VALUE],
       })
+    })
+  })
+
+  it("should return error NOT_FOUND error code when trying to update a non-existing todo (HATCH-211)", async () => {
+    const ERROR_CODE_NOT_FOUND = {
+      status: 404,
+      code: "not-found",
+      title: "Resource not found.",
+      detail: "URL must include an ID of an existing 'Todo'.",
+      source: {
+        parameter: "id",
+      },
+    }
+
+    const response = await fetch("/api/todos/-1", {
+      method: "patch",
+      body: {
+        data: {
+          type: "Todo",
+          attributes: { name: "Updated" },
+        },
+      },
+    })
+
+    expect(response).toBeTruthy()
+
+    const { status, body } = response
+
+    expect(status).toBe(ERROR_CODE_NOT_FOUND.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_NOT_FOUND],
+    })
+  })
+
+  it("should return error NOT_FOUND error code when trying to delete a non-existing todo (HATCH-212)", async () => {
+    const ERROR_CODE_NOT_FOUND = {
+      status: 404,
+      code: "not-found",
+      title: "Resource not found.",
+      detail: "URL must include an ID of an existing 'Todo'.",
+      source: {
+        parameter: "id",
+      },
+    }
+
+    const response = await fetch("/api/todos/-1", {
+      method: "delete",
+    })
+
+    expect(response).toBeTruthy()
+
+    const { status, body } = response
+
+    expect(status).toBe(ERROR_CODE_NOT_FOUND.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_NOT_FOUND],
     })
   })
 
@@ -601,6 +601,48 @@ describe("Error Code Tests", () => {
     expect(body).toEqual({
       jsonapi: { version: "1.0" },
       errors: [ERROR_CODE_VALUE_REQUIRED],
+    })
+  })
+
+  it("should return error UNEXPECTED_VALUE error code when receiving non existing fields for sort (HATCH-222)", async () => {
+    const ERROR_CODE_UNEXPECTED_VALUE = {
+      status: 422,
+      code: "unexpected-value",
+      title: "Unexpected value.",
+      detail:
+        "URL must have 'sort' as comma separated values containing one or more of 'name', 'due_date', 'importance'.",
+      source: {
+        parameter: "sort",
+      },
+    }
+
+    const { status, body } = await fetch("/api/todos?sort=namee")
+
+    expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_UNEXPECTED_VALUE],
+    })
+  })
+
+  it("should return error UNEXPECTED_VALUE error code when receiving non existing fields for filter (HATCH-223)", async () => {
+    const ERROR_CODE_UNEXPECTED_VALUE = {
+      status: 422,
+      code: "unexpected-value",
+      title: "Unexpected value.",
+      detail:
+        "URL must have 'filter[x]' where 'x' is one of 'name', 'due_date', 'importance'.",
+      source: {
+        parameter: "filter[namee]",
+      },
+    }
+
+    const { status, body } = await fetch("/api/todos?filter[namee][]=John+Doe")
+
+    expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+    expect(body).toEqual({
+      jsonapi: { version: "1.0" },
+      errors: [ERROR_CODE_UNEXPECTED_VALUE],
     })
   })
 

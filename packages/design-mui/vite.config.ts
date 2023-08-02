@@ -20,6 +20,7 @@ export default defineConfig({
         "@emotion/styled",
         "@mui/icons-material",
         "@mui/utils",
+        "lodash",
         "react",
         "react-dom",
       ],

@@ -24,7 +24,7 @@ describe("builder", () => {
     it("works with ID attribute provided", () => {
       const options = buildFindOptions(
         Todo,
-        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5&sort=-date,name",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5&sort=-due_date,name",
       )
 
       expect(options).toEqual({
@@ -35,7 +35,7 @@ describe("builder", () => {
           offset: 10,
           where: { name: { [Op.like]: "%laundry%" } },
           order: [
-            ["date", "DESC"],
+            ["due_date", "DESC"],
             ["name", "ASC"],
           ],
         },
@@ -133,6 +133,28 @@ describe("builder", () => {
         new UnexpectedValueError({
           detail: `URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance'.`,
           parameter: `fields[todo]`,
+        }),
+      ])
+    })
+
+    it("handles unknown filter fields", async () => {
+      await expect(async () =>
+        buildFindOptions(Todo, "filter[namee][]=test"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'filter[x]' where 'x' is one of 'name', 'due_date', 'importance'.`,
+          parameter: "filter[namee]",
+        }),
+      ])
+    })
+
+    it("handles unknown sort fields", async () => {
+      await expect(async () =>
+        buildFindOptions(Todo, "sort=invalid"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'sort' as comma separated values containing one or more of 'name', 'due_date', 'importance'.`,
+          parameter: `sort`,
         }),
       ])
     })
