@@ -41,7 +41,7 @@ React-rest provides TypeScript support. Here's an example of how two schemas (`T
 
 By providing react-rest your schemas, it will be able to fetch related data from your JSON:API backend.
 
-> Note: take note of code commented with the 👀 emoji.
+> **Note:** take note of code commented with the 👀 emoji.
 
 ```tsx
 const [todos] = hatchedReactRest.Todo.useAll({ include: ["user"] })
@@ -74,7 +74,7 @@ Then, we'll extend the app to handle relationships:
 
 ### Project Setup
 
-> Note: the ✏️ icon indicates when to follow along!
+> **Note:** the ✏️ icon indicates when to follow along!
 
 **✏️ Perform the following steps:**
 
@@ -118,7 +118,7 @@ Then, we'll extend the app to handle relationships:
    npx msw init public/ --save
    ```
 
-   c. Run the following command to add a `browser.js` file to your `/mocks` directory and populate it with mocked data:
+   c. Run the following command to add a `browser.js` file to your `/mocks` directory and populate it with some request handlers and mocked data:
 
    ```
    curl -o src/mocks/browser.ts https://raw.githubusercontent.com/bitovi/hatchify/main/example/react-rest/src/mocks/browser.ts
@@ -228,8 +228,7 @@ export default App
 
 In the following sections, we'll configure react-rest to understand the data it’s loading, where it’s loading it from, and that it’s using a JSON:API data format.
 
-> **Note**
-> In your Vite app, you may have noticed the duplicated GET requests in the network tab. This is happening because Vite runs React in strict mode in development. In strict mode, React is running hooks twice (hence the duplicated requests) to help catch bugs in our code. You can read more about it [here](https://react.dev/reference/react/StrictMode).
+> **Note:** In your Vite app, you may have noticed the duplicated GET requests in the network tab. This is happening because Vite runs React in strict mode in development. In strict mode, React is running hooks twice (hence the duplicated requests) to help catch bugs in our code. You can read more about it [here](https://react.dev/reference/react/StrictMode).
 
 <a id="configuration"></a>
 
@@ -324,7 +323,7 @@ return (
 )
 ```
 
-> Note: You might be unfamiliar with calling a hook as a method on an object (like we're doing above) but it's perfectly valid! A hook is a hook, and it still follows the rules of hooks, even when it's a method.
+> **Note:** You might be unfamiliar with calling a hook as a method on an object (like we're doing above) but it's perfectly valid! A hook is a hook, and it still follows the rules of hooks, even when it's a method.
 
 <a id="creating"></a>
 
@@ -812,10 +811,9 @@ function App() {
 export default App
 ```
 
-> **Note**
-> This is the extent of functionality the mock service worker supports. If you would like to continue exploring the HatchifyJS ecosystem, then we suggest setting up a standalone HatchifyJS backend. The getting started guide for a HatchifyJS backend can be found [here](https://github.com/bitovi/hatchify/blob/main/packages/koa/README.md).
-
 Congratulations! You've just created an app with react-rest with a fully functional development backend, complete with CRUD operations and relationship support.
+
+> **Note:** At this point we've reached the limits of what our todo app's `msw`-powered API supports. If you would like to continue exploring the HatchifyJS ecosystem, then we suggest setting up a standalone HatchifyJS backend. The getting started guide for a HatchifyJS backend can be found [here](https://github.com/bitovi/hatchify/blob/main/packages/koa/README.md).
 
 For more information on react-rest, read on.
 
@@ -851,4 +849,4 @@ const unsubscribe = hatchedReactRest.Todo.subscribeToOne((data) => {
 }, id)
 ```
 
-> Note: we named the return of the subscription method `unsubscribe` above because it's a function that can be called to do just that; i.e. `unsubscribe()`
+> **Note:** we named the return of the subscription method `unsubscribe` above because it's a function that can be called to do just that; i.e. `unsubscribe()`

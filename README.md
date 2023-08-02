@@ -36,7 +36,7 @@ frontend and backend. Our frontend will use React and MUI, and our backend
 will be using Koa. We will be setting up our project using Vite so that
 it handles all the React configurations for us.
 
-> Note: The ✏️ icon indicates when to follow along!
+> **Note:** The ✏️ icon indicates when to follow along!
 
 [✏️](https://emojipedia.org/pencil/) Perform all the
 following steps:
@@ -180,7 +180,7 @@ under the hood to talk to your database.
 
 **✏️ Create a** `schemas/User.ts`**:**
 
-> Note: Take note of lines commented with the 👀 emoji.
+> **Note:** Take note of lines commented with the 👀 emoji.
 
 ```ts
 // hatchify-app/schemas/User.ts

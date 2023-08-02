@@ -2,7 +2,7 @@
 
 This guide is a continuation of Hatchify's [getting started guide](../../README.md#project-setup) and will teach you how to set Postgres as your database. You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but this tutorial will focus on Postgres.
 
-> Note: the ✏️ icon indicates when to follow along!
+> **Note:** the ✏️ icon indicates when to follow along!
  ## ✏️ Perform the following steps:
   
 ### Install Postgres: 
@@ -119,7 +119,7 @@ app.use(hatchedKoa.middleware.allModels.all);
     npm run dev:backend
     ```
     
-> Note: the new Postgres db we just created is empty, so you'll need to seed it just like we did in the [getting started guide](../../README.md#seeding-data)
+> **Note:** the new Postgres db we just created is empty, so you'll need to seed it just like we did in the [getting started guide](../../README.md#seeding-data)
 
 #### The following options are allowed within the db options object:
 
