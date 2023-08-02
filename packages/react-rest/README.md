@@ -135,7 +135,7 @@ Then we extend the app with relationships.
    )
    ```
 
-7. Run `npm run dev``, and open http://localhost:5173/ to see react-rest in action.
+7. Run `npm run dev`, and open http://localhost:5173/ to see react-rest in action.
 
 <a id="listing-creating-and-deleting-todos"></a>
 
