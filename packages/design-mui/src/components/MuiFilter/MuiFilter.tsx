@@ -10,7 +10,11 @@ import {
   debounce,
 } from "@mui/material"
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
-import type { Attribute, Filter } from "@hatchifyjs/rest-client"
+import type {
+  Attribute,
+  AttributeObject,
+  Filter,
+} from "@hatchifyjs/rest-client"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 
@@ -68,10 +72,14 @@ const removeEmptyOptions = (
   },
 ): Option[] => {
   const proposedType =
-    typeof attributes[col] === "string" ? attributes[col] : attributes[col].type
+    typeof attributes[col] === "string"
+      ? attributes[col]
+      : (attributes[col] as AttributeObject).type
 
   const required =
-    typeof attributes[col] === "string" ? false : !attributes[col].allowNull
+    typeof attributes[col] === "string"
+      ? false
+      : !(attributes[col] as AttributeObject).allowNull
 
   const availableOptions = operatorOptions[
     proposedType as keyof OperatorOption
@@ -119,7 +127,7 @@ const MuiFilterRow: React.FC<MuiFilterRowProps> = ({
   const selectedType =
     typeof attributes[column] === "string"
       ? attributes[column]
-      : attributes[column].type
+      : (attributes[column] as AttributeObject).type
   const availableOptions = removeEmptyOptions(column, attributes)
 
   return (
