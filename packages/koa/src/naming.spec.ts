@@ -1,5 +1,4 @@
-import type { HatchifyModel, ModelAttributes } from "@hatchifyjs/node"
-import type { Model } from "sequelize"
+import type { HatchifyModel } from "@hatchifyjs/node"
 
 import { startServerWith } from "./testing/utils"
 
@@ -9,9 +8,12 @@ interface Request {
   url: string
   options: {
     method: Method
-    body: Record<string, unknown>
+    body?: Record<string, unknown>
   }
-  expected: Record<string, unknown>
+  expected: {
+    body: Record<string, unknown>
+    status: number
+  }
 }
 
 interface Table {
@@ -20,11 +22,7 @@ interface Table {
 }
 interface TestCase {
   description: string
-  model: {
-    name: string
-    attributes: ModelAttributes<Model<any, any>, unknown>
-    pluralName?: string
-  }
+  models: HatchifyModel[]
   requests: Request[]
   database: Table[]
 }
@@ -33,9 +31,14 @@ describe("Naming rules", () => {
   const schemaNameTestCases: TestCase[] = [
     {
       description: "Ensure basic schema for SalesPerson works",
-      model: {
-        name: "SalesPerson",
-      },
+      models: [
+        {
+          name: "SalesPerson",
+          attributes: {
+            name: "STRING",
+          },
+        },
+      ],
       requests: [
         {
           url: "/sales-persons",
@@ -44,17 +47,23 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "SalesPerson",
+                id: "1",
+                attributes: { name: "Roye" },
               },
             },
           },
           expected: {
-            jsonapi: {
-              version: "1.0",
+            body: {
+              jsonapi: {
+                version: "1.0",
+              },
+              data: {
+                type: "SalesPerson",
+                id: "1",
+                attributes: { name: "Roye" },
+              },
             },
-            data: {
-              id: "1",
-              type: "SalesPerson",
-            },
+            status: 200,
           },
         },
         {
@@ -64,23 +73,23 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "SalesPerson",
-                attributes: {
-                  name: "John Doe",
-                },
+                id: "1",
+                attributes: { name: "Roye" },
               },
             },
           },
           expected: {
-            jsonapi: {
-              version: "1.0",
-            },
-            data: {
-              id: "1",
-              type: "SalesPerson",
-              attributes: {
-                name: "John Doe",
+            body: {
+              jsonapi: {
+                version: "1.0",
+              },
+              data: {
+                type: "SalesPerson",
+                id: "1",
+                attributes: { name: "Roye" },
               },
             },
+            status: 200,
           },
         },
       ],
@@ -105,26 +114,30 @@ describe("Naming rules", () => {
 
   it.each(cases)(
     "$description",
-    async ({ description, model, database, requests }) => {
-      const Account: HatchifyModel = model
-      ;({ fetch, teardown, hatchify } = await startServerWith([Account]))
+    async ({ description, models, database, requests }) => {
+      ;({ fetch, teardown, hatchify } = await startServerWith(
+        [...models],
+        false,
+      ))
 
       for (const request of requests) {
         const { expected, options, url } = request
+        const { body: expectedBody, status: expectedStatus } = expected
 
-        const { body } = await fetch(url, options)
+        const { body, status } = await fetch(url, options)
 
-        expect(body).toStrictEqual(expected)
+        expect(body).toStrictEqual(expectedBody)
+        expect(status).toStrictEqual(expectedStatus)
       }
 
       for (const table of database) {
         const { columns: expectedColumns, tableName } = table
 
         const [dbResult] = await hatchify._sequelize.query(
-          `SELECT * FROM ${tableName}`,
+          `SELECT name FROM pragma_table_info("${tableName}")`,
         )
 
-        const columns = Object.keys(dbResult[0])
+        const columns = dbResult.map((row) => row.name)
 
         expect(columns).toEqual(expect.arrayContaining(expectedColumns))
       }
