@@ -1,10 +1,10 @@
-import type { HatchifyBaseDataType, HatchifyInteger } from "../dataTypes"
+import type { HatchifyBaseDataType } from "../dataTypes"
 
 export interface SchemaV2 {
   name: string
   id: HatchifyBaseDataType
   attributes: {
-    [attributeName: string]: HatchifyInteger
+    [attributeName: string]: HatchifyBaseDataType
   }
 }
 
