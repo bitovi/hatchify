@@ -1,7 +1,7 @@
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import type { FilterArray } from "@hatchifyjs/rest-client"
 import { useCallback, useRef, useState } from "react"
-import { Button, Grid, Popover, debounce } from "@mui/material"
+import { Badge, Button, Grid, Popover, debounce } from "@mui/material"
 import MuiFilterRows from "./components/MuiFilterRows"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
@@ -10,6 +10,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 export const MuiFilters: React.FC<XCollectionProps> = ({
   allSchemas,
   schemaName,
+  filter: queryFilter,
   setFilter: setQueryFilter,
 }) => {
   const fields = getStringAndDateFields(allSchemas, schemaName)
@@ -100,7 +101,11 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
         ref={buttonRef}
         variant="text"
         onClick={() => setOpen(true)}
-        startIcon={<FilterListIcon />}
+        startIcon={
+          <Badge badgeContent={queryFilter?.length} color="primary">
+            <FilterListIcon />
+          </Badge>
+        }
       >
         Filters
       </Button>
