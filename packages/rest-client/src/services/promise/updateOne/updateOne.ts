@@ -10,18 +10,9 @@ export const updateOne = async (
   dataSource: Source,
   allSchemas: Schemas,
   schemaName: string,
-  data: Omit<UpdateData, "type">, // todo: Resource or Record?
+  data: UpdateData, // todo: Resource or Record?
 ): Promise<Record> => {
-  const updateData = {
-    ...data,
-    type: schemaName,
-  }
-
-  const resources = await dataSource.updateOne(
-    allSchemas,
-    schemaName,
-    updateData,
-  )
+  const resources = await dataSource.updateOne(allSchemas, schemaName, data)
 
   notifySubscribers(schemaName)
 

@@ -10,18 +10,9 @@ export const createOne = async (
   dataSource: Source,
   allSchemas: Schemas,
   schemaName: string,
-  data: Omit<CreateData, "type">, // todo: Resource or Record?
+  data: CreateData, // todo: Resource or Record?
 ): Promise<Record> => {
-  const createData = {
-    ...data,
-    type: schemaName,
-  }
-
-  const resources = await dataSource.createOne(
-    allSchemas,
-    schemaName,
-    createData,
-  )
+  const resources = await dataSource.createOne(allSchemas, schemaName, data)
 
   notifySubscribers(schemaName)
 
