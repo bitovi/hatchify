@@ -16,6 +16,9 @@ export async function fetchJsonApi<T>(
   const response = await fetch(url, {
     method,
     body: body ? JSON.stringify({ data: body }) : undefined,
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+    },
   })
 
   if (!response.ok) {

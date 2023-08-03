@@ -34,13 +34,13 @@ type SchemaKeys<Schema extends SchemaRecord> = keyof Schema
 export type ReactRest<Schema extends SchemaRecord> = {
   [schemaName in SchemaKeys<Schema>]: {
     // promises
-    createOne: (data: CreateData) => Promise<Record>
+    createOne: (data: Omit<CreateData, "type">) => Promise<Record>
     deleteOne: (id: string) => Promise<void>
     findOne: (query: QueryOne | string) => Promise<Record | undefined>
     findAll: (
       query: QueryList,
     ) => Promise<[Records: Record[], Meta: RequestMetaData]>
-    updateOne: (data: UpdateData) => Promise<Record>
+    updateOne: (data: Omit<UpdateData, "type">) => Promise<Record>
     // hooks
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     useDeleteOne: () => [(id: string) => void, Meta]

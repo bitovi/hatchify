@@ -6,7 +6,14 @@ export interface RecordRelationship {
 }
 export interface Record {
   id: string
-  [key: string]: any // todo: strict typing
+  attributes?: {
+    [key: string]: any // @todo
+  }
+  relationships?: globalThis.Record<
+    string,
+    ResourceRelationship | ResourceRelationship[]
+  >
+  type: string
 }
 
 export interface ResourceRelationship {
@@ -26,6 +33,6 @@ export interface Resource {
   >
 }
 
-export type CreateData = Omit<Record, "id" | "__schema">
+export type CreateData = Omit<Record, "id">
 
 export type UpdateData = Omit<Record, "__schema">

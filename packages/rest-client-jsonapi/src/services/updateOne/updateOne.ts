@@ -15,12 +15,17 @@ export async function updateOne(
   config: SourceConfig,
   allSchemas: Schemas,
   schemaName: string,
-  data: UpdateData,
+  data: Omit<UpdateData, "type">,
 ): Promise<Resource[]> {
+  const updateData = {
+    ...data,
+    type: schemaName,
+  }
+
   const json = await fetchJsonApi<JsonApiResource>(
     "PATCH",
-    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${data.id}`,
-    data,
+    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${updateData.id}`,
+    updateData,
   )
 
   return Promise.resolve(
