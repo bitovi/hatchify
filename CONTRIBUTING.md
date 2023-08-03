@@ -112,7 +112,7 @@ Run `npm ci` within the cloned repository folder.
 
 #### 3.1. With SQLite
 
-No further configuration is required to test Hatchify against a SQLite database.  However, if your feature relies on column type constraints from the database, SQLite does not check these by default.  Instead, use validations on your models' columns:
+No further configuration is required to test Hatchify against a SQLite database. However, if your feature relies on column type constraints from the database, SQLite does not check these by default. Instead, use validations on your models' columns:
 
 ```ts
 // hatchify-app/schemas/Todo.ts
@@ -123,18 +123,18 @@ export const Todo = {
     due_date: {
       type: "DATE",
       validate: {
-        isDate: true
-      }
+        isDate: true,
+      },
     },
     importance: {
       type: "INTEGER",
       validate: {
-        isInt: true
-      }
-    }
+        isInt: true,
+      },
+    },
   },
   belongsTo: [{ target: "User", options: { as: "user" } }], // 👀
-};
+}
 ```
 
 A list of all validations that can be used in an attribute's type configuration can be found [here](https://sequelize.org/docs/v6/core-concepts/validations-and-constraints/).
@@ -222,13 +222,12 @@ After creating an app like the example in [the getting started guide](./README.m
   // ...
   "dependencies": {
     "@hatchifyjs/koa": "file:../hatchify/packages/koa",
-    "@hatchifyjs/react": "file:../hatchify/packages/react",
+    "@hatchifyjs/react": "file:../hatchify/packages/react"
     // ...
   }
   // ...
 }
 ```
-
 
 ### 5. Commit your modifications
 
@@ -347,7 +346,6 @@ npx nx eslint @hatchifyjs/koa
 │   │   │   ├── middleware                      # The actual source code of this package which is a wrapper around @hatchifyjs/node
 │   │   │   ├── relationships.spec.ts           # "E2E" tests for our Express implementation
 │   │   │   ├── schema.spec.ts
-│   │   │   └── testing                         # Tests for a real-world staffing app
 │   │   ├── tsconfig.json
 │   │   └── tsconfig.tsbuildinfo
 │   ├── hatchify-core                           # @hatchifyjs/hatchify-core; Hatchify's schemas
@@ -454,4 +452,3 @@ npx nx eslint @hatchifyjs/koa
 │   └── getting-started-react-rest.spec.ts
 └── tsconfig.json
 ```
-

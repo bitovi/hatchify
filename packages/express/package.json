@@ -129,8 +129,7 @@
       "<rootDir>/src"
     ],
     "collectCoverageFrom": [
-      "<rootDir>/src/**/*.ts",
-      "!<rootDir>/src/testing/**/*.ts"
+      "<rootDir>/src/**/*.ts"
     ],
     "coverageDirectory": "coverage",
     "coverageProvider": "v8",
