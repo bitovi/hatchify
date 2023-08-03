@@ -1,4 +1,4 @@
-import { assemble } from "./assembler"
+import { assembler } from "./assembler"
 import { integer } from "./dataTypes"
 import type { HatchifyInteger } from "./dataTypes/integer"
 import type { SchemaV2 } from "./types"
@@ -18,7 +18,7 @@ describe("assembler", () => {
     expect(preparedId.controlType.primary).toBeFalsy()
     expect(preparedId.orm.sequelize.primaryKey).toBeFalsy()
 
-    const assembledTodo = assemble(Todo)
+    const { Todo: assembledTodo } = assembler({ Todo })
     const assembledId = assembledTodo.id as HatchifyInteger
     const preparedAssembledId = assembledId.prepare()
 

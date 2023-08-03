@@ -1,8 +1,15 @@
 import type { SchemaV2 } from "./types"
 
-export function assemble(schema: SchemaV2): SchemaV2 {
-  return {
-    ...schema,
-    id: schema.id.primary(),
-  }
+interface Schemas {
+  [schemaName: string]: SchemaV2
+}
+
+export function assembler(schemas: Schemas): Schemas {
+  return Object.entries(schemas).reduce(
+    (acc, [key, schema]) => ({
+      ...acc,
+      [key]: { ...schema, id: schema.id.primary() },
+    }),
+    {},
+  )
 }
