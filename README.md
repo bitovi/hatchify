@@ -26,7 +26,9 @@ Unlike code generation tools—which allow you to write your schema and then gen
 - [Frontend with React & MUI](#frontend-with-react--mui)
   - [Rendering a List](#rendering-a-list)
 - [Next Steps](#next-steps)
+  - [Using Postgres DB](#using-postgres-db)
   - [Rendering an empty list](#rendering-an-empty-list)
+  - [Adding checkboxes to the list](#adding-checkboxes-to-the-list)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -572,33 +574,7 @@ well-defined schemas to create a database, a running backend with REST endpoints
 You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but we've created a tutorial specifically for using Postgres: [Using Postgres DB](./doc/next-steps/using-postgres-db.md).
 
 ## Rendering an empty List
-
-By default, a model's `List` component will render a message when there are no records to display:
-
-![](doc/attachments/defaultNoRecords.png)
-To customize what is displayed here the `Empty` component can be passed into `Collection`
-
-```tsx
-// hatchify-app/src/App.tsx
-
-const TodoList = hatchedReact.components.Todo.Collection
-const TodoEmpty = hatchedReact.components.Todo.Empty
-
-const App: React.FC = () => {
-  return (
-    <MuiProvider>
-      <TodoList>
-        <TodoEmptyList>
-          <strong>No records to display</strong>
-        </TodoEmptyList>
-      </TodoList>
-    </MuiProvider>
-  )
-}
-```
-
-`Empty` will accept any custom component that is passed in as its children.
-![Alt text](doc/attachments/customNoRecords.png)
+By default, a model's `List` component will render a message when there are no records to display. See how to customize this here: [Rendering an empty list guide](./doc/next-steps/empty-list.md)
 
 ## Adding checkboxes to the list
 
