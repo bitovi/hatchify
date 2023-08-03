@@ -14,6 +14,7 @@ type Middleware = (ctx: Context) => void
 
 export async function startServerWith(
   models: HatchifyModel[],
+  usesPrefix: boolean,
   middleware?: Middleware[],
 ): Promise<{
   fetch: (
@@ -21,9 +22,11 @@ export async function startServerWith(
     options?: { method?: Method; headers?: object; body?: object },
   ) => Promise<any>
   teardown: () => Promise<void>
+  hatchify?
 }> {
   const app = new Koa()
-  const hatchify = new Hatchify(models, { prefix: "/api" })
+  const prefix = usesPrefix ? "/api" : undefined
+  const hatchify = new Hatchify(models, { prefix })
   app.use(errorHandlerMiddleware)
   app.use(hatchify.middleware.allModels.all)
 
@@ -50,6 +53,7 @@ export async function startServerWith(
   return {
     fetch,
     teardown: async () => hatchify.orm.close(),
+    hatchify,
   }
 }
 
