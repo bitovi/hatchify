@@ -567,9 +567,8 @@ well-defined schemas to create a database, a running backend with REST endpoints
 
 # Next Steps
 
-## Using Postgres DB
+- [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
 
-You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but we've created a tutorial specifically for using Postgres: [Using Postgres DB](./doc/next-steps/using-postgres-db.md).
 
 ## Rendering an empty List
 
