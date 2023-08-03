@@ -25,9 +25,6 @@ export abstract class HatchifyBaseDataType {
   abstract prepare(): PreparedDataType<number>
 
   public primary(): HatchifyBaseDataType {
-    // this.inputProps = Object.assign({}, this, this.inputProps || {}, {
-    //   primary: true,
-    // })
     this.controlType.primary = true
     return this
   }
