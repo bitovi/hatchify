@@ -1,19 +1,19 @@
 import { describe, expect, it } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import useFilter from "./useFilter"
+import useFilters from "./useFilter"
 
 describe("usePage", () => {
   it("works", async () => {
-    const { result } = renderHook(() => useFilter())
+    const { result } = renderHook(() => useFilters())
 
-    expect(result.current.filter).toEqual(undefined)
+    expect(result.current.filters).toEqual(undefined)
 
     await waitFor(() => {
-      result.current.setFilter([{ name: "Walk the dog", operator: "$eq" }])
+      result.current.setFilters([{ value: "Walk the dog", operator: "$eq" }])
     })
 
-    expect(result.current.filter).toEqual([
-      { name: "Walk the dog", operator: "$eq" },
+    expect(result.current.filters).toEqual([
+      { value: "Walk the dog", operator: "$eq" },
     ])
   })
 })

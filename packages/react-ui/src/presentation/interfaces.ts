@@ -1,6 +1,5 @@
 // import type { Schema } from "@hatchifyjs/rest-client"
 import type {
-  Filter,
   Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
 } from "@hatchifyjs/rest-client"
 import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
@@ -11,6 +10,7 @@ import type {
 } from "../services-legacy"
 import type { FormState } from "../components/HatchifyForm"
 import type { CollectionState } from "../hooks/useCollectionState"
+import { Filters } from "@hatchifyjs/rest-client"
 
 export type Primitive = string | boolean | number
 
@@ -45,9 +45,9 @@ export interface HatchifyCollectionSelected {
   setSelected: (ids: string[]) => void
 }
 
-export interface HatchifyCollectionFilter {
-  filter: Filter
-  setFilter: (filterBy: Filter) => void
+export interface HatchifyCollectionFilters {
+  filter: Filters
+  setFilter: (filters: Filters) => void
 }
 
 export interface XCollectionProps extends CollectionState {
