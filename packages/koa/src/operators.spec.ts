@@ -71,7 +71,7 @@ const testCases = [
     queryParam: "filter[name][$nin]=John&filter[name][$nin]=Jane",
     expectedResult: [],
   },
-  // skipped due to test failing
+  // TODO: resolve with HATCH-293. Skipped due to test failing
   // {
   //   description:
   //     "returns correct data using the $like operator for end of a string",
@@ -79,7 +79,7 @@ const testCases = [
   //   queryParam: "filter[name][$like]=%ne",
   //   expectedResult: [jane],
   // },
-  // skipped due to test failing
+  // TODO: resolve with HATCH-293. Skipped due to test failing
   // {
   //   description:
   //     "returns correct data using the $like operator for beginning of a string",
@@ -87,7 +87,7 @@ const testCases = [
   //   queryParam: "filter[name][$like]=Jo%",
   //   expectedResult: [john],
   // },
-  // skipped due to test failing
+  // TODO: resolve with HATCH-293. Skipped due to test failing
   // {
   //   description:
   //     "returns correct data using the $like operator for middle of a string",
@@ -95,7 +95,7 @@ const testCases = [
   //   queryParam: "filter[name][$like]=%an%",
   //   expectedResult: [jane],
   // },
-  // skipped due to test failing
+  // TODO: resolve with HATCH-293. Skipped due to test failing
   // {
   //   description:
   //     "returns correct data using the $like operator for entirety of a string (non-case sensitive)",
@@ -198,7 +198,7 @@ const testCases = [
     queryParam: "filter[startDate][$lte]=2020-05-05",
     expectedResult: [john],
   },
-  // skipped due to test failing
+  // TODO: resolve with HATCH-294. Skipped due to test failing
   // {
   //   description: "returns correct data using the $gte operator with a date",
   //   operator: "$gte",
