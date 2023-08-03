@@ -65,6 +65,9 @@ The schema name should be `Singular PascalCase` as follows:
 ```js
 const Account = {
   name: "SalesPerson", //👀
+  attributes: {
+    firstName: "STRING" 
+  }
 }
 ```
 
@@ -85,7 +88,10 @@ Set `pluralName` to configure plural naming for that type.
 ```js
 const Account = {
   name: "SalesPerson",
-  pluralName: "SalesPeople" //👀
+  pluralName: "SalesPeople", //👀
+  attributes: {
+    firstName: "STRING"
+  }
 }
 ```
 
