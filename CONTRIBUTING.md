@@ -365,13 +365,13 @@ npx nx eslint @hatchifyjs/koa
 │   │   │   ├── NAMING.md
 │   │   │   ├── attributes.spec.ts
 │   │   │   ├── custom.spec.ts
+│   │   │   ├── error-codes.spec.ts             # "E2E" tests for our Koa implementation
 │   │   │   ├── exports.ts                      # Exports to be used by the Koa package users
 │   │   │   ├── jsonapi.spec.ts
 │   │   │   ├── koa.ts                          # @hatchifyjs/koa entry point
 │   │   │   ├── middleware                      # The actual source code of this package which is a wrapper around @hatchifyjs/node
 │   │   │   ├── relationships.spec.ts           # "E2E" tests for our Koa implementation
 │   │   │   ├── schema.spec.ts
-│   │   │   └── testing                         # Tests for a real-world staffing app
 │   │   ├── tsconfig.json
 │   │   ├── tsconfig.tsbuildinfo
 │   │   └── typedoc.json
