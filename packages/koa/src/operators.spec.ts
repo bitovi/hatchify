@@ -111,6 +111,12 @@ const testCases = [
     expectedResult: [jane],
   },
   {
+    description: "returns correct data using the $ne operator with a number",
+    operator: "$ne",
+    queryParam: "filter[age][$ne]=35",
+    expectedResult: [john],
+  },
+  {
     description: "returns correct data using the $gt operator with a number",
     operator: "$gt",
     queryParam: "filter[age][$gt]=30",
@@ -169,6 +175,12 @@ const testCases = [
     expectedResult: [john],
   },
   {
+    description: "returns correct data using the $ne operator with a date",
+    operator: "$ne",
+    queryParam: "filter[startDate][$ne]=2020-05-05T00:00:00.000Z",
+    expectedResult: [jane],
+  },
+  {
     description: "returns correct data using the $gt operator with a date",
     operator: "$gt",
     queryParam: "filter[startDate][$gt]=2020-12-12",
@@ -193,6 +205,20 @@ const testCases = [
   //   queryParam: "filter[startDate][$gte]=2021-01-05",
   //   expectedResult: [jane],
   // },
+  {
+    description: "returns correct data using the $in operator with a date",
+    operator: "$in",
+    queryParam:
+      "filter[startDate][$in]=2020-05-05T00:00:00.000Z&filter[startDate][$in]=2021-01-05T00:00:00.000Z",
+    expectedResult: [john, jane],
+  },
+  {
+    description: "returns correct data using the $nin operator with a date",
+    operator: "$nin",
+    queryParam:
+      "filter[startDate][$nin]=2020-05-05T00:00:00.000Z&filter[startDate][$nin]=2021-01-05T00:00:00.000Z",
+    expectedResult: [],
+  },
   //boolean
   {
     description: "returns correct data using the $eq operator with a boolean",
