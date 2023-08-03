@@ -7,7 +7,7 @@ export type Selector = { include?: Include; fields?: Fields }
 export type FilterArray = Array<{
   field: string
   operator: string
-  value: string
+  value: string | string[] | number | number[] | boolean | boolean[]
 }>
 
 export type Filters = FilterArray | string | undefined

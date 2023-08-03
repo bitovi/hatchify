@@ -10,7 +10,7 @@ import type {
 } from "../services-legacy"
 import type { FormState } from "../components/HatchifyForm"
 import type { CollectionState } from "../hooks/useCollectionState"
-import { Filters } from "@hatchifyjs/rest-client"
+import type { Filters } from "@hatchifyjs/rest-client"
 
 export type Primitive = string | boolean | number
 

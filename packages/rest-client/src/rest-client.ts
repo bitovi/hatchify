@@ -1,5 +1,6 @@
 export type {
   Attribute,
+  AttributeObject,
   CreateData,
   Fields,
   FilterArray,

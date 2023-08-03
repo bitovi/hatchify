@@ -1,5 +1,5 @@
+import type { Attribute, FilterArray } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
-import { Attribute, FilterArray } from "@hatchifyjs/rest-client"
 import {
   Grid,
   IconButton,
@@ -44,20 +44,30 @@ export const MuiFilterRows: React.FC<{
   setFilters: (filters: FilterArray) => void
   removeFilter: (index: number) => void
 }> = ({ attributes, fields, filters, setFilters, removeFilter }) => {
+  const fieldType = (field: string) => {
+    const attribute = attributes[field]
+    return typeof attribute === "string" ? attribute : attribute.type
+  }
+
   function onChange(
     field: "field" | "operator" | "value",
     value: string,
     index: number,
   ) {
     const newFilters = [...filters]
-    newFilters[index][field] = value
+
     if (field === "field") {
-      newFilters[index].operator = getOperator(
+      newFilters[index].operator = getAvailableOperator(
         value,
         newFilters[index].operator,
         attributes,
       )
+
+      if (fieldType(value) !== fieldType(newFilters[index].field))
+        newFilters[index].value = ""
     }
+
+    newFilters[index][field] = value
     setFilters(newFilters)
   }
 
@@ -95,9 +105,7 @@ export const MuiFilterRows: React.FC<{
               value={filter.operator}
               onChange={(e) => onChange("operator", e.target.value, index)}
             >
-              {operatorOptions[
-                attributes[filter.field] as keyof OperatorOption
-              ].map((option) => (
+              {getPossibleOptions(filter.field, attributes).map((option) => (
                 <MenuItem key={option.operator} value={option.operator}>
                   {option.text}
                 </MenuItem>
@@ -113,7 +121,7 @@ export const MuiFilterRows: React.FC<{
                   placeholder="Filter Value"
                   variant="standard"
                   type={
-                    (attributes[filter.field] as string) === "date"
+                    fieldType(filter.field) === "date"
                       ? "datetime-local"
                       : "text"
                   }
@@ -131,22 +139,43 @@ export const MuiFilterRows: React.FC<{
 
 export default MuiFilterRows
 
-export function getOperator(
-  col: string,
-  op: string,
+// Get the first available operator for the field type
+export function getAvailableOperator(
+  field: string,
+  // todo: operator should be it's own type used in FilterArray & Option
+  operator: string,
   attributes: {
     [field: string]: Attribute
   },
 ): Option["operator"] {
-  const proposedType = attributes[col] as string
+  const availableOptions = getPossibleOptions(field, attributes)
 
-  // todo this only works when Attribute is a string, not object!!
-  const availableOptions = operatorOptions[proposedType as keyof OperatorOption]
   const optionAvailable = availableOptions.find((option) => {
-    if (option.operator === op) {
-      return option
-    } else return undefined
+    return option.operator === operator ? option : undefined
   })
 
   return optionAvailable?.operator ?? availableOptions[0].operator
+}
+
+// Filter out operators that are not available for the field type
+export function getPossibleOptions(
+  field: string,
+  attributes: {
+    [field: string]: Attribute
+  },
+): Option[] {
+  const attribute = attributes[field]
+  const fieldType = typeof attribute === "string" ? attribute : attribute.type
+  const required = typeof attribute === "string" ? false : !attribute.allowNull
+
+  const options = operatorOptions[
+    // todo(v2 schema): operatorOption types should match possible Attribute types
+    fieldType as keyof OperatorOption
+  ].filter((option) => {
+    return required
+      ? option.operator !== "empty" && option.operator !== "nempty"
+      : option
+  })
+
+  return options
 }

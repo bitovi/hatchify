@@ -51,13 +51,23 @@ export function transformSchema(schema: OldSchema): Schema {
 
   for (const [key, value] of Object.entries(schema.attributes)) {
     let stringValue: string
+    let allowNull = true
+
     if (typeof value === "string") {
       stringValue = value
     } else {
       stringValue = (value as AttributeObject).type as string
+
+      allowNull =
+        (typeof (value as AttributeObject).allowNull === "undefined" ||
+          (value as AttributeObject).allowNull) ??
+        false
     }
 
-    resolved.attributes[key] = transformDataType(stringValue)
+    resolved.attributes[key] = {
+      type: transformDataType(stringValue),
+      allowNull,
+    }
   }
 
   if (

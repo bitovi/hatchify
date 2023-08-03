@@ -1,6 +1,6 @@
 import type { HatchifyModel } from "@hatchifyjs/node"
 
-import { startServerWith } from "./utils"
+import { startServerWith } from "./testing/utils"
 
 describe("Error Code Tests", () => {
   const User: HatchifyModel = {
