@@ -6,9 +6,9 @@ interface Schemas {
 
 export function assembler(schemas: Schemas): Schemas {
   return Object.entries(schemas).reduce(
-    (acc, [key, schema]) => ({
+    (acc, [schemaName, schema]) => ({
       ...acc,
-      [key]: { ...schema, id: schema.id.primary() },
+      [schemaName]: { ...schema, id: schema.id.primary() },
     }),
     {},
   )
