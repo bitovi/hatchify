@@ -335,7 +335,8 @@ const SalesPerson = {
   },
   belongsToMany: [
     {
-      target: "Account" //👀
+      target: "Account", //👀
+      options: { through: "SalesAccount" }
     }
   ],
 }
@@ -406,7 +407,7 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {as: "salesAccounts"}
+      options: {as: "salesAccounts", through: "SalesAccount"}
     }
   ],
 }
@@ -451,7 +452,7 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {foreignKey: "seller_id"}
+      options: {foreignKey: "seller_id", through: "SalesAccount"}
     }
   ],
 }
@@ -478,7 +479,7 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {otherKey: "sold_account_id"}
+      options: {otherKey: "sold_account_id", through: "SalesAccount"}
     }
   ],
 }
