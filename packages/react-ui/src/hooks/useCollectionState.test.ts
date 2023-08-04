@@ -41,7 +41,7 @@ describe("useCollectionState", () => {
   it("works", async () => {
     const { result } = renderHook(() =>
       useCollectionState(schemas, schemas.Todo.name, fakeRestClient, {
-        selectedDefault: [],
+        defaultSelected: { all: false, ids: [] },
         onSelectedChange: vi.fn(),
       }),
     )
@@ -81,7 +81,10 @@ describe("useCollectionState", () => {
         sortBy: undefined,
       },
       setSort: expect.any(Function),
-      selected: [],
+      selected: {
+        all: false,
+        ids: [],
+      },
       setSelected: expect.any(Function),
       allSchemas: schemas,
       schemaName: "Todo",
@@ -147,7 +150,7 @@ describe("useCollectionState", () => {
 
     await waitFor(() => {
       if (result.current.setSelected !== undefined)
-        result.current.setSelected(["1", "2"])
+        result.current.setSelected({ all: false, ids: ["1", "2"] })
     })
 
     await waitFor(() => {
@@ -161,7 +164,7 @@ describe("useCollectionState", () => {
           direction: "desc",
           sortBy: "name",
         },
-        selected: ["1", "2"],
+        selected: { all: false, ids: ["1", "2"] },
       })
     })
   })

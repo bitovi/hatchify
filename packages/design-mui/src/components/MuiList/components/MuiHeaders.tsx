@@ -31,17 +31,12 @@ export const MuiHeaders: React.FC<
             <Checkbox
               disabled={meta.isLoading}
               aria-label="select all"
-              checked={
-                data.length > 0 && Object.keys(selected).length === data.length
-              }
-              indeterminate={
-                data.length > 0 &&
-                Object.keys(selected).length > 0 &&
-                Object.keys(selected).length < data.length
-              }
+              checked={selected.all}
+              indeterminate={Boolean(!selected.all && selected.ids.length)}
               onChange={() => {
-                if (Object.keys(selected).length > 0) setSelected([])
-                else setSelected(data.map((item) => item.id))
+                if (selected.ids.length)
+                  return setSelected({ all: false, ids: [] })
+                setSelected({ all: true, ids: data.map((item) => item.id) })
               }}
             />
           </TableCell>
@@ -50,6 +45,7 @@ export const MuiHeaders: React.FC<
           <TableCell
             key={column.key}
             css={styles.th}
+            sx={{ fontWeight: "bold" }}
             sortDirection={column.key === sortBy ? direction : false}
           >
             {column.sortable ? (

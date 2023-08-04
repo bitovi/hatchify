@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import type {
   Fields,
   Filters,
@@ -39,13 +40,13 @@ export default function useCollectionState(
   schemaName: string,
   restClient: ReactRest<Schemas>,
   {
-    selectedDefault,
+    defaultSelected,
     onSelectedChange,
     fields,
     include,
   }: {
-    selectedDefault?: string[]
-    onSelectedChange?: (ids: string[]) => void
+    defaultSelected?: HatchifyCollectionSelected["selected"]
+    onSelectedChange?: HatchifyCollectionSelected["setSelected"]
     fields?: Fields
     include?: Include
   } = {},
@@ -54,7 +55,7 @@ export default function useCollectionState(
   const { sort, sortQueryString, setSort } = useSort()
   const { filter, setFilter } = useFilter()
   const { selected, setSelected } = useSelected(
-    selectedDefault,
+    defaultSelected,
     onSelectedChange,
   )
 
@@ -65,6 +66,13 @@ export default function useCollectionState(
     fields,
     include,
   })
+
+  useEffect(() => {
+    setSelected({
+      all: selected.all ? data.length > 0 : false,
+      ids: selected.all ? data.map((record) => record.id) : [],
+    })
+  }, [data])
 
   return {
     data,

@@ -602,17 +602,27 @@ const App: React.FC = () => {
 
 ## Adding checkboxes to the list
 
-To add a checkboxes column to the list, we must pass an `onSelectedChange` prop to the `TodosList` component. If we want some rows to checked by default then we can pass them as an array of ids to the `selected` prop. Whenever a checkbox is clicked, the `onSelectedChange` callback will fire and update our `App` state.
+To add a checkboxes column to the list, we must pass an `onSelectedChange` prop to the `TodosList` component. If we want to set the default selected state, we can pass a `defaultSelected` prop as an object with the `ids` of the rows we want to be selected, and an `all` boolean to indicate if the header checkbox should be checked. Whenever a checkbox is clicked, the `onSelectedChange` callback will fire and update our `App` state.
 
 ```tsx
 // hatchify-app/src/App.tsx
 const App: React.FC = () => {
-  const [selected, setSelected] = useState<string[]>([])
+  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
+    all: false,
+    ids: [],
+  })
 
   return (
     <MuiProvider>
-      <button onClick={() => alert(`action on [${selected.join(",")}]`)}>action</button>
-      <TodoList selected={selected} onSelectionChange={(ids) => setSelected(ids)}>
+      <button
+        onClick={() => alert(`all: ${selected.all}, ids: ${selected.ids}`)}
+      >
+        action
+      </button>
+      <TodoList
+        defaultSelected={selected} 
+        onSelectedChange={(selected) => setSelected(selected)}
+      >
         <TodoEmptyList>
           <div>No records to display</div>
         </TodoEmptyList>
