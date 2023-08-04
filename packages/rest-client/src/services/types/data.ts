@@ -35,4 +35,4 @@ export interface Resource {
 
 export type CreateData = Omit<Record, "id">
 
-export type UpdateData = Omit<Record, "__schema">
+export type UpdateData = Record
