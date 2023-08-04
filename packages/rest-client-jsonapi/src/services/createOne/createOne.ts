@@ -17,10 +17,14 @@ export async function createOne(
   schemaName: string,
   data: CreateData,
 ): Promise<Resource[]> {
+  const formattedData = { ...data }
+  formattedData.type = formattedData.__schema
+  delete formattedData.__schema
+
   const json = await fetchJsonApi<JsonApiResource>(
     "POST",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}`,
-    data,
+    formattedData,
   )
 
   return Promise.resolve(
