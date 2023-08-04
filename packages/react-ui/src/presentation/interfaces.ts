@@ -41,8 +41,11 @@ export interface HatchifyCollectionSort {
 }
 
 export interface HatchifyCollectionSelected {
-  selected: string[]
-  setSelected: (ids: string[]) => void
+  selected: {
+    all: boolean
+    ids: string[]
+  }
+  setSelected: ({ all, ids }: { all: boolean; ids: string[] }) => void
 }
 
 export interface HatchifyCollectionFilters {
