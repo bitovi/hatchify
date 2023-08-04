@@ -3,9 +3,8 @@
 Similar to [$like](./$like.md), except case insensitive.<br>
 Records that contain the specified values. Using the `%` wildcard will determine how this filter operater functions.<br>
 
-`%value%` <-- value exists anywhere in the record attribute<br>
+`%value` <-- value exists at the end of the record attribute<br>
 `value%`  <-- value exists at the beginning of the record attribute<br>
-`%value%` <-- value exists anywhere in the record attribute<br>
 `%value%` <-- value exists anywhere in the record attribute<br>
 `value` <-- record attribute matches the exact value. Functionally the same as `%eq`<br>
 

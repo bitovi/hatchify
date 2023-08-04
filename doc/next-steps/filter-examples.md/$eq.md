@@ -1,6 +1,6 @@
 # $eq
 
-Records that exactly match the given value will be returned.
+Records that exactly match the given value will be returned. This is case-sensitive.
 
 ## Compatibility
 

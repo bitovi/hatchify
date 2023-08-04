@@ -8,6 +8,10 @@ Records that are greater than the given value will be returned.
 This operator is compatible with the following types:
  `string`, `date`,  `number`
 
+ ** A note on string comparison **
+ 
+ Strings are compared lexicographically. Capital letters [A-Z] are smaller than lowercase [a-z]. Shorter strings are also smaller. This is similar to dictionary order.
+ "Workout" < "workout" > "out".
 ## Examples
 
 All examples use this example data:
@@ -74,3 +78,26 @@ This filter will match the following records:<br>
             },
         }
 ```
+
+The `name` attribute is greater than "take"<br>
+`filter[name][$gt]=take`<br>
+
+This filter will match the following records:<br>
+
+```json
+        {
+            "type": "Todo",
+            "id": "2",
+            "attributes": {
+                "name": "take out trash",
+                "due_date": "2023-05-09T05:00:00.000Z",
+                "importance": 9,
+                "completed": false
+            },
+        },
+```
+
+The `name` attribute is greater than "take out trash"<br>
+`filter[name][$gt]=take out trash`<br>
+
+This filter will match no records:<br>

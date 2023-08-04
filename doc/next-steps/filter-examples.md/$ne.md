@@ -1,6 +1,6 @@
 # $ne
 
-Records that do not exactly match the given value will be returned.
+Records that do not exactly match the given value will be returned. This is case-sensitive.
 
 ## Compatibility
 
