@@ -17,14 +17,11 @@ export const MuiBody: React.FC<
 
   function onRowSelect(id: string) {
     if (selectable) {
-      const copy = [...selected]
-      const index = copy.indexOf(id)
-      if (index > -1) {
-        copy.splice(index, 1)
-      } else {
-        copy.push(id)
-      }
-      setSelected(copy)
+      const ids = [...selected.ids]
+      const index = ids.indexOf(id)
+      if (index > -1) ids.splice(index, 1)
+      else ids.push(id)
+      setSelected({ all: ids.length === meta?.meta?.unpaginatedCount, ids })
     }
   }
 
@@ -44,7 +41,7 @@ export const MuiBody: React.FC<
                 <TableCell>
                   <Checkbox
                     aria-label={`select ${item.id}`}
-                    checked={selected.includes(item.id)}
+                    checked={selected.ids.includes(item.id)}
                     onChange={() => onRowSelect(item.id)}
                   />
                 </TableCell>

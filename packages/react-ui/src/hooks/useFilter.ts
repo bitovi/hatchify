@@ -1,9 +1,9 @@
 import { useState } from "react"
-import type { Filter } from "@hatchifyjs/rest-client"
-import type { HatchifyCollectionFilter } from "../presentation"
+import type { Filters } from "@hatchifyjs/rest-client"
+import type { HatchifyCollectionFilters } from "../presentation"
 
-export default function useFilter(): HatchifyCollectionFilter {
-  const [filter, setFilter] = useState<Filter>(undefined)
+export default function useFilter(): HatchifyCollectionFilters {
+  const [filter, setFilter] = useState<Filters>(undefined)
 
   return {
     filter,

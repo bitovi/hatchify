@@ -1,6 +1,6 @@
 import type {
   Fields,
-  Filter,
+  Filters,
   Include,
   RequiredSchemaMap,
   Schemas,
@@ -63,40 +63,38 @@ export function sortToQueryParam(sort: string[] | string): string {
  * [{name: "John", operator: "$eq"}, {age: 30, operator: "$gte"}] => "filter[name][$eq]=John&filter[age][$gte]=30"
  */
 
-export function filterToQueryParam(filterArr: Filter): string {
-  if (filterArr === undefined) {
+/**
+ * Transforms the filter from an array into a JSON:API compliant query parameter.
+ * [{ field: "name", value: "John", operator: "$eq" }] => "filter[name][$eq]=John"
+ */
+export function filterToQueryParam(filter: Filters): string {
+  if (filter === undefined) {
     return ""
   }
-  if (typeof filterArr === "string") {
-    return filterArr
+  if (typeof filter === "string") {
+    return filter
   }
 
-  const queries: string[] = []
+  const q: string[] = []
 
-  for (let i = 0; i < filterArr.length; i++) {
-    const { operator, ...filterKeys } = filterArr[i]
-    for (const [key, value] of Object.entries(filterKeys)) {
-      if (Array.isArray(value)) {
-        queries.push(
-          value
-            .map((v) => `filter[${key}][]=${encodeURIComponent(v)}`)
-            .join("&"),
-        )
-      } else {
-        if (operator === "empty") {
-          queries.push(`filter[${key}][$eq]=${null}`)
-        } else if (operator === "nempty") {
-          queries.push(`filter[${key}][$ne]=${null}`)
-        } else {
-          queries.push(
-            `filter[${key}][${operator}]=${encodeURIComponent(value)}`,
-          )
-        }
-      }
+  for (let i = 0; i < filter.length; i++) {
+    const { operator, field, value } = filter[i]
+    if (Array.isArray(value)) {
+      q.push(
+        value
+          .map((v) => `filter[${field}][]=${encodeURIComponent(v)}`)
+          .join("&"),
+      )
+    } else if (operator === "empty") {
+      q.push(`filter[${field}][$eq]=${null}`)
+    } else if (operator === "nempty") {
+      q.push(`filter[${field}][$ne]=${null}`)
+    } else {
+      q.push(`filter[${field}][${operator}]=${encodeURIComponent(value)}`)
     }
   }
 
-  return queries.join("&")
+  return q.join("&")
 }
 
 /**
@@ -138,7 +136,7 @@ export function getQueryParams(
     fields: Fields
     include: Include
     sort?: string[] | string
-    filter?: Filter
+    filter?: Filters
     page?: unknown
   },
 ): string {

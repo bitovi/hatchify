@@ -9,11 +9,13 @@ describe("usePage", () => {
     expect(result.current.filter).toEqual(undefined)
 
     await waitFor(() => {
-      result.current.setFilter([{ name: "Walk the dog", operator: "$eq" }])
+      result.current.setFilter([
+        { field: "name", value: "Walk the dog", operator: "$eq" },
+      ])
     })
 
     expect(result.current.filter).toEqual([
-      { name: "Walk the dog", operator: "$eq" },
+      { field: "name", value: "Walk the dog", operator: "$eq" },
     ])
   })
 })
