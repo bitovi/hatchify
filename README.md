@@ -26,9 +26,9 @@ Unlike code generation tools—which allow you to write your schema and then gen
 - [Frontend with React & MUI](#frontend-with-react--mui)
   - [Rendering a List](#rendering-a-list)
 - [Next Steps](#next-steps)
-  - [Using Postgres DB](#using-postgres-db)
-  - [Rendering an empty list](#rendering-an-empty-list)
-  - [Adding checkboxes to the list](#adding-checkboxes-to-the-list)
+  - [Schema, database, and service API naming](./doc/naming.md)
+  - [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
+  - [Rendering an empty list](./doc/next-steps/empty-list.md)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -569,11 +569,9 @@ well-defined schemas to create a database, a running backend with REST endpoints
 
 # Next Steps
 
+- [Schema, database, and service API naming](./doc/naming.md)
 - [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
-
-
-## Rendering an empty List
-By default, a model's `List` component will render a message when there are no records to display. See how to customize this here: [Rendering an empty list guide](./doc/next-steps/empty-list.md)
+- [Rendering an empty list](./doc/next-steps/empty-list.md)
 
 ## Adding checkboxes to the list
 
