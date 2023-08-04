@@ -164,15 +164,15 @@ const Account = {
       id: "1",
       attributes: { firstName: "Acme" },
       relationships: {
-        closerPerson: {type: "SalesPerson", id: "322"} //👀
+        closerPerson: {
+          data: [ 
+            { type: "SalesPerson", id: "322" } //👀 
+          ]
+        }          
       }
     }
   }
   ```
-
-
-
-
 
 ### relationships.belongsTo.foreignKey
 
@@ -236,7 +236,9 @@ const SalesPerson = {
       id: "1",
       attributes: { firstName: "Roye" },
       relationships: {
-        accounts: [{type: "Account", id: "456"}] //👀
+        accounts: {
+          data: [{type: "Account", id: "456"}]  //👀
+        }
       }
     }
   }
@@ -276,7 +278,9 @@ const SalesPerson = {
       id: "1",
       attributes: { firstName: "Roye" },
       relationships: {
-        managingAccounts: [{type: "Account", id: "456"}] //👀
+        managingAccounts: {
+          data: [{type: "Account", id: "456"}] //👀
+        } 
       }
     }
   }
@@ -353,7 +357,9 @@ const SalesPerson = {
       id: "1",
       attributes: { firstName: "Roye" },
       relationships: {
-        accounts: [{type: "Account", id: "456"}] //👀
+        accounts: { 
+          data: [{type: "Account", id: "456"}] //👀
+        } 
       }
     }
   }
@@ -422,7 +428,9 @@ This does not change the Database behavior.
       id: "1",
       attributes: { firstName: "Roye" },
       relationships: {
-        salesAccounts: [{type: "Account", id: "456"}] //👀
+        salesAccounts: {
+          data: [{type: "Account", id: "456"}] //👀
+        } 
       }
     }
   }
