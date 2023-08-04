@@ -19,22 +19,22 @@ then create a `hatchyify-app` database.
 
 1. If you don't have Docker installed on your computer yet, download it from [Docker's official website](https://www.docker.com/products/docker-desktop/).
 
-  ```bash
-  docker pull postgres
-  ```
+   ```bash
+   docker pull postgres
+   ```
 
 2. To create and run Postgres database, run the following command:
 
-  ``` bash
-  docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
-  ```
+   ``` bash
+   docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
+   ```
 
-  This installs the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
+   This installs the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
 
-  - `POSTGRES_PASSWORD=example_password`
-  - `POSTGRES_USER=example_user`
+   - `POSTGRES_PASSWORD=example_password`
+   - `POSTGRES_USER=example_user`
 
-  This also runs Postgres on port 5432.
+   This also runs Postgres on port 5432.
 
 To check that it worked, run the command:
 
@@ -105,57 +105,57 @@ the benefits of storing config in the environment [here](https://12factor.net/co
 
 4. Run the following command in the root directory of your project to create a new .env file to store your credentials:
 
-  ``` bash
-  echo > .env
-  ```
+   ``` bash
+   echo > .env
+   ```
 
 5. Fill your .env file with the following content:
 
-  ```bash
-  DB_HOST=localhost
-  DB_PORT=5432
-  DB_USERNAME=example_user
-  DB_PASSWORD=example_password
-  DB_NAME=hatchify_app
-  ```
+   ```bash
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USERNAME=example_user
+   DB_PASSWORD=example_password
+   DB_NAME=hatchify_app
+   ```
 
 6. Edit your Hatchify app's server (`backend/index.ts`) to use your newly created database:
 
-  ```js
-  // hatchify-app/backend/index.ts
-  import Koa from "koa"
-  import cors from "@koa/cors"
-  import { hatchifyKoa } from "@hatchifyjs/koa"
-  import { Todo } from "../schemas/Todo"
-  import { User } from "../schemas/User"
+   ```js
+   // hatchify-app/backend/index.ts
+   import Koa from "koa"
+   import cors from "@koa/cors"
+   import { hatchifyKoa } from "@hatchifyjs/koa"
+   import { Todo } from "../schemas/Todo"
+   import { User } from "../schemas/User" 
 
-  import dotenv from "dotenv"; // 👀
-  dotenv.config();             // 👀
-
-  const app = new Koa()
-
-  const hatchedKoa = hatchifyKoa([Todo, User], {
-    prefix: "/api",
-    database: {
-      dialect: "postgres",               // 👀
-      host: process.env.DB_HOST,         // 👀
-      port: Number(process.env.DB_PORT), // 👀
-      username: process.env.DB_USERNAME, // 👀
-      password: process.env.DB_PASSWORD, // 👀
-      database: process.env.DB_NAME,     // 👀
-    },
-  })
-
-  app.use(cors())
-  app.use(hatchedKoa.middleware.allModels.all);
-  (async () => {
-    await hatchedKoa.createDatabase()
-
-    app.listen(3000, () => {
-      console.log("Started on port 3000")
-    })
-  })()
-  ```  
+   import dotenv from "dotenv"; // 👀
+   dotenv.config();             // 👀
+   
+   const app = new Koa()
+   
+   const hatchedKoa = hatchifyKoa([Todo, User], {
+     prefix: "/api",
+     database: {
+       dialect: "postgres",               // 👀
+       host: process.env.DB_HOST,         // 👀
+       port: Number(process.env.DB_PORT), // 👀
+       username: process.env.DB_USERNAME, // 👀
+       password: process.env.DB_PASSWORD, // 👀
+       database: process.env.DB_NAME,     // 👀
+     },
+   })
+  
+   app.use(cors())
+   app.use(hatchedKoa.middleware.allModels.all);
+   (async () => {
+     await hatchedKoa.createDatabase()
+    
+     app.listen(3000, () => {
+       console.log("Started on port 3000")
+     })
+   })()
+   ```  
 
 7. Restart your server:
 
