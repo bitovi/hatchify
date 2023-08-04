@@ -45,7 +45,6 @@ export const MuiHeaders: React.FC<
           <TableCell
             key={column.key}
             css={styles.th}
-            sx={{ fontWeight: "bold" }}
             sortDirection={column.key === sortBy ? direction : false}
           >
             {column.sortable ? (
