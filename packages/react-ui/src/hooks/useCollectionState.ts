@@ -1,6 +1,6 @@
 import type {
   Fields,
-  Filter,
+  Filters,
   Include,
   Meta,
   Record,
@@ -22,8 +22,8 @@ export interface CollectionState {
   meta: Meta
   fields?: Fields
   include?: Include
-  filter: Filter
-  setFilter: (filterBy: Filter) => void
+  filter: Filters
+  setFilter: (filters: Filters) => void
   page: HatchifyCollectionPage["page"]
   setPage: HatchifyCollectionPage["setPage"]
   sort: HatchifyCollectionSort["sort"]
@@ -52,11 +52,11 @@ export default function useCollectionState(
 ): CollectionState {
   const { page, setPage } = usePage()
   const { sort, sortQueryString, setSort } = useSort()
+  const { filter, setFilter } = useFilter()
   const { selected, setSelected } = useSelected(
     selectedDefault,
     onSelectedChange,
   )
-  const { filter, setFilter } = useFilter()
 
   const [data, meta] = restClient[schemaName].useAll({
     page,

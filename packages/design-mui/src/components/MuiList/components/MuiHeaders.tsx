@@ -19,7 +19,7 @@ const styles = {
 
 export const MuiHeaders: React.FC<
   XCollectionProps & { columns: HatchifyDisplay[] }
-> = ({ selected, setSelected, sort, setSort, data, columns }) => {
+> = ({ selected, setSelected, sort, setSort, data, columns, meta }) => {
   const selectable = selected !== undefined && setSelected !== undefined
   const { direction, sortBy } = sort
 
@@ -29,6 +29,7 @@ export const MuiHeaders: React.FC<
         {selectable && (
           <TableCell css={styles.th}>
             <Checkbox
+              disabled={meta.isLoading}
               aria-label="select all"
               checked={
                 data.length > 0 && Object.keys(selected).length === data.length
@@ -53,6 +54,7 @@ export const MuiHeaders: React.FC<
           >
             {column.sortable ? (
               <TableSortLabel
+                disabled={meta.isLoading}
                 active={column.key === sortBy}
                 direction={sortBy === sortBy ? direction : "asc"}
                 onClick={() => setSort(column.key)}

@@ -57,7 +57,7 @@ describe("components/MuiList", () => {
         schemaName="User"
         fields={{}}
         include={[]}
-        filter={[{ name: "wash car", operator: "equals" }]}
+        filter={[{ field: "name", value: "wash car", operator: "equals" }]}
         setFilter={vi.fn()}
       />,
     )
@@ -90,7 +90,7 @@ describe("components/MuiList", () => {
         schemaName="User"
         fields={{}}
         include={[]}
-        filter={[{ name: "wash car", operator: "equals" }]}
+        filter={[{ field: "name", value: "wash car", operator: "equals" }]}
         setFilter={vi.fn()}
       />,
     )
@@ -122,7 +122,7 @@ describe("components/MuiList", () => {
           schemaName="User"
           fields={{}}
           include={[]}
-          filter={[{ name: "wash car", operator: "equals" }]}
+          filter={[{ field: "name", value: "wash car", operator: "equals" }]}
           setFilter={vi.fn()}
         />,
       )
@@ -198,7 +198,7 @@ describe("components/MuiList", () => {
         schemaName="User"
         fields={{}}
         include={[]}
-        filter={[{ name: "wash car", operator: "equals" }]}
+        filter={[{ field: "name", value: "wash car", operator: "equals" }]}
         setFilter={vi.fn()}
       >
         {createElement(Empty, {}, <div>so empty inside</div>)}
