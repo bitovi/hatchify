@@ -84,7 +84,11 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
       deleteOne: (id) => deleteOne(dataSource, newSchemas, schema.name, id),
       findAll: (query) => findAll(dataSource, newSchemas, schema.name, query),
       findOne: (query) => findOne(dataSource, newSchemas, schema.name, query),
-      updateOne: (data) => updateOne(dataSource, newSchemas, schema.name, data),
+      updateOne: (data) =>
+        updateOne(dataSource, newSchemas, schema.name, {
+          ...data,
+          __schema: schema.name,
+        }),
       // hooks
       useCreateOne: () => useCreateOne(dataSource, newSchemas, schema.name),
       useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schema.name),

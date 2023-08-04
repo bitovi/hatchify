@@ -13,18 +13,20 @@ import type { JsonApiResource } from "../jsonapi"
  */
 export async function createOne(
   config: SourceConfig,
-  allSchemas: Schemas,
+  allSchemas: Schemas, // Unused; can we remove?
   schemaName: string,
   data: CreateData,
 ): Promise<Resource[]> {
-  const formattedData = { ...data }
-  formattedData.type = formattedData.__schema
-  delete formattedData.__schema
+  const jsonApiResource = hatchifyResourceToJsonApiResource(
+    config,
+    schemaName,
+    data,
+  )
 
   const json = await fetchJsonApi<JsonApiResource>(
     "POST",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}`,
-    formattedData,
+    jsonApiResource,
   )
 
   return Promise.resolve(
@@ -33,4 +35,16 @@ export async function createOne(
       config.schemaMap,
     ),
   )
+}
+
+function hatchifyResourceToJsonApiResource(
+  config: SourceConfig,
+  schemaName: string,
+  hatchifyResource: CreateData,
+): JsonApiResource {
+  const jsonApiResource = { ...hatchifyResource }
+  jsonApiResource.type = config.schemaMap[schemaName].type
+  delete jsonApiResource.__schema
+
+  return jsonApiResource as JsonApiResource
 }

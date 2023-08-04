@@ -13,14 +13,20 @@ import type { JsonApiResource } from "../jsonapi"
  */
 export async function updateOne(
   config: SourceConfig,
-  allSchemas: Schemas,
+  allSchemas: Schemas, // Unused; can we remove?
   schemaName: string,
   data: UpdateData,
 ): Promise<Resource[]> {
+  const jsonApiResource = hatchifyResourceToJsonApiResource(
+    config,
+    schemaName,
+    data,
+  )
+
   const json = await fetchJsonApi<JsonApiResource>(
     "PATCH",
-    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${data.id}`,
-    data,
+    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${jsonApiResource.id}`,
+    jsonApiResource,
   )
 
   return Promise.resolve(
@@ -29,4 +35,16 @@ export async function updateOne(
       config.schemaMap,
     ),
   )
+}
+
+function hatchifyResourceToJsonApiResource(
+  config: SourceConfig,
+  schemaName: string,
+  hatchifyResource: UpdateData,
+): JsonApiResource {
+  const jsonApiResource = { ...hatchifyResource }
+  jsonApiResource.type = config.schemaMap[schemaName].type
+  delete jsonApiResource.__schema
+
+  return jsonApiResource as JsonApiResource
 }
