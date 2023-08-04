@@ -34,19 +34,19 @@ type SchemaKeys<Schema extends SchemaRecord> = keyof Schema
 export type ReactRest<Schema extends SchemaRecord> = {
   [schemaName in SchemaKeys<Schema>]: {
     // promises
-    createOne: (data: Omit<CreateData, "type">) => Promise<Record>
+    createOne: (data: CreateData) => Promise<Record>
     deleteOne: (id: string) => Promise<void>
     findOne: (query: QueryOne | string) => Promise<Record | undefined>
     findAll: (
       query: QueryList,
     ) => Promise<[Records: Record[], Meta: RequestMetaData]>
-    updateOne: (data: Omit<UpdateData, "type">) => Promise<Record>
+    updateOne: (data: UpdateData) => Promise<Record>
     // hooks
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     useDeleteOne: () => [(id: string) => void, Meta]
     useAll: (query?: QueryList) => [Record[], Meta]
     useOne: (query: QueryOne | string) => [Record | undefined, Meta]
-    useUpdateOne: (id: string) => [(data: UpdateData) => void, Meta, Record?]
+    useUpdateOne: (id: string) => [(data: CreateData) => void, Meta, Record?]
     // subscribes
     subscribeToAll: (callback: (data: Record[]) => void) => Unsubscribe
     subscribeToOne: (
@@ -76,19 +76,11 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   const functions = Object.values(schemas).reduce((acc, schema) => {
     acc[schema.name as SchemaKeys<TSchemaRecord>] = {
       // promises
-      createOne: (data) =>
-        createOne(dataSource, newSchemas, schema.name, {
-          ...data,
-          type: schema.name,
-        }),
+      createOne: (data) => createOne(dataSource, newSchemas, schema.name, data),
       deleteOne: (id) => deleteOne(dataSource, newSchemas, schema.name, id),
       findAll: (query) => findAll(dataSource, newSchemas, schema.name, query),
       findOne: (query) => findOne(dataSource, newSchemas, schema.name, query),
-      updateOne: (data) =>
-        updateOne(dataSource, newSchemas, schema.name, {
-          ...data,
-          type: schema.name,
-        }),
+      updateOne: (data) => updateOne(dataSource, newSchemas, schema.name, data),
       // hooks
       useCreateOne: () => useCreateOne(dataSource, newSchemas, schema.name),
       useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schema.name),
