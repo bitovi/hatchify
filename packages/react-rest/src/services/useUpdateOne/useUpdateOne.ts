@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { updateOne, getMeta } from "@hatchifyjs/rest-client"
 import type {
-  UpdateData,
+  ConsumerUpdateData,
   Meta,
   MetaError,
   Record,
@@ -17,12 +17,12 @@ export const useUpdateOne = (
   dataSource: Source,
   allSchemas: Schemas,
   schemaName: string,
-): [(data: UpdateData) => void, Meta, Record?] => {
+): [(data: ConsumerUpdateData) => void, Meta, Record?] => {
   const [data, setData] = useState<Record | undefined>(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  function update(data: UpdateData) {
+  function update(data: ConsumerUpdateData) {
     setLoading(true)
     updateOne(dataSource, allSchemas, schemaName, {
       ...data,

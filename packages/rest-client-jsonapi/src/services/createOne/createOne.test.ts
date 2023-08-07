@@ -17,10 +17,9 @@ const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/createOne", () => {
   it("works", async () => {
-    const data = { attributes: { title: "Hello, World!" } }
+    const data = { __schema: "Article", attributes: { title: "Hello, World!" } }
     const expected = [
       {
-        __schema: "Article",
         id: `article-id-${testData.data.length + 1}`,
         ...data,
       },
@@ -37,13 +36,16 @@ describe("rest-client-jsonapi/services/createOne", () => {
     )
 
     await expect(() =>
-      createOne(sourceConfig, schemas, "Article", {}),
+      createOne(sourceConfig, schemas, "Article", {
+        __schema: "Article",
+        attributes: { title: "Hello, World!" },
+      }),
     ).rejects.toThrowError("request failed")
   })
 
   it("can be called from a Source", async () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
-    const data = { attributes: { title: "Hello, World!" } }
+    const data = { __schema: "Article", attributes: { title: "Hello, World!" } }
     const spy = vi.spyOn(dataSource, "createOne")
     await dataSource.createOne(schemas, "Article", data)
     expect(spy).toHaveBeenCalledWith(schemas, "Article", data)

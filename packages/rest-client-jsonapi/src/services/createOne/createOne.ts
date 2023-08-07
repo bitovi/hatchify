@@ -1,8 +1,8 @@
 import type {
-  CreateData,
   Schemas,
   SourceConfig,
   Resource,
+  RestClientCreateData,
 } from "@hatchifyjs/rest-client"
 import { convertToHatchifyResources, fetchJsonApi } from "../utils"
 import type { JsonApiResource } from "../jsonapi"
@@ -15,7 +15,7 @@ export async function createOne(
   config: SourceConfig,
   allSchemas: Schemas, // Unused; can we remove?
   schemaName: string,
-  data: CreateData,
+  data: RestClientCreateData,
 ): Promise<Resource[]> {
   const jsonApiResource = hatchifyResourceToJsonApiResource(
     config,
@@ -40,11 +40,12 @@ export async function createOne(
 function hatchifyResourceToJsonApiResource(
   config: SourceConfig,
   schemaName: string,
-  hatchifyResource: CreateData,
+  hatchifyResource: RestClientCreateData,
 ): JsonApiResource {
-  const jsonApiResource = { ...hatchifyResource }
-  jsonApiResource.type = config.schemaMap[schemaName].type
-  delete jsonApiResource.__schema
+  const { __schema, ...rest } = hatchifyResource
 
-  return jsonApiResource as JsonApiResource
+  return {
+    ...rest,
+    type: config.schemaMap[schemaName].type,
+  } as JsonApiResource
 }

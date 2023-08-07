@@ -5,6 +5,7 @@ import { fakeDataSource, schemas } from "../../mocks/testData"
 
 describe("rest-client/services/promise/updateOne", () => {
   const data = {
+    __schema: "Article",
     id: "article-1",
     attributes: { title: "updated title", body: "updated body" },
   }

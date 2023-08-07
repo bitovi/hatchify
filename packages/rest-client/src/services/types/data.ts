@@ -26,6 +26,15 @@ export interface Resource {
   >
 }
 
-export type CreateData = Omit<Record, "id" | "__schema">
+export interface RestClientCreateData
+  extends Omit<Resource, "attributes" | "id"> {
+  attributes: {
+    [key: string]: any
+  }
+}
 
-export type UpdateData = Omit<Record, "__schema">
+export type ConsumerCreateData = Omit<RestClientCreateData, "__schema">
+
+export type RestClientUpdateData = Resource
+
+export type ConsumerUpdateData = Omit<Resource, "__schema">
