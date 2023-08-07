@@ -392,7 +392,6 @@ describe("Naming rules", () => {
               options: {
                 foreignKey: "seller_id",
                 through: "account_sales_person",
-                as: "salesaccount",
               },
             },
           ],
@@ -405,7 +404,7 @@ describe("Naming rules", () => {
           hasOne: [
             {
               target: "SalesPerson",
-              options: { as: "salesperson" },
+              options: {},
             },
           ],
         },
@@ -430,7 +429,7 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { through: "sales_account", as: "account" },
+              options: { through: "sales_account" },
             },
           ],
         },
@@ -561,7 +560,6 @@ describe("Naming rules", () => {
               options: {
                 foreignKey: "seller_id",
                 through: "account_sales_person",
-                as: "account",
               },
             },
           ],
@@ -587,8 +585,9 @@ describe("Naming rules", () => {
         },
       ],
     },
-    /*{
-      description: "Ensure belongsToMany otherKey works properly",
+    {
+      description:
+        "Ensure belongsToMany otherKey works properly (relationships.belongsToMany.otherKey)",
       models: [
         {
           name: "SalesPerson",
@@ -598,7 +597,10 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { otherKey: "sold_account_id", through: "SalesAccount" },
+              options: {
+                otherKey: "sold_account_id",
+                through: "account_sales_person",
+              },
             },
           ],
         },
@@ -610,6 +612,7 @@ describe("Naming rules", () => {
           hasOne: [
             {
               target: "SalesPerson",
+              options: { as: "salesperson" },
             },
           ],
         },
@@ -621,7 +624,7 @@ describe("Naming rules", () => {
           columns: ["sales_person_id", "sold_account_id"],
         },
       ],
-    }, */
+    },
   ]
 
   //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
