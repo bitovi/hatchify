@@ -104,7 +104,7 @@ const SalesPerson = {
 An attribute name should be `Singular camelCase`.
 
 ```js
-const Account = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {
     firstName: "STRING" //👀
