@@ -24,7 +24,10 @@ export const useUpdateOne = (
 
   function update(data: UpdateData) {
     setLoading(true)
-    updateOne(dataSource, allSchemas, schemaName, data)
+    updateOne(dataSource, allSchemas, schemaName, {
+      ...data,
+      __schema: schemaName,
+    })
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false))
