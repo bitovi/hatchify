@@ -455,7 +455,7 @@ const SalesPerson = {
       options: {
         foreignKey: "seller_id",
         through: "account_sales_person",
-        as: "salesaccount",
+        as: "account",
       },
     },
   ],
