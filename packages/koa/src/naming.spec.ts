@@ -418,8 +418,9 @@ describe("Naming rules", () => {
         },
       ],
     },
-    /*     {
-      description: "Ensure belongsToMany through works properly",
+    {
+      description:
+        "Ensure belongsToMany through works properly (relationships.belongsToMany.options.through)",
       models: [
         {
           name: "SalesPerson",
@@ -429,7 +430,7 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { through: "SalesAccount" },
+              options: { through: "sales_account", as: "account" },
             },
           ],
         },
@@ -441,6 +442,7 @@ describe("Naming rules", () => {
           hasOne: [
             {
               target: "SalesPerson",
+              options: { as: "salesperson" },
             },
           ],
         },
@@ -453,7 +455,7 @@ describe("Naming rules", () => {
         },
       ],
     },
-    {
+    /*   {
       description: "Ensure belongsToMany alias (as) is correctly returned",
       models: [
         {
