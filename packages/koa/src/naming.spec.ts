@@ -42,7 +42,7 @@ describe("Naming rules", () => {
       ],
       requests: [
         {
-          url: "/api/api/sales-persons",
+          url: "/api/sales-persons",
           options: {
             method: "post",
             body: {
@@ -68,7 +68,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons?fields[SalesPerson]=name",
+          url: "/api/sales-persons?fields[SalesPerson]=name",
           options: {
             method: "post",
             body: {
@@ -141,7 +141,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons",
+          url: "/api/sales-persons",
           options: {
             method: "get",
           },
@@ -170,7 +170,7 @@ describe("Naming rules", () => {
       ],
       requests: [
         {
-          url: "/api/api/sales-persons",
+          url: "/api/sales-persons",
           options: {
             method: "post",
             body: {
@@ -513,7 +513,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons?include=managingAccounts",
+          url: "/api/sales-persons?include=managingAccounts",
           options: {
             method: "get",
           },
@@ -670,7 +670,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons?include=accounts",
+          url: "/api/sales-persons?include=accounts",
           options: {
             method: "get",
           },
@@ -799,7 +799,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons?include=managingAccounts",
+          url: "/api/sales-persons?include=managingAccounts",
           options: {
             method: "get",
           },
@@ -832,6 +832,28 @@ describe("Naming rules", () => {
     },
   ] */
 
+  //TODO: Remove these tests as soon as fixes for previous tests are in place.
+  const dummyTestCases: TestCase[] = [
+    {
+      description: "Ensure basic schema for Test works",
+      models: [
+        {
+          name: "Test",
+          attributes: {
+            name: "STRING",
+          },
+        },
+      ],
+      requests: [],
+      database: [
+        {
+          tableName: "test",
+          columns: ["id", "name"],
+        },
+      ],
+    },
+  ]
+
   const cases: TestCase[] = [
     /*    ...schemaNameTestCases,
     ...pluralNameTestCases,
@@ -839,6 +861,7 @@ describe("Naming rules", () => {
     ...belongsToTestCases,
     ...hasManyTestCases,
     ...belongsToManyTestCases, */
+    ...dummyTestCases,
   ]
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
