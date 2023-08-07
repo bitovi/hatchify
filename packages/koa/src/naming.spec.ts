@@ -376,10 +376,10 @@ describe("Naming rules", () => {
   ] */
 
   //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
-  /* const belongsToManyTestCases: TestCase[] = [
+  const belongsToManyTestCases: TestCase[] = [
     {
       description:
-        "Ensure belongsToMany attributes are correctly created as rows and can be fetched",
+        "Ensure belongsToMany attributes are correctly created as rows and can be fetched (relationships.belongsToMany.options.foreignKey)",
       models: [
         {
           name: "SalesPerson",
@@ -389,7 +389,11 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { foreignKey: "seller_id", through: "SalesAccount" },
+              options: {
+                foreignKey: "seller_id",
+                through: "account_sales_person",
+                as: "salesaccount",
+              },
             },
           ],
         },
@@ -401,6 +405,7 @@ describe("Naming rules", () => {
           hasOne: [
             {
               target: "SalesPerson",
+              options: { as: "salesperson" },
             },
           ],
         },
@@ -413,7 +418,7 @@ describe("Naming rules", () => {
         },
       ],
     },
-    {
+    /*     {
       description: "Ensure belongsToMany through works properly",
       models: [
         {
@@ -608,8 +613,8 @@ describe("Naming rules", () => {
           columns: ["sales_person_id", "sold_account_id"],
         },
       ],
-    },
-  ] */
+    }, */
+  ]
 
   //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
   const hasManyTestCases: TestCase[] = [
@@ -838,8 +843,8 @@ describe("Naming rules", () => {
     ...pluralNameTestCases,
     ...attributeNameTestCases,
     ...belongsToTestCases,*/
-    ...hasManyTestCases /*
-    ...belongsToManyTestCases, */,
+    ...hasManyTestCases,
+    ...belongsToManyTestCases,
   ]
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
