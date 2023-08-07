@@ -63,7 +63,7 @@ This section shows how each part of the schema relates to the Database or servic
 The schema name should be `Singular PascalCase` as follows:
 
 ```js
-const Account = {
+const SalesPerson = {
   name: "SalesPerson", //👀
   attributes: {
     firstName: "STRING" 
@@ -86,7 +86,7 @@ const Account = {
 Set `pluralName` to configure plural naming for that type.  
 
 ```js
-const Account = {
+const SalesPerson = {
   name: "SalesPerson",
   pluralName: "SalesPeople", //👀
   attributes: {
