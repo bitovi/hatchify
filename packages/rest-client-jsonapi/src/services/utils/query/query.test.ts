@@ -170,9 +170,9 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           include: ["illustrated", "authored"],
           sort: ["-created", "title", "user.name"],
           filter: [
-            { name: ["John", "Joan"], operator: "$eq" },
-            { age: 21, operator: "$eq" },
-            { employed: false, operator: "$eq" },
+            { field: "name", value: ["John", "Joan"], operator: "$eq" },
+            { field: "age", value: 21, operator: "$eq" },
+            { field: "employed", value: false, operator: "$eq" },
           ],
           page: { number: 3, size: 30 },
         }),
@@ -212,23 +212,27 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         filterToQueryParam("filter[name]=ABC&filter[completed]=true"),
       ).toEqual("filter[name]=ABC&filter[completed]=true")
 
-      expect(filterToQueryParam([{ name: "ABC", operator: "$eq" }])).toEqual(
-        "filter[name][$eq]=ABC",
-      )
+      expect(
+        filterToQueryParam([{ field: "name", value: "ABC", operator: "$eq" }]),
+      ).toEqual("filter[name][$eq]=ABC")
 
       expect(
-        filterToQueryParam([{ name: ["ABC", "DEF"], operator: "$eq" }]),
+        filterToQueryParam([
+          { field: "name", value: ["ABC", "DEF"], operator: "$eq" },
+        ]),
       ).toEqual("filter[name][]=ABC&filter[name][]=DEF")
 
       expect(
-        filterToQueryParam([{ completed: false, operator: "$eq" }]),
+        filterToQueryParam([
+          { field: "completed", value: false, operator: "$eq" },
+        ]),
       ).toEqual("filter[completed][$eq]=false")
 
       expect(
         filterToQueryParam([
-          { name: ["ABC", "DEF"], operator: "$eq" },
-          { count: 3, operator: "$eq" },
-          { completed: true, operator: "$eq" },
+          { field: "name", value: ["ABC", "DEF"], operator: "$eq" },
+          { field: "count", value: 3, operator: "$eq" },
+          { field: "completed", value: true, operator: "$eq" },
         ]),
       ).toEqual(
         "filter[name][]=ABC&filter[name][]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
@@ -237,12 +241,13 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       expect(
         filterToQueryParam([
           {
-            name: ["A'bc!*\"", "$()"],
+            field: "name",
+            value: ["A'bc!*\"", "$()"],
             operator: "$eq",
           },
-          { count: 3, operator: "$eq" },
-          { completed: true, operator: "$eq" },
-          { employer: "(test$!)", operator: "$eq" },
+          { field: "count", value: 3, operator: "$eq" },
+          { field: "completed", value: true, operator: "$eq" },
+          { field: "employer", value: "(test$!)", operator: "$eq" },
         ]),
       ).toEqual(
         "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",

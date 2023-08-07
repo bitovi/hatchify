@@ -42,13 +42,13 @@ type HatchifyApp = {
   state: {
     [schemaName: string]: {
       useCollectionState: ({
-        selectedDefault,
+        defaultSelected,
         onSelectedChange,
         fields,
         include,
       }: {
-        selectedDefault?: string[]
-        onSelectedChange?: (ids: string[]) => void
+        defaultSelected?: HatchifyCollectionProps["defaultSelected"]
+        onSelectedChange?: HatchifyCollectionProps["onSelectedChange"]
         fields?: Fields
         include?: Include
       }) => CollectionState
@@ -94,13 +94,13 @@ export function hatchifyReact(
   const state = Object.values(schemas).reduce((acc, schema) => {
     acc[schema.name] = {
       useCollectionState: ({
-        selectedDefault,
+        defaultSelected,
         onSelectedChange,
         fields,
         include,
       } = {}) =>
         useCollectionState(schemas, schema.name, reactRest, {
-          selectedDefault,
+          defaultSelected,
           onSelectedChange,
           fields,
           include,
