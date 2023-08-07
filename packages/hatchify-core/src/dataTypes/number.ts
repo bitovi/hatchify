@@ -74,16 +74,25 @@ export function number(props?: HatchifyNumberProps): PartialAttribute<number> {
 export function validateStep(value: number, step: number, min = 0): boolean {
   if (value == null) return false
 
-  const factor = Math.pow(
-    10,
-    Math.max(
-      ...[value, step, min].map(
-        (number) => (number.toString().split(".")[1] || "").length,
-      ),
-    ),
-  )
+  let absValue = Math.abs(value)
+  let absStep = Math.abs(step)
+  let absMin = Math.abs(min)
 
-  return (value * factor - min * factor) % (step * factor) === 0
+  while (
+    (absValue > 0 && absValue < 1) ||
+    (absStep > 0 && absStep < 1) ||
+    (absMin > 0 && absMin < 1)
+  ) {
+    value *= 10
+    step *= 10
+    min *= 10
+
+    absValue = Math.abs(value)
+    absStep = Math.abs(step)
+    absMin = Math.abs(min)
+  }
+
+  return (value - min) % step === 0
 }
 
 function clientMutationCoerce(
