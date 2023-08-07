@@ -4,36 +4,24 @@ describe("integer", () => {
   describe("integer()", () => {
     const type = integer()
 
-    it("assumes defaults correctly", () => {
-      expect(type.getControlType()).toEqual({
-        allowNull: true,
-        autoIncrement: false,
-        min: -Infinity,
-        max: Infinity,
-        primary: false,
-        step: 1,
-      })
-    })
-
     it("prepares correctly", () => {
-      expect(type.prepare()).toEqual({
+      expect(type).toEqual({
         name: "integer()",
         orm: {
           sequelize: {
             type: "INTEGER",
             typeArgs: [],
-            allowNull: true,
-            autoIncrement: false,
-            primaryKey: false,
-            validate: { min: -Infinity, max: Infinity },
+            allowNull: undefined,
+            autoIncrement: undefined,
+            primaryKey: undefined,
           },
         },
-        controlType: {
+        control: {
           type: "Number",
-          allowNull: true,
-          min: -Infinity,
-          max: Infinity,
-          primary: false,
+          allowNull: undefined,
+          min: undefined,
+          max: undefined,
+          primary: undefined,
           step: 1,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -47,7 +35,7 @@ describe("integer", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type.prepare()
+      } = type
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -104,36 +92,24 @@ describe("integer", () => {
   describe("integer({required: true})", () => {
     const type = integer({ required: true })
 
-    it("assumes defaults correctly", () => {
-      expect(type.getControlType()).toEqual({
-        allowNull: false,
-        autoIncrement: false,
-        min: -Infinity,
-        max: Infinity,
-        primary: false,
-        step: 1,
-      })
-    })
-
     it("prepares correctly", () => {
-      expect(type.prepare()).toEqual({
+      expect(type).toEqual({
         name: 'integer({"required":true})',
         orm: {
           sequelize: {
             type: "INTEGER",
             typeArgs: [],
             allowNull: false,
-            autoIncrement: false,
-            primaryKey: false,
-            validate: { min: -Infinity, max: Infinity },
+            autoIncrement: undefined,
+            primaryKey: undefined,
           },
         },
-        controlType: {
+        control: {
           type: "Number",
           allowNull: false,
-          min: -Infinity,
-          max: Infinity,
-          primary: false,
+          min: undefined,
+          max: undefined,
+          primary: undefined,
           step: 1,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -147,7 +123,7 @@ describe("integer", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type.prepare()
+      } = type
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -211,36 +187,24 @@ describe("integer", () => {
   describe("integer({autoIncrement: true})", () => {
     const type = integer({ autoIncrement: true })
 
-    it("assumes defaults correctly", () => {
-      expect(type.getControlType()).toEqual({
-        allowNull: true,
-        autoIncrement: true,
-        min: -Infinity,
-        max: Infinity,
-        primary: false,
-        step: 1,
-      })
-    })
-
     it("prepares correctly", () => {
-      expect(type.prepare()).toEqual({
+      expect(type).toEqual({
         name: 'integer({"autoIncrement":true})',
         orm: {
           sequelize: {
             type: "INTEGER",
             typeArgs: [],
-            allowNull: true,
+            allowNull: undefined,
             autoIncrement: true,
-            primaryKey: false,
-            validate: { min: -Infinity, max: Infinity },
+            primaryKey: undefined,
           },
         },
-        controlType: {
+        control: {
           type: "Number",
-          allowNull: true,
-          min: -Infinity,
-          max: Infinity,
-          primary: false,
+          allowNull: undefined,
+          min: undefined,
+          max: undefined,
+          primary: undefined,
           step: 1,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -254,7 +218,7 @@ describe("integer", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type.prepare()
+      } = type
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -310,35 +274,23 @@ describe("integer", () => {
   describe("integer({primary: true})", () => {
     const type = integer({ primary: true })
 
-    it("assumes defaults correctly", () => {
-      expect(type.getControlType()).toEqual({
-        allowNull: true,
-        autoIncrement: false,
-        min: -Infinity,
-        max: Infinity,
-        primary: true,
-        step: 1,
-      })
-    })
-
     it("prepares correctly", () => {
-      expect(type.prepare()).toEqual({
+      expect(type).toEqual({
         name: 'integer({"primary":true})',
         orm: {
           sequelize: {
             type: "INTEGER",
             typeArgs: [],
-            allowNull: true,
-            autoIncrement: false,
+            allowNull: undefined,
+            autoIncrement: undefined,
             primaryKey: true,
-            validate: { min: -Infinity, max: Infinity },
           },
         },
-        controlType: {
+        control: {
           type: "Number",
-          allowNull: true,
-          min: -Infinity,
-          max: Infinity,
+          allowNull: undefined,
+          min: undefined,
+          max: undefined,
           primary: true,
           step: 1,
         },
@@ -353,7 +305,7 @@ describe("integer", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type.prepare()
+      } = type
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)

@@ -1,3 +1,2 @@
-export { integer, HatchifyInteger } from "./integer"
-export { number, HatchifyNumber } from "./number"
-export { HatchifyBaseDataType } from "./base"
+export { integer } from "./integer"
+export { number } from "./number"

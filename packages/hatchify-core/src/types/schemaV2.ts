@@ -1,36 +1,66 @@
-import type { HatchifyBaseDataType } from "../dataTypes"
+export interface HatchifyDataTypeProps {
+  primary?: boolean
+  required?: boolean
+}
+
+export interface HatchifyDataTypeControl {
+  allowNull?: boolean
+  primary?: boolean
+}
+
+export interface HatchifyNumberProps extends HatchifyDataTypeProps {
+  autoIncrement?: boolean
+  min?: number
+  max?: number
+  step?: number
+}
+
+export interface HatchifyNumberControl extends HatchifyDataTypeControl {
+  autoIncrement: boolean
+  min: number
+  max: number
+  step: number
+}
+
+export type HatchifyIntegerProps = Omit<HatchifyNumberProps, "step">
+
+export interface PartialSchemaV2 extends Omit<SchemaV2, "id"> {
+  id?: PartialAttribute<number>
+}
 
 export interface SchemaV2 {
   name: string
-  id: HatchifyBaseDataType
+  id: PartialAttribute<number>
   attributes: {
-    [attributeName: string]: HatchifyBaseDataType
+    [attributeName: string]: PartialAttribute<number>
   }
 }
 
-export interface PreparedDataType<T> {
-  name: string
-  orm: {
-    sequelize: {
-      type: string
-      typeArgs: Array<number | string>
-      allowNull?: boolean
-      autoIncrement?: boolean
-      primaryKey?: boolean
-      validate?: {
-        min?: number
-        max?: number
-      }
-    }
-  }
-  controlType: {
-    type: string
-    allowNull?: boolean
+export interface SequelizeDataType {
+  type: string
+  typeArgs: Array<number | string>
+  allowNull?: boolean
+  autoIncrement?: boolean
+  primaryKey?: boolean
+  validate?: {
     min?: number
     max?: number
-    primary?: boolean
-    step?: number
   }
+}
+
+export interface ControlType {
+  type: string
+  allowNull?: boolean
+  min?: number
+  max?: number
+  primary?: boolean
+  step?: number
+}
+
+export interface PartialAttribute<T> {
+  name: string
+  orm: { sequelize: SequelizeDataType }
+  control: ControlType
   setORMPropertyValue: (jsonValue: T | null) => T | null
   setORMQueryFilterValue: (queryValue: string) => T | null
   serializeORMPropertyValue: (ormValue: T | null) => T | null
