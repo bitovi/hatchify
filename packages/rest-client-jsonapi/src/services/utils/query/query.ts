@@ -77,8 +77,14 @@ export function filterToQueryParam(filter: Filters): string {
 
   const q: string[] = []
 
+  //We need the UTC iso in the request, but we need the local iso in the frontend.
+  const DATE_REGEX = new RegExp(
+    /([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]))/i,
+  )
+
   for (let i = 0; i < filter.length; i++) {
     const { operator, field, value } = filter[i]
+
     if (Array.isArray(value)) {
       q.push(
         value
@@ -90,7 +96,13 @@ export function filterToQueryParam(filter: Filters): string {
     } else if (operator === "nempty") {
       q.push(`filter[${field}][$ne]=${null}`)
     } else {
-      q.push(`filter[${field}][${operator}]=${encodeURIComponent(value)}`)
+      q.push(
+        `filter[${field}][${operator}]=${encodeURIComponent(
+          DATE_REGEX.test(value.toString())
+            ? new Date(value.toString()).toISOString()
+            : value,
+        )}`,
+      )
     }
   }
 
