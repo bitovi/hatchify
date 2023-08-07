@@ -546,8 +546,9 @@ describe("Naming rules", () => {
       ],
       database: [],
     },
-    {
-      description: "Ensure belongsToMany foreignKey is correctly created",
+    */ {
+      description:
+        "Ensure belongsToMany foreignKey is correctly created (relationships.belongsToMany.foreignKey)",
       models: [
         {
           name: "SalesPerson",
@@ -557,7 +558,11 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { foreignKey: "seller_id", through: "SalesAccount" },
+              options: {
+                foreignKey: "seller_id",
+                through: "account_sales_person",
+                as: "account",
+              },
             },
           ],
         },
@@ -569,6 +574,7 @@ describe("Naming rules", () => {
           hasOne: [
             {
               target: "SalesPerson",
+              options: { as: "salesperson" },
             },
           ],
         },
@@ -581,7 +587,7 @@ describe("Naming rules", () => {
         },
       ],
     },
-    {
+    /*{
       description: "Ensure belongsToMany otherKey works properly",
       models: [
         {
