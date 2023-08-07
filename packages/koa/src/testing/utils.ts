@@ -21,7 +21,7 @@ export async function startServerWith(
     options?: { method?: Method; headers?: object; body?: object },
   ) => Promise<any>
   teardown: () => Promise<void>
-  hatchify?
+  hatchify
 }> {
   const app = new Koa()
   const hatchify = new Hatchify(models, { prefix: "/api" })

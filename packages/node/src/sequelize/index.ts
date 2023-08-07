@@ -24,6 +24,7 @@ import type {
   Virtuals,
 } from "../types"
 import { HatchifySymbolModel } from "../types"
+import { pascalCaseToSnakeCase } from "../utils/string"
 
 export function buildHatchifyModelObject(
   models: SequelizeModelsCollection,
@@ -137,6 +138,7 @@ export function convertHatchifyModels(
         createdAt: false,
         updatedAt: false,
         freezeTableName: true,
+        tableName: pascalCaseToSnakeCase(model.name),
       },
     )
 
