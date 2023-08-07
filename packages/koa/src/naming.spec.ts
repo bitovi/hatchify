@@ -612,8 +612,8 @@ describe("Naming rules", () => {
   ] */
 
   //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
-  /* const hasManyTestCases: TestCase[] = [
-    {
+  const hasManyTestCases: TestCase[] = [
+    /*  {
       description: "Ensure hasMany creates rows and is returned in include",
       models: [
         {
@@ -698,9 +698,10 @@ describe("Naming rules", () => {
           columns: ["id", "sales_person_id"],
         },
       ],
-    },
+    }, */
     {
-      description: "Ensure hasMany foreignKey row is correctly created",
+      description:
+        "Ensure hasMany foreignKey row is correctly created (relationships.hasMany.foreignKey)",
       models: [
         {
           name: "SalesPerson",
@@ -738,7 +739,7 @@ describe("Naming rules", () => {
         },
       ],
     },
-    {
+    /*  {
       description: "Ensure hasMany alias (as) is correctly addressed",
       models: [
         {
@@ -829,39 +830,16 @@ describe("Naming rules", () => {
           columns: ["id", "sales_person_id"],
         },
       ],
-    },
-  ] */
-
-  //TODO: Remove these tests as soon as fixes for previous tests are in place.
-  const dummyTestCases: TestCase[] = [
-    {
-      description: "Ensure basic schema for Test works",
-      models: [
-        {
-          name: "Test",
-          attributes: {
-            name: "STRING",
-          },
-        },
-      ],
-      requests: [],
-      database: [
-        {
-          tableName: "test",
-          columns: ["id", "name"],
-        },
-      ],
-    },
+    }, */
   ]
 
   const cases: TestCase[] = [
     /*    ...schemaNameTestCases,
     ...pluralNameTestCases,
     ...attributeNameTestCases,
-    ...belongsToTestCases,
-    ...hasManyTestCases,
-    ...belongsToManyTestCases, */
-    ...dummyTestCases,
+    ...belongsToTestCases,*/
+    ...hasManyTestCases /*
+    ...belongsToManyTestCases, */,
   ]
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]

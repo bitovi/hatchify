@@ -7,6 +7,7 @@ import type {
 import { camelCase } from "camel-case"
 import * as inflection from "inflection"
 import type JSONAPISerializer from "json-api-serializer"
+import { snakeCase } from "lodash"
 import type {
   DataType,
   Model,
@@ -137,6 +138,7 @@ export function convertHatchifyModels(
         createdAt: false,
         updatedAt: false,
         freezeTableName: true,
+        tableName: snakeCase(model.name),
       },
     )
 
