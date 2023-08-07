@@ -24,7 +24,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/design-mui": "^0.0.1-16",
+    "@hatchifyjs/design-mui": "^0.0.1-17",
     "@hatchifyjs/hatchify-core": "^0.0.1-1",
     "@hatchifyjs/react-ui": "^0.0.1-13",
     "@hatchifyjs/rest-client-jsonapi": "^0.0.1-13"
