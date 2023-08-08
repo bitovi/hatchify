@@ -47,7 +47,7 @@ export function number(props?: HatchifyNumberProps): PartialAttribute<number> {
         throw new Error("Non-null value is required")
       }
 
-      if (isNaN(queryValue as unknown as number)) {
+      if (isNaN(+queryValue)) {
         throw new Error("Provided value is not a number")
       }
 
