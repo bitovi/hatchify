@@ -71,28 +71,18 @@ export function number(props?: HatchifyNumberProps): PartialAttribute<number> {
   }
 }
 
-export function validateStep(value: number, step: number, min = 0): boolean {
+export function validateStep(
+  value: number,
+  step?: number,
+  min?: number,
+): boolean {
   if (value == null) return false
+  if (!step) return true
 
-  let absValue = Math.abs(value)
-  let absStep = Math.abs(step)
-  let absMin = Math.abs(min)
-
-  while (
-    (absValue > 0 && absValue < 1) ||
-    (absStep > 0 && absStep < 1) ||
-    (absMin > 0 && absMin < 1)
-  ) {
-    value *= 10
-    step *= 10
-    min *= 10
-
-    absValue = Math.abs(value)
-    absStep = Math.abs(step)
-    absMin = Math.abs(min)
-  }
-
-  return (value - min) % step === 0
+  const diff = (value - (min || 0)) % step
+  const epsilon = 0.00001 // a small tolerance
+  const absDiff = diff < 0 ? -diff : diff
+  return absDiff < epsilon || step - absDiff < epsilon
 }
 
 function clientMutationCoerce(
@@ -124,7 +114,7 @@ function clientMutationCoerce(
     )
   }
 
-  if (control.step && !validateStep(value, control.step)) {
+  if (!validateStep(value, control.step, control.min)) {
     throw new Error(`Provided value violates the step of ${control.step}`)
   }
 

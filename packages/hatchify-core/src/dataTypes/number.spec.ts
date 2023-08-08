@@ -2,6 +2,17 @@ import { number, validateStep } from "./number"
 
 describe("number", () => {
   describe("validateStep", () => {
+    it("without step", () => {
+      expect(validateStep(0)).toBe(true)
+      expect(validateStep(1)).toBe(true)
+      expect(validateStep(0.1)).toBe(true)
+      expect(validateStep(-0.1)).toBe(true)
+      expect(validateStep(0.11)).toBe(true)
+      expect(validateStep(-0.11)).toBe(true)
+      expect(validateStep(null as unknown as number)).toBe(false)
+      expect(validateStep(undefined as unknown as number)).toBe(false)
+    })
+
     it("without minimum", () => {
       const step = 0.1
 
