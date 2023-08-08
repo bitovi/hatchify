@@ -404,7 +404,6 @@ describe("Naming rules", () => {
           hasOne: [
             {
               target: "SalesPerson",
-              options: {},
             },
           ],
         },
@@ -441,7 +440,6 @@ describe("Naming rules", () => {
           hasOne: [
             {
               target: "SalesPerson",
-              options: { as: "salesperson" },
             },
           ],
         },
@@ -572,7 +570,6 @@ describe("Naming rules", () => {
           hasOne: [
             {
               target: "SalesPerson",
-              options: { as: "salesperson" },
             },
           ],
         },
