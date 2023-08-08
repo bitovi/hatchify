@@ -240,19 +240,15 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       )
 
       it("converts the date to an ISO string", () => {
-        const DATE_ISO_REGEX = new RegExp(
-          /^filter\[date\]\[\$eq\]=([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3])(%3A[0-9]{2}){2}.000Z)/,
-        )
-
-        const returnedFilter = filterToQueryParam([
-          {
-            field: "date",
-            value: "2023-08-08T14:00",
-            operator: "$eq",
-          },
-        ])
-
-        expect(DATE_ISO_REGEX.test(returnedFilter)).toEqual(true)
+        expect(
+          filterToQueryParam([
+            {
+              field: "date",
+              value: "2023-08-08T14:00",
+              operator: "$eq",
+            },
+          ]),
+        ).toEqual("filter[date][$eq]=2023-08-08T19%3A00%3A00.000Z")
       })
 
       expect(
