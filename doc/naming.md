@@ -104,7 +104,7 @@ const SalesPerson = {
 An attribute name should be `Singular camelCase`.
 
 ```js
-const Account = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {
     firstName: "STRING" //👀
@@ -380,8 +380,8 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {through: "SalesAccount"}
-    }
+      options: { through: "sales_account", as: "account" },
+    },
   ],
 }
 ```
@@ -452,8 +452,12 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {foreignKey: "seller_id", through: "SalesAccount"}
-    }
+      options: {
+        foreignKey: "seller_id",
+        through: "account_sales_person",
+        as: "account",
+      },
+    },
   ],
 }
 ```
