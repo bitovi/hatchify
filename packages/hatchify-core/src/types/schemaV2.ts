@@ -64,4 +64,5 @@ export interface PartialAttribute<T> {
   setORMPropertyValue: (jsonValue: T | null) => T | null
   setORMQueryFilterValue: (queryValue: string) => T | null
   serializeORMPropertyValue: (ormValue: T | null) => T | null
+  finalize: (isId?: boolean) => PartialAttribute<T>
 }

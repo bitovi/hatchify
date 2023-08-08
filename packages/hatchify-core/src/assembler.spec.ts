@@ -1,105 +1,8 @@
-import {
-  assembler,
-  makePrimary,
-  makePrimaryRequired,
-  setDefaults,
-} from "./assembler"
+import { assembler } from "./assembler"
 import { integer } from "./dataTypes"
 import type { PartialSchemaV2 } from "./types"
 
 describe("assembler", () => {
-  describe("makePrimary", () => {
-    it("handles undefined", () => {
-      expect(() => makePrimary()).toThrow(
-        new Error("attribute is missing, use createIfNotFound"),
-      )
-    })
-  })
-
-  describe("makePrimaryRequired", () => {
-    it("handles undefined", () => {
-      expect(() => makePrimaryRequired()).toThrow(
-        new Error("attribute is missing, use createIfNotFound"),
-      )
-    })
-
-    it("handles required non-primary", () => {
-      const baseProps = {
-        name: `integer({"required":true})`,
-        setORMPropertyValue: jest.fn(),
-        setORMQueryFilterValue: jest.fn(),
-        serializeORMPropertyValue: jest.fn(),
-      }
-
-      expect(
-        makePrimaryRequired({
-          ...baseProps,
-          control: { type: "Number", allowNull: false },
-          orm: {
-            sequelize: {
-              type: "INTEGER",
-              typeArgs: [],
-              allowNull: false,
-            },
-          },
-        }),
-      ).toEqual({
-        ...baseProps,
-        control: { type: "Number", allowNull: false },
-        orm: {
-          sequelize: {
-            type: "INTEGER",
-            typeArgs: [],
-            allowNull: false,
-          },
-        },
-      })
-    })
-
-    it("handles optional primary", () => {
-      const baseProps = {
-        name: `integer({"primary":true,"required":false})`,
-        setORMPropertyValue: jest.fn(),
-        setORMQueryFilterValue: jest.fn(),
-        serializeORMPropertyValue: jest.fn(),
-      }
-
-      expect(
-        makePrimaryRequired({
-          ...baseProps,
-          control: { type: "Number", allowNull: true, primary: true },
-          orm: {
-            sequelize: {
-              type: "INTEGER",
-              typeArgs: [],
-              allowNull: true,
-              primaryKey: true,
-            },
-          },
-        }),
-      ).toEqual({
-        ...baseProps,
-        control: { type: "Number", allowNull: false, primary: true },
-        orm: {
-          sequelize: {
-            type: "INTEGER",
-            typeArgs: [],
-            allowNull: false,
-            primaryKey: true,
-          },
-        },
-      })
-    })
-  })
-
-  describe("setDefaults", () => {
-    it("handles undefined", () => {
-      expect(() => setDefaults()).toThrow(
-        new Error("attribute is missing, use createIfNotFound"),
-      )
-    })
-  })
-
   describe("assembler", () => {
     const Todo: PartialSchemaV2 = {
       name: "Todo",
@@ -133,7 +36,7 @@ describe("assembler", () => {
         const { Todo: assembledTodo } = assembler({ Todo })
 
         expect(assembledTodo.id.control.allowNull).toBe(false)
-        expect(assembledTodo.id.control.min).toBe(-Infinity)
+        expect(assembledTodo.id.control.min).toBe(1)
         expect(assembledTodo.id.control.max).toBe(Infinity)
         expect(assembledTodo.id.control.primary).toBe(true)
 

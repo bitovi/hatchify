@@ -76,6 +76,7 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -133,6 +134,33 @@ describe("number", () => {
         new Error("Infinity as a value is not supported"),
       )
     })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'number({"autoIncrement":false,"min":null,"max":null,"primary":false,"required":false})',
+        orm: {
+          sequelize: {
+            type: "DOUBLE",
+            typeArgs: [],
+            allowNull: true,
+            autoIncrement: false,
+            primaryKey: false,
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: true,
+          min: -Infinity,
+          max: Infinity,
+          primary: false,
+          step: undefined,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
+    })
   })
 
   describe("number({required: true})", () => {
@@ -161,6 +189,7 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -225,6 +254,33 @@ describe("number", () => {
         new Error("Infinity as a value is not supported"),
       )
     })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'number({"required":true,"autoIncrement":false,"min":null,"max":null,"primary":false})',
+        orm: {
+          sequelize: {
+            type: "DOUBLE",
+            typeArgs: [],
+            allowNull: false,
+            autoIncrement: false,
+            primaryKey: false,
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: false,
+          min: -Infinity,
+          max: Infinity,
+          primary: false,
+          step: undefined,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
+    })
   })
 
   describe("number({autoIncrement: true})", () => {
@@ -253,6 +309,7 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -308,6 +365,34 @@ describe("number", () => {
       expect(() => setORMQueryFilterValue("Infinity")).toThrow(
         new Error("Infinity as a value is not supported"),
       )
+    })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'number({"autoIncrement":true,"min":1,"max":null,"primary":false,"required":false})',
+        orm: {
+          sequelize: {
+            type: "DOUBLE",
+            typeArgs: [],
+            allowNull: true,
+            autoIncrement: true,
+            primaryKey: false,
+            validate: { min: 1 },
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: true,
+          min: 1,
+          max: Infinity,
+          primary: false,
+          step: undefined,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
     })
   })
 
@@ -337,6 +422,7 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -393,6 +479,33 @@ describe("number", () => {
         new Error("Infinity as a value is not supported"),
       )
     })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'number({"primary":true,"autoIncrement":false,"min":null,"max":null,"required":true})',
+        orm: {
+          sequelize: {
+            type: "DOUBLE",
+            typeArgs: [],
+            allowNull: false,
+            autoIncrement: false,
+            primaryKey: true,
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: false,
+          min: -Infinity,
+          max: Infinity,
+          primary: true,
+          step: undefined,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
+    })
   })
 
   describe("number({step: 0.1})", () => {
@@ -421,6 +534,7 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -484,6 +598,33 @@ describe("number", () => {
         new Error("Provided value violates the step of 0.1"),
       )
     })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'number({"step":0.1,"autoIncrement":false,"min":null,"max":null,"primary":false,"required":false})',
+        orm: {
+          sequelize: {
+            type: "DOUBLE",
+            typeArgs: [],
+            allowNull: true,
+            autoIncrement: false,
+            primaryKey: false,
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: true,
+          min: -Infinity,
+          max: Infinity,
+          primary: false,
+          step: 0.1,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
+    })
   })
 
   describe("number({min: 1, max: 10})", () => {
@@ -513,6 +654,7 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -598,6 +740,34 @@ describe("number", () => {
       expect(() => setORMQueryFilterValue("Infinity")).toThrow(
         new Error("Infinity as a value is not supported"),
       )
+    })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'number({"min":1,"max":10,"autoIncrement":false,"primary":false,"required":false})',
+        orm: {
+          sequelize: {
+            type: "DOUBLE",
+            typeArgs: [],
+            allowNull: true,
+            autoIncrement: false,
+            primaryKey: false,
+            validate: { min: 1, max: 10 },
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: true,
+          min: 1,
+          max: 10,
+          primary: false,
+          step: undefined,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
     })
   })
 })

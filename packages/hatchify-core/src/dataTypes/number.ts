@@ -24,14 +24,7 @@ export function number(props?: HatchifyNumberProps): PartialAttribute<number> {
         allowNull,
         autoIncrement: props?.autoIncrement,
         primaryKey: props?.primary,
-        ...(props?.min || props?.max
-          ? {
-              validate: {
-                min: props?.min,
-                max: props?.max,
-              },
-            }
-          : {}),
+        ...buildValidation(props?.min, props?.max),
       },
     },
     control,
@@ -68,6 +61,17 @@ export function number(props?: HatchifyNumberProps): PartialAttribute<number> {
     serializeORMPropertyValue: (ormValue: number | null): number | null => {
       return clientMutationCoerce(ormValue, control)
     },
+
+    finalize: (isId?: boolean): PartialAttribute<number> => {
+      return number({
+        ...props,
+        autoIncrement: !!props?.autoIncrement,
+        min: props?.min ?? (props?.autoIncrement ? 1 : -Infinity),
+        max: props?.max ?? Infinity,
+        primary: isId || !!props?.primary,
+        required: isId || !!props?.primary || !!props?.required,
+      })
+    },
   }
 }
 
@@ -83,6 +87,15 @@ export function validateStep(
   const epsilon = 0.00001 // a small tolerance
   const absDiff = diff < 0 ? -diff : diff
   return absDiff < epsilon || step - absDiff < epsilon
+}
+
+function buildValidation(min?: number, max?: number) {
+  const validate = {
+    ...([null, undefined, -Infinity].includes(min) ? {} : { min }),
+    ...([null, undefined, Infinity].includes(max) ? {} : { max }),
+  }
+
+  return Object.keys(validate).length ? { validate } : {}
 }
 
 function clientMutationCoerce(

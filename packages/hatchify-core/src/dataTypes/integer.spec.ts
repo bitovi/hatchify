@@ -27,6 +27,7 @@ describe("integer", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -87,6 +88,33 @@ describe("integer", () => {
         new Error("Provided value violates the step of 1"),
       )
     })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'integer({"autoIncrement":false,"min":null,"max":null,"primary":false,"required":false})',
+        orm: {
+          sequelize: {
+            type: "INTEGER",
+            typeArgs: [],
+            allowNull: true,
+            autoIncrement: false,
+            primaryKey: false,
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: true,
+          min: -Infinity,
+          max: Infinity,
+          primary: false,
+          step: 1,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
+    })
   })
 
   describe("integer({required: true})", () => {
@@ -115,6 +143,7 @@ describe("integer", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -182,6 +211,33 @@ describe("integer", () => {
         new Error("Provided value violates the step of 1"),
       )
     })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'integer({"required":true,"autoIncrement":false,"min":null,"max":null,"primary":false})',
+        orm: {
+          sequelize: {
+            type: "INTEGER",
+            typeArgs: [],
+            allowNull: false,
+            autoIncrement: false,
+            primaryKey: false,
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: false,
+          min: -Infinity,
+          max: Infinity,
+          primary: false,
+          step: 1,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
+    })
   })
 
   describe("integer({autoIncrement: true})", () => {
@@ -210,6 +266,7 @@ describe("integer", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -268,6 +325,34 @@ describe("integer", () => {
       expect(() => setORMQueryFilterValue("1.1")).toThrow(
         new Error("Provided value violates the step of 1"),
       )
+    })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'integer({"autoIncrement":true,"min":1,"max":null,"primary":false,"required":false})',
+        orm: {
+          sequelize: {
+            type: "INTEGER",
+            typeArgs: [],
+            allowNull: true,
+            autoIncrement: true,
+            primaryKey: false,
+            validate: { min: 1 },
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: true,
+          min: 1,
+          max: Infinity,
+          primary: false,
+          step: 1,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
     })
   })
 
@@ -297,6 +382,7 @@ describe("integer", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
       })
     })
 
@@ -355,6 +441,33 @@ describe("integer", () => {
       expect(() => setORMQueryFilterValue("1.1")).toThrow(
         new Error("Provided value violates the step of 1"),
       )
+    })
+
+    it("sets defaults", () => {
+      expect(type.finalize()).toEqual({
+        name: 'integer({"primary":true,"autoIncrement":false,"min":null,"max":null,"required":true})',
+        orm: {
+          sequelize: {
+            type: "INTEGER",
+            typeArgs: [],
+            allowNull: false,
+            autoIncrement: false,
+            primaryKey: true,
+          },
+        },
+        control: {
+          type: "Number",
+          allowNull: false,
+          min: -Infinity,
+          max: Infinity,
+          primary: true,
+          step: 1,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+        finalize: expect.any(Function),
+      })
     })
   })
 })
