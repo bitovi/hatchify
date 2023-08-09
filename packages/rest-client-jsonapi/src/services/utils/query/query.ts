@@ -13,6 +13,7 @@ import type {
  * where "book_type" and "person_type" are the JSON:API types for the "Book" and "Person" schemas.
  */
 export function fieldsToQueryParam(
+  schemaMap: RequiredSchemaMap,
   allSchemas: Schemas,
   schemaName: string,
   fields: Fields,
@@ -22,14 +23,14 @@ export function fieldsToQueryParam(
   for (const field of fieldsArr) {
     // if field is equal to the schemaName, then the field is an attribute of the base schema
     if (field === schemaName) {
-      fieldsObj[schemaName] = fields[field]
+      fieldsObj[schemaMap[schemaName].type] = fields[field]
       continue
     }
 
     const baseSchema = allSchemas[schemaName]
     const relationship = baseSchema?.relationships || {}
     const relatedSchema = relationship[field].schema
-    fieldsObj[relatedSchema] = fields[field]
+    fieldsObj[schemaMap[relatedSchema].type] = fields[field]
   }
 
   const fieldset = Object.entries(fieldsObj)
@@ -145,8 +146,8 @@ export function getQueryParams(
   allSchemas: Schemas,
   schemaName: string,
   query: {
-    fields: Fields
-    include: Include
+    fields?: Fields
+    include?: Include
     sort?: string[] | string
     filter?: Filters
     page?: unknown
@@ -155,14 +156,18 @@ export function getQueryParams(
   const params = []
   const { fields, include, sort, filter, page } = query
 
-  if (include.length) {
+  if (include) {
     const includeParam = includeToQueryParam(include)
     if (includeParam) params.push(includeParam)
   }
 
   if (fields) {
-    const fieldsParam = fieldsToQueryParam(allSchemas, schemaName, fields)
-
+    const fieldsParam = fieldsToQueryParam(
+      schemaMap,
+      allSchemas,
+      schemaName,
+      fields,
+    )
     if (fieldsParam) params.push(fieldsParam)
   }
 
