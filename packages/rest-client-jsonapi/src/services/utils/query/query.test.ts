@@ -17,6 +17,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       attributes: {
         title: "string",
         year: "number",
+        date: "string",
       },
       relationships: {
         author: {
@@ -237,6 +238,18 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual(
         "filter[name][]=ABC&filter[name][]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
       )
+
+      it("converts the date to an ISO string", () => {
+        expect(
+          filterToQueryParam([
+            {
+              field: "date",
+              value: "2023-08-08T14:00",
+              operator: "$eq",
+            },
+          ]),
+        ).toEqual("filter[date][$eq]=2023-08-08T19%3A00%3A00.000Z")
+      })
 
       expect(
         filterToQueryParam([

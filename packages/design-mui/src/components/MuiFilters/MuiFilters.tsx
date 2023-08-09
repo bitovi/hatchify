@@ -2,7 +2,7 @@ import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import type { FilterArray } from "@hatchifyjs/rest-client"
 import { useCallback, useRef, useState } from "react"
 import { Badge, Button, Grid, Popover, debounce } from "@mui/material"
-import MuiFilterRows from "./components/MuiFilterRows"
+import { MuiFilterRows } from "./components/MuiFilterRows"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
@@ -69,7 +69,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
           horizontal: "left",
         }}
       >
-        <Grid container spacing={1} width="37.5rem" padding="0.75rem">
+        <Grid container spacing={1} width="39.5rem" padding="0.75rem">
           <Grid item xs={12}>
             <MuiFilterRows
               attributes={allSchemas[schemaName].attributes}

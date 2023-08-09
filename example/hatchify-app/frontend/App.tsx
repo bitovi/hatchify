@@ -27,7 +27,6 @@ const App: React.FC = () => {
   })
 
   function onActionClick() {
-    return alert(`all: ${selected.all}, ids: ${selected.ids}`)
     if (!selected.all && !selected.ids.length) alert("action on no items")
     else if (selected.all)
       alert(`action on ALL ITEMS or items ${selected.ids.join(",")}`)
