@@ -205,8 +205,8 @@ export function convertHatchifyModels(
             joinTable:
               relationshipType === "belongsToMany"
                 ? typeof options.through === "string"
-                  ? options.through
-                  : options.through.model
+                  ? options?.through
+                  : options?.through.model
                 : undefined,
           }
           associationsLookup[model.name] = {
