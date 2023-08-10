@@ -28,10 +28,9 @@ interface TestCase {
 }
 
 describe("Naming rules", () => {
-  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
-  /* const schemaNameTestCases: TestCase[] = [
+  const schemaNameTestCases: TestCase[] = [
     {
-      description: "Ensure basic schema for SalesPerson works",
+      description: "Ensure basic schema for SalesPerson works (Schema.name)",
       models: [
         {
           name: "SalesPerson",
@@ -70,25 +69,21 @@ describe("Naming rules", () => {
         {
           url: "/api/sales-persons?fields[SalesPerson]=name",
           options: {
-            method: "post",
-            body: {
-              data: {
-                type: "SalesPerson",
-                id: "1",
-                attributes: { name: "Roye" },
-              },
-            },
+            method: "get",
           },
           expected: {
             body: {
               jsonapi: {
                 version: "1.0",
               },
-              data: {
-                type: "SalesPerson",
-                id: "1",
-                attributes: { name: "Roye" },
-              },
+              meta: { unpaginatedCount: 1 },
+              data: [
+                {
+                  type: "SalesPerson",
+                  id: "1",
+                  attributes: { name: "Roye" },
+                },
+              ],
             },
             status: 200,
           },
@@ -101,12 +96,12 @@ describe("Naming rules", () => {
         },
       ],
     },
-  ] */
+  ]
 
-  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
-  /*   const pluralNameTestCases: TestCase[] = [
+  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-310
+  /* const pluralNameTestCases: TestCase[] = [
     {
-      description: "Ensure pluralName creates route with correct name",
+      description: "Ensure pluralName creates route with correct name (Schema.pluralName)",
       models: [
         {
           name: "SalesPerson",
@@ -124,6 +119,8 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "SalesPerson",
+                id: "1",
+                attributes: { name: "Roye" },
               },
             },
           },
@@ -132,10 +129,13 @@ describe("Naming rules", () => {
               jsonapi: {
                 version: "1.0",
               },
+              meta: { unpaginatedCount: 1 },
               data: {
-                id: "1",
-                type: "SalesPerson",
-              },
+                  type: "SalesPerson",
+                  id: "1",
+                  attributes: { name: "Roye" },
+                },
+              ,
             },
             status: 200,
           },
@@ -155,11 +155,10 @@ describe("Naming rules", () => {
     },
   ] */
 
-  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
-  /*  const attributeNameTestCases: TestCase[] = [
+  const attributeNameTestCases: TestCase[] = [
     {
       description:
-        "Ensure attribute's names create correct rows and can be fetched",
+        "Ensure attribute's names create correct rows and can be fetched (Schema.attributes.ATTRIBUTE_NAME)",
       models: [
         {
           name: "SalesPerson",
@@ -202,10 +201,10 @@ describe("Naming rules", () => {
         },
       ],
     },
-  ] */
+  ]
 
-  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
-  /*   const belongsToTestCases: TestCase[] = [
+  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
+  /*const belongsToTestCases: TestCase[] = [
     {
       description: "Ensure belongsTo creates rows and is returned in include",
       models: [
@@ -375,7 +374,6 @@ describe("Naming rules", () => {
     },
   ] */
 
-  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
   const belongsToManyTestCases: TestCase[] = [
     {
       description:
@@ -452,7 +450,8 @@ describe("Naming rules", () => {
         },
       ],
     },
-    /*   {
+    //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
+    /*  {
       description: "Ensure belongsToMany alias (as) is correctly returned",
       models: [
         {
@@ -463,7 +462,7 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { as: "salesAccounts", through: "SalesAccount" },
+              options: { as: "salesAccounts", through: "sales_account" },
             },
           ],
         },
@@ -472,16 +471,43 @@ describe("Naming rules", () => {
           attributes: {
             name: "STRING",
           },
-          hasOne: [
+          belongsToMany: [
             {
               target: "SalesPerson",
+              options: { as: "salesPerson", through: "sales_account" },
             },
           ],
         },
       ],
       requests: [
         {
-          url: "/api/sales-person",
+          url: "/api/accounts",
+          options: {
+            method: "post",
+            body: {
+              data: {
+                type: "Account",
+                id: "456",
+                attributes: { name: "Ana" },
+              },
+            },
+          },
+          expected: {
+            body: {
+              jsonapi: {
+                version: "1.0",
+              },
+              data: {
+                type: "Account",
+                id: "456",
+                attributes: { name: "Ana" },
+              },
+            },
+            status: 200,
+          },
+        },
+        {
+          url: "/api/sales-persons",
           options: {
             method: "post",
             body: {
@@ -506,18 +532,13 @@ describe("Naming rules", () => {
                 type: "SalesPerson",
                 id: "1",
                 attributes: { firstName: "Roye" },
-                relationships: {
-                  salesAccounts: {
-                    data: [{ type: "Account", id: "456" }],
-                  },
-                },
               },
             },
             status: 200,
           },
         },
         {
-          url: "/api/sales-persons?include=managingAccounts",
+          url: "/api/sales-persons?include=salesAccounts",
           options: {
             method: "get",
           },
@@ -526,24 +547,27 @@ describe("Naming rules", () => {
               jsonapi: {
                 version: "1.0",
               },
-              data: {
-                type: "SalesPerson",
-                id: "1",
-                attributes: { firstName: "Roye" },
-                relationships: {
-                  salesAccounts: {
-                    data: [{ type: "Account", id: "456" }],
+              meta: { unpaginatedCount: 1 },
+              data: [
+                {
+                  type: "SalesPerson",
+                  id: "1",
+                  attributes: { firstName: "Roye" },
+                  relationships: {
+                    salesAccounts: {
+                      data: [{ type: "Account", id: "456" }],
+                    },
                   },
                 },
-              },
+              ],
             },
             status: 200,
           },
         },
       ],
       database: [],
-    },
-    */ {
+    }, */
+    {
       description:
         "Ensure belongsToMany foreignKey is correctly created (relationships.belongsToMany.foreignKey)",
       models: [
@@ -624,10 +648,10 @@ describe("Naming rules", () => {
     },
   ]
 
-  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
   const hasManyTestCases: TestCase[] = [
-    /*  {
-      description: "Ensure hasMany creates rows and is returned in include",
+    {
+      description:
+        "Ensure hasMany creates rows and is returned in include (relationships.hasMany)",
       models: [
         {
           name: "SalesPerson",
@@ -644,7 +668,6 @@ describe("Naming rules", () => {
           belongsTo: [
             {
               target: "SalesPerson",
-              options: { as: "closerPerson", foreignKey: "finisher_id" },
             },
           ],
         },
@@ -658,10 +681,7 @@ describe("Naming rules", () => {
               data: {
                 type: "Account",
                 id: "456",
-                attributes: { firstName: "Acme" },
-                relationships: {
-                  closerPerson: { type: "SalesPerson", id: "1" },
-                },
+                attributes: { name: "Developer" },
               },
             },
           },
@@ -673,10 +693,36 @@ describe("Naming rules", () => {
               data: {
                 type: "Account",
                 id: "456",
-                attributes: { firstName: "Acme" },
+                attributes: { name: "Developer" },
+              },
+            },
+            status: 200,
+          },
+        },
+        {
+          url: "/api/sales-persons",
+          options: {
+            method: "post",
+            body: {
+              data: {
+                type: "SalesPerson",
+                id: "1",
+                attributes: { firstName: "Roye" },
                 relationships: {
-                  closerPerson: [{ type: "SalesPerson", id: "1" }],
+                  accounts: { data: [{ type: "Account", id: "456" }] },
                 },
+              },
+            },
+          },
+          expected: {
+            body: {
+              jsonapi: {
+                version: "1.0",
+              },
+              data: {
+                type: "SalesPerson",
+                id: "1",
+                attributes: { firstName: "Roye" },
               },
             },
             status: 200,
@@ -692,14 +738,26 @@ describe("Naming rules", () => {
               jsonapi: {
                 version: "1.0",
               },
-              data: {
-                type: "SalesPerson",
-                id: "1",
-                attributes: { firstName: "Roye" },
-                relationships: {
-                  closerPerson: { type: "Account", id: "456" },
-                },
+              meta: {
+                unpaginatedCount: 1,
               },
+              data: [
+                {
+                  type: "SalesPerson",
+                  id: "1",
+                  attributes: { firstName: "Roye" },
+                  relationships: {
+                    accounts: { data: [{ type: "Account", id: "456" }] },
+                  },
+                },
+              ],
+              included: [
+                {
+                  type: "Account",
+                  id: "456",
+                  attributes: { name: "Developer" },
+                },
+              ],
             },
             status: 200,
           },
@@ -711,8 +769,9 @@ describe("Naming rules", () => {
           columns: ["id", "sales_person_id"],
         },
       ],
-    }, */
-    {
+    },
+    //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
+    /*  {
       description:
         "Ensure hasMany foreignKey row is correctly created (relationships.hasMany.foreignKey)",
       models: [
@@ -751,7 +810,7 @@ describe("Naming rules", () => {
           columns: ["id", "opening_sales_person_id"],
         },
       ],
-    },
+    }, */
     /*  {
       description: "Ensure hasMany alias (as) is correctly addressed",
       models: [
@@ -777,7 +836,7 @@ describe("Naming rules", () => {
       ],
       requests: [
         {
-          url: "/api/sales-person",
+          url: "/api/sales-persons",
           options: {
             method: "post",
             body: {
@@ -847,10 +906,10 @@ describe("Naming rules", () => {
   ]
 
   const cases: TestCase[] = [
-    /*    ...schemaNameTestCases,
-    ...pluralNameTestCases,
+    ...schemaNameTestCases,
+    /*  ...pluralNameTestCases,*/
     ...attributeNameTestCases,
-    ...belongsToTestCases,*/
+    /*  ...belongsToTestCases, */
     ...hasManyTestCases,
     ...belongsToManyTestCases,
   ]

@@ -5,7 +5,6 @@ import type {
   ICreateHatchifyModel,
 } from "@hatchifyjs/sequelize-create-with-associations"
 import { camelCase } from "camel-case"
-import * as inflection from "inflection"
 import type JSONAPISerializer from "json-api-serializer"
 import { snakeCase } from "lodash"
 import type {
@@ -183,7 +182,7 @@ export function convertHatchifyModels(
             options?.as ??
             camelCase(
               ["belongsToMany", "hasMany"].includes(relationshipType)
-                ? inflection.pluralize(target)
+                ? target + "s"
                 : target,
             )
 
