@@ -21,6 +21,7 @@ interface Table {
   columns: string[]
 }
 interface TestCase {
+  skip?: boolean
   description: string
   models: HatchifyModel[]
   requests: Request[]
@@ -203,9 +204,10 @@ describe("Naming rules", () => {
     },
   ]
 
-  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
-  /*const belongsToTestCases: TestCase[] = [
+  //Temporarily skipped, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
+  const belongsToTestCases: TestCase[] = [
     {
+      skip: true,
       description: "Ensure belongsTo creates rows and is returned in include",
       models: [
         {
@@ -288,6 +290,7 @@ describe("Naming rules", () => {
       ],
     },
     {
+      skip: true,
       description: "Ensure belongsTo foreign key is correctly created",
       models: [
         {
@@ -372,7 +375,7 @@ describe("Naming rules", () => {
         },
       ],
     },
-  ] */
+  ]
 
   const belongsToManyTestCases: TestCase[] = [
     {
@@ -450,8 +453,9 @@ describe("Naming rules", () => {
         },
       ],
     },
-    //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
-    /*  {
+    //Temporarily skipped, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
+    {
+      skip: true,
       description: "Ensure belongsToMany alias (as) is correctly returned",
       models: [
         {
@@ -566,7 +570,7 @@ describe("Naming rules", () => {
         },
       ],
       database: [],
-    }, */
+    },
     {
       description:
         "Ensure belongsToMany foreignKey is correctly created (relationships.belongsToMany.foreignKey)",
@@ -770,8 +774,9 @@ describe("Naming rules", () => {
         },
       ],
     },
-    //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
-    /*  {
+    //Temporarily skipped, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
+    {
+      skip: true,
       description:
         "Ensure hasMany foreignKey row is correctly created (relationships.hasMany.foreignKey)",
       models: [
@@ -810,8 +815,9 @@ describe("Naming rules", () => {
           columns: ["id", "opening_sales_person_id"],
         },
       ],
-    }, */
-    /*  {
+    },
+    {
+      skip: true,
       description: "Ensure hasMany alias (as) is correctly addressed",
       models: [
         {
@@ -902,17 +908,17 @@ describe("Naming rules", () => {
           columns: ["id", "sales_person_id"],
         },
       ],
-    }, */
+    },
   ]
 
   const cases: TestCase[] = [
     ...schemaNameTestCases,
     /*  ...pluralNameTestCases,*/
     ...attributeNameTestCases,
-    /*  ...belongsToTestCases, */
+    ...belongsToTestCases,
     ...hasManyTestCases,
     ...belongsToManyTestCases,
-  ]
+  ].filter((testCase) => !testCase.skip)
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
