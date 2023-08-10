@@ -643,7 +643,7 @@ describe("Accounts and Sales People", () => {
       },
     })
 
-    const { body: salesPerson } = await fetch("/api/salespeople", {
+    const { body: salesPerson } = await fetch("/api/sales-persons", {
       method: "post",
       body: {
         data: {
@@ -665,11 +665,11 @@ describe("Accounts and Sales People", () => {
       },
     })
 
-    const { body: accountWithSalesPeople } = await fetch(
-      `/api/accounts/${account.data.id}?include=salesPeople`,
+    const { body: accountWithSalesPersons } = await fetch(
+      `/api/accounts/${account.data.id}?include=salesPersons`,
     )
 
-    expect(accountWithSalesPeople).toEqual({
+    expect(accountWithSalesPersons).toEqual({
       jsonapi: { version: "1.0" },
       data: {
         type: "Account",
@@ -678,7 +678,7 @@ describe("Accounts and Sales People", () => {
           name: account.data.attributes.name,
         },
         relationships: {
-          salesPeople: {
+          salesPersons: {
             data: [{ type: "SalesPerson", id: salesPerson.data.id }],
           },
         },
