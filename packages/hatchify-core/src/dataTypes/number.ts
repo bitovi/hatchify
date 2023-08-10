@@ -43,7 +43,9 @@ export function number(props?: HatchifyNumberProps): PartialAttribute<number> {
     // Example : ?filter[age]=xyz ... xyz => throw "xyz is not a number";
     setORMQueryFilterValue: (queryValue: string): number | null => {
       if (["null", "undefined"].includes(queryValue)) {
-        if (control.allowNull !== false) return null
+        if (control.allowNull !== false) {
+          return null
+        }
         throw new Error("Non-null value is required")
       }
 
@@ -80,8 +82,12 @@ export function validateStep(
   step?: number,
   min?: number,
 ): boolean {
-  if (value == null) return false
-  if (!step) return true
+  if (value == null) {
+    return false
+  }
+  if (!step) {
+    return true
+  }
 
   const diff = (value - (min || 0)) % step
   const epsilon = 0.00001 // a small tolerance
@@ -103,7 +109,9 @@ function clientMutationCoerce(
   control: ControlType,
 ): number | null {
   if (value == null) {
-    if (control.allowNull !== false) return value
+    if (control.allowNull !== false) {
+      return value
+    }
     throw new Error("Non-null value is required")
   }
 

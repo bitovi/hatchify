@@ -48,7 +48,9 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   }
 
   const removeFilter = (index: number) => {
-    if (filters.length === 1) return clearFilters()
+    if (filters.length === 1) {
+      return clearFilters()
+    }
     const newFilters = [...filters]
     newFilters.splice(index, 1)
     setFilters(newFilters)
