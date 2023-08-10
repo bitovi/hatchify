@@ -198,13 +198,12 @@ const testCases = [
     queryParam: "filter[startDate][$lte]=2020-05-05",
     expectedResult: [john],
   },
-  // TODO: resolve with HATCH-294. Skipped due to test failing
-  // {
-  //   description: "returns correct data using the $gte operator with a date",
-  //   operator: "$gte",
-  //   queryParam: "filter[startDate][$gte]=2021-01-05",
-  //   expectedResult: [jane],
-  // },
+  {
+    description: "returns correct data using the $gte operator with a date",
+    operator: "$gte",
+    queryParam: "filter[startDate][$gte]=2021-01-05T00:00:00.000Z",
+    expectedResult: [jane],
+  },
   {
     description: "returns correct data using the $in operator with a date",
     operator: "$in",
