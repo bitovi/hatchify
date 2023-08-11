@@ -83,30 +83,9 @@ export function convertToHatchifyResources(
 }
 
 /**
- * Converts Hatchify relationship object to JSON:API relationship object
- */
-export function convertHatchifyRelationshipsToJsonApiRelationships(
-  config: SourceConfig,
-  resourceRelationships: Record<
-    string,
-    ResourceRelationship | ResourceRelationship[]
-  >,
-): Record<string, JsonApiResourceRelationship> {
-  return Object.keys(resourceRelationships).reduce((a, b) => {
-    a[b] = {
-      data: convertHatchifyRelationshipsToJsonApiRelationship(
-        config,
-        resourceRelationships[b],
-      ),
-    }
-    return a
-  }, {} as Record<string, JsonApiResourceRelationship>)
-}
-
-/**
  * Converts a single Hatchify relationship to a JSON:API relationship
  */
-function convertHatchifyRelationshipsToJsonApiRelationship(
+function hatchifyRelationshipToJsonApiRelationship(
   config: SourceConfig,
   relationships: ResourceRelationship | ResourceRelationship[],
 ): JsonApiRelationship | JsonApiRelationship[] {
@@ -123,4 +102,25 @@ function convertHatchifyRelationshipsToJsonApiRelationship(
   return Array.isArray(relationships)
     ? jsonApiRelationships
     : jsonApiRelationships[0]
+}
+
+/**
+ * Converts Hatchify relationship object to JSON:API relationship object
+ */
+export function convertToJsonApiRelationships(
+  config: SourceConfig,
+  resourceRelationships: Record<
+    string,
+    ResourceRelationship | ResourceRelationship[]
+  >,
+): Record<string, JsonApiResourceRelationship> {
+  return Object.keys(resourceRelationships).reduce((a, b) => {
+    a[b] = {
+      data: hatchifyRelationshipToJsonApiRelationship(
+        config,
+        resourceRelationships[b],
+      ),
+    }
+    return a
+  }, {} as Record<string, JsonApiResourceRelationship>)
 }

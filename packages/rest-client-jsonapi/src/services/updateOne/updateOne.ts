@@ -7,7 +7,7 @@ import type {
 import {
   convertToHatchifyResources,
   fetchJsonApi,
-  convertHatchifyRelationshipsToJsonApiRelationships,
+  convertToJsonApiRelationships,
 } from "../utils"
 import type { JsonApiResource } from "../jsonapi"
 
@@ -53,10 +53,7 @@ function hatchifyResourceToJsonApiResource(
 
   const translatedRelationships = relationships
     ? {
-        relationships: convertHatchifyRelationshipsToJsonApiRelationships(
-          config,
-          relationships,
-        ),
+        relationships: convertToJsonApiRelationships(config, relationships),
       }
     : null
 

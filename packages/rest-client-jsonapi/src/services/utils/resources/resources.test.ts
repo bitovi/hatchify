@@ -7,7 +7,7 @@ import {
   jsonApiResourceToHatchifyResource,
   convertToHatchifyResources,
   getTypeToSchema,
-  convertHatchifyRelationshipsToJsonApiRelationships,
+  convertToJsonApiRelationships,
 } from "./resources"
 import type { ResourceRelationship } from "@hatchifyjs/rest-client"
 
@@ -196,11 +196,8 @@ describe("hatchifyRelationshipsToJsonApiRelationship", () => {
       },
     }
 
-    expect(
-      convertHatchifyRelationshipsToJsonApiRelationships(
-        sourceConfig,
-        relationships,
-      ),
-    ).toEqual(expected)
+    expect(convertToJsonApiRelationships(sourceConfig, relationships)).toEqual(
+      expected,
+    )
   })
 })
