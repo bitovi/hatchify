@@ -968,6 +968,6 @@ describe("Naming rules", () => {
   )
 
   skippedCases.forEach(({ description }) => {
-    it.skip(`${description}`, () => {})
+    it.skip(`${description}`, jest.fn())
   })
 })
