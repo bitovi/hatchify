@@ -49,7 +49,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { name: "Roye" },
+                attributes: { name: "Mary" },
               },
             },
           },
@@ -61,7 +61,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { name: "Roye" },
+                attributes: { name: "Mary" },
               },
             },
             status: 200,
@@ -82,7 +82,7 @@ describe("Naming rules", () => {
                 {
                   type: "SalesPerson",
                   id: "1",
-                  attributes: { name: "Roye" },
+                  attributes: { name: "Mary" },
                 },
               ],
             },
@@ -108,7 +108,7 @@ describe("Naming rules", () => {
           name: "SalesPerson",
           pluralName: "SalesPeople",
           attributes: {
-            firstName: "Roye",
+            firstName: "Mary",
           },
         },
       ],
@@ -121,7 +121,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { name: "Roye" },
+                attributes: { name: "Mary" },
               },
             },
           },
@@ -134,7 +134,7 @@ describe("Naming rules", () => {
               data: {
                   type: "SalesPerson",
                   id: "1",
-                  attributes: { name: "Roye" },
+                  attributes: { name: "Mary" },
                 },
               ,
             },
@@ -518,7 +518,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { firstName: "Roye" },
+                attributes: { firstName: "Mary" },
                 relationships: {
                   salesAccounts: {
                     data: [{ type: "Account", id: "456" }],
@@ -535,7 +535,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { firstName: "Roye" },
+                attributes: { firstName: "Mary" },
               },
             },
             status: 200,
@@ -556,7 +556,7 @@ describe("Naming rules", () => {
                 {
                   type: "SalesPerson",
                   id: "1",
-                  attributes: { firstName: "Roye" },
+                  attributes: { firstName: "Mary" },
                   relationships: {
                     salesAccounts: {
                       data: [{ type: "Account", id: "456" }],
@@ -711,7 +711,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { firstName: "Roye" },
+                attributes: { firstName: "Mary" },
                 relationships: {
                   accounts: { data: [{ type: "Account", id: "456" }] },
                 },
@@ -726,7 +726,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { firstName: "Roye" },
+                attributes: { firstName: "Mary" },
               },
             },
             status: 200,
@@ -749,7 +749,7 @@ describe("Naming rules", () => {
                 {
                   type: "SalesPerson",
                   id: "1",
-                  attributes: { firstName: "Roye" },
+                  attributes: { firstName: "Mary" },
                   relationships: {
                     accounts: { data: [{ type: "Account", id: "456" }] },
                   },
@@ -849,7 +849,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { firstName: "Roye" },
+                attributes: { firstName: "Mary" },
                 relationships: {
                   managingAccounts: {
                     data: [{ type: "Account", id: "456" }],
@@ -866,7 +866,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { firstName: "Roye" },
+                attributes: { firstName: "Mary" },
                 relationships: {
                   managingAccounts: {
                     data: [{ type: "Account", id: "456" }],
@@ -890,7 +890,7 @@ describe("Naming rules", () => {
               data: {
                 type: "SalesPerson",
                 id: "1",
-                attributes: { firstName: "Roye" },
+                attributes: { firstName: "Mary" },
                 relationships: {
                   managingAccounts: {
                     data: [{ type: "Account", id: "456" }],

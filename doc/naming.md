@@ -119,14 +119,14 @@ const SalesPerson = {
 **API Implications**
 
 - `firstName` will be used in query parameters like
-  `GET /sales-persons?filter[firstName]=Roye&fields[SalePerson]=firstName`
+  `GET /sales-persons?filter[firstName]=Mary&fields[SalePerson]=firstName`
 - `firstName` will be used in mutation payloads and response payloads like:
   ```js
   {
     data: {
       type: "SalesPerson",
       id: "1",
-      attributes: { firstName: "Roye" } //👀
+      attributes: { firstName: "Mary" } //👀
     }
   }
   ```
@@ -234,7 +234,7 @@ const SalesPerson = {
     data: {
       type: "SalesPerson",
       id: "1",
-      attributes: { firstName: "Roye" },
+      attributes: { firstName: "Mary" },
       relationships: {
         accounts: {
           data: [{type: "Account", id: "456"}]  //👀
@@ -276,7 +276,7 @@ const SalesPerson = {
     data: {
       type: "SalesPerson",
       id: "1",
-      attributes: { firstName: "Roye" },
+      attributes: { firstName: "Mary" },
       relationships: {
         managingAccounts: {
           data: [{type: "Account", id: "456"}] //👀
@@ -356,7 +356,7 @@ const SalesPerson = {
     data: {
       type: "SalesPerson",
       id: "1",
-      attributes: { firstName: "Roye" },
+      attributes: { firstName: "Mary" },
       relationships: {
         accounts: { 
           data: [{type: "Account", id: "456"}] //👀
@@ -427,7 +427,7 @@ This does not change the Database behavior.
     data: {
       type: "SalesPerson",
       id: "1",
-      attributes: { firstName: "Roye" },
+      attributes: { firstName: "Mary" },
       relationships: {
         salesAccounts: {
           data: [{type: "Account", id: "456"}] //👀
