@@ -24,6 +24,7 @@ import type {
   Virtuals,
 } from "../types"
 import { HatchifySymbolModel } from "../types"
+import { pluralize } from "../utils/string"
 
 export function buildHatchifyModelObject(
   models: SequelizeModelsCollection,
@@ -182,7 +183,7 @@ export function convertHatchifyModels(
             options?.as ??
             camelCase(
               ["belongsToMany", "hasMany"].includes(relationshipType)
-                ? target + "s"
+                ? pluralize(target)
                 : target,
             )
 

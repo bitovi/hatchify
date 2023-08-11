@@ -26,6 +26,7 @@ import type {
   SequelizeModelsCollection,
   Virtuals,
 } from "./types"
+import { pluralize } from "./utils/string"
 
 /**
  * Parse can be imported from the `@bitovi/hatchify` package
@@ -115,7 +116,7 @@ export class Hatchify {
 
     this._sequelizeModelNames.forEach((singular) => {
       this._pluralToSingularModelNames.set(
-        singular.toLowerCase() + "s",
+        pluralize(singular.toLowerCase()),
         singular,
       )
     })
