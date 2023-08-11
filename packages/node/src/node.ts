@@ -1,5 +1,6 @@
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
 import JSONAPISerializer from "json-api-serializer"
+import { kebabCase } from "lodash"
 import { match } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
 
@@ -351,7 +352,7 @@ export class Hatchify {
     // Validate if endpoint name is lowercase
     if (endpointName === endpointName.toLowerCase()) {
       //Endpoints follow kebab-case convention; must convert to flat case to compare
-      const flatCaseEndpointName = endpointName.replace("-", "")
+      const flatCaseEndpointName = kebabCase(endpointName)
 
       const singular =
         this._pluralToSingularModelNames.get(flatCaseEndpointName)
