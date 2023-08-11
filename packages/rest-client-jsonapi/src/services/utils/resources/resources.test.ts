@@ -1,10 +1,15 @@
 import { describe, expect, it } from "vitest"
-import type { JsonApiResource } from "../../jsonapi"
+import type {
+  JsonApiResource,
+  JsonApiResourceRelationship,
+} from "../../jsonapi"
 import {
   jsonApiResourceToHatchifyResource,
   convertToHatchifyResources,
   getTypeToSchema,
+  convertHatchifyRelationshipsToJsonApiRelationships,
 } from "./resources"
+import type { ResourceRelationship } from "@hatchifyjs/rest-client"
 
 describe("rest-client-jsonapi/services/utils/resources", () => {
   const typeToSchema = { article: "Article", person: "Person", tag: "Tag" }
@@ -157,5 +162,45 @@ describe("rest-client-jsonapi/services/utils/resources", () => {
 
       expect(convertToHatchifyResources(resources, schemaMap)).toEqual(expected)
     })
+  })
+})
+
+describe("hatchifyRelationshipsToJsonApiRelationship", () => {
+  it("Correctly converts relationship objects with one and many relationships", () => {
+    const sourceConfig = {
+      baseUrl: "http://localhost:3000/api",
+      schemaMap: {
+        Person: { type: "person", endpoint: "people" },
+        Tag: { type: "tag", endpoint: "tags" },
+      },
+    }
+
+    const relationships: Record<
+      string,
+      ResourceRelationship | ResourceRelationship[]
+    > = {
+      person: { id: "1", __schema: "Person" },
+      tags: [
+        { id: "1", __schema: "Tag" },
+        { id: "2", __schema: "Tag" },
+      ],
+    }
+
+    const expected: Record<string, JsonApiResourceRelationship> = {
+      person: { data: { id: "1", type: "person" } },
+      tags: {
+        data: [
+          { id: "1", type: "tag" },
+          { id: "2", type: "tag" },
+        ],
+      },
+    }
+
+    expect(
+      convertHatchifyRelationshipsToJsonApiRelationships(
+        sourceConfig,
+        relationships,
+      ),
+    ).toEqual(expected)
   })
 })
