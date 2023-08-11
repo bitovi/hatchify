@@ -21,7 +21,7 @@ export async function updateOne(
   schemaName: string,
   data: RestClientUpdateData,
 ): Promise<Resource[]> {
-  const jsonApiResource = hatchifyResourceToJsonApiResource(
+  const jsonApiResource = restClientUpdateDataToJsonApiResource(
     config,
     schemaName,
     data,
@@ -44,7 +44,7 @@ export async function updateOne(
 /**
  * Converts a Hatchify resource into a JSON:API resource.
  */
-function hatchifyResourceToJsonApiResource(
+function restClientUpdateDataToJsonApiResource(
   config: SourceConfig,
   schemaName: string,
   hatchifyResource: RestClientUpdateData,

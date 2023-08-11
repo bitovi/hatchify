@@ -21,7 +21,7 @@ export async function createOne(
   schemaName: string,
   data: RestClientCreateData,
 ): Promise<Resource[]> {
-  const jsonApiResource = hatchifyResourceToJsonApiResource(
+  const jsonApiResource = restClientCreateDataToJsonApiResource(
     config,
     schemaName,
     data,
@@ -44,7 +44,7 @@ export async function createOne(
 /**
  * Converts a Hatchify resource into a JSON:API resource.
  */
-function hatchifyResourceToJsonApiResource(
+function restClientCreateDataToJsonApiResource(
   config: SourceConfig,
   schemaName: string,
   hatchifyResource: RestClientCreateData,
