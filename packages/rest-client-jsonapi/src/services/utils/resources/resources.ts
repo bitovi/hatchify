@@ -2,8 +2,13 @@ import type {
   Resource,
   ResourceRelationship,
   RequiredSchemaMap,
+  SourceConfig,
 } from "@hatchifyjs/rest-client"
-import type { JsonApiResource } from "../../jsonapi"
+import type {
+  JsonApiResource,
+  JsonApiResourceRelationship,
+  Relationship as JsonApiRelationship,
+} from "../../jsonapi"
 
 type Relationship = Record<
   string,
@@ -75,4 +80,47 @@ export function convertToHatchifyResources(
   }
 
   return [jsonApiResourceToHatchifyResource(data, typeToSchema)]
+}
+
+/**
+ * Converts Hatchify relationship object to JSON:API relationship object
+ */
+export function hatchifyRelationshipsToJsonApiRelationships(
+  config: SourceConfig,
+  resourceRelationships: Record<
+    string,
+    ResourceRelationship | ResourceRelationship[]
+  >,
+): Record<string, JsonApiResourceRelationship> {
+  return Object.keys(resourceRelationships).reduce((a, b) => {
+    a[b] = {
+      data: hatchifyRelationshipsToJsonApiRelationship(
+        config,
+        resourceRelationships[b],
+      ),
+    }
+    return a
+  }, {} as Record<string, JsonApiResourceRelationship>)
+}
+
+/**
+ * Converts a single Hatchify relationship to a JSON:API relationship
+ */
+function hatchifyRelationshipsToJsonApiRelationship(
+  config: SourceConfig,
+  relationships: ResourceRelationship | ResourceRelationship[],
+): JsonApiRelationship | JsonApiRelationship[] {
+  const jsonApiRelationships = ([] as ResourceRelationship[])
+    .concat(relationships)
+    .map((relationship) => {
+      const { id, __schema } = relationship
+      return {
+        id,
+        type: config.schemaMap[__schema].type,
+      }
+    })
+
+  return Array.isArray(relationships)
+    ? jsonApiRelationships
+    : jsonApiRelationships[0]
 }

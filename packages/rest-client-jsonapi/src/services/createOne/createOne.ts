@@ -4,7 +4,11 @@ import type {
   Resource,
   RestClientCreateData,
 } from "@hatchifyjs/rest-client"
-import { convertToHatchifyResources, fetchJsonApi } from "../utils"
+import {
+  convertToHatchifyResources,
+  fetchJsonApi,
+  hatchifyRelationshipsToJsonApiRelationships,
+} from "../utils"
 import type { JsonApiResource } from "../jsonapi"
 
 /**
@@ -13,7 +17,7 @@ import type { JsonApiResource } from "../jsonapi"
  */
 export async function createOne(
   config: SourceConfig,
-  allSchemas: Schemas, // Unused; can we remove?
+  allSchemas: Schemas,
   schemaName: string,
   data: RestClientCreateData,
 ): Promise<Resource[]> {
@@ -37,15 +41,28 @@ export async function createOne(
   )
 }
 
+/**
+ * Converts a Hatchify resource into a JSON:API resource.
+ */
 function hatchifyResourceToJsonApiResource(
   config: SourceConfig,
   schemaName: string,
   hatchifyResource: RestClientCreateData,
-): JsonApiResource {
-  const { __schema, ...rest } = hatchifyResource
+): Omit<JsonApiResource, "id"> {
+  const { attributes, relationships } = hatchifyResource
+
+  const translatedRelationships = relationships
+    ? {
+        relationships: hatchifyRelationshipsToJsonApiRelationships(
+          config,
+          relationships,
+        ),
+      }
+    : null
 
   return {
-    ...rest,
     type: config.schemaMap[schemaName].type,
-  } as JsonApiResource
+    attributes,
+    ...translatedRelationships,
+  }
 }
