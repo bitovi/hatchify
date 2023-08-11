@@ -3,6 +3,7 @@ import type {
   SourceConfig,
   Resource,
   RestClientCreateData,
+  Schema,
 } from "@hatchifyjs/rest-client"
 import {
   convertToHatchifyResources,
@@ -23,6 +24,7 @@ export async function createOne(
 ): Promise<Resource[]> {
   const jsonApiResource = restClientCreateDataToJsonApiResource(
     config,
+    allSchemas[schemaName],
     schemaName,
     data,
   )
@@ -46,6 +48,7 @@ export async function createOne(
  */
 function restClientCreateDataToJsonApiResource(
   config: SourceConfig,
+  schema: Schema,
   schemaName: string,
   hatchifyResource: RestClientCreateData,
 ): Omit<JsonApiResource, "id"> {
@@ -53,7 +56,11 @@ function restClientCreateDataToJsonApiResource(
 
   const translatedRelationships = relationships
     ? {
-        relationships: convertToJsonApiRelationships(config, relationships),
+        relationships: convertToJsonApiRelationships(
+          config,
+          schema,
+          relationships,
+        ),
       }
     : null
 

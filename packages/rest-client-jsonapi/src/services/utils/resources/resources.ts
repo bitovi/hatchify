@@ -3,6 +3,7 @@ import type {
   ResourceRelationship,
   RequiredSchemaMap,
   SourceConfig,
+  Schema,
 } from "@hatchifyjs/rest-client"
 import type {
   JsonApiResource,
@@ -87,15 +88,32 @@ export function convertToHatchifyResources(
  */
 function hatchifyRelationshipToJsonApiRelationship(
   config: SourceConfig,
-  relationships: ResourceRelationship | ResourceRelationship[],
+  schema: Schema & Required<Pick<Schema, "relationships">>,
+  typeName: string,
+  relationships:
+    | Omit<ResourceRelationship, "__schema">
+    | Array<Omit<ResourceRelationship, "__schema">>,
 ): JsonApiRelationship | JsonApiRelationship[] {
-  const jsonApiRelationships = ([] as ResourceRelationship[])
+  const jsonApiRelationships = (
+    [] as Array<Omit<ResourceRelationship, "__schema">>
+  )
     .concat(relationships)
     .map((relationship) => {
-      const { id, __schema } = relationship
+      const { id } = relationship
       return {
         id,
-        type: config.schemaMap[__schema].type,
+        type: Object.keys(schema.relationships).reduce((a, b) => {
+          if (a.length) {
+            return a
+          }
+
+          if (b === typeName) {
+            a = schema.relationships[b].schema
+            return a
+          }
+
+          return ""
+        }, ""),
       }
     })
 
@@ -109,15 +127,19 @@ function hatchifyRelationshipToJsonApiRelationship(
  */
 export function convertToJsonApiRelationships(
   config: SourceConfig,
+  schema: Schema & Required<Pick<Schema, "relationships">>,
   resourceRelationships: Record<
     string,
-    ResourceRelationship | ResourceRelationship[]
+    | Omit<ResourceRelationship, "__schema">
+    | Array<Omit<ResourceRelationship, "__schema">>
   >,
 ): Record<string, JsonApiResourceRelationship> {
   return Object.keys(resourceRelationships).reduce((a, b) => {
     a[b] = {
       data: hatchifyRelationshipToJsonApiRelationship(
         config,
+        schema,
+        b,
         resourceRelationships[b],
       ),
     }

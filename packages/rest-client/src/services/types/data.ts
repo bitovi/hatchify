@@ -27,14 +27,39 @@ export interface Resource {
 }
 
 export interface RestClientCreateData
-  extends Omit<Resource, "attributes" | "id"> {
+  extends Omit<Resource, "attributes" | "id" | "relationships"> {
   attributes: {
     [key: string]: any
   }
+  relationships?: globalThis.Record<
+    string,
+    | Omit<ResourceRelationship, "__schema">
+    | Array<Omit<ResourceRelationship, "__schema">>
+  >
 }
 
-export type ConsumerCreateData = Omit<RestClientCreateData, "__schema">
+export interface ConsumerCreateData
+  extends Omit<RestClientCreateData, "__schema" | "relationships"> {
+  relationships?: globalThis.Record<
+    string,
+    | Omit<ResourceRelationship, "__schema">
+    | Array<Omit<ResourceRelationship, "__schema">>
+  >
+}
 
-export type RestClientUpdateData = Resource
+export interface RestClientUpdateData extends Omit<Resource, "relationships"> {
+  relationships?: globalThis.Record<
+    string,
+    | Omit<ResourceRelationship, "__schema">
+    | Array<Omit<ResourceRelationship, "__schema">>
+  >
+}
 
-export type ConsumerUpdateData = Omit<Resource, "__schema">
+export interface ConsumerUpdateData
+  extends Omit<Resource, "__schema" | "relationships"> {
+  relationships?: globalThis.Record<
+    string,
+    | Omit<ResourceRelationship, "__schema">
+    | Array<Omit<ResourceRelationship, "__schema">>
+  >
+}

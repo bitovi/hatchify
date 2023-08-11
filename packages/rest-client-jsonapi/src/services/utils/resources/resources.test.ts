@@ -9,7 +9,7 @@ import {
   getTypeToSchema,
   convertToJsonApiRelationships,
 } from "./resources"
-import type { ResourceRelationship } from "@hatchifyjs/rest-client"
+import type { ResourceRelationship, Schema } from "@hatchifyjs/rest-client"
 
 describe("rest-client-jsonapi/services/utils/resources", () => {
   const typeToSchema = { article: "Article", person: "Person", tag: "Tag" }
@@ -167,9 +167,28 @@ describe("rest-client-jsonapi/services/utils/resources", () => {
 
 describe("hatchifyRelationshipsToJsonApiRelationship", () => {
   it("Correctly converts relationship objects with one or many relationships", () => {
+    const schema: Schema = {
+      name: "Article",
+      displayAttribute: "name",
+      attributes: {
+        title: "string",
+        body: "string",
+      },
+      relationships: {
+        person: {
+          type: "one",
+          schema: "Person",
+        },
+        tag: {
+          type: "many",
+          schema: "Tag",
+        },
+      },
+    }
     const sourceConfig = {
       baseUrl: "http://localhost:3000/api",
       schemaMap: {
+        Article: { type: "article", endpoint: "articles" },
         Person: { type: "person", endpoint: "people" },
         Tag: { type: "tag", endpoint: "tags" },
       },
@@ -177,27 +196,25 @@ describe("hatchifyRelationshipsToJsonApiRelationship", () => {
 
     const relationships: Record<
       string,
-      ResourceRelationship | ResourceRelationship[]
+      | Omit<ResourceRelationship, "__schema">
+      | Array<Omit<ResourceRelationship, "__schema">>
     > = {
-      person: { id: "1", __schema: "Person" },
-      tags: [
-        { id: "1", __schema: "Tag" },
-        { id: "2", __schema: "Tag" },
-      ],
+      person: { id: "1" },
+      tag: [{ id: "1" }, { id: "2" }],
     }
 
     const expected: Record<string, JsonApiResourceRelationship> = {
-      person: { data: { id: "1", type: "person" } },
-      tags: {
+      person: { data: { id: "1", type: "Person" } },
+      tag: {
         data: [
-          { id: "1", type: "tag" },
-          { id: "2", type: "tag" },
+          { id: "1", type: "Tag" },
+          { id: "2", type: "Tag" },
         ],
       },
     }
 
-    expect(convertToJsonApiRelationships(sourceConfig, relationships)).toEqual(
-      expected,
-    )
+    expect(
+      convertToJsonApiRelationships(sourceConfig, schema, relationships),
+    ).toEqual(expected)
   })
 })

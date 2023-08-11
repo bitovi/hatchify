@@ -1,6 +1,7 @@
 import type {
   Resource,
   RestClientUpdateData,
+  Schema,
   Schemas,
   SourceConfig,
 } from "@hatchifyjs/rest-client"
@@ -23,6 +24,7 @@ export async function updateOne(
 ): Promise<Resource[]> {
   const jsonApiResource = restClientUpdateDataToJsonApiResource(
     config,
+    allSchemas[schemaName],
     schemaName,
     data,
   )
@@ -46,6 +48,7 @@ export async function updateOne(
  */
 function restClientUpdateDataToJsonApiResource(
   config: SourceConfig,
+  schema: Schema,
   schemaName: string,
   hatchifyResource: RestClientUpdateData,
 ): JsonApiResource {
@@ -53,7 +56,11 @@ function restClientUpdateDataToJsonApiResource(
 
   const translatedRelationships = relationships
     ? {
-        relationships: convertToJsonApiRelationships(config, relationships),
+        relationships: convertToJsonApiRelationships(
+          config,
+          schema,
+          relationships,
+        ),
       }
     : null
 

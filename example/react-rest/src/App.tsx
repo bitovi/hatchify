@@ -77,7 +77,7 @@ function App() {
           onClick={() => {
             createTodo({
               attributes: { name: todoName },
-              relationships: { user: { __schema: "User", id: selectedUser } },
+              relationships: { user: { id: selectedUser } },
             })
             setTodoName("")
             setSelectedUser("")
