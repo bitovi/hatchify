@@ -911,14 +911,24 @@ describe("Naming rules", () => {
     },
   ]
 
-  const cases: TestCase[] = [
+  const [skippedCases, cases] = [
     ...schemaNameTestCases,
     /*  ...pluralNameTestCases,*/
     ...attributeNameTestCases,
     ...belongsToTestCases,
     ...hasManyTestCases,
     ...belongsToManyTestCases,
-  ].filter((testCase) => !testCase.skip)
+  ].reduce(
+    (acc: TestCase[][], curr: TestCase) => {
+      if (curr.skip) {
+        acc[0].push(curr)
+      } else {
+        acc[1].push(curr)
+      }
+      return acc
+    },
+    [[], []],
+  )
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
@@ -956,4 +966,8 @@ describe("Naming rules", () => {
       }
     },
   )
+
+  skippedCases.forEach(({ description }) => {
+    it.skip(`${description}`, () => {})
+  })
 })
