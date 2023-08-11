@@ -1,55 +1,6 @@
-import { number, validateStep } from "./number"
+import { number } from "."
 
 describe("number", () => {
-  describe("validateStep", () => {
-    it("without step", () => {
-      expect(validateStep(0)).toBe(true)
-      expect(validateStep(1)).toBe(true)
-      expect(validateStep(0.1)).toBe(true)
-      expect(validateStep(-0.1)).toBe(true)
-      expect(validateStep(0.11)).toBe(true)
-      expect(validateStep(-0.11)).toBe(true)
-      expect(validateStep(null as unknown as number)).toBe(false)
-      expect(validateStep(undefined as unknown as number)).toBe(false)
-    })
-
-    it("without minimum", () => {
-      const step = 0.1
-
-      expect(validateStep(0, step)).toBe(true)
-      expect(validateStep(1, step)).toBe(true)
-      expect(validateStep(0.1, step)).toBe(true)
-      expect(validateStep(-0.1, step)).toBe(true)
-      expect(validateStep(0.11, step)).toBe(false)
-      expect(validateStep(-0.11, step)).toBe(false)
-      expect(validateStep(null as unknown as number, step)).toBe(false)
-      expect(validateStep(undefined as unknown as number, step)).toBe(false)
-    })
-
-    it("with minimum", () => {
-      const step = 0.1
-      const min = -0.01
-
-      // ..., -1.11, -1.01, ..., -0.21, -0.11, -0.01, 0.09, 0.19,...
-
-      expect(validateStep(0, step, min)).toBe(false)
-      expect(validateStep(1, step, min)).toBe(false)
-      expect(validateStep(0.1, step, min)).toBe(false)
-      expect(validateStep(-0.1, step, min)).toBe(false)
-      expect(validateStep(0.09, step, min)).toBe(true)
-      expect(validateStep(0.11, step, min)).toBe(false)
-      expect(validateStep(0.19, step, min)).toBe(true)
-      expect(validateStep(-0.11, step, min)).toBe(true)
-      expect(validateStep(0.01, step, min)).toBe(false)
-      expect(validateStep(1.01, step, min)).toBe(false)
-      expect(validateStep(0.111, step, min)).toBe(false)
-      expect(validateStep(-0.111, step, min)).toBe(false)
-      expect(validateStep(null as unknown as number, step, min)).toBe(false)
-      expect(validateStep(undefined as unknown as number, step, min)).toBe(
-        false,
-      )
-    })
-  })
   describe("number()", () => {
     const type = number()
 
@@ -73,9 +24,6 @@ describe("number", () => {
           primary: undefined,
           step: undefined,
         },
-        serializeORMPropertyValue: expect.any(Function),
-        setORMPropertyValue: expect.any(Function),
-        setORMQueryFilterValue: expect.any(Function),
         finalize: expect.any(Function),
       })
     })
@@ -85,7 +33,7 @@ describe("number", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type
+      } = type.finalize()
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -137,7 +85,7 @@ describe("number", () => {
 
     it("sets defaults", () => {
       expect(type.finalize()).toEqual({
-        name: 'number({"autoIncrement":false,"min":null,"max":null,"primary":false,"required":false})',
+        name: "number()",
         orm: {
           sequelize: {
             type: "DOUBLE",
@@ -158,7 +106,6 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
-        finalize: expect.any(Function),
       })
     })
   })
@@ -186,9 +133,6 @@ describe("number", () => {
           primary: undefined,
           step: undefined,
         },
-        serializeORMPropertyValue: expect.any(Function),
-        setORMPropertyValue: expect.any(Function),
-        setORMQueryFilterValue: expect.any(Function),
         finalize: expect.any(Function),
       })
     })
@@ -198,7 +142,7 @@ describe("number", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type
+      } = type.finalize()
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -257,7 +201,7 @@ describe("number", () => {
 
     it("sets defaults", () => {
       expect(type.finalize()).toEqual({
-        name: 'number({"required":true,"autoIncrement":false,"min":null,"max":null,"primary":false})',
+        name: 'number({"required":true})',
         orm: {
           sequelize: {
             type: "DOUBLE",
@@ -278,7 +222,6 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
-        finalize: expect.any(Function),
       })
     })
   })
@@ -296,6 +239,7 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: true,
             primaryKey: undefined,
+            validate: { min: 1 },
           },
         },
         control: {
@@ -306,9 +250,6 @@ describe("number", () => {
           primary: undefined,
           step: undefined,
         },
-        serializeORMPropertyValue: expect.any(Function),
-        setORMPropertyValue: expect.any(Function),
-        setORMQueryFilterValue: expect.any(Function),
         finalize: expect.any(Function),
       })
     })
@@ -318,7 +259,7 @@ describe("number", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type
+      } = type.finalize()
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -369,7 +310,7 @@ describe("number", () => {
 
     it("sets defaults", () => {
       expect(type.finalize()).toEqual({
-        name: 'number({"autoIncrement":true,"min":1,"max":null,"primary":false,"required":false})',
+        name: 'number({"autoIncrement":true})',
         orm: {
           sequelize: {
             type: "DOUBLE",
@@ -383,7 +324,7 @@ describe("number", () => {
         control: {
           type: "Number",
           allowNull: true,
-          min: 1,
+          min: -Infinity,
           max: Infinity,
           primary: false,
           step: undefined,
@@ -391,7 +332,6 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
-        finalize: expect.any(Function),
       })
     })
   })
@@ -419,9 +359,6 @@ describe("number", () => {
           primary: true,
           step: undefined,
         },
-        serializeORMPropertyValue: expect.any(Function),
-        setORMPropertyValue: expect.any(Function),
-        setORMQueryFilterValue: expect.any(Function),
         finalize: expect.any(Function),
       })
     })
@@ -431,7 +368,7 @@ describe("number", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type
+      } = type.finalize()
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -439,7 +376,9 @@ describe("number", () => {
       expect(serializeORMPropertyValue(1)).toBe(1)
       expect(serializeORMPropertyValue(1.1)).toBe(1.1)
       expect(serializeORMPropertyValue(1.11)).toBe(1.11)
-      expect(serializeORMPropertyValue(null)).toBeNull()
+      expect(() => serializeORMPropertyValue(null)).toThrow(
+        new Error("Non-null value is required"),
+      )
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as number),
       ).toThrow(new Error("Provided value is not a number"))
@@ -450,7 +389,9 @@ describe("number", () => {
       expect(setORMPropertyValue(1)).toBe(1)
       expect(setORMPropertyValue(1.1)).toBe(1.1)
       expect(setORMPropertyValue(1.11)).toBe(1.11)
-      expect(setORMPropertyValue(null)).toBeNull()
+      expect(() => setORMPropertyValue(null)).toThrow(
+        new Error("Non-null value is required"),
+      )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new Error("Provided value is not a number"),
       )
@@ -467,8 +408,12 @@ describe("number", () => {
       expect(setORMQueryFilterValue("1")).toBe(1)
       expect(setORMQueryFilterValue("1.1")).toBe(1.1)
       expect(setORMQueryFilterValue("1.11")).toBe(1.11)
-      expect(setORMQueryFilterValue("null")).toBeNull()
-      expect(setORMQueryFilterValue("undefined")).toBeNull()
+      expect(() => setORMQueryFilterValue("null")).toThrow(
+        new Error("Non-null value is required"),
+      )
+      expect(() => setORMQueryFilterValue("undefined")).toThrow(
+        new Error("Non-null value is required"),
+      )
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
         new Error("Provided value is not a number"),
       )
@@ -482,7 +427,7 @@ describe("number", () => {
 
     it("sets defaults", () => {
       expect(type.finalize()).toEqual({
-        name: 'number({"primary":true,"autoIncrement":false,"min":null,"max":null,"required":true})',
+        name: 'number({"primary":true})',
         orm: {
           sequelize: {
             type: "DOUBLE",
@@ -503,7 +448,6 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
-        finalize: expect.any(Function),
       })
     })
   })
@@ -531,9 +475,6 @@ describe("number", () => {
           primary: undefined,
           step: 0.1,
         },
-        serializeORMPropertyValue: expect.any(Function),
-        setORMPropertyValue: expect.any(Function),
-        setORMQueryFilterValue: expect.any(Function),
         finalize: expect.any(Function),
       })
     })
@@ -543,7 +484,7 @@ describe("number", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type
+      } = type.finalize()
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -601,7 +542,7 @@ describe("number", () => {
 
     it("sets defaults", () => {
       expect(type.finalize()).toEqual({
-        name: 'number({"step":0.1,"autoIncrement":false,"min":null,"max":null,"primary":false,"required":false})',
+        name: 'number({"step":0.1})',
         orm: {
           sequelize: {
             type: "DOUBLE",
@@ -622,7 +563,6 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
-        finalize: expect.any(Function),
       })
     })
   })
@@ -651,9 +591,6 @@ describe("number", () => {
           primary: undefined,
           step: undefined,
         },
-        serializeORMPropertyValue: expect.any(Function),
-        setORMPropertyValue: expect.any(Function),
-        setORMQueryFilterValue: expect.any(Function),
         finalize: expect.any(Function),
       })
     })
@@ -663,7 +600,7 @@ describe("number", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-      } = type
+      } = type.finalize()
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(1)).toBe(1)
@@ -744,7 +681,7 @@ describe("number", () => {
 
     it("sets defaults", () => {
       expect(type.finalize()).toEqual({
-        name: 'number({"min":1,"max":10,"autoIncrement":false,"primary":false,"required":false})',
+        name: 'number({"min":1,"max":10})',
         orm: {
           sequelize: {
             type: "DOUBLE",
@@ -766,7 +703,6 @@ describe("number", () => {
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
-        finalize: expect.any(Function),
       })
     })
   })

@@ -1,10 +1,10 @@
 import { assembler } from "./assembler"
+import type { PartialSchema } from "./assembler"
 import { integer } from "./dataTypes"
-import type { PartialSchemaV2 } from "./types"
 
 describe("assembler", () => {
   describe("assembler", () => {
-    const Todo: PartialSchemaV2 = {
+    const Todo: PartialSchema = {
       name: "Todo",
       id: integer({ required: true, autoIncrement: true }),
       attributes: {
@@ -36,7 +36,7 @@ describe("assembler", () => {
         const { Todo: assembledTodo } = assembler({ Todo })
 
         expect(assembledTodo.id.control.allowNull).toBe(false)
-        expect(assembledTodo.id.control.min).toBe(1)
+        expect(assembledTodo.id.control.min).toBe(-Infinity)
         expect(assembledTodo.id.control.max).toBe(Infinity)
         expect(assembledTodo.id.control.primary).toBe(true)
 
@@ -46,7 +46,7 @@ describe("assembler", () => {
       })
 
       it("creates id if you did not create one", () => {
-        const User: PartialSchemaV2 = {
+        const User: PartialSchema = {
           name: "User",
           attributes: {},
         }

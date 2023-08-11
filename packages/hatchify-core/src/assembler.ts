@@ -1,39 +1,113 @@
-import { number } from "./dataTypes"
-import type { PartialSchemaV2, SchemaV2 } from "./types"
+import { integer } from "./dataTypes"
+import type {
+  FinalAttribute,
+  FinalNumberORM,
+  PartialAttribute,
+  PartialNumberControlType,
+  PartialNumberORM,
+} from "./types"
 
-interface PartialSchemas {
-  [schemaName: string]: PartialSchemaV2
+export interface PartialSchema {
+  name: string
+  id?: PartialAttribute<
+    PartialNumberORM,
+    PartialNumberControlType,
+    number,
+    FinalNumberORM
+  >
+  attributes: {
+    [attributeName: string]: PartialAttribute<
+      PartialNumberORM,
+      PartialNumberControlType,
+      number,
+      FinalNumberORM
+    >
+  }
+}
+export interface FinalSchema {
+  name: string
+  id: FinalAttribute<
+    PartialNumberORM,
+    PartialNumberControlType,
+    number,
+    FinalNumberORM
+  >
+  attributes: {
+    [attributeName: string]: FinalAttribute<
+      PartialNumberORM,
+      PartialNumberControlType,
+      number,
+      FinalNumberORM
+    >
+  }
 }
 
-interface Schemas {
-  [schemaName: string]: SchemaV2
+type PartialSchemaWithPrimaryAttribute = Omit<PartialSchema, "id"> & {
+  id: PartialAttribute<
+    PartialNumberORM,
+    PartialNumberControlType,
+    number,
+    FinalNumberORM
+  >
 }
 
-export function assembler(schemas: PartialSchemas): Schemas {
+export function assembler(schemas: { [schemaName: string]: PartialSchema }): {
+  [schemaName: string]: FinalSchema
+} {
   return Object.entries(schemas).reduce(
     (acc, [schemaName, schema]) => ({
       ...acc,
-      [schemaName]: {
-        ...schema,
-        id: schema.id?.finalize(true) || getDefaultPrimaryAttribute(),
-        attributes: Object.entries(schema.attributes).reduce(
-          (acc, [attributeName, attribute]) => ({
-            ...acc,
-            [attributeName]: attribute.finalize(),
-          }),
-          {},
-        ),
-      },
+      [schemaName]: finalize(setDefaultPrimaryAttribute(schema)),
     }),
     {},
   )
 }
 
+function finalize(schema: PartialSchemaWithPrimaryAttribute): FinalSchema {
+  return {
+    ...schema,
+    id: schema.id.finalize(),
+    attributes: Object.entries(schema.attributes).reduce(
+      (acc, [attributeName, attribute]) => ({
+        ...acc,
+        [attributeName]: attribute.finalize(),
+      }),
+      {},
+    ),
+  }
+}
+
+function setDefaultPrimaryAttribute(
+  schema: PartialSchema,
+): PartialSchemaWithPrimaryAttribute {
+  return {
+    ...schema,
+    id: schema.id
+      ? {
+          ...schema.id,
+          control: {
+            ...schema.id.control,
+            primary: true,
+            allowNull: false,
+          },
+          orm: {
+            ...schema.id.orm,
+            sequelize: {
+              ...schema.id.orm.sequelize,
+              primaryKey: true,
+              allowNull: false,
+            },
+          },
+        }
+      : getDefaultPrimaryAttribute(),
+  }
+}
+
 function getDefaultPrimaryAttribute() {
-  return number({
+  return integer({
     primary: true,
     autoIncrement: true,
     required: true,
     min: 1,
-  }).finalize()
+  })
 }
