@@ -1,6 +1,8 @@
 import type { Attribute, FilterArray } from "@hatchifyjs/rest-client"
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 import {
+  Autocomplete,
+  Chip,
   Grid,
   IconButton,
   InputLabel,
@@ -19,12 +21,46 @@ type OperatorOption = {
   [key in "string" | "date"]: Option[]
 }
 
+const ChipInput: React.FC<{
+  value: string[]
+  onChange: (value: string[]) => void
+}> = ({ value, onChange }) => {
+  return (
+    <Autocomplete
+      multiple
+      freeSolo
+      value={value}
+      options={[]}
+      ChipProps={{ size: "small", variant: "outlined" }}
+      fullWidth
+      disableClearable
+      onChange={(e, value) => {
+        onChange(value)
+      }}
+      renderInput={(params) => (
+        <>
+          <InputLabel id={`hello`}>Value</InputLabel>
+          <TextField
+            {...params}
+            variant="standard"
+            placeholder="Filter Value"
+            InputProps={{
+              ...params.InputProps,
+            }}
+          />
+        </>
+      )}
+    />
+  )
+}
+
 const operatorOptions: OperatorOption = {
   string: [
     { operator: "ilike", text: "contains" },
     { operator: "$eq", text: "equals" },
     { operator: "empty", text: "is empty" },
     { operator: "nempty", text: "is not empty" },
+    { operator: "$in", text: "is any of" },
   ],
   date: [
     { operator: "$eq", text: "is" },
@@ -51,7 +87,7 @@ export const MuiFilterRows: React.FC<{
 
   function onChange(
     field: "field" | "operator" | "value",
-    value: string,
+    value: string | string[],
     index: number,
   ) {
     const newFilters = [...filters]
@@ -113,23 +149,31 @@ export const MuiFilterRows: React.FC<{
             </Select>
           </Grid>
           <Grid item xs={4}>
-            {filter.operator !== "empty" && filter.operator !== "nempty" && (
-              <>
-                <InputLabel id={`${index}-value-label`}>Value</InputLabel>
-                <TextField
-                  fullWidth
-                  placeholder="Filter Value"
-                  variant="standard"
-                  type={
-                    fieldType(filter.field) === "date"
-                      ? "datetime-local"
-                      : "text"
-                  }
-                  value={filter.value}
-                  onChange={(e) => onChange("value", e.target.value, index)}
-                />
-              </>
+            {filter.operator === "$in" && (
+              <ChipInput
+                value={filter.value as string[]}
+                onChange={(value) => onChange("value", value, index)}
+              />
             )}
+            {filter.operator !== "$in" &&
+              filter.operator !== "empty" &&
+              filter.operator !== "nempty" && (
+                <>
+                  <InputLabel id={`${index}-value-label`}>Value</InputLabel>
+                  <TextField
+                    fullWidth
+                    placeholder="Filter Value"
+                    variant="standard"
+                    type={
+                      fieldType(filter.field) === "date"
+                        ? "datetime-local"
+                        : "text"
+                    }
+                    value={filter.value}
+                    onChange={(e) => onChange("value", e.target.value, index)}
+                  />
+                </>
+              )}
           </Grid>
         </Fragment>
       ))}
