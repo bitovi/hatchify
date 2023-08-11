@@ -85,6 +85,20 @@ export const MuiFilterRows: React.FC<{
       if (fieldType(value) !== fieldType(newFilters[index].field))
         newFilters[index].value = ""
     }
+    if (field === "operator") {
+      //reset the filter value if switching from an array operator to another operator
+      if (value !== "$nin" && value !== "$in") {
+        newFilters[index].value = Array.isArray(filters[index].value)
+          ? ""
+          : filters[index].value
+      }
+
+      if (value === "$nin" || value === "$in") {
+        newFilters[index].value = Array.isArray(filters[index].value)
+          ? filters[index].value
+          : []
+      }
+    }
 
     newFilters[index][field] = value as string & string[]
 

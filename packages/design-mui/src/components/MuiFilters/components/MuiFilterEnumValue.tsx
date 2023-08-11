@@ -1,4 +1,3 @@
-// import { useEffect, useState } from "react"
 import { MenuItem, Select } from "@mui/material"
 import { MuiMultiSelect } from "../../MuiMultiSelect/MuiMultiSelect"
 
@@ -8,13 +7,6 @@ export const MuiFilterEnumValue: React.FC<{
   value: string | string[]
   operator: string
 }> = ({ operator, options, handleChange, value }) => {
-  //   const [selectedOptions, setSelectedOptions] = useState<string[]>([])
-
-  //   useEffect(() => {
-  //     handleChange(selectedOptions)
-  //   }, [selectedOptions]) //todo fix this
-  //   const initialValue = Array.isArray(value) ? value : [""]
-
   return (
     <>
       {operator !== "$in" && operator !== "$nin" ? (
