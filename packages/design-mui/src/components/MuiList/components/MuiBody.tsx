@@ -1,6 +1,6 @@
 import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material"
 import type { HatchifyDisplay, XCollectionProps } from "@hatchifyjs/react-ui"
-import MuiBodySkeleton from "./MuiBodySkeleton"
+import { MuiBodySkeleton } from "./MuiBodySkeleton"
 
 export const MuiBody: React.FC<
   XCollectionProps & { columns: HatchifyDisplay[]; Empty: () => JSX.Element }

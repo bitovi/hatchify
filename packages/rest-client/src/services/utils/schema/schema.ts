@@ -35,6 +35,10 @@ export function transformDataType(dataType: string): string {
     return "date"
   }
 
+  if (type.includes("enum")) {
+    return "enum"
+  }
+
   // varchar, ...text, uuid, enum, ...
   return "string"
 }
@@ -67,6 +71,8 @@ export function transformSchema(schema: OldSchema): Schema {
     resolved.attributes[key] = {
       type: transformDataType(stringValue),
       allowNull,
+      ...(typeof value !== "string" &&
+        "values" in value && { values: value.values }),
     }
   }
 
