@@ -1,5 +1,5 @@
 import { MenuItem, Select } from "@mui/material"
-import { MuiMultiSelect } from "../../MuiMultiSelect/MuiMultiSelect"
+import { MuiAutocomplete } from "../../MuiAutocomplete/MuiAutocomplete"
 
 export const MuiFilterEnumValue: React.FC<{
   options: string[]
@@ -24,7 +24,7 @@ export const MuiFilterEnumValue: React.FC<{
           ))}
         </Select>
       ) : (
-        <MuiMultiSelect
+        <MuiAutocomplete
           options={options}
           selectedOptions={Array.isArray(value) ? value : []}
           handleChange={(value) => handleChange(value)}
