@@ -166,7 +166,7 @@ describe("rest-client-jsonapi/services/utils/resources", () => {
 })
 
 describe("hatchifyRelationshipsToJsonApiRelationship", () => {
-  it("Correctly converts relationship objects with one and many relationships", () => {
+  it("Correctly converts relationship objects with one or many relationships", () => {
     const sourceConfig = {
       baseUrl: "http://localhost:3000/api",
       schemaMap: {
