@@ -58,15 +58,14 @@ The `name` attribute starts with "worko"<br>
 This filter will match the following records:<br>
 
 ```json
-
-        {
-            "type": "Todo",
-            "id": "1",
-            "attributes": {
-                "name": "Workout",
-                "due_date": "2024-12-12T06:00:00.000Z",
-                "importance": 6,
-                "completed": false
-            },
-        },
+{
+    "type": "Todo",
+    "id": "1",
+    "attributes": {
+        "name": "Workout",
+        "due_date": "2024-12-12T06:00:00.000Z",
+        "importance": 6,
+        "completed": false
+    },
+},
 ```
