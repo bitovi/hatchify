@@ -13,7 +13,7 @@ import {
   TextField,
 } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
-import { MuiFilterEnumValue } from "./MuiFilterEnumValue"
+import MuiFilterEnumValue from "./MuiFilterEnumValue"
 
 type ChangeParams =
   | {
@@ -86,7 +86,7 @@ export const MuiFilterRows: React.FC<{
         newFilters[index].value = ""
     }
     if (field === "operator") {
-      //reset the filter value if switching from an array operator to another operator
+      //reset the filter value if switching from an array operator to another operator and vice versa
       if (value !== "$nin" && value !== "$in") {
         newFilters[index].value = Array.isArray(filters[index].value)
           ? ""
