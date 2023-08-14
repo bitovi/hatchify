@@ -29,18 +29,29 @@ describe("rest-client-jsonapi/services/createOne", () => {
   })
 
   it("throws an error if the request fails", async () => {
+    const errors = [
+      {
+        code: "resource-conflict-occurred",
+        source: { pointer: "name" },
+        status: 409,
+        title: "Record with name already exists",
+      },
+    ]
+
     server.use(
       rest.post(`${baseUrl}/articles`, (_, res, ctx) =>
-        res.once(ctx.status(500), ctx.json({ error: "error message" })),
+        res.once(
+          ctx.status(500),
+          ctx.json({
+            errors,
+          }),
+        ),
       ),
     )
 
     await expect(() =>
-      createOne(sourceConfig, schemas, "Article", {
-        __schema: "Article",
-        attributes: { title: "Hello, World!" },
-      }),
-    ).rejects.toThrowError("request failed")
+      createOne(sourceConfig, schemas, "Article", {}),
+    ).rejects.toEqual(errors)
   })
 
   it("can be called from a Source", async () => {

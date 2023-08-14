@@ -2,6 +2,7 @@ export type {
   Attribute,
   AttributeObject,
   ConsumerCreateData,
+  EnumObject,
   Fields,
   FilterArray,
   Filters,

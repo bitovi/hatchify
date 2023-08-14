@@ -108,8 +108,16 @@ describe("react-rest/services/useUpdateOne", () => {
       ])
     })
 
-    fakeDataSource.updateOne = () =>
-      Promise.reject(new Error("Something went wrong"))
+    const errors = [
+      {
+        code: "resource-conflict-occurred",
+        source: { pointer: "name" },
+        status: 409,
+        title: "Record with name already exists",
+      },
+    ]
+
+    fakeDataSource.updateOne = () => Promise.reject(errors)
 
     await result.current[0]({
       id: "1",
@@ -122,7 +130,7 @@ describe("react-rest/services/useUpdateOne", () => {
         {
           status: "error",
           meta: undefined,
-          error: new Error("Something went wrong"),
+          error: errors,
           isDone: true,
           isLoading: false,
           isRejected: true,

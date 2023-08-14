@@ -13,6 +13,7 @@ import type {
  * where "book_type" and "person_type" are the JSON:API types for the "Book" and "Person" schemas.
  */
 export function fieldsToQueryParam(
+  schemaMap: RequiredSchemaMap,
   allSchemas: Schemas,
   schemaName: string,
   fields: Fields,
@@ -22,14 +23,14 @@ export function fieldsToQueryParam(
   for (const field of fieldsArr) {
     // if field is equal to the schemaName, then the field is an attribute of the base schema
     if (field === schemaName) {
-      fieldsObj[schemaName] = fields[field]
+      fieldsObj[schemaMap[schemaName].type] = fields[field]
       continue
     }
 
     const baseSchema = allSchemas[schemaName]
     const relationship = baseSchema?.relationships || {}
     const relatedSchema = relationship[field].schema
-    fieldsObj[relatedSchema] = fields[field]
+    fieldsObj[schemaMap[relatedSchema].type] = fields[field]
   }
 
   const fieldset = Object.entries(fieldsObj)
@@ -77,20 +78,31 @@ export function filterToQueryParam(filter: Filters): string {
 
   const q: string[] = []
 
+  //We need the UTC iso in the request, but we need the local iso in the frontend.
+  const DATE_REGEX = new RegExp(
+    /([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]))/i,
+  )
+
   for (let i = 0; i < filter.length; i++) {
     const { operator, field, value } = filter[i]
-    if (Array.isArray(value)) {
+    if (operator === "empty" || operator === "nempty") {
+      q.push(
+        `filter[${field}][${operator === "empty" ? "$eq" : "$ne"}]=${null}`,
+      )
+    } else if (Array.isArray(value)) {
       q.push(
         value
-          .map((v) => `filter[${field}][]=${encodeURIComponent(v)}`)
+          .map((v) => `filter[${field}][${operator}]=${encodeURIComponent(v)}`)
           .join("&"),
       )
-    } else if (operator === "empty") {
-      q.push(`filter[${field}][$eq]=${null}`)
-    } else if (operator === "nempty") {
-      q.push(`filter[${field}][$ne]=${null}`)
     } else {
-      q.push(`filter[${field}][${operator}]=${encodeURIComponent(value)}`)
+      q.push(
+        `filter[${field}][${operator}]=${encodeURIComponent(
+          DATE_REGEX.test(value.toString())
+            ? new Date(value.toString()).toISOString()
+            : value,
+        )}`,
+      )
     }
   }
 
@@ -133,8 +145,8 @@ export function getQueryParams(
   allSchemas: Schemas,
   schemaName: string,
   query: {
-    fields: Fields
-    include: Include
+    fields?: Fields
+    include?: Include
     sort?: string[] | string
     filter?: Filters
     page?: unknown
@@ -143,14 +155,18 @@ export function getQueryParams(
   const params = []
   const { fields, include, sort, filter, page } = query
 
-  if (include.length) {
+  if (include) {
     const includeParam = includeToQueryParam(include)
     if (includeParam) params.push(includeParam)
   }
 
   if (fields) {
-    const fieldsParam = fieldsToQueryParam(allSchemas, schemaName, fields)
-
+    const fieldsParam = fieldsToQueryParam(
+      schemaMap,
+      allSchemas,
+      schemaName,
+      fields,
+    )
     if (fieldsParam) params.push(fieldsParam)
   }
 

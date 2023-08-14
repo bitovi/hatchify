@@ -33,12 +33,21 @@ describe("rest-client/services/promise/createOne", () => {
   })
 
   it("should throw an error if the request fails", async () => {
+    const errors = [
+      {
+        code: "resource-conflict-occurred",
+        source: { pointer: "name" },
+        status: 409,
+        title: "Record with name already exists",
+      },
+    ]
+
     const errorDataSource = {
       ...fakeDataSource,
-      createOne: () => Promise.reject(new Error("network error")),
+      createOne: () => Promise.reject(errors),
     }
     await expect(
       createOne(errorDataSource, schemas, "Article", data),
-    ).rejects.toThrowError("network error")
+    ).rejects.toEqual(errors)
   })
 })

@@ -107,8 +107,16 @@ describe("react-rest/services/useCreateOne", () => {
       ])
     })
 
-    fakeDataSource.createOne = () =>
-      Promise.reject(new Error("Something went wrong"))
+    const errors = [
+      {
+        code: "resource-conflict-occurred",
+        source: { pointer: "name" },
+        status: 409,
+        title: "Record with name already exists",
+      },
+    ]
+
+    fakeDataSource.createOne = () => Promise.reject(errors)
 
     await result.current[0]({ attributes: { title: "baz", body: "baz-body" } })
 
@@ -118,7 +126,7 @@ describe("react-rest/services/useCreateOne", () => {
         {
           status: "error",
           meta: undefined,
-          error: new Error("Something went wrong"),
+          error: errors,
           isDone: true,
           isLoading: false,
           isRejected: true,

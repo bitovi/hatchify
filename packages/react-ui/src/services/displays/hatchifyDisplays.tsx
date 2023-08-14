@@ -45,7 +45,10 @@ export function getDefaultDisplayRender(
       return <Date value={value} />
     }
 
-    if (attType === "string" && typeof value === "string") {
+    if (
+      (attType === "string" || attType === "enum") &&
+      typeof value === "string"
+    ) {
       return <String value={value} />
     }
 

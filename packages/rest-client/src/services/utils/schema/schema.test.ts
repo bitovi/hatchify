@@ -78,6 +78,11 @@ describe("rest-client/services/utils/schema", () => {
           title: { type: "VARCHAR(100)", allowNull: true },
           body: { type: "LONGTEXT" },
           wordCount: { type: "INTEGER" },
+          status: {
+            type: "enum",
+            allowNull: true,
+            values: ["Published", "Reviewed", "In Progress"],
+          },
         },
         hasMany: [{ target: "Comment", options: { as: "comments" } }],
         hasOne: [{ target: "Person", options: { as: "author" } }],
@@ -104,6 +109,11 @@ describe("rest-client/services/utils/schema", () => {
           wordCount: {
             allowNull: true,
             type: "number",
+          },
+          status: {
+            allowNull: true,
+            type: "enum",
+            values: ["Published", "Reviewed", "In Progress"],
           },
         },
         relationships: {
