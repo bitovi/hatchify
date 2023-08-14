@@ -13,7 +13,9 @@ export default function useSelected(
     selected,
   ) => {
     setSelected(selected)
-    if (onSelectedChange) onSelectedChange(selected)
+    if (onSelectedChange) {
+      onSelectedChange(selected)
+    }
   }
 
   return {

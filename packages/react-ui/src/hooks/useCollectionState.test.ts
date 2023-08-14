@@ -149,8 +149,9 @@ describe("useCollectionState", () => {
     })
 
     await waitFor(() => {
-      if (result.current.setSelected !== undefined)
+      if (result.current.setSelected !== undefined) {
         result.current.setSelected({ all: false, ids: ["1", "2"] })
+      }
     })
 
     await waitFor(() => {

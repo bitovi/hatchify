@@ -24,8 +24,9 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
     debounce((filters: FilterArray) => {
       const queryFilters = filters.filter((filter) => {
         // filter out empty values only if they are not empty operators
-        if (filter.operator === "empty" || filter.operator === "nempty")
+        if (filter.operator === "empty" || filter.operator === "nempty") {
           return true
+        }
         return filter.value !== "" && (filter.value as string[]).length !== 0
       })
       setQueryFilter(queryFilters.length ? queryFilters : undefined)

@@ -265,7 +265,9 @@ export function injectExtraDisplays(
 ): HatchifyDisplay[] {
   const updatedDisplays = cloneDeep(displays)
   for (let i = 0; i < children.length; i++) {
-    if (children[i].type.name !== HatchifyExtraColumn.displayName) continue
+    if (children[i].type.name !== HatchifyExtraColumn.displayName) {
+      continue
+    }
     const { props } = children[i]
     // @todo add according to props.after property
     updatedDisplays.push(
