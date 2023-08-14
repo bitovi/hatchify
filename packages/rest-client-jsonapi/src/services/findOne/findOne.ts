@@ -19,7 +19,7 @@ export async function findOne(
   config: SourceConfig,
   allSchemas: Schemas,
   schemaName: string,
-  query: Required<QueryOne>,
+  query: QueryOne,
 ): Promise<Resource[]> {
   const queryParams = getQueryParams(config.schemaMap, allSchemas, schemaName, {
     fields: query.fields,

@@ -63,8 +63,11 @@ This section shows how each part of the schema relates to the Database or servic
 The schema name should be `Singular PascalCase` as follows:
 
 ```js
-const Account = {
+const SalesPerson = {
   name: "SalesPerson", //👀
+  attributes: {
+    firstName: "STRING" 
+  }
 }
 ```
 
@@ -83,9 +86,12 @@ const Account = {
 Set `pluralName` to configure plural naming for that type.  
 
 ```js
-const Account = {
+const SalesPerson = {
   name: "SalesPerson",
-  pluralName: "SalesPeople" //👀
+  pluralName: "SalesPeople", //👀
+  attributes: {
+    firstName: "STRING"
+  }
 }
 ```
 
@@ -98,7 +104,7 @@ const Account = {
 An attribute name should be `Singular camelCase`.
 
 ```js
-const Account = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {
     firstName: "STRING" //👀
@@ -127,10 +133,50 @@ const Account = {
 
 ### relationships.belongsTo
 
-A `target` and `as` option are required.
+A `target` option is required.
 
 - `target` should match a `Schema.name` and be _Singular PascalCase_.
-- `as` should be _Singular camelCase_.
+
+```js
+const Account = {
+  name: "Account",
+  attributes: {
+    name: "STRING",
+  },
+  belongsTo: [{ target: "SalesPerson"}], //👀
+}
+```
+
+**Database Implications**
+
+- Creates a column `sales_person_id` column in the `account` table.
+
+**API Implications**
+
+- `salesPerson` will be used in the include query parameter like
+  `GET /accounts?include=salesPerson`
+- `salesPerson` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "Account",
+      id: "1",
+      attributes: { firstName: "Acme" },
+      relationships: {
+        salesPerson: {
+          data: [ 
+            { type: "SalesPerson", id: "322" } //👀 
+          ]
+        }          
+      }
+    }
+  }
+  ```
+
+
+### relationships.belongsTo.as
+
+`as` should be _Singular camelCase_.
 
 ```js
 const Account = {
@@ -158,15 +204,15 @@ const Account = {
       id: "1",
       attributes: { firstName: "Acme" },
       relationships: {
-        closerPerson: {type: "SalesPerson", id: "322"} //👀
+        closerPerson: {
+          data: [ 
+            { type: "SalesPerson", id: "322" } //👀 
+          ]
+        }          
       }
     }
   }
   ```
-
-
-
-
 
 ### relationships.belongsTo.foreignKey
 
@@ -230,7 +276,9 @@ const SalesPerson = {
       id: "1",
       attributes: { firstName: "Roye" },
       relationships: {
-        accounts: [{type: "Account", id: "456"}] //👀
+        accounts: {
+          data: [{type: "Account", id: "456"}]  //👀
+        }
       }
     }
   }
@@ -270,7 +318,9 @@ const SalesPerson = {
       id: "1",
       attributes: { firstName: "Roye" },
       relationships: {
-        managingAccounts: [{type: "Account", id: "456"}] //👀
+        managingAccounts: {
+          data: [{type: "Account", id: "456"}] //👀
+        } 
       }
     }
   }
@@ -325,7 +375,7 @@ const SalesPerson = {
   },
   belongsToMany: [
     {
-      target: "Account" //👀
+      target: "Account", //👀
     }
   ],
 }
@@ -347,7 +397,9 @@ const SalesPerson = {
       id: "1",
       attributes: { firstName: "Roye" },
       relationships: {
-        accounts: [{type: "Account", id: "456"}] //👀
+        accounts: { 
+          data: [{type: "Account", id: "456"}] //👀
+        } 
       }
     }
   }
@@ -367,8 +419,8 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {through: "SalesAccount"}
-    }
+      options: { through: "sales_account" },
+    },
   ],
 }
 ```
@@ -416,7 +468,9 @@ This does not change the Database behavior.
       id: "1",
       attributes: { firstName: "Roye" },
       relationships: {
-        salesAccounts: [{type: "Account", id: "456"}] //👀
+        salesAccounts: {
+          data: [{type: "Account", id: "456"}] //👀
+        } 
       }
     }
   }
@@ -437,8 +491,10 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {foreignKey: "seller_id"}
-    }
+      options: {
+        foreignKey: "seller_id",
+      }
+    },
   ],
 }
 ```

@@ -20,7 +20,7 @@ export async function findAll(
   config: SourceConfig,
   allSchemas: Schemas,
   schemaName: string,
-  query: Required<QueryList>,
+  query: QueryList,
 ): Promise<[Resources: Resource[], Meta: RequestMetaData]> {
   const queryParams = getQueryParams(config.schemaMap, allSchemas, schemaName, {
     fields: query.fields,

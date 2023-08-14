@@ -160,8 +160,16 @@ describe("react-rest/services/useAll", () => {
     createStore(["Article"])
     const query = {}
 
-    fakeDataSource.findAll = () =>
-      Promise.reject(new Error("Something went wrong"))
+    const errors = [
+      {
+        code: "invalid-query",
+        source: {},
+        status: 422,
+        title: "Invalid query",
+      },
+    ]
+
+    fakeDataSource.findAll = () => Promise.reject(errors)
 
     const { result } = renderHook(() =>
       useAll(fakeDataSource, schemas, "Article", query),
@@ -173,7 +181,7 @@ describe("react-rest/services/useAll", () => {
         {
           status: "error",
           meta: undefined,
-          error: new Error("Something went wrong"),
+          error: errors,
           isDone: true,
           isLoading: false,
           isRejected: true,
