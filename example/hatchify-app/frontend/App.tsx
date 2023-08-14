@@ -20,27 +20,17 @@ const TodoList = hatchedReact.components.Todo.Collection
 const TodoColumn = hatchedReact.components.Todo.Column
 const TodoEmptyList = hatchedReact.components.Todo.Empty
 
-hatchedReact.model.Todo.createOne({
-  attributes: { fake: "fake" },
-}).catch((e: any) => {
-  console.log("eeeeeeeeee", e)
-})
-
 const App: React.FC = () => {
-  const [create, meta, created] = hatchedReact.model.Todo.useCreateOne()
-  console.log("meta", meta)
-
   const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
     all: false,
     ids: [],
   })
 
   function onActionClick() {
-    create({ attributes: { fake: "fake" } })
-    // if (!selected.all && !selected.ids.length) alert("action on no items")
-    // else if (selected.all)
-    // alert(`action on ALL ITEMS or items ${selected.ids.join(",")}`)
-    // else alert(`action on items ${selected.ids.join(",")}`)
+    if (!selected.all && !selected.ids.length) alert("action on no items")
+    else if (selected.all)
+      alert(`action on ALL ITEMS or items ${selected.ids.join(",")}`)
+    else alert(`action on items ${selected.ids.join(",")}`)
   }
 
   return (
