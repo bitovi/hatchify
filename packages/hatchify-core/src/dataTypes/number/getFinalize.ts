@@ -1,30 +1,34 @@
 import { coerce } from "./coerce"
-import { getControl } from "./getControl"
-import { getOrm } from "./getOrm"
+import { finalizeControl } from "./finalizeControl"
+import { finalizeOrm } from "./finalizeOrm"
 import type {
   FinalAttribute,
   FinalNumberORM,
+  PartialAttribute,
   PartialNumberControlType,
   PartialNumberORM,
-  PartialNumberProps,
   ValueInRequest,
 } from "../../types"
 
 export function getFinalize(
-  name: string,
-  props?: PartialNumberProps,
+  props: PartialAttribute<
+    PartialNumberORM,
+    PartialNumberControlType,
+    number,
+    FinalNumberORM
+  >,
 ): FinalAttribute<
   PartialNumberORM,
   PartialNumberControlType,
   number,
   FinalNumberORM
 > {
-  const control = getControl(true, props)
+  const control = finalizeControl(props.control)
 
   return {
-    name,
+    name: props.name,
     control,
-    orm: getOrm(true, props),
+    orm: finalizeOrm(props.orm),
 
     // Passed  - Any crazy value the client might send as a POST or PATCH
     // Returns - A type the ORM can use

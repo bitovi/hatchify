@@ -14,6 +14,7 @@ describe("integer", () => {
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: undefined,
+            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -86,7 +87,7 @@ describe("integer", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: "integer()",
         orm: {
@@ -126,6 +127,7 @@ describe("integer", () => {
             allowNull: false,
             autoIncrement: undefined,
             primaryKey: undefined,
+            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -205,7 +207,7 @@ describe("integer", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: 'integer({"required":true})',
         orm: {
@@ -245,6 +247,7 @@ describe("integer", () => {
             allowNull: undefined,
             autoIncrement: true,
             primaryKey: undefined,
+            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -316,7 +319,7 @@ describe("integer", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: 'integer({"autoIncrement":true})',
         orm: {
@@ -356,6 +359,7 @@ describe("integer", () => {
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: true,
+            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -435,7 +439,7 @@ describe("integer", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: 'integer({"primary":true})',
         orm: {

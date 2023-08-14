@@ -14,6 +14,7 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: undefined,
+            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -83,7 +84,7 @@ describe("number", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: "number()",
         orm: {
@@ -101,7 +102,7 @@ describe("number", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
-          step: undefined,
+          step: 0,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -123,6 +124,7 @@ describe("number", () => {
             allowNull: false,
             autoIncrement: undefined,
             primaryKey: undefined,
+            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -199,7 +201,7 @@ describe("number", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: 'number({"required":true})',
         orm: {
@@ -217,7 +219,7 @@ describe("number", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
-          step: undefined,
+          step: 0,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -239,7 +241,7 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: true,
             primaryKey: undefined,
-            validate: { min: 1 },
+            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -308,7 +310,7 @@ describe("number", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: 'number({"autoIncrement":true})',
         orm: {
@@ -318,7 +320,6 @@ describe("number", () => {
             allowNull: true,
             autoIncrement: true,
             primaryKey: false,
-            validate: { min: 1 },
           },
         },
         control: {
@@ -327,7 +328,7 @@ describe("number", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
-          step: undefined,
+          step: 0,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -349,6 +350,7 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: true,
+            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -425,7 +427,7 @@ describe("number", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: 'number({"primary":true})',
         orm: {
@@ -443,7 +445,7 @@ describe("number", () => {
           min: -Infinity,
           max: Infinity,
           primary: true,
-          step: undefined,
+          step: 0,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -465,6 +467,7 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: undefined,
+            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -540,7 +543,7 @@ describe("number", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: 'number({"step":0.1})',
         orm: {
@@ -679,7 +682,7 @@ describe("number", () => {
       )
     })
 
-    it("sets defaults", () => {
+    it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
         name: 'number({"min":1,"max":10})',
         orm: {
@@ -698,7 +701,7 @@ describe("number", () => {
           min: 1,
           max: 10,
           primary: false,
-          step: undefined,
+          step: 0,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),

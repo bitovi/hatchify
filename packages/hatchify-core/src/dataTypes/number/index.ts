@@ -1,6 +1,6 @@
-import { getControl } from "./getControl"
 import { getFinalize } from "./getFinalize"
-import { getOrm } from "./getOrm"
+import { getPartialControl } from "./getPartialControl"
+import { getPartialOrm } from "./getPartialOrm"
 import type {
   FinalNumberORM,
   PartialAttribute,
@@ -17,12 +17,12 @@ export function number(
   number,
   FinalNumberORM
 > {
-  const name = `number(${props ? JSON.stringify(props) : ""})`
-
   return {
-    name,
-    orm: getOrm(false, props),
-    control: getControl(false, props),
-    finalize: () => getFinalize(name, props),
+    name: `number(${props ? JSON.stringify(props) : ""})`,
+    orm: getPartialOrm(props),
+    control: getPartialControl(props),
+    finalize: function finalizeNumber() {
+      return getFinalize(this)
+    },
   }
 }

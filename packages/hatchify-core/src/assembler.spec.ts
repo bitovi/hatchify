@@ -23,7 +23,7 @@ describe("assembler", () => {
         expect(assembledTodo.id.orm.sequelize.primaryKey).toBe(true)
       })
 
-      it("sets defaults", () => {
+      it("finalizes correctly", () => {
         expect(Todo.id?.control.allowNull).toBe(false)
         expect(Todo.id?.control.min).toBeUndefined()
         expect(Todo.id?.control.max).toBeUndefined()
@@ -65,7 +65,7 @@ describe("assembler", () => {
     })
 
     describe("attributes", () => {
-      it("sets defaults", () => {
+      it("finalizes correctly", () => {
         expect(Todo.attributes.importance.control.allowNull).toBeUndefined()
         expect(Todo.attributes.importance.control.min).toBe(0)
         expect(Todo.attributes.importance.control.max).toBeUndefined()

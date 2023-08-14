@@ -26,7 +26,8 @@ export interface SequelizeNumberValidation {
 }
 
 export interface PartialNumberORM {
-  sequelize: PartialSequelizeDataType<number[]> & SequelizeNumberValidation
+  sequelize: PartialSequelizeDataType<number[]> &
+    Required<SequelizeNumberValidation>
 }
 
 export interface FinalNumberORM {

@@ -57,13 +57,15 @@ export function assembler(schemas: { [schemaName: string]: PartialSchema }): {
   return Object.entries(schemas).reduce(
     (acc, [schemaName, schema]) => ({
       ...acc,
-      [schemaName]: finalize(setDefaultPrimaryAttribute(schema)),
+      [schemaName]: finalizeSchema(setDefaultPrimaryAttribute(schema)),
     }),
     {},
   )
 }
 
-function finalize(schema: PartialSchemaWithPrimaryAttribute): FinalSchema {
+function finalizeSchema(
+  schema: PartialSchemaWithPrimaryAttribute,
+): FinalSchema {
   return {
     ...schema,
     id: schema.id.finalize(),
