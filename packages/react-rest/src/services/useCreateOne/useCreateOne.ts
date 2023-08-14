@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { createOne, getMeta } from "@hatchifyjs/rest-client"
 import type {
-  ConsumerCreateData,
+  CreateData,
   Meta,
   MetaError,
   Record,
@@ -17,12 +17,12 @@ export const useCreateOne = (
   dataSource: Source,
   allSchemas: Schemas,
   schemaName: string,
-): [(data: ConsumerCreateData) => void, Meta, Record?] => {
+): [(data: CreateData) => void, Meta, Record?] => {
   const [data, setData] = useState<Record | undefined>(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  function create(data: ConsumerCreateData) {
+  function create(data: CreateData) {
     setLoading(true)
     createOne(dataSource, allSchemas, schemaName, {
       ...data,

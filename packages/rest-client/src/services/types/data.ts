@@ -38,7 +38,7 @@ export interface RestClientCreateData
   >
 }
 
-export interface ConsumerCreateData
+export interface CreateData
   extends Omit<RestClientCreateData, "__schema" | "relationships"> {
   relationships?: globalThis.Record<
     string,
@@ -55,7 +55,7 @@ export interface RestClientUpdateData extends Omit<Resource, "relationships"> {
   >
 }
 
-export interface ConsumerUpdateData
+export interface UpdateData
   extends Omit<Resource, "__schema" | "relationships"> {
   relationships?: globalThis.Record<
     string,

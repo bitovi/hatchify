@@ -1,7 +1,7 @@
 export type {
   Attribute,
   AttributeObject,
-  ConsumerCreateData,
+  CreateData,
   EnumObject,
   Fields,
   FilterArray,
@@ -25,7 +25,7 @@ export type {
   SourceConfig,
   Subscription,
   Unsubscribe,
-  ConsumerUpdateData,
+  UpdateData,
 } from "./services"
 
 export {

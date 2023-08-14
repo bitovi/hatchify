@@ -10,7 +10,7 @@ import {
   updateOne,
 } from "@hatchifyjs/rest-client"
 import type {
-  ConsumerCreateData,
+  CreateData,
   Meta,
   Schema,
   Schemas,
@@ -19,7 +19,7 @@ import type {
   QueryOne,
   Record,
   Unsubscribe,
-  ConsumerUpdateData,
+  UpdateData,
   RequestMetaData,
 } from "@hatchifyjs/rest-client"
 import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
@@ -34,19 +34,19 @@ type SchemaKeys<Schema extends SchemaRecord> = keyof Schema
 export type ReactRest<Schema extends SchemaRecord> = {
   [schemaName in SchemaKeys<Schema>]: {
     // promises
-    createOne: (data: ConsumerCreateData) => Promise<Record>
+    createOne: (data: CreateData) => Promise<Record>
     deleteOne: (id: string) => Promise<void>
     findOne: (query: QueryOne | string) => Promise<Record | undefined>
     findAll: (
       query: QueryList,
     ) => Promise<[Records: Record[], Meta: RequestMetaData]>
-    updateOne: (data: ConsumerUpdateData) => Promise<Record>
+    updateOne: (data: UpdateData) => Promise<Record>
     // hooks
-    useCreateOne: () => [(data: ConsumerCreateData) => void, Meta, Record?]
+    useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     useDeleteOne: () => [(id: string) => void, Meta]
     useAll: (query?: QueryList) => [Record[], Meta]
     useOne: (query: QueryOne | string) => [Record | undefined, Meta]
-    useUpdateOne: () => [(data: ConsumerUpdateData) => void, Meta, Record?]
+    useUpdateOne: () => [(data: UpdateData) => void, Meta, Record?]
     // subscribes
     subscribeToAll: (callback: (data: Record[]) => void) => Unsubscribe
     subscribeToOne: (
