@@ -11,6 +11,7 @@ export const MuiAutocomplete: React.FC<{
       id="value-autocomplete"
       options={options}
       value={selectedOptions}
+      filterSelectedOptions
       renderTags={(value: string[], getTagProps) =>
         value.map((option: string, index: number) => (
           <Chip

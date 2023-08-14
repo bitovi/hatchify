@@ -2,21 +2,13 @@ import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { MuiAutocomplete } from "./MuiAutocomplete"
+import { useState } from "react"
 
 describe("components/MuiFilters/components/MuiAutocomplete", () => {
   it("works", async () => {
     const handleChange = vi.fn()
 
-    render(
-      <MuiAutocomplete
-        options={["Pending", "Failed"]}
-        handleChange={(value) => {
-          console.log("value 🟢🟢🟢🟢🟢🟢🟢🟢🟢", value)
-          handleChange(value)
-        }}
-        selectedOptions={[]}
-      />,
-    )
+    render(<TestWrapper handleChange={handleChange} />)
 
     const dropdown = screen.getByRole("combobox")
 
@@ -30,16 +22,40 @@ describe("components/MuiFilters/components/MuiAutocomplete", () => {
     await userEvent.click(dropdown)
     const secondOption = screen.getByText("Failed")
     await userEvent.click(secondOption)
+
     expect(handleChange).toHaveBeenCalledWith(["Pending", "Failed"])
 
-    // //removes selections and updates values when items are closed out of the selected items
-    // await userEvent.click(dropdown)
-    // const closeChips = screen.getAllByTestId("CloseIcon")
+    const closeChips = screen.getAllByTestId("CancelIcon")
 
-    // await userEvent.click(closeChips[0])
-    // expect(handleChange).toHaveBeenCalledWith(["Failed"])
+    await userEvent.click(closeChips[0])
+    expect(handleChange).toHaveBeenCalledWith(["Failed"])
 
-    // await userEvent.click(closeChips[1])
-    // expect(handleChange).toHaveBeenCalledWith([])
+    //The Close icon closes out all selected chips
+    await userEvent.click(dropdown)
+    const reselectedPending = screen.getByText("Pending")
+
+    await userEvent.click(reselectedPending)
+    expect(handleChange).toHaveBeenCalledWith(["Failed", "Pending"])
+
+    const closeAllChips = screen.getByTestId("CloseIcon")
+    await userEvent.click(closeAllChips)
+    expect(handleChange).toHaveBeenCalledWith([])
   })
 })
+
+const TestWrapper: React.FC<{
+  handleChange: (val: string[]) => void
+}> = ({ handleChange }) => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+
+  return (
+    <MuiAutocomplete
+      options={["Pending", "Failed"]}
+      handleChange={(value) => {
+        handleChange(value)
+        setSelectedOptions(value)
+      }}
+      selectedOptions={selectedOptions}
+    />
+  )
+}
