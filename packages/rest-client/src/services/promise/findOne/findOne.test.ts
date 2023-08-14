@@ -66,14 +66,23 @@ describe("rest-client/promise", () => {
     })
 
     it("should throw an error if the request fails", async () => {
+      const errors = [
+        {
+          code: "missing-resource",
+          source: {},
+          status: 404,
+          title: "Resource not found",
+        },
+      ]
+
       const errorDataSource = {
         ...fakeDataSource,
-        findOne: () => Promise.reject(new Error("network error")),
+        findOne: () => Promise.reject(errors),
       }
 
       await expect(
         findOne(errorDataSource, schemas, "Article", query),
-      ).rejects.toThrowError("network error")
+      ).rejects.toEqual(errors)
     })
   })
 })

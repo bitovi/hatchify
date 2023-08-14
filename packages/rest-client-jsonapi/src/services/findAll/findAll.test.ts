@@ -39,15 +39,24 @@ describe("rest-client-jsonapi/services/findAll", () => {
   })
 
   it("throws an error if the request fails", async () => {
+    const errors = [
+      {
+        code: "invalid-query",
+        source: {},
+        status: 422,
+        title: "Invalid query",
+      },
+    ]
+
     server.use(
       rest.get(`${baseUrl}/articles`, (_, res, ctx) =>
-        res.once(ctx.status(500), ctx.json({ error: "error message" })),
+        res.once(ctx.status(500), ctx.json({ errors })),
       ),
     )
 
     await expect(
       findAll(sourceConfig, schemas, "Article", query),
-    ).rejects.toThrowError("request failed")
+    ).rejects.toEqual(errors)
   })
 
   it("can be called from a Source", async () => {

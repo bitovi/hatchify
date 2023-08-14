@@ -90,8 +90,16 @@ describe("react-rest/services/useDeleteOne", () => {
       ])
     })
 
-    fakeDataSource.deleteOne = () =>
-      Promise.reject(new Error("Something went wrong"))
+    const errors = [
+      {
+        code: "missing-resource",
+        source: {},
+        status: 404,
+        title: "Resource not found",
+      },
+    ]
+
+    fakeDataSource.deleteOne = () => Promise.reject(errors)
 
     await result.current[0]("id")
 
@@ -101,7 +109,7 @@ describe("react-rest/services/useDeleteOne", () => {
         {
           status: "error",
           meta: undefined,
-          error: new Error("Something went wrong"),
+          error: errors,
           isDone: true,
           isLoading: false,
           isRejected: true,

@@ -133,10 +133,50 @@ const SalesPerson = {
 
 ### relationships.belongsTo
 
-A `target` and `as` option are required.
+A `target` option is required.
 
 - `target` should match a `Schema.name` and be _Singular PascalCase_.
-- `as` should be _Singular camelCase_.
+
+```js
+const Account = {
+  name: "Account",
+  attributes: {
+    name: "STRING",
+  },
+  belongsTo: [{ target: "SalesPerson"}], //👀
+}
+```
+
+**Database Implications**
+
+- Creates a column `sales_person_id` column in the `account` table.
+
+**API Implications**
+
+- `salesPerson` will be used in the include query parameter like
+  `GET /accounts?include=salesPerson`
+- `salesPerson` will be used in mutation payloads and response payloads like:
+  ```js
+  {
+    data: {
+      type: "Account",
+      id: "1",
+      attributes: { firstName: "Acme" },
+      relationships: {
+        salesPerson: {
+          data: [ 
+            { type: "SalesPerson", id: "322" } //👀 
+          ]
+        }          
+      }
+    }
+  }
+  ```
+
+
+### relationships.belongsTo.as
+
+`as` should be _Singular camelCase_.
 
 ```js
 const Account = {
@@ -336,7 +376,6 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account", //👀
-      options: { through: "SalesAccount" }
     }
   ],
 }
@@ -380,7 +419,7 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: { through: "sales_account", as: "account" },
+      options: { through: "sales_account" },
     },
   ],
 }
@@ -407,7 +446,7 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {as: "salesAccounts", through: "SalesAccount"}
+      options: {as: "salesAccounts"}
     }
   ],
 }
@@ -454,9 +493,7 @@ const SalesPerson = {
       target: "Account",
       options: {
         foreignKey: "seller_id",
-        through: "account_sales_person",
-        as: "account",
-      },
+      }
     },
   ],
 }
@@ -483,7 +520,7 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {otherKey: "sold_account_id", through: "SalesAccount"}
+      options: {otherKey: "sold_account_id"}
     }
   ],
 }

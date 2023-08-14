@@ -1,5 +1,5 @@
 import type { Source, Record, QueryOne, Schemas } from "../../types"
-import { flattenResourcesIntoRecords, getFields } from "../../utils"
+import { flattenResourcesIntoRecords } from "../../utils"
 
 /**
  * Fetches a single resource from a data source, inserts it into the store,
@@ -11,11 +11,7 @@ export const findOne = async (
   schemaName: string,
   query: QueryOne | string,
 ): Promise<Record | undefined> => {
-  const queryObj = typeof query === "string" ? { id: query } : { ...query }
-  const updatedQuery = {
-    ...queryObj,
-    fields: getFields(allSchemas, schemaName, queryObj),
-  } as Required<QueryOne>
+  const updatedQuery = typeof query === "string" ? { id: query } : { ...query }
 
   const resources = await dataSource.findOne(
     allSchemas,
@@ -27,6 +23,6 @@ export const findOne = async (
     allSchemas,
     resources,
     schemaName,
-    queryObj.id,
+    updatedQuery.id,
   )
 }
