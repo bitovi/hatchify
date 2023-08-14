@@ -17,7 +17,8 @@ describe("components/MuiFilters/components/MuiFilterEnumValue", () => {
     )
 
     const dropdown = screen.getByRole("button")
-    expect(dropdown.className.includes("MuiSelect-multiple")).toEqual(false)
+    expect(dropdown.className.includes("MuiSelect-select")).toEqual(true)
+    expect(dropdown.className.includes("MuiAutocomplete-input")).toEqual(false)
 
     await userEvent.click(dropdown)
     const firstOption = screen.getByText("Pending")
@@ -26,19 +27,17 @@ describe("components/MuiFilters/components/MuiFilterEnumValue", () => {
     expect(handleChange).toHaveBeenCalled()
   })
 
-  it("displays the multiselect when $in is the value", async () => {
-    const handleChange = vi.fn()
-
+  it("displays the autocomplete when $in is the value", async () => {
     render(
       <MuiFilterEnumValue
         options={["Pending", "Failed"]}
-        handleChange={(value) => handleChange(value)}
+        handleChange={vi.fn()}
         value=""
         operator={"$in"}
       />,
     )
 
-    // const dropdown = screen.getByRole("button")
-    // expect(dropdown.className.includes("MuiSelect-multiple")).toEqual(true)
+    const dropdown = screen.getByRole("combobox")
+    expect(dropdown.className.includes("MuiAutocomplete-input")).toEqual(true)
   })
 })
