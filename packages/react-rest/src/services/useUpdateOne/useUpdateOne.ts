@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { updateOne, getMeta } from "@hatchifyjs/rest-client"
 import type {
   UpdateData,
@@ -22,13 +22,19 @@ export const useUpdateOne = (
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  function update(data: UpdateData) {
-    setLoading(true)
-    updateOne(dataSource, allSchemas, schemaName, data)
-      .then(setData)
-      .catch(setError)
-      .finally(() => setLoading(false))
-  }
+  const update = useCallback(
+    (data: UpdateData) => {
+      setLoading(true)
+      updateOne(dataSource, allSchemas, schemaName, data)
+        .then((data) => {
+          setError(undefined)
+          setData(data)
+        })
+        .catch(setError)
+        .finally(() => setLoading(false))
+    },
+    [dataSource, allSchemas, schemaName],
+  )
 
   const meta = getMeta(error, loading, false, undefined)
   return [update, meta, data]
