@@ -56,7 +56,6 @@ export async function startServerWith(
     path: string,
     options?: { method?: Method; headers?: object; body: object },
   ) {
-    console.log(path)
     const method = options?.method || "get"
     const headers = options?.headers || {}
     const body = options?.body
