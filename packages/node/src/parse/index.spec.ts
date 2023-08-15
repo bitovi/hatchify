@@ -49,7 +49,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.like]: "%laundry%" } },
+          where: { name: { [Op.iLike]: "laundry" } },
         })
       })
 
@@ -110,7 +110,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.like]: "%laundry%" } },
+          where: { name: { [Op.iLike]: "laundry" } },
         })
       })
 
@@ -178,7 +178,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.like]: "%laundry%" } },
+          where: { name: { [Op.iLike]: "laundry" } },
         })
       })
 
@@ -300,7 +300,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.like]: "%laundry%" } },
+          where: { name: { [Op.iLike]: "laundry" } },
         })
       })
 
@@ -398,7 +398,7 @@ describe("index", () => {
         include: [{ association: "user", include: [] }],
         limit: 5,
         offset: 10,
-        where: { name: { [Op.like]: "%laundry%" } },
+        where: { name: { [Op.iLike]: "laundry" } },
       })
     })
   })
