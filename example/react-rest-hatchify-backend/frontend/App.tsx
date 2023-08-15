@@ -133,6 +133,7 @@ function Users() {
       >
         create user
       </button>
+      {createState.error && <div>{createState?.error[0]?.detail}</div>}
       <table>
         <thead>
           <tr>

@@ -23,7 +23,9 @@ export async function updateOne(
     data,
   )
 
-  if (!json.data) return Promise.resolve(null)
+  if (!json.data) {
+    return Promise.resolve(null)
+  }
 
   return Promise.resolve(
     convertToHatchifyResources(

@@ -16,7 +16,9 @@ export const updateOne = async (
 
   notifySubscribers()
 
-  if (!resources) return null
+  if (!resources) {
+    return null
+  }
 
   return flattenResourcesIntoRecords(allSchemas, resources, schemaName)[0]
 }
