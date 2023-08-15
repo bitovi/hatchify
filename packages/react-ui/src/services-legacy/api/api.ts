@@ -80,7 +80,9 @@ export function getDisplayValueKeyForSchema(schemaKey: string): string {
  * }
  */
 function getFlattenedIncluded(included?: JsonApiIncluded[]): FlatIncluded {
-  if (!included) return {}
+  if (!included) {
+    return {}
+  }
 
   return included.reduce(
     (acc: FlatIncluded, next) => ({

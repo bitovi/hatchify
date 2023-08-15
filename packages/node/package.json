@@ -31,10 +31,12 @@
     "@bitovi/querystring-parser": "^0.6.8",
     "@bitovi/sequelize-querystring-parser": "^0.1.12",
     "@hatchifyjs/sequelize-create-with-associations": "^0.6.2",
+    "@types/lodash": "^4.14.196",
     "camel-case": "^4.1.2",
     "co-body": "^6.1.0",
     "inflection": "^2.0.1",
     "json-api-serializer": "^2.6.6",
+    "lodash": "^4.17.21",
     "no-case": "^3.0.4",
     "path-to-regexp": "^6.2.1"
   },
@@ -72,6 +74,7 @@
         ],
         "rules": {
           "@typescript-eslint/explicit-module-boundary-types": "warn",
+          "curly": "error",
           "import/order": [
             "error",
             {

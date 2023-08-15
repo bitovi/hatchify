@@ -376,10 +376,10 @@ describe("Naming rules", () => {
   ] */
 
   //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
-  /* const belongsToManyTestCases: TestCase[] = [
+  const belongsToManyTestCases: TestCase[] = [
     {
       description:
-        "Ensure belongsToMany attributes are correctly created as rows and can be fetched",
+        "Ensure belongsToMany attributes are correctly created as rows and can be fetched (relationships.belongsToMany.options.foreignKey)",
       models: [
         {
           name: "SalesPerson",
@@ -389,7 +389,10 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { foreignKey: "seller_id", through: "SalesAccount" },
+              options: {
+                foreignKey: "seller_id",
+                through: "account_sales_person",
+              },
             },
           ],
         },
@@ -414,7 +417,8 @@ describe("Naming rules", () => {
       ],
     },
     {
-      description: "Ensure belongsToMany through works properly",
+      description:
+        "Ensure belongsToMany through works properly (relationships.belongsToMany.options.through)",
       models: [
         {
           name: "SalesPerson",
@@ -424,7 +428,7 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { through: "SalesAccount" },
+              options: { through: "sales_account" },
             },
           ],
         },
@@ -448,7 +452,7 @@ describe("Naming rules", () => {
         },
       ],
     },
-    {
+    /*   {
       description: "Ensure belongsToMany alias (as) is correctly returned",
       models: [
         {
@@ -539,8 +543,9 @@ describe("Naming rules", () => {
       ],
       database: [],
     },
-    {
-      description: "Ensure belongsToMany foreignKey is correctly created",
+    */ {
+      description:
+        "Ensure belongsToMany foreignKey is correctly created (relationships.belongsToMany.foreignKey)",
       models: [
         {
           name: "SalesPerson",
@@ -550,7 +555,10 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { foreignKey: "seller_id", through: "SalesAccount" },
+              options: {
+                foreignKey: "seller_id",
+                through: "account_sales_person",
+              },
             },
           ],
         },
@@ -575,7 +583,8 @@ describe("Naming rules", () => {
       ],
     },
     {
-      description: "Ensure belongsToMany otherKey works properly",
+      description:
+        "Ensure belongsToMany otherKey works properly (relationships.belongsToMany.otherKey)",
       models: [
         {
           name: "SalesPerson",
@@ -585,7 +594,10 @@ describe("Naming rules", () => {
           belongsToMany: [
             {
               target: "Account",
-              options: { otherKey: "sold_account_id", through: "SalesAccount" },
+              options: {
+                otherKey: "sold_account_id",
+                through: "account_sales_person",
+              },
             },
           ],
         },
@@ -597,6 +609,7 @@ describe("Naming rules", () => {
           hasOne: [
             {
               target: "SalesPerson",
+              options: { as: "salesperson" },
             },
           ],
         },
@@ -609,11 +622,11 @@ describe("Naming rules", () => {
         },
       ],
     },
-  ] */
+  ]
 
   //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-296 and https://bitovi.atlassian.net/browse/HATCH-297
-  /* const hasManyTestCases: TestCase[] = [
-    {
+  const hasManyTestCases: TestCase[] = [
+    /*  {
       description: "Ensure hasMany creates rows and is returned in include",
       models: [
         {
@@ -698,9 +711,10 @@ describe("Naming rules", () => {
           columns: ["id", "sales_person_id"],
         },
       ],
-    },
+    }, */
     {
-      description: "Ensure hasMany foreignKey row is correctly created",
+      description:
+        "Ensure hasMany foreignKey row is correctly created (relationships.hasMany.foreignKey)",
       models: [
         {
           name: "SalesPerson",
@@ -738,7 +752,7 @@ describe("Naming rules", () => {
         },
       ],
     },
-    {
+    /*  {
       description: "Ensure hasMany alias (as) is correctly addressed",
       models: [
         {
@@ -829,16 +843,16 @@ describe("Naming rules", () => {
           columns: ["id", "sales_person_id"],
         },
       ],
-    },
-  ] */
+    }, */
+  ]
 
   const cases: TestCase[] = [
     /*    ...schemaNameTestCases,
     ...pluralNameTestCases,
     ...attributeNameTestCases,
-    ...belongsToTestCases,
+    ...belongsToTestCases,*/
     ...hasManyTestCases,
-    ...belongsToManyTestCases, */
+    ...belongsToManyTestCases,
   ]
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]

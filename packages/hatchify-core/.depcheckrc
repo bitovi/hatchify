@@ -1,0 +1,5 @@
+ignore-dirs:
+  - /dist
+ignores:
+  - "@types/*"
+  - ts-jest

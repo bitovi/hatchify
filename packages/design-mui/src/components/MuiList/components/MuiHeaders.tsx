@@ -34,8 +34,9 @@ export const MuiHeaders: React.FC<
               checked={selected.all}
               indeterminate={Boolean(!selected.all && selected.ids.length)}
               onChange={() => {
-                if (selected.ids.length)
+                if (selected.ids.length) {
                   return setSelected({ all: false, ids: [] })
+                }
                 setSelected({ all: true, ids: data.map((item) => item.id) })
               }}
             />
