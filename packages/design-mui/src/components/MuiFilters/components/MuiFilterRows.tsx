@@ -82,8 +82,9 @@ export const MuiFilterRows: React.FC<{
         attributes,
       )
 
-      if (fieldType(value) !== fieldType(newFilters[index].field))
+      if (fieldType(value) !== fieldType(newFilters[index].field)) {
         newFilters[index].value = ""
+      }
     }
     if (field === "operator") {
       //reset the filter value if switching from an array operator to another operator and vice versa

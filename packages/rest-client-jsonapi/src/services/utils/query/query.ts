@@ -157,7 +157,9 @@ export function getQueryParams(
 
   if (include) {
     const includeParam = includeToQueryParam(include)
-    if (includeParam) params.push(includeParam)
+    if (includeParam) {
+      params.push(includeParam)
+    }
   }
 
   if (fields) {
@@ -167,22 +169,30 @@ export function getQueryParams(
       schemaName,
       fields,
     )
-    if (fieldsParam) params.push(fieldsParam)
+    if (fieldsParam) {
+      params.push(fieldsParam)
+    }
   }
 
   if (sort) {
     const sortParam = sortToQueryParam(sort)
-    if (sortParam) params.push(sortParam)
+    if (sortParam) {
+      params.push(sortParam)
+    }
   }
 
   if (filter) {
     const filterParam = filterToQueryParam(filter)
-    if (filterParam) params.push(filterParam)
+    if (filterParam) {
+      params.push(filterParam)
+    }
   }
 
   if (page) {
     const pageParam = pageToQueryParam(page)
-    if (pageParam) params.push(pageParam)
+    if (pageParam) {
+      params.push(pageParam)
+    }
   }
 
   return params.length ? `?${params.join("&")}` : ""

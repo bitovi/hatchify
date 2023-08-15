@@ -71,6 +71,7 @@
         ],
         "rules": {
           "@typescript-eslint/explicit-module-boundary-types": "warn",
+          "curly": "error",
           "import/order": [
             "error",
             {
