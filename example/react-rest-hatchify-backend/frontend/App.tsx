@@ -24,8 +24,10 @@ const App: React.FC = () => {
 export default App
 
 function Todos() {
+  const [enableFilter, setEnableFilter] = useState(false)
   const [todos, todosState] = hatchedReactRest.Todo.useAll({
     include: ["user"],
+    filter: enableFilter ? { name: ["Workout", "other"] } : undefined,
   })
   const [users, usersState] = hatchedReactRest.User.useAll()
   const [createTodo, createState] = hatchedReactRest.Todo.useCreateOne()
@@ -101,6 +103,9 @@ function Todos() {
           ))}
         </tbody>
       </table>
+      <button type="button" onClick={() => setEnableFilter(!enableFilter)}>
+        {enableFilter ? "disable filter" : "filter [Workout, other]"}
+      </button>
     </div>
   )
 }
