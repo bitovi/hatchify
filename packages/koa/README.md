@@ -695,7 +695,7 @@ export const Movie = {
 }
 ```
 
-In this case both models contain a belongsToMany type relationship. One of the differences here is that we need another table to help us define this complex many-to-many relationship. We can see this as the `through` option providing a table name of `ActorMovies`.
+In this case both models contain a belongsToMany type relationship. One of the differences here is that we need another table to help us define this complex many-to-many relationship. We can see this as the `through` option providing a table name of `actor_movies`.
 
 For more information on these relationships and the options available check the [documentation for Sequelize](https://sequelize.org/docs/v6/core-concepts/assocs/).
 
