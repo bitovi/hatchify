@@ -71,38 +71,62 @@ const testCases = [
     queryParam: "filter[name][$nin]=John&filter[name][$nin]=Jane",
     expectedResult: [],
   },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for end of a string",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=%ne",
-  //   expectedResult: [jane],
-  // },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for beginning of a string",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=Jo%",
-  //   expectedResult: [john],
-  // },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for middle of a string",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=%an%",
-  //   expectedResult: [jane],
-  // },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for entirety of a string (non-case sensitive)",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=john",
-  //   expectedResult: [john],
-  // },
+  {
+    description:
+      "returns correct data using the $like operator for end of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%ne")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $like operator for beginning of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
+    expectedResult: [john],
+  },
+  {
+    description:
+      "returns correct data using the $like operator for middle of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%an%")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $like operator for entirety of a string (non-case sensitive)",
+    operator: "$like",
+    queryParam: "filter[name][$like]=John",
+    expectedResult: [john],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for end of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("%Ne")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for beginning of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("jO%")}`,
+    expectedResult: [john],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for middle of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("%aN%")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for entirety of a string (non-case sensitive)",
+    operator: "$ilike",
+    queryParam: "filter[name][$ilike]=jOhN",
+    expectedResult: [john],
+  },
   //number
   {
     description: "returns correct data using the $eq operator with a number",
@@ -244,7 +268,7 @@ describe("Operators", () => {
     name: "User",
     attributes: {
       name: "STRING",
-      age: "NUMBER",
+      age: "INTEGER",
       startDate: "DATE",
       onSite: "BOOLEAN",
       manager: "BOOLEAN",
