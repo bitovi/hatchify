@@ -99,6 +99,7 @@
     ],
     "collectCoverageFrom": [
       "<rootDir>/src/**/*.ts",
+      "!<rootDir>/src/**/types.ts",
       "!<rootDir>/src/dataTypes/index.ts",
       "!<rootDir>/src/hatchify-core.ts",
       "!<rootDir>/src/types/**/*.ts"

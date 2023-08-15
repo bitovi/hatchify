@@ -1,6 +1,6 @@
-import type { SequelizeNumberValidation } from "../../types"
+import type { SequelizeNumberValidation } from "./types"
 
-export function buildNumberValidation(
+export function buildValidation(
   min?: number,
   max?: number,
 ): Record<string, never> | SequelizeNumberValidation {

@@ -3,11 +3,16 @@ import { getPartialControl } from "./getPartialControl"
 import { getPartialOrm } from "./getPartialOrm"
 import type {
   FinalNumberORM,
-  PartialAttribute,
   PartialNumberControlType,
   PartialNumberORM,
   PartialNumberProps,
-} from "../../types"
+} from "./types"
+import type { PartialAttribute } from "../../types"
+
+export * from "./getFinalize"
+export * from "./getPartialControl"
+export * from "./getPartialOrm"
+export * from "./types"
 
 export function number(
   props?: PartialNumberProps,

@@ -1,4 +1,4 @@
-import type { PartialNumberControlType, PartialNumberProps } from "../../types"
+import type { PartialNumberControlType, PartialNumberProps } from "./types"
 
 export function getPartialControl(
   props?: PartialNumberProps,

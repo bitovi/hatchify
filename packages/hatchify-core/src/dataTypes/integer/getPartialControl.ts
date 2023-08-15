@@ -1,5 +1,8 @@
-import type { PartialNumberControlType, PartialNumberProps } from "../../types"
-import { getPartialControl as getNumberPartialControl } from "../number/getPartialControl"
+import { getPartialControl as getNumberPartialControl } from "../number"
+import type {
+  PartialNumberControlType,
+  PartialNumberProps,
+} from "../number/types"
 
 export function getPartialControl(
   props?: PartialNumberProps,

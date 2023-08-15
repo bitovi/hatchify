@@ -1,6 +1,7 @@
-import { assembler } from "./assembler"
-import type { PartialSchema } from "./assembler"
-import { integer } from "./dataTypes"
+import type { PartialSchema } from "./types"
+import { integer } from "../dataTypes"
+
+import { assembler } from "."
 
 describe("assembler", () => {
   describe("assembler", () => {

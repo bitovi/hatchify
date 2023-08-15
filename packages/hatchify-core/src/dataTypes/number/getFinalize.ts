@@ -2,11 +2,13 @@ import { coerce } from "./coerce"
 import { finalizeControl } from "./finalizeControl"
 import { finalizeOrm } from "./finalizeOrm"
 import type {
-  FinalAttribute,
   FinalNumberORM,
-  PartialAttribute,
   PartialNumberControlType,
   PartialNumberORM,
+} from "./types"
+import type {
+  FinalAttribute,
+  PartialAttribute,
   ValueInRequest,
 } from "../../types"
 

@@ -1,13 +1,13 @@
 import { getPartialControl } from "./getPartialControl"
 import { getPartialOrm } from "./getPartialOrm"
+import type { PartialAttribute } from "../../types"
+import { getFinalize } from "../number"
 import type {
   FinalNumberORM,
-  PartialAttribute,
   PartialNumberControlType,
   PartialNumberORM,
   PartialNumberProps,
-} from "../../types"
-import { getFinalize } from "../number/getFinalize"
+} from "../number"
 
 export function integer(
   props?: PartialNumberProps,

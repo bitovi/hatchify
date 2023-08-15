@@ -1,5 +1,6 @@
+import type { PartialNumberControlType } from "./types"
 import { validateStep } from "./validateStep"
-import type { PartialNumberControlType, ValueInRequest } from "../../types"
+import type { ValueInRequest } from "../../types"
 
 export function coerce(
   value: ValueInRequest,

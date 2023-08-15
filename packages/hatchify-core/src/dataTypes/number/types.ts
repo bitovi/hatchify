@@ -2,7 +2,7 @@ import type {
   PartialControlType,
   PartialDataTypeProps,
   PartialSequelizeDataType,
-} from "./generic"
+} from "../../types"
 
 export interface PartialNumberProps extends PartialDataTypeProps {
   autoIncrement?: boolean

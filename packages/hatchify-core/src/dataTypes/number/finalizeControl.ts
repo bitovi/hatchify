@@ -1,4 +1,4 @@
-import type { PartialNumberControlType } from "../../types"
+import type { PartialNumberControlType } from "./types"
 
 export function finalizeControl(
   props: PartialNumberControlType,

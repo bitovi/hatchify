@@ -1,4 +1,4 @@
-import type { PartialNumberORM, PartialNumberProps } from "../../types"
+import type { PartialNumberORM, PartialNumberProps } from "./types"
 
 export function getPartialOrm(props?: PartialNumberProps): PartialNumberORM {
   return {
