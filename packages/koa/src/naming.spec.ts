@@ -42,7 +42,7 @@ describe("Naming rules", () => {
       ],
       requests: [
         {
-          url: "/api/api/sales-persons",
+          url: "/api/sales-persons",
           options: {
             method: "post",
             body: {
@@ -68,7 +68,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons?fields[SalesPerson]=name",
+          url: "/api/sales-persons?fields[SalesPerson]=name",
           options: {
             method: "post",
             body: {
@@ -141,7 +141,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons",
+          url: "/api/sales-persons",
           options: {
             method: "get",
           },
@@ -170,7 +170,7 @@ describe("Naming rules", () => {
       ],
       requests: [
         {
-          url: "/api/api/sales-persons",
+          url: "/api/sales-persons",
           options: {
             method: "post",
             body: {
@@ -513,7 +513,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons?include=managingAccounts",
+          url: "/api/sales-persons?include=managingAccounts",
           options: {
             method: "get",
           },
@@ -670,7 +670,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons?include=accounts",
+          url: "/api/sales-persons?include=accounts",
           options: {
             method: "get",
           },
@@ -799,7 +799,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/api/sales-persons?include=managingAccounts",
+          url: "/api/sales-persons?include=managingAccounts",
           options: {
             method: "get",
           },
