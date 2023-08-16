@@ -22,8 +22,8 @@ export async function fetchJsonApi<T>(
   })
 
   if (!response.ok) {
-    // todo proper validation
-    throw Error("request failed")
+    const json = await response.json()
+    return Promise.reject(json?.errors || "Unknown error")
   }
 
   if (response.status === 204) {

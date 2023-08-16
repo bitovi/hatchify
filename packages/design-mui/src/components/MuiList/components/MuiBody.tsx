@@ -19,8 +19,11 @@ export const MuiBody: React.FC<
     if (selectable) {
       const ids = [...selected.ids]
       const index = ids.indexOf(id)
-      if (index > -1) ids.splice(index, 1)
-      else ids.push(id)
+      if (index > -1) {
+        ids.splice(index, 1)
+      } else {
+        ids.push(id)
+      }
       setSelected({ all: ids.length === meta?.meta?.unpaginatedCount, ids })
     }
   }

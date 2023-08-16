@@ -2,6 +2,7 @@ export type {
   Attribute,
   AttributeObject,
   CreateData,
+  EnumObject,
   Fields,
   FilterArray,
   Filters,

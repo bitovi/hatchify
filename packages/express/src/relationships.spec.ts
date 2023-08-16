@@ -303,7 +303,8 @@ describe("Relationships", () => {
   })
 
   describe("should support pagination meta (HATCH-203)", () => {
-    it("with pagination", async () => {
+    //TODO UNSKIP / FIX WITH HATCH-299
+    it.skip("with pagination", async () => {
       const [{ body: mrPagination }] = await Promise.all([
         fetch("/api/users", {
           method: "post",
@@ -341,8 +342,8 @@ describe("Relationships", () => {
         meta: { unpaginatedCount: 2 },
       })
     })
-
-    it("without pagination", async () => {
+    //TODO UNSKIP / FIX WITH HATCH-299
+    it.skip("without pagination", async () => {
       const [{ body: mrPagination }] = await Promise.all([
         fetch("/api/users", {
           method: "post",

@@ -35,7 +35,9 @@ export function jsonApiResourceToHatchifyResource(
     relationships = Object.entries(resource.relationships).reduce(
       (acc: Relationship, [key, value]) => {
         // skip if relationship has no data
-        if (!value.data) return acc
+        if (!value.data) {
+          return acc
+        }
 
         acc[key] = Array.isArray(value.data)
           ? value.data.map((v) => ({

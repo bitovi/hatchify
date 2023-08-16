@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import { rest } from "msw"
 
 export const baseUrl = "http://api.example.com"
@@ -162,3 +163,4 @@ export const handlers = [
     return res(ctx.status(201), ctx.json({ data: article }))
   }),
 ]
+/* c8 ignore stop */

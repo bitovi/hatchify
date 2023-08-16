@@ -30,7 +30,7 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
   - [Rendering an empty list](./doc/next-steps/[empty-list.md](doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md))
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-  - [Learn how to filter data](./doc/next-steps/query-filter-data.md)
+  - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -575,7 +575,7 @@ well-defined schemas to create a database, a running backend with REST endpoints
 - [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
 - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-- [Learn how to filter data](./doc/next-steps/query-filter-data.md)
+- [Learn how to filter data](./doc/filtering-data/filtering-data.md)
 
 # Troubleshooting / Known issues
 
