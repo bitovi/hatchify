@@ -32,7 +32,6 @@
     "@bitovi/sequelize-querystring-parser": "^0.2.0",
     "@hatchifyjs/sequelize-create-with-associations": "^0.6.2",
     "@types/lodash": "^4.14.196",
-    "camel-case": "^4.1.2",
     "co-body": "^6.1.0",
     "inflection": "^2.0.1",
     "json-api-serializer": "^2.6.6",
