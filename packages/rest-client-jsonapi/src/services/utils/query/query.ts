@@ -85,17 +85,16 @@ export function filterToQueryParam(filter: Filters): string {
 
   for (let i = 0; i < filter.length; i++) {
     const { operator, field, value } = filter[i]
-
-    if (Array.isArray(value)) {
+    if (operator === "empty" || operator === "nempty") {
+      q.push(
+        `filter[${field}][${operator === "empty" ? "$eq" : "$ne"}]=${null}`,
+      )
+    } else if (Array.isArray(value)) {
       q.push(
         value
-          .map((v) => `filter[${field}][]=${encodeURIComponent(v)}`)
+          .map((v) => `filter[${field}][${operator}]=${encodeURIComponent(v)}`)
           .join("&"),
       )
-    } else if (operator === "empty") {
-      q.push(`filter[${field}][$eq]=${null}`)
-    } else if (operator === "nempty") {
-      q.push(`filter[${field}][$ne]=${null}`)
     } else {
       q.push(
         `filter[${field}][${operator}]=${encodeURIComponent(
@@ -158,7 +157,9 @@ export function getQueryParams(
 
   if (include) {
     const includeParam = includeToQueryParam(include)
-    if (includeParam) params.push(includeParam)
+    if (includeParam) {
+      params.push(includeParam)
+    }
   }
 
   if (fields) {
@@ -168,22 +169,30 @@ export function getQueryParams(
       schemaName,
       fields,
     )
-    if (fieldsParam) params.push(fieldsParam)
+    if (fieldsParam) {
+      params.push(fieldsParam)
+    }
   }
 
   if (sort) {
     const sortParam = sortToQueryParam(sort)
-    if (sortParam) params.push(sortParam)
+    if (sortParam) {
+      params.push(sortParam)
+    }
   }
 
   if (filter) {
     const filterParam = filterToQueryParam(filter)
-    if (filterParam) params.push(filterParam)
+    if (filterParam) {
+      params.push(filterParam)
+    }
   }
 
   if (page) {
     const pageParam = pageToQueryParam(page)
-    if (pageParam) params.push(pageParam)
+    if (pageParam) {
+      params.push(pageParam)
+    }
   }
 
   return params.length ? `?${params.join("&")}` : ""

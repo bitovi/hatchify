@@ -40,7 +40,10 @@ export const useOne = (
     setLoading(true)
 
     findOne(dataSource, allSchemas, schemaName, memoizedQuery)
-      .then(setData)
+      .then((data) => {
+        setError(undefined)
+        setData(data)
+      })
       .catch(setError)
       .finally(() => setLoading(false))
   }, [dataSource, allSchemas, schemaName, memoizedQuery])
@@ -55,6 +58,6 @@ export const useOne = (
     return subscribeToAll(schemaName, fetchOne)
   }, [schemaName, fetchOne, memoizedQuery.id])
 
-  const meta: Meta = getMeta(error, loading, false, undefined)
+  const meta = getMeta(error, loading, false, undefined)
   return [data, meta]
 }

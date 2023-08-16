@@ -13,7 +13,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   filter: queryFilter,
   setFilter: setQueryFilter,
 }) => {
-  const fields = getStringAndDateFields(allSchemas, schemaName)
+  const fields = getSupportedFields(allSchemas, schemaName)
   const defaultFilter = { field: fields[0], operator: "ilike", value: "" }
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -24,9 +24,10 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
     debounce((filters: FilterArray) => {
       const queryFilters = filters.filter((filter) => {
         // filter out empty values only if they are not empty operators
-        if (filter.operator === "empty" || filter.operator === "nempty")
+        if (filter.operator === "empty" || filter.operator === "nempty") {
           return true
-        return filter.value !== ""
+        }
+        return filter.value !== "" && (filter.value as string[]).length !== 0
       })
       setQueryFilter(queryFilters.length ? queryFilters : undefined)
     }, 500),
@@ -48,7 +49,9 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   }
 
   const removeFilter = (index: number) => {
-    if (filters.length === 1) return clearFilters()
+    if (filters.length === 1) {
+      return clearFilters()
+    }
     const newFilters = [...filters]
     newFilters.splice(index, 1)
     setFilters(newFilters)
@@ -113,15 +116,15 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   )
 }
 
-function getStringAndDateFields(
+function getSupportedFields(
   allSchemas: XCollectionProps["allSchemas"],
   schemaName: XCollectionProps["schemaName"],
 ) {
   return Object.entries(allSchemas[schemaName].attributes)
     .filter(([, attr]) =>
       typeof attr === "object"
-        ? attr.type === "string" || attr.type === "date"
-        : attr === "string" || attr === "date",
+        ? attr.type === "string" || attr.type === "date" || attr.type === "enum"
+        : attr === "string" || attr === "date" || attr === "enum",
     )
     .map(([key]) => key)
 }

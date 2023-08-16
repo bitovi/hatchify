@@ -42,7 +42,9 @@ async function findAllImpl(
   querystring: string,
 ) {
   const { data, errors } = buildFindOptions(model, querystring)
-  if (errors.length) throw errors
+  if (errors.length) {
+    throw errors
+  }
   validateFindOptions(data, model, hatchify)
   return data
 }
@@ -54,7 +56,9 @@ async function findOneImpl(
   id,
 ) {
   const { data, errors } = buildFindOptions(model, querystring, id)
-  if (errors.length) throw errors
+  if (errors.length) {
+    throw errors
+  }
   validateFindOptions(data, model, hatchify)
   return data
 }
@@ -65,7 +69,9 @@ async function findAndCountAllImpl(
   querystring: string,
 ) {
   const { data, errors } = buildFindOptions(model, querystring)
-  if (errors.length) throw errors
+  if (errors.length) {
+    throw errors
+  }
   validateFindOptions(data, model, hatchify)
   return data
 }
@@ -101,7 +107,9 @@ async function updateImpl(
 
 async function destroyImpl(querystring: string, id?: Identifier) {
   const { data, errors } = buildDestroyOptions(querystring, id)
-  if (errors.length) throw errors
+  if (errors.length) {
+    throw errors
+  }
   return data
 }
 
