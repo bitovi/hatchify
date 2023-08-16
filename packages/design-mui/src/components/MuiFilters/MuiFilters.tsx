@@ -12,6 +12,8 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   schemaName,
   filter: queryFilter,
   setFilter: setQueryFilter,
+  page,
+  setPage,
 }) => {
   const fields = getSupportedFields(allSchemas, schemaName)
   const defaultFilter = { field: fields[0], operator: "ilike", value: "" }
@@ -29,6 +31,9 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
         }
         return filter.value !== "" && (filter.value as string[]).length !== 0
       })
+      if (queryFilters.length) {
+        setPage({ ...page, number: 1 })
+      }
       setQueryFilter(queryFilters.length ? queryFilters : undefined)
     }, 500),
     [setQueryFilter],
