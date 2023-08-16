@@ -43,6 +43,7 @@ export const useAll = (
     setLoading(true)
     findAll(dataSource, allSchemas, schemaName, memoizedQuery)
       .then(([data, requestMeta]) => {
+        setError(undefined)
         setData(data)
         setRequestMeta(requestMeta)
       })
@@ -58,6 +59,6 @@ export const useAll = (
     return subscribeToAll(schemaName, fetchAll)
   }, [schemaName, fetchAll])
 
-  const meta: Meta = getMeta(error, loading, false, requestMeta)
+  const meta = getMeta(error, loading, false, requestMeta)
   return [data, meta]
 }

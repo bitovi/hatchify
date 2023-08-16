@@ -66,7 +66,7 @@ describe("react-rest/services/useDeleteOne", () => {
     )
   })
 
-  it("should return an error if the request fails", async () => {
+  it("should return an error if the request fails and clear it after success", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
@@ -116,6 +116,27 @@ describe("react-rest/services/useDeleteOne", () => {
           isRevalidating: false,
           isStale: false,
           isSuccess: false,
+        },
+      ]),
+    )
+
+    fakeDataSource.deleteOne = () => Promise.resolve()
+
+    await result.current[0]("id")
+
+    await waitFor(() =>
+      expect(result.current).toEqual([
+        expect.any(Function),
+        {
+          status: "success",
+          meta: undefined,
+          error: undefined,
+          isDone: true,
+          isLoading: false,
+          isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
         },
       ]),
     )
