@@ -41,15 +41,24 @@ describe("rest-client-jsonapi/services/findOne", () => {
   })
 
   it("throws an error if the request fails", async () => {
+    const errors = [
+      {
+        code: "missing-resource",
+        source: {},
+        status: 404,
+        title: "Resource not found",
+      },
+    ]
+
     server.use(
       rest.get(`${baseUrl}/articles/article-id-1`, (_, res, ctx) =>
-        res.once(ctx.status(500), ctx.json({ error: "error message" })),
+        res.once(ctx.status(500), ctx.json({ errors })),
       ),
     )
 
     await expect(
       findOne(sourceConfig, schemas, "Article", query),
-    ).rejects.toThrowError("request failed")
+    ).rejects.toEqual(errors)
   })
 
   it("can be called from a Source", async () => {

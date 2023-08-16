@@ -8,7 +8,9 @@ export default function useSort(): HatchifyCollectionSort {
   })
 
   const sortQueryString = useMemo(() => {
-    if (sort.sortBy === undefined) return ""
+    if (sort.sortBy === undefined) {
+      return ""
+    }
     return `${sort.direction === "desc" ? "-" : ""}${sort.sortBy}`
   }, [sort.sortBy, sort.direction])
 

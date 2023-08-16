@@ -21,6 +21,7 @@ export async function startServerWith(
     options?: { method?: Method; headers?: object; body?: object },
   ) => Promise<any>
   teardown: () => Promise<void>
+  hatchify?
 }> {
   const app = new Koa()
   const hatchify = new Hatchify(models, { prefix: "/api" })
@@ -50,6 +51,7 @@ export async function startServerWith(
   return {
     fetch,
     teardown: async () => hatchify.orm.close(),
+    hatchify,
   }
 }
 

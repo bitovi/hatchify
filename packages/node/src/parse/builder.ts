@@ -36,7 +36,9 @@ export function buildFindOptions(
     )
   }
 
-  if (!ops.data) return ops
+  if (!ops.data) {
+    return ops
+  }
 
   Object.keys(ops.data.where || {}).forEach((attribute) => {
     if (attribute !== "id" && !model.attributes[attribute]) {
@@ -95,7 +97,9 @@ export function buildFindOptions(
     }
   }
 
-  if (ops.errors.length) throw ops.errors
+  if (ops.errors.length) {
+    throw ops.errors
+  }
 
   if (!ops.data.where) {
     ops.data.where = {}

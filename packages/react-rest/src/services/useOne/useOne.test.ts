@@ -149,8 +149,16 @@ describe("react-rest/services/useOne", () => {
   it("should return an error", async () => {
     createStore(["Article"])
 
-    fakeDataSource.findOne = () =>
-      Promise.reject(new Error("Something went wrong"))
+    const errors = [
+      {
+        code: "missing-resource",
+        source: {},
+        status: 404,
+        title: "Resource not found",
+      },
+    ]
+
+    fakeDataSource.findOne = () => Promise.reject(errors)
 
     const { result } = renderHook(() =>
       useOne(fakeDataSource, schemas, "Article", { id: "1" }),
@@ -162,7 +170,7 @@ describe("react-rest/services/useOne", () => {
         {
           status: "error",
           meta: undefined,
-          error: new Error("Something went wrong"),
+          error: errors,
           isDone: true,
           isLoading: false,
           isRejected: true,

@@ -7,6 +7,7 @@ import type {
 import { camelCase } from "camel-case"
 import * as inflection from "inflection"
 import type JSONAPISerializer from "json-api-serializer"
+import { snakeCase } from "lodash"
 import type {
   DataType,
   Model,
@@ -137,6 +138,7 @@ export function convertHatchifyModels(
         createdAt: false,
         updatedAt: false,
         freezeTableName: true,
+        tableName: snakeCase(model.name),
       },
     )
 
@@ -178,7 +180,7 @@ export function convertHatchifyModels(
 
           //Get association name for lookup
           const associationName =
-            options.as ||
+            options?.as ??
             camelCase(
               ["belongsToMany", "hasMany"].includes(relationshipType)
                 ? inflection.pluralize(target)
@@ -199,12 +201,12 @@ export function convertHatchifyModels(
           const modelAssociation = {
             type: relationshipType,
             model: target,
-            key: options.foreignKey ?? `${target.toLowerCase()}_id`,
+            key: options?.foreignKey ?? `${target.toLowerCase()}_id`,
             joinTable:
               relationshipType === "belongsToMany"
                 ? typeof options.through === "string"
-                  ? options.through
-                  : options.through.model
+                  ? options?.through
+                  : options?.through.model
                 : undefined,
           }
           associationsLookup[model.name] = {

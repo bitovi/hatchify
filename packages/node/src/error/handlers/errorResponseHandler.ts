@@ -16,7 +16,9 @@ export function errorResponseHandler(
 ): ErrorResponse {
   const errors: GeneralError[] = []
 
-  if (Array.isArray(error)) return { errors: error, status: error[0].status }
+  if (Array.isArray(error)) {
+    return { errors: error, status: error[0].status }
+  }
 
   if (
     [

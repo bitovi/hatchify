@@ -23,10 +23,14 @@ Unlike code generation tools—which allow you to write your schema and then gen
     - [Updating a resource](#updating-a-resource)
     - [Deleting a resource](#deleting-a-resource)
   - [Seeding data](#seeding-data)
-- [Frontend with React & MUI](#frontend-with-react--mui)
+- [Frontend with React & MUI](#frontend-with-react-and-mui)
   - [Rendering a List](#rendering-a-list)
 - [Next Steps](#next-steps)
-  - [Rendering an empty list](#rendering-an-empty-list)
+  - [Schema, database, and service API naming](./doc/naming.md)
+  - [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
+  - [Rendering an empty list](./doc/next-steps/[empty-list.md](doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md))
+  - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
+  - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -567,60 +571,11 @@ well-defined schemas to create a database, a running backend with REST endpoints
 
 # Next Steps
 
-## Using Postgres DB
-
-You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but we've created a tutorial specifically for using Postgres: [Using Postgres DB](./doc/next-steps/using-postgres-db.md).
-
-## Rendering an empty List
-
-By default, a model's `List` component will render a message when there are no records to display:
-
-![](doc/attachments/defaultNoRecords.png)
-To customize what is displayed here the `Empty` component can be passed into `Collection`
-
-```tsx
-// hatchify-app/src/App.tsx
-
-const TodoList = hatchedReact.components.Todo.Collection
-const TodoEmpty = hatchedReact.components.Todo.Empty
-
-const App: React.FC = () => {
-  return (
-    <MuiProvider>
-      <TodoList>
-        <TodoEmptyList>
-          <strong>No records to display</strong>
-        </TodoEmptyList>
-      </TodoList>
-    </MuiProvider>
-  )
-}
-```
-
-`Empty` will accept any custom component that is passed in as its children.
-![Alt text](doc/attachments/customNoRecords.png)
-
-## Adding checkboxes to the list
-
-To add a checkboxes column to the list, we must pass an `onSelectedChange` prop to the `TodosList` component. If we want some rows to checked by default then we can pass them as an array of ids to the `selected` prop. Whenever a checkbox is clicked, the `onSelectedChange` callback will fire and update our `App` state.
-
-```tsx
-// hatchify-app/src/App.tsx
-const App: React.FC = () => {
-  const [selected, setSelected] = useState<string[]>([])
-
-  return (
-    <MuiProvider>
-      <button onClick={() => alert(`action on [${selected.join(",")}]`)}>action</button>
-      <TodoList selected={selected} onSelectionChange={(ids) => setSelected(ids)}>
-        <TodoEmptyList>
-          <div>No records to display</div>
-        </TodoEmptyList>
-      </TodoList>
-    </MuiProvider>
-  )
-}
-```
+- [Schema, database, and service API naming](./doc/naming.md)
+- [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
+- [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
+- [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
+- [Learn how to filter data](./doc/filtering-data/filtering-data.md)
 
 # Troubleshooting / Known issues
 
