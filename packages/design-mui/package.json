@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/design-mui",
-  "version": "0.0.1-25",
+  "version": "0.0.1-26",
   "main": "./dist/design-mui.js",
   "module": "./dist/design-mui.mjs",
   "types": "./dist/design-mui.d.ts",
