@@ -19,10 +19,6 @@ describe("getDefaultPrimaryAttribute", () => {
           primaryKey: true,
           type: "INTEGER",
           typeArgs: [],
-          validate: {
-            max: undefined,
-            min: 1,
-          },
         },
       },
       finalize: expect.any(Function),

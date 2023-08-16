@@ -8,10 +8,6 @@ export function getPartialOrm(props?: PartialNumberProps): PartialNumberORM {
       allowNull: props?.required == null ? props?.required : !props.required,
       autoIncrement: props?.autoIncrement,
       primaryKey: props?.primary,
-      validate: {
-        min: props?.min,
-        max: props?.max,
-      },
     },
   }
 }

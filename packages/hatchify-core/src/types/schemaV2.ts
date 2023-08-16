@@ -1,5 +1,7 @@
 export type ValueInRequest = number | string | object | null | undefined
 
+export * from "../assembler/types"
+
 export interface PartialDataTypeProps {
   primary?: boolean
   required?: boolean

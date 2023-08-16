@@ -40,28 +40,4 @@ describe("getPartialOrm", () => {
     expect(getPartialOrm({ primary: true }).sequelize.primaryKey).toBe(true)
     expect(getPartialOrm({ primary: false }).sequelize.primaryKey).toBe(false)
   })
-
-  describe("handles validate", () => {
-    it("handles min", () => {
-      expect(
-        getPartialOrm({ min: undefined, max: 0 }).sequelize.validate.min,
-      ).toBeUndefined()
-      expect(
-        getPartialOrm({ min: null as unknown as number, max: 0 }).sequelize
-          .validate.min,
-      ).toBeNull()
-      expect(getPartialOrm({ min: 0, max: 0 }).sequelize.validate.min).toBe(0)
-    })
-
-    it("handles max", () => {
-      expect(
-        getPartialOrm({ min: 0, max: undefined }).sequelize.validate.max,
-      ).toBeUndefined()
-      expect(
-        getPartialOrm({ min: 0, max: null as unknown as number }).sequelize
-          .validate.max,
-      ).toBeNull()
-      expect(getPartialOrm({ min: 0, max: 0 }).sequelize.validate.max).toBe(0)
-    })
-  })
 })

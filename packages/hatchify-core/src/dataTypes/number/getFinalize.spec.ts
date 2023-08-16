@@ -19,7 +19,6 @@ describe("getFinalize", () => {
           primaryKey: undefined,
           type: "INTEGER",
           typeArgs: [],
-          validate: { max: undefined, min: undefined },
         },
       },
       finalize: expect.any(Function),
