@@ -1,7 +1,1 @@
-export function pascalCaseToSnakeCase(text: string): string {
-  return text
-    .replace(/\.?([A-Z]+)/g, function (x, y) {
-      return "_" + y.toLowerCase()
-    })
-    .replace(/^_/, "")
-}
+export const pluralize = (str: string): string => str + "s"
