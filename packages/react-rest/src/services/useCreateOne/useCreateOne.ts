@@ -30,7 +30,12 @@ export const useCreateOne = (
           setError(undefined)
           setData(data)
         })
-        .catch(setError)
+        .catch((error) => {
+          setError(error)
+          if (error instanceof Error) {
+            throw error
+          }
+        })
         .finally(() => setLoading(false))
     },
     [dataSource, allSchemas, schemaName],

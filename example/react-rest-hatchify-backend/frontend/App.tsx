@@ -27,6 +27,7 @@ function Todos() {
   const [enableFilter, setEnableFilter] = useState(false)
   const [todos, todosState] = hatchedReactRest.Todo.useAll({
     include: ["user"],
+    fields: { Todo: ["name"] },
     filter: enableFilter ? { name: ["Workout", "other"] } : undefined,
   })
   const [users, usersState] = hatchedReactRest.User.useAll()

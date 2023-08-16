@@ -18,7 +18,12 @@ export const useDeleteOne = (
       setLoading(true)
       deleteOne(dataSource, allSchemas, schemaName, id)
         .then(() => setError(undefined))
-        .catch(setError)
+        .catch((error) => {
+          setError(error)
+          if (error instanceof Error) {
+            throw error
+          }
+        })
         .finally(() => setLoading(false))
     },
     [dataSource, allSchemas, schemaName],
