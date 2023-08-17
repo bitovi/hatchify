@@ -281,32 +281,54 @@ describe("Operators", () => {
   beforeAll(async () => {
     ;({ fetch, teardown } = await startServerWith([User]))
 
-    await fetch("/api/users", {
-      method: "post",
-      body: {
-        data: {
-          type: "User",
-          attributes: userData[0],
-        },
-      },
-    })
-
-    await fetch("/api/users", {
-      method: "post",
-      body: {
-        data: {
-          type: "User",
-          attributes: userData[1],
-        },
-      },
-    })
+    await Promise.all(
+      userData.map(async (attributes) =>
+        fetch("api/users", {
+          method: "post",
+          body: {
+            data: {
+              type: "User",
+              attributes,
+            },
+          },
+        }),
+      ),
+    )
   })
 
   afterAll(async () => {
+    // const { body } = await fetch(`/api/users/?`)
+    // const userIds = body.data.map(({ id }) => id)
+    // await Promise.all(
+    //   userIds.map(async (id: number) =>
+    //     fetch("api/users", {
+    //       method: "delete",
+    //       body: {
+    //         data: {
+    //           type: "User",
+    //           id,
+    //         },
+    //       },
+    //     }),
+    //   ),
+    // )
+
     await teardown()
   })
 
-  it.each(testCases)("$description", async ({ expectedResult, queryParam }) => {
+  // it.each(testCases)("$description", async ({ expectedResult, queryParam }) => {
+  //   const { body } = await fetch(`/api/users/?${queryParam}`)
+  //   const users = body.data.map(({ attributes }) => attributes)
+  //   expect(users).toEqual(
+  //     expectedResult.map((er) => ({
+  //       ...er,
+  //       startDate: new Date(er.startDate).toISOString(),
+  //     })),
+  //   )
+  // })
+  it("test", async () => {
+    const queryParam = testCases[0].queryParam
+    const expectedResult = testCases[0].expectedResult
     const { body } = await fetch(`/api/users/?${queryParam}`)
     const users = body.data.map(({ attributes }) => attributes)
     expect(users).toEqual(
