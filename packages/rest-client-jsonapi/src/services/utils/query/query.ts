@@ -27,10 +27,11 @@ export function fieldsToQueryParam(
       continue
     }
 
-    const baseSchema = allSchemas[schemaName]
-    const relationship = baseSchema?.relationships || {}
-    const relatedSchema = relationship[field].schema
-    fieldsObj[schemaMap[relatedSchema].type] = fields[field]
+    if (schemaMap[field] === undefined) {
+      throw new Error(`"${field}" is not a valid schema`)
+    }
+
+    fieldsObj[schemaMap[field].type] = fields[field]
   }
 
   const fieldset = Object.entries(fieldsObj)
