@@ -91,7 +91,7 @@ describe("toSequelize", () => {
           schemas.Todo.build({
             importance: -1,
           }).save(),
-        ).rejects.toThrow("Validation min on importance failed")
+        ).rejects.toThrow("Provided value is lower than the minimum of 0")
       })
 
       it("enforces maximum value", async () => {
@@ -99,7 +99,7 @@ describe("toSequelize", () => {
           schemas.Todo.build({
             importance: 2,
           }).save(),
-        ).rejects.toThrow("Validation max on importance failed")
+        ).rejects.toThrow("Provided value is higher than the maximum of 1")
       })
 
       it("enforces type checks", async () => {
@@ -133,7 +133,7 @@ describe("toSequelize", () => {
           schemas.Todo.create({
             importance: -1,
           }),
-        ).rejects.toThrow("Validation min on importance failed")
+        ).rejects.toThrow("Provided value is lower than the minimum of 0")
       })
 
       it("enforces maximum value", async () => {
@@ -141,7 +141,7 @@ describe("toSequelize", () => {
           schemas.Todo.create({
             importance: 2,
           }),
-        ).rejects.toThrow("Validation max on importance failed")
+        ).rejects.toThrow("Provided value is higher than the maximum of 1")
       })
 
       it("enforces type checks", async () => {

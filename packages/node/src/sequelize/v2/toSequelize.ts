@@ -31,9 +31,7 @@ export function toSequelize(
               ...omit(sequelize, ["type", "typeArgs"]),
               type: DataTypes[sequelize.type](...sequelize.typeArgs),
               validate: {
-                schemaValidation(value) {
-                  setORMPropertyValue(value)
-                },
+                setORMPropertyValue,
               },
             },
           }),
