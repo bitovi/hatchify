@@ -60,7 +60,7 @@ export const useOne = (
   useEffect(() => {
     // todo: should use subscribeToOne here once store + can-query-logic is implemented
     // for now, subscribe to any change and refetch data
-    return subscribeToAll(schemaName, fetchOne)
+    return subscribeToAll(schemaName, undefined, fetchOne)
   }, [schemaName, fetchOne, memoizedQuery.id])
 
   const meta = getMeta(error, loading, false, undefined)

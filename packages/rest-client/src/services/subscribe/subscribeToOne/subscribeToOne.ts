@@ -7,8 +7,8 @@ import type { Record, Unsubscribe } from "../../types"
  */
 export const subscribeToOne = (
   resource: string,
-  onChange: (data: Record) => void,
   id: string,
+  onChange: (data: Record) => void,
 ): Unsubscribe => {
   const store = getStore(resource)
 

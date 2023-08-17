@@ -7,7 +7,7 @@ describe("rest-client/services/subscribe/subscribeToAll", () => {
     const store = createStore(["articles"])
     const spy = vi.fn()
 
-    subscribeToAll("articles", spy)
+    subscribeToAll("articles", undefined, spy)
     store.articles.subscribers.forEach((fn) => fn([]))
 
     expect(spy).toHaveBeenCalledTimes(1)

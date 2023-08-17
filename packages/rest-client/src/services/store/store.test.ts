@@ -211,8 +211,8 @@ describe("rest-client/store", () => {
       const subscriber1 = vi.fn()
       const subscriber2 = vi.fn()
 
-      subscribeToAll("Article", subscriber1)
-      subscribeToAll("Person", subscriber2)
+      subscribeToAll("Article", undefined, subscriber1)
+      subscribeToAll("Person", undefined, subscriber2)
 
       notifySubscribers()
 
@@ -225,8 +225,8 @@ describe("rest-client/store", () => {
       const subscriber1 = vi.fn()
       const subscriber2 = vi.fn()
 
-      subscribeToAll("Article", subscriber1)
-      subscribeToAll("Person", subscriber2)
+      subscribeToAll("Article", undefined, subscriber1)
+      subscribeToAll("Person", undefined, subscriber2)
 
       notifySubscribers("Person")
 
