@@ -83,7 +83,7 @@ function Todos() {
 
   return (
     <div>
-      <h1>Todos</h1>
+      <h2>Todos</h2>
       <input
         type="text"
         value={todoName}
@@ -201,7 +201,7 @@ function Users() {
 
   return (
     <div>
-      <h1>Users</h1>
+      <h2>Users</h2>
       <input
         type="text"
         value={userName}
