@@ -40,13 +40,17 @@ export type ReactRest<Schema extends SchemaRecord> = {
     findAll: (
       query: QueryList,
     ) => Promise<[Records: Record[], Meta: RequestMetaData]>
-    updateOne: (data: UpdateData) => Promise<Record>
+    updateOne: (data: UpdateData) => Promise<Record | null>
     // hooks
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     useDeleteOne: () => [(id: string) => void, Meta]
     useAll: (query?: QueryList) => [Record[], Meta]
     useOne: (query: QueryOne | string) => [Record | undefined, Meta]
-    useUpdateOne: (id: string) => [(data: CreateData) => void, Meta, Record?]
+    useUpdateOne: () => [
+      (data: UpdateData) => void,
+      Meta,
+      Record | undefined | null,
+    ]
     // subscribes
     subscribeToAll: (callback: (data: Record[]) => void) => Unsubscribe
     subscribeToOne: (

@@ -10,7 +10,11 @@ export type FilterArray = Array<{
   value: string | string[] | number | number[] | boolean | boolean[]
 }>
 
-export type Filters = FilterArray | string | undefined
+export type FilterObject = {
+  [key: string]: string | string[] | number | number[] | boolean | boolean[]
+}
+
+export type Filters = FilterArray | FilterObject | string | undefined
 
 export type QueryList = Selector & {
   page?: unknown

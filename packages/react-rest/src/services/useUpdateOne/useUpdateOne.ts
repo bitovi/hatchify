@@ -17,8 +17,8 @@ export const useUpdateOne = (
   dataSource: Source,
   allSchemas: Schemas,
   schemaName: string,
-): [(data: UpdateData) => void, Meta, Record?] => {
-  const [data, setData] = useState<Record | undefined>(undefined)
+): [(data: UpdateData) => void, Meta, Record | undefined | null] => {
+  const [data, setData] = useState<Record | undefined | null>(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 

@@ -40,7 +40,7 @@ export interface SourceV0 {
     allSchemas: Schemas,
     schemaName: string,
     data: UpdateData,
-  ) => Promise<Resource[]>
+  ) => Promise<Resource[] | null>
   deleteOne: (
     allSchemas: Schemas,
     schemaName: string,
