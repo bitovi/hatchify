@@ -1,4 +1,5 @@
 import type { HatchifyModel } from "@hatchifyjs/node"
+import * as dotenv from "dotenv"
 
 import { startServerWith } from "./testing/utils"
 
@@ -266,6 +267,9 @@ const postgresOnlyTestCases = [
     expectedResult: [john],
   },
 ]
+dotenv.config({
+  path: ".env",
+})
 
 const testCases =
   process.env.DB_CONFIG === "postgres"

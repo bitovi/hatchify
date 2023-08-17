@@ -2,7 +2,6 @@ import http from "node:http"
 
 import type { HatchifyModel } from "@hatchifyjs/node"
 import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
-import cors from "@koa/cors"
 import * as dotenv from "dotenv"
 import { Deserializer } from "jsonapi-serializer"
 import Koa from "koa"
@@ -46,7 +45,6 @@ export async function startServerWith(
           prefix: "/api",
         })
   app.use(errorHandlerMiddleware)
-  app.use(cors())
   app.use(hatchify.middleware.allModels.all)
 
   const server = http.createServer(app.callback())

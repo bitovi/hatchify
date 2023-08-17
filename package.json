@@ -32,7 +32,6 @@
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",
     "@playwright/test": "^1.35.1",
-    "@types/pg": "^8.10.2",
     "depcheck": "^1.4.3",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
@@ -46,8 +45,6 @@
     "packages/*"
   ],
   "dependencies": {
-    "dotenv": "^16.3.1",
-    "pg": "^8.11.2",
     "semver": "^7.5.0"
   }
 }
