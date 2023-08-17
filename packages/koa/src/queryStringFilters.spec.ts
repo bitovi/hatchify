@@ -21,7 +21,7 @@ const userData = [
 const john = userData[0]
 const jane = userData[1]
 
-const testCases = [
+const baseTestCases = [
   //string
   {
     description: "returns correct data using the $eq operator with a string",
@@ -97,34 +97,6 @@ const testCases = [
       "returns correct data using the $like operator for entirety of a string (non-case sensitive)",
     operator: "$like",
     queryParam: "filter[name][$like]=John",
-    expectedResult: [john],
-  },
-  {
-    description:
-      "returns correct data using the $ilike operator for end of a string",
-    operator: "$ilike",
-    queryParam: `filter[name][$ilike]=${encodeURIComponent("%Ne")}`,
-    expectedResult: [jane],
-  },
-  {
-    description:
-      "returns correct data using the $ilike operator for beginning of a string",
-    operator: "$ilike",
-    queryParam: `filter[name][$ilike]=${encodeURIComponent("jO%")}`,
-    expectedResult: [john],
-  },
-  {
-    description:
-      "returns correct data using the $ilike operator for middle of a string",
-    operator: "$ilike",
-    queryParam: `filter[name][$ilike]=${encodeURIComponent("%aN%")}`,
-    expectedResult: [jane],
-  },
-  {
-    description:
-      "returns correct data using the $ilike operator for entirety of a string (non-case sensitive)",
-    operator: "$ilike",
-    queryParam: "filter[name][$ilike]=jOhN",
     expectedResult: [john],
   },
   //number
@@ -263,6 +235,43 @@ const testCases = [
   },
 ]
 
+//iLike not supported by SQLite
+const postgresOnlyTestCases = [
+  {
+    description:
+      "returns correct data using the $ilike operator for end of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("%Ne")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for beginning of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("jO%")}`,
+    expectedResult: [john],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for middle of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("%aN%")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for entirety of a string (non-case sensitive)",
+    operator: "$ilike",
+    queryParam: "filter[name][$ilike]=jOhN",
+    expectedResult: [john],
+  },
+]
+
+const testCases =
+  process.env.DB_CONFIG === "postgres"
+    ? baseTestCases.concat(postgresOnlyTestCases)
+    : baseTestCases
+
 describe("Operators", () => {
   const User: HatchifyModel = {
     name: "User",
@@ -280,55 +289,41 @@ describe("Operators", () => {
 
   beforeAll(async () => {
     ;({ fetch, teardown } = await startServerWith([User]))
+    await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: userData[0],
+        },
+      },
+    })
 
-    await Promise.all(
-      userData.map(async (attributes) =>
-        fetch("api/users", {
-          method: "post",
-          body: {
-            data: {
-              type: "User",
-              attributes,
-            },
-          },
-        }),
-      ),
-    )
+    await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: userData[1],
+        },
+      },
+    })
   })
 
   afterAll(async () => {
-    // const { body } = await fetch(`/api/users/?`)
-    // const userIds = body.data.map(({ id }) => id)
-    // await Promise.all(
-    //   userIds.map(async (id: number) =>
-    //     fetch("api/users", {
-    //       method: "delete",
-    //       body: {
-    //         data: {
-    //           type: "User",
-    //           id,
-    //         },
-    //       },
-    //     }),
-    //   ),
-    // )
+    const { body } = await fetch(`/api/users/?`)
+    const userIds = body.data.map(({ id }) => id)
+    await fetch(`/api/users/${userIds[0]}`, {
+      method: "delete",
+    })
+    await fetch(`/api/users/${userIds[1]}`, {
+      method: "delete",
+    })
 
     await teardown()
   })
 
-  // it.each(testCases)("$description", async ({ expectedResult, queryParam }) => {
-  //   const { body } = await fetch(`/api/users/?${queryParam}`)
-  //   const users = body.data.map(({ attributes }) => attributes)
-  //   expect(users).toEqual(
-  //     expectedResult.map((er) => ({
-  //       ...er,
-  //       startDate: new Date(er.startDate).toISOString(),
-  //     })),
-  //   )
-  // })
-  it("test", async () => {
-    const queryParam = testCases[0].queryParam
-    const expectedResult = testCases[0].expectedResult
+  it.each(testCases)("$description", async ({ expectedResult, queryParam }) => {
     const { body } = await fetch(`/api/users/?${queryParam}`)
     const users = body.data.map(({ attributes }) => attributes)
     expect(users).toEqual(
