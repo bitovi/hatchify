@@ -52,10 +52,13 @@ export type ReactRest<Schema extends SchemaRecord> = {
       Record | undefined | null,
     ]
     // subscribes
-    subscribeToAll: (callback: (data: Record[]) => void) => Unsubscribe
+    subscribeToAll: (
+      query: QueryList | undefined,
+      callback: (data: Record[]) => void,
+    ) => Unsubscribe
     subscribeToOne: (
-      callback: (data: Record) => void,
       id: string,
+      callback: (data: Record) => void,
     ) => Unsubscribe
   }
 }
@@ -93,9 +96,10 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
       useOne: (query) => useOne(dataSource, newSchemas, schema.name, query),
       useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schema.name),
       // subscribes
-      subscribeToAll: (callback) => subscribeToAll(schema.name, callback),
-      subscribeToOne: (callback, id) =>
-        subscribeToOne(schema.name, callback, id),
+      subscribeToAll: (query, callback) =>
+        subscribeToAll(schema.name, query, callback),
+      subscribeToOne: (id, callback) =>
+        subscribeToOne(schema.name, id, callback),
     }
 
     return acc

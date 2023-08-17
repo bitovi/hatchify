@@ -149,7 +149,6 @@ Then, we'll extend the app to handle relationships:
 
 ![image](https://github.com/bitovi/hatchify/assets/78602/c7445b31-534f-4e03-868a-5ea28b0eabbf)
 
-
 <a id="listing-creating-and-deleting-todos"></a>
 
 ### Listing, creating, and deleting todos
@@ -822,15 +821,15 @@ Sometimes we need to fetch data outside of our React components. For these cases
 To fire a callback whenever data is manipulated, you can use the subscribe functions:
 
 ```ts
-const unsubscribe = hatchedReactRest.Todo.subscribeToAll((data) => {
+const unsubscribe = hatchedReactRest.Todo.subscribeToAll(query, (data) => {
   console.log("changes:", data)
 })
 ```
 
 ```ts
-const unsubscribe = hatchedReactRest.Todo.subscribeToOne((data) => {
+const unsubscribe = hatchedReactRest.Todo.subscribeToOne(id, (data) => {
   console.log("changes:", data)
-}, id)
+})
 ```
 
 > **Note:** we named the return of the subscription method `unsubscribe` above because it's a function that can be called to do just that; i.e. `unsubscribe()`

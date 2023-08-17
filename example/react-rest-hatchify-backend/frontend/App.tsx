@@ -12,6 +12,13 @@ export const hatchedReactRest = hatchifyReactRest(
   }),
 )
 
+hatchedReactRest.Todo.subscribeToAll(undefined, (data) => {
+  console.log("Todo.subscribeToAll(undefined)", data)
+})
+hatchedReactRest.User.subscribeToOne("1", (data) => {
+  console.log("User.subscribeToOne(1)", data)
+})
+
 const App: React.FC = () => {
   return (
     <div>

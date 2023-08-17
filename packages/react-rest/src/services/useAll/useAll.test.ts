@@ -133,7 +133,7 @@ describe("react-rest/services/useAll", () => {
 
     // unrelated schema subscribe(mutate) should trigger refetch
     // todo: remove once subscribe/can-query-logic is properly implemented
-    subscribeToAll("Person", () => [])
+    subscribeToAll("Person", query, () => [])
     store.Article.subscribers.forEach((subscriber: Subscription) =>
       subscriber([]),
     )

@@ -61,7 +61,7 @@ export const useAll = (
   }, [fetchAll])
 
   useEffect(() => {
-    return subscribeToAll(schemaName, fetchAll)
+    return subscribeToAll(schemaName, query, fetchAll)
   }, [schemaName, fetchAll])
 
   const meta = getMeta(error, loading, false, requestMeta)
