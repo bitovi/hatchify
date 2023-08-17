@@ -72,11 +72,30 @@ export function filterToQueryParam(filter: Filters): string {
   if (filter === undefined) {
     return ""
   }
+
   if (typeof filter === "string") {
     return filter
   }
 
   const q: string[] = []
+
+  if (typeof filter === "object" && !Array.isArray(filter)) {
+    for (const [key, value] of Object.entries(filter)) {
+      if (value == null) {
+        q.push(`filter[${key}]=${null}`)
+      } else if (Array.isArray(value)) {
+        q.push(
+          value
+            .map((v) => `filter[${key}][]=${encodeURIComponent(v.toString())}`)
+            .join("&"),
+        )
+      } else {
+        q.push(`filter[${key}]=${encodeURIComponent(value.toString())}`)
+      }
+    }
+
+    return q.join("&")
+  }
 
   //We need the UTC iso in the request, but we need the local iso in the frontend.
   const DATE_REGEX = new RegExp(
