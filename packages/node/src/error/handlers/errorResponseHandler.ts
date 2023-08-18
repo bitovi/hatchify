@@ -27,7 +27,7 @@ export function errorResponseHandler(
   if (error.name === "SequelizeValidationError") {
     const { errors }: SequelizeError = error
 
-    if (errors?.[0].validatorKey === "schemaValidation") {
+    if (errors?.[0].validatorKey === "setORMPropertyValue") {
       return {
         errors: errors.map((validationError) => {
           const { path, message, original, value } =
