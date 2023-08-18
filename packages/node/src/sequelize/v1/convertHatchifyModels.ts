@@ -17,7 +17,7 @@ import type {
   SequelizeModelsCollection,
   Virtuals,
 } from "../../types"
-import { pluralize } from "../../utils/string"
+import { pluralize } from "../../utils/pluralize"
 
 export function convertHatchifyModels(
   sequelize: Sequelize,

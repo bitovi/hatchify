@@ -54,7 +54,6 @@ describe("finalizeSchema", () => {
               primaryKey: false,
               type: "INTEGER",
               typeArgs: [],
-              validate: { min: 0 },
             },
           },
           serializeORMPropertyValue: expect.any(Function),

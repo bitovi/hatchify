@@ -18,19 +18,10 @@ export interface PartialNumberControlType extends PartialControlType {
   step?: number
 }
 
-export interface SequelizeNumberValidation {
-  validate?: {
-    min?: number
-    max?: number
-  }
-}
-
 export interface PartialNumberORM {
-  sequelize: PartialSequelizeDataType<number[]> &
-    Required<SequelizeNumberValidation>
+  sequelize: PartialSequelizeDataType<number[]>
 }
 
 export interface FinalNumberORM {
-  sequelize: Required<PartialSequelizeDataType<number[]>> &
-    SequelizeNumberValidation
+  sequelize: Required<PartialSequelizeDataType<number[]>>
 }

@@ -14,7 +14,6 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: undefined,
-            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -124,7 +123,6 @@ describe("number", () => {
             allowNull: false,
             autoIncrement: undefined,
             primaryKey: undefined,
-            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -241,7 +239,6 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: true,
             primaryKey: undefined,
-            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -350,7 +347,6 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: true,
-            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -467,7 +463,6 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: undefined,
-            validate: { min: undefined, max: undefined },
           },
         },
         control: {
@@ -583,7 +578,6 @@ describe("number", () => {
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: undefined,
-            validate: { min: 1, max: 10 },
           },
         },
         control: {
@@ -692,7 +686,6 @@ describe("number", () => {
             allowNull: true,
             autoIncrement: false,
             primaryKey: false,
-            validate: { min: 1, max: 10 },
           },
         },
         control: {

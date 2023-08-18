@@ -1,6 +1,6 @@
-import { pluralize } from "./string"
+import { pluralize } from "./pluralize"
 
-describe("Pluralize", () => {
+describe("pluralize", () => {
   it("should pluralize a word with an s", () => {
     expect(pluralize("word")).toBe("words")
     expect(pluralize("words")).toBe("wordss")

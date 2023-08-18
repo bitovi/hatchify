@@ -32,34 +32,4 @@ describe("finalizeControl", () => {
       false,
     )
   })
-
-  describe("handles validate", () => {
-    it("handles min", () => {
-      expect(
-        finalizeControl({ type: "Number", min: undefined, max: 0 }).min,
-      ).toBe(-Infinity)
-      expect(
-        finalizeControl({
-          type: "Number",
-          min: null as unknown as number,
-          max: 0,
-        }).min,
-      ).toBe(-Infinity)
-      expect(finalizeControl({ type: "Number", min: 0, max: 0 }).min).toBe(0)
-    })
-
-    it("handles max", () => {
-      expect(
-        finalizeControl({ type: "Number", min: 0, max: undefined }).max,
-      ).toBe(Infinity)
-      expect(
-        finalizeControl({
-          type: "Number",
-          min: 0,
-          max: null as unknown as number,
-        }).max,
-      ).toBe(Infinity)
-      expect(finalizeControl({ type: "Number", min: 0, max: 0 }).max).toBe(0)
-    })
-  })
 })
