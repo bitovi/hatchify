@@ -73,6 +73,7 @@ export function convertHatchifyModels(
     // GET THE PRIMARY KEY
     primaryKeys[model.name] = temp.primaryKeyAttribute
 
+    console.log(HatchifySymbolModel)
     temp[HatchifySymbolModel] = model
   })
 

@@ -31,7 +31,21 @@ export function toSequelize(
               ...omit(sequelize, ["type", "typeArgs"]),
               type: DataTypes[sequelize.type](...sequelize.typeArgs),
               validate: {
-                setORMPropertyValue,
+                schemaValidation(value) {
+                  setORMPropertyValue(value)
+                },
+                // schemaValidation(value) {
+                //   try {
+                //     return setORMPropertyValue(value)
+                //   } catch (ex) {
+                //     throw [
+                //       new UnexpectedValueError({
+                //         detail: `Payload must have '${attributeName}' ${ex.message}.`,
+                //         pointer: `/data/attributes/${attributeName}`,
+                //       }),
+                //     ]
+                //   }
+                // },
               },
             },
           }),

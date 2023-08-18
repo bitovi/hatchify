@@ -1,5 +1,9 @@
 import { Hatchify as HatchifyNode, buildExportWrapper } from "@hatchifyjs/node"
-import type { HatchifyModel, HatchifyOptions } from "@hatchifyjs/node"
+import type {
+  HatchifyModel,
+  HatchifyOptions,
+  PartialSchema,
+} from "@hatchifyjs/node"
 
 import { buildMiddlewareForModel, errorMiddleware } from "./middleware/koa"
 import type { MiddlewareFunctionsKoa } from "./middleware/koa"
@@ -17,7 +21,10 @@ import type { MiddlewareFunctionsKoa } from "./middleware/koa"
  *
  */
 export class Hatchify extends HatchifyNode {
-  constructor(models: HatchifyModel[], options: HatchifyOptions = {}) {
+  constructor(
+    models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
+    options: HatchifyOptions = {},
+  ) {
     super(models, options)
   }
 

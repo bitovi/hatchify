@@ -31,3 +31,5 @@ export { parseHatchifyBody } from "./parse/body"
 export type { SerializeFunctions } from "./serialize"
 
 export { Op } from "sequelize"
+
+export type { PartialSchema } from "@hatchifyjs/hatchify-core"

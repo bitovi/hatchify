@@ -1,11 +1,14 @@
 import { assembler, integer } from "@hatchifyjs/hatchify-core"
 import { Sequelize } from "sequelize"
+import type { ModelStatic } from "sequelize"
 
 import { toSequelize } from "./toSequelize"
 
 describe("toSequelize", () => {
   const sequelize = new Sequelize("sqlite::memory:")
-  let schemas: ReturnType<typeof toSequelize>
+  let schemas: {
+    [schemaName: string]: ModelStatic<any>
+  }
 
   beforeAll(async () => {
     schemas = toSequelize(
@@ -91,7 +94,7 @@ describe("toSequelize", () => {
           schemas.Todo.build({
             importance: -1,
           }).save(),
-        ).rejects.toThrow("Provided value is lower than the minimum of 0")
+        ).rejects.toThrow("greater than or equal to 0")
       })
 
       it("enforces maximum value", async () => {
@@ -99,7 +102,7 @@ describe("toSequelize", () => {
           schemas.Todo.build({
             importance: 2,
           }).save(),
-        ).rejects.toThrow("Provided value is higher than the maximum of 1")
+        ).rejects.toThrow("less than or equal to 1")
       })
 
       it("enforces type checks", async () => {
@@ -107,7 +110,7 @@ describe("toSequelize", () => {
           schemas.Todo.build({
             importance: "not a number",
           }).save(),
-        ).rejects.toThrow("Provided value is not a number")
+        ).rejects.toThrow("as a number")
       })
 
       it("enforces step check", async () => {
@@ -115,7 +118,7 @@ describe("toSequelize", () => {
           schemas.Todo.build({
             importance: 0.1,
           }).save(),
-        ).rejects.toThrow("Provided value violates the step of 1")
+        ).rejects.toThrow("as multiples of 1")
       })
     })
 
@@ -133,7 +136,7 @@ describe("toSequelize", () => {
           schemas.Todo.create({
             importance: -1,
           }),
-        ).rejects.toThrow("Provided value is lower than the minimum of 0")
+        ).rejects.toThrow("greater than or equal to 0")
       })
 
       it("enforces maximum value", async () => {
@@ -141,7 +144,7 @@ describe("toSequelize", () => {
           schemas.Todo.create({
             importance: 2,
           }),
-        ).rejects.toThrow("Provided value is higher than the maximum of 1")
+        ).rejects.toThrow("less than or equal to 1")
       })
 
       it("enforces type checks", async () => {
@@ -149,7 +152,7 @@ describe("toSequelize", () => {
           schemas.Todo.create({
             importance: "not a number",
           }),
-        ).rejects.toThrow("Provided value is not a number")
+        ).rejects.toThrow("as a number")
       })
 
       it("enforces step check", async () => {
@@ -157,7 +160,7 @@ describe("toSequelize", () => {
           schemas.Todo.create({
             importance: 0.1,
           }),
-        ).rejects.toThrow("Provided value violates the step of 1")
+        ).rejects.toThrow("as multiples of 1")
       })
     })
   })

@@ -1,5 +1,6 @@
 import type { PartialNumberControlType } from "./types"
 import { validateStep } from "./validateStep"
+import { HatchifyCoerceError } from "../../types"
 import type { ValueInRequest } from "../../types"
 
 export function coerce(
@@ -7,38 +8,34 @@ export function coerce(
   control: PartialNumberControlType,
 ): number | null {
   if (value === undefined) {
-    throw new Error("Non-undefined value is required")
+    throw new HatchifyCoerceError("as a non-undefined value")
   }
 
   if (value === null) {
     if (control.allowNull) {
       return value
     }
-    throw new Error("Non-null value is required")
+    throw new HatchifyCoerceError("as a non-null value")
   }
 
   if (typeof value !== "number") {
-    throw new Error("Provided value is not a number")
+    throw new HatchifyCoerceError("as a number")
   }
 
   if ([-Infinity, Infinity].includes(value)) {
-    throw new Error("Infinity as a value is not supported")
+    throw new HatchifyCoerceError("different than Infinity")
   }
 
   if (control.min != null && value < control.min) {
-    throw new Error(
-      `Provided value is lower than the minimum of ${control.min}`,
-    )
+    throw new HatchifyCoerceError(`greater than or equal to ${control.min}`)
   }
 
   if (control.max != null && value > control.max) {
-    throw new Error(
-      `Provided value is higher than the maximum of ${control.max}`,
-    )
+    throw new HatchifyCoerceError(`less than or equal to ${control.max}`)
   }
 
   if (!validateStep(value, control.step, control.min)) {
-    throw new Error(`Provided value violates the step of ${control.step}`)
+    throw new HatchifyCoerceError(`as multiples of ${control.step}`)
   }
 
   return value

@@ -1,8 +1,8 @@
 import JSONAPISerializer from "json-api-serializer"
 
 import { convertHatchifyModels } from "./convertHatchifyModels"
-import { createSequelizeInstance } from "./createSequelizeInstance"
 import type { HatchifyModel } from "../../types"
+import { createSequelizeInstance } from "../createSequelizeInstance"
 
 describe("convertHatchifyModels", () => {
   const sequelize = createSequelizeInstance()

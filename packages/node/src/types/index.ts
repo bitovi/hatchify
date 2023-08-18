@@ -7,7 +7,7 @@ import type {
   HasOneOptions,
   Model,
   ModelAttributeColumnOptions,
-  ModelCtor,
+  ModelStatic,
   ModelValidateOptions,
   Options,
 } from "sequelize"
@@ -53,7 +53,8 @@ export const HatchifySymbolModel = Symbol("hatchify")
  * provided on the original class that do not exist on the
  * Sequelize model itself.
  */
-export type SequelizeModelInstance = ModelCtor<Model<any, any>> & {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SequelizeModelInstance = ModelStatic<any> & {
   [HatchifySymbolModel]: HatchifyModel
 }
 
