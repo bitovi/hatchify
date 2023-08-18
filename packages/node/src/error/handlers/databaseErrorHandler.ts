@@ -61,13 +61,23 @@ export function databaseErrorHandler(error: SequelizeError): Error {
         break
 
       case "SequelizeDatabaseError":
-      default:
-        error = new HatchifyError({
-          code: codes.ERR_DATABASE_ERROR,
-          title: message,
-          status: statusCodes.INTERNAL_SERVER_ERROR,
-        })
-        break
+        switch (message) {
+          case `SQLITE_ERROR: near "ILIKE": syntax error`:
+            error = new HatchifyError({
+              code: codes.ERR_DATABASE_ERROR,
+              title: "SQLITE does not support ilike. Please use like",
+              status: statusCodes.INTERNAL_SERVER_ERROR,
+            })
+            break
+
+          default:
+            error = new HatchifyError({
+              code: codes.ERR_DATABASE_ERROR,
+              title: message,
+              status: statusCodes.INTERNAL_SERVER_ERROR,
+            })
+            break
+        }
     }
   }
 
