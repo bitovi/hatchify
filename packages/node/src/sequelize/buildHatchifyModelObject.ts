@@ -1,8 +1,8 @@
-import { HatchifySymbolModel } from "../../types"
+import { HatchifySymbolModel } from "../types"
 import type {
   HatchifyModelCollection,
   SequelizeModelsCollection,
-} from "../../types"
+} from "../types"
 
 export function buildHatchifyModelObject(
   models: SequelizeModelsCollection,

@@ -1,3 +1,4 @@
+import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
 import JSONAPISerializer from "json-api-serializer"
 import { match } from "path-to-regexp"
@@ -12,9 +13,10 @@ import type { ParseFunctions } from "./parse"
 import { buildSchemaForModel } from "./schema"
 import {
   buildHatchifyModelObject,
-  convertHatchifyModels,
+  convertHatchifyModels as convertHatchifyV1Models,
   createSequelizeInstance,
 } from "./sequelize"
+import { convertHatchifyModels as convertHatchifyV2Models } from "./sequelize/v2/convertHatchifyModels"
 import { buildSerializerForModel } from "./serialize"
 import type { SerializeFunctions } from "./serialize"
 import type {
@@ -71,10 +73,9 @@ import { pluralize } from "./utils/pluralize"
 export class Hatchify {
   private _sequelizeModels: SequelizeModelsCollection
   private _sequelize: Sequelize
-  private _serializer: JSONAPISerializer
-  private _allowedMethods: ["GET", "POST", "PATCH", "DELETE"]
-  private _sequelizeModelNames: string[]
-  private _pluralToSingularModelNames: Map<string, string>
+  private _serializer = new JSONAPISerializer()
+  private _allowedMethods = ["GET", "POST", "PATCH", "DELETE"]
+  private _pluralToSingularModelNames: { [plural: string]: string }
   private _prefix: string
 
   virtuals: Virtuals
@@ -90,7 +91,10 @@ export class Hatchify {
    *
    * @return {Hatchify}
    */
-  constructor(models: HatchifyModel[], options: HatchifyOptions = {}) {
+  constructor(
+    models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
+    options: HatchifyOptions = {},
+  ) {
     // Prepare the ORM instance and keep references to the different Models
     this._sequelize = createSequelizeInstance(options.database)
 
@@ -101,28 +105,26 @@ export class Hatchify {
       associationsLookup,
       models: sequelizeModels,
       virtuals,
-    } = convertHatchifyModels(this._sequelize, this._serializer, models)
+    } = Array.isArray(models)
+      ? convertHatchifyV1Models(this._sequelize, this._serializer, models)
+      : convertHatchifyV2Models(this._sequelize, this._serializer, models)
 
     this.virtuals = virtuals
     this.associationsLookup = associationsLookup
     this._sequelizeModels = sequelizeModels
 
-    // Types of requests that Hatchify should attempt to process
-    this._allowedMethods = ["GET", "POST", "PATCH", "DELETE"]
-
-    // Do some quick work up front to get the list of model names
-    this._sequelizeModelNames = Object.keys(this._sequelizeModels)
-    this._pluralToSingularModelNames = new Map<string, string>()
-
-    this._sequelizeModelNames.forEach((singular) => {
-      this._pluralToSingularModelNames.set(
-        pluralize(singular.toLowerCase()),
-        singular,
-      )
-    })
+    this._pluralToSingularModelNames = Object.entries(
+      this._sequelizeModels,
+    ).reduce(
+      (acc, [singular, value]) => ({
+        ...acc,
+        [pluralize(singular.toLowerCase())]: singular,
+      }),
+      {},
+    )
 
     // Store the route prefix if the user set one
-    this._prefix = options.prefix || ""
+    this._prefix = options.prefix ?? ""
 
     if (options.sync) {
       this.createDatabase()
@@ -266,18 +268,11 @@ export class Hatchify {
    * @return {boolean}
    * @internal
    */
-  isValidHatchifyRoute(method, path: string): boolean {
-    if (!this._allowedMethods.includes(method)) {
-      return false
-    }
-
-    const model = this.getHatchifyModelNameForRoute(path)
-
-    if (model) {
-      return true
-    } else {
-      return false
-    }
+  isValidHatchifyRoute(method: string, path: string): boolean {
+    return (
+      !!this._allowedMethods.includes(method) &&
+      !!this.getHatchifyModelNameForRoute(path)
+    )
   }
 
   /**
@@ -347,14 +342,13 @@ export class Hatchify {
    * @param path the endpoint or include name for a Hatchify model
    * @returns the endpoint's singular capitalized Model name if found, otherwise false
    */
-  getHatchifyModelNameForEndpointName(endpointName: string): false | string {
+  getHatchifyModelNameForEndpointName(endpointName: string): string | null {
     // Validate if endpoint name is lowercase
     if (endpointName === endpointName.toLowerCase()) {
-      //Endpoints follow kebab-case convention; this convert it to flat case to compare
+      // Endpoints follow kebab-case convention; this convert it to flat case to compare
       const flatCaseEndpointName = endpointName.replace("-", "")
 
-      const singular =
-        this._pluralToSingularModelNames.get(flatCaseEndpointName)
+      const singular = this._pluralToSingularModelNames[flatCaseEndpointName]
 
       // Validate if endpoint name is plural
       if (singular && endpointName !== singular) {
@@ -362,7 +356,7 @@ export class Hatchify {
       }
     }
 
-    return false
+    return null
   }
 
   /**
@@ -382,7 +376,7 @@ export class Hatchify {
 
     if (result.model) {
       const pathModelName = result.model
-      const matchedModelName = this._sequelizeModelNames.find(
+      const matchedModelName = Object.keys(this._sequelizeModels).find(
         (name) => name.toLowerCase() === pathModelName.toLowerCase(),
       )
       if (matchedModelName) {

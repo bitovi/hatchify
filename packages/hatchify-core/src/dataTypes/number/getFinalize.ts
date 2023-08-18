@@ -6,6 +6,7 @@ import type {
   PartialNumberControlType,
   PartialNumberORM,
 } from "./types"
+import { HatchifyCoerceError } from "../../types"
 import type {
   FinalAttribute,
   PartialAttribute,
@@ -51,11 +52,11 @@ export function getFinalize(
         if (control.allowNull !== false) {
           return null
         }
-        throw new Error("Non-null value is required")
+        throw new HatchifyCoerceError("as a non-null value")
       }
 
       if (isNaN(+queryValue)) {
-        throw new Error("Provided value is not a number")
+        throw new HatchifyCoerceError("as a number")
       }
 
       return coerce(+queryValue, control)
