@@ -65,8 +65,12 @@ export function databaseErrorHandler(error: SequelizeError): Error {
           case `SQLITE_ERROR: near "ILIKE": syntax error`:
             error = new HatchifyError({
               code: codes.ERR_DATABASE_ERROR,
-              title: "SQLITE does not support ilike. Please use like",
+              title: "SQLITE does not support ilike.",
               status: statusCodes.INTERNAL_SERVER_ERROR,
+              detail: "SQLITE does not support ilike. Please use like",
+              source: {
+                pointer,
+              },
             })
             break
 

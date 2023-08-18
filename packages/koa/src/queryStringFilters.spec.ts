@@ -342,9 +342,7 @@ describe("Operators", () => {
     it("should throw an error when trying to use iLike for sqlite", async () => {
       const response = await fetch("/api/users/?filter[name][$ilike]=jOhN")
       const error = JSON.parse(response.error.text)
-      expect(error.errors[0].title).toEqual(
-        "SQLITE does not support ilike. Please use like",
-      )
+      expect(error.errors[0].title).toEqual("SQLITE does not support ilike.")
     })
   }
 })
