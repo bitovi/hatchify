@@ -464,7 +464,7 @@ describe("Users and Todos", () => {
       ])
 
       const { body: users } = await fetch(
-        "/api/users?filter[name]=No+Pagination"
+        "/api/users?filter[name]=No+Pagination",
       )
 
       expect(users).toEqual({
