@@ -236,7 +236,7 @@ const baseTestCases = [
   },
 ]
 
-iLike not supported by SQLite
+// iLike not supported by SQLite
 const postgresOnlyTestCases = [
   {
     description:
