@@ -37,7 +37,6 @@ export function validateFindOptions<T extends HatchifyModel = HatchifyModel>(
         .map((res) => paramObj[res])
       const parameters = iLikeParams.map((p) => `[$iLike]=${p}`)
       const parameter = parameters.join(",")
-      console.log(parameter)
       if (iLikeParams.length) {
         throw new HatchifyError({
           code: codes.ERR_INVALID_PARAMETER,
