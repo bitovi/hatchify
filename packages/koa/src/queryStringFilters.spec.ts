@@ -236,7 +236,7 @@ const baseTestCases = [
   },
 ]
 
-//iLike not supported by SQLite
+iLike not supported by SQLite
 const postgresOnlyTestCases = [
   {
     description:
@@ -342,8 +342,13 @@ describe("Operators", () => {
     it("should throw an error when trying to use iLike for sqlite", async () => {
       const response = await fetch("/api/users/?filter[name][$ilike]=jOhN")
       const error = JSON.parse(response.error.text)
-      console.error(error)
-      expect(error.errors[0].title).toEqual("SQLITE does not support ilike")
+      expect(error.errors[0]).toEqual({
+        status: 422,
+        code: "invalid-parameter",
+        detail: "SQLITE does not support ilike. Please use like",
+        source: { parameter: "[$iLike]=jOhN" },
+        title: "SQLITE does not support ilike",
+      })
     })
   }
 })
