@@ -126,7 +126,7 @@ describe("schema", () => {
         })
       })
 
-      it("validates yearsWorked", async () => {
+      it("validates age and yearsWorked", async () => {
         const { status: postStatus, body: postUser } = await fetch(
           "/api/users",
           {
@@ -453,7 +453,7 @@ describe("schema", () => {
         })
       })
 
-      it("validates yearsWorked", async () => {
+      it("validates age and yearsWorked", async () => {
         const { status: postStatus, body: postUser } = await fetch(
           "/api/users",
           {
