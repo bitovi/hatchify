@@ -1,5 +1,4 @@
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
-import { pluralize } from "inflection"
 import JSONAPISerializer from "json-api-serializer"
 import { match } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
@@ -27,6 +26,7 @@ import type {
   SequelizeModelsCollection,
   Virtuals,
 } from "./types"
+import { pluralize } from "./utils/string"
 
 /**
  * Parse can be imported from the `@bitovi/hatchify` package
@@ -350,7 +350,11 @@ export class Hatchify {
   getHatchifyModelNameForEndpointName(endpointName: string): false | string {
     // Validate if endpoint name is lowercase
     if (endpointName === endpointName.toLowerCase()) {
-      const singular = this._pluralToSingularModelNames.get(endpointName)
+      //Endpoints follow kebab-case convention; this convert it to flat case to compare
+      const flatCaseEndpointName = endpointName.replace("-", "")
+
+      const singular =
+        this._pluralToSingularModelNames.get(flatCaseEndpointName)
 
       // Validate if endpoint name is plural
       if (singular && endpointName !== singular) {

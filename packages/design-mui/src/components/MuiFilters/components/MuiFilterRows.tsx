@@ -1,57 +1,33 @@
-import type { Attribute, FilterArray } from "@hatchifyjs/rest-client"
-import { Fragment, useState } from "react"
-import {
-  Autocomplete,
-  Chip,
-  Grid,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material"
+import type {
+  Attribute,
+  EnumObject,
+  FilterArray,
+} from "@hatchifyjs/rest-client"
+import { Fragment } from "react"
+import { Grid, IconButton } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
+import ColumnSelect from "./inputs/ColumnSelect"
+import OperatorSelect from "./inputs/OperatorSelect"
+import ValueInput from "./inputs/ValueInput"
 
+type ChangeParams =
+  | {
+      field: "value"
+      value: string | string[]
+      index: number
+    }
+  | {
+      field: "field" | "operator"
+      value: string
+      index: number
+    }
 interface Option {
   operator: string
   text: string
 }
 
 type OperatorOption = {
-  [key in "string" | "date"]: Option[]
-}
-
-const ChipInput: React.FC<{
-  value: string[]
-  onChange: (value: string[]) => void
-}> = ({ value, onChange }) => {
-  return (
-    <Autocomplete
-      multiple
-      freeSolo
-      value={value}
-      options={[]}
-      ChipProps={{ size: "small", variant: "outlined" }}
-      fullWidth
-      disableClearable
-      onChange={(e, value) => {
-        onChange(value)
-      }}
-      renderInput={(params) => (
-        <>
-          <InputLabel id={`hello`}>Value</InputLabel>
-          <TextField
-            {...params}
-            variant="standard"
-            placeholder="Filter Value"
-            InputProps={{
-              ...params.InputProps,
-            }}
-          />
-        </>
-      )}
-    />
-  )
+  [key in "enum" | "date" | "string"]: Option[]
 }
 
 const operatorOptions: OperatorOption = {
@@ -71,6 +47,14 @@ const operatorOptions: OperatorOption = {
     { operator: "empty", text: "is empty" },
     { operator: "nempty", text: "is not empty" },
   ],
+  enum: [
+    { operator: "$eq", text: "is" },
+    { operator: "$ne", text: "is not" },
+    { operator: "empty", text: "is empty" },
+    { operator: "nempty", text: "is not empty" },
+    { operator: "$in", text: "is any of" },
+    { operator: "$nin", text: "is not any of" },
+  ],
 }
 
 export const MuiFilterRows: React.FC<{
@@ -80,30 +64,43 @@ export const MuiFilterRows: React.FC<{
   setFilters: (filters: FilterArray) => void
   removeFilter: (index: number) => void
 }> = ({ attributes, fields, filters, setFilters, removeFilter }) => {
-  const fieldType = (field: string) => {
-    const attribute = attributes[field]
-    return typeof attribute === "string" ? attribute : attribute.type
-  }
-
-  function onChange(
-    field: "field" | "operator" | "value",
-    value: string | string[],
-    index: number,
-  ) {
+  const onChange = ({ field, value, index }: ChangeParams) => {
     const newFilters = [...filters]
 
+    // modifying column select
     if (field === "field") {
+      // change the operator if existing operator does not exist on new column
       newFilters[index].operator = getAvailableOperator(
         value,
         newFilters[index].operator,
         attributes,
       )
 
-      if (fieldType(value) !== fieldType(newFilters[index].field))
+      // reset the filter value if switching from one field type to another
+      if (
+        getFieldType(attributes, value) !==
+        getFieldType(attributes, newFilters[index].field)
+      ) {
         newFilters[index].value = ""
+      }
     }
 
-    newFilters[index][field] = value
+    // modifying operator select
+    if (field === "operator") {
+      // reset the filter value if switching from an array operator to another operator and vice versa
+      if (value !== "$nin" && value !== "$in") {
+        newFilters[index].value = Array.isArray(filters[index].value)
+          ? ""
+          : filters[index].value
+      }
+      if (value === "$nin" || value === "$in") {
+        newFilters[index].value = Array.isArray(filters[index].value)
+          ? filters[index].value
+          : []
+      }
+    }
+
+    newFilters[index][field] = value as string & string[]
     setFilters(newFilters)
   }
 
@@ -117,63 +114,44 @@ export const MuiFilterRows: React.FC<{
             </IconButton>
           </Grid>
           <Grid item xs={3}>
-            <InputLabel id={`${index}-column-label`}>Column</InputLabel>
-            <Select
-              fullWidth
-              variant="standard"
+            <ColumnSelect
               labelId={`${index}-column-label`}
               value={filter.field}
-              onChange={(e) => onChange("field", e.target.value, index)}
-            >
-              {fields.map((field) => (
-                <MenuItem key={field} value={field}>
-                  {field}
-                </MenuItem>
-              ))}
-            </Select>
+              fields={fields}
+              onChange={(value) =>
+                onChange({
+                  field: "field",
+                  value,
+                  index: index,
+                })
+              }
+            />
           </Grid>
           <Grid item xs={4}>
-            <InputLabel id={`${index}-operator-label`}>Operator</InputLabel>
-            <Select
-              fullWidth
-              variant="standard"
+            <OperatorSelect
               labelId={`${index}-operator-label`}
               value={filter.operator}
-              onChange={(e) => onChange("operator", e.target.value, index)}
-            >
-              {getPossibleOptions(filter.field, attributes).map((option) => (
-                <MenuItem key={option.operator} value={option.operator}>
-                  {option.text}
-                </MenuItem>
-              ))}
-            </Select>
+              options={getPossibleOptions(filter.field, attributes)}
+              onChange={(value) =>
+                onChange({
+                  field: "operator",
+                  value,
+                  index: index,
+                })
+              }
+            />
           </Grid>
           <Grid item xs={4}>
-            {filter.operator === "$in" && (
-              <ChipInput
-                value={filter.value as string[]}
-                onChange={(value) => onChange("value", value, index)}
-              />
-            )}
-            {filter.operator !== "$in" &&
-              filter.operator !== "empty" &&
-              filter.operator !== "nempty" && (
-                <>
-                  <InputLabel id={`${index}-value-label`}>Value</InputLabel>
-                  <TextField
-                    fullWidth
-                    placeholder="Filter Value"
-                    variant="standard"
-                    type={
-                      fieldType(filter.field) === "date"
-                        ? "datetime-local"
-                        : "text"
-                    }
-                    value={filter.value}
-                    onChange={(e) => onChange("value", e.target.value, index)}
-                  />
-                </>
-              )}
+            <ValueInput
+              labelId={`${index}-value-label`}
+              fieldType={getFieldType(attributes, filter.field)}
+              value={filter.value}
+              operator={filter.operator}
+              onChange={(value: any) =>
+                onChange({ field: "value", value, index })
+              }
+              options={(attributes[filter.field] as EnumObject)?.values}
+            />
           </Grid>
         </Fragment>
       ))}
@@ -222,4 +200,12 @@ export function getPossibleOptions(
   })
 
   return options
+}
+
+export const getFieldType = (
+  attributes: Record<string, Attribute>,
+  field: string,
+): string => {
+  const attribute = attributes[field]
+  return typeof attribute === "string" ? attribute : attribute.type
 }

@@ -56,23 +56,30 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
   describe("fieldsToQueryParam", () => {
     it("works", () => {
-      expect(
+      expect(() =>
         fieldsToQueryParam(schemaMap, schemas, "Book", {
           Book: ["title", "body"],
           author: ["name", "email"],
           illustrators: ["name", "email"],
         }),
-      ).toEqual("fields[book_type]=title,body&fields[person_type]=name,email")
+      ).toThrowError('"author" is not a valid schema')
 
-      expect(
+      expect(() =>
         fieldsToQueryParam(schemaMap, schemas, "Person", {
           Person: ["firstName", "age"],
           authored: ["title", "year"],
           illustrated: ["title", "year"],
         }),
-      ).toEqual(
-        "fields[person_type]=firstName,age&fields[book_type]=title,year",
-      )
+      ).toThrowError('"authored" is not a valid schema')
+
+      expect(fieldsToQueryParam(schemaMap, schemas, "Book", {})).toEqual("")
+
+      expect(
+        fieldsToQueryParam(schemaMap, schemas, "Book", {
+          Book: ["title", "body"],
+          Person: ["name", "email"],
+        }),
+      ).toEqual("fields[book_type]=title,body&fields[person_type]=name,email")
     })
   })
 
@@ -82,8 +89,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         getQueryParams(schemaMap, schemas, "Book", {
           fields: {
             Book: ["title", "body"],
-            author: ["name", "email"],
-            illustrators: ["name", "email"],
+            Person: ["name", "email"],
           },
           include: ["author", "illustrators"],
         }),
@@ -95,14 +101,23 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         getQueryParams(schemaMap, schemas, "Person", {
           fields: {
             Person: ["firstName", "age"],
-            illustrated: ["title", "year"],
-            authored: ["title", "year"],
+            Book: ["title", "year"],
           },
           include: ["illustrated", "authored"],
         }),
       ).toEqual(
         "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
       )
+
+      expect(() =>
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: {
+            Person: ["firstName", "age"],
+            authored: ["title", "year"],
+          },
+          include: ["illustrated", "authored"],
+        }),
+      ).toThrowError('"authored" is not a valid schema')
     })
 
     it("works for when fields has values and include is empty", () => {
@@ -163,24 +178,41 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       expect(
         getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
       ).toEqual("")
-      expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+
+      expect(() =>
+        getQueryParams(schemaMap, schemas, "Book", {
           fields: {
             Person: ["firstName", "age"],
-            illustrated: ["title", "year"],
             authored: ["title", "year"],
           },
           include: ["illustrated", "authored"],
           sort: ["-created", "title", "user.name"],
           filter: [
-            { field: "name", value: ["John", "Joan"], operator: "$eq" },
+            { field: "name", value: ["John", "Joan"], operator: "$in" },
+            { field: "age", value: 21, operator: "$eq" },
+            { field: "employed", value: false, operator: "$eq" },
+          ],
+          page: { number: 3, size: 30 },
+        }),
+      ).toThrowError('"authored" is not a valid schema')
+
+      expect(
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: {
+            Person: ["firstName", "age"],
+            Book: ["title", "year"],
+          },
+          include: ["illustrated", "authored"],
+          sort: ["-created", "title", "user.name"],
+          filter: [
+            { field: "name", value: ["John", "Joan"], operator: "$in" },
             { field: "age", value: 21, operator: "$eq" },
             { field: "employed", value: false, operator: "$eq" },
           ],
           page: { number: 3, size: 30 },
         }),
       ).toEqual(
-        "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year&sort=-created,title,user.name&filter[name][]=John&filter[name][]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
+        "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year&sort=-created,title,user.name&filter[name][$in]=John&filter[name][$in]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
       )
     })
   })
@@ -221,9 +253,9 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
       expect(
         filterToQueryParam([
-          { field: "name", value: ["ABC", "DEF"], operator: "$eq" },
+          { field: "name", value: ["ABC", "DEF"], operator: "$in" },
         ]),
-      ).toEqual("filter[name][]=ABC&filter[name][]=DEF")
+      ).toEqual("filter[name][$in]=ABC&filter[name][$in]=DEF")
 
       expect(
         filterToQueryParam([
@@ -233,13 +265,21 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
       expect(
         filterToQueryParam([
-          { field: "name", value: ["ABC", "DEF"], operator: "$eq" },
+          { field: "name", value: ["ABC", "DEF"], operator: "$in" },
           { field: "count", value: 3, operator: "$eq" },
           { field: "completed", value: true, operator: "$eq" },
         ]),
       ).toEqual(
-        "filter[name][]=ABC&filter[name][]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
+        "filter[name][$in]=ABC&filter[name][$in]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
       )
+
+      expect(
+        filterToQueryParam([{ field: "name", value: "", operator: "empty" }]),
+      ).toEqual("filter[name][$eq]=null")
+
+      expect(
+        filterToQueryParam([{ field: "name", value: "", operator: "nempty" }]),
+      ).toEqual("filter[name][$ne]=null")
 
       it("converts the date to an ISO string", () => {
         expect(
@@ -258,14 +298,24 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           {
             field: "name",
             value: ["A'bc!*\"", "$()"],
-            operator: "$eq",
+            operator: "$in",
           },
           { field: "count", value: 3, operator: "$eq" },
           { field: "completed", value: true, operator: "$eq" },
           { field: "employer", value: "(test$!)", operator: "$eq" },
         ]),
       ).toEqual(
-        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",
+        "filter[name][$in]=A'bc!*%22&filter[name][$in]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",
+      )
+
+      expect(
+        filterToQueryParam({
+          name: ["A'bc!*\"", "$()"],
+          completed: true,
+          employer: "Some Employer",
+        }),
+      ).toEqual(
+        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[completed]=true&filter[employer]=Some%20Employer",
       )
     })
   })

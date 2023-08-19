@@ -22,6 +22,7 @@ const MuiPagination: React.FC<XCollectionProps> = ({ meta, page, setPage }) => {
       disabled={meta?.isLoading}
       css={styles.pagination}
       count={count}
+      page={page.number}
       shape="rounded"
       variant="outlined"
       onChange={(ev: React.ChangeEvent<unknown>, value: number) =>

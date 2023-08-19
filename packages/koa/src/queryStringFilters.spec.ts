@@ -1,4 +1,5 @@
 import type { HatchifyModel } from "@hatchifyjs/node"
+import * as dotenv from "dotenv"
 
 import { startServerWith } from "./testing/utils"
 
@@ -21,7 +22,7 @@ const userData = [
 const john = userData[0]
 const jane = userData[1]
 
-const testCases = [
+const baseTestCases = [
   //string
   {
     description: "returns correct data using the $eq operator with a string",
@@ -71,38 +72,34 @@ const testCases = [
     queryParam: "filter[name][$nin]=John&filter[name][$nin]=Jane",
     expectedResult: [],
   },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for end of a string",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=%ne",
-  //   expectedResult: [jane],
-  // },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for beginning of a string",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=Jo%",
-  //   expectedResult: [john],
-  // },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for middle of a string",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=%an%",
-  //   expectedResult: [jane],
-  // },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for entirety of a string (non-case sensitive)",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=john",
-  //   expectedResult: [john],
-  // },
+  {
+    description:
+      "returns correct data using the $like operator for end of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%ne")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $like operator for beginning of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
+    expectedResult: [john],
+  },
+  {
+    description:
+      "returns correct data using the $like operator for middle of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%an%")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $like operator for entirety of a string (non-case sensitive)",
+    operator: "$like",
+    queryParam: "filter[name][$like]=John",
+    expectedResult: [john],
+  },
   //number
   {
     description: "returns correct data using the $eq operator with a number",
@@ -239,12 +236,52 @@ const testCases = [
   },
 ]
 
+//iLike not supported by SQLite
+const postgresOnlyTestCases = [
+  {
+    description:
+      "returns correct data using the $ilike operator for end of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("%Ne")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for beginning of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("jO%")}`,
+    expectedResult: [john],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for middle of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("%aN%")}`,
+    expectedResult: [jane],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for entirety of a string (non-case sensitive)",
+    operator: "$ilike",
+    queryParam: "filter[name][$ilike]=jOhN",
+    expectedResult: [john],
+  },
+]
+dotenv.config({
+  path: ".env",
+})
+
+const testCases =
+  process.env.DB_CONFIG === "postgres"
+    ? baseTestCases.concat(postgresOnlyTestCases)
+    : baseTestCases
+
 describe("Operators", () => {
   const User: HatchifyModel = {
     name: "User",
     attributes: {
       name: "STRING",
-      age: "NUMBER",
+      age: "INTEGER",
       startDate: "DATE",
       onSite: "BOOLEAN",
       manager: "BOOLEAN",
@@ -256,7 +293,6 @@ describe("Operators", () => {
 
   beforeAll(async () => {
     ;({ fetch, teardown } = await startServerWith([User]))
-
     await fetch("/api/users", {
       method: "post",
       body: {
@@ -279,6 +315,15 @@ describe("Operators", () => {
   })
 
   afterAll(async () => {
+    const { body } = await fetch(`/api/users/?`)
+    const userIds = body.data.map(({ id }) => id)
+    await fetch(`/api/users/${userIds[0]}`, {
+      method: "delete",
+    })
+    await fetch(`/api/users/${userIds[1]}`, {
+      method: "delete",
+    })
+
     await teardown()
   })
 

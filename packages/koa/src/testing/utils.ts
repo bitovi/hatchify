@@ -2,6 +2,7 @@ import http from "node:http"
 
 import type { HatchifyModel } from "@hatchifyjs/node"
 import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
+import * as dotenv from "dotenv"
 import { Deserializer } from "jsonapi-serializer"
 import Koa from "koa"
 import type { Context } from "koa"
@@ -23,8 +24,26 @@ export async function startServerWith(
   teardown: () => Promise<void>
   hatchify?
 }> {
+  dotenv.config({
+    path: ".env",
+  })
   const app = new Koa()
-  const hatchify = new Hatchify(models, { prefix: "/api" })
+  const hatchify =
+    process.env.DB_CONFIG === "postgres"
+      ? new Hatchify(models, {
+          prefix: "/api",
+          database: {
+            dialect: "postgres",
+            host: process.env.DB_HOST,
+            port: Number(process.env.DB_PORT),
+            username: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME,
+          },
+        })
+      : new Hatchify(models, {
+          prefix: "/api",
+        })
   app.use(errorHandlerMiddleware)
   app.use(hatchify.middleware.allModels.all)
 

@@ -40,8 +40,16 @@ export const useOne = (
     setLoading(true)
 
     findOne(dataSource, allSchemas, schemaName, memoizedQuery)
-      .then(setData)
-      .catch(setError)
+      .then((data) => {
+        setError(undefined)
+        setData(data)
+      })
+      .catch((error) => {
+        setError(error)
+        if (error instanceof Error) {
+          throw error
+        }
+      })
       .finally(() => setLoading(false))
   }, [dataSource, allSchemas, schemaName, memoizedQuery])
 
@@ -52,9 +60,9 @@ export const useOne = (
   useEffect(() => {
     // todo: should use subscribeToOne here once store + can-query-logic is implemented
     // for now, subscribe to any change and refetch data
-    return subscribeToAll(schemaName, fetchOne)
+    return subscribeToAll(schemaName, undefined, fetchOne)
   }, [schemaName, fetchOne, memoizedQuery.id])
 
-  const meta: Meta = getMeta(error, loading, false, undefined)
+  const meta = getMeta(error, loading, false, undefined)
   return [data, meta]
 }

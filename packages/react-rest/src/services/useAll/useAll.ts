@@ -43,10 +43,16 @@ export const useAll = (
     setLoading(true)
     findAll(dataSource, allSchemas, schemaName, memoizedQuery)
       .then(([data, requestMeta]) => {
+        setError(undefined)
         setData(data)
         setRequestMeta(requestMeta)
       })
-      .catch(setError)
+      .catch((error) => {
+        setError(error)
+        if (error instanceof Error) {
+          throw error
+        }
+      })
       .finally(() => setLoading(false))
   }, [dataSource, allSchemas, schemaName, memoizedQuery])
 
@@ -55,9 +61,9 @@ export const useAll = (
   }, [fetchAll])
 
   useEffect(() => {
-    return subscribeToAll(schemaName, fetchAll)
+    return subscribeToAll(schemaName, query, fetchAll)
   }, [schemaName, fetchAll])
 
-  const meta: Meta = getMeta(error, loading, false, requestMeta)
+  const meta = getMeta(error, loading, false, requestMeta)
   return [data, meta]
 }

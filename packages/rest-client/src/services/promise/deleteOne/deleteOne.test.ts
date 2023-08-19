@@ -34,12 +34,22 @@ describe("rest-client/services/promise/deleteOne", () => {
   it.todo("should notify subscribers")
 
   it("should throw an error if the request fails", async () => {
+    const errors = [
+      {
+        code: "missing-resource",
+        source: {},
+        status: 404,
+        title: "Resource not found",
+      },
+    ]
+
     const errorDataSource = {
       ...fakeDataSource,
-      deleteOne: () => Promise.reject(new Error("network error")),
+      deleteOne: () => Promise.reject(errors),
     }
+
     await expect(
       deleteOne(errorDataSource, schemas, "Article", data),
-    ).rejects.toThrowError("network error")
+    ).rejects.toEqual(errors)
   })
 })

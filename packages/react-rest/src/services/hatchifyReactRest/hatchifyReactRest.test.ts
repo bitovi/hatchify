@@ -26,7 +26,7 @@ describe("react-rest/services/hatchifyReactRest", () => {
       name: "Person",
       attributes: {
         name: "string",
-        age: "number",
+        age: "integer",
       },
     }
 
@@ -78,7 +78,7 @@ describe("react-rest/services/hatchifyReactRest", () => {
       displayAttribute: "name",
       attributes: {
         name: "string",
-        age: "number",
+        age: "integer",
       },
       relationships: {
         Article: {

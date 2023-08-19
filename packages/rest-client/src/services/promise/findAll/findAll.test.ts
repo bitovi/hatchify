@@ -46,13 +46,22 @@ describe("rest-client/services/promise/findAll", () => {
   })
 
   it("should throw an error if the request fails", async () => {
+    const errors = [
+      {
+        code: "invalid-query",
+        source: {},
+        status: 422,
+        title: "Invalid query",
+      },
+    ]
+
     const errorDataSource = {
       ...fakeDataSource,
-      findAll: () => Promise.reject(new Error("network error")),
+      findAll: () => Promise.reject(errors),
     }
 
     await expect(
       findAll(errorDataSource, schemas, "Article", {}),
-    ).rejects.toThrowError("network error")
+    ).rejects.toEqual(errors)
   })
 })
