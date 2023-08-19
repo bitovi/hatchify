@@ -3,6 +3,7 @@ import hatchifyReactRest from "@hatchifyjs/react-rest"
 import createJsonapiClient from "@hatchifyjs/rest-client-jsonapi"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
+import WithoutHooks from "./WithoutHooks"
 
 export const hatchedReactRest = hatchifyReactRest(
   { Todo, User },
@@ -12,18 +13,16 @@ export const hatchedReactRest = hatchifyReactRest(
   }),
 )
 
-hatchedReactRest.Todo.subscribeToAll(undefined, (data) => {
-  console.log("Todo.subscribeToAll(undefined)", data)
-})
-hatchedReactRest.User.subscribeToOne("1", (data) => {
-  console.log("User.subscribeToOne(1)", data)
-})
-
 const App: React.FC = () => {
   return (
     <div>
+      <h1>With Hooks</h1>
       <Todos />
       <Users />
+      <hr />
+      <hr />
+      <h1>Without Hooks</h1>
+      <WithoutHooks />
     </div>
   )
 }
@@ -48,7 +47,7 @@ function Todos() {
 
   return (
     <div>
-      <h1>Todos</h1>
+      <h2>Todos</h2>
       <input
         type="text"
         value={todoName}
@@ -130,7 +129,7 @@ function Users() {
 
   return (
     <div>
-      <h1>Users</h1>
+      <h2>Users</h2>
       <input
         type="text"
         value={userName}
