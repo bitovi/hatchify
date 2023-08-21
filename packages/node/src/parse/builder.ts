@@ -45,7 +45,7 @@ export function buildFindOptions(
       })
     }
 
-    queryStringToParse = querystring.replace("[$ilike]", "[$like]")
+    queryStringToParse = querystring.replaceAll("[$ilike]", "[$like]")
   }
 
   const ops: QueryStringParser<FindOptions> =
