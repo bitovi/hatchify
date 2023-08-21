@@ -35,28 +35,6 @@ export function buildFindOptions(
   // 1. throw error if like is used (temporary)
   // 2. ilike needs to be changed to like before parsing query
   if (process.env.DB_CONFIG !== "postgres") {
-    // for (const key in options.where) {
-    //   const paramObj = options.where[key]
-    //   const likeParams = Object.getOwnPropertySymbols(paramObj)
-    //     .filter((s) => {
-    //       if (s.toString() === "Symbol(like)") {
-    //         return true
-    //       }
-    //       return false
-    //     })
-    //     .map((res) => paramObj[res])
-    //   const parameters = likeParams.map((p) => `[$like]=${p}`)
-    //   const parameter = parameters.join(",")
-    //   if (likeParams.length) {
-    //     throw new HatchifyError({
-    //       code: codes.ERR_INVALID_PARAMETER,
-    //       title: "SQLITE does not support like",
-    //       status: statusCodes.UNPROCESSABLE_ENTITY,
-    //       detail: "SQLITE does not support like. Please use ilike",
-    //       parameter,
-    //     })
-    //   }
-    // }
     if (querystring.includes("[$like]")) {
       throw new HatchifyError({
         code: codes.ERR_INVALID_PARAMETER,
