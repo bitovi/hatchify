@@ -1,5 +1,6 @@
 import type QuerystringParsingError from "@bitovi/querystring-parser/lib/errors/querystring-parsing-error"
 import querystringParser from "@bitovi/sequelize-querystring-parser"
+import * as dotenv from "dotenv"
 import { noCase } from "no-case"
 import type {
   CreateOptions,
@@ -9,7 +10,8 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
-import { UnexpectedValueError } from "../error"
+import { HatchifyError, UnexpectedValueError } from "../error"
+import { codes, statusCodes } from "../error/constants"
 import type { HatchifyModel } from "../types"
 
 interface QueryStringParser<T> {
@@ -18,13 +20,58 @@ interface QueryStringParser<T> {
   orm: "sequelize"
 }
 
+dotenv.config({
+  path: ".env",
+})
+
 export function buildFindOptions(
   model: HatchifyModel,
   querystring: string,
   id?: Identifier,
 ): QueryStringParser<FindOptions> {
+  let queryStringToParse = querystring
+
+  // if not postgres (sqlite)
+  // 1. throw error if like is used (temporary)
+  // 2. ilike needs to be changed to like before parsing query
+  if (process.env.DB_CONFIG !== "postgres") {
+    // for (const key in options.where) {
+    //   const paramObj = options.where[key]
+    //   const likeParams = Object.getOwnPropertySymbols(paramObj)
+    //     .filter((s) => {
+    //       if (s.toString() === "Symbol(like)") {
+    //         return true
+    //       }
+    //       return false
+    //     })
+    //     .map((res) => paramObj[res])
+    //   const parameters = likeParams.map((p) => `[$like]=${p}`)
+    //   const parameter = parameters.join(",")
+    //   if (likeParams.length) {
+    //     throw new HatchifyError({
+    //       code: codes.ERR_INVALID_PARAMETER,
+    //       title: "SQLITE does not support like",
+    //       status: statusCodes.UNPROCESSABLE_ENTITY,
+    //       detail: "SQLITE does not support like. Please use ilike",
+    //       parameter,
+    //     })
+    //   }
+    // }
+    if (querystring.includes("[$like]")) {
+      throw new HatchifyError({
+        code: codes.ERR_INVALID_PARAMETER,
+        title: "SQLITE does not support like",
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+        detail: "SQLITE does not support like. Please use ilike",
+        parameter: querystring,
+      })
+    }
+
+    queryStringToParse = querystring.replace("[$ilike]", "[$like]")
+  }
+
   const ops: QueryStringParser<FindOptions> =
-    querystringParser.parse(querystring)
+    querystringParser.parse(queryStringToParse)
 
   if (ops.errors.length) {
     throw ops.errors.map(
