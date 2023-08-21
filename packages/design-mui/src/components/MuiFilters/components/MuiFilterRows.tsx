@@ -54,7 +54,9 @@ const operatorOptions: OperatorOption = {
     { operator: "$nin", text: "is not any of" },
   ],
   string: [
-    { operator: "ilike", text: "contains" },
+    { operator: "$like", text: "contains" },
+    { operator: "starts", text: "starts with" },
+    { operator: "ends", text: "ends with" },
     { operator: "$eq", text: "equals" },
     { operator: "empty", text: "is empty" },
     { operator: "nempty", text: "is not empty" },

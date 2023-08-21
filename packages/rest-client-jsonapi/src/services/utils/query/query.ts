@@ -103,9 +103,21 @@ export function filterToQueryParam(filter: Filters): string {
     /([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]))/i,
   )
 
+  const containsOperators = ["starts", "ends", "contains"]
+
   for (let i = 0; i < filter.length; i++) {
     const { operator, field, value } = filter[i]
-    if (operator === "empty" || operator === "nempty") {
+    if (containsOperators.includes(operator)) {
+      const wildcardOperator =
+        operator === "starts"
+          ? `${value}%`
+          : operator === "ends"
+          ? `%${value}`
+          : `%${value}%`
+      q.push(
+        `filter[${field}][$like]=${encodeURIComponent(`${wildcardOperator}`)}`,
+      )
+    } else if (operator === "empty" || operator === "nempty") {
       q.push(
         `filter[${field}][${operator === "empty" ? "$eq" : "$ne"}]=${null}`,
       )
