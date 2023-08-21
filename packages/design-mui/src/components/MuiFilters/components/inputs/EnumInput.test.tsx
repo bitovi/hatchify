@@ -1,16 +1,17 @@
 import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { MuiFilterEnumValue } from "./MuiFilterEnumValue"
+import EnumInput from "./EnumInput"
 
-describe("components/MuiFilters/components/MuiFilterEnumValue", () => {
+describe("components/MuiFilters/inputs/EnumInput", () => {
   it("works", async () => {
     const handleChange = vi.fn()
 
     render(
-      <MuiFilterEnumValue
+      <EnumInput
+        labelId=""
         options={["Pending", "Failed"]}
-        handleChange={(value) => handleChange(value)}
+        onChange={(value) => handleChange(value)}
         value=""
         operator={"$eq"}
       />,
@@ -27,11 +28,12 @@ describe("components/MuiFilters/components/MuiFilterEnumValue", () => {
     expect(handleChange).toHaveBeenCalled()
   })
 
-  it("displays the autocomplete when $in is the value", async () => {
+  it("renders MuiAutocompelte when operator is $in", async () => {
     render(
-      <MuiFilterEnumValue
+      <EnumInput
+        labelId=""
         options={["Pending", "Failed"]}
-        handleChange={vi.fn()}
+        onChange={vi.fn()}
         value=""
         operator={"$in"}
       />,

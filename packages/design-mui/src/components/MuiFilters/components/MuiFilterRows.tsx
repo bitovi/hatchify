@@ -4,16 +4,11 @@ import type {
   FilterArray,
 } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
-import {
-  Grid,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material"
+import { Grid, IconButton } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
-import MuiFilterEnumValue from "./MuiFilterEnumValue"
+import ColumnSelect from "./inputs/ColumnSelect"
+import OperatorSelect from "./inputs/OperatorSelect"
+import ValueInput from "./inputs/ValueInput"
 
 type ChangeParams =
   | {
@@ -36,6 +31,13 @@ type OperatorOption = {
 }
 
 const operatorOptions: OperatorOption = {
+  string: [
+    { operator: "ilike", text: "contains" },
+    { operator: "$eq", text: "equals" },
+    { operator: "empty", text: "is empty" },
+    { operator: "nempty", text: "is not empty" },
+    { operator: "$in", text: "is any of" },
+  ],
   date: [
     { operator: "$eq", text: "is" },
     { operator: "$gt", text: "is after" },
@@ -53,12 +55,6 @@ const operatorOptions: OperatorOption = {
     { operator: "$in", text: "is any of" },
     { operator: "$nin", text: "is not any of" },
   ],
-  string: [
-    { operator: "ilike", text: "contains" },
-    { operator: "$eq", text: "equals" },
-    { operator: "empty", text: "is empty" },
-    { operator: "nempty", text: "is not empty" },
-  ],
 }
 
 export const MuiFilterRows: React.FC<{
@@ -68,32 +64,35 @@ export const MuiFilterRows: React.FC<{
   setFilters: (filters: FilterArray) => void
   removeFilter: (index: number) => void
 }> = ({ attributes, fields, filters, setFilters, removeFilter }) => {
-  const fieldType = (field: string) => {
-    const attribute = attributes[field]
-    return typeof attribute === "string" ? attribute : attribute.type
-  }
-
   const onChange = ({ field, value, index }: ChangeParams) => {
     const newFilters = [...filters]
+
+    // modifying column select
     if (field === "field") {
+      // change the operator if existing operator does not exist on new column
       newFilters[index].operator = getAvailableOperator(
         value,
         newFilters[index].operator,
         attributes,
       )
 
-      if (fieldType(value) !== fieldType(newFilters[index].field)) {
+      // reset the filter value if switching from one field type to another
+      if (
+        getFieldType(attributes, value) !==
+        getFieldType(attributes, newFilters[index].field)
+      ) {
         newFilters[index].value = ""
       }
     }
+
+    // modifying operator select
     if (field === "operator") {
-      //reset the filter value if switching from an array operator to another operator and vice versa
+      // reset the filter value if switching from an array operator to another operator and vice versa
       if (value !== "$nin" && value !== "$in") {
         newFilters[index].value = Array.isArray(filters[index].value)
           ? ""
           : filters[index].value
       }
-
       if (value === "$nin" || value === "$in") {
         newFilters[index].value = Array.isArray(filters[index].value)
           ? filters[index].value
@@ -102,7 +101,6 @@ export const MuiFilterRows: React.FC<{
     }
 
     newFilters[index][field] = value as string & string[]
-
     setFilters(newFilters)
   }
 
@@ -116,85 +114,44 @@ export const MuiFilterRows: React.FC<{
             </IconButton>
           </Grid>
           <Grid item xs={3}>
-            <InputLabel id={`${index}-column-label`}>Column</InputLabel>
-            <Select
-              fullWidth
-              variant="standard"
+            <ColumnSelect
               labelId={`${index}-column-label`}
               value={filter.field}
-              onChange={(e) =>
+              fields={fields}
+              onChange={(value) =>
                 onChange({
                   field: "field",
-                  value: e.target.value,
+                  value,
                   index: index,
                 })
               }
-            >
-              {fields.map((field) => (
-                <MenuItem key={field} value={field}>
-                  {field}
-                </MenuItem>
-              ))}
-            </Select>
+            />
           </Grid>
           <Grid item xs={4}>
-            <InputLabel id={`${index}-operator-label`}>Operator</InputLabel>
-            <Select
-              fullWidth
-              variant="standard"
+            <OperatorSelect
               labelId={`${index}-operator-label`}
               value={filter.operator}
-              onChange={(e) =>
+              options={getPossibleOptions(filter.field, attributes)}
+              onChange={(value) =>
                 onChange({
                   field: "operator",
-                  value: e.target.value,
+                  value,
                   index: index,
                 })
               }
-            >
-              {getPossibleOptions(filter.field, attributes).map((option) => (
-                <MenuItem key={option.operator} value={option.operator}>
-                  {option.text}
-                </MenuItem>
-              ))}
-            </Select>
+            />
           </Grid>
           <Grid item xs={4}>
-            {filter.operator !== "empty" && filter.operator !== "nempty" && (
-              <>
-                {/* todo: We should look into moving this all into its own component */}
-                <InputLabel id={`${index}-value-label`}>Value</InputLabel>
-                {fieldType(filter.field) === "enum" ? (
-                  <MuiFilterEnumValue
-                    options={(attributes[filter.field] as EnumObject).values}
-                    handleChange={(value) =>
-                      onChange({ field: "value", value: value, index })
-                    }
-                    value={filter.value as string}
-                    operator={filter.operator}
-                  />
-                ) : (
-                  <TextField
-                    fullWidth
-                    placeholder="Filter Value"
-                    variant="standard"
-                    type={
-                      fieldType(filter.field) === "date"
-                        ? "datetime-local"
-                        : "text"
-                    }
-                    value={filter.value}
-                    onChange={(e) =>
-                      onChange({
-                        field: "value",
-                        value: e.target.value,
-                        index: index,
-                      })
-                    }
-                  />
-                )}
-              </>
-            )}
+            <ValueInput
+              labelId={`${index}-value-label`}
+              fieldType={getFieldType(attributes, filter.field)}
+              value={filter.value}
+              operator={filter.operator}
+              onChange={(value: any) =>
+                onChange({ field: "value", value, index })
+              }
+              options={(attributes[filter.field] as EnumObject)?.values}
+            />
           </Grid>
         </Fragment>
       ))}
@@ -243,4 +200,12 @@ export function getPossibleOptions(
   })
 
   return options
+}
+
+export const getFieldType = (
+  attributes: Record<string, Attribute>,
+  field: string,
+): string => {
+  const attribute = attributes[field]
+  return typeof attribute === "string" ? attribute : attribute.type
 }

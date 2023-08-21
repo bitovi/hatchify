@@ -1,13 +1,23 @@
 import { Autocomplete, Chip, TextField } from "@mui/material"
 
 export const MuiAutocomplete: React.FC<{
+  freeSolo?: boolean
+  disableClearable?: boolean
   options: string[]
   handleChange: (value: string[]) => void
   selectedOptions: string[]
-}> = ({ options, handleChange, selectedOptions }) => {
+}> = ({
+  options,
+  handleChange,
+  selectedOptions,
+  freeSolo = false,
+  disableClearable = false,
+}) => {
   return (
     <Autocomplete
       multiple
+      freeSolo={freeSolo}
+      disableClearable={disableClearable}
       id="value-autocomplete"
       options={options}
       value={selectedOptions}
