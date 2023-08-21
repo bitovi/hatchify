@@ -248,7 +248,7 @@ const SQLiteOnlyTestCases = [
     operator: "$like",
     queryParam: `filter[name][$like]=${encodeURIComponent("%ne")}`,
     expectedErrorSource: {
-      parameter: `filter[name][$like]=${encodeURIComponent("%ne")}`
+      parameter: `filter[name][$like]=${encodeURIComponent("%ne")}`,
     },
   },
   {
@@ -257,7 +257,7 @@ const SQLiteOnlyTestCases = [
     operator: "$like",
     queryParam: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
     expectedErrorSource: {
-      parameter: `filter[name][$like]=${encodeURIComponent("Jo%")}`
+      parameter: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
     },
   },
   {
@@ -266,7 +266,7 @@ const SQLiteOnlyTestCases = [
     operator: "$like",
     queryParam: `filter[name][$like]=${encodeURIComponent("%an%")}`,
     expectedErrorSource: {
-      parameter: `filter[name][$like]=${encodeURIComponent("%an%")}`
+      parameter: `filter[name][$like]=${encodeURIComponent("%an%")}`,
     },
   },
   {
