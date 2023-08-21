@@ -1,6 +1,5 @@
-import { integer } from "@hatchifyjs/hatchify-core"
+import { integer, string } from "@hatchifyjs/hatchify-core"
 import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
-import { DataTypes } from "sequelize"
 
 import { startServerWith } from "./testing/utils"
 
@@ -9,8 +8,9 @@ describe("schema", () => {
     const User: HatchifyModel = {
       name: "User",
       attributes: {
-        age: { type: DataTypes.INTEGER, validate: { min: 0 } },
-        yearsWorked: { type: DataTypes.INTEGER, validate: { min: 0 } },
+        name: { type: "STRING", validate: { len: [1, 10] } },
+        age: { type: "INTEGER", validate: { min: 0 } },
+        yearsWorked: { type: "INTEGER", validate: { min: 0 } },
       },
     }
 
@@ -26,12 +26,12 @@ describe("schema", () => {
       await teardown()
     })
 
-    it("should create a snake_case table with id, age and years_worked columns", async () => {
+    it("should create a snake_case table with id, name, age and years_worked columns", async () => {
       const [columns] = await hatchify._sequelize.query(
         'SELECT * FROM pragma_table_info("user")',
       )
 
-      expect(columns).toHaveLength(3)
+      expect(columns).toHaveLength(4)
       expect(columns[0]).toMatchObject({
         name: "id",
         notnull: 0,
@@ -39,12 +39,18 @@ describe("schema", () => {
         type: "INTEGER",
       })
       expect(columns[1]).toMatchObject({
+        name: "name",
+        notnull: 0,
+        pk: 0,
+        type: "VARCHAR(255)",
+      })
+      expect(columns[2]).toMatchObject({
         name: "age",
         notnull: 0,
         pk: 0,
         type: "INTEGER",
       })
-      expect(columns[2]).toMatchObject({
+      expect(columns[3]).toMatchObject({
         name: "years_worked",
         notnull: 0,
         pk: 0,
@@ -69,6 +75,7 @@ describe("schema", () => {
               data: {
                 type: "User",
                 attributes: {
+                  name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
                 },
@@ -81,6 +88,7 @@ describe("schema", () => {
               data: {
                 type: "User",
                 attributes: {
+                  name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
                 },
@@ -107,6 +115,7 @@ describe("schema", () => {
             id: "1",
             type: "User",
             attributes: {
+              name: "John Doe",
               age: 21,
               yearsWorked: 1,
             },
@@ -121,12 +130,16 @@ describe("schema", () => {
           data: {
             id: "2",
             type: "User",
-            attributes: { age: 22, yearsWorked: 3 },
+            attributes: {
+              name: "Jane Doe",
+              age: 22,
+              yearsWorked: 3,
+            },
           },
         })
       })
 
-      it("validates age and yearsWorked", async () => {
+      it("validates name, age and yearsWorked", async () => {
         const { status: postStatus, body: postUser } = await fetch(
           "/api/users",
           {
@@ -135,6 +148,7 @@ describe("schema", () => {
               data: {
                 type: "User",
                 attributes: {
+                  name: "",
                   age: -1,
                   yearsWorked: -1,
                 },
@@ -151,12 +165,24 @@ describe("schema", () => {
               name: "SequelizeValidationError",
               errors: [
                 {
+                  message: "Validation len on name failed",
+                  type: "Validation error",
+                  path: "name",
+                  value: "",
+                  origin: "FUNCTION",
+                  instance: { id: null, name: "", age: -1, yearsWorked: -1 },
+                  validatorKey: "len",
+                  validatorName: "len",
+                  validatorArgs: [1, 10],
+                  original: { validatorName: "len", validatorArgs: [1, 10] },
+                },
+                {
                   message: "Validation min on age failed",
                   type: "Validation error",
                   path: "age",
                   value: -1,
                   origin: "FUNCTION",
-                  instance: { id: null, age: -1, yearsWorked: -1 },
+                  instance: { id: null, name: "", age: -1, yearsWorked: -1 },
                   validatorKey: "min",
                   validatorName: "min",
                   validatorArgs: [0],
@@ -168,7 +194,7 @@ describe("schema", () => {
                   path: "yearsWorked",
                   value: -1,
                   origin: "FUNCTION",
-                  instance: { id: null, age: -1, yearsWorked: -1 },
+                  instance: { id: null, name: "", age: -1, yearsWorked: -1 },
                   validatorKey: "min",
                   validatorName: "min",
                   validatorArgs: [0],
@@ -193,6 +219,7 @@ describe("schema", () => {
               id: "1",
               type: "User",
               attributes: {
+                name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
               },
@@ -201,6 +228,7 @@ describe("schema", () => {
               id: "2",
               type: "User",
               attributes: {
+                name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
               },
@@ -227,6 +255,7 @@ describe("schema", () => {
               id: "2",
               type: "User",
               attributes: {
+                name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
               },
@@ -285,6 +314,7 @@ describe("schema", () => {
               id: "2",
               type: "User",
               attributes: {
+                name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
               },
@@ -293,6 +323,7 @@ describe("schema", () => {
               id: "1",
               type: "User",
               attributes: {
+                name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
               },
@@ -319,6 +350,7 @@ describe("schema", () => {
               id: "1",
               type: "User",
               attributes: {
+                name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
               },
@@ -336,6 +368,7 @@ describe("schema", () => {
     const User: PartialSchema = {
       name: "User",
       attributes: {
+        name: string({ min: 1, max: 10 }),
         age: integer({ min: 0 }),
         yearsWorked: integer({ min: 0 }),
       },
@@ -358,7 +391,7 @@ describe("schema", () => {
         'SELECT * FROM pragma_table_info("user")',
       )
 
-      expect(columns).toHaveLength(3)
+      expect(columns).toHaveLength(4)
       expect(columns[0]).toMatchObject({
         name: "id",
         notnull: 0,
@@ -366,12 +399,18 @@ describe("schema", () => {
         type: "INTEGER",
       })
       expect(columns[1]).toMatchObject({
+        name: "name",
+        notnull: 0,
+        pk: 0,
+        type: "VARCHAR(255)",
+      })
+      expect(columns[2]).toMatchObject({
         name: "age",
         notnull: 0,
         pk: 0,
         type: "INTEGER",
       })
-      expect(columns[2]).toMatchObject({
+      expect(columns[3]).toMatchObject({
         name: "years_worked",
         notnull: 0,
         pk: 0,
@@ -396,6 +435,7 @@ describe("schema", () => {
               data: {
                 type: "User",
                 attributes: {
+                  name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
                 },
@@ -408,6 +448,7 @@ describe("schema", () => {
               data: {
                 type: "User",
                 attributes: {
+                  name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
                 },
@@ -434,6 +475,7 @@ describe("schema", () => {
             id: "1",
             type: "User",
             attributes: {
+              name: "John Doe",
               age: 21,
               yearsWorked: 1,
             },
@@ -448,12 +490,16 @@ describe("schema", () => {
           data: {
             id: "2",
             type: "User",
-            attributes: { age: 22, yearsWorked: 3 },
+            attributes: {
+              name: "Jane Doe",
+              age: 22,
+              yearsWorked: 3,
+            },
           },
         })
       })
 
-      it("validates age and yearsWorked", async () => {
+      it("validates name, age and yearsWorked", async () => {
         const { status: postStatus, body: postUser } = await fetch(
           "/api/users",
           {
@@ -462,6 +508,7 @@ describe("schema", () => {
               data: {
                 type: "User",
                 attributes: {
+                  name: "",
                   age: -1,
                   yearsWorked: -1,
                 },
@@ -474,6 +521,14 @@ describe("schema", () => {
         expect(postUser).toEqual({
           jsonapi: { version: "1.0" },
           errors: [
+            {
+              status: 422,
+              code: "unexpected-value",
+              detail:
+                "Payload must have 'name' with length greater than or equal to 1 but received '' instead.",
+              source: { pointer: "/data/attributes/name" },
+              title: "Unexpected value.",
+            },
             {
               status: 422,
               code: "unexpected-value",
@@ -511,6 +566,7 @@ describe("schema", () => {
               id: "1",
               type: "User",
               attributes: {
+                name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
               },
@@ -519,6 +575,7 @@ describe("schema", () => {
               id: "2",
               type: "User",
               attributes: {
+                name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
               },
@@ -545,6 +602,7 @@ describe("schema", () => {
               id: "2",
               type: "User",
               attributes: {
+                name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
               },
@@ -603,6 +661,7 @@ describe("schema", () => {
               id: "2",
               type: "User",
               attributes: {
+                name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
               },
@@ -611,6 +670,7 @@ describe("schema", () => {
               id: "1",
               type: "User",
               attributes: {
+                name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
               },
@@ -637,6 +697,7 @@ describe("schema", () => {
               id: "1",
               type: "User",
               attributes: {
+                name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
               },
