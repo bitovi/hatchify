@@ -53,6 +53,7 @@ export async function startServerWith(
     const method = options?.method || "get"
     const headers = options?.headers || {}
     const body = options?.body
+
     const response = request(server)[method](path)
 
     Object.entries(headers).forEach(([key, value]) => response.set(key, value))
