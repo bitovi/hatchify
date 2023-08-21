@@ -38,7 +38,8 @@
     "json-api-serializer": "^2.6.6",
     "lodash": "^4.17.21",
     "no-case": "^3.0.4",
-    "path-to-regexp": "^6.2.1"
+    "path-to-regexp": "^6.2.1",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",
