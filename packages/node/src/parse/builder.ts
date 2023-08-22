@@ -24,13 +24,7 @@ dotenv.config({
   path: ".env",
 })
 
-export function buildFindOptions(
-  model: HatchifyModel,
-  querystring: string,
-  id?: Identifier,
-): QueryStringParser<FindOptions> {
-  let queryStringToParse = querystring
-
+function handleSqliteLike(querystring: string): string {
   // if not postgres (sqlite)
   // 1. throw error if like is used (temporary)
   // 2. ilike needs to be changed to like before parsing query
@@ -45,11 +39,20 @@ export function buildFindOptions(
       })
     }
 
-    queryStringToParse = querystring.replaceAll("[$ilike]", "[$like]")
+    return querystring.replaceAll("[$ilike]", "[$like]")
   }
 
-  const ops: QueryStringParser<FindOptions> =
-    querystringParser.parse(queryStringToParse)
+  return querystring
+}
+
+export function buildFindOptions(
+  model: HatchifyModel,
+  querystring: string,
+  id?: Identifier,
+): QueryStringParser<FindOptions> {
+  const ops: QueryStringParser<FindOptions> = querystringParser.parse(
+    handleSqliteLike(querystring),
+  )
 
   if (ops.errors.length) {
     throw ops.errors.map(
