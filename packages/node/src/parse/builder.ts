@@ -20,18 +20,11 @@ interface QueryStringParser<T> {
   orm: "sequelize"
 }
 
-export function buildFindOptions(
-  hatchify: Hatchify,
-  model: HatchifyModel,
-  querystring: string,
-  id?: Identifier,
-): QueryStringParser<FindOptions> {
-  let queryStringToParse = querystring
-
+function handleSqliteLike(querystring: string, dbType: string): string {
   // if not postgres (sqlite)
   // 1. throw error if like is used (temporary)
   // 2. ilike needs to be changed to like before parsing query
-  if (hatchify.orm.getDialect() === "sqlite") {
+  if (dbType === "sqlite") {
     if (querystring.includes("[$like]")) {
       throw new HatchifyError({
         code: codes.ERR_INVALID_PARAMETER,
@@ -42,11 +35,21 @@ export function buildFindOptions(
       })
     }
 
-    queryStringToParse = querystring.replaceAll("[$ilike]", "[$like]")
+    return querystring.replaceAll("[$ilike]", "[$like]")
   }
 
-  const ops: QueryStringParser<FindOptions> =
-    querystringParser.parse(queryStringToParse)
+  return querystring
+}
+
+export function buildFindOptions(
+  hatchify: Hatchify,
+  model: HatchifyModel,
+  querystring: string,
+  id?: Identifier,
+): QueryStringParser<FindOptions> {
+  const ops: QueryStringParser<FindOptions> = querystringParser.parse(
+    handleSqliteLike(querystring, hatchify.orm.getDialect()),
+  )
 
   if (ops.errors.length) {
     throw ops.errors.map(
