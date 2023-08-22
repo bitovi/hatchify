@@ -3,6 +3,11 @@ import type {
   PartialNumberControlType,
   PartialNumberORM,
 } from "../dataTypes/number"
+import type {
+  FinalStringORM,
+  PartialStringControlType,
+  PartialStringORM,
+} from "../dataTypes/string"
 import type { FinalAttribute, PartialAttribute } from "../types"
 
 export interface PartialSchema {
@@ -14,12 +19,19 @@ export interface PartialSchema {
     FinalNumberORM
   >
   attributes: {
-    [attributeName: string]: PartialAttribute<
-      PartialNumberORM,
-      PartialNumberControlType,
-      number,
-      FinalNumberORM
-    >
+    [attributeName: string]:
+      | PartialAttribute<
+          PartialNumberORM,
+          PartialNumberControlType,
+          number,
+          FinalNumberORM
+        >
+      | PartialAttribute<
+          PartialStringORM,
+          PartialStringControlType,
+          string,
+          FinalStringORM
+        >
   }
 }
 export interface FinalSchema {
@@ -31,12 +43,19 @@ export interface FinalSchema {
     FinalNumberORM
   >
   attributes: {
-    [attributeName: string]: FinalAttribute<
-      PartialNumberORM,
-      PartialNumberControlType,
-      number,
-      FinalNumberORM
-    >
+    [attributeName: string]:
+      | FinalAttribute<
+          PartialNumberORM,
+          PartialNumberControlType,
+          number,
+          FinalNumberORM
+        >
+      | FinalAttribute<
+          PartialStringORM,
+          PartialStringControlType,
+          string,
+          FinalStringORM
+        >
   }
 }
 

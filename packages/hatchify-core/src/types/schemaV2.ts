@@ -14,7 +14,7 @@ export interface PartialDataTypeProps {
 }
 
 export interface PartialControlType {
-  type: "Boolean" | "Number" | "String"
+  type: string
   allowNull?: boolean
   primary?: boolean
 }
