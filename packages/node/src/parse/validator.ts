@@ -1,4 +1,3 @@
-import * as dotenv from "dotenv"
 import type { FindOptions } from "sequelize"
 
 import {
@@ -6,14 +5,9 @@ import {
   UnexpectedValueError,
   ValueRequiredError,
 } from "../error"
-import { codes, statusCodes } from "../error/constants"
-import { HatchifyError } from "../error/types"
+import type { HatchifyError } from "../error/types"
 import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
-
-dotenv.config({
-  path: ".env",
-})
 
 function isObject(value: any): boolean {
   return value && typeof value === "object" && !Array.isArray(value)
@@ -24,30 +18,6 @@ export function validateFindOptions<T extends HatchifyModel = HatchifyModel>(
   model: T,
   hatchify: Hatchify,
 ): void {
-  if (options.where && process.env.DB_CONFIG !== "postgres") {
-    for (const key in options.where) {
-      const paramObj = options.where[key]
-      const iLikeParams = Object.getOwnPropertySymbols(paramObj)
-        .filter((s) => {
-          if (s.toString() === "Symbol(iLike)") {
-            return true
-          }
-          return false
-        })
-        .map((res) => paramObj[res])
-      const parameters = iLikeParams.map((p) => `[$iLike]=${p}`)
-      const parameter = parameters.join(",")
-      if (iLikeParams.length) {
-        throw new HatchifyError({
-          code: codes.ERR_INVALID_PARAMETER,
-          title: "SQLITE does not support ilike",
-          status: statusCodes.UNPROCESSABLE_ENTITY,
-          detail: "SQLITE does not support ilike. Please use like",
-          parameter,
-        })
-      }
-    }
-  }
   if (options.include) {
     const include = Array.isArray(options.include)
       ? options.include
