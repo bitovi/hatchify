@@ -254,13 +254,16 @@ import { Todo } from "../schemas/Todo"
 import { User } from "../schemas/User"
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa([Todo, User], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: "example.sqlite",
+const hatchedKoa = hatchifyKoa(
+  { Todo, User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: "example.sqlite",
+    },
   },
-})
+)
 
 app.use(cors())
 app.use(hatchedKoa.middleware.allModels.all)
