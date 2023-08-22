@@ -2,6 +2,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 
 import { startServerWith } from "./testing/utils"
+import { DBOptions } from "./testing/utils"
 
 const userData = [
   {
@@ -282,7 +283,7 @@ dotenv.config({
   path: ".env",
 })
 
-describe("Operators", () => {
+describe.each(DBOptions)("Operators", (dbType) => {
   const User: HatchifyModel = {
     name: "User",
     attributes: {
@@ -298,7 +299,7 @@ describe("Operators", () => {
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    ;({ fetch, teardown } = await startServerWith([User]))
+    ;({ fetch, teardown } = await startServerWith([User], dbType))
     await fetch("/api/users", {
       method: "post",
       body: {
@@ -344,7 +345,7 @@ describe("Operators", () => {
     )
   })
 
-  if (process.env.DB_CONFIG !== "postgres") {
+  if (dbType !== "postgres") {
     it.each(SQLiteOnlyTestCases)(
       "$description",
       async ({ expectedErrorSource, queryParam }) => {

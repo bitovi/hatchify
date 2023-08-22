@@ -7,6 +7,7 @@ import {
   buildUpdateOptions,
 } from "./builder"
 import { UnexpectedValueError } from "../error"
+import { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
 describe("builder", () => {
@@ -19,10 +20,12 @@ describe("builder", () => {
     },
     belongsTo: [{ target: "User", options: { as: "user" } }],
   }
+  const hatchify = new Hatchify([Todo], { prefix: "/api" })
 
   describe("buildFindOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildFindOptions(
+        hatchify,
         Todo,
         "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5&sort=-due_date,name",
       )
@@ -45,7 +48,11 @@ describe("builder", () => {
     })
 
     it("adds ID attribute if not specified", () => {
-      const options = buildFindOptions(Todo, "fields[todo]=name,due_date")
+      const options = buildFindOptions(
+        hatchify,
+        Todo,
+        "fields[todo]=name,due_date",
+      )
 
       expect(options).toEqual({
         data: {
@@ -58,7 +65,12 @@ describe("builder", () => {
     })
 
     it("ignores ID if any filter provided", () => {
-      const options = buildFindOptions(Todo, "page[number]=1&page[size]=10", 1)
+      const options = buildFindOptions(
+        hatchify,
+        Todo,
+        "page[number]=1&page[size]=10",
+        1,
+      )
 
       expect(options).toEqual({
         data: {
@@ -73,7 +85,7 @@ describe("builder", () => {
 
     it("handles zero pagination parameters", async () => {
       await expect(async () =>
-        buildFindOptions(Todo, "page[number]=0&page[size]=0"),
+        buildFindOptions(hatchify, Todo, "page[number]=0&page[size]=0"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: "Page number should be a positive integer.",
@@ -88,7 +100,7 @@ describe("builder", () => {
 
     it("handles negative pagination parameters", async () => {
       await expect(async () =>
-        buildFindOptions(Todo, "page[number]=-1&page[size]=-1"),
+        buildFindOptions(hatchify, Todo, "page[number]=-1&page[size]=-1"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: "Page number should be a positive integer.",
@@ -103,7 +115,7 @@ describe("builder", () => {
 
     it("handles float pagination parameters", async () => {
       await expect(async () =>
-        buildFindOptions(Todo, "page[number]=2.1&page[size]=1.1"),
+        buildFindOptions(hatchify, Todo, "page[number]=2.1&page[size]=1.1"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: "Page number should be a positive integer.",
@@ -117,7 +129,7 @@ describe("builder", () => {
     })
 
     it("handles no attributes", () => {
-      const options = buildFindOptions(Todo, "")
+      const options = buildFindOptions(hatchify, Todo, "")
 
       expect(options).toEqual({
         data: { where: {} },
@@ -128,7 +140,7 @@ describe("builder", () => {
 
     it("handles unknown attributes", async () => {
       await expect(async () =>
-        buildFindOptions(Todo, "fields[todo]=invalid"),
+        buildFindOptions(hatchify, Todo, "fields[todo]=invalid"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: `URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance'.`,
@@ -139,7 +151,7 @@ describe("builder", () => {
 
     it("handles unknown filter fields", async () => {
       await expect(async () =>
-        buildFindOptions(Todo, "filter[namee][]=test"),
+        buildFindOptions(hatchify, Todo, "filter[namee][]=test"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: `URL must have 'filter[x]' where 'x' is one of 'name', 'due_date', 'importance'.`,
@@ -150,7 +162,7 @@ describe("builder", () => {
 
     it("handles unknown sort fields", async () => {
       await expect(async () =>
-        buildFindOptions(Todo, "sort=invalid"),
+        buildFindOptions(hatchify, Todo, "sort=invalid"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: `URL must have 'sort' as comma separated values containing one or more of 'name', 'due_date', 'importance'.`,
@@ -161,7 +173,7 @@ describe("builder", () => {
 
     it("handles invalid query string", async () => {
       await expect(async () =>
-        buildFindOptions(Todo, "fields=name,due_date"),
+        buildFindOptions(hatchify, Todo, "fields=name,due_date"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: "Incorrect format was provided for fields.",
