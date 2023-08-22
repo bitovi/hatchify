@@ -78,4 +78,47 @@ describe("finalizeOrm", () => {
       }).sequelize.primaryKey,
     ).toBe(false)
   })
+
+  it("handles typeArgs", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "String",
+          typeArgs: [],
+        },
+      }).sequelize.typeArgs,
+    ).toEqual([255])
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "String",
+          typeArgs: [0],
+        },
+      }).sequelize.typeArgs,
+    ).toEqual([0])
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "String",
+          typeArgs: [25],
+        },
+      }).sequelize.typeArgs,
+    ).toEqual([25])
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "String",
+          typeArgs: [255],
+        },
+      }).sequelize.typeArgs,
+    ).toEqual([255])
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "String",
+          typeArgs: [1000],
+        },
+      }).sequelize.typeArgs,
+    ).toEqual([1000])
+  })
 })

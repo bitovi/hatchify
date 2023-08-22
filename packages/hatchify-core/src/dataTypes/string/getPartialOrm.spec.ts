@@ -24,4 +24,17 @@ describe("getPartialOrm", () => {
     expect(getPartialOrm({ primary: true }).sequelize.primaryKey).toBe(true)
     expect(getPartialOrm({ primary: false }).sequelize.primaryKey).toBe(false)
   })
+
+  it("handles typeArgs", () => {
+    expect(getPartialOrm().sequelize.typeArgs).toEqual([])
+    expect(getPartialOrm({}).sequelize.typeArgs).toEqual([])
+    expect(getPartialOrm({ max: undefined }).sequelize.typeArgs).toEqual([])
+    expect(
+      getPartialOrm({ max: null as unknown as number }).sequelize.typeArgs,
+    ).toEqual([])
+    expect(getPartialOrm({ max: 0 }).sequelize.typeArgs).toEqual([0])
+    expect(getPartialOrm({ max: 25 }).sequelize.typeArgs).toEqual([25])
+    expect(getPartialOrm({ max: 255 }).sequelize.typeArgs).toEqual([255])
+    expect(getPartialOrm({ max: 1000 }).sequelize.typeArgs).toEqual([1000])
+  })
 })

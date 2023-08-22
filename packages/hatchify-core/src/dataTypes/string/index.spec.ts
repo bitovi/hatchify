@@ -62,7 +62,7 @@ describe("string", () => {
         orm: {
           sequelize: {
             type: "STRING",
-            typeArgs: [],
+            typeArgs: [255],
             allowNull: true,
             autoIncrement: false,
             primaryKey: false,
@@ -149,7 +149,7 @@ describe("string", () => {
         orm: {
           sequelize: {
             type: "STRING",
-            typeArgs: [],
+            typeArgs: [255],
             allowNull: false,
             autoIncrement: false,
             primaryKey: false,
@@ -236,7 +236,7 @@ describe("string", () => {
         orm: {
           sequelize: {
             type: "STRING",
-            typeArgs: [],
+            typeArgs: [255],
             allowNull: false,
             autoIncrement: false,
             primaryKey: true,
@@ -265,7 +265,7 @@ describe("string", () => {
         orm: {
           sequelize: {
             type: "STRING",
-            typeArgs: [],
+            typeArgs: [10],
             allowNull: undefined,
             autoIncrement: undefined,
             primaryKey: undefined,
@@ -333,7 +333,7 @@ describe("string", () => {
         orm: {
           sequelize: {
             type: "STRING",
-            typeArgs: [],
+            typeArgs: [10],
             allowNull: true,
             autoIncrement: false,
             primaryKey: false,
