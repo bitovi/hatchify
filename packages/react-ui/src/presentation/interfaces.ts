@@ -2,15 +2,12 @@
 import type {
   Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
 } from "@hatchifyjs/rest-client"
-import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
-import type {
-  HatchifyDisplay as LegacyHatchifyDisplay,
-  HatchifyFormField,
-  FormFieldValueType,
-} from "../services-legacy"
+// import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
+import type { HatchifyDisplay as LegacyHatchifyDisplay } from "../services-legacy"
 import type { FormState } from "../components/HatchifyForm"
 import type { CollectionState } from "../hooks/useCollectionState"
 import type { Filters } from "@hatchifyjs/rest-client"
+import type { Schema, HatchifyFormField, FormFieldValueType } from "../services"
 
 export type Primitive = string | boolean | number
 

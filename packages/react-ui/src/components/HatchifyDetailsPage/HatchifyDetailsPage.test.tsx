@@ -3,7 +3,8 @@ import { describe, it } from "vitest"
 import { render } from "@testing-library/react"
 import { HatchifyDetailsPage } from "./HatchifyDetailsPage"
 // import type { Schema } from "@hatchifyjs/rest-client"
-import type { Schema } from "../../services-legacy/api/schemas" //TODO update schema
+// import type { Schema } from "../../services-legacy/api/schemas" //TODO update schema
+import type { Schema } from "../../services"
 
 const TestSchema: Schema = {
   name: "Test",
