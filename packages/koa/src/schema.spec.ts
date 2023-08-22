@@ -402,7 +402,7 @@ describe("schema", () => {
         name: "name",
         notnull: 0,
         pk: 0,
-        type: "VARCHAR(255)",
+        type: "VARCHAR(10)",
       })
       expect(columns[2]).toMatchObject({
         name: "age",
