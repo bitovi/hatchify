@@ -15,7 +15,7 @@ export const DBOptions: DBOption[] = ["postgres", "sqlite"]
 
 export async function startServerWith(
   models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
-  dialect?: DBOption = "sqlite",
+  dialect: DBOption = "sqlite",
 ): Promise<{
   fetch: (
     path: string,
