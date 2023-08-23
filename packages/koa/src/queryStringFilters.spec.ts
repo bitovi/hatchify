@@ -348,7 +348,7 @@ describe.each(DBOptions)("Operators", (dbType) => {
     },
   )
 
-  if (dbType === "sqlite" || dbType === "postgres") {
+  if (dbType === "sqlite") {
     it.each(SQLiteOnlyTestCases)(
       `${dbType} - $description`,
       async ({ expectedErrorSource, queryParam }) => {
