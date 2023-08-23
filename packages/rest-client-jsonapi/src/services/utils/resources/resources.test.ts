@@ -189,7 +189,7 @@ describe("hatchifyRelationshipsToJsonApiRelationship", () => {
       baseUrl: "http://localhost:3000/api",
       schemaMap: {
         Article: { type: "article", endpoint: "articles" },
-        Person: { endpoint: "people" },
+        Person: { type: "Person", endpoint: "people" },
         Tag: { type: "tag", endpoint: "tags" },
       },
     }
