@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Postgres
+        uses: ./.github/actions/postgres
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -34,11 +37,13 @@ jobs:
       packages: write
 
     steps:
+      - name: Postgres
+        uses: ./.github/actions/postgres
+
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Publish
-        uses: ./.github/actions/postgres
         uses: ./.github/actions/job-publish
         with:
           directory: koa
