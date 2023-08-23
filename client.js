@@ -1,4 +1,4 @@
-import { Client } from "pg"
+const { Client } = require("pg")
 
 const pgclient = new Client({
   host: process.env.DB_HOST,
