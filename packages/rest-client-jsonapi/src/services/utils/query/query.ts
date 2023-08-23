@@ -108,9 +108,9 @@ export function filterToQueryParam(filter: Filters): string {
     const { operator, field, value } = filter[i]
     if (likeOperators.includes(operator)) {
       const wildcardOperator =
-        operator === "starts"
+        operator === "istarts"
           ? `${value}%`
-          : operator === "ends"
+          : operator === "iends"
           ? `%${value}`
           : `%${value}%`
       q.push(
