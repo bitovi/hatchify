@@ -73,10 +73,20 @@ describe("number", () => {
 
       // setClientQueryFilterValue
       expect(setClientQueryFilterValue(-1)).toBe(-1)
-      // todo: more tests!
-      // todo: should this handle filter query strings or objects? ie.
-      // `filter[age]=1&filter[name]=bob`
-      // [{ field: "age", operator: "$eq", value: 1 }, { field: "name", operator: "$eq", value: "bob" }]
+      expect(setClientQueryFilterValue(0)).toBe(0)
+      expect(setClientQueryFilterValue(1)).toBe(1)
+      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
+      expect(setClientQueryFilterValue(null)).toBeNull()
+      expect(() =>
+        setClientQueryFilterValue("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
 
       // serializeClientQueryFilterValue
       expect(serializeClientQueryFilterValue(-1)).toBe("-1")
@@ -259,10 +269,22 @@ describe("number", () => {
 
       // setClientQueryFilterValue
       expect(setClientQueryFilterValue(-1)).toBe(-1)
-      // todo: more tests!
-      // todo: should this handle filter query strings or objects? ie.
-      // `filter[age]=1&filter[name]=bob`
-      // [{ field: "age", operator: "$eq", value: 1 }, { field: "name", operator: "$eq", value: "bob" }]
+      expect(setClientQueryFilterValue(0)).toBe(0)
+      expect(setClientQueryFilterValue(1)).toBe(1)
+      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
+      expect(() => setClientQueryFilterValue(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() =>
+        setClientQueryFilterValue("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
 
       // serializeClientQueryFilterValue
       expect(serializeClientQueryFilterValue(-1)).toBe("-1")
@@ -399,7 +421,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-          allowNull: undefined, // todo: arthur - should this default to boolean?
+          allowNull: undefined,
           min: undefined,
           max: undefined,
           primary: undefined,
@@ -452,10 +474,20 @@ describe("number", () => {
 
       // setClientQueryFilterValue
       expect(setClientQueryFilterValue(-1)).toBe(-1)
-      // todo: more tests!
-      // todo: should this handle filter query strings or objects? ie.
-      // `filter[age]=1&filter[name]=bob`
-      // [{ field: "age", operator: "$eq", value: 1 }, { field: "name", operator: "$eq", value: "bob" }]
+      expect(setClientQueryFilterValue(0)).toBe(0)
+      expect(setClientQueryFilterValue(1)).toBe(1)
+      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
+      expect(setClientQueryFilterValue(null)).toBeNull()
+      expect(() =>
+        setClientQueryFilterValue("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
 
       // serializeClientQueryFilterValue
       expect(serializeClientQueryFilterValue(-1)).toBe("-1")
@@ -637,10 +669,22 @@ describe("number", () => {
 
       // setClientQueryFilterValue
       expect(setClientQueryFilterValue(-1)).toBe(-1)
-      // todo: more tests!
-      // todo: should this handle filter query strings or objects? ie.
-      // `filter[age]=1&filter[name]=bob`
-      // [{ field: "age", operator: "$eq", value: 1 }, { field: "name", operator: "$eq", value: "bob" }]
+      expect(setClientQueryFilterValue(0)).toBe(0)
+      expect(setClientQueryFilterValue(1)).toBe(1)
+      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
+      expect(() => setClientQueryFilterValue(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() =>
+        setClientQueryFilterValue("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
 
       // serializeClientQueryFilterValue
       expect(serializeClientQueryFilterValue(-1)).toBe("-1")
@@ -671,6 +715,9 @@ describe("number", () => {
       )
       expect(() => setClientPropertyValueFromResponse(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValueFromResponse("1.0")).toThrow(
+        new HatchifyCoerceError("as a number"),
       )
 
       // serializeORMPropertyValue
@@ -832,10 +879,22 @@ describe("number", () => {
 
       // setClientQueryFilterValue
       expect(setClientQueryFilterValue(-1)).toBe(-1)
-      // todo: more tests!
-      // todo: should this handle filter query strings or objects? ie.
-      // `filter[age]=1&filter[name]=bob`
-      // [{ field: "age", operator: "$eq", value: 1 }, { field: "name", operator: "$eq", value: "bob" }]
+      expect(setClientQueryFilterValue(0)).toBe(0)
+      expect(setClientQueryFilterValue(1)).toBe(1)
+      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue(null)).toBeNull()
+      expect(() => setClientQueryFilterValue(1.11)).toThrow(
+        new HatchifyCoerceError("as multiples of 0.1"),
+      )
+      expect(() =>
+        setClientQueryFilterValue("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
 
       // serializeClientQueryFilterValue
       expect(serializeClientQueryFilterValue(-1)).toBe("-1")
@@ -1028,10 +1087,24 @@ describe("number", () => {
 
       // setClientQueryFilterValue
       expect(setClientQueryFilterValue(1)).toBe(1)
-      // todo: more tests!
-      // todo: should this handle filter query strings or objects? ie.
-      // `filter[age]=1&filter[name]=bob`
-      // [{ field: "age", operator: "$eq", value: 1 }, { field: "name", operator: "$eq", value: "bob" }]
+      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
+      expect(setClientQueryFilterValue(null)).toBeNull()
+      expect(() => setClientQueryFilterValue(-1)).toThrow(
+        new HatchifyCoerceError("greater than or equal to 1"),
+      )
+      expect(() => setClientQueryFilterValue(0)).toThrow(
+        new HatchifyCoerceError("greater than or equal to 1"),
+      )
+      expect(() => setClientQueryFilterValue(0.9)).toThrow(
+        new HatchifyCoerceError("greater than or equal to 1"),
+      )
+      expect(() => setClientQueryFilterValue(10.1)).toThrow(
+        new HatchifyCoerceError("less than or equal to 10"),
+      )
+      expect(() =>
+        setClientQueryFilterValue("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
 
       // serializeClientQueryFilterValue
       expect(serializeClientQueryFilterValue(1)).toBe("1")
