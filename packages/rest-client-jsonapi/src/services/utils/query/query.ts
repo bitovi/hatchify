@@ -102,12 +102,11 @@ export function filterToQueryParam(filter: Filters): string {
   const DATE_REGEX = new RegExp(
     /([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]))/i,
   )
-
-  const containsOperators = ["starts", "ends", "contains"]
+  const likeOperators = ["istarts", "iends", "icontains"]
 
   for (let i = 0; i < filter.length; i++) {
     const { operator, field, value } = filter[i]
-    if (containsOperators.includes(operator)) {
+    if (likeOperators.includes(operator)) {
       const wildcardOperator =
         operator === "starts"
           ? `${value}%`
