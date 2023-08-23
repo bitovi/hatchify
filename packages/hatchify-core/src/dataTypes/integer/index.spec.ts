@@ -1,3 +1,5 @@
+import { HatchifyCoerceError } from "../../types"
+
 import { integer } from "."
 
 describe("integer", () => {
@@ -42,9 +44,9 @@ describe("integer", () => {
       expect(serializeORMPropertyValue(null)).toBeNull()
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as number),
-      ).toThrow(new Error("Provided value is not a number"))
+      ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => serializeORMPropertyValue(1.1)).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
 
       // setORMPropertyValue
@@ -54,16 +56,16 @@ describe("integer", () => {
 
       expect(setORMPropertyValue(null)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
-        new Error("Provided value is not a number"),
+        new HatchifyCoerceError("as a number"),
       )
       expect(() => setORMPropertyValue(-Infinity)).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMPropertyValue(Infinity)).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMPropertyValue(1.1)).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
 
       // setORMQueryFilterValue
@@ -73,16 +75,16 @@ describe("integer", () => {
       expect(setORMQueryFilterValue("null")).toBeNull()
       expect(setORMQueryFilterValue("undefined")).toBeNull()
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
-        new Error("Provided value is not a number"),
+        new HatchifyCoerceError("as a number"),
       )
       expect(() => setORMQueryFilterValue("-Infinity")).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMQueryFilterValue("Infinity")).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMQueryFilterValue("1.1")).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
     })
 
@@ -152,13 +154,13 @@ describe("integer", () => {
       expect(serializeORMPropertyValue(0)).toBe(0)
       expect(serializeORMPropertyValue(1)).toBe(1)
       expect(() => serializeORMPropertyValue(null)).toThrow(
-        new Error("Non-null value is required"),
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as number),
-      ).toThrow(new Error("Provided value is not a number"))
+      ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => serializeORMPropertyValue(1.1)).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
 
       // setORMPropertyValue
@@ -166,19 +168,19 @@ describe("integer", () => {
       expect(setORMPropertyValue(0)).toBe(0)
       expect(setORMPropertyValue(1)).toBe(1)
       expect(() => setORMPropertyValue(null)).toThrow(
-        new Error("Non-null value is required"),
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
-        new Error("Provided value is not a number"),
+        new HatchifyCoerceError("as a number"),
       )
       expect(() => setORMPropertyValue(-Infinity)).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMPropertyValue(Infinity)).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMPropertyValue(1.1)).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
 
       // setORMQueryFilterValue
@@ -186,22 +188,22 @@ describe("integer", () => {
       expect(setORMQueryFilterValue("0")).toBe(0)
       expect(setORMQueryFilterValue("1")).toBe(1)
       expect(() => setORMQueryFilterValue("null")).toThrow(
-        new Error("Non-null value is required"),
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMQueryFilterValue("undefined")).toThrow(
-        new Error("Non-null value is required"),
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
-        new Error("Provided value is not a number"),
+        new HatchifyCoerceError("as a number"),
       )
       expect(() => setORMQueryFilterValue("-Infinity")).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMQueryFilterValue("Infinity")).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMQueryFilterValue("1.1")).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
     })
 
@@ -273,9 +275,9 @@ describe("integer", () => {
       expect(serializeORMPropertyValue(null)).toBeNull()
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as number),
-      ).toThrow(new Error("Provided value is not a number"))
+      ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => serializeORMPropertyValue(1.1)).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
 
       // setORMPropertyValue
@@ -284,16 +286,16 @@ describe("integer", () => {
       expect(setORMPropertyValue(1)).toBe(1)
       expect(setORMPropertyValue(null)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
-        new Error("Provided value is not a number"),
+        new HatchifyCoerceError("as a number"),
       )
       expect(() => setORMPropertyValue(-Infinity)).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMPropertyValue(Infinity)).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMPropertyValue(1.1)).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
 
       // setORMQueryFilterValue
@@ -303,16 +305,16 @@ describe("integer", () => {
       expect(setORMQueryFilterValue("null")).toBeNull()
       expect(setORMQueryFilterValue("undefined")).toBeNull()
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
-        new Error("Provided value is not a number"),
+        new HatchifyCoerceError("as a number"),
       )
       expect(() => setORMQueryFilterValue("-Infinity")).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMQueryFilterValue("Infinity")).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMQueryFilterValue("1.1")).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
     })
 
@@ -382,13 +384,13 @@ describe("integer", () => {
       expect(serializeORMPropertyValue(0)).toBe(0)
       expect(serializeORMPropertyValue(1)).toBe(1)
       expect(() => serializeORMPropertyValue(null)).toThrow(
-        new Error("Non-null value is required"),
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as number),
-      ).toThrow(new Error("Provided value is not a number"))
+      ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => serializeORMPropertyValue(1.1)).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
 
       // setORMPropertyValue
@@ -396,19 +398,19 @@ describe("integer", () => {
       expect(setORMPropertyValue(0)).toBe(0)
       expect(setORMPropertyValue(1)).toBe(1)
       expect(() => setORMPropertyValue(null)).toThrow(
-        new Error("Non-null value is required"),
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
-        new Error("Provided value is not a number"),
+        new HatchifyCoerceError("as a number"),
       )
       expect(() => setORMPropertyValue(-Infinity)).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMPropertyValue(Infinity)).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMPropertyValue(1.1)).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
 
       // setORMQueryFilterValue
@@ -416,22 +418,22 @@ describe("integer", () => {
       expect(setORMQueryFilterValue("0")).toBe(0)
       expect(setORMQueryFilterValue("1")).toBe(1)
       expect(() => setORMQueryFilterValue("null")).toThrow(
-        new Error("Non-null value is required"),
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMQueryFilterValue("undefined")).toThrow(
-        new Error("Non-null value is required"),
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
-        new Error("Provided value is not a number"),
+        new HatchifyCoerceError("as a number"),
       )
       expect(() => setORMQueryFilterValue("-Infinity")).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMQueryFilterValue("Infinity")).toThrow(
-        new Error("Infinity as a value is not supported"),
+        new HatchifyCoerceError("different than Infinity"),
       )
       expect(() => setORMQueryFilterValue("1.1")).toThrow(
-        new Error("Provided value violates the step of 1"),
+        new HatchifyCoerceError("as multiples of 1"),
       )
     })
 

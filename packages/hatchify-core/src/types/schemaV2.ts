@@ -2,13 +2,19 @@ export type ValueInRequest = number | string | object | null | undefined
 
 export * from "../assembler/types"
 
+export class HatchifyCoerceError extends Error {
+  constructor(message: string) {
+    super(message)
+  }
+}
+
 export interface PartialDataTypeProps {
   primary?: boolean
   required?: boolean
 }
 
 export interface PartialControlType {
-  type: "Boolean" | "Number" | "String"
+  type: string
   allowNull?: boolean
   primary?: boolean
 }

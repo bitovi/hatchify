@@ -1,7 +1,11 @@
+import { HatchifyCoerceError } from "@hatchifyjs/hatchify-core"
+import type { ValidationErrorItem } from "sequelize"
+
 import { databaseErrorHandler } from "./databaseErrorHandler"
 import type { SequelizeError } from "./databaseErrorHandler"
 import { hatchifyErrorHandler } from "./hatchifyErrorHandler"
 import { statusCodes } from "../constants"
+import { UnexpectedValueError } from "../types"
 import type { HatchifyError } from "../types"
 
 type GeneralError = SequelizeError | HatchifyError
@@ -18,6 +22,27 @@ export function errorResponseHandler(
 
   if (Array.isArray(error)) {
     return { errors: error, status: error[0].status }
+  }
+
+  if (error.name === "SequelizeValidationError") {
+    const { errors }: SequelizeError = error
+
+    if (errors?.[0].validatorKey === "setORMPropertyValue") {
+      return {
+        errors: errors.map((validationError) => {
+          const { path, message, original, value } =
+            validationError as ValidationErrorItem & { original: Error }
+
+          return original instanceof HatchifyCoerceError
+            ? new UnexpectedValueError({
+                detail: `Payload must have '${path}' ${message} but received '${value}' instead.`,
+                pointer: `/data/attributes/${path}`,
+              })
+            : databaseErrorHandler(error as SequelizeError)
+        }),
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+      }
+    }
   }
 
   if (

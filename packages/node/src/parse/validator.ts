@@ -5,7 +5,7 @@ import {
   UnexpectedValueError,
   ValueRequiredError,
 } from "../error"
-import type { HatchifyError } from "../error"
+import type { HatchifyError } from "../error/types"
 import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 

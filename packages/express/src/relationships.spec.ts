@@ -303,8 +303,7 @@ describe("Relationships", () => {
   })
 
   describe("should support pagination meta (HATCH-203)", () => {
-    //TODO UNSKIP / FIX WITH HATCH-299
-    it.skip("with pagination", async () => {
+    it("with pagination", async () => {
       const [{ body: mrPagination }] = await Promise.all([
         fetch("/api/users", {
           method: "post",
@@ -312,7 +311,7 @@ describe("Relationships", () => {
             data: {
               type: "User",
               attributes: {
-                name: "Mr. Pagination",
+                name: "Pagination",
               },
             },
           },
@@ -323,7 +322,7 @@ describe("Relationships", () => {
             data: {
               type: "User",
               attributes: {
-                name: "Mrs. Pagination",
+                name: "Pagination",
               },
             },
           },
@@ -331,7 +330,7 @@ describe("Relationships", () => {
       ])
 
       const { body: users } = await fetch(
-        "/api/users?filter[name]=pagination&page[number]=1&page[size]=1",
+        "/api/users?filter[name]=Pagination&page[number]=1&page[size]=1",
       )
 
       expect(users).toEqual({
@@ -342,8 +341,8 @@ describe("Relationships", () => {
         meta: { unpaginatedCount: 2 },
       })
     })
-    //TODO UNSKIP / FIX WITH HATCH-299
-    it.skip("without pagination", async () => {
+
+    it("without pagination", async () => {
       const [{ body: mrPagination }] = await Promise.all([
         fetch("/api/users", {
           method: "post",
@@ -351,7 +350,7 @@ describe("Relationships", () => {
             data: {
               type: "User",
               attributes: {
-                name: "Mr. No Pagination",
+                name: "No Pagination",
               },
             },
           },
@@ -359,7 +358,7 @@ describe("Relationships", () => {
       ])
 
       const { body: users } = await fetch(
-        "/api/users?filter[name]=no+pagination",
+        "/api/users?filter[name]=No+Pagination",
       )
 
       expect(users).toEqual({
