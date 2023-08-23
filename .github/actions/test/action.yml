@@ -9,6 +9,11 @@ runs:
   using: "composite"
 
   steps:
-    - name: Test
+    - name: SQLite tests
       shell: bash
       run: npx nx test ${{ inputs.package }}
+    - name: Postgres tests
+      shell: bash
+      run: npx nx test ${{ inputs.package }}
+      env:
+        POSTGRES_URI: postgres://postgres:postgres@postgres:5432
