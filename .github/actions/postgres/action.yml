@@ -1,11 +1,19 @@
 name: Postgres
 
-on:
-  pull_request:
-    branches: [main]
-
 runs:
   using: "composite"
+
+  steps:
+  - name: Checkout
+    uses: actions/checkout@v3
+
+  - name: Setup Node.js environment
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18
+
+  - name: Install
+    run: npm ci
 
 services:
   postgres:
@@ -22,14 +30,3 @@ services:
     ports:
       - 5432:5432
 
-steps:
-  - name: Checkout
-    uses: actions/checkout@v3
-
-  - name: Setup Node.js environment
-    uses: actions/setup-node@v3
-    with:
-      node-version: 18
-
-  - name: Install
-    run: npm ci
