@@ -4,13 +4,8 @@ runs:
   using: "composite"
 
   steps:
-  - name: Checkout
-    uses: actions/checkout@v3
-
-  - name: Setup Node.js environment
-    uses: actions/setup-node@v3
-    with:
-      node-version: 18
+  - name: Setup
+    uses: ./.github/actions/setup
 
   - name: Install
     run: npm ci
