@@ -1,8 +1,11 @@
-name: Build
+name: Postgres
 
 on:
   pull_request:
     branches: [main]
+
+runs:
+  using: "composite"
 
 jobs:
   test:

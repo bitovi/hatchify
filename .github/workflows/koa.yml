@@ -40,9 +40,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Postgres
-        uses: ./.github/actions/postgres
-
       - name: Publish
         uses: ./.github/actions/job-publish
         with:
