@@ -1,4 +1,4 @@
-export type ValueInRequest = number | string | object | null | undefined
+export type ValueInRequest = number | string | Date | object | null | undefined
 
 export * from "../assembler/types"
 
@@ -23,7 +23,6 @@ export interface PartialSequelizeDataType<PrimitiveType> {
   type: string
   typeArgs: PrimitiveType
   allowNull?: boolean
-  autoIncrement?: boolean
   primaryKey?: boolean
 }
 

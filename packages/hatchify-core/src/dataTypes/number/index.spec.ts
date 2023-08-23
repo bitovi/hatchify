@@ -11,7 +11,7 @@ describe("number", () => {
         name: "number()",
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: undefined,
             autoIncrement: undefined,
@@ -90,7 +90,7 @@ describe("number", () => {
         name: "number()",
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: true,
             autoIncrement: false,
@@ -120,7 +120,7 @@ describe("number", () => {
         name: 'number({"required":true})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: false,
             autoIncrement: undefined,
@@ -206,7 +206,7 @@ describe("number", () => {
         name: 'number({"required":true})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: false,
             autoIncrement: false,
@@ -236,7 +236,7 @@ describe("number", () => {
         name: 'number({"autoIncrement":true})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: undefined,
             autoIncrement: true,
@@ -314,7 +314,7 @@ describe("number", () => {
         name: 'number({"autoIncrement":true})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: true,
             autoIncrement: true,
@@ -344,7 +344,7 @@ describe("number", () => {
         name: 'number({"primary":true})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: undefined,
             autoIncrement: undefined,
@@ -430,7 +430,7 @@ describe("number", () => {
         name: 'number({"primary":true})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: false,
             autoIncrement: false,
@@ -460,7 +460,7 @@ describe("number", () => {
         name: 'number({"step":0.1})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: undefined,
             autoIncrement: undefined,
@@ -545,7 +545,7 @@ describe("number", () => {
         name: 'number({"step":0.1})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: true,
             autoIncrement: false,
@@ -575,7 +575,7 @@ describe("number", () => {
         name: 'number({"min":1,"max":10})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: undefined,
             autoIncrement: undefined,
@@ -683,7 +683,7 @@ describe("number", () => {
         name: 'number({"min":1,"max":10})',
         orm: {
           sequelize: {
-            type: "DOUBLE",
+            type: "DECIMAL",
             typeArgs: [],
             allowNull: true,
             autoIncrement: false,

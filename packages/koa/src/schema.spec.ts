@@ -1,4 +1,4 @@
-import { integer, string } from "@hatchifyjs/hatchify-core"
+import { datetime, integer, string } from "@hatchifyjs/hatchify-core"
 import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 
 import { startServerWith } from "./testing/utils"
@@ -11,6 +11,10 @@ describe("schema", () => {
         name: { type: "STRING", validate: { len: [1, 10] } },
         age: { type: "INTEGER", validate: { min: 0 } },
         yearsWorked: { type: "INTEGER", validate: { min: 0 } },
+        hireDate: {
+          type: "DATE",
+          validate: { isAfter: "2022-12-31T00:00:00.000Z" },
+        },
       },
     }
 
@@ -26,12 +30,12 @@ describe("schema", () => {
       await teardown()
     })
 
-    it("should create a snake_case table with id, name, age and years_worked columns", async () => {
+    it("should create a snake_case table with id, name, age, years_worked and hire_date columns", async () => {
       const [columns] = await hatchify._sequelize.query(
         'SELECT * FROM pragma_table_info("user")',
       )
 
-      expect(columns).toHaveLength(4)
+      expect(columns).toHaveLength(5)
       expect(columns[0]).toMatchObject({
         name: "id",
         notnull: 0,
@@ -56,6 +60,12 @@ describe("schema", () => {
         pk: 0,
         type: "INTEGER",
       })
+      expect(columns[4]).toMatchObject({
+        name: "hire_date",
+        notnull: 0,
+        pk: 0,
+        type: "DATETIME",
+      })
     })
 
     describe("should have API with core features working", () => {
@@ -78,6 +88,7 @@ describe("schema", () => {
                   name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             },
@@ -91,6 +102,7 @@ describe("schema", () => {
                   name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             },
@@ -118,6 +130,7 @@ describe("schema", () => {
               name: "John Doe",
               age: 21,
               yearsWorked: 1,
+              hireDate: "2023-01-01T00:00:00.000Z",
             },
           },
         })
@@ -134,12 +147,13 @@ describe("schema", () => {
               name: "Jane Doe",
               age: 22,
               yearsWorked: 3,
+              hireDate: "2023-01-01T00:00:00.000Z",
             },
           },
         })
       })
 
-      it("validates name, age and yearsWorked", async () => {
+      it("validates name, age, yearsWorked and hireDate", async () => {
         const { status: postStatus, body: postUser } = await fetch(
           "/api/users",
           {
@@ -151,6 +165,7 @@ describe("schema", () => {
                   name: "",
                   age: -1,
                   yearsWorked: -1,
+                  hireDate: "2022-01-01T00:00:00.000Z",
                 },
               },
             },
@@ -170,7 +185,13 @@ describe("schema", () => {
                   path: "name",
                   value: "",
                   origin: "FUNCTION",
-                  instance: { id: null, name: "", age: -1, yearsWorked: -1 },
+                  instance: {
+                    id: null,
+                    name: "",
+                    age: -1,
+                    yearsWorked: -1,
+                    hireDate: "2022-01-01T00:00:00.000Z",
+                  },
                   validatorKey: "len",
                   validatorName: "len",
                   validatorArgs: [1, 10],
@@ -182,7 +203,13 @@ describe("schema", () => {
                   path: "age",
                   value: -1,
                   origin: "FUNCTION",
-                  instance: { id: null, name: "", age: -1, yearsWorked: -1 },
+                  instance: {
+                    id: null,
+                    name: "",
+                    age: -1,
+                    yearsWorked: -1,
+                    hireDate: "2022-01-01T00:00:00.000Z",
+                  },
                   validatorKey: "min",
                   validatorName: "min",
                   validatorArgs: [0],
@@ -194,11 +221,38 @@ describe("schema", () => {
                   path: "yearsWorked",
                   value: -1,
                   origin: "FUNCTION",
-                  instance: { id: null, name: "", age: -1, yearsWorked: -1 },
+                  instance: {
+                    id: null,
+                    name: "",
+                    age: -1,
+                    yearsWorked: -1,
+                    hireDate: "2022-01-01T00:00:00.000Z",
+                  },
                   validatorKey: "min",
                   validatorName: "min",
                   validatorArgs: [0],
                   original: { validatorName: "min", validatorArgs: [0] },
+                },
+                {
+                  message: "Validation isAfter on hireDate failed",
+                  type: "Validation error",
+                  path: "hireDate",
+                  value: "2022-01-01T00:00:00.000Z",
+                  origin: "FUNCTION",
+                  instance: {
+                    id: null,
+                    name: "",
+                    age: -1,
+                    yearsWorked: -1,
+                    hireDate: "2022-01-01T00:00:00.000Z",
+                  },
+                  validatorKey: "isAfter",
+                  validatorName: "isAfter",
+                  validatorArgs: ["2022-12-31T00:00:00.000Z"],
+                  original: {
+                    validatorName: "isAfter",
+                    validatorArgs: ["2022-12-31T00:00:00.000Z"],
+                  },
                 },
               ],
             },
@@ -222,6 +276,7 @@ describe("schema", () => {
                 name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
             {
@@ -231,6 +286,7 @@ describe("schema", () => {
                 name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           ],
@@ -258,6 +314,7 @@ describe("schema", () => {
                 name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           ],
@@ -317,6 +374,7 @@ describe("schema", () => {
                 name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
             {
@@ -326,6 +384,7 @@ describe("schema", () => {
                 name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           ],
@@ -353,6 +412,7 @@ describe("schema", () => {
                 name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           ],
@@ -371,6 +431,7 @@ describe("schema", () => {
         name: string({ min: 1, max: 10 }),
         age: integer({ min: 0 }),
         yearsWorked: integer({ min: 0 }),
+        hireDate: datetime({ min: new Date("2022-12-31T00:00:00.000Z") }),
       },
     }
 
@@ -386,12 +447,12 @@ describe("schema", () => {
       await teardown()
     })
 
-    it("should create a snake_case table with id, age and years_worked columns", async () => {
+    it("should create a snake_case table with id, age, years_worked and hired_date columns", async () => {
       const [columns] = await hatchify._sequelize.query(
         'SELECT * FROM pragma_table_info("user")',
       )
 
-      expect(columns).toHaveLength(4)
+      expect(columns).toHaveLength(5)
       expect(columns[0]).toMatchObject({
         name: "id",
         notnull: 0,
@@ -416,6 +477,12 @@ describe("schema", () => {
         pk: 0,
         type: "INTEGER",
       })
+      expect(columns[4]).toMatchObject({
+        name: "hire_date",
+        notnull: 0,
+        pk: 0,
+        type: "DATETIME",
+      })
     })
 
     describe("should have API with core features working", () => {
@@ -438,6 +505,7 @@ describe("schema", () => {
                   name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             },
@@ -451,6 +519,7 @@ describe("schema", () => {
                   name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             },
@@ -478,6 +547,7 @@ describe("schema", () => {
               name: "John Doe",
               age: 21,
               yearsWorked: 1,
+              hireDate: "2023-01-01T00:00:00.000Z",
             },
           },
         })
@@ -494,12 +564,13 @@ describe("schema", () => {
               name: "Jane Doe",
               age: 22,
               yearsWorked: 3,
+              hireDate: "2023-01-01T00:00:00.000Z",
             },
           },
         })
       })
 
-      it("validates name, age and yearsWorked", async () => {
+      it("validates name, age, yearsWorked and hireDate", async () => {
         const { status: postStatus, body: postUser } = await fetch(
           "/api/users",
           {
@@ -511,6 +582,7 @@ describe("schema", () => {
                   name: "",
                   age: -1,
                   yearsWorked: -1,
+                  hireDate: "2022-01-01T00:00:00.000Z",
                 },
               },
             },
@@ -549,6 +621,15 @@ describe("schema", () => {
                 pointer: "/data/attributes/yearsWorked",
               },
             },
+            {
+              status: 422,
+              code: "unexpected-value",
+              detail: expect.stringMatching(
+                /Payload must have 'hireDate' after or on 2022-12-31T00:00:00\.000Z but received '(.*?)' instead\./,
+              ),
+              source: { pointer: "/data/attributes/hireDate" },
+              title: "Unexpected value.",
+            },
           ],
         })
       })
@@ -569,6 +650,7 @@ describe("schema", () => {
                 name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
             {
@@ -578,6 +660,7 @@ describe("schema", () => {
                 name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           ],
@@ -605,6 +688,7 @@ describe("schema", () => {
                 name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           ],
@@ -664,6 +748,7 @@ describe("schema", () => {
                 name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
             {
@@ -673,6 +758,7 @@ describe("schema", () => {
                 name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           ],
@@ -700,6 +786,7 @@ describe("schema", () => {
                 name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           ],
