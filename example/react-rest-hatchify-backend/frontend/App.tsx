@@ -42,6 +42,10 @@ function Todos() {
   const [todoName, setTodoName] = useState("")
   const [selectedUser, setSelectedUser] = useState("")
 
+  useEffect(() => {
+    console.log("todosState has changed", todosState)
+  }, [todosState])
+
   if (todosState.isLoading) return <div>fetching todos...</div>
   if (todosState.isRejected) return <div>failed to fetch todos</div>
 

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { createOne, getMeta } from "@hatchifyjs/rest-client"
 import type {
   CreateData,
@@ -41,6 +41,10 @@ export const useCreateOne = (
     [dataSource, allSchemas, schemaName],
   )
 
-  const meta = getMeta(error, loading, false, undefined)
+  const meta = useMemo(
+    () => getMeta(error, loading, false, undefined),
+    [error, loading],
+  )
+
   return [create, meta, data]
 }

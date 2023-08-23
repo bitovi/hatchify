@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { deleteOne, getMeta } from "@hatchifyjs/rest-client"
 import type { Meta, MetaError, Schemas, Source } from "@hatchifyjs/rest-client"
 
@@ -29,6 +29,10 @@ export const useDeleteOne = (
     [dataSource, allSchemas, schemaName],
   )
 
-  const meta = getMeta(error, loading, false, undefined)
+  const meta = useMemo(
+    () => getMeta(error, loading, false, undefined),
+    [error, loading],
+  )
+
   return [remove, meta]
 }
