@@ -7,7 +7,7 @@ runs:
     - name: Connect to PostgreSQL
       # Runs a script that creates a PostgreSQL table, populates
       # the table with data, and then retrieves the data.
-      run: node client.js
+      run: node client.ts
       # Environment variable used by the `client.js` script to create
       # a new PostgreSQL client.
       env:
