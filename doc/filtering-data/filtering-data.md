@@ -41,9 +41,7 @@ Todo.useAll({
 })
 ```
 
-
 Filter queries take the shape of: `filter[ATTRIBUTE_NAME][OPERATOR]=VALUE`.
-
 
 ## Operators
 
