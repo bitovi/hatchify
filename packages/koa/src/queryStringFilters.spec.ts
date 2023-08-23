@@ -348,9 +348,9 @@ describe.each(DBOptions)("Operators", (dbType) => {
     },
   )
 
-  if (dbType !== "postgres") {
+  if (dbType === "sqlite") {
     it.each(SQLiteOnlyTestCases)(
-      "$description",
+      `${dbType} - $description`,
       async ({ expectedErrorSource, queryParam }) => {
         const result = await fetch(`/api/users/?${queryParam}`)
         const error = JSON.parse(result.error.text)
