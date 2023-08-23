@@ -4,6 +4,10 @@ runs:
   using: "composite"
 
   steps:
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+
     - name: Connect to PostgreSQL
       shell: bash
       # Runs a script that creates a PostgreSQL table, populates
