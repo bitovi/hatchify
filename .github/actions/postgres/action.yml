@@ -1,15 +1,5 @@
 name: Postgres
 
-runs:
-  using: "composite"
-
-  steps:
-  - name: Setup
-    uses: ./.github/actions/setup
-
-  - name: Install
-    run: npm ci
-
 services:
   postgres:
     image: postgres/postgres
