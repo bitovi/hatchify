@@ -334,16 +334,19 @@ describe.each(DBOptions)("Operators", (dbType) => {
     await teardown()
   })
 
-  it.each(testCases)("$description", async ({ expectedResult, queryParam }) => {
-    const { body } = await fetch(`/api/users/?${queryParam}`)
-    const users = body.data.map(({ attributes }) => attributes)
-    expect(users).toEqual(
-      expectedResult.map((er) => ({
-        ...er,
-        startDate: new Date(er.startDate).toISOString(),
-      })),
-    )
-  })
+  it.each(testCases)(
+    `${dbType} - $description`,
+    async ({ expectedResult, queryParam }) => {
+      const { body } = await fetch(`/api/users/?${queryParam}`)
+      const users = body.data.map(({ attributes }) => attributes)
+      expect(users).toEqual(
+        expectedResult.map((er) => ({
+          ...er,
+          startDate: new Date(er.startDate).toISOString(),
+        })),
+      )
+    },
+  )
 
   if (dbType !== "postgres") {
     it.each(SQLiteOnlyTestCases)(
