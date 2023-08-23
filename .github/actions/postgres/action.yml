@@ -3,17 +3,15 @@ name: Postgres
 runs:
   using: "composite"
 
-  services:
-    postgres:
-      image: postgres/postgres
+  steps:
+    - name: Connect to PostgreSQL
+      # Runs a script that creates a PostgreSQL table, populates
+      # the table with data, and then retrieves the data.
+      run: node client.js
+      # Environment variable used by the `client.js` script to create
+      # a new PostgreSQL client.
       env:
-        DB_USERNAME: postgres
-        DB_PASSWORD: postgres
-        DB_NAME: postgres
-      options: >-
-        --health-cmd pg_isready
-        --health-interval 10s
-        --health-timeout 5s
-        --health-retries 5
-      ports:
-        - 5432:5432
+        # The hostname used to communicate with the PostgreSQL service container
+        DB_HOST: postgres
+        # The default PostgreSQL port
+        DB_PORT: 5432
