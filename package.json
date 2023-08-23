@@ -46,6 +46,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "pg": "^8.11.3",
     "semver": "^7.5.0"
   }
 }
