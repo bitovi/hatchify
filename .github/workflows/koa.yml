@@ -16,7 +16,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres/postgres
+        image: postgres
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
