@@ -108,7 +108,9 @@ function hatchifyRelationshipToJsonApiRelationship(
           }
 
           if (b === typeName) {
-            a = schema.relationships[b].schema
+            a =
+              config.schemaMap[schema.relationships[b].schema]?.type ??
+              schema.relationships[b].schema
             return a
           }
 

@@ -166,7 +166,7 @@ describe("rest-client-jsonapi/services/utils/resources", () => {
 })
 
 describe("hatchifyRelationshipsToJsonApiRelationship", () => {
-  it("Correctly converts relationship objects with one or many relationships", () => {
+  it("Correctly converts relationship objects with one or many relationships, including relationships to schemas with custom `type`s", () => {
     const schema: Schema = {
       name: "Article",
       displayAttribute: "name",
@@ -189,7 +189,7 @@ describe("hatchifyRelationshipsToJsonApiRelationship", () => {
       baseUrl: "http://localhost:3000/api",
       schemaMap: {
         Article: { type: "article", endpoint: "articles" },
-        Person: { type: "person", endpoint: "people" },
+        Person: { endpoint: "people" },
         Tag: { type: "tag", endpoint: "tags" },
       },
     }
@@ -207,8 +207,8 @@ describe("hatchifyRelationshipsToJsonApiRelationship", () => {
       person: { data: { id: "1", type: "Person" } },
       tag: {
         data: [
-          { id: "1", type: "Tag" },
-          { id: "2", type: "Tag" },
+          { id: "1", type: "tag" },
+          { id: "2", type: "tag" },
         ],
       },
     }
