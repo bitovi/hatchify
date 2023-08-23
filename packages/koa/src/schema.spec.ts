@@ -624,8 +624,9 @@ describe("schema", () => {
             {
               status: 422,
               code: "unexpected-value",
-              detail:
-                "Payload must have 'hireDate' after or on 2022-12-31T00:00:00.000Z but received 'Fri Dec 31 2021 19:00:00 GMT-0500 (Eastern Standard Time)' instead.",
+              detail: expect.stringMatching(
+                /Payload must have 'hireDate' after or on 2022-12-31T00:00:00\.000Z but received '(.*?)' instead\./,
+              ),
               source: { pointer: "/data/attributes/hireDate" },
               title: "Unexpected value.",
             },
