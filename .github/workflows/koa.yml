@@ -31,8 +31,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Postgres
-        uses: ./.github/actions/postgres
+      # - name: Postgres
+      #   uses: ./.github/actions/postgres
 
       - name: Verify
         uses: ./.github/actions/job-verify

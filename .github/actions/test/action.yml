@@ -12,3 +12,11 @@ runs:
     - name: SQLite tests
       shell: bash
       run: npx nx test ${{ inputs.package }}
+      env:
+        # The hostname used to communicate with the PostgreSQL service container
+        DB_HOST: postgres
+        # The default PostgreSQL port
+        DB_PORT: 5432
+        DB_USERNAME: postgres
+        DB_PASSWORD: postgres
+        DB_NAME: postgres
