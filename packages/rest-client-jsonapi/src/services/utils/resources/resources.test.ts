@@ -165,8 +165,8 @@ describe("rest-client-jsonapi/services/utils/resources", () => {
   })
 })
 
-describe("hatchifyRelationshipsToJsonApiRelationship", () => {
-  it("Correctly converts relationship objects with one or many relationships, including relationships to schemas with custom `type`s", () => {
+describe("convertToJsonApiRelationships", () => {
+  it("Correctly converts relationship objects with one or many relationships", () => {
     const schema: Schema = {
       name: "Article",
       displayAttribute: "name",
@@ -188,9 +188,9 @@ describe("hatchifyRelationshipsToJsonApiRelationship", () => {
     const sourceConfig = {
       baseUrl: "http://localhost:3000/api",
       schemaMap: {
-        Article: { type: "article", endpoint: "articles" },
+        Article: { type: "Article", endpoint: "articles" },
         Person: { type: "Person", endpoint: "people" },
-        Tag: { type: "tag", endpoint: "tags" },
+        Tag: { type: "Tag", endpoint: "tags" },
       },
     }
 
@@ -207,10 +207,50 @@ describe("hatchifyRelationshipsToJsonApiRelationship", () => {
       person: { data: { id: "1", type: "Person" } },
       tag: {
         data: [
-          { id: "1", type: "tag" },
-          { id: "2", type: "tag" },
+          { id: "1", type: "Tag" },
+          { id: "2", type: "Tag" },
         ],
       },
+    }
+
+    expect(
+      convertToJsonApiRelationships(sourceConfig, schema, relationships),
+    ).toEqual(expected)
+  })
+
+  it("Correctly converts relationship objects for schemas with custom-defined `type` values", () => {
+    const schema: Schema = {
+      name: "Article",
+      displayAttribute: "name",
+      attributes: {
+        title: "string",
+        body: "string",
+      },
+      relationships: {
+        person: {
+          type: "one",
+          schema: "Person",
+        },
+      },
+    }
+    const sourceConfig = {
+      baseUrl: "http://localhost:3000/api",
+      schemaMap: {
+        Article: { type: "article", endpoint: "articles" },
+        Person: { type: "person_custom", endpoint: "people" },
+      },
+    }
+
+    const relationships: Record<
+      string,
+      | Omit<ResourceRelationship, "__schema">
+      | Array<Omit<ResourceRelationship, "__schema">>
+    > = {
+      person: { id: "1" },
+    }
+
+    const expected: Record<string, JsonApiResourceRelationship> = {
+      person: { data: { id: "1", type: "person_custom" } },
     }
 
     expect(
