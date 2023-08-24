@@ -13,6 +13,10 @@ import type {
   Relationship as JsonApiRelationship,
   CreateJsonApiResource,
 } from "../../jsonapi"
+import type {
+  SchemalessResourceRelationship,
+  SchemalessResourceRelationshipObject,
+} from "@hatchifyjs/rest-client/dist/services"
 
 type Relationship = Record<
   string,
@@ -94,12 +98,10 @@ function hatchifyRelationshipToJsonApiRelationship(
   schema: Schema,
   typeName: string,
   resourceRelationships:
-    | Omit<ResourceRelationship, "__schema">
-    | Array<Omit<ResourceRelationship, "__schema">>,
+    | SchemalessResourceRelationship
+    | SchemalessResourceRelationship[],
 ): JsonApiRelationship | JsonApiRelationship[] {
-  const jsonApiRelationships = (
-    [] as Array<Omit<ResourceRelationship, "__schema">>
-  )
+  const jsonApiRelationships = ([] as SchemalessResourceRelationship[])
     .concat(resourceRelationships)
     .map((resourceRelationship) => {
       const { id } = resourceRelationship
@@ -138,11 +140,7 @@ function hatchifyRelationshipToJsonApiRelationship(
 export function convertToJsonApiRelationships(
   config: SourceConfig,
   schema: Schema,
-  resourceRelationships: Record<
-    string,
-    | Omit<ResourceRelationship, "__schema">
-    | Array<Omit<ResourceRelationship, "__schema">>
-  >,
+  resourceRelationships: SchemalessResourceRelationshipObject,
 ): Record<string, JsonApiResourceRelationship> {
   return Object.keys(resourceRelationships).reduce(
     (jsonApiRelationshipObject, relationshipKey) => {

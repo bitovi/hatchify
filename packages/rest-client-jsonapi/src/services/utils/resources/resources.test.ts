@@ -9,7 +9,10 @@ import {
   getTypeToSchema,
   jsonApiResourceToHatchifyResource,
 } from "./resources"
-import type { ResourceRelationship, Schema } from "@hatchifyjs/rest-client"
+import type {
+  Schema,
+  SchemalessResourceRelationshipObject,
+} from "@hatchifyjs/rest-client"
 
 describe("rest-client-jsonapi/services/utils/resources", () => {
   const typeToSchema = { article: "Article", person: "Person", tag: "Tag" }
@@ -194,11 +197,7 @@ describe("convertToJsonApiRelationships", () => {
       },
     }
 
-    const relationships: Record<
-      string,
-      | Omit<ResourceRelationship, "__schema">
-      | Array<Omit<ResourceRelationship, "__schema">>
-    > = {
+    const relationships: SchemalessResourceRelationshipObject = {
       person: { id: "1" },
       tag: [{ id: "1" }, { id: "2" }],
     }
@@ -241,11 +240,7 @@ describe("convertToJsonApiRelationships", () => {
       },
     }
 
-    const relationships: Record<
-      string,
-      | Omit<ResourceRelationship, "__schema">
-      | Array<Omit<ResourceRelationship, "__schema">>
-    > = {
+    const relationships: SchemalessResourceRelationshipObject = {
       person: { id: "1" },
     }
 

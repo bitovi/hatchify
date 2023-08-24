@@ -14,16 +14,28 @@ export interface ResourceRelationship {
   __schema: string
 }
 
+export type SchemalessResourceRelationship = Omit<
+  ResourceRelationship,
+  "__schema"
+>
+
+export interface ResourceRelationshipObject {
+  [key: string]: ResourceRelationship | ResourceRelationship[]
+}
+
+export interface SchemalessResourceRelationshipObject {
+  [key: string]:
+    | SchemalessResourceRelationship
+    | SchemalessResourceRelationship[]
+}
+
 export interface Resource {
   id: string
   __schema: string
   attributes?: {
     [key: string]: any // @todo
   }
-  relationships?: globalThis.Record<
-    string,
-    ResourceRelationship | ResourceRelationship[]
-  >
+  relationships?: ResourceRelationshipObject
 }
 
 export interface RestClientCreateData
@@ -31,35 +43,19 @@ export interface RestClientCreateData
   attributes: {
     [key: string]: any
   }
-  relationships?: globalThis.Record<
-    string,
-    | Omit<ResourceRelationship, "__schema">
-    | Array<Omit<ResourceRelationship, "__schema">>
-  >
+  relationships?: SchemalessResourceRelationshipObject
 }
 
 export interface CreateData
   extends Omit<RestClientCreateData, "__schema" | "relationships"> {
-  relationships?: globalThis.Record<
-    string,
-    | Omit<ResourceRelationship, "__schema">
-    | Array<Omit<ResourceRelationship, "__schema">>
-  >
+  relationships?: SchemalessResourceRelationshipObject
 }
 
 export interface RestClientUpdateData extends Omit<Resource, "relationships"> {
-  relationships?: globalThis.Record<
-    string,
-    | Omit<ResourceRelationship, "__schema">
-    | Array<Omit<ResourceRelationship, "__schema">>
-  >
+  relationships?: SchemalessResourceRelationshipObject
 }
 
 export interface UpdateData
   extends Omit<Resource, "__schema" | "relationships"> {
-  relationships?: globalThis.Record<
-    string,
-    | Omit<ResourceRelationship, "__schema">
-    | Array<Omit<ResourceRelationship, "__schema">>
-  >
+  relationships?: SchemalessResourceRelationshipObject
 }
