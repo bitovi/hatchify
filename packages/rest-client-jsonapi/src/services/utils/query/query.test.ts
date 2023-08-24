@@ -344,7 +344,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
             operator: "icontains",
           },
         ]),
-      ).toEqual("filter[name][$like]=%25Some%25")
+      ).toEqual("filter[name][$ilike]=%25Some%25")
 
       expect(
         filterToQueryParam([
@@ -354,7 +354,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
             operator: "istarts",
           },
         ]),
-      ).toEqual("filter[name][$like]=Some%25")
+      ).toEqual("filter[name][$ilike]=Some%25")
 
       expect(
         filterToQueryParam([
@@ -364,7 +364,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
             operator: "iends",
           },
         ]),
-      ).toEqual("filter[name][$like]=%25Some")
+      ).toEqual("filter[name][$ilike]=%25Some")
     })
   })
 
