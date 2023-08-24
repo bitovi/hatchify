@@ -21,6 +21,8 @@ export interface JsonApiResource {
   relationships?: Record<string, JsonApiResourceRelationship>
 }
 
+export type CreateJsonApiResource = Omit<JsonApiResource, "id">
+
 /**
  * Creates a new JSON:API Source.
  */

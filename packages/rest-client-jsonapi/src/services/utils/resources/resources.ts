@@ -11,6 +11,7 @@ import type {
   JsonApiResource,
   JsonApiResourceRelationship,
   Relationship as JsonApiRelationship,
+  CreateJsonApiResource,
 } from "../../jsonapi"
 
 type Relationship = Record<
@@ -159,11 +160,12 @@ export function restClientDataToJsonApiResource(
   schema: Schema,
   schemaName: string,
   hatchifyResource: RestClientCreateData | RestClientUpdateData,
-): JsonApiResource | Omit<JsonApiResource, "id"> {
+): JsonApiResource | CreateJsonApiResource {
   const { attributes, relationships } = hatchifyResource
   const id = "id" in hatchifyResource ? hatchifyResource?.id : null
 
-  const translatedRelationships = relationships
+  const conditionalId = id ? { id } : {}
+  const conditionalRelationships = relationships
     ? {
         relationships: convertToJsonApiRelationships(
           config,
@@ -174,9 +176,9 @@ export function restClientDataToJsonApiResource(
     : null
 
   return {
-    ...(id ? { id } : {}),
+    ...conditionalId,
     type: config.schemaMap[schemaName].type,
     attributes,
-    ...translatedRelationships,
+    ...conditionalRelationships,
   }
 }
