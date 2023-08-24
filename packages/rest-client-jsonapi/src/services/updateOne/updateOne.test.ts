@@ -69,7 +69,10 @@ describe("rest-client-jsonapi/services/updateOne", () => {
     )
 
     await expect(() =>
-      updateOne(sourceConfig, schemas, "Article", { id: "article-id-1" }),
+      updateOne(sourceConfig, schemas, "Article", {
+        __schema: "Article",
+        id: "article-id-1",
+      }),
     ).rejects.toEqual(errors)
   })
 

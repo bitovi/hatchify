@@ -88,7 +88,7 @@ export function convertToHatchifyResources(
  */
 function hatchifyRelationshipToJsonApiRelationship(
   config: SourceConfig,
-  schema: Schema & Required<Pick<Schema, "relationships">>,
+  schema: Schema,
   typeName: string,
   relationships:
     | Omit<ResourceRelationship, "__schema">
@@ -102,15 +102,15 @@ function hatchifyRelationshipToJsonApiRelationship(
       const { id } = relationship
       return {
         id,
-        type: Object.keys(schema.relationships).reduce((a, b) => {
+        type: Object.keys(schema?.relationships || {}).reduce((a, b) => {
           if (a.length) {
             return a
           }
 
-          if (b === typeName) {
-            a =
-              config.schemaMap[schema.relationships[b].schema]?.type ??
-              schema.relationships[b].schema
+          const relation = schema.relationships?.[b]
+
+          if (relation && b === typeName) {
+            a = config.schemaMap[relation.schema]?.type ?? relation.schema
             return a
           }
 
@@ -129,7 +129,7 @@ function hatchifyRelationshipToJsonApiRelationship(
  */
 export function convertToJsonApiRelationships(
   config: SourceConfig,
-  schema: Schema & Required<Pick<Schema, "relationships">>,
+  schema: Schema,
   resourceRelationships: Record<
     string,
     | Omit<ResourceRelationship, "__schema">

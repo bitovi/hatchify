@@ -29,6 +29,8 @@ describe("rest-client-jsonapi/services/createOne", () => {
   })
 
   it("throws an error if the request fails", async () => {
+    const data = { __schema: "Article", attributes: { title: "Hello, World!" } }
+
     const errors = [
       {
         code: "resource-conflict-occurred",
@@ -50,7 +52,7 @@ describe("rest-client-jsonapi/services/createOne", () => {
     )
 
     await expect(() =>
-      createOne(sourceConfig, schemas, "Article", {}),
+      createOne(sourceConfig, schemas, "Article", data),
     ).rejects.toEqual(errors)
   })
 
