@@ -1,7 +1,7 @@
 import type { Schema } from "@hatchifyjs/rest-client"
 import "@testing-library/jest-dom"
 import { describe, it, expect, vi } from "vitest"
-import { render, screen } from "@testing-library/react"
+import { render, screen, act } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import MuiFilters from "./MuiFilters"
 
@@ -60,5 +60,52 @@ describe("components/MuiFilters", () => {
     expect(await screen.findByText("Column")).toBeInTheDocument()
     expect(await screen.findByText("Operator")).toBeInTheDocument()
     expect(await screen.findByText("Value")).toBeInTheDocument()
+  })
+
+  it("sets page number back to 1 when the filter is applied", async () => {
+    const setPage = vi.fn()
+
+    const setFilters = vi.fn()
+
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+
+    render(
+      <MuiFilters
+        allSchemas={{ Test: TestSchema }}
+        schemaName="Test"
+        data={[]}
+        meta={meta}
+        sort={{
+          direction: undefined,
+          sortBy: undefined,
+        }}
+        page={{ number: 2, size: 10 }}
+        fields={{}}
+        include={[]}
+        setSort={vi.fn()}
+        setPage={(val) => setPage(val)}
+        selected={{ all: false, ids: [] }}
+        setSelected={vi.fn()}
+        filter={undefined}
+        setFilter={(val) => setFilters(val)}
+      />,
+    )
+
+    const filter = await screen.findByTestId("FilterListIcon")
+
+    await userEvent.click(filter)
+
+    const textField = await screen.findByPlaceholderText("Filter Value")
+    await userEvent.click(textField)
+    await userEvent.keyboard("was")
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+
+    expect(setFilters).toHaveBeenCalledWith([
+      { field: "id", operator: "icontains", value: "was" },
+    ])
+    expect(setPage).toHaveBeenCalledWith({ number: 1, size: 10 })
+    vi.useRealTimers()
   })
 })

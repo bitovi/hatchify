@@ -27,10 +27,11 @@ export function fieldsToQueryParam(
       continue
     }
 
-    const baseSchema = allSchemas[schemaName]
-    const relationship = baseSchema?.relationships || {}
-    const relatedSchema = relationship[field].schema
-    fieldsObj[schemaMap[relatedSchema].type] = fields[field]
+    if (schemaMap[field] === undefined) {
+      throw new Error(`"${field}" is not a valid schema`)
+    }
+
+    fieldsObj[schemaMap[field].type] = fields[field]
   }
 
   const fieldset = Object.entries(fieldsObj)
@@ -72,20 +73,50 @@ export function filterToQueryParam(filter: Filters): string {
   if (filter === undefined) {
     return ""
   }
+
   if (typeof filter === "string") {
     return filter
   }
 
   const q: string[] = []
 
+  if (typeof filter === "object" && !Array.isArray(filter)) {
+    for (const [key, value] of Object.entries(filter)) {
+      if (value == null) {
+        q.push(`filter[${key}]=${null}`)
+      } else if (Array.isArray(value)) {
+        q.push(
+          value
+            .map((v) => `filter[${key}][]=${encodeURIComponent(v.toString())}`)
+            .join("&"),
+        )
+      } else {
+        q.push(`filter[${key}]=${encodeURIComponent(value.toString())}`)
+      }
+    }
+
+    return q.join("&")
+  }
+
   //We need the UTC iso in the request, but we need the local iso in the frontend.
   const DATE_REGEX = new RegExp(
     /([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]))/i,
   )
+  const likeOperators = ["istarts", "iends", "icontains"]
 
   for (let i = 0; i < filter.length; i++) {
     const { operator, field, value } = filter[i]
-    if (operator === "empty" || operator === "nempty") {
+    if (likeOperators.includes(operator)) {
+      const wildcardOperator =
+        operator === "istarts"
+          ? `${value}%`
+          : operator === "iends"
+          ? `%${value}`
+          : `%${value}%`
+      q.push(
+        `filter[${field}][$ilike]=${encodeURIComponent(`${wildcardOperator}`)}`,
+      )
+    } else if (operator === "empty" || operator === "nempty") {
       q.push(
         `filter[${field}][${operator === "empty" ? "$eq" : "$ne"}]=${null}`,
       )
@@ -157,7 +188,9 @@ export function getQueryParams(
 
   if (include) {
     const includeParam = includeToQueryParam(include)
-    if (includeParam) params.push(includeParam)
+    if (includeParam) {
+      params.push(includeParam)
+    }
   }
 
   if (fields) {
@@ -167,22 +200,30 @@ export function getQueryParams(
       schemaName,
       fields,
     )
-    if (fieldsParam) params.push(fieldsParam)
+    if (fieldsParam) {
+      params.push(fieldsParam)
+    }
   }
 
   if (sort) {
     const sortParam = sortToQueryParam(sort)
-    if (sortParam) params.push(sortParam)
+    if (sortParam) {
+      params.push(sortParam)
+    }
   }
 
   if (filter) {
     const filterParam = filterToQueryParam(filter)
-    if (filterParam) params.push(filterParam)
+    if (filterParam) {
+      params.push(filterParam)
+    }
   }
 
   if (page) {
     const pageParam = pageToQueryParam(page)
-    if (pageParam) params.push(pageParam)
+    if (pageParam) {
+      params.push(pageParam)
+    }
   }
 
   return params.length ? `?${params.join("&")}` : ""

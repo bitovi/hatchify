@@ -12,9 +12,11 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   schemaName,
   filter: queryFilter,
   setFilter: setQueryFilter,
+  page,
+  setPage,
 }) => {
   const fields = getSupportedFields(allSchemas, schemaName)
-  const defaultFilter = { field: fields[0], operator: "ilike", value: "" }
+  const defaultFilter = { field: fields[0], operator: "icontains", value: "" }
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)
@@ -24,10 +26,14 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
     debounce((filters: FilterArray) => {
       const queryFilters = filters.filter((filter) => {
         // filter out empty values only if they are not empty operators
-        if (filter.operator === "empty" || filter.operator === "nempty")
+        if (filter.operator === "empty" || filter.operator === "nempty") {
           return true
+        }
         return filter.value !== "" && (filter.value as string[]).length !== 0
       })
+      if (queryFilters.length) {
+        setPage({ ...page, number: 1 })
+      }
       setQueryFilter(queryFilters.length ? queryFilters : undefined)
     }, 500),
     [setQueryFilter],
@@ -48,7 +54,9 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   }
 
   const removeFilter = (index: number) => {
-    if (filters.length === 1) return clearFilters()
+    if (filters.length === 1) {
+      return clearFilters()
+    }
     const newFilters = [...filters]
     newFilters.splice(index, 1)
     setFilters(newFilters)

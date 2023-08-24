@@ -82,7 +82,7 @@ describe("react-rest/services/useCreateOne", () => {
     )
   })
 
-  it("should return an error if the request fails", async () => {
+  it("should return an error if the request fails and then clear it on success", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
@@ -135,6 +135,40 @@ describe("react-rest/services/useCreateOne", () => {
           isSuccess: false,
         },
         undefined,
+      ]),
+    )
+
+    fakeDataSource.createOne = () =>
+      Promise.resolve([
+        {
+          id: "3",
+          __schema: "Article",
+          attributes: { title: "baz", body: "baz-body" },
+        },
+      ])
+
+    await result.current[0]({ title: "baz", body: "baz-body" })
+
+    await waitFor(() =>
+      expect(result.current).toEqual([
+        expect.any(Function),
+        {
+          status: "success",
+          meta: undefined,
+          error: undefined,
+          isDone: true,
+          isLoading: false,
+          isRejected: false,
+          isRevalidating: false,
+          isStale: false,
+          isSuccess: true,
+        },
+        {
+          id: "3",
+          __schema: "Article",
+          title: "baz",
+          body: "baz-body",
+        },
       ]),
     )
   })

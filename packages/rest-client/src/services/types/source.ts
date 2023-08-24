@@ -44,7 +44,7 @@ export interface SourceV0 {
     allSchemas: Schemas,
     schemaName: string,
     data: RestClientUpdateData,
-  ) => Promise<Resource[]>
+  ) => Promise<Resource[] | null>
   deleteOne: (
     allSchemas: Schemas,
     schemaName: string,

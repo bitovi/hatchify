@@ -1,4 +1,5 @@
 import type { HatchifyModel } from "@hatchifyjs/node"
+import * as dotenv from "dotenv"
 
 import { startServerWith } from "./testing/utils"
 
@@ -71,38 +72,38 @@ const testCases = [
     queryParam: "filter[name][$nin]=John&filter[name][$nin]=Jane",
     expectedResult: [],
   },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for end of a string",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=%ne",
-  //   expectedResult: [jane],
-  // },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for beginning of a string",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=Jo%",
-  //   expectedResult: [john],
-  // },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for middle of a string",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=%an%",
-  //   expectedResult: [jane],
-  // },
-  // TODO: resolve with HATCH-293. Skipped due to test failing
-  // {
-  //   description:
-  //     "returns correct data using the $like operator for entirety of a string (non-case sensitive)",
-  //   operator: "$like",
-  //   queryParam: "filter[name][$like]=john",
-  //   expectedResult: [john],
-  // },
+  {
+    description:
+      "returns correct data using the $ilike operator for end of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("%Ne")}`,
+    expectedResult: [jane],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for beginning of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("jO%")}`,
+    expectedResult: [john],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for middle of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("%aN%")}`,
+    expectedResult: [jane],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for entirety of a string (non-case sensitive)",
+    operator: "$ilike",
+    queryParam: "filter[name][$ilike]=jOhN",
+    expectedResult: [john],
+    expectedError: undefined,
+  },
   //number
   {
     description: "returns correct data using the $eq operator with a number",
@@ -239,12 +240,54 @@ const testCases = [
   },
 ]
 
+// like not supported by SQLite
+const SQLiteOnlyTestCases = [
+  {
+    description:
+      "throws error when attempting to use the $like operator for end of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%ne")}`,
+    expectedErrorSource: {
+      parameter: `filter[name][$like]=${encodeURIComponent("%ne")}`,
+    },
+  },
+  {
+    description:
+      "throws error when attempting to use the $like operator for beginning of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
+    expectedErrorSource: {
+      parameter: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
+    },
+  },
+  {
+    description:
+      "throws error when attempting to use the $like operator for middle of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%an%")}`,
+    expectedErrorSource: {
+      parameter: `filter[name][$like]=${encodeURIComponent("%an%")}`,
+    },
+  },
+  {
+    description:
+      "throws error when attempting to use the $like operator for entirety of a string (non-case sensitive)",
+    operator: "$like",
+    queryParam: "filter[name][$like]=John",
+    expectedErrorSource: { parameter: "filter[name][$like]=John" },
+  },
+]
+
+dotenv.config({
+  path: ".env",
+})
+
 describe("Operators", () => {
   const User: HatchifyModel = {
     name: "User",
     attributes: {
       name: "STRING",
-      age: "NUMBER",
+      age: "INTEGER",
       startDate: "DATE",
       onSite: "BOOLEAN",
       manager: "BOOLEAN",
@@ -256,7 +299,6 @@ describe("Operators", () => {
 
   beforeAll(async () => {
     ;({ fetch, teardown } = await startServerWith([User]))
-
     await fetch("/api/users", {
       method: "post",
       body: {
@@ -279,6 +321,15 @@ describe("Operators", () => {
   })
 
   afterAll(async () => {
+    const { body } = await fetch(`/api/users/?`)
+    const userIds = body.data.map(({ id }) => id)
+    await fetch(`/api/users/${userIds[0]}`, {
+      method: "delete",
+    })
+    await fetch(`/api/users/${userIds[1]}`, {
+      method: "delete",
+    })
+
     await teardown()
   })
 
@@ -292,4 +343,21 @@ describe("Operators", () => {
       })),
     )
   })
+
+  if (process.env.DB_CONFIG !== "postgres") {
+    it.each(SQLiteOnlyTestCases)(
+      "$description",
+      async ({ expectedErrorSource, queryParam }) => {
+        const result = await fetch(`/api/users/?${queryParam}`)
+        const error = JSON.parse(result.error.text)
+        expect(error.errors[0]).toEqual({
+          status: 422,
+          code: "invalid-parameter",
+          detail: "SQLITE does not support like. Please use ilike",
+          source: expectedErrorSource,
+          title: "SQLITE does not support like",
+        })
+      },
+    )
+  }
 })

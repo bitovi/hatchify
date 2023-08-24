@@ -14,7 +14,7 @@ export const createOne = async (
 ): Promise<Record> => {
   const resources = await dataSource.createOne(allSchemas, schemaName, data)
 
-  notifySubscribers(schemaName)
+  notifySubscribers()
 
   return flattenResourcesIntoRecords(allSchemas, resources, schemaName)[0]
 }

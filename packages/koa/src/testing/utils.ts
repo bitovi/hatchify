@@ -1,20 +1,18 @@
 import http from "node:http"
 
-import type { HatchifyModel } from "@hatchifyjs/node"
+import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
+import * as dotenv from "dotenv"
 import { Deserializer } from "jsonapi-serializer"
 import Koa from "koa"
-import type { Context } from "koa"
 import request from "supertest"
 
 import { Hatchify, errorHandlerMiddleware } from "../koa"
 
 type Method = "get" | "post" | "patch" | "delete"
-type Middleware = (ctx: Context) => void
 
 export async function startServerWith(
-  models: HatchifyModel[],
-  middleware?: Middleware[],
+  models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
 ): Promise<{
   fetch: (
     path: string,
@@ -23,12 +21,29 @@ export async function startServerWith(
   teardown: () => Promise<void>
   hatchify?
 }> {
+  dotenv.config({
+    path: ".env",
+  })
   const app = new Koa()
-  const hatchify = new Hatchify(models, { prefix: "/api" })
+  const hatchify = new Hatchify(models, {
+    prefix: "/api",
+    ...(process.env.DB_CONFIG === "postgres"
+      ? {
+          database: {
+            dialect: "postgres",
+            host: process.env.DB_HOST,
+            port: Number(process.env.DB_PORT),
+            username: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME,
+          },
+        }
+      : {}),
+  })
   app.use(errorHandlerMiddleware)
   app.use(hatchify.middleware.allModels.all)
 
-  const server = http.createServer(app.callback())
+  const server = createServer(app)
   await hatchify.createDatabase()
 
   async function fetch(
@@ -38,6 +53,7 @@ export async function startServerWith(
     const method = options?.method || "get"
     const headers = options?.headers || {}
     const body = options?.body
+
     const response = request(server)[method](path)
 
     Object.entries(headers).forEach(([key, value]) => response.set(key, value))
@@ -55,7 +71,9 @@ export async function startServerWith(
   }
 }
 
-export function createServer(app: Koa) {
+export function createServer(
+  app: Koa,
+): http.Server<typeof http.IncomingMessage, typeof http.ServerResponse> {
   return http.createServer(app.callback())
 }
 

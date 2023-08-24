@@ -1,5 +1,6 @@
 import type QuerystringParsingError from "@bitovi/querystring-parser/lib/errors/querystring-parsing-error"
 import querystringParser from "@bitovi/sequelize-querystring-parser"
+import * as dotenv from "dotenv"
 import { noCase } from "no-case"
 import type {
   CreateOptions,
@@ -9,7 +10,8 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
-import { UnexpectedValueError } from "../error"
+import { HatchifyError, UnexpectedValueError } from "../error"
+import { codes, statusCodes } from "../error/constants"
 import type { HatchifyModel } from "../types"
 
 interface QueryStringParser<T> {
@@ -18,13 +20,39 @@ interface QueryStringParser<T> {
   orm: "sequelize"
 }
 
+dotenv.config({
+  path: ".env",
+})
+
+function handleSqliteLike(querystring: string): string {
+  // if not postgres (sqlite)
+  // 1. throw error if like is used (temporary)
+  // 2. ilike needs to be changed to like before parsing query
+  if (process.env.DB_CONFIG !== "postgres") {
+    if (querystring.includes("[$like]")) {
+      throw new HatchifyError({
+        code: codes.ERR_INVALID_PARAMETER,
+        title: "SQLITE does not support like",
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+        detail: "SQLITE does not support like. Please use ilike",
+        parameter: querystring,
+      })
+    }
+
+    return querystring.replaceAll("[$ilike]", "[$like]")
+  }
+
+  return querystring
+}
+
 export function buildFindOptions(
   model: HatchifyModel,
   querystring: string,
   id?: Identifier,
 ): QueryStringParser<FindOptions> {
-  const ops: QueryStringParser<FindOptions> =
-    querystringParser.parse(querystring)
+  const ops: QueryStringParser<FindOptions> = querystringParser.parse(
+    handleSqliteLike(querystring),
+  )
 
   if (ops.errors.length) {
     throw ops.errors.map(
@@ -36,7 +64,9 @@ export function buildFindOptions(
     )
   }
 
-  if (!ops.data) return ops
+  if (!ops.data) {
+    return ops
+  }
 
   Object.keys(ops.data.where || {}).forEach((attribute) => {
     if (attribute !== "id" && !model.attributes[attribute]) {
@@ -95,7 +125,9 @@ export function buildFindOptions(
     }
   }
 
-  if (ops.errors.length) throw ops.errors
+  if (ops.errors.length) {
+    throw ops.errors
+  }
 
   if (!ops.data.where) {
     ops.data.where = {}

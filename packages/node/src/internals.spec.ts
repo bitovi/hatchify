@@ -73,13 +73,13 @@ describe("Internal Tests", () => {
     )
 
     // Test actual vs false pluralization
-    expect(hatchify.getHatchifyModelNameForRoute("/api/people")).toBe("Person")
-    expect(hatchify.getHatchifyModelNameForRoute("/api/persons")).toBe(false)
+    expect(hatchify.getHatchifyModelNameForRoute("/api/people")).toBe(false)
+    expect(hatchify.getHatchifyModelNameForRoute("/api/persons")).toBe("Person")
 
-    expect(hatchify.getHatchifyModelNameForRoute("/api/people/1")).toBe(
+    expect(hatchify.getHatchifyModelNameForRoute("/api/people/1")).toBe(false)
+    expect(hatchify.getHatchifyModelNameForRoute("/api/persons/1")).toBe(
       "Person",
     )
-    expect(hatchify.getHatchifyModelNameForRoute("/api/persons/1")).toBe(false)
   })
 
   it("should test return false for unknown model names in url", async () => {

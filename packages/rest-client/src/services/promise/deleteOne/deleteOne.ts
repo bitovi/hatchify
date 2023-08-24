@@ -12,7 +12,7 @@ export const deleteOne = async (
 ): Promise<void> => {
   await dataSource.deleteOne(allSchemas, schemaName, id)
 
-  notifySubscribers(schemaName)
+  notifySubscribers()
 
   return
 }

@@ -6,7 +6,7 @@ describe("rest-client/services/subscribesubscribeToOne", () => {
   it("callback should be called from store subscribers", () => {
     const store = createStore(["articles"])
     const spy = vi.fn()
-    subscribeToOne("articles", spy, "article-1")
+    subscribeToOne("articles", "article-1", spy)
 
     store.articles.subscribers.forEach((fn) =>
       fn([{ id: "article-1", attributes: {} }]),
@@ -18,7 +18,7 @@ describe("rest-client/services/subscribesubscribeToOne", () => {
   it("should not call callback if id does not exist in data", () => {
     const store = createStore(["articles"])
     const spy = vi.fn()
-    subscribeToOne("articles", spy, "article-1")
+    subscribeToOne("articles", "article-1", spy)
 
     store.articles.subscribers.forEach((fn) =>
       fn([{ id: "article-2", attributes: {} }]),

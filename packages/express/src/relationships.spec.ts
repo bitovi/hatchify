@@ -311,7 +311,7 @@ describe("Relationships", () => {
             data: {
               type: "User",
               attributes: {
-                name: "Mr. Pagination",
+                name: "Pagination",
               },
             },
           },
@@ -322,7 +322,7 @@ describe("Relationships", () => {
             data: {
               type: "User",
               attributes: {
-                name: "Mrs. Pagination",
+                name: "Pagination",
               },
             },
           },
@@ -330,7 +330,7 @@ describe("Relationships", () => {
       ])
 
       const { body: users } = await fetch(
-        "/api/users?filter[name]=pagination&page[number]=1&page[size]=1",
+        "/api/users?filter[name]=Pagination&page[number]=1&page[size]=1",
       )
 
       expect(users).toEqual({
@@ -350,7 +350,7 @@ describe("Relationships", () => {
             data: {
               type: "User",
               attributes: {
-                name: "Mr. No Pagination",
+                name: "No Pagination",
               },
             },
           },
@@ -358,7 +358,7 @@ describe("Relationships", () => {
       ])
 
       const { body: users } = await fetch(
-        "/api/users?filter[name]=no+pagination",
+        "/api/users?filter[name]=No+Pagination",
       )
 
       expect(users).toEqual({
