@@ -46,16 +46,10 @@ export interface RestClientCreateData
   relationships?: SchemalessResourceRelationshipObject
 }
 
-export interface CreateData
-  extends Omit<RestClientCreateData, "__schema" | "relationships"> {
-  relationships?: SchemalessResourceRelationshipObject
-}
+export type CreateData = Omit<RestClientCreateData, "__schema">
 
 export interface RestClientUpdateData extends Omit<Resource, "relationships"> {
   relationships?: SchemalessResourceRelationshipObject
 }
 
-export interface UpdateData
-  extends Omit<Resource, "__schema" | "relationships"> {
-  relationships?: SchemalessResourceRelationshipObject
-}
+export type UpdateData = Omit<Resource, "__schema">
