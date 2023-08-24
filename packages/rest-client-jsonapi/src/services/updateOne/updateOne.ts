@@ -1,14 +1,13 @@
 import type {
   Resource,
   RestClientUpdateData,
-  Schema,
   Schemas,
   SourceConfig,
 } from "@hatchifyjs/rest-client"
 import {
   convertToHatchifyResources,
   fetchJsonApi,
-  convertToJsonApiRelationships,
+  restClientDataToJsonApiResource,
 } from "../utils"
 import type { JsonApiResource } from "../jsonapi"
 
@@ -22,7 +21,7 @@ export async function updateOne(
   schemaName: string,
   data: RestClientUpdateData,
 ): Promise<Resource[]> {
-  const jsonApiResource = restClientUpdateDataToJsonApiResource(
+  const jsonApiResource = restClientDataToJsonApiResource(
     config,
     allSchemas[schemaName],
     schemaName,
@@ -31,7 +30,9 @@ export async function updateOne(
 
   const json = await fetchJsonApi<JsonApiResource>(
     "PATCH",
-    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${jsonApiResource.id}`,
+    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${
+      "id" in jsonApiResource ? jsonApiResource.id : null
+    }`,
     jsonApiResource,
   )
 
@@ -41,33 +42,4 @@ export async function updateOne(
       config.schemaMap,
     ),
   )
-}
-
-/**
- * Converts a Hatchify resource into a JSON:API resource.
- */
-function restClientUpdateDataToJsonApiResource(
-  config: SourceConfig,
-  schema: Schema,
-  schemaName: string,
-  hatchifyResource: RestClientUpdateData,
-): JsonApiResource {
-  const { attributes, relationships, id } = hatchifyResource
-
-  const translatedRelationships = relationships
-    ? {
-        relationships: convertToJsonApiRelationships(
-          config,
-          schema,
-          relationships,
-        ),
-      }
-    : null
-
-  return {
-    id,
-    type: config.schemaMap[schemaName].type,
-    attributes,
-    ...translatedRelationships,
-  }
 }

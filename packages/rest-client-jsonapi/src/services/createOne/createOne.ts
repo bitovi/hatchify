@@ -1,14 +1,13 @@
 import type {
-  Schemas,
-  SourceConfig,
   Resource,
   RestClientCreateData,
-  Schema,
+  Schemas,
+  SourceConfig,
 } from "@hatchifyjs/rest-client"
 import {
   convertToHatchifyResources,
   fetchJsonApi,
-  convertToJsonApiRelationships,
+  restClientDataToJsonApiResource,
 } from "../utils"
 import type { JsonApiResource } from "../jsonapi"
 
@@ -22,7 +21,7 @@ export async function createOne(
   schemaName: string,
   data: RestClientCreateData,
 ): Promise<Resource[]> {
-  const jsonApiResource = restClientCreateDataToJsonApiResource(
+  const jsonApiResource = restClientDataToJsonApiResource(
     config,
     allSchemas[schemaName],
     schemaName,
@@ -41,32 +40,4 @@ export async function createOne(
       config.schemaMap,
     ),
   )
-}
-
-/**
- * Converts a Hatchify resource into a JSON:API resource.
- */
-function restClientCreateDataToJsonApiResource(
-  config: SourceConfig,
-  schema: Schema,
-  schemaName: string,
-  hatchifyResource: RestClientCreateData,
-): Omit<JsonApiResource, "id"> {
-  const { attributes, relationships } = hatchifyResource
-
-  const translatedRelationships = relationships
-    ? {
-        relationships: convertToJsonApiRelationships(
-          config,
-          schema,
-          relationships,
-        ),
-      }
-    : null
-
-  return {
-    type: config.schemaMap[schemaName].type,
-    attributes,
-    ...translatedRelationships,
-  }
 }

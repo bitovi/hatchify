@@ -1,9 +1,11 @@
 import type {
+  RequiredSchemaMap,
   Resource,
   ResourceRelationship,
-  RequiredSchemaMap,
-  SourceConfig,
+  RestClientCreateData,
+  RestClientUpdateData,
   Schema,
+  SourceConfig,
 } from "@hatchifyjs/rest-client"
 import type {
   JsonApiResource,
@@ -147,4 +149,34 @@ export function convertToJsonApiRelationships(
     }
     return a
   }, {} as Record<string, JsonApiResourceRelationship>)
+}
+
+/**
+ * Converts a Hatchify resource into a JSON:API resource.
+ */
+export function restClientDataToJsonApiResource(
+  config: SourceConfig,
+  schema: Schema,
+  schemaName: string,
+  hatchifyResource: RestClientCreateData | RestClientUpdateData,
+): JsonApiResource | Omit<JsonApiResource, "id"> {
+  const { attributes, relationships } = hatchifyResource
+  const id = "id" in hatchifyResource ? hatchifyResource?.id : null
+
+  const translatedRelationships = relationships
+    ? {
+        relationships: convertToJsonApiRelationships(
+          config,
+          schema,
+          relationships,
+        ),
+      }
+    : null
+
+  return {
+    ...(id ? { id } : {}),
+    type: config.schemaMap[schemaName].type,
+    attributes,
+    ...translatedRelationships,
+  }
 }

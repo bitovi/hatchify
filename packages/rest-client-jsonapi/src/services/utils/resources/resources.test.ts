@@ -4,10 +4,10 @@ import type {
   JsonApiResourceRelationship,
 } from "../../jsonapi"
 import {
-  jsonApiResourceToHatchifyResource,
   convertToHatchifyResources,
-  getTypeToSchema,
   convertToJsonApiRelationships,
+  getTypeToSchema,
+  jsonApiResourceToHatchifyResource,
 } from "./resources"
 import type { ResourceRelationship, Schema } from "@hatchifyjs/rest-client"
 
