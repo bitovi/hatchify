@@ -471,7 +471,8 @@ describe.each(dbDialects)("Operators", (dialect) => {
               status: 422,
               code: "unexpected-value",
               title: "Unexpected value.",
-              detail: "Page size was provided but page number was not provided.",
+              detail:
+                "Page size was provided but page number was not provided.",
               source: {
                 parameter: "page[number]",
               },
@@ -531,7 +532,8 @@ describe.each(dbDialects)("Operators", (dialect) => {
               status: 422,
               code: "unexpected-value",
               title: "Unexpected value.",
-              detail: "Page number was provided but page size was not provided.",
+              detail:
+                "Page number was provided but page size was not provided.",
               source: {
                 parameter: "page[size]",
               },
@@ -638,7 +640,9 @@ describe.each(dbDialects)("Operators", (dialect) => {
         },
       }
 
-      const { status, body } = await fetch("/api/todos?filter[namee][]=John+Doe")
+      const { status, body } = await fetch(
+        "/api/todos?filter[namee][]=John+Doe",
+      )
 
       expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
       expect(body).toEqual({
