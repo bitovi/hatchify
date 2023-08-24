@@ -1,4 +1,9 @@
 import type {
+  FinalDatetimeORM,
+  PartialDatetimeControlType,
+  PartialDatetimeORM,
+} from "../dataTypes/datetime"
+import type {
   FinalNumberORM,
   PartialNumberControlType,
   PartialNumberORM,
@@ -32,6 +37,12 @@ export interface PartialSchema {
           string,
           FinalStringORM
         >
+      | PartialAttribute<
+          PartialDatetimeORM,
+          PartialDatetimeControlType,
+          Date,
+          FinalDatetimeORM
+        >
   }
 }
 export interface FinalSchema {
@@ -55,6 +66,12 @@ export interface FinalSchema {
           PartialStringControlType,
           string,
           FinalStringORM
+        >
+      | FinalAttribute<
+          PartialDatetimeORM,
+          PartialDatetimeControlType,
+          Date,
+          FinalDatetimeORM
         >
   }
 }

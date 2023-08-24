@@ -32,7 +32,9 @@ type OperatorOption = {
 
 const operatorOptions: OperatorOption = {
   string: [
-    { operator: "ilike", text: "contains" },
+    { operator: "icontains", text: "contains" },
+    { operator: "istarts", text: "starts with" },
+    { operator: "iends", text: "ends with" },
     { operator: "$eq", text: "equals" },
     { operator: "empty", text: "is empty" },
     { operator: "nempty", text: "is not empty" },

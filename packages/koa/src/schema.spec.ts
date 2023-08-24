@@ -1,4 +1,4 @@
-import { integer, string } from "@hatchifyjs/hatchify-core"
+import { datetime, integer, string } from "@hatchifyjs/hatchify-core"
 import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
@@ -12,6 +12,10 @@ describe.each(dbDialects)("Operators", (dialect) => {
           name: { type: "STRING", validate: { len: [1, 10] } },
           age: { type: "INTEGER", validate: { min: 0 } },
           yearsWorked: { type: "INTEGER", validate: { min: 0 } },
+          hireDate: {
+            type: "DATE",
+            validate: { isAfter: "2022-12-31T00:00:00.000Z" },
+          },
         },
       }
 
@@ -20,19 +24,22 @@ describe.each(dbDialects)("Operators", (dialect) => {
       let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
       beforeAll(async () => {
-        ;({ fetch, hatchify, teardown } = await startServerWith([User], dialect))
+        ;({ fetch, hatchify, teardown } = await startServerWith(
+          [User],
+          dialect,
+        ))
       })
 
       afterAll(async () => {
         await teardown()
       })
 
-      it("should create a snake_case table with id, name, age and years_worked columns", async () => {
+      it("should create a snake_case table with id, name, age, years_worked and hire_date columns", async () => {
         const [columns] = await hatchify._sequelize.query(
           'SELECT * FROM pragma_table_info("user")',
         )
 
-        expect(columns).toHaveLength(4)
+        expect(columns).toHaveLength(5)
         expect(columns[0]).toMatchObject({
           name: "id",
           notnull: 0,
@@ -57,6 +64,12 @@ describe.each(dbDialects)("Operators", (dialect) => {
           pk: 0,
           type: "INTEGER",
         })
+        expect(columns[4]).toMatchObject({
+          name: "hire_date",
+          notnull: 0,
+          pk: 0,
+          type: "DATETIME",
+        })
       })
 
       describe("should have API with core features working", () => {
@@ -79,6 +92,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     name: "John Doe",
                     age: 21,
                     yearsWorked: 1,
+                    hireDate: "2023-01-01T00:00:00.000Z",
                   },
                 },
               },
@@ -92,6 +106,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     name: "Jane Doe",
                     age: 22,
                     yearsWorked: 3,
+                    hireDate: "2023-01-01T00:00:00.000Z",
                   },
                 },
               },
@@ -119,6 +134,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           })
@@ -135,12 +151,13 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           })
         })
 
-        it("validates name, age and yearsWorked", async () => {
+        it("validates name, age, yearsWorked and hireDate", async () => {
           const { status: postStatus, body: postUser } = await fetch(
             "/api/users",
             {
@@ -152,6 +169,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     name: "",
                     age: -1,
                     yearsWorked: -1,
+                    hireDate: "2022-01-01T00:00:00.000Z",
                   },
                 },
               },
@@ -171,7 +189,13 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     path: "name",
                     value: "",
                     origin: "FUNCTION",
-                    instance: { id: null, name: "", age: -1, yearsWorked: -1 },
+                    instance: {
+                      id: null,
+                      name: "",
+                      age: -1,
+                      yearsWorked: -1,
+                      hireDate: "2022-01-01T00:00:00.000Z",
+                    },
                     validatorKey: "len",
                     validatorName: "len",
                     validatorArgs: [1, 10],
@@ -183,7 +207,13 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     path: "age",
                     value: -1,
                     origin: "FUNCTION",
-                    instance: { id: null, name: "", age: -1, yearsWorked: -1 },
+                    instance: {
+                      id: null,
+                      name: "",
+                      age: -1,
+                      yearsWorked: -1,
+                      hireDate: "2022-01-01T00:00:00.000Z",
+                    },
                     validatorKey: "min",
                     validatorName: "min",
                     validatorArgs: [0],
@@ -195,11 +225,38 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     path: "yearsWorked",
                     value: -1,
                     origin: "FUNCTION",
-                    instance: { id: null, name: "", age: -1, yearsWorked: -1 },
+                    instance: {
+                      id: null,
+                      name: "",
+                      age: -1,
+                      yearsWorked: -1,
+                      hireDate: "2022-01-01T00:00:00.000Z",
+                    },
                     validatorKey: "min",
                     validatorName: "min",
                     validatorArgs: [0],
                     original: { validatorName: "min", validatorArgs: [0] },
+                  },
+                  {
+                    message: "Validation isAfter on hireDate failed",
+                    type: "Validation error",
+                    path: "hireDate",
+                    value: "2022-01-01T00:00:00.000Z",
+                    origin: "FUNCTION",
+                    instance: {
+                      id: null,
+                      name: "",
+                      age: -1,
+                      yearsWorked: -1,
+                      hireDate: "2022-01-01T00:00:00.000Z",
+                    },
+                    validatorKey: "isAfter",
+                    validatorName: "isAfter",
+                    validatorArgs: ["2022-12-31T00:00:00.000Z"],
+                    original: {
+                      validatorName: "isAfter",
+                      validatorArgs: ["2022-12-31T00:00:00.000Z"],
+                    },
                   },
                 ],
               },
@@ -208,7 +265,9 @@ describe.each(dbDialects)("Operators", (dialect) => {
         })
 
         it("supports listing all users", async () => {
-          const { status: getStatus, body: getUsers } = await fetch("/api/users")
+          const { status: getStatus, body: getUsers } = await fetch(
+            "/api/users",
+          )
 
           expect(getStatus).toBe(200)
           expect(getUsers).toEqual({
@@ -223,6 +282,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
               {
@@ -232,6 +292,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             ],
@@ -259,6 +320,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             ],
@@ -318,6 +380,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
               {
@@ -327,6 +390,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             ],
@@ -354,6 +418,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             ],
@@ -372,6 +437,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           name: string({ min: 1, max: 10 }),
           age: integer({ min: 0 }),
           yearsWorked: integer({ min: 0 }),
+          hireDate: datetime({ min: new Date("2022-12-31T00:00:00.000Z") }),
         },
       }
 
@@ -387,12 +453,12 @@ describe.each(dbDialects)("Operators", (dialect) => {
         await teardown()
       })
 
-      it("should create a snake_case table with id, age and years_worked columns", async () => {
+      it("should create a snake_case table with id, age, years_worked and hired_date columns", async () => {
         const [columns] = await hatchify._sequelize.query(
           'SELECT * FROM pragma_table_info("user")',
         )
 
-        expect(columns).toHaveLength(4)
+        expect(columns).toHaveLength(5)
         expect(columns[0]).toMatchObject({
           name: "id",
           notnull: 0,
@@ -417,6 +483,12 @@ describe.each(dbDialects)("Operators", (dialect) => {
           pk: 0,
           type: "INTEGER",
         })
+        expect(columns[4]).toMatchObject({
+          name: "hire_date",
+          notnull: 0,
+          pk: 0,
+          type: "DATETIME",
+        })
       })
 
       describe("should have API with core features working", () => {
@@ -439,6 +511,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     name: "John Doe",
                     age: 21,
                     yearsWorked: 1,
+                    hireDate: "2023-01-01T00:00:00.000Z",
                   },
                 },
               },
@@ -452,6 +525,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     name: "Jane Doe",
                     age: 22,
                     yearsWorked: 3,
+                    hireDate: "2023-01-01T00:00:00.000Z",
                   },
                 },
               },
@@ -479,6 +553,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 name: "John Doe",
                 age: 21,
                 yearsWorked: 1,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           })
@@ -495,12 +570,13 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 name: "Jane Doe",
                 age: 22,
                 yearsWorked: 3,
+                hireDate: "2023-01-01T00:00:00.000Z",
               },
             },
           })
         })
 
-        it("validates name, age and yearsWorked", async () => {
+        it("validates name, age, yearsWorked and hireDate", async () => {
           const { status: postStatus, body: postUser } = await fetch(
             "/api/users",
             {
@@ -512,6 +588,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     name: "",
                     age: -1,
                     yearsWorked: -1,
+                    hireDate: "2022-01-01T00:00:00.000Z",
                   },
                 },
               },
@@ -550,13 +627,22 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   pointer: "/data/attributes/yearsWorked",
                 },
               },
+              {
+                status: 422,
+                code: "unexpected-value",
+                detail: expect.stringMatching(
+                  /Payload must have 'hireDate' after or on 2022-12-31T00:00:00\.000Z but received '(.*?)' instead\./,
+                ),
+                source: { pointer: "/data/attributes/hireDate" },
+                title: "Unexpected value.",
+              },
             ],
           })
         })
 
         it("supports listing all users", async () => {
           const { status: getStatus, body: getUsers } = await fetch(
-            "/api/users"
+            "/api/users",
           )
 
           expect(getStatus).toBe(200)
@@ -572,6 +658,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
               {
@@ -581,6 +668,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             ],
@@ -608,6 +696,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             ],
@@ -667,6 +756,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "Jane Doe",
                   age: 22,
                   yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
               {
@@ -676,6 +766,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             ],
@@ -703,6 +794,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   name: "John Doe",
                   age: 21,
                   yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
                 },
               },
             ],

@@ -76,7 +76,8 @@ describe("assembler", () => {
           Todo.attributes.importance.orm.sequelize.allowNull,
         ).toBeUndefined()
         expect(
-          Todo.attributes.importance.orm.sequelize.autoIncrement,
+          "autoIncrement" in Todo.attributes.importance.orm.sequelize &&
+            Todo.attributes.importance.orm.sequelize.autoIncrement,
         ).toBeUndefined()
         expect(
           Todo.attributes.importance.orm.sequelize.primaryKey,
@@ -93,7 +94,9 @@ describe("assembler", () => {
           assembledTodo.attributes.importance.orm.sequelize.allowNull,
         ).toBe(true)
         expect(
-          assembledTodo.attributes.importance.orm.sequelize.autoIncrement,
+          "autoIncrement" in
+            assembledTodo.attributes.importance.orm.sequelize &&
+            assembledTodo.attributes.importance.orm.sequelize.autoIncrement,
         ).toBe(false)
         expect(
           assembledTodo.attributes.importance.orm.sequelize.primaryKey,
