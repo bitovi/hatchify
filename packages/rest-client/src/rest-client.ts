@@ -21,6 +21,7 @@ export type {
   Schema,
   SchemaMap,
   Schemas,
+  SchemalessResourceRelationshipObject,
   Source,
   SourceConfig,
   Subscription,
