@@ -9,7 +9,7 @@ runs:
   using: "composite"
 
   steps:
-    - name: SQLite tests
+    - name: Test
       shell: bash
       run: npx nx test ${{ inputs.package }}
       env:
