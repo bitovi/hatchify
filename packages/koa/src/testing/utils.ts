@@ -70,7 +70,7 @@ export async function startServerWith(
   async function teardown() {
     if (dialect === "postgres") {
       // drop all tables
-      await hatchify.orm.drop()
+      await hatchify.orm?.drop()
     }
     return hatchify.orm.close()
   }
