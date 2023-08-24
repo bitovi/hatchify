@@ -14,17 +14,17 @@ filtering capabilities. For example, the following url might
 find all todos whose name starts with "clean":
 
 ```curl
-GET /api/todos?filter[name][$ilike]=clean%23
+GET /api/todos?filter[name][$ilike]=clean%25
 ```
 
-> Note: `%23` is `#` escaped. 
+> Note: `%25` is `%` escaped. 
 
 These queries are also supported in [react-rest](../../packages/react-rest/README.md):
 
 ```ts
 Todo.useAll({ 
   filter: {
-    name: {$ilike: "clean#"}
+    name: {$ilike: "clean%"}
   } 
 })
 ```
@@ -34,16 +34,14 @@ Filters can be combined across multiple properties:
 ```ts
 Todo.useAll({ 
   filter: {
-    name: {$ilike: "clean#"},
+    name: {$ilike: "clean%"},
     severity: {$gt: 0.5},
     user: {name: "Christina"} 
   } 
 })
 ```
 
-
 Filter queries take the shape of: `filter[ATTRIBUTE_NAME][OPERATOR]=VALUE`.
-
 
 ## Operators
 

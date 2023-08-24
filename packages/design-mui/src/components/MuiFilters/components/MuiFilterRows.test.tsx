@@ -16,7 +16,7 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
         }}
         fields={["name", "date"]}
         filters={[
-          { field: "name", operator: "ilike", value: "test" },
+          { field: "name", operator: "$like", value: "test" },
           { field: "date", operator: "nempty", value: "2020-01-01 01:01" },
         ]}
         setFilters={setFilters}
