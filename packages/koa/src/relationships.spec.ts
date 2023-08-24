@@ -206,23 +206,26 @@ describe.each(dbDialects)("Operators", (dialect) => {
       })
       expect(todo).toBeTruthy()
 
-      const { body: patchUserWTodo } = await fetch(`/api/users/${user.data.id}`, {
-        method: "patch",
-        body: {
-          data: {
-            type: "User",
-            id: user.data.id,
-            attributes: {
-              name: "John Doe Updated",
-            },
-            relationships: {
-              todos: {
-                data: [],
+      const { body: patchUserWTodo } = await fetch(
+        `/api/users/${user.data.id}`,
+        {
+          method: "patch",
+          body: {
+            data: {
+              type: "User",
+              id: user.data.id,
+              attributes: {
+                name: "John Doe Updated",
+              },
+              relationships: {
+                todos: {
+                  data: [],
+                },
               },
             },
           },
         },
-      })
+      )
       expect(patchUserWTodo).toBeTruthy()
 
       // get user with todos
@@ -285,7 +288,9 @@ describe.each(dbDialects)("Operators", (dialect) => {
               due_date: todo.data.attributes.due_date,
               importance: todo.data.attributes.importance,
             },
-            relationships: { user: { data: { type: "User", id: user.data.id } } },
+            relationships: {
+              user: { data: { type: "User", id: user.data.id } },
+            },
           },
           included: [
             {
@@ -341,7 +346,9 @@ describe.each(dbDialects)("Operators", (dialect) => {
               due_date: todo.data.attributes.due_date,
               importance: todo.data.attributes.importance,
             },
-            relationships: { user: { data: { type: "User", id: user.data.id } } },
+            relationships: {
+              user: { data: { type: "User", id: user.data.id } },
+            },
           },
           included: [
             {
