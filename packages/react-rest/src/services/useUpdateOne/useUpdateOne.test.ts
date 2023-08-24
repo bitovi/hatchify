@@ -110,7 +110,10 @@ describe("react-rest/services/useUpdateOne", () => {
       ])
     })
 
-    await result.current[0]({ title: "updated-title", body: "baz-body" })
+    await result.current[0]({
+      id: "1",
+      attributes: { title: "updated-title", body: "baz-body" },
+    })
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -199,7 +202,10 @@ describe("react-rest/services/useUpdateOne", () => {
         },
       ])
 
-    await result.current[0]({ title: "updated-title", body: "baz-body" })
+    await result.current[0]({
+      id: "1",
+      attributes: { title: "updated-title", body: "baz-body" },
+    })
 
     await waitFor(() =>
       expect(result.current).toEqual([

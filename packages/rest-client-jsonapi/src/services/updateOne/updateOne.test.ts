@@ -59,7 +59,11 @@ describe("rest-client-jsonapi/services/updateOne", () => {
       ),
     )
 
-    const data = { id: "article-id-1", attributes: { title: "A new world!" } }
+    const data = {
+      __schema: "Article",
+      id: "article-id-1",
+      attributes: { title: "A new world!" },
+    }
 
     const result = await updateOne(sourceConfig, schemas, "Article", data)
 
