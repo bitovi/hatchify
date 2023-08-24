@@ -7,7 +7,7 @@ import type {
 import {
   convertToHatchifyResources,
   fetchJsonApi,
-  restClientDataToJsonApiResource,
+  hatchifyResourceToJsonApiResource,
 } from "../utils"
 import type { JsonApiResource } from "../jsonapi"
 
@@ -21,7 +21,7 @@ export async function updateOne(
   schemaName: string,
   data: RestClientUpdateData,
 ): Promise<Resource[]> {
-  const jsonApiResource = restClientDataToJsonApiResource(
+  const jsonApiResource = hatchifyResourceToJsonApiResource(
     config,
     allSchemas[schemaName],
     schemaName,

@@ -93,36 +93,41 @@ function hatchifyRelationshipToJsonApiRelationship(
   config: SourceConfig,
   schema: Schema,
   typeName: string,
-  relationships:
+  resourceRelationships:
     | Omit<ResourceRelationship, "__schema">
     | Array<Omit<ResourceRelationship, "__schema">>,
 ): JsonApiRelationship | JsonApiRelationship[] {
   const jsonApiRelationships = (
     [] as Array<Omit<ResourceRelationship, "__schema">>
   )
-    .concat(relationships)
-    .map((relationship) => {
-      const { id } = relationship
+    .concat(resourceRelationships)
+    .map((resourceRelationship) => {
+      const { id } = resourceRelationship
+      const type = Object.keys(schema?.relationships || {}).reduce(
+        (type, relationshipKey) => {
+          if (type) {
+            return type
+          }
+
+          const relationship = schema.relationships?.[relationshipKey]
+
+          if (relationship && relationshipKey === typeName) {
+            type =
+              config.schemaMap[relationship.schema]?.type ?? relationship.schema
+          }
+
+          return type
+        },
+        "",
+      )
+
       return {
         id,
-        type: Object.keys(schema?.relationships || {}).reduce((a, b) => {
-          if (a.length) {
-            return a
-          }
-
-          const relation = schema.relationships?.[b]
-
-          if (relation && b === typeName) {
-            a = config.schemaMap[relation.schema]?.type ?? relation.schema
-            return a
-          }
-
-          return ""
-        }, ""),
+        type,
       }
     })
 
-  return Array.isArray(relationships)
+  return Array.isArray(resourceRelationships)
     ? jsonApiRelationships
     : jsonApiRelationships[0]
 }
@@ -139,23 +144,26 @@ export function convertToJsonApiRelationships(
     | Array<Omit<ResourceRelationship, "__schema">>
   >,
 ): Record<string, JsonApiResourceRelationship> {
-  return Object.keys(resourceRelationships).reduce((a, b) => {
-    a[b] = {
-      data: hatchifyRelationshipToJsonApiRelationship(
-        config,
-        schema,
-        b,
-        resourceRelationships[b],
-      ),
-    }
-    return a
-  }, {} as Record<string, JsonApiResourceRelationship>)
+  return Object.keys(resourceRelationships).reduce(
+    (jsonApiRelationshipObject, relationshipKey) => {
+      jsonApiRelationshipObject[relationshipKey] = {
+        data: hatchifyRelationshipToJsonApiRelationship(
+          config,
+          schema,
+          relationshipKey,
+          resourceRelationships[relationshipKey],
+        ),
+      }
+      return jsonApiRelationshipObject
+    },
+    {} as Record<string, JsonApiResourceRelationship>,
+  )
 }
 
 /**
  * Converts a Hatchify resource into a JSON:API resource.
  */
-export function restClientDataToJsonApiResource(
+export function hatchifyResourceToJsonApiResource(
   config: SourceConfig,
   schema: Schema,
   schemaName: string,
@@ -164,8 +172,8 @@ export function restClientDataToJsonApiResource(
   const { attributes, relationships } = hatchifyResource
   const id = "id" in hatchifyResource ? hatchifyResource?.id : null
 
-  const conditionalId = id ? { id } : {}
-  const conditionalRelationships = relationships
+  const conditionalIdProperty = id ? { id } : null
+  const conditionalRelationshipsProperty = relationships
     ? {
         relationships: convertToJsonApiRelationships(
           config,
@@ -176,9 +184,9 @@ export function restClientDataToJsonApiResource(
     : null
 
   return {
-    ...conditionalId,
+    ...conditionalIdProperty,
     type: config.schemaMap[schemaName].type,
     attributes,
-    ...conditionalRelationships,
+    ...conditionalRelationshipsProperty,
   }
 }
