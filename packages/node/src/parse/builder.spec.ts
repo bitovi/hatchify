@@ -11,6 +11,12 @@ import { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
 describe("builder", () => {
+  const User: HatchifyModel = {
+    name: "User",
+    attributes: {
+      name: "STRING",
+    },
+  }
   const Todo: HatchifyModel = {
     name: "Todo",
     attributes: {
@@ -20,7 +26,7 @@ describe("builder", () => {
     },
     belongsTo: [{ target: "User", options: { as: "user" } }],
   }
-  const hatchify = new Hatchify([Todo], { prefix: "/api" })
+  const hatchify = new Hatchify([User, Todo], { prefix: "/api" })
 
   describe("buildFindOptions", () => {
     it("works with ID attribute provided", () => {

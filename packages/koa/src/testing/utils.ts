@@ -10,12 +10,12 @@ import request from "supertest"
 import { Hatchify, errorHandlerMiddleware } from "../koa"
 
 type Method = "get" | "post" | "patch" | "delete"
-type DBOption = "postgres" | "sqlite"
-export const DBOptions: DBOption[] = ["postgres", "sqlite"]
+type dbDialect = "postgres" | "sqlite"
+export const dbDialects: dbDialect[] = ["postgres", "sqlite"]
 
 export async function startServerWith(
   models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
-  dialect: DBOption = "sqlite",
+  dialect: dbDialect = "sqlite",
 ): Promise<{
   fetch: (
     path: string,
@@ -34,11 +34,11 @@ export async function startServerWith(
       ? {
           database: {
             dialect,
-            host: process.env.DB_HOST,
-            port: Number(process.env.DB_PORT),
-            username: process.env.DB_USERNAME,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
+            host: process.env.PG_DB_HOST,
+            port: Number(process.env.PG_DB_PORT),
+            username: process.env.PG_DB_USERNAME,
+            password: process.env.PG_DB_PASSWORD,
+            database: process.env.PG_DB_NAME,
           },
         }
       : {}),

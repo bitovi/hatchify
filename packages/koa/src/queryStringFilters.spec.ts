@@ -2,7 +2,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 
 import { startServerWith } from "./testing/utils"
-import { DBOptions } from "./testing/utils"
+import { dbDialects } from "./testing/utils"
 
 const userData = [
   {
@@ -283,7 +283,7 @@ dotenv.config({
   path: ".env",
 })
 
-describe.each(DBOptions)("Operators", (dbType) => {
+describe.each(dbDialects)("Operators", (dbType) => {
   const User: HatchifyModel = {
     name: "User",
     attributes: {

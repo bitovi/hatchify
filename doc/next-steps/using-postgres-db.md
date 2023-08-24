@@ -112,11 +112,11 @@ the benefits of storing config in the environment [here](https://12factor.net/co
 5. Fill your .env file with the following content:
 
    ```bash
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USERNAME=example_user
-   DB_PASSWORD=example_password
-   DB_NAME=hatchify_app
+   PG_DB_HOST=localhost
+   PG_DB_PORT=5432
+   PG_DB_USERNAME=example_user
+   PG_DB_PASSWORD=example_password
+   PG_DB_NAME=hatchify_app
    ```
 
 6. Edit your Hatchify app's server (`backend/index.ts`) to use your newly created database:
@@ -138,11 +138,11 @@ the benefits of storing config in the environment [here](https://12factor.net/co
      prefix: "/api",
      database: {
        dialect: "postgres",               // 👀
-       host: process.env.DB_HOST,         // 👀
-       port: Number(process.env.DB_PORT), // 👀
-       username: process.env.DB_USERNAME, // 👀
-       password: process.env.DB_PASSWORD, // 👀
-       database: process.env.DB_NAME,     // 👀
+       host: process.env.PG_DB_HOST,         // 👀
+       port: Number(process.env.PG_DB_PORT), // 👀
+       username: process.env.PG_DB_USERNAME, // 👀
+       password: process.env.PG_DB_PASSWORD, // 👀
+       database: process.env.PG_DB_NAME,     // 👀
      },
    })
   
