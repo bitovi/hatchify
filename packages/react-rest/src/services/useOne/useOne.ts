@@ -63,6 +63,10 @@ export const useOne = (
     return subscribeToAll(schemaName, undefined, fetchOne)
   }, [schemaName, fetchOne, memoizedQuery.id])
 
-  const meta = getMeta(error, loading, false, undefined)
+  const meta = useMemo(
+    () => getMeta(error, loading, false, undefined),
+    [error, loading],
+  )
+
   return [data, meta]
 }
