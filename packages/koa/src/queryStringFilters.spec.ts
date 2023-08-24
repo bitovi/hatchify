@@ -283,7 +283,7 @@ dotenv.config({
   path: ".env",
 })
 
-describe.each(dbDialects)("Operators", (dbType) => {
+describe.each(dbDialects)("Operators", (dialect) => {
   const User: HatchifyModel = {
     name: "User",
     attributes: {
@@ -299,7 +299,7 @@ describe.each(dbDialects)("Operators", (dbType) => {
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    ;({ fetch, teardown } = await startServerWith([User], dbType))
+    ;({ fetch, teardown } = await startServerWith([User], dialect))
     await fetch("/api/users", {
       method: "post",
       body: {
@@ -335,7 +335,7 @@ describe.each(dbDialects)("Operators", (dbType) => {
   })
 
   it.each(testCases)(
-    `${dbType} - $description`,
+    `${dialect} - $description`,
     async ({ expectedResult, queryParam }) => {
       const { body } = await fetch(`/api/users/?${queryParam}`)
       const users = body.data.map(({ attributes }) => attributes)
@@ -348,9 +348,9 @@ describe.each(dbDialects)("Operators", (dbType) => {
     },
   )
 
-  if (dbType === "sqlite") {
+  if (dialect === "sqlite") {
     it.each(SQLiteOnlyTestCases)(
-      `${dbType} - $description`,
+      `${dialect} - $description`,
       async ({ expectedErrorSource, queryParam }) => {
         const result = await fetch(`/api/users/?${queryParam}`)
         const error = JSON.parse(result.error.text)
