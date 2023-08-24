@@ -114,7 +114,7 @@ export function filterToQueryParam(filter: Filters): string {
           ? `%${value}`
           : `%${value}%`
       q.push(
-        `filter[${field}][$like]=${encodeURIComponent(`${wildcardOperator}`)}`,
+        `filter[${field}][$ilike]=${encodeURIComponent(`${wildcardOperator}`)}`,
       )
     } else if (operator === "empty" || operator === "nempty") {
       q.push(
