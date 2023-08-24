@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react"
 import { findAll, getMeta, subscribeToAll } from "@hatchifyjs/rest-client"
 
 import type {
+  FinalSchemas,
   Meta,
   MetaError,
   QueryList,
@@ -29,7 +30,7 @@ const useMemoizedQuery = (query: QueryList) => {
  */
 export const useAll = (
   dataSource: Source,
-  allSchemas: Schemas,
+  allSchemas: Schemas | FinalSchemas,
   schemaName: string,
   query: QueryList,
 ): [Record[], Meta] => {

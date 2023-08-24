@@ -12,3 +12,5 @@ export {
 } from "./services"
 
 export default hatchifyReactRest
+
+export { hatchifyV2 } from "./services"

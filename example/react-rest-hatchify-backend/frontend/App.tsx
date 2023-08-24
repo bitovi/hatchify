@@ -4,6 +4,7 @@ import createJsonapiClient from "@hatchifyjs/rest-client-jsonapi"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
 import WithoutHooks from "./WithoutHooks"
+// import { assembler, integer } from "@hatchifyjs/hatchify-core"
 
 export const hatchedReactRest = hatchifyReactRest(
   { Todo, User },
@@ -12,6 +13,15 @@ export const hatchedReactRest = hatchifyReactRest(
     User: { endpoint: "users" },
   }),
 )
+
+// const assembled = assembler({
+//   Todo: {
+//     name: "Todo",
+//     attributes: {
+//       importance: integer({ min: 0 }),
+//     },
+//   },
+// })
 
 const App: React.FC = () => {
   return (

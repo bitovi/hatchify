@@ -24,10 +24,16 @@ import type {
 } from "@hatchifyjs/rest-client"
 import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
 
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
+// import type {
+//   FinalSchema,
+//   Schema as LegacySchema,
+//   PartialSchema,
+// } from "@hatchifyjs/hatchify-core"
+// import { assembler, integer } from "@hatchifyjs/hatchify-core"
+import { RestClient } from "@hatchifyjs/rest-client"
 
 export interface SchemaRecord {
-  [schemaName: string]: LegacySchema | Schema
+  [schemaName: string]: Schema
 }
 type SchemaKeys<Schema extends SchemaRecord> = keyof Schema
 
@@ -107,3 +113,85 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
 
   return functions
 }
+
+// ----------------------------------------------------------------------------
+
+// // maps control.type to a typescript type, eg. "Integer" => number, fallback to string
+// type AttributeValue<T> = T extends "Number" | "number" | "Integer" | "integer"
+//   ? number
+//   : string
+
+// // attribute type (based on FinalAttribute)
+// type AttributeType = FinalSchema["attributes"][number]
+
+// // [attributeName: string]: AttributeType (control from FinalAttribute)
+// type Attributes = globalThis.Record<string, AttributeType>
+
+// // [attributeName: string]: AttributeValue (typescript type)
+// type AttributeValues<T extends Attributes> = {
+//   [key in keyof T]: AttributeValue<T[key]>
+// }
+
+// // for given attributes, convert AttributeType (schema v2) to AttributeValue (typescript type)
+// function parse<T extends Attributes>(attributes: T): AttributeValues<T> {
+//   return Object.entries(attributes).reduce((acc, [key, value]) => {
+//     acc[key] = attributes[key].control.type as AttributeValue<T[keyof T]>
+//     return acc
+//   }, {} as AttributeValues<T>)
+// }
+
+// const Todo: PartialSchema = {
+//   name: "Todo",
+//   id: integer({ required: true, autoIncrement: true }),
+//   attributes: {
+//     importance: integer({ min: 0 }),
+//   },
+// }
+
+// const assembled = assembler({ Todo })
+// assembled.Todo.attributes.importance.control.type
+
+// const TypedTodo = parse(assembled.Todo.attributes)
+// TypedTodo.importance
+
+// export interface v2SchemaRecord {
+//   [schemaName: string]: PartialSchema
+// }
+// type v2SchemaKeys<PartialSchema extends v2SchemaRecord> = keyof PartialSchema
+// export type v2ReactRest<PartialSchema extends v2SchemaRecord> = {
+//   [schemaName in v2SchemaKeys<PartialSchema>]: {
+//     // promises
+//     findAll: (
+//       query: QueryList,
+//     ) => Promise<[Records: Record[], Meta: RequestMetaData]>
+//     // hooks
+//     useAll: (query?: QueryList) => [Record[], Meta]
+//     // subscribes
+//     subscribeToAll: (
+//       query: QueryList | undefined,
+//       callback: (data: Record[]) => void,
+//     ) => Unsubscribe
+//   }
+// }
+
+// export function hatchifyV2<TSchemaRecord extends v2SchemaRecord>(
+//   schemas: TSchemaRecord,
+//   restClient: RestClient,
+// ): v2ReactRest<TSchemaRecord> {
+//   const finalSchemas = assembler(schemas)
+//   console.log("assembled", finalSchemas)
+
+//   const functions = Object.values(finalSchemas).reduce((acc, schema) => {
+//     acc[schema.name as v2SchemaKeys<TSchemaRecord>] = {
+//       findAll: (query) => findAll(restClient, finalSchemas, schema.name, query),
+//       useAll: (query) =>
+//         useAll(restClient, finalSchemas, schema.name, query ?? {}),
+//       subscribeToAll: (query, callback) =>
+//         subscribeToAll(schema.name, query, callback),
+//     }
+
+//     return acc
+//   }, {} as v2ReactRest<TSchemaRecord>)
+
+//   return functions
+// }

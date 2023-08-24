@@ -1,6 +1,7 @@
 import type {
   Fields,
   Filters,
+  FinalSchemas,
   Include,
   RequiredSchemaMap,
   Schemas,
@@ -14,7 +15,7 @@ import type {
  */
 export function fieldsToQueryParam(
   schemaMap: RequiredSchemaMap,
-  allSchemas: Schemas,
+  allSchemas: Schemas | FinalSchemas,
   schemaName: string,
   fields: Fields,
 ): string {
@@ -162,7 +163,7 @@ export function pageToQueryParam(page: unknown): string {
  */
 export function getQueryParams(
   schemaMap: RequiredSchemaMap,
-  allSchemas: Schemas,
+  allSchemas: Schemas | FinalSchemas,
   schemaName: string,
   query: {
     fields?: Fields

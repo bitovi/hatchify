@@ -1,4 +1,4 @@
-import type { Schemas } from "./schema"
+import type { FinalSchemas, Schemas } from "./schema"
 import type { QueryList, QueryOne } from "./query"
 import type { CreateData, Resource, UpdateData } from "./data"
 import type { RequestMetaData } from "./meta"
@@ -22,7 +22,7 @@ export interface SourceConfig {
 export interface SourceV0 {
   version: 0
   findAll: (
-    allSchemas: Schemas,
+    allSchemas: Schemas | FinalSchemas,
     schemaName: string,
     query: QueryList,
   ) => Promise<[Resources: Resource[], Meta: RequestMetaData]>
@@ -49,3 +49,5 @@ export interface SourceV0 {
 }
 
 export type Source = SourceV0 // | SourceV1 | ...
+
+export type RestClient = Source

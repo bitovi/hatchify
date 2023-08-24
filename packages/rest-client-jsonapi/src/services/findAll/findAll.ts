@@ -4,6 +4,7 @@ import type {
   QueryList,
   Resource,
   RequestMetaData,
+  FinalSchemas,
 } from "@hatchifyjs/rest-client"
 import type { JsonApiResource } from "../jsonapi"
 import {
@@ -18,7 +19,7 @@ import {
  */
 export async function findAll(
   config: SourceConfig,
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas | Schemas,
   schemaName: string,
   query: QueryList,
 ): Promise<[Resources: Resource[], Meta: RequestMetaData]> {

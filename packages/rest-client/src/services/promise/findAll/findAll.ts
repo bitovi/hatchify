@@ -4,6 +4,7 @@ import type {
   QueryList,
   Schemas,
   RequestMetaData,
+  FinalSchemas,
 } from "../../types"
 import { flattenResourcesIntoRecords } from "../../utils"
 
@@ -13,7 +14,7 @@ import { flattenResourcesIntoRecords } from "../../utils"
  */
 export const findAll = async (
   dataSource: Source,
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas | Schemas,
   schemaName: string,
   query: QueryList,
 ): Promise<[Records: Record[], RequestMetaData: RequestMetaData]> => {
