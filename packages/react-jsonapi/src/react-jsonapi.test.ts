@@ -13,7 +13,7 @@ const TestSchema: SchemaRecord = {
     displayAttribute: "name",
     attributes: {
       name: "string",
-      age: "number",
+      age: "integer",
     },
     relationships: {
       Article: {

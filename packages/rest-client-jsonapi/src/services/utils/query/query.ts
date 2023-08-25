@@ -1,6 +1,6 @@
 import type {
   Fields,
-  Filter,
+  Filters,
   Include,
   RequiredSchemaMap,
   Schemas,
@@ -13,6 +13,7 @@ import type {
  * where "book_type" and "person_type" are the JSON:API types for the "Book" and "Person" schemas.
  */
 export function fieldsToQueryParam(
+  schemaMap: RequiredSchemaMap,
   allSchemas: Schemas,
   schemaName: string,
   fields: Fields,
@@ -22,14 +23,15 @@ export function fieldsToQueryParam(
   for (const field of fieldsArr) {
     // if field is equal to the schemaName, then the field is an attribute of the base schema
     if (field === schemaName) {
-      fieldsObj[schemaName] = fields[field]
+      fieldsObj[schemaMap[schemaName].type] = fields[field]
       continue
     }
 
-    const baseSchema = allSchemas[schemaName]
-    const relationship = baseSchema?.relationships || {}
-    const relatedSchema = relationship[field].schema
-    fieldsObj[relatedSchema] = fields[field]
+    if (schemaMap[field] === undefined) {
+      throw new Error(`"${field}" is not a valid schema`)
+    }
+
+    fieldsObj[schemaMap[field].type] = fields[field]
   }
 
   const fieldset = Object.entries(fieldsObj)
@@ -63,36 +65,79 @@ export function sortToQueryParam(sort: string[] | string): string {
  * [{name: "John", operator: "$eq"}, {age: 30, operator: "$gte"}] => "filter[name][$eq]=John&filter[age][$gte]=30"
  */
 
-export function filterToQueryParam(filterArr: Filter): string {
-  if (filterArr === undefined) {
+/**
+ * Transforms the filter from an array into a JSON:API compliant query parameter.
+ * [{ field: "name", value: "John", operator: "$eq" }] => "filter[name][$eq]=John"
+ */
+export function filterToQueryParam(filter: Filters): string {
+  if (filter === undefined) {
     return ""
   }
-  if (typeof filterArr === "string") {
-    return filterArr
+
+  if (typeof filter === "string") {
+    return filter
   }
 
-  const queries: string[] = []
+  const q: string[] = []
 
-  for (let i = 0; i < filterArr.length; i++) {
-    const { operator, ...filterKeys } = filterArr[i]
-    for (const [key, value] of Object.entries(filterKeys)) {
-      if (Array.isArray(value)) {
-        queries.push(
+  if (typeof filter === "object" && !Array.isArray(filter)) {
+    for (const [key, value] of Object.entries(filter)) {
+      if (value == null) {
+        q.push(`filter[${key}]=${null}`)
+      } else if (Array.isArray(value)) {
+        q.push(
           value
-            .map((v) => `filter[${key}][]=${encodeURIComponent(v)}`)
+            .map((v) => `filter[${key}][]=${encodeURIComponent(v.toString())}`)
             .join("&"),
         )
       } else {
-        queries.push(
-          `filter[${key}]${operator === "empty" ? "" : `[${operator}]`}=${
-            operator !== "empty" ? encodeURIComponent(value) : null
-          }`,
-        )
+        q.push(`filter[${key}]=${encodeURIComponent(value.toString())}`)
       }
+    }
+
+    return q.join("&")
+  }
+
+  //We need the UTC iso in the request, but we need the local iso in the frontend.
+  const DATE_REGEX = new RegExp(
+    /([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]))/i,
+  )
+  const likeOperators = ["istarts", "iends", "icontains"]
+
+  for (let i = 0; i < filter.length; i++) {
+    const { operator, field, value } = filter[i]
+    if (likeOperators.includes(operator)) {
+      const wildcardOperator =
+        operator === "istarts"
+          ? `${value}%`
+          : operator === "iends"
+          ? `%${value}`
+          : `%${value}%`
+      q.push(
+        `filter[${field}][$ilike]=${encodeURIComponent(`${wildcardOperator}`)}`,
+      )
+    } else if (operator === "empty" || operator === "nempty") {
+      q.push(
+        `filter[${field}][${operator === "empty" ? "$eq" : "$ne"}]=${null}`,
+      )
+    } else if (Array.isArray(value)) {
+      q.push(
+        value
+          .map((v) => `filter[${field}][${operator}]=${encodeURIComponent(v)}`)
+          .join("&"),
+      )
+    } else {
+      q.push(
+        `filter[${field}][${operator}]=${encodeURIComponent(
+          DATE_REGEX.test(value.toString())
+            ? new Date(value.toString()).toISOString()
+            : value,
+        )}`,
+      )
     }
   }
 
-  return queries.join("&")
+  return q.join("&")
 }
 
 /**
@@ -131,40 +176,54 @@ export function getQueryParams(
   allSchemas: Schemas,
   schemaName: string,
   query: {
-    fields: Fields
-    include: Include
+    fields?: Fields
+    include?: Include
     sort?: string[] | string
-    filter?: Filter
+    filter?: Filters
     page?: unknown
   },
 ): string {
   const params = []
   const { fields, include, sort, filter, page } = query
 
-  if (include.length) {
+  if (include) {
     const includeParam = includeToQueryParam(include)
-    if (includeParam) params.push(includeParam)
+    if (includeParam) {
+      params.push(includeParam)
+    }
   }
 
   if (fields) {
-    const fieldsParam = fieldsToQueryParam(allSchemas, schemaName, fields)
-
-    if (fieldsParam) params.push(fieldsParam)
+    const fieldsParam = fieldsToQueryParam(
+      schemaMap,
+      allSchemas,
+      schemaName,
+      fields,
+    )
+    if (fieldsParam) {
+      params.push(fieldsParam)
+    }
   }
 
   if (sort) {
     const sortParam = sortToQueryParam(sort)
-    if (sortParam) params.push(sortParam)
+    if (sortParam) {
+      params.push(sortParam)
+    }
   }
 
   if (filter) {
     const filterParam = filterToQueryParam(filter)
-    if (filterParam) params.push(filterParam)
+    if (filterParam) {
+      params.push(filterParam)
+    }
   }
 
   if (page) {
     const pageParam = pageToQueryParam(page)
-    if (pageParam) params.push(pageParam)
+    if (pageParam) {
+      params.push(pageParam)
+    }
   }
 
   return params.length ? `?${params.join("&")}` : ""

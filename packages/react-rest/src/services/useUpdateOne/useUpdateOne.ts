@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { updateOne, getMeta } from "@hatchifyjs/rest-client"
 import type {
   UpdateData,
@@ -17,19 +17,34 @@ export const useUpdateOne = (
   dataSource: Source,
   allSchemas: Schemas,
   schemaName: string,
-): [(data: UpdateData) => void, Meta, Record?] => {
-  const [data, setData] = useState<Record | undefined>(undefined)
+): [(data: UpdateData) => void, Meta, Record | undefined | null] => {
+  const [data, setData] = useState<Record | undefined | null>(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  function update(data: UpdateData) {
-    setLoading(true)
-    updateOne(dataSource, allSchemas, schemaName, data)
-      .then(setData)
-      .catch(setError)
-      .finally(() => setLoading(false))
-  }
+  const update = useCallback(
+    (data: UpdateData) => {
+      setLoading(true)
+      updateOne(dataSource, allSchemas, schemaName, data)
+        .then((data) => {
+          setError(undefined)
+          setData(data)
+        })
+        .catch((error) => {
+          setError(error)
+          if (error instanceof Error) {
+            throw error
+          }
+        })
+        .finally(() => setLoading(false))
+    },
+    [dataSource, allSchemas, schemaName],
+  )
 
-  const meta = getMeta(error, loading, false, undefined)
+  const meta = useMemo(
+    () => getMeta(error, loading, false, undefined),
+    [error, loading],
+  )
+
   return [update, meta, data]
 }

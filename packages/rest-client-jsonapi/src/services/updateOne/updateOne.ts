@@ -16,12 +16,16 @@ export async function updateOne(
   allSchemas: Schemas,
   schemaName: string,
   data: UpdateData,
-): Promise<Resource[]> {
+): Promise<Resource[] | null> {
   const json = await fetchJsonApi<JsonApiResource>(
     "PATCH",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${data.id}`,
     data,
   )
+
+  if (!json.data) {
+    return Promise.resolve(null)
+  }
 
   return Promise.resolve(
     convertToHatchifyResources(

@@ -39,7 +39,9 @@ export function getIncludeFromFields(
   const fieldKeys = Object.keys(fields)
 
   for (const field of fieldKeys) {
-    if (field === schemaName) continue
+    if (field === schemaName) {
+      continue
+    }
 
     const include = field
     includes[include] = true

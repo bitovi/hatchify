@@ -42,10 +42,22 @@ describe("rest-client/services/utils/schema", () => {
         name: "Article",
         displayAttribute: "id",
         attributes: {
-          id: "string",
-          title: "string",
-          body: "string",
-          wordCount: "number",
+          id: {
+            allowNull: true,
+            type: "string",
+          },
+          title: {
+            allowNull: true,
+            type: "string",
+          },
+          body: {
+            allowNull: true,
+            type: "string",
+          },
+          wordCount: {
+            allowNull: true,
+            type: "number",
+          },
         },
         relationships: {
           comments: { type: "many", schema: "Comment" },
@@ -62,10 +74,15 @@ describe("rest-client/services/utils/schema", () => {
       const schema: OldSchema = {
         name: "Article",
         attributes: {
-          id: { type: "UUID" },
-          title: { type: "VARCHAR(100)" },
+          id: { type: "UUID", allowNull: false },
+          title: { type: "VARCHAR(100)", allowNull: true },
           body: { type: "LONGTEXT" },
           wordCount: { type: "INTEGER" },
+          status: {
+            type: "enum",
+            allowNull: true,
+            values: ["Published", "Reviewed", "In Progress"],
+          },
         },
         hasMany: [{ target: "Comment", options: { as: "comments" } }],
         hasOne: [{ target: "Person", options: { as: "author" } }],
@@ -77,10 +94,27 @@ describe("rest-client/services/utils/schema", () => {
         name: "Article",
         displayAttribute: "id",
         attributes: {
-          id: "string",
-          title: "string",
-          body: "string",
-          wordCount: "number",
+          id: {
+            allowNull: false,
+            type: "string",
+          },
+          title: {
+            allowNull: true,
+            type: "string",
+          },
+          body: {
+            allowNull: true,
+            type: "string",
+          },
+          wordCount: {
+            allowNull: true,
+            type: "number",
+          },
+          status: {
+            allowNull: true,
+            type: "enum",
+            values: ["Published", "Reviewed", "In Progress"],
+          },
         },
         relationships: {
           comments: { type: "many", schema: "Comment" },

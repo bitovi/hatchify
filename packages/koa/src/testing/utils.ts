@@ -1,33 +1,52 @@
 import http from "node:http"
 
-import type { HatchifyModel } from "@hatchifyjs/node"
+import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
+import * as dotenv from "dotenv"
 import { Deserializer } from "jsonapi-serializer"
 import Koa from "koa"
-import type { Context } from "koa"
 import request from "supertest"
 
 import { Hatchify, errorHandlerMiddleware } from "../koa"
 
 type Method = "get" | "post" | "patch" | "delete"
-type Middleware = (ctx: Context) => void
+type dbDialect = "postgres" | "sqlite"
+export const dbDialects: dbDialect[] = ["postgres", "sqlite"]
 
 export async function startServerWith(
-  models: HatchifyModel[],
-  middleware?: Middleware[],
+  models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
+  dialect: dbDialect = "sqlite",
 ): Promise<{
   fetch: (
     path: string,
     options?: { method?: Method; headers?: object; body?: object },
   ) => Promise<any>
   teardown: () => Promise<void>
+  hatchify?
 }> {
+  dotenv.config({
+    path: ".env",
+  })
   const app = new Koa()
-  const hatchify = new Hatchify(models, { prefix: "/api" })
+  const hatchify = new Hatchify(models, {
+    prefix: "/api",
+    ...(dialect === "postgres"
+      ? {
+          database: {
+            dialect,
+            host: process.env.PG_DB_HOST,
+            port: Number(process.env.PG_DB_PORT),
+            username: process.env.PG_DB_USERNAME,
+            password: process.env.PG_DB_PASSWORD,
+            database: process.env.PG_DB_NAME,
+          },
+        }
+      : {}),
+  })
   app.use(errorHandlerMiddleware)
   app.use(hatchify.middleware.allModels.all)
 
-  const server = http.createServer(app.callback())
+  const server = createServer(app)
   await hatchify.createDatabase()
 
   async function fetch(
@@ -37,6 +56,7 @@ export async function startServerWith(
     const method = options?.method || "get"
     const headers = options?.headers || {}
     const body = options?.body
+
     const response = request(server)[method](path)
 
     Object.entries(headers).forEach(([key, value]) => response.set(key, value))
@@ -47,13 +67,24 @@ export async function startServerWith(
     return response
   }
 
+  async function teardown() {
+    if (dialect === "postgres") {
+      // drop all tables
+      await hatchify.orm.drop({})
+    }
+    return hatchify.orm.close()
+  }
+
   return {
     fetch,
-    teardown: async () => hatchify.orm.close(),
+    teardown,
+    hatchify,
   }
 }
 
-export function createServer(app: Koa) {
+export function createServer(
+  app: Koa,
+): http.Server<typeof http.IncomingMessage, typeof http.ServerResponse> {
   return http.createServer(app.callback())
 }
 

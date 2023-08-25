@@ -22,17 +22,37 @@ describe("rest-client/services/promise/updateOne", () => {
     expect(result).toEqual(expected)
   })
 
+  it("should return null if data source returns null", async () => {
+    const nullDataSource = {
+      ...fakeDataSource,
+      updateOne: () => Promise.resolve(null),
+    }
+
+    const result = await updateOne(nullDataSource, schemas, "Article", data)
+    expect(result).toEqual(null)
+  })
+
   it.todo("should insert the record into the store")
 
   it.todo("should notify subscribers")
 
   it("should throw an error if the request fails", async () => {
+    const errors = [
+      {
+        code: "missing-resource",
+        source: {},
+        status: 404,
+        title: "Resource not found",
+      },
+    ]
+
     const errorDataSource = {
       ...fakeDataSource,
-      updateOne: () => Promise.reject(new Error("network error")),
+      updateOne: () => Promise.reject(errors),
     }
+
     await expect(
       updateOne(errorDataSource, schemas, "Article", data),
-    ).rejects.toThrowError("network error")
+    ).rejects.toEqual(errors)
   })
 })

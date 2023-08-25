@@ -1,8 +1,11 @@
 export type {
   Attribute,
+  AttributeObject,
   CreateData,
+  EnumObject,
   Fields,
-  Filter,
+  FilterArray,
+  Filters,
   Include,
   Meta,
   MetaError,

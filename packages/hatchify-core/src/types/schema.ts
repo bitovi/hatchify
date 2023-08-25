@@ -1,7 +1,7 @@
 export type Attribute =
   | string
-  | { type: string }
-  | { type: "enum"; values: string[] }
+  | { type: string; allowNull?: boolean }
+  | { type: "enum"; allowNull?: boolean; values: string[] }
 
 export interface Relationship {
   target: string

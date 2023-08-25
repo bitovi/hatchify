@@ -48,16 +48,39 @@ describe("rest-client-jsonapi/services/updateOne", () => {
     expect(result).toEqual(expected)
   })
 
-  it("throws an error if the request fails", async () => {
+  it("works if server returns null", async () => {
     server.use(
       rest.patch(`${baseUrl}/articles/article-id-1`, (_, res, ctx) =>
-        res.once(ctx.status(500), ctx.json({ error: "error message" })),
+        res.once(ctx.status(200), ctx.json({ data: null })),
+      ),
+    )
+
+    const data = { id: "article-id-1", attributes: { title: "A new world!" } }
+
+    const result = await updateOne(sourceConfig, schemas, "Article", data)
+
+    expect(result).toEqual(null)
+  })
+
+  it("throws an error if the request fails", async () => {
+    const errors = [
+      {
+        code: "resource-conflict-occurred",
+        source: { pointer: "name" },
+        status: 409,
+        title: "Record with name already exists",
+      },
+    ]
+
+    server.use(
+      rest.patch(`${baseUrl}/articles/article-id-1`, (_, res, ctx) =>
+        res.once(ctx.status(500), ctx.json({ errors })),
       ),
     )
 
     await expect(() =>
-      updateOne(sourceConfig, schemas, "Article", {}),
-    ).rejects.toThrowError("request failed")
+      updateOne(sourceConfig, schemas, "Article", { id: "article-id-1" }),
+    ).rejects.toEqual(errors)
   })
 
   it("can be called from a Source", async () => {

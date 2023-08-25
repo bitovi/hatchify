@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { deleteOne, getMeta } from "@hatchifyjs/rest-client"
 import type { Meta, MetaError, Schemas, Source } from "@hatchifyjs/rest-client"
 
@@ -13,13 +13,26 @@ export const useDeleteOne = (
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  function remove(id: string) {
-    setLoading(true)
-    deleteOne(dataSource, allSchemas, schemaName, id)
-      .catch(setError)
-      .finally(() => setLoading(false))
-  }
+  const remove = useCallback(
+    (id: string) => {
+      setLoading(true)
+      deleteOne(dataSource, allSchemas, schemaName, id)
+        .then(() => setError(undefined))
+        .catch((error) => {
+          setError(error)
+          if (error instanceof Error) {
+            throw error
+          }
+        })
+        .finally(() => setLoading(false))
+    },
+    [dataSource, allSchemas, schemaName],
+  )
 
-  const meta = getMeta(error, loading, false, undefined)
+  const meta = useMemo(
+    () => getMeta(error, loading, false, undefined),
+    [error, loading],
+  )
+
   return [remove, meta]
 }

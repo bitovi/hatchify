@@ -17,6 +17,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       attributes: {
         title: "string",
         year: "number",
+        date: "string",
       },
       relationships: {
         author: {
@@ -55,21 +56,30 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
   describe("fieldsToQueryParam", () => {
     it("works", () => {
-      expect(
-        fieldsToQueryParam(schemas, "Book", {
+      expect(() =>
+        fieldsToQueryParam(schemaMap, schemas, "Book", {
           Book: ["title", "body"],
           author: ["name", "email"],
           illustrators: ["name", "email"],
         }),
-      ).toEqual("fields[Book]=title,body&fields[Person]=name,email")
+      ).toThrowError('"author" is not a valid schema')
 
-      expect(
-        fieldsToQueryParam(schemas, "Person", {
+      expect(() =>
+        fieldsToQueryParam(schemaMap, schemas, "Person", {
           Person: ["firstName", "age"],
           authored: ["title", "year"],
           illustrated: ["title", "year"],
         }),
-      ).toEqual("fields[Person]=firstName,age&fields[Book]=title,year")
+      ).toThrowError('"authored" is not a valid schema')
+
+      expect(fieldsToQueryParam(schemaMap, schemas, "Book", {})).toEqual("")
+
+      expect(
+        fieldsToQueryParam(schemaMap, schemas, "Book", {
+          Book: ["title", "body"],
+          Person: ["name", "email"],
+        }),
+      ).toEqual("fields[book_type]=title,body&fields[person_type]=name,email")
     })
   })
 
@@ -79,27 +89,35 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         getQueryParams(schemaMap, schemas, "Book", {
           fields: {
             Book: ["title", "body"],
-            author: ["name", "email"],
-            illustrators: ["name", "email"],
+            Person: ["name", "email"],
           },
           include: ["author", "illustrators"],
         }),
       ).toEqual(
-        "?include=author,illustrators&fields[Book]=title,body&fields[Person]=name,email",
+        "?include=author,illustrators&fields[book_type]=title,body&fields[person_type]=name,email",
       )
 
       expect(
         getQueryParams(schemaMap, schemas, "Person", {
           fields: {
             Person: ["firstName", "age"],
-            illustrated: ["title", "year"],
-            authored: ["title", "year"],
+            Book: ["title", "year"],
           },
           include: ["illustrated", "authored"],
         }),
       ).toEqual(
-        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year",
+        "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
       )
+
+      expect(() =>
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: {
+            Person: ["firstName", "age"],
+            authored: ["title", "year"],
+          },
+          include: ["illustrated", "authored"],
+        }),
+      ).toThrowError('"authored" is not a valid schema')
     })
 
     it("works for when fields has values and include is empty", () => {
@@ -108,14 +126,14 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           fields: { Book: ["title", "body"] },
           include: [],
         }),
-      ).toEqual("?fields[Book]=title,body")
+      ).toEqual("?fields[book_type]=title,body")
 
       expect(
         getQueryParams(schemaMap, schemas, "Person", {
           fields: { Person: ["firstName", "age"] },
           include: [],
         }),
-      ).toEqual("?fields[Person]=firstName,age")
+      ).toEqual("?fields[person_type]=firstName,age")
     })
 
     it("works when both fields and include are empty", () => {
@@ -160,24 +178,41 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       expect(
         getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
       ).toEqual("")
-      expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+
+      expect(() =>
+        getQueryParams(schemaMap, schemas, "Book", {
           fields: {
             Person: ["firstName", "age"],
-            illustrated: ["title", "year"],
             authored: ["title", "year"],
           },
           include: ["illustrated", "authored"],
           sort: ["-created", "title", "user.name"],
           filter: [
-            { name: ["John", "Joan"], operator: "$eq" },
-            { age: 21, operator: "$eq" },
-            { employed: false, operator: "$eq" },
+            { field: "name", value: ["John", "Joan"], operator: "$in" },
+            { field: "age", value: 21, operator: "$eq" },
+            { field: "employed", value: false, operator: "$eq" },
+          ],
+          page: { number: 3, size: 30 },
+        }),
+      ).toThrowError('"authored" is not a valid schema')
+
+      expect(
+        getQueryParams(schemaMap, schemas, "Person", {
+          fields: {
+            Person: ["firstName", "age"],
+            Book: ["title", "year"],
+          },
+          include: ["illustrated", "authored"],
+          sort: ["-created", "title", "user.name"],
+          filter: [
+            { field: "name", value: ["John", "Joan"], operator: "$in" },
+            { field: "age", value: 21, operator: "$eq" },
+            { field: "employed", value: false, operator: "$eq" },
           ],
           page: { number: 3, size: 30 },
         }),
       ).toEqual(
-        "?include=illustrated,authored&fields[Person]=firstName,age&fields[Book]=title,year&sort=-created,title,user.name&filter[name][]=John&filter[name][]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
+        "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year&sort=-created,title,user.name&filter[name][$in]=John&filter[name][$in]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
       )
     })
   })
@@ -212,41 +247,124 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         filterToQueryParam("filter[name]=ABC&filter[completed]=true"),
       ).toEqual("filter[name]=ABC&filter[completed]=true")
 
-      expect(filterToQueryParam([{ name: "ABC", operator: "$eq" }])).toEqual(
-        "filter[name][$eq]=ABC",
-      )
+      expect(
+        filterToQueryParam([{ field: "name", value: "ABC", operator: "$eq" }]),
+      ).toEqual("filter[name][$eq]=ABC")
 
       expect(
-        filterToQueryParam([{ name: ["ABC", "DEF"], operator: "$eq" }]),
-      ).toEqual("filter[name][]=ABC&filter[name][]=DEF")
+        filterToQueryParam([
+          { field: "name", value: ["ABC", "DEF"], operator: "$in" },
+        ]),
+      ).toEqual("filter[name][$in]=ABC&filter[name][$in]=DEF")
 
       expect(
-        filterToQueryParam([{ completed: false, operator: "$eq" }]),
+        filterToQueryParam([
+          { field: "completed", value: false, operator: "$eq" },
+        ]),
       ).toEqual("filter[completed][$eq]=false")
 
       expect(
         filterToQueryParam([
-          { name: ["ABC", "DEF"], operator: "$eq" },
-          { count: 3, operator: "$eq" },
-          { completed: true, operator: "$eq" },
+          { field: "name", value: ["ABC", "DEF"], operator: "$in" },
+          { field: "count", value: 3, operator: "$eq" },
+          { field: "completed", value: true, operator: "$eq" },
         ]),
       ).toEqual(
-        "filter[name][]=ABC&filter[name][]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
+        "filter[name][$in]=ABC&filter[name][$in]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
+      )
+
+      expect(
+        filterToQueryParam([{ field: "name", value: "", operator: "empty" }]),
+      ).toEqual("filter[name][$eq]=null")
+
+      expect(
+        filterToQueryParam([{ field: "name", value: "", operator: "nempty" }]),
+      ).toEqual("filter[name][$ne]=null")
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "date",
+            value: "2023-08-08T14:00",
+            operator: "$eq",
+          },
+        ]),
+      ).toEqual("filter[date][$eq]=2023-08-08T14%3A00%3A00.000Z")
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "date",
+            value: "invalid-date",
+            operator: "$eq",
+          },
+        ]),
+      ).toEqual("filter[date][$eq]=invalid-date")
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "name",
+            value: ["A'bc!*\"", "$()"],
+            operator: "$in",
+          },
+          { field: "count", value: 3, operator: "$eq" },
+          { field: "completed", value: true, operator: "$eq" },
+          { field: "employer", value: "(test$!)", operator: "$eq" },
+        ]),
+      ).toEqual(
+        "filter[name][$in]=A'bc!*%22&filter[name][$in]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",
+      )
+
+      expect(
+        filterToQueryParam({
+          name: ["A'bc!*\"", "$()"],
+          completed: true,
+          employer: "Some Employer",
+        }),
+      ).toEqual(
+        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[completed]=true&filter[employer]=Some%20Employer",
+      )
+
+      expect(
+        filterToQueryParam({
+          name: ["A'bc!*\"", "$()"],
+          completed: true,
+          employer: "Some Employer",
+        }),
+      ).toEqual(
+        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[completed]=true&filter[employer]=Some%20Employer",
       )
 
       expect(
         filterToQueryParam([
           {
-            name: ["A'bc!*\"", "$()"],
-            operator: "$eq",
+            field: "name",
+            value: "Some",
+            operator: "icontains",
           },
-          { count: 3, operator: "$eq" },
-          { completed: true, operator: "$eq" },
-          { employer: "(test$!)", operator: "$eq" },
         ]),
-      ).toEqual(
-        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",
-      )
+      ).toEqual("filter[name][$ilike]=%25Some%25")
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "name",
+            value: "Some",
+            operator: "istarts",
+          },
+        ]),
+      ).toEqual("filter[name][$ilike]=Some%25")
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "name",
+            value: "Some",
+            operator: "iends",
+          },
+        ]),
+      ).toEqual("filter[name][$ilike]=%25Some")
     })
   })
 

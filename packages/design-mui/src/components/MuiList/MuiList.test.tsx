@@ -51,13 +51,13 @@ describe("components/MuiList", () => {
         setSort={vi.fn()}
         page={{ number: 1, size: 10 }}
         setPage={vi.fn()}
-        selected={[]}
+        selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
         allSchemas={schemas}
         schemaName="User"
         fields={{}}
         include={[]}
-        filter={[{ name: "wash car", operator: "equals" }]}
+        filter={[{ field: "name", value: "wash car", operator: "equals" }]}
         setFilter={vi.fn()}
       />,
     )
@@ -84,13 +84,13 @@ describe("components/MuiList", () => {
         setSort={setSort}
         page={{ number: 1, size: 10 }}
         setPage={vi.fn()}
-        selected={[]}
+        selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
         allSchemas={schemas}
         schemaName="User"
         fields={{}}
         include={[]}
-        filter={[{ name: "wash car", operator: "equals" }]}
+        filter={[{ field: "name", value: "wash car", operator: "equals" }]}
         setFilter={vi.fn()}
       />,
     )
@@ -104,7 +104,7 @@ describe("components/MuiList", () => {
   describe("fires checkbox callbacks", async () => {
     const setSelected = vi.fn()
 
-    const renderWithSelected = (selected: string[]) =>
+    const renderWithSelected = (selected: { all: boolean; ids: string[] }) =>
       render(
         <MuiList
           data={data}
@@ -122,59 +122,65 @@ describe("components/MuiList", () => {
           schemaName="User"
           fields={{}}
           include={[]}
-          filter={[{ name: "wash car", operator: "equals" }]}
+          filter={[{ field: "name", value: "wash car", operator: "equals" }]}
           setFilter={vi.fn()}
         />,
       )
 
     it("selects all", async () => {
-      renderWithSelected([])
+      renderWithSelected({ all: false, ids: [] })
 
       within(await screen.findByLabelText("select all"))
         .getByRole("checkbox")
         .click()
 
-      expect(setSelected).toHaveBeenCalledWith(["uuid1", "uuid2"])
+      expect(setSelected).toHaveBeenCalledWith({
+        all: true,
+        ids: ["uuid1", "uuid2"],
+      })
     })
 
     it("deselects all", async () => {
-      renderWithSelected(["uuid1", "uuid2"])
+      renderWithSelected({ all: true, ids: ["uuid1", "uuid2"] })
 
       within(await screen.findByLabelText("select all"))
         .getByRole("checkbox")
         .click()
 
-      expect(setSelected).toHaveBeenCalledWith([])
+      expect(setSelected).toHaveBeenCalledWith({ all: false, ids: [] })
     })
 
     it("selects one", async () => {
-      renderWithSelected([])
+      renderWithSelected({ all: false, ids: [] })
 
       within(await screen.findByLabelText("select uuid1"))
         .getByRole("checkbox")
         .click()
 
-      expect(setSelected).toHaveBeenCalledWith(["uuid1"])
+      expect(setSelected).toHaveBeenCalledWith({ all: false, ids: ["uuid1"] })
     })
 
     it("selects an additional row", async () => {
-      renderWithSelected(["uuid1"])
+      renderWithSelected({ all: false, ids: ["uuid1"] })
 
       within(await screen.findByLabelText("select uuid2"))
         .getByRole("checkbox")
         .click()
 
-      expect(setSelected).toHaveBeenCalledWith(["uuid1", "uuid2"])
+      expect(setSelected).toHaveBeenCalledWith({
+        all: false,
+        ids: ["uuid1", "uuid2"],
+      })
     })
 
     it("deselects one", async () => {
-      renderWithSelected(["uuid1", "uuid2"])
+      renderWithSelected({ all: true, ids: ["uuid1", "uuid2"] })
 
       within(await screen.findByLabelText("select uuid1"))
         .getByRole("checkbox")
         .click()
 
-      expect(setSelected).toHaveBeenCalledWith(["uuid2"])
+      expect(setSelected).toHaveBeenCalledWith({ all: false, ids: ["uuid2"] })
     })
   })
 
@@ -192,13 +198,13 @@ describe("components/MuiList", () => {
         setSort={() => vi.fn()}
         page={{ number: 1, size: 10 }}
         setPage={vi.fn()}
-        selected={[]}
+        selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
         allSchemas={schemas}
         schemaName="User"
         fields={{}}
         include={[]}
-        filter={[{ name: "wash car", operator: "equals" }]}
+        filter={[{ field: "name", value: "wash car", operator: "equals" }]}
         setFilter={vi.fn()}
       >
         {createElement(Empty, {}, <div>so empty inside</div>)}

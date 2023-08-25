@@ -35,6 +35,10 @@ export function transformDataType(dataType: string): string {
     return "date"
   }
 
+  if (type.includes("enum")) {
+    return "enum"
+  }
+
   // varchar, ...text, uuid, enum, ...
   return "string"
 }
@@ -51,13 +55,28 @@ export function transformSchema(schema: OldSchema): Schema {
 
   for (const [key, value] of Object.entries(schema.attributes)) {
     let stringValue: string
+    let allowNull = true
+
     if (typeof value === "string") {
       stringValue = value
     } else {
       stringValue = (value as AttributeObject).type as string
+
+      allowNull =
+        (typeof (value as AttributeObject).allowNull === "undefined" ||
+          (value as AttributeObject).allowNull) ??
+        false
     }
 
-    resolved.attributes[key] = transformDataType(stringValue)
+    /* values exists in enums types only. There's a bit of type narrowing here since value is either string,
+     an object, or an object that contains a values key.
+    */
+    resolved.attributes[key] = {
+      type: transformDataType(stringValue),
+      allowNull,
+      ...(typeof value !== "string" &&
+        "values" in value && { values: value.values }),
+    }
   }
 
   if (

@@ -16,11 +16,14 @@ export async function fetchJsonApi<T>(
   const response = await fetch(url, {
     method,
     body: body ? JSON.stringify({ data: body }) : undefined,
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+    },
   })
 
   if (!response.ok) {
-    // todo proper validation
-    throw Error("request failed")
+    const json = await response.json()
+    return Promise.reject(json?.errors || "Unknown error")
   }
 
   if (response.status === 204) {

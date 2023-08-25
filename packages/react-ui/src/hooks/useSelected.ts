@@ -1,17 +1,21 @@
 import { useState } from "react"
+import type { HatchifyCollectionSelected } from "../presentation"
 
 export default function useSelected(
-  selectedDefault?: string[],
-  onSelectedChange?: (ids: string[]) => void,
-): {
-  selected: string[]
-  setSelected: (ids: string[]) => void
-} {
-  const [selected, setSelected] = useState<string[]>(selectedDefault || [])
+  defaultSelected?: HatchifyCollectionSelected["selected"],
+  onSelectedChange?: HatchifyCollectionSelected["setSelected"],
+): HatchifyCollectionSelected {
+  const [selected, setSelected] = useState<
+    HatchifyCollectionSelected["selected"]
+  >(defaultSelected || { all: false, ids: [] })
 
-  const setSelectedWrapper = (ids: string[]) => {
-    setSelected(ids)
-    if (onSelectedChange) onSelectedChange(ids)
+  const setSelectedWrapper: HatchifyCollectionSelected["setSelected"] = (
+    selected,
+  ) => {
+    setSelected(selected)
+    if (onSelectedChange) {
+      onSelectedChange(selected)
+    }
   }
 
   return {

@@ -5,7 +5,7 @@ import {
   UnexpectedValueError,
   ValueRequiredError,
 } from "../error"
-import type { HatchifyError } from "../error"
+import type { HatchifyError } from "../error/types"
 import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
@@ -127,7 +127,9 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
     ]
   }
 
-  if (!body.data.relationships) return
+  if (!body.data.relationships) {
+    return
+  }
 
   if (!isObject(body.data.relationships)) {
     throw [
@@ -211,5 +213,7 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
     [],
   )
 
-  if (relationshipsErrors.length) throw relationshipsErrors
+  if (relationshipsErrors.length) {
+    throw relationshipsErrors
+  }
 }

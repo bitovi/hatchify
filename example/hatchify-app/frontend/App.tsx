@@ -21,14 +21,27 @@ const TodoColumn = hatchedReact.components.Todo.Column
 const TodoEmptyList = hatchedReact.components.Todo.Empty
 
 const App: React.FC = () => {
-  const [selected, setSelected] = useState<string[]>([])
+  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
+    all: false,
+    ids: [],
+  })
+
+  function onActionClick() {
+    if (!selected.all && !selected.ids.length) alert("action on no items")
+    else if (selected.all)
+      alert(`action on ALL ITEMS or items ${selected.ids.join(",")}`)
+    else alert(`action on items ${selected.ids.join(",")}`)
+  }
 
   return (
     <MuiProvider>
-      <button onClick={() => alert(`action on [${selected.join(",")}]`)}>
+      <button onClick={onActionClick} style={{ margin: 10 }}>
         action
       </button>
-      <TodoList onSelectedChange={(ids: string[]) => setSelected(ids)}>
+      <TodoList
+        defaultSelected={selected}
+        onSelectedChange={(selected) => setSelected(selected)}
+      >
         <TodoEmptyList>No records to display</TodoEmptyList>
         <TodoColumn
           type="append"

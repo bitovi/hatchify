@@ -24,12 +24,12 @@ export interface SourceV0 {
   findAll: (
     allSchemas: Schemas,
     schemaName: string,
-    query: Required<QueryList>,
+    query: QueryList,
   ) => Promise<[Resources: Resource[], Meta: RequestMetaData]>
   findOne: (
     allSchemas: Schemas,
     schemaName: string,
-    query: Required<QueryOne>,
+    query: QueryOne,
   ) => Promise<Resource[]>
   createOne: (
     allSchemas: Schemas,
@@ -40,7 +40,7 @@ export interface SourceV0 {
     allSchemas: Schemas,
     schemaName: string,
     data: UpdateData,
-  ) => Promise<Resource[]>
+  ) => Promise<Resource[] | null>
   deleteOne: (
     allSchemas: Schemas,
     schemaName: string,

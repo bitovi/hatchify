@@ -4,18 +4,22 @@ export type Fields = { [key: string]: string[] } // todo: typed to schema attrib
 
 export type Selector = { include?: Include; fields?: Fields }
 
-export type FilterRecord = Record<string, any>
-
-export type FilterObj = {
+export type FilterArray = Array<{
+  field: string
   operator: string
-} & FilterRecord
+  value: string | string[] | number | number[] | boolean | boolean[]
+}>
 
-export type Filter = FilterObj[] | string | undefined
+export type FilterObject = {
+  [key: string]: string | string[] | number | number[] | boolean | boolean[]
+}
+
+export type Filters = FilterArray | FilterObject | string | undefined
 
 export type QueryList = Selector & {
   page?: unknown
   sort?: string[] | string
-  filter?: Filter
+  filter?: Filters
 }
 
 export type QueryOne = Selector & { id: string }

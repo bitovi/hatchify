@@ -15,6 +15,7 @@
       "prettier"
     ],
     "rules": {
+      "curly": "error",
       "prettier/prettier": [
         "error",
         {
@@ -44,6 +45,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "pg": "^8.11.3",
     "semver": "^7.5.0"
   }
 }
