@@ -4,7 +4,10 @@ import { createOne } from "./createOne"
 import { fakeDataSource, schemas } from "../../mocks/testData"
 
 describe("rest-client/services/promise/createOne", () => {
-  const data = { attributes: { title: "baz", body: "baz-body" } }
+  const data = {
+    __schema: "Article",
+    attributes: { title: "baz", body: "baz-body" },
+  }
 
   const expected = {
     id: "article-3",

@@ -1,10 +1,14 @@
 import type {
-  CreateData,
+  Resource,
+  RestClientCreateData,
   Schemas,
   SourceConfig,
-  Resource,
 } from "@hatchifyjs/rest-client"
-import { convertToHatchifyResources, fetchJsonApi } from "../utils"
+import {
+  convertToHatchifyResources,
+  fetchJsonApi,
+  hatchifyResourceToJsonApiResource,
+} from "../utils"
 import type { JsonApiResource } from "../jsonapi"
 
 /**
@@ -15,12 +19,19 @@ export async function createOne(
   config: SourceConfig,
   allSchemas: Schemas,
   schemaName: string,
-  data: CreateData,
+  data: RestClientCreateData,
 ): Promise<Resource[]> {
+  const jsonApiResource = hatchifyResourceToJsonApiResource(
+    config,
+    allSchemas[schemaName],
+    schemaName,
+    data,
+  )
+
   const json = await fetchJsonApi<JsonApiResource>(
     "POST",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}`,
-    data,
+    jsonApiResource,
   )
 
   return Promise.resolve(
