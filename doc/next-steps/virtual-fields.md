@@ -1,7 +1,3 @@
-# Introduction
-
-This document covers API topics not included in the [Getting Started Guide](./README.md).  Think of it as a Getting Moving Guide, once you've started from the other guide.
-
 # Implementing Virtual Fields
 
 Just like Sequelize, Hatchify supports the creating of virtual fields through the implementation of a getter and the definition of it's type as virtual. These virtual fields will not be created in your database, but generated under the hood. In this tutorial we will create a virtual field called "hasTodos" in the User model, this field will return true if the user record is related to any todos and false if the user is not.
