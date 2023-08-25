@@ -2,6 +2,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 
 import { startServerWith } from "./testing/utils"
+import { dbDialects } from "./testing/utils"
 
 const userData = [
   {
@@ -282,7 +283,7 @@ dotenv.config({
   path: ".env",
 })
 
-describe("Operators", () => {
+describe.each(dbDialects)("Operators", (dialect) => {
   const User: HatchifyModel = {
     name: "User",
     attributes: {
@@ -298,7 +299,7 @@ describe("Operators", () => {
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    ;({ fetch, teardown } = await startServerWith([User]))
+    ;({ fetch, teardown } = await startServerWith([User], dialect))
     await fetch("/api/users", {
       method: "post",
       body: {
@@ -333,20 +334,23 @@ describe("Operators", () => {
     await teardown()
   })
 
-  it.each(testCases)("$description", async ({ expectedResult, queryParam }) => {
-    const { body } = await fetch(`/api/users/?${queryParam}`)
-    const users = body.data.map(({ attributes }) => attributes)
-    expect(users).toEqual(
-      expectedResult.map((er) => ({
-        ...er,
-        startDate: new Date(er.startDate).toISOString(),
-      })),
-    )
-  })
+  it.each(testCases)(
+    `${dialect} - $description`,
+    async ({ expectedResult, queryParam }) => {
+      const { body } = await fetch(`/api/users/?${queryParam}`)
+      const users = body.data.map(({ attributes }) => attributes)
+      expect(users).toEqual(
+        expectedResult.map((er) => ({
+          ...er,
+          startDate: new Date(er.startDate).toISOString(),
+        })),
+      )
+    },
+  )
 
-  if (process.env.DB_CONFIG !== "postgres") {
+  if (dialect === "sqlite") {
     it.each(SQLiteOnlyTestCases)(
-      "$description",
+      `${dialect} - $description`,
       async ({ expectedErrorSource, queryParam }) => {
         const result = await fetch(`/api/users/?${queryParam}`)
         const error = JSON.parse(result.error.text)

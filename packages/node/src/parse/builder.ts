@@ -1,6 +1,5 @@
 import type QuerystringParsingError from "@bitovi/querystring-parser/lib/errors/querystring-parsing-error"
 import querystringParser from "@bitovi/sequelize-querystring-parser"
-import * as dotenv from "dotenv"
 import { noCase } from "no-case"
 import type {
   CreateOptions,
@@ -12,6 +11,7 @@ import type {
 
 import { HatchifyError, UnexpectedValueError } from "../error"
 import { codes, statusCodes } from "../error/constants"
+import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
 interface QueryStringParser<T> {
@@ -20,15 +20,11 @@ interface QueryStringParser<T> {
   orm: "sequelize"
 }
 
-dotenv.config({
-  path: ".env",
-})
-
-function handleSqliteLike(querystring: string): string {
+function handleSqliteLike(querystring: string, dbType: string): string {
   // if not postgres (sqlite)
   // 1. throw error if like is used (temporary)
   // 2. ilike needs to be changed to like before parsing query
-  if (process.env.DB_CONFIG !== "postgres") {
+  if (dbType === "sqlite") {
     if (querystring.includes("[$like]")) {
       throw new HatchifyError({
         code: codes.ERR_INVALID_PARAMETER,
@@ -46,12 +42,13 @@ function handleSqliteLike(querystring: string): string {
 }
 
 export function buildFindOptions(
+  hatchify: Hatchify,
   model: HatchifyModel,
   querystring: string,
   id?: Identifier,
 ): QueryStringParser<FindOptions> {
   const ops: QueryStringParser<FindOptions> = querystringParser.parse(
-    handleSqliteLike(querystring),
+    handleSqliteLike(querystring, hatchify.orm.getDialect()),
   )
 
   if (ops.errors.length) {

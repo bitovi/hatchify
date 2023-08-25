@@ -34,7 +34,6 @@
     "@hatchifyjs/sequelize-create-with-associations": "^0.6.2",
     "@types/lodash": "^4.14.196",
     "co-body": "^6.1.0",
-    "dotenv": "^16.3.1",
     "json-api-serializer": "^2.6.6",
     "lodash": "^4.17.21",
     "no-case": "^3.0.4",
