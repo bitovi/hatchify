@@ -419,7 +419,7 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: { through: "sales_account" },
+      options: { through: "SalesAccount" },
     },
   ],
 }
