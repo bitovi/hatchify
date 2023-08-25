@@ -105,6 +105,14 @@ const testCases = [
     expectedResult: [john],
     expectedError: undefined,
   },
+  {
+    description:
+      "returns correct data using the $ilike operator for an array of strings (non-case sensitive)",
+    operator: "$ilike",
+    queryParam: "filter[name][$ilike]=[jOhN, jAnE]",
+    expectedResult: [john, jane],
+    expectedError: undefined,
+  },
   //number
   {
     description: "returns correct data using the $eq operator with a number",
@@ -277,6 +285,14 @@ const SQLiteOnlyTestCases = [
     queryParam: "filter[name][$like]=John",
     expectedErrorSource: { parameter: "filter[name][$like]=John" },
   },
+  {
+    description:
+      "returns correct data using the $like operator for an array of strings (non-case sensitive)",
+    operator: "$like",
+    queryParam: "filter[name][$like]=[John, Jane]",
+    expectedResult: [john, jane],
+    expectedError: undefined,
+  },
 ]
 
 dotenv.config({
@@ -364,4 +380,70 @@ describe.each(dbDialects)("Operators", (dialect) => {
       },
     )
   }
+})
+
+describe("test", () => {
+  const User: HatchifyModel = {
+    name: "User",
+    attributes: {
+      name: "STRING",
+      age: "INTEGER",
+      startDate: "DATE",
+      onSite: "BOOLEAN",
+      manager: "BOOLEAN",
+    },
+  }
+
+  let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+  let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+  beforeAll(async () => {
+    ;({ fetch, teardown } = await startServerWith([User], "postgres"))
+    await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: userData[0],
+        },
+      },
+    })
+
+    await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: userData[1],
+        },
+      },
+    })
+  })
+
+  afterAll(async () => {
+    const { body } = await fetch(`/api/users/?`)
+    const userIds = body.data.map(({ id }) => id)
+    await fetch(`/api/users/${userIds[0]}`, {
+      method: "delete",
+    })
+    await fetch(`/api/users/${userIds[1]}`, {
+      method: "delete",
+    })
+
+    await teardown()
+  })
+
+  // '[jOhN,%20jAnE]'
+  it("test", async () => {
+    try {
+      const result = await fetch(
+        `/api/users/?filter[name][$ilike]=[jOhN, jAnE]`,
+      )
+      console.log(result.body)
+      console.log(result.body.errors[0].source)
+      expect(result).toBeTruthy()
+    } catch (ex) {
+      console.error(ex)
+    }
+  })
 })
