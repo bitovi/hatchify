@@ -1,6 +1,10 @@
 import type { Schemas } from "./schema"
 import type { QueryList, QueryOne } from "./query"
-import type { CreateData, Resource, UpdateData } from "./data"
+import type {
+  RestClientCreateData,
+  Resource,
+  RestClientUpdateData,
+} from "./data"
 import type { RequestMetaData } from "./meta"
 
 interface SourceSchema {
@@ -34,12 +38,12 @@ export interface SourceV0 {
   createOne: (
     allSchemas: Schemas,
     schemaName: string,
-    data: CreateData,
+    data: RestClientCreateData,
   ) => Promise<Resource[]>
   updateOne: (
     allSchemas: Schemas,
     schemaName: string,
-    data: UpdateData,
+    data: RestClientUpdateData,
   ) => Promise<Resource[] | null>
   deleteOne: (
     allSchemas: Schemas,

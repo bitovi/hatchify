@@ -17,7 +17,11 @@ const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/updateOne", () => {
   it("works", async () => {
-    const data = { id: "article-id-1", attributes: { title: "A new world!" } }
+    const data = {
+      __schema: "Article",
+      id: "article-id-1",
+      attributes: { title: "A new world!" },
+    }
     const expected = [
       {
         __schema: "Article",
@@ -55,7 +59,11 @@ describe("rest-client-jsonapi/services/updateOne", () => {
       ),
     )
 
-    const data = { id: "article-id-1", attributes: { title: "A new world!" } }
+    const data = {
+      __schema: "Article",
+      id: "article-id-1",
+      attributes: { title: "A new world!" },
+    }
 
     const result = await updateOne(sourceConfig, schemas, "Article", data)
 
@@ -79,13 +87,20 @@ describe("rest-client-jsonapi/services/updateOne", () => {
     )
 
     await expect(() =>
-      updateOne(sourceConfig, schemas, "Article", { id: "article-id-1" }),
+      updateOne(sourceConfig, schemas, "Article", {
+        __schema: "Article",
+        id: "article-id-1",
+      }),
     ).rejects.toEqual(errors)
   })
 
   it("can be called from a Source", async () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
-    const data = { id: "article-id-1", attributes: { title: "Hello, World!" } }
+    const data = {
+      __schema: "Article",
+      id: "article-id-1",
+      attributes: { title: "Hello, World!" },
+    }
     const spy = vi.spyOn(dataSource, "updateOne")
     await dataSource.updateOne(schemas, "Article", data)
     expect(spy).toHaveBeenCalledWith(schemas, "Article", data)

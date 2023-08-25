@@ -25,7 +25,10 @@ export const useCreateOne = (
   const create = useCallback(
     (data: CreateData) => {
       setLoading(true)
-      createOne(dataSource, allSchemas, schemaName, data)
+      createOne(dataSource, allSchemas, schemaName, {
+        ...data,
+        __schema: schemaName,
+      })
         .then((data) => {
           setError(undefined)
           setData(data)

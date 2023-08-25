@@ -14,18 +14,42 @@ export interface ResourceRelationship {
   __schema: string
 }
 
+export type SchemalessResourceRelationship = Omit<
+  ResourceRelationship,
+  "__schema"
+>
+
+export interface ResourceRelationshipObject {
+  [key: string]: ResourceRelationship | ResourceRelationship[]
+}
+
+export interface SchemalessResourceRelationshipObject {
+  [key: string]:
+    | SchemalessResourceRelationship
+    | SchemalessResourceRelationship[]
+}
+
 export interface Resource {
   id: string
   __schema: string
   attributes?: {
     [key: string]: any // @todo
   }
-  relationships?: globalThis.Record<
-    string,
-    ResourceRelationship | ResourceRelationship[]
-  >
+  relationships?: ResourceRelationshipObject
 }
 
-export type CreateData = Omit<Record, "id" | "__schema">
+export interface RestClientCreateData
+  extends Omit<Resource, "attributes" | "id" | "relationships"> {
+  attributes: {
+    [key: string]: any
+  }
+  relationships?: SchemalessResourceRelationshipObject
+}
 
-export type UpdateData = Omit<Record, "__schema">
+export type CreateData = Omit<RestClientCreateData, "__schema">
+
+export interface RestClientUpdateData extends Omit<Resource, "relationships"> {
+  relationships?: SchemalessResourceRelationshipObject
+}
+
+export type UpdateData = Omit<Resource, "__schema">
