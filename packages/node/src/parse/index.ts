@@ -72,7 +72,6 @@ async function findAndCountAllImpl(
   if (errors.length) {
     throw errors
   }
-  console.log(data)
   validateFindOptions(data, model, hatchify)
   return data
 }
