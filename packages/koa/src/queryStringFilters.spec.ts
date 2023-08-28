@@ -398,7 +398,7 @@ describe("test", () => {
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    ;({ fetch, teardown } = await startServerWith([User], "postgres"))
+    ;({ fetch, teardown } = await startServerWith([User], "sqlite"))
     await fetch("/api/users", {
       method: "post",
       body: {
@@ -433,11 +433,11 @@ describe("test", () => {
     await teardown()
   })
 
-  // '[jOhN,%20jAnE]'
   it("test", async () => {
     try {
       const result = await fetch(
-        `/api/users/?filter[name][$ilike]=[jOhN, jAnE]`,
+        // `/api/users/?filter[name][$ilike]=jOhN`,
+        `/api/users/?filter[name][$like]=[jOhN, jAnE]`,
       )
       console.log(result.body)
       console.log(result.body.errors[0].source)

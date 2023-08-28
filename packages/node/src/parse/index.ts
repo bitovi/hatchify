@@ -5,6 +5,7 @@ import type {
   Identifier,
   UpdateOptions,
 } from "sequelize"
+import { Op } from "sequelize"
 
 import { buildDestroyOptions, buildFindOptions } from "./builder"
 import { validateFindOptions, validateStructure } from "./validator"
@@ -72,7 +73,15 @@ async function findAndCountAllImpl(
   if (errors.length) {
     throw errors
   }
-  validateFindOptions(data, model, hatchify)
+  console.log(data)
+  const operators = Op
+  const data2 = {
+    where: {
+      name: { [operators.like]: { [operators.any]: ["jOhN", "jAnE"] } },
+    },
+  }
+  console.log(data2)
+  validateFindOptions(data2, model, hatchify)
   return data
 }
 

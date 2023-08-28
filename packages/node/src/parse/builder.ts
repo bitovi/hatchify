@@ -50,7 +50,6 @@ export function buildFindOptions(
   const ops: QueryStringParser<FindOptions> = querystringParser.parse(
     handleSqliteLike(querystring, hatchify.orm.getDialect()),
   )
-  console.log(ops)
 
   if (ops.errors.length) {
     throw ops.errors.map(
