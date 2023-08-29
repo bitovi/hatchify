@@ -51,7 +51,7 @@ type HatchifyApp<TSchemas extends PartialSchemas> = {
         onSelectedChange,
         fields,
         include,
-      }: {
+      }?: {
         defaultSelected?: HatchifyCollectionProps["defaultSelected"]
         onSelectedChange?: HatchifyCollectionProps["onSelectedChange"]
         fields?: Fields

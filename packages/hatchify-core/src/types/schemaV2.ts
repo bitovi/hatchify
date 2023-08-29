@@ -1,6 +1,6 @@
-export type UserValue = number | string | object | null | undefined
+export type UserValue = number | string | Date | object | null | undefined
 
-export type ValueInRequest = number | string | object | null | undefined
+export type ValueInRequest = number | string | Date | object | null | undefined
 
 export * from "../assembler/types"
 
@@ -15,18 +15,18 @@ export interface PartialDataTypeProps {
   required?: boolean
 }
 
-export type PartialControlType<TType extends "Boolean" | "Number" | "String"> =
-  {
-    type: TType
-    allowNull?: boolean
-    primary?: boolean
-  }
+export type PartialControlType<
+  TType extends "Boolean" | "Number" | "String" | "Datetime",
+> = {
+  type: TType
+  allowNull?: boolean
+  primary?: boolean
+}
 
 export interface PartialSequelizeDataType<PrimitiveType> {
   type: string
   typeArgs: PrimitiveType
   allowNull?: boolean
-  autoIncrement?: boolean
   primaryKey?: boolean
 }
 

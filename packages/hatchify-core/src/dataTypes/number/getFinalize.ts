@@ -82,7 +82,6 @@ export function getFinalize(
     // Throws  - If the data is bad ❓
     // Example : '2023-07-17T01:45:28.778Z' => new Date('2023-07-17T01:45:28.778Z')
     //         : throw "'4 $core' is not a valid date";
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setORMPropertyValue: (jsonValue: ValueInRequest): number | null => {
       return coerce(jsonValue, control)
     },

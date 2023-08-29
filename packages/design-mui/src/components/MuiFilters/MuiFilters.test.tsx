@@ -108,7 +108,7 @@ describe.skip("components/MuiFilters", () => {
     })
 
     expect(setFilters).toHaveBeenCalledWith([
-      { field: "id", operator: "ilike", value: "was" },
+      { field: "id", operator: "icontains", value: "was" },
     ])
     expect(setPage).toHaveBeenCalledWith({ number: 1, size: 10 })
     vi.useRealTimers()

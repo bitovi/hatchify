@@ -25,7 +25,7 @@ describe.skip("components/MuiFilters/components/MuiFilterRows", () => {
         attributes={partialSchemas.Todo.attributes}
         fields={["name", "date"]}
         filters={[
-          { field: "views", operator: "ilike", value: "test" },
+          { field: "views", operator: "$ilike", value: "test" },
           {
             field: "importance",
             operator: "nempty",

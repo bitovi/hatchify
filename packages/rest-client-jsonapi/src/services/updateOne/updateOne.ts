@@ -1,10 +1,14 @@
 import type {
   Resource,
+  RestClientUpdateData,
   Schemas,
   SourceConfig,
-  UpdateData,
 } from "@hatchifyjs/rest-client"
-import { convertToHatchifyResources, fetchJsonApi } from "../utils"
+import {
+  convertToHatchifyResources,
+  fetchJsonApi,
+  hatchifyResourceToJsonApiResource,
+} from "../utils"
 import type { JsonApiResource } from "../jsonapi"
 
 /**
@@ -15,12 +19,21 @@ export async function updateOne(
   config: SourceConfig,
   allSchemas: Schemas,
   schemaName: string,
-  data: UpdateData,
+  data: RestClientUpdateData,
 ): Promise<Resource[] | null> {
+  const jsonApiResource = hatchifyResourceToJsonApiResource(
+    config,
+    allSchemas[schemaName],
+    schemaName,
+    data,
+  )
+
   const json = await fetchJsonApi<JsonApiResource>(
     "PATCH",
-    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${data.id}`,
-    data,
+    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${
+      "id" in jsonApiResource ? jsonApiResource.id : null
+    }`,
+    jsonApiResource,
   )
 
   if (!json.data) {

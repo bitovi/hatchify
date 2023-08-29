@@ -281,17 +281,25 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         filterToQueryParam([{ field: "name", value: "", operator: "nempty" }]),
       ).toEqual("filter[name][$ne]=null")
 
-      it("converts the date to an ISO string", () => {
-        expect(
-          filterToQueryParam([
-            {
-              field: "date",
-              value: "2023-08-08T14:00",
-              operator: "$eq",
-            },
-          ]),
-        ).toEqual("filter[date][$eq]=2023-08-08T19%3A00%3A00.000Z")
-      })
+      expect(
+        filterToQueryParam([
+          {
+            field: "date",
+            value: "2023-08-08T14:00",
+            operator: "$eq",
+          },
+        ]),
+      ).toEqual("filter[date][$eq]=2023-08-08T14%3A00%3A00.000Z")
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "date",
+            value: "invalid-date",
+            operator: "$eq",
+          },
+        ]),
+      ).toEqual("filter[date][$eq]=invalid-date")
 
       expect(
         filterToQueryParam([
@@ -317,6 +325,46 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual(
         "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[completed]=true&filter[employer]=Some%20Employer",
       )
+
+      expect(
+        filterToQueryParam({
+          name: ["A'bc!*\"", "$()"],
+          completed: true,
+          employer: "Some Employer",
+        }),
+      ).toEqual(
+        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[completed]=true&filter[employer]=Some%20Employer",
+      )
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "name",
+            value: "Some",
+            operator: "icontains",
+          },
+        ]),
+      ).toEqual("filter[name][$ilike]=%25Some%25")
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "name",
+            value: "Some",
+            operator: "istarts",
+          },
+        ]),
+      ).toEqual("filter[name][$ilike]=Some%25")
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "name",
+            value: "Some",
+            operator: "iends",
+          },
+        ]),
+      ).toEqual("filter[name][$ilike]=%25Some")
     })
   })
 

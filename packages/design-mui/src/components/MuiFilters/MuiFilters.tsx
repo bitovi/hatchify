@@ -17,7 +17,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   setPage,
 }) => {
   const fields = getSupportedFields(finalSchemas, schemaName)
-  const defaultFilter = { field: fields[0], operator: "ilike", value: "" }
+  const defaultFilter = { field: fields[0], operator: "icontains", value: "" }
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)

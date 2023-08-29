@@ -19,9 +19,13 @@ export interface PartialNumberControlType extends PartialControlType<"Number"> {
 }
 
 export interface PartialNumberORM {
-  sequelize: PartialSequelizeDataType<number[]>
+  sequelize: PartialSequelizeDataType<number[]> & {
+    autoIncrement?: boolean
+  }
 }
 
 export interface FinalNumberORM {
-  sequelize: Required<PartialSequelizeDataType<number[]>>
+  sequelize: Required<PartialSequelizeDataType<number[]>> & {
+    autoIncrement: boolean
+  }
 }

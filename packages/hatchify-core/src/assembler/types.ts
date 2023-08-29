@@ -1,18 +1,40 @@
 import type {
+  FinalDatetimeORM,
+  PartialDatetimeControlType,
+  PartialDatetimeORM,
+} from "../dataTypes/datetime"
+import type {
   FinalNumberORM,
   PartialNumberControlType,
   PartialNumberORM,
 } from "../dataTypes/number"
+import type {
+  FinalStringORM,
+  PartialStringControlType,
+  PartialStringORM,
+} from "../dataTypes/string"
 import type { FinalAttribute, PartialAttribute } from "../types"
 
 export type PartialAttributeRecord = Record<
   string,
-  PartialAttribute<
-    PartialNumberORM,
-    PartialNumberControlType,
-    number,
-    FinalNumberORM
-  >
+  | PartialAttribute<
+      PartialNumberORM,
+      PartialNumberControlType,
+      number,
+      FinalNumberORM
+    >
+  | PartialAttribute<
+      PartialStringORM,
+      PartialStringControlType,
+      string,
+      FinalStringORM
+    >
+  | PartialAttribute<
+      PartialDatetimeORM,
+      PartialDatetimeControlType,
+      Date,
+      FinalDatetimeORM
+    >
 >
 export interface PartialSchema<
   TAttributes extends PartialAttributeRecord = PartialAttributeRecord,
@@ -36,12 +58,25 @@ export interface FinalSchema {
     FinalNumberORM
   >
   attributes: {
-    [attributeName: string]: FinalAttribute<
-      PartialNumberORM,
-      PartialNumberControlType,
-      number,
-      FinalNumberORM
-    >
+    [attributeName: string]:
+      | FinalAttribute<
+          PartialNumberORM,
+          PartialNumberControlType,
+          number,
+          FinalNumberORM
+        >
+      | FinalAttribute<
+          PartialStringORM,
+          PartialStringControlType,
+          string,
+          FinalStringORM
+        >
+      | FinalAttribute<
+          PartialDatetimeORM,
+          PartialDatetimeControlType,
+          Date,
+          FinalDatetimeORM
+        >
   }
 }
 
