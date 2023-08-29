@@ -86,6 +86,7 @@ describe("useCollectionState", () => {
       },
       setSelected: expect.any(Function),
       finalSchemas,
+      partialSchemas,
       schemaName: "Todo",
       filter: undefined,
       setFilter: expect.any(Function),

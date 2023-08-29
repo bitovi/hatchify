@@ -20,7 +20,7 @@ import type {
   RenderValue,
   DefaultValueComponentsTypes,
 } from "../../components"
-import { FinalSchema } from "@hatchifyjs/hatchify-core"
+import type { FinalSchema } from "@hatchifyjs/hatchify-core"
 
 export interface HatchifyDisplay {
   sortable: boolean
@@ -297,7 +297,7 @@ export function hasValidChildren(
 
 export function getDisplays(
   // todo: future; remove any, `getDisplays` used by Details page which is not yet implemented
-  schema: any,
+  schema: FinalSchema,
   valueComponents: { [field: string]: ValueComponent } | undefined,
   defaultValueComponents: DefaultValueComponentsTypes,
   children: React.ReactNode | null,
@@ -307,7 +307,12 @@ export function getDisplays(
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
 
   let displays = hasValidChildren(HatchifyColumn.displayName || "", childArray)
-    ? getDisplaysFromChildren(schema, defaultValueComponents, childArray)
+    ? getDisplaysFromChildren(
+        // todo: future; remove unknown, `getDisplays` used by Details page which is not yet implemented
+        schema as unknown as Schema,
+        defaultValueComponents,
+        childArray,
+      )
     : getDisplaysFromSchema(
         schema,
         defaultValueComponents,

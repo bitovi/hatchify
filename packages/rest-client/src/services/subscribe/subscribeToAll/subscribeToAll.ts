@@ -1,4 +1,4 @@
-import { PartialSchema } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 import { getStore } from "../../store"
 import type {
   GetSchemaFromName,
@@ -18,7 +18,7 @@ export const subscribeToAll = <
   resource: string,
   query: QueryList | undefined,
   onChange: (
-    data: RecordType<GetSchemaFromName<TSchemas, TSchemaName>>[],
+    data: Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>,
   ) => void,
 ): Unsubscribe => {
   const store = getStore(resource)

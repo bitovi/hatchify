@@ -1,7 +1,7 @@
 import createClient from "@hatchifyjs/rest-client-jsonapi"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
-import { PartialSchemas } from "@hatchifyjs/rest-client"
+import type { PartialSchemas } from "@hatchifyjs/rest-client"
 
 interface SourceSchema {
   type?: string

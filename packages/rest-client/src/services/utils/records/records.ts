@@ -1,10 +1,10 @@
-import {
-  type Record,
-  type Resource,
-  type RecordRelationship,
-  type Schemas,
-  type ResourceRelationship,
-  type FinalSchemas,
+import type {
+  Record,
+  Resource,
+  RecordRelationship,
+  Schemas,
+  ResourceRelationship,
+  FinalSchemas,
 } from "../../types"
 import { isSchemasV2 } from "../schema"
 

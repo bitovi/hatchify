@@ -25,7 +25,7 @@ export interface CollectionState<
   TSchemas extends PartialSchemas,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > {
-  data: RecordType<GetSchemaFromName<TSchemas, TSchemaName>>[]
+  data: Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>
   meta: Meta
   fields?: Fields
   include?: Include
@@ -38,6 +38,7 @@ export interface CollectionState<
   selected: HatchifyCollectionSelected["selected"] | undefined
   setSelected: HatchifyCollectionSelected["setSelected"] | undefined
   finalSchemas: FinalSchemas
+  partialSchemas: TSchemas
   schemaName: string
 }
 
@@ -104,6 +105,7 @@ export default function useCollectionState<
     selected: onSelectedChange !== undefined ? selected : undefined,
     setSelected: onSelectedChange !== undefined ? setSelected : undefined,
     finalSchemas,
+    partialSchemas,
     schemaName,
   }
 }

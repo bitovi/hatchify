@@ -9,6 +9,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 
 export const MuiFilters: React.FC<XCollectionProps> = ({
   finalSchemas,
+  partialSchemas,
   schemaName,
   filter: queryFilter,
   setFilter: setQueryFilter,
@@ -80,7 +81,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
         <Grid container spacing={1} width="39.5rem" padding="0.75rem">
           <Grid item xs={12}>
             <MuiFilterRows
-              attributes={finalSchemas[schemaName].attributes}
+              attributes={partialSchemas[schemaName].attributes}
               fields={fields}
               filters={filters}
               setFilters={setFilters}

@@ -1,4 +1,4 @@
-import { FinalSchema, PartialSchema } from "@hatchifyjs/hatchify-core"
+import type { FinalSchema, PartialSchema } from "@hatchifyjs/hatchify-core"
 
 export type EnumObject = { type: "enum"; allowNull?: boolean; values: string[] }
 export type AttributeObject = { type: string; allowNull?: boolean } | EnumObject

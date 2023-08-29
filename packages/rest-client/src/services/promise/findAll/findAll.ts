@@ -1,4 +1,4 @@
-import { PartialSchema } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 import type {
   Source,
   QueryList,
@@ -23,7 +23,7 @@ export const findAll = async <
   schemaName: TSchemaName,
   query: QueryList,
 ): Promise<
-  [RecordType<GetSchemaFromName<TSchemas, TSchemaName>>[], RequestMetaData]
+  [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, RequestMetaData]
 > => {
   if (typeof schemaName !== "string") {
     throw new Error(

@@ -2,30 +2,32 @@ import "@testing-library/jest-dom"
 import { createElement } from "react"
 import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
-import { assembler } from "@hatchifyjs/hatchify-core"
+import { assembler, integer } from "@hatchifyjs/hatchify-core"
 import { MuiList } from "./MuiList"
 
 describe("components/MuiList", () => {
-  const schemas = {
+  const partialSchemas = {
     User: {
       name: "User",
       displayAttribute: "firstName",
       attributes: {
-        firstName: "string",
-        lastName: "string",
+        // todo: change back to strings when v2 supports strings
+        firstName: integer(),
+        lastName: integer(),
       },
     },
   }
 
-  const finalSchemas = assembler(schemas)
+  const finalSchemas = assembler(partialSchemas)
 
+  // todo: change back to strings when v2 supports strings
   const data = [
     {
       id: "uuid1",
-      firstName: "Joe",
-      lastName: "Smith",
+      firstName: 5,
+      lastName: 15,
     },
-    { id: "uuid2", firstName: "John", lastName: "Snow" },
+    { id: "uuid2", firstName: 25, lastName: 30 },
   ]
 
   const meta = {
@@ -57,6 +59,7 @@ describe("components/MuiList", () => {
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
         finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="User"
         fields={{}}
         include={[]}
@@ -67,10 +70,10 @@ describe("components/MuiList", () => {
 
     expect(await screen.findByText("FirstName")).toBeInTheDocument()
     expect(await screen.findByText("LastName")).toBeInTheDocument()
-    expect(await screen.findByText("Joe")).toBeInTheDocument()
-    expect(await screen.findByText("Smith")).toBeInTheDocument()
-    expect(await screen.findByText("John")).toBeInTheDocument()
-    expect(await screen.findByText("Snow")).toBeInTheDocument()
+    expect(await screen.findByText("5")).toBeInTheDocument()
+    expect(await screen.findByText("15")).toBeInTheDocument()
+    expect(await screen.findByText("25")).toBeInTheDocument()
+    expect(await screen.findByText("30")).toBeInTheDocument()
   })
 
   it("fires sort callback", async () => {
@@ -90,6 +93,7 @@ describe("components/MuiList", () => {
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
         finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="User"
         fields={{}}
         include={[]}
@@ -122,6 +126,7 @@ describe("components/MuiList", () => {
           selected={selected}
           setSelected={setSelected}
           finalSchemas={finalSchemas}
+          partialSchemas={partialSchemas}
           schemaName="User"
           fields={{}}
           include={[]}
@@ -204,6 +209,7 @@ describe("components/MuiList", () => {
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
         finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="User"
         fields={{}}
         include={[]}

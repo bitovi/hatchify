@@ -1,4 +1,4 @@
-import type { FinalAttribute } from "@hatchifyjs/hatchify-core"
+import type { PartialAttributeRecord } from "@hatchifyjs/hatchify-core"
 import type { FilterArray } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
@@ -56,7 +56,7 @@ const operatorOptions: OperatorOption = {
 
 export const MuiFilterRows: React.FC<{
   // todo: stricter typing
-  attributes: Record<string, FinalAttribute<any, any, any, any>>
+  attributes: PartialAttributeRecord
   fields: string[]
   filters: FilterArray
   setFilters: (filters: FilterArray) => void
@@ -148,7 +148,8 @@ export const MuiFilterRows: React.FC<{
               onChange={(value: any) =>
                 onChange({ field: "value", value, index })
               }
-              options={attributes[filter.field].control?.options || undefined}
+              // todo: v2 schema only supports numbers, fix with enums (use finalSchema.attributes)
+              options={undefined}
             />
           </Grid>
         </Fragment>
@@ -164,9 +165,7 @@ export function getAvailableOperator(
   field: string,
   // todo: operator should be it's own type used in FilterArray & Option
   operator: string,
-  attributes: {
-    [field: string]: FinalAttribute<any, any, any, any> // todo: stricter typing
-  },
+  attributes: PartialAttributeRecord,
 ): Option["operator"] {
   const availableOptions = getPossibleOptions(field, attributes)
 
@@ -180,9 +179,7 @@ export function getAvailableOperator(
 // Filter out operators that are not available for the field type
 export function getPossibleOptions(
   field: string,
-  attributes: {
-    [field: string]: FinalAttribute<any, any, any, any> // todo: stricter typing
-  },
+  attributes: PartialAttributeRecord,
 ): Option[] {
   const attribute = attributes[field]
   const fieldType = attribute.control.type
@@ -201,7 +198,7 @@ export function getPossibleOptions(
 }
 
 export const getFieldType = (
-  attributes: Record<string, FinalAttribute<any, any, any, any>>, // todo: stricter typing
+  attributes: PartialAttributeRecord, // todo: stricter typing
   field: string,
 ): string => {
   const attribute = attributes[field]
