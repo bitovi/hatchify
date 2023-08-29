@@ -329,6 +329,41 @@ feat: support specifying a custom name for enums
 
 Happy hacking and thank you for contributing.
 
+### 6. Making a release
+
+After your changes get successfully merged, it's necessary to release a new version of the package targeted by said changes, so others can use the new version.
+
+The [Semantic Versioning specification](https://semver.org/) is used by Hatchify, and its related repositories, to version its changes. The version number follows the MAJOR.MINOR.PATCH structure (all positive integers), meaning:
+
+ 
+- **MAJOR** version when you make incompatible API changes,
+- **MINOR** version when you add functionality in a backwards-compatible manner, and
+- **PATCH** version when you make backwards-compatible bug fixes.
+ 
+ 
+#### Releases for hatchify's packages:
+  1. In the Hatchify's repository in [Github](https://github.com/bitovi/hatchify), navigate to the [Actions tab](https://github.com/bitovi/hatchify/actions).
+  2. Select the package that will be released from the list of workflows at the left, and you'll be redirected to the package's workflows page; for example, [@hatchifyjs/koa](https://github.com/bitovi/hatchify/actions/workflows/koa.yml). 
+  3. Click in the button "Run workflow" at the top right to dispatch a new workflow; it will open up a form requesting the version number and the prereleaseId (you may leave it empty); 
+  input the new version number and submit the form by clicking on the button "Run workflow" in the form.
+  4. In any dependent package or project, run: ``` npm install @hatchifyjs/koa@latest``` to get the newest version of the package.
+ 
+#### Releases for sequelize-create-with-associations:
+  1. In the Sequelize-create-with-associations's repository in [Github](https://github.com/bitovi/sequelize-create-with-associations), navigate to the [Actions tab](https://github.com/bitovi/sequelize-create-with-associations/actions).
+  2. Select the workflow called "Publish" from the list of workflows at the left. 
+  3. Click in the button "Run workflow" at the top right to dispatch a new workflow; it will open up a form requesting the version number and the prereleaseId (you may leave it empty); 
+  input the new version number and submit the form by clicking on the button "Run workflow" in the form.  
+  4. In any dependent package or project, run: ``` npm install @hatchifyjs/sequelize-create-with-associations@latest``` to get the newest version of the package.
+
+##### Releases for query-string-parser:
+  1. In the main branch of query-string-parser, at the root level, navigate into the package that will have its version bumped by running in the terminal the following command: ````cd packages/querystring-parser```` 
+  2. Still in the terminal, run: ```npm version patch && npm publish``` to increase the version and publish the package
+  3. Navigate into the dependent packages and install the new version with: 
+    * ```cd ../sequelize && npm install @bitovi/querystring-parser@latest && npm version patch && npm publish```
+    * ```cd ../objection && npm install @bitovi/querystring-parser@latest && npm version patch && npm publish```
+  4. Commit and push your changes with: ```git add . && git commit -m "chore: upgrade package version (querystring-parser)" && git push```
+  5. Repeat this process for every other package that has @bitovi/querystring-parser as a dependency.
+
 ## Coding guidelines
 
 We use ESLint and Prettier to enforce coding guidelines. You can run it like this:
