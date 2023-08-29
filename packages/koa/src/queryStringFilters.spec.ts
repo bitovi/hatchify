@@ -241,6 +241,18 @@ const testCases = [
   },
 ]
 
+const postgresOnlyTestCases = [
+  // TODO - we need to support this in SQLite too as part of HATCH-329
+  {
+    description:
+      "returns correct data using the $ilike operator for an array of strings (non-case sensitive)",
+    operator: "$ilike",
+    queryParam: "filter[name][$ilike]=[jOhN, jAnE]",
+    expectedResult: [john, jane],
+    expectedError: undefined,
+  },
+]
+
 // like not supported by SQLite
 const SQLiteOnlyTestCases = [
   {
@@ -347,6 +359,22 @@ describe.each(dbDialects)("Operators", (dialect) => {
       )
     },
   )
+
+  if (dialect === "postgres") {
+    it.each(postgresOnlyTestCases)(
+      `${dialect} - $description`,
+      async ({ expectedResult, queryParam }) => {
+        const { body } = await fetch(`/api/users/?${queryParam}`)
+        const users = body.data.map(({ attributes }) => attributes)
+        expect(users).toEqual(
+          expectedResult.map((er) => ({
+            ...er,
+            startDate: new Date(er.startDate).toISOString(),
+          })),
+        )
+      },
+    )
+  }
 
   if (dialect === "sqlite") {
     it.each(SQLiteOnlyTestCases)(
