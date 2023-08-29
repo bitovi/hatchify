@@ -1,5 +1,13 @@
-import type { Schema as OldSchema } from "@hatchifyjs/hatchify-core"
-import type { Schema, AttributeObject } from "../../types"
+import type {
+  FinalSchema,
+  Schema as OldSchema,
+} from "@hatchifyjs/hatchify-core"
+import type {
+  Schema,
+  AttributeObject,
+  FinalSchemas,
+  Schemas,
+} from "../../types"
 
 /**
  * The current backend schema attribute types are sequelize datatypes. This function
@@ -125,4 +133,16 @@ export function transformSchema(schema: OldSchema): Schema {
   }
 
   return resolved
+}
+
+export function isSchemaV2(
+  schema: Schema | FinalSchema,
+): schema is FinalSchema {
+  return "id" in schema && "orm" in schema.id
+}
+
+export function isSchemasV2(
+  schemas: Schemas | FinalSchemas,
+): schemas is FinalSchemas {
+  return Object.values(schemas).every(isSchemaV2)
 }

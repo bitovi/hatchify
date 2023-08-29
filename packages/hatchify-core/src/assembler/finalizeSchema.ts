@@ -9,6 +9,7 @@ export function finalizeSchema(
     attributes: Object.entries(schema.attributes).reduce(
       (acc, [attributeName, attribute]) => ({
         ...acc,
+        // @ts-expect-error - todo: arthur
         [attributeName]: attribute.finalize(),
       }),
       {},

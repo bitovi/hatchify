@@ -2,12 +2,15 @@ import { useEffect } from "react"
 import type {
   Fields,
   Filters,
+  FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
   Include,
   Meta,
-  Record,
-  Schemas,
+  PartialSchemas,
+  RecordType,
 } from "@hatchifyjs/rest-client"
-import type { ReactRest } from "@hatchifyjs/react-rest"
+import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   HatchifyCollectionPage,
   HatchifyCollectionSelected,
@@ -18,8 +21,11 @@ import useSort from "./useSort"
 import useSelected from "./useSelected"
 import useFilter from "./useFilter"
 
-export interface CollectionState {
-  data: Record[]
+export interface CollectionState<
+  TSchemas extends PartialSchemas,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> {
+  data: RecordType<GetSchemaFromName<TSchemas, TSchemaName>>[]
   meta: Meta
   fields?: Fields
   include?: Include
@@ -31,14 +37,18 @@ export interface CollectionState {
   setSort: HatchifyCollectionSort["setSort"]
   selected: HatchifyCollectionSelected["selected"] | undefined
   setSelected: HatchifyCollectionSelected["setSelected"] | undefined
-  allSchemas: Schemas
+  finalSchemas: FinalSchemas
   schemaName: string
 }
 
-export default function useCollectionState(
-  allSchemas: Schemas,
-  schemaName: string,
-  restClient: ReactRest<Schemas>,
+export default function useCollectionState<
+  const TSchemas extends PartialSchemas,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
+  finalSchemas: FinalSchemas,
+  partialSchemas: TSchemas,
+  schemaName: TSchemaName,
+  restClient: HatchifyReactRest<TSchemas>,
   {
     defaultSelected,
     onSelectedChange,
@@ -50,7 +60,13 @@ export default function useCollectionState(
     fields?: Fields
     include?: Include
   } = {},
-): CollectionState {
+): CollectionState<TSchemas, TSchemaName> {
+  if (typeof schemaName !== "string") {
+    throw new Error(
+      `Expected schemaName to be a string, received ${typeof schemaName}`,
+    )
+  }
+
   const { page, setPage } = usePage()
   const { sort, sortQueryString, setSort } = useSort()
   const { filter, setFilter } = useFilter()
@@ -87,7 +103,7 @@ export default function useCollectionState(
     setSort,
     selected: onSelectedChange !== undefined ? selected : undefined,
     setSelected: onSelectedChange !== undefined ? setSelected : undefined,
-    allSchemas,
+    finalSchemas,
     schemaName,
   }
 }

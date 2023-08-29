@@ -53,7 +53,7 @@ export interface HatchifyCollectionFilters {
   setFilter: (filters: Filters) => void
 }
 
-export interface XCollectionProps extends CollectionState {
+export interface XCollectionProps extends CollectionState<any, any> {
   children?: React.ReactNode
 }
 

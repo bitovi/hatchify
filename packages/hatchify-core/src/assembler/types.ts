@@ -5,7 +5,17 @@ import type {
 } from "../dataTypes/number"
 import type { FinalAttribute, PartialAttribute } from "../types"
 
-export interface PartialSchema {
+export interface PartialSchema<
+  TAttributes extends Record<
+    string,
+    PartialAttribute<
+      PartialNumberORM,
+      PartialNumberControlType,
+      number,
+      FinalNumberORM
+    >
+  > = any,
+> {
   name: string
   id?: PartialAttribute<
     PartialNumberORM,
@@ -13,14 +23,7 @@ export interface PartialSchema {
     number,
     FinalNumberORM
   >
-  attributes: {
-    [attributeName: string]: PartialAttribute<
-      PartialNumberORM,
-      PartialNumberControlType,
-      number,
-      FinalNumberORM
-    >
-  }
+  attributes: TAttributes
 }
 export interface FinalSchema {
   name: string

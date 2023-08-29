@@ -1,15 +1,4 @@
 {
   "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "target": "esnext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    // ---
-    "rootDir": "src",
-    "outDir": "dist",
-    "sourceMap": true,
-    "strict": true,
-    "strictNullChecks": true
-  }
+  "include": ["src"]
 }

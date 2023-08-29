@@ -15,11 +15,12 @@ export interface PartialDataTypeProps {
   required?: boolean
 }
 
-export interface PartialControlType {
-  type: "Boolean" | "Number" | "String"
-  allowNull?: boolean
-  primary?: boolean
-}
+export type PartialControlType<TType extends "Boolean" | "Number" | "String"> =
+  {
+    type: TType
+    allowNull?: boolean
+    primary?: boolean
+  }
 
 export interface PartialSequelizeDataType<PrimitiveType> {
   type: string

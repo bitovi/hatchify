@@ -5,8 +5,8 @@ import {
   type Schemas,
   type ResourceRelationship,
   type FinalSchemas,
-  isSchemasV2,
 } from "../../types"
+import { isSchemasV2 } from "../schema"
 
 type Relationship = globalThis.Record<
   string,

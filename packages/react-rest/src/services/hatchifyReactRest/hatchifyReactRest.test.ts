@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest"
 import type { Source } from "@hatchifyjs/rest-client"
-import { hatchifyReactRest, hatchifyV2 } from "./hatchifyReactRest"
+import { hatchifyReactRest, hatchifyV2 } from "./hatchifyReactRest.legacy"
 import type { Schema } from "@hatchifyjs/rest-client"
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import { integer } from "@hatchifyjs/hatchify-core"
