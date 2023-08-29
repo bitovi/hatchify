@@ -46,7 +46,7 @@ type HatchifyApp = {
         onSelectedChange,
         fields,
         include,
-      }: {
+      }?: {
         defaultSelected?: HatchifyCollectionProps["defaultSelected"]
         onSelectedChange?: HatchifyCollectionProps["onSelectedChange"]
         fields?: Fields
