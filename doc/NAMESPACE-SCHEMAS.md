@@ -102,11 +102,6 @@ _Note: When refering to fields that belongs to the same namespace we could omit 
 ```
 GET /api/astra-zeneca/todos?fields[Todo]=title
 ```
-***IMPORTANT*** If there is at least one defined namespace, then the rest of the schemas with no defined namespaces would default to public namespace, which means an API call to one of them would look like (notice *public*):
-
-```
-GET /api/public/todos
-```
 
 **Returned values**
 
