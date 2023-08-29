@@ -20,6 +20,7 @@ import type {
   RenderValue,
   DefaultValueComponentsTypes,
 } from "../../components"
+import { FinalSchema } from "@hatchifyjs/hatchify-core"
 
 export interface HatchifyDisplay {
   sortable: boolean
@@ -111,7 +112,7 @@ export function getDisplaysFromChildren(
 }
 
 export function getDisplaysFromSchema(
-  schema: Schema,
+  schema: FinalSchema,
   defaultValueComponents: DefaultValueComponentsTypes,
   valueComponents: { [attribute: string]: ValueComponent } | null,
 ): HatchifyDisplay[] {
@@ -120,49 +121,51 @@ export function getDisplaysFromSchema(
       return getHatchifyDisplay({
         sortable: true,
         attribute: key,
-        attributeSchema: value,
+        attributeSchema: value.control,
         valueComponents,
         defaultValueComponents,
       })
     },
   )
 
-  const manyRelationshipDisplays = Object.entries(schema?.relationships || {})
-    .filter(([key, relationship]) => {
-      return relationship.type === "many"
-    })
-    .map(([key, relationship]) => {
-      // related schema = schema[relationship.schema]
-      return getHatchifyDisplay({
-        isRelationship: true,
-        attribute: key,
-        label: key,
-        attributeSchema: null, // the schema in this case is a "relationship"
-        valueComponents,
-        defaultValueComponents,
-      })
-    })
+  // todo: relationships not implemented in v2 yet
+  // const manyRelationshipDisplays = Object.entries(schema?.relationships || {})
+  //   .filter(([key, relationship]) => {
+  //     return relationship.type === "many"
+  //   })
+  //   .map(([key, relationship]) => {
+  //     // related schema = schema[relationship.schema]
+  //     return getHatchifyDisplay({
+  //       isRelationship: true,
+  //       attribute: key,
+  //       label: key,
+  //       attributeSchema: null, // the schema in this case is a "relationship"
+  //       valueComponents,
+  //       defaultValueComponents,
+  //     })
+  //   })
 
-  const oneRelationshipDisplays = Object.entries(schema?.relationships || {})
-    .filter(([key, relationship]) => {
-      return relationship.type === "one"
-    })
-    .map(([key, relationship]) => {
-      // related schema = schema[relationship.schema]
-      return getHatchifyDisplay({
-        isRelationship: true,
-        attribute: key,
-        label: key,
-        attributeSchema: null, // the schema in this case is a "relationship"
-        valueComponents,
-        defaultValueComponents,
-      })
-    })
+  // todo: relationships not implemented in v2 yet
+  // const oneRelationshipDisplays = Object.entries(schema?.relationships || {})
+  //   .filter(([key, relationship]) => {
+  //     return relationship.type === "one"
+  //   })
+  //   .map(([key, relationship]) => {
+  //     // related schema = schema[relationship.schema]
+  //     return getHatchifyDisplay({
+  //       isRelationship: true,
+  //       attribute: key,
+  //       label: key,
+  //       attributeSchema: null, // the schema in this case is a "relationship"
+  //       valueComponents,
+  //       defaultValueComponents,
+  //     })
+  //   })
 
   return [
     ...attributesDisplays,
-    ...manyRelationshipDisplays,
-    ...oneRelationshipDisplays,
+    // ...manyRelationshipDisplays,
+    // ...oneRelationshipDisplays,
   ]
 }
 
@@ -293,7 +296,8 @@ export function hasValidChildren(
 }
 
 export function getDisplays(
-  schema: Schema,
+  // todo: future; remove any, `getDisplays` used by Details page which is not yet implemented
+  schema: any,
   valueComponents: { [field: string]: ValueComponent } | undefined,
   defaultValueComponents: DefaultValueComponentsTypes,
   children: React.ReactNode | null,

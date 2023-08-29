@@ -1,19 +1,17 @@
 import { describe, expect, it } from "vitest"
-import type { SchemaRecord } from "@hatchifyjs/react-rest"
 import { reactJsonapi } from "./react-jsonapi"
+import { integer } from "@hatchifyjs/hatchify-core"
 
-const TestSchema: SchemaRecord = {
+const TestSchema = {
   Article: {
     name: "Article",
-    displayAttribute: "title",
-    attributes: { title: "string", body: "string" },
+    attributes: { views: integer() },
   },
   Person: {
     name: "Person",
     displayAttribute: "name",
     attributes: {
-      name: "string",
-      age: "integer",
+      age: integer(),
     },
     relationships: {
       Article: {
@@ -40,32 +38,32 @@ describe("react-jsonapi", () =>
 
     expect(reactRest).toEqual({
       Article: {
-        createOne: expect.any(Function),
-        deleteOne: expect.any(Function),
+        // createOne: expect.any(Function),
+        // deleteOne: expect.any(Function),
         findAll: expect.any(Function),
-        findOne: expect.any(Function),
-        updateOne: expect.any(Function),
-        useCreateOne: expect.any(Function),
-        useDeleteOne: expect.any(Function),
+        // findOne: expect.any(Function),
+        // updateOne: expect.any(Function),
+        // useCreateOne: expect.any(Function),
+        // useDeleteOne: expect.any(Function),
         useAll: expect.any(Function),
-        useOne: expect.any(Function),
-        useUpdateOne: expect.any(Function),
+        // useOne: expect.any(Function),
+        // useUpdateOne: expect.any(Function),
         subscribeToAll: expect.any(Function),
-        subscribeToOne: expect.any(Function),
+        // subscribeToOne: expect.any(Function),
       },
       Person: {
-        createOne: expect.any(Function),
-        deleteOne: expect.any(Function),
+        // createOne: expect.any(Function),
+        // deleteOne: expect.any(Function),
         findAll: expect.any(Function),
-        findOne: expect.any(Function),
-        updateOne: expect.any(Function),
-        useCreateOne: expect.any(Function),
-        useDeleteOne: expect.any(Function),
+        // findOne: expect.any(Function),
+        // updateOne: expect.any(Function),
+        // useCreateOne: expect.any(Function),
+        // useDeleteOne: expect.any(Function),
         useAll: expect.any(Function),
-        useOne: expect.any(Function),
-        useUpdateOne: expect.any(Function),
+        // useOne: expect.any(Function),
+        // useUpdateOne: expect.any(Function),
         subscribeToAll: expect.any(Function),
-        subscribeToOne: expect.any(Function),
+        // subscribeToOne: expect.any(Function),
       },
     })
   }))

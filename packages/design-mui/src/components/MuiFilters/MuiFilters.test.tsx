@@ -1,15 +1,16 @@
-import type { Schema } from "@hatchifyjs/rest-client"
 import "@testing-library/jest-dom"
 import { describe, it, expect, vi } from "vitest"
 import { render, screen, act } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import MuiFilters from "./MuiFilters"
+import { assembler } from "@hatchifyjs/hatchify-core"
 
-const TestSchema: Schema = {
-  name: "Test",
-  attributes: { id: "string", name: "string" },
-  displayAttribute: "name",
-}
+const finalSchemas = assembler({
+  Test: {
+    name: "Test",
+    attributes: { id: "string", name: "string" },
+  },
+})
 
 const meta = {
   status: "success",
@@ -29,7 +30,7 @@ describe("components/MuiFilters", () => {
   it("works", async () => {
     render(
       <MuiFilters
-        allSchemas={{ Test: TestSchema }}
+        finalSchemas={finalSchemas}
         schemaName="Test"
         data={[]}
         meta={meta}
@@ -71,7 +72,7 @@ describe("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={{ Test: TestSchema }}
+        finalSchemas={finalSchemas}
         schemaName="Test"
         data={[]}
         meta={meta}

@@ -1,4 +1,4 @@
-import { assembler, integer } from "@hatchifyjs/hatchify-core"
+import { assembler } from "@hatchifyjs/hatchify-core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   Fields,
@@ -128,31 +128,31 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
   }
 }
 
-const partialTodo = {
-  name: "Todo",
-  attributes: {
-    date: integer(),
-    importance: integer(),
-  },
-}
+// const partialTodo = {
+//   name: "Todo",
+//   attributes: {
+//     date: integer(),
+//     importance: integer(),
+//   },
+// }
 
-const partialUser = {
-  name: "User",
-  attributes: {
-    age: integer({ required: true }),
-    name: {
-      control: { type: "String" } as any,
-    },
-  },
-}
+// const partialUser = {
+//   name: "User",
+//   attributes: {
+//     age: integer({ required: true }),
+//     name: {
+//       control: { type: "String" } as any,
+//     },
+//   },
+// }
 
-const app = hatchifyReact(
-  { Todo: partialTodo, User: partialUser },
-  undefined as any,
-)
+// const app = hatchifyReact(
+//   { Todo: partialTodo, User: partialUser },
+//   undefined as any,
+// )
 
-const [records] = app.model.User.useAll()
-records[0].id
-records[0].age
-records[0].name
-records[0].adsfa
+// const [records] = app.model.User.useAll()
+// records[0].id
+// records[0].age
+// records[0].name
+// records[0].adsfa

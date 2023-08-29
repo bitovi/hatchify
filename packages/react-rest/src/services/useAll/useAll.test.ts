@@ -1,12 +1,13 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
+import { assembler, integer } from "@hatchifyjs/hatchify-core"
 import {
   createStore,
   flattenResourcesIntoRecords,
   subscribeToAll,
 } from "@hatchifyjs/rest-client"
-import type { Schema, Source, Subscription } from "@hatchifyjs/rest-client"
+import type { Source, Subscription } from "@hatchifyjs/rest-client"
 import { useAll } from "./useAll"
 
 const fakeData = [
@@ -35,12 +36,14 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = {
-  name: "Article",
-  displayAttribute: "title",
-  attributes: { title: "string", body: "string" },
-} as Schema
-const schemas = { Article: ArticleSchema }
+const schemas = assembler({
+  Article: {
+    name: "Article",
+    attributes: {
+      views: integer(),
+    },
+  },
+})
 
 describe("react-rest/services/useAll", () => {
   it("should fetch a list of records", async () => {

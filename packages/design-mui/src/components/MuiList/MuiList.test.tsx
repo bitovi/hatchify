@@ -2,6 +2,7 @@ import "@testing-library/jest-dom"
 import { createElement } from "react"
 import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
+import { assembler } from "@hatchifyjs/hatchify-core"
 import { MuiList } from "./MuiList"
 
 describe("components/MuiList", () => {
@@ -15,6 +16,8 @@ describe("components/MuiList", () => {
       },
     },
   }
+
+  const finalSchemas = assembler(schemas)
 
   const data = [
     {
@@ -53,7 +56,7 @@ describe("components/MuiList", () => {
         setPage={vi.fn()}
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
         schemaName="User"
         fields={{}}
         include={[]}
@@ -86,7 +89,7 @@ describe("components/MuiList", () => {
         setPage={vi.fn()}
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
         schemaName="User"
         fields={{}}
         include={[]}
@@ -118,7 +121,7 @@ describe("components/MuiList", () => {
           setPage={vi.fn()}
           selected={selected}
           setSelected={setSelected}
-          allSchemas={schemas}
+          finalSchemas={finalSchemas}
           schemaName="User"
           fields={{}}
           include={[]}
@@ -200,7 +203,7 @@ describe("components/MuiList", () => {
         setPage={vi.fn()}
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
         schemaName="User"
         fields={{}}
         include={[]}

@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { findAll, getMeta, subscribeToAll } from "@hatchifyjs/rest-client"
-
 import type {
   FinalSchemas,
   GetSchemaFromName,
@@ -8,10 +7,8 @@ import type {
   Meta,
   MetaError,
   QueryList,
-  Record,
   RecordType,
   RequestMetaData,
-  Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
 import { PartialSchema } from "@hatchifyjs/hatchify-core"
@@ -41,6 +38,12 @@ export const useAll = <
   schemaName: TSchemaName,
   query: QueryList,
 ): [RecordType<GetSchemaFromName<TSchemas, TSchemaName>>[], Meta] => {
+  if (typeof schemaName !== "string") {
+    throw new Error(
+      `Expected schemaName to be a string, received ${typeof schemaName}`,
+    )
+  }
+
   const memoizedQuery = useMemoizedQuery(query)
   const [data, setData] = useState<
     RecordType<GetSchemaFromName<TSchemas, TSchemaName>>[]

@@ -8,14 +8,14 @@ import AddIcon from "@mui/icons-material/Add"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 
 export const MuiFilters: React.FC<XCollectionProps> = ({
-  allSchemas,
+  finalSchemas,
   schemaName,
   filter: queryFilter,
   setFilter: setQueryFilter,
   page,
   setPage,
 }) => {
-  const fields = getSupportedFields(allSchemas, schemaName)
+  const fields = getSupportedFields(finalSchemas, schemaName)
   const defaultFilter = { field: fields[0], operator: "ilike", value: "" }
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -80,7 +80,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
         <Grid container spacing={1} width="39.5rem" padding="0.75rem">
           <Grid item xs={12}>
             <MuiFilterRows
-              attributes={allSchemas[schemaName].attributes}
+              attributes={finalSchemas[schemaName].attributes}
               fields={fields}
               filters={filters}
               setFilters={setFilters}
@@ -122,14 +122,15 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
 }
 
 function getSupportedFields(
-  allSchemas: XCollectionProps["allSchemas"],
+  allSchemas: XCollectionProps["finalSchemas"],
   schemaName: XCollectionProps["schemaName"],
 ) {
   return Object.entries(allSchemas[schemaName].attributes)
-    .filter(([, attr]) =>
-      typeof attr === "object"
-        ? attr.type === "string" || attr.type === "date" || attr.type === "enum"
-        : attr === "string" || attr === "date" || attr === "enum",
+    .filter(
+      ([, attr]) => attr.control.type === "Number", // todo: only `Number` in v2 at the moment
+      // typeof attr === "object"
+      //   ? attr.type === "string" || attr.type === "date" || attr.type === "enum"
+      //   : attr === "string" || attr === "date" || attr === "enum",
     )
     .map(([key]) => key)
 }

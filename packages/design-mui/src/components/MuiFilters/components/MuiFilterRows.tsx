@@ -1,8 +1,5 @@
-import type {
-  Attribute,
-  EnumObject,
-  FilterArray,
-} from "@hatchifyjs/rest-client"
+import type { FinalAttribute } from "@hatchifyjs/hatchify-core"
+import type { FilterArray } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
@@ -58,7 +55,8 @@ const operatorOptions: OperatorOption = {
 }
 
 export const MuiFilterRows: React.FC<{
-  attributes: Record<string, Attribute>
+  // todo: stricter typing
+  attributes: Record<string, FinalAttribute<any, any, any, any>>
   fields: string[]
   filters: FilterArray
   setFilters: (filters: FilterArray) => void
@@ -150,7 +148,7 @@ export const MuiFilterRows: React.FC<{
               onChange={(value: any) =>
                 onChange({ field: "value", value, index })
               }
-              options={(attributes[filter.field] as EnumObject)?.values}
+              options={attributes[filter.field].control?.options || undefined}
             />
           </Grid>
         </Fragment>
@@ -167,7 +165,7 @@ export function getAvailableOperator(
   // todo: operator should be it's own type used in FilterArray & Option
   operator: string,
   attributes: {
-    [field: string]: Attribute
+    [field: string]: FinalAttribute<any, any, any, any> // todo: stricter typing
   },
 ): Option["operator"] {
   const availableOptions = getPossibleOptions(field, attributes)
@@ -183,12 +181,12 @@ export function getAvailableOperator(
 export function getPossibleOptions(
   field: string,
   attributes: {
-    [field: string]: Attribute
+    [field: string]: FinalAttribute<any, any, any, any> // todo: stricter typing
   },
 ): Option[] {
   const attribute = attributes[field]
-  const fieldType = typeof attribute === "string" ? attribute : attribute.type
-  const required = typeof attribute === "string" ? false : !attribute.allowNull
+  const fieldType = attribute.control.type
+  const required = !attribute.control.allowNull
 
   const options = operatorOptions[
     // todo(v2 schema): operatorOption types should match possible Attribute types
@@ -203,9 +201,9 @@ export function getPossibleOptions(
 }
 
 export const getFieldType = (
-  attributes: Record<string, Attribute>,
+  attributes: Record<string, FinalAttribute<any, any, any, any>>, // todo: stricter typing
   field: string,
 ): string => {
   const attribute = attributes[field]
-  return typeof attribute === "string" ? attribute : attribute.type
+  return attribute.control.type // currently only "Number"
 }

@@ -110,17 +110,17 @@ async function test() {
   a[0].id
   a[0].age
   a[0].importance
-  a[0].adsfaasdfaskldhfk
+  // a[0].adsfaasdfaskldhfk
   b[0].id
   b[0].age
   b[0].importance
-  b[0].asdf
+  // b[0].asdf
 
   const [aa] = app.Todo.useAll({})
   aa[0].id
   aa[0].age
   aa[0].importance
-  aa[0].asdfas
+  // aa[0].asdfas
 }
 
 //

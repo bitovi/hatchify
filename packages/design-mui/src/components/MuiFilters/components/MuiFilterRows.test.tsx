@@ -2,18 +2,26 @@ import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import MuiFilterRows from "./MuiFilterRows"
+import { assembler, integer } from "@hatchifyjs/hatchify-core"
 
 describe("components/MuiFilters/components/MuiFilterRows", () => {
+  const finalSchemas = assembler({
+    Todo: {
+      name: "Todo",
+      attributes: {
+        views: integer(),
+        importance: integer(),
+      },
+    },
+  })
+
   it("works", async () => {
     const setFilters = vi.fn()
     const removeFilter = vi.fn()
 
     render(
       <MuiFilterRows
-        attributes={{
-          name: "string",
-          date: "date",
-        }}
+        attributes={finalSchemas.Todo.attributes}
         fields={["name", "date"]}
         filters={[
           { field: "name", operator: "ilike", value: "test" },

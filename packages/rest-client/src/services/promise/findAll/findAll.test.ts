@@ -1,12 +1,15 @@
+import { assembler } from "@hatchifyjs/hatchify-core"
 import { describe, it, expect } from "vitest"
 import { createStore } from "../../store"
 import { findAll } from "./findAll"
 import { fakeDataSource, schemas } from "../../mocks/testData"
 
+const finalSchemas = assembler(schemas)
+
 describe("rest-client/services/promise/findAll", () => {
   it("should return a list of records", async () => {
     createStore(["Article"])
-    const result = await findAll(fakeDataSource, schemas, "Article", {})
+    const result = await findAll(fakeDataSource, finalSchemas, "Article", {})
     const expected = [
       {
         id: "article-1",
@@ -61,7 +64,7 @@ describe("rest-client/services/promise/findAll", () => {
     }
 
     await expect(
-      findAll(errorDataSource, schemas, "Article", {}),
+      findAll(errorDataSource, finalSchemas, "Article", {}),
     ).rejects.toEqual(errors)
   })
 })

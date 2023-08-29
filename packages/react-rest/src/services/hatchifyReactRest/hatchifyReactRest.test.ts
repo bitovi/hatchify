@@ -1,9 +1,8 @@
 import { describe, it, expect } from "vitest"
 import type { Source } from "@hatchifyjs/rest-client"
-import { hatchifyReactRest, hatchifyV2 } from "./hatchifyReactRest.legacy"
+import { hatchifyReactRest } from "./hatchifyReactRest.legacy"
 import type { Schema } from "@hatchifyjs/rest-client"
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
-import { integer } from "@hatchifyjs/hatchify-core"
 
 const fakeDataSource: Source = {
   version: 0,
@@ -15,20 +14,6 @@ const fakeDataSource: Source = {
 }
 
 describe("react-rest/services/hatchifyReactRest", () => {
-  it.only("testing", () => {
-    const User: any = {
-      name: "User",
-      attributes: {
-        age: integer({ min: 0 }),
-        yearsWorked: integer({ min: 0 }),
-      },
-    }
-
-    const result = hatchifyV2({ User })
-
-    console.log("result", result.User.attributes)
-  })
-
   it("should return functions for each schema", () => {
     const Article: LegacySchema = {
       name: "Article",
