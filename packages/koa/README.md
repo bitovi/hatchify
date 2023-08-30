@@ -43,7 +43,7 @@ const hatchedKoa = hatchifyKoa([User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -127,7 +127,7 @@ const hatchedKoa = hatchifyKoa([User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -145,7 +145,7 @@ app.use(async (ctx) => {
 })()
 ```
 
-At this point you have created a Koa application with Hatchify connected as Middleware. In this above example we are configuring Hatchify to use sqlite as a database and to store any of our data in the `example.sqlite` file.
+At this point you have created a Koa application with Hatchify connected as Middleware. In this above example we are configuring Hatchify to use sqlite as a database and to store any of our data in memory.
 
 The most important step in working with Hatchify is creating Models that define the data within your application. Lets take a look at this example `models.ts` file containing two different exported Models:
 
@@ -197,7 +197,7 @@ const hatchedKoa = hatchifyKoa([Player, Team], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -306,7 +306,7 @@ const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -346,7 +346,7 @@ const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 ```
@@ -427,7 +427,7 @@ const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -482,7 +482,7 @@ const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -570,7 +570,7 @@ const hatchedKoa = hatchifyKoa([Assignment, Employee], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 

@@ -28,7 +28,7 @@ Unlike code generation tools—which allow you to write your schema and then gen
 - [Next Steps](#next-steps)
   - [Schema, database, and service API naming](./doc/naming.md)
   - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
-  - [Rendering an empty list](./doc/next-steps/[empty-list.md](doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md))
+  - [Rendering an empty list](<./doc/next-steps/[empty-list.md](doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)>)
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
   - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
   - [Using virtual fields](./doc/next-steps/virtual-fields.md)
@@ -249,7 +249,7 @@ const hatchedKoa = hatchifyKoa([Todo, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: "example.sqlite",
+    storage: ":memory:",
   },
 })
 

@@ -9,13 +9,12 @@ node_modules
 /packages/*/coverage
 
 # misc
-.vscode
+.vscode/settings.json
 .DS_Store
 Thumbs.db
 *.tsbuildinfo
 npm-debug.log*
 
-example.sqlite
 /test-results/
 /playwright-report/
 /playwright/.cache/
