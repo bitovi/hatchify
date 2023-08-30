@@ -4,7 +4,7 @@ export function getPartialControl(
   props?: PartialNumberProps,
 ): PartialNumberControlType {
   return {
-    type: "Number", // todo: as const???
+    type: "Number",
     allowNull: props?.required == null ? props?.required : !props.required,
     min: props?.min,
     max: props?.max,

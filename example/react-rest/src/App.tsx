@@ -1,13 +1,12 @@
-import { integer } from "@hatchifyjs/hatchify-core"
+import { integer, string } from "@hatchifyjs/hatchify-core"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import createClient from "@hatchifyjs/rest-client-jsonapi"
 
 const Todo = {
   name: "Todo",
   attributes: {
-    firstAttribute: integer(),
-    secondAttribute: integer(),
-    thirdAttribute: integer(),
+    name: string(),
+    importance: integer(),
   },
 }
 
@@ -30,9 +29,8 @@ function App() {
         <thead>
           {todos.map((todo) => (
             <tr key={todo.id}>
-              <td>{todo.firstAttribute}</td>
-              <td>{todo.secondAttribute}</td>
-              <td>{todo.thirdAttribute}</td>
+              <td>{todo.name}</td>
+              <td>{todo.importance}</td>
             </tr>
           ))}
         </thead>

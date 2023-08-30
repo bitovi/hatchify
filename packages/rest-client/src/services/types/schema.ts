@@ -43,7 +43,7 @@ export type GetSchemaFromName<
 > = TSchemas[TSchemaName]
 
 export type NumberAsString = "number" | "Number"
-export type StringAsString = "number" | "Number"
+export type StringAsString = "string" | "String"
 
 export type IsNumber<TValue> = TValue extends NumberAsString ? true : false
 export type IsString<TValue> = TValue extends StringAsString ? true : false

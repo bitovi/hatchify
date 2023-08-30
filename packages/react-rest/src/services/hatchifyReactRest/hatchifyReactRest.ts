@@ -86,6 +86,7 @@ export const hatchifyReactRest = <const TSchemas extends PartialSchemas>(
   return functions
 }
 
+// todo: leaving for testing, remove before merge to main
 // const partialTodo = {
 //   name: "Todo",
 //   attributes: {
