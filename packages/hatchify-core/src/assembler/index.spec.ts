@@ -68,8 +68,14 @@ describe("assembler", () => {
     describe("attributes", () => {
       it("finalizes correctly", () => {
         expect(Todo.attributes.importance.control.allowNull).toBeUndefined()
-        expect(Todo.attributes.importance.control.min).toBe(0)
-        expect(Todo.attributes.importance.control.max).toBeUndefined()
+        expect(
+          "min" in Todo.attributes.importance.control &&
+            Todo.attributes.importance.control.min,
+        ).toBe(0)
+        expect(
+          "max" in Todo.attributes.importance.control &&
+            Todo.attributes.importance.control.max,
+        ).toBeUndefined()
         expect(Todo.attributes.importance.control.primary).toBeUndefined()
 
         expect(
@@ -86,8 +92,14 @@ describe("assembler", () => {
         const { Todo: assembledTodo } = assembler({ Todo })
 
         expect(assembledTodo.attributes.importance.control.allowNull).toBe(true)
-        expect(assembledTodo.attributes.importance.control.min).toBe(0)
-        expect(assembledTodo.attributes.importance.control.max).toBe(Infinity)
+        expect(
+          "min" in assembledTodo.attributes.importance.control &&
+            assembledTodo.attributes.importance.control.min,
+        ).toBe(0)
+        expect(
+          "max" in assembledTodo.attributes.importance.control &&
+            assembledTodo.attributes.importance.control.max,
+        ).toBe(Infinity)
         expect(assembledTodo.attributes.importance.control.primary).toBe(false)
 
         expect(

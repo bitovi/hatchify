@@ -1,4 +1,10 @@
-import { datetime, integer, string, text } from "@hatchifyjs/hatchify-core"
+import {
+  datetime,
+  enumerate,
+  integer,
+  string,
+  text,
+} from "@hatchifyjs/hatchify-core"
 import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
@@ -17,6 +23,10 @@ describe.each(dbDialects)("Operators", (dialect) => {
             validate: { isAfter: "2022-12-31T00:00:00.000Z" },
           },
           bio: "TEXT",
+          status: {
+            type: "ENUM",
+            values: ["active", "inactive"],
+          },
         },
       }
 
@@ -73,7 +83,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           return 0
         })
 
-        expect(sortedColumns).toHaveLength(6)
+        expect(sortedColumns).toHaveLength(7)
         expect(sortedColumns[0]).toMatchObject({
           name: "age",
           notnull: dialect === "postgres" ? "YES" : 0,
@@ -106,6 +116,12 @@ describe.each(dbDialects)("Operators", (dialect) => {
           type: dialect === "postgres" ? "character varying" : "VARCHAR(255)",
         })
         expect(sortedColumns[5]).toMatchObject({
+          name: "status",
+          notnull: dialect === "postgres" ? "YES" : 0,
+          pk: 0,
+          type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
+        })
+        expect(sortedColumns[6]).toMatchObject({
           name: "years_worked",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
@@ -135,6 +151,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     yearsWorked: 1,
                     hireDate: "2023-01-01T00:00:00.000Z",
                     bio: "bla bla",
+                    status: "active",
                   },
                 },
               },
@@ -150,6 +167,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     yearsWorked: 3,
                     hireDate: "2023-01-01T00:00:00.000Z",
                     bio: "bla bla",
+                    status: "active",
                   },
                 },
               },
@@ -179,6 +197,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 yearsWorked: 1,
                 hireDate: "2023-01-01T00:00:00.000Z",
                 bio: "bla bla",
+                status: "active",
               },
             },
           })
@@ -197,6 +216,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 yearsWorked: 3,
                 hireDate: "2023-01-01T00:00:00.000Z",
                 bio: "bla bla",
+                status: "active",
               },
             },
           })
@@ -215,6 +235,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     age: -1,
                     yearsWorked: -1,
                     hireDate: "2022-01-01T00:00:00.000Z",
+                    status: "invalid",
                   },
                 },
               },
@@ -240,6 +261,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                       age: -1,
                       yearsWorked: -1,
                       hireDate: "2022-01-01T00:00:00.000Z",
+                      status: "invalid",
                     },
                     validatorKey: "len",
                     validatorName: "len",
@@ -258,6 +280,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                       age: -1,
                       yearsWorked: -1,
                       hireDate: "2022-01-01T00:00:00.000Z",
+                      status: "invalid",
                     },
                     validatorKey: "min",
                     validatorName: "min",
@@ -276,6 +299,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                       age: -1,
                       yearsWorked: -1,
                       hireDate: "2022-01-01T00:00:00.000Z",
+                      status: "invalid",
                     },
                     validatorKey: "min",
                     validatorName: "min",
@@ -294,6 +318,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                       age: -1,
                       yearsWorked: -1,
                       hireDate: "2022-01-01T00:00:00.000Z",
+                      status: "invalid",
                     },
                     validatorKey: "isAfter",
                     validatorName: "isAfter",
@@ -301,6 +326,28 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     original: {
                       validatorName: "isAfter",
                       validatorArgs: ["2022-12-31T00:00:00.000Z"],
+                    },
+                  },
+                  {
+                    message: "Validation isIn on status failed",
+                    type: "Validation error",
+                    path: "status",
+                    value: "invalid",
+                    origin: "FUNCTION",
+                    instance: {
+                      id: null,
+                      name: "",
+                      age: -1,
+                      yearsWorked: -1,
+                      hireDate: "2022-01-01T00:00:00.000Z",
+                      status: "invalid",
+                    },
+                    validatorKey: "isIn",
+                    validatorName: "isIn",
+                    validatorArgs: [["active", "inactive"]],
+                    original: {
+                      validatorName: "isIn",
+                      validatorArgs: [["active", "inactive"]],
                     },
                   },
                 ],
@@ -329,6 +376,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
               {
@@ -340,6 +388,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -369,6 +418,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -430,6 +480,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
               {
@@ -441,6 +492,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -470,6 +522,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -490,6 +543,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           yearsWorked: integer({ min: 0 }),
           hireDate: datetime({ min: new Date("2022-12-31T00:00:00.000Z") }),
           bio: text(),
+          status: enumerate({ values: ["active", "inactive"] }),
         },
       }
 
@@ -545,7 +599,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           }
           return 0
         })
-        expect(sortedColumns).toHaveLength(6)
+        expect(sortedColumns).toHaveLength(7)
         expect(sortedColumns[0]).toMatchObject({
           name: "age",
           notnull: dialect === "postgres" ? "YES" : 0,
@@ -578,6 +632,12 @@ describe.each(dbDialects)("Operators", (dialect) => {
           type: dialect === "postgres" ? "character varying" : "VARCHAR(10)",
         })
         expect(sortedColumns[5]).toMatchObject({
+          name: "status",
+          notnull: dialect === "postgres" ? "YES" : 0,
+          pk: 0,
+          type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
+        })
+        expect(sortedColumns[6]).toMatchObject({
           name: "years_worked",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
@@ -607,6 +667,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     yearsWorked: 1,
                     hireDate: "2023-01-01T00:00:00.000Z",
                     bio: "bla bla",
+                    status: "active",
                   },
                 },
               },
@@ -622,6 +683,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     yearsWorked: 3,
                     hireDate: "2023-01-01T00:00:00.000Z",
                     bio: "bla bla",
+                    status: "active",
                   },
                 },
               },
@@ -651,6 +713,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 yearsWorked: 1,
                 hireDate: "2023-01-01T00:00:00.000Z",
                 bio: "bla bla",
+                status: "active",
               },
             },
           })
@@ -669,6 +732,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 yearsWorked: 3,
                 hireDate: "2023-01-01T00:00:00.000Z",
                 bio: "bla bla",
+                status: "active",
               },
             },
           })
@@ -687,6 +751,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     age: -1,
                     yearsWorked: -1,
                     hireDate: "2022-01-01T00:00:00.000Z",
+                    status: "invalid",
                   },
                 },
               },
@@ -742,6 +807,14 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 source: { pointer: "/data/attributes/bio" },
                 title: "Unexpected value.",
               },
+              {
+                status: 422,
+                code: "unexpected-value",
+                detail:
+                  "Payload must have 'status' as one of 'active', 'inactive' but received 'invalid' instead.",
+                source: { pointer: "/data/attributes/status" },
+                title: "Unexpected value.",
+              },
             ],
           })
         })
@@ -766,6 +839,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
               {
@@ -777,6 +851,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -806,6 +881,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -867,6 +943,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
               {
@@ -878,6 +955,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -907,6 +985,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],

@@ -4,6 +4,11 @@ import type {
   PartialDatetimeORM,
 } from "../dataTypes/datetime"
 import type {
+  FinalEnumORM,
+  PartialEnumControlType,
+  PartialEnumORM,
+} from "../dataTypes/enumerate/types"
+import type {
   FinalNumberORM,
   PartialNumberControlType,
   PartialNumberORM,
@@ -34,6 +39,12 @@ export type PartialAttributeRecord = Record<
       PartialDatetimeControlType,
       Date,
       FinalDatetimeORM
+    >
+  | PartialAttribute<
+      PartialEnumORM,
+      PartialEnumControlType,
+      string,
+      FinalEnumORM
     >
 >
 
@@ -77,6 +88,12 @@ export interface FinalSchema {
           PartialDatetimeControlType,
           Date,
           FinalDatetimeORM
+        >
+      | FinalAttribute<
+          PartialEnumORM,
+          PartialEnumControlType,
+          string,
+          FinalEnumORM
         >
   }
 }

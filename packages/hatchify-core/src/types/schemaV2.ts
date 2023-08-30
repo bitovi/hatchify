@@ -10,6 +10,12 @@ export class HatchifyCoerceError extends Error {
   }
 }
 
+export class HatchifyInvalidInputError extends Error {
+  constructor(message: string) {
+    super(message)
+  }
+}
+
 export interface PartialDataTypeProps {
   primary?: boolean
   required?: boolean
