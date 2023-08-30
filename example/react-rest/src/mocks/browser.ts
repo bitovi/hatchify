@@ -11,20 +11,35 @@ const todos = [
   {
     id: "todo-1",
     type: "Todo",
-    attributes: { name: "Workout" },
-    relationships: { user: { data: { id: "user-1", type: "User" } } },
+    attributes: {
+      firstAttribute: 1,
+      secondAttribute: 2,
+      thirdAttribute: 3,
+    },
+    // attributes: { name: "Workout" },
+    // relationships: { user: { data: { id: "user-1", type: "User" } } },
   },
   {
     id: "todo-2",
     type: "Todo",
-    attributes: { name: "Shopping" },
-    relationships: { user: { data: { id: "user-2", type: "User" } } },
+    attributes: {
+      firstAttribute: 1,
+      secondAttribute: 2,
+      thirdAttribute: 3,
+    },
+    // attributes: { name: "Shopping" },
+    // relationships: { user: { data: { id: "user-2", type: "User" } } },
   },
   {
     id: "todo-3",
     type: "Todo",
-    attributes: { name: "Cooking" },
-    relationships: { user: { data: { id: "user-3", type: "User" } } },
+    attributes: {
+      firstAttribute: 1,
+      secondAttribute: 2,
+      thirdAttribute: 3,
+    },
+    // attributes: { name: "Cooking" },
+    // relationships: { user: { data: { id: "user-3", type: "User" } } },
   },
 ]
 
