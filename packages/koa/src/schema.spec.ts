@@ -1,4 +1,10 @@
-import { datetime, integer, string, text } from "@hatchifyjs/hatchify-core"
+import {
+  datetime,
+  enumerate,
+  integer,
+  string,
+  text,
+} from "@hatchifyjs/hatchify-core"
 import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
@@ -17,6 +23,10 @@ describe.each(dbDialects)("Operators", (dialect) => {
             validate: { isAfter: "2022-12-31T00:00:00.000Z" },
           },
           bio: "TEXT",
+          status: {
+            type: "ENUM",
+            values: ["active", "inactive"],
+          },
         },
       }
 
@@ -73,7 +83,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           return 0
         })
 
-        expect(sortedColumns).toHaveLength(6)
+        expect(sortedColumns).toHaveLength(7)
         expect(sortedColumns[0]).toMatchObject({
           name: "age",
           notnull: dialect === "postgres" ? "YES" : 0,
@@ -106,6 +116,12 @@ describe.each(dbDialects)("Operators", (dialect) => {
           type: dialect === "postgres" ? "character varying" : "VARCHAR(255)",
         })
         expect(sortedColumns[5]).toMatchObject({
+          name: "status",
+          notnull: dialect === "postgres" ? "YES" : 0,
+          pk: 0,
+          type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
+        })
+        expect(sortedColumns[6]).toMatchObject({
           name: "years_worked",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
@@ -135,6 +151,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     yearsWorked: 1,
                     hireDate: "2023-01-01T00:00:00.000Z",
                     bio: "bla bla",
+                    status: "active",
                   },
                 },
               },
@@ -150,6 +167,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     yearsWorked: 3,
                     hireDate: "2023-01-01T00:00:00.000Z",
                     bio: "bla bla",
+                    status: "active",
                   },
                 },
               },
@@ -179,6 +197,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 yearsWorked: 1,
                 hireDate: "2023-01-01T00:00:00.000Z",
                 bio: "bla bla",
+                status: "active",
               },
             },
           })
@@ -197,6 +216,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 yearsWorked: 3,
                 hireDate: "2023-01-01T00:00:00.000Z",
                 bio: "bla bla",
+                status: "active",
               },
             },
           })
@@ -329,6 +349,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
               {
@@ -340,6 +361,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -369,6 +391,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -430,6 +453,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
               {
@@ -441,6 +465,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -470,6 +495,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -490,6 +516,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           yearsWorked: integer({ min: 0 }),
           hireDate: datetime({ min: new Date("2022-12-31T00:00:00.000Z") }),
           bio: text(),
+          status: enumerate({ values: ["active", "inactive"] }),
         },
       }
 
@@ -545,7 +572,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           }
           return 0
         })
-        expect(sortedColumns).toHaveLength(6)
+        expect(sortedColumns).toHaveLength(7)
         expect(sortedColumns[0]).toMatchObject({
           name: "age",
           notnull: dialect === "postgres" ? "YES" : 0,
@@ -578,6 +605,12 @@ describe.each(dbDialects)("Operators", (dialect) => {
           type: dialect === "postgres" ? "character varying" : "VARCHAR(10)",
         })
         expect(sortedColumns[5]).toMatchObject({
+          name: "status",
+          notnull: dialect === "postgres" ? "YES" : 0,
+          pk: 0,
+          type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
+        })
+        expect(sortedColumns[6]).toMatchObject({
           name: "years_worked",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
@@ -607,6 +640,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     yearsWorked: 1,
                     hireDate: "2023-01-01T00:00:00.000Z",
                     bio: "bla bla",
+                    status: "active",
                   },
                 },
               },
@@ -622,6 +656,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     yearsWorked: 3,
                     hireDate: "2023-01-01T00:00:00.000Z",
                     bio: "bla bla",
+                    status: "active",
                   },
                 },
               },
@@ -651,6 +686,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 yearsWorked: 1,
                 hireDate: "2023-01-01T00:00:00.000Z",
                 bio: "bla bla",
+                status: "active",
               },
             },
           })
@@ -669,6 +705,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 yearsWorked: 3,
                 hireDate: "2023-01-01T00:00:00.000Z",
                 bio: "bla bla",
+                status: "active",
               },
             },
           })
@@ -742,6 +779,14 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 source: { pointer: "/data/attributes/bio" },
                 title: "Unexpected value.",
               },
+              {
+                status: 422,
+                code: "unexpected-value",
+                detail:
+                  "Payload must have 'status' as a non-undefined value but received 'null' instead.",
+                source: { pointer: "/data/attributes/status" },
+                title: "Unexpected value.",
+              },
             ],
           })
         })
@@ -766,6 +811,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
               {
@@ -777,6 +823,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -806,6 +853,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -867,6 +915,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
               {
@@ -878,6 +927,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
@@ -907,6 +957,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
                   bio: "bla bla",
+                  status: "active",
                 },
               },
             ],
