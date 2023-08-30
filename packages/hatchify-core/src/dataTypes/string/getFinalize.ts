@@ -33,11 +33,7 @@ export function getFinalize(
     control,
     orm: finalizeOrm(props.orm),
 
-    setClientPropertyValue: () => null,
-    serializeClientPropertyValue: () => null,
-    setClientQueryFilterValue: () => null,
-    serializeClientQueryFilterValue: () => "",
-    setClientPropertyValueFromResponse: () => null,
+    // todo: HATCH-347
 
     // Passed  - Any crazy value the client might send as a POST or PATCH
     // Returns - A type the ORM can use

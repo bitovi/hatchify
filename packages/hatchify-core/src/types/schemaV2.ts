@@ -10,15 +10,19 @@ export class HatchifyCoerceError extends Error {
   }
 }
 
+export class HatchifyInvalidInputError extends Error {
+  constructor(message: string) {
+    super(message)
+  }
+}
+
 export interface PartialDataTypeProps {
   primary?: boolean
   required?: boolean
 }
 
-export type PartialControlType<
-  TType extends "Boolean" | "Number" | "String" | "Datetime",
-> = {
-  type: TType
+export type PartialControlType = {
+  type: "Boolean" | "Number" | "String" | "Datetime"
   allowNull?: boolean
   primary?: boolean
 }
@@ -63,17 +67,16 @@ export interface FinalAttribute<
   > {
   orm: FinalORMTypeTemplate
   control: Required<PartialControlTypeTemplate>
-
-  setClientPropertyValue: (userValue: UserValue) => PrimitiveType | null
-  serializeClientPropertyValue: (
+  // todo: client-side optional until types catch up
+  setClientPropertyValue?: (userValue: UserValue) => PrimitiveType | null
+  serializeClientPropertyValue?: (
     value: PrimitiveType | null,
   ) => PrimitiveType | null
-  setClientQueryFilterValue: (queryValue: UserValue) => PrimitiveType | null
-  serializeClientQueryFilterValue: (value: PrimitiveType | null) => string
-  setClientPropertyValueFromResponse: (
+  setClientQueryFilterValue?: (queryValue: UserValue) => PrimitiveType | null
+  serializeClientQueryFilterValue?: (value: PrimitiveType | null) => string
+  setClientPropertyValueFromResponse?: (
     jsonValue: ValueInRequest,
   ) => PrimitiveType | null
-
   setORMPropertyValue: (jsonValue: ValueInRequest) => PrimitiveType | null
   setORMQueryFilterValue: (queryValue: string) => PrimitiveType | null
   serializeORMPropertyValue: (

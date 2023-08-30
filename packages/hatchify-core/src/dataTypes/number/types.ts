@@ -11,7 +11,7 @@ export interface PartialNumberProps extends PartialDataTypeProps {
   step?: number
 }
 
-export interface PartialNumberControlType extends PartialControlType<"Number"> {
+export interface PartialNumberControlType extends PartialControlType {
   type: "Number"
   min?: number
   max?: number

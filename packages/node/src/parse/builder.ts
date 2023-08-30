@@ -24,6 +24,8 @@ function handleSqliteLike(querystring: string, dbType: string): string {
   // if not postgres (sqlite)
   // 1. throw error if like is used (temporary)
   // 2. ilike needs to be changed to like before parsing query
+  // 3. TODO - HATCH-329 if query includes an array, it needs to be changed to an OR query
+  // (sqlite doesn't support Op.any like postgres)
   if (dbType === "sqlite") {
     if (querystring.includes("[$like]")) {
       throw new HatchifyError({

@@ -133,26 +133,15 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
 //   attributes: {
 //     date: integer(),
 //     importance: integer(),
+//     name: string(),
 //   },
 // }
 
-// const partialUser = {
-//   name: "User",
-//   attributes: {
-//     age: integer({ required: true }),
-//     name: {
-//       control: { type: "String" } as any,
-//     },
-//   },
-// }
+// const app = hatchifyReact({ Todo: partialTodo }, undefined as any)
 
-// const app = hatchifyReact(
-//   { Todo: partialTodo, User: partialUser },
-//   undefined as any,
-// )
-
-// const [records] = app.model.User.useAll()
+// const [records] = app.model.Todo.useAll()
 // records[0].id
-// records[0].age
+// records[0].date
 // records[0].name
-// records[0].adsfa
+// records[0].importance
+// records[0].asdf

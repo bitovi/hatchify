@@ -43,77 +43,77 @@ describe("number", () => {
       } = type.finalize()
 
       // setClientPropertyValue
-      expect(setClientPropertyValue(-1)).toBe(-1)
-      expect(setClientPropertyValue(0)).toBe(0)
-      expect(setClientPropertyValue(1)).toBe(1)
-      expect(setClientPropertyValue(1.1)).toBe(1.1)
-      expect(setClientPropertyValue(1.11)).toBe(1.11)
-      expect(setClientPropertyValue(null)).toBeNull()
+      expect(setClientPropertyValue?.(-1)).toBe(-1)
+      expect(setClientPropertyValue?.(0)).toBe(0)
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(setClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValue?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValue?.(null)).toBeNull()
       expect(() =>
-        setClientPropertyValue("invalid" as unknown as number),
+        setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValue(-Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValue(Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientPropertyValue
-      expect(serializeClientPropertyValue(-1)).toBe(-1)
-      expect(serializeClientPropertyValue(0)).toBe(0)
-      expect(serializeClientPropertyValue(1)).toBe(1)
-      expect(serializeClientPropertyValue(1.1)).toBe(1.1)
-      expect(serializeClientPropertyValue(1.11)).toBe(1.11)
-      expect(serializeClientPropertyValue(null)).toBeNull()
+      expect(serializeClientPropertyValue?.(-1)).toBe(-1)
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(serializeClientPropertyValue?.(1.11)).toBe(1.11)
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientPropertyValue("invalid" as unknown as number)).toBe(
-        "invalid",
-      )
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
 
       // setClientQueryFilterValue
-      expect(setClientQueryFilterValue(-1)).toBe(-1)
-      expect(setClientQueryFilterValue(0)).toBe(0)
-      expect(setClientQueryFilterValue(1)).toBe(1)
-      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
-      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
-      expect(setClientQueryFilterValue(null)).toBeNull()
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(0)).toBe(0)
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(setClientQueryFilterValue?.(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue?.(1.11)).toBe(1.11)
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
       expect(() =>
-        setClientQueryFilterValue("invalid" as unknown as number),
+        setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientQueryFilterValue
-      expect(serializeClientQueryFilterValue(-1)).toBe("-1")
-      expect(serializeClientQueryFilterValue(0)).toBe("0")
-      expect(serializeClientQueryFilterValue(1)).toBe("1")
-      expect(serializeClientQueryFilterValue(1.1)).toBe("1.1")
-      expect(serializeClientQueryFilterValue(1.11)).toBe("1.11")
-      expect(serializeClientQueryFilterValue(null)).toBe("null")
+      expect(serializeClientQueryFilterValue?.(-1)).toBe("-1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      expect(serializeClientQueryFilterValue?.(1.1)).toBe("1.1")
+      expect(serializeClientQueryFilterValue?.(1.11)).toBe("1.11")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
       // This function expects valid data, so it won't throw an error.
       expect(
-        serializeClientQueryFilterValue("invalid" as unknown as number),
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
       ).toBe('"invalid"')
 
       // setClientPropertyValueFromResponse
-      expect(setClientPropertyValueFromResponse(-1)).toBe(-1)
-      expect(setClientPropertyValueFromResponse(0)).toBe(0)
-      expect(setClientPropertyValueFromResponse(1)).toBe(1)
-      expect(setClientPropertyValueFromResponse(1.1)).toBe(1.1)
-      expect(setClientPropertyValueFromResponse(1.11)).toBe(1.11)
-      expect(setClientPropertyValueFromResponse(null)).toBeNull()
+      expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
+      expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() =>
-        setClientPropertyValueFromResponse("invalid" as unknown as number),
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValueFromResponse(-Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValueFromResponse(Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
@@ -237,83 +237,83 @@ describe("number", () => {
       } = type.finalize()
 
       // setClientPropertyValue
-      expect(setClientPropertyValue(-1)).toBe(-1)
-      expect(setClientPropertyValue(0)).toBe(0)
-      expect(setClientPropertyValue(1)).toBe(1)
-      expect(setClientPropertyValue(1.1)).toBe(1.1)
-      expect(setClientPropertyValue(1.11)).toBe(1.11)
-      expect(() => setClientPropertyValue(null)).toThrow(
+      expect(setClientPropertyValue?.(-1)).toBe(-1)
+      expect(setClientPropertyValue?.(0)).toBe(0)
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(setClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValue?.(1.11)).toBe(1.11)
+      expect(() => setClientPropertyValue?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() =>
-        setClientPropertyValue("invalid" as unknown as number),
+        setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValue(-Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValue(Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientPropertyValue
-      expect(serializeClientPropertyValue(-1)).toBe(-1)
-      expect(serializeClientPropertyValue(0)).toBe(0)
-      expect(serializeClientPropertyValue(1)).toBe(1)
-      expect(serializeClientPropertyValue(1.1)).toBe(1.1)
-      expect(serializeClientPropertyValue(1.11)).toBe(1.11)
+      expect(serializeClientPropertyValue?.(-1)).toBe(-1)
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(serializeClientPropertyValue?.(1.11)).toBe(1.11)
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientPropertyValue(null)).toBeNull()
-      expect(serializeClientPropertyValue("invalid" as unknown as number)).toBe(
-        "invalid",
-      )
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
 
       // setClientQueryFilterValue
-      expect(setClientQueryFilterValue(-1)).toBe(-1)
-      expect(setClientQueryFilterValue(0)).toBe(0)
-      expect(setClientQueryFilterValue(1)).toBe(1)
-      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
-      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
-      expect(() => setClientQueryFilterValue(null)).toThrow(
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(0)).toBe(0)
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(setClientQueryFilterValue?.(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue?.(1.11)).toBe(1.11)
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() =>
-        setClientQueryFilterValue("invalid" as unknown as number),
+        setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientQueryFilterValue
-      expect(serializeClientQueryFilterValue(-1)).toBe("-1")
-      expect(serializeClientQueryFilterValue(0)).toBe("0")
-      expect(serializeClientQueryFilterValue(1)).toBe("1")
-      expect(serializeClientQueryFilterValue(1.1)).toBe("1.1")
-      expect(serializeClientQueryFilterValue(1.11)).toBe("1.11")
+      expect(serializeClientQueryFilterValue?.(-1)).toBe("-1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      expect(serializeClientQueryFilterValue?.(1.1)).toBe("1.1")
+      expect(serializeClientQueryFilterValue?.(1.11)).toBe("1.11")
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientQueryFilterValue(null)).toBe("null")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
       expect(
-        serializeClientQueryFilterValue("invalid" as unknown as number),
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
       ).toBe('"invalid"')
 
       // setClientPropertyValueFromResponse
-      expect(setClientPropertyValueFromResponse(-1)).toBe(-1)
-      expect(setClientPropertyValueFromResponse(0)).toBe(0)
-      expect(setClientPropertyValueFromResponse(1)).toBe(1)
-      expect(setClientPropertyValueFromResponse(1.1)).toBe(1.1)
-      expect(setClientPropertyValueFromResponse(1.11)).toBe(1.11)
-      expect(() => setClientPropertyValueFromResponse(null)).toThrow(
+      expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
+      expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() =>
-        setClientPropertyValueFromResponse("invalid" as unknown as number),
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValueFromResponse(-Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValueFromResponse(Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
@@ -444,77 +444,77 @@ describe("number", () => {
       } = type.finalize()
 
       // setClientPropertyValue
-      expect(setClientPropertyValue(-1)).toBe(-1)
-      expect(setClientPropertyValue(0)).toBe(0)
-      expect(setClientPropertyValue(1)).toBe(1)
-      expect(setClientPropertyValue(1.1)).toBe(1.1)
-      expect(setClientPropertyValue(1.11)).toBe(1.11)
-      expect(setClientPropertyValue(null)).toBeNull()
+      expect(setClientPropertyValue?.(-1)).toBe(-1)
+      expect(setClientPropertyValue?.(0)).toBe(0)
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(setClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValue?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValue?.(null)).toBeNull()
       expect(() =>
-        setClientPropertyValue("invalid" as unknown as number),
+        setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValue(-Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValue(Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientPropertyValue
-      expect(serializeClientPropertyValue(-1)).toBe(-1)
-      expect(serializeClientPropertyValue(0)).toBe(0)
-      expect(serializeClientPropertyValue(1)).toBe(1)
-      expect(serializeClientPropertyValue(1.1)).toBe(1.1)
-      expect(serializeClientPropertyValue(1.11)).toBe(1.11)
-      expect(serializeClientPropertyValue(null)).toBeNull()
+      expect(serializeClientPropertyValue?.(-1)).toBe(-1)
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(serializeClientPropertyValue?.(1.11)).toBe(1.11)
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientPropertyValue("invalid" as unknown as number)).toBe(
-        "invalid",
-      )
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
 
       // setClientQueryFilterValue
-      expect(setClientQueryFilterValue(-1)).toBe(-1)
-      expect(setClientQueryFilterValue(0)).toBe(0)
-      expect(setClientQueryFilterValue(1)).toBe(1)
-      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
-      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
-      expect(setClientQueryFilterValue(null)).toBeNull()
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(0)).toBe(0)
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(setClientQueryFilterValue?.(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue?.(1.11)).toBe(1.11)
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
       expect(() =>
-        setClientQueryFilterValue("invalid" as unknown as number),
+        setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientQueryFilterValue
-      expect(serializeClientQueryFilterValue(-1)).toBe("-1")
-      expect(serializeClientQueryFilterValue(0)).toBe("0")
-      expect(serializeClientQueryFilterValue(1)).toBe("1")
-      expect(serializeClientQueryFilterValue(1.1)).toBe("1.1")
-      expect(serializeClientQueryFilterValue(1.11)).toBe("1.11")
+      expect(serializeClientQueryFilterValue?.(-1)).toBe("-1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      expect(serializeClientQueryFilterValue?.(1.1)).toBe("1.1")
+      expect(serializeClientQueryFilterValue?.(1.11)).toBe("1.11")
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientQueryFilterValue(null)).toBe("null")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
       expect(
-        serializeClientQueryFilterValue("invalid" as unknown as number),
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
       ).toBe('"invalid"')
 
       // setClientPropertyValueFromResponse
-      expect(setClientPropertyValueFromResponse(-1)).toBe(-1)
-      expect(setClientPropertyValueFromResponse(0)).toBe(0)
-      expect(setClientPropertyValueFromResponse(1)).toBe(1)
-      expect(setClientPropertyValueFromResponse(1.1)).toBe(1.1)
-      expect(setClientPropertyValueFromResponse(1.11)).toBe(1.11)
-      expect(setClientPropertyValueFromResponse(null)).toBeNull()
+      expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
+      expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() =>
-        setClientPropertyValueFromResponse("invalid" as unknown as number),
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValueFromResponse(-Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValueFromResponse(Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
@@ -637,86 +637,86 @@ describe("number", () => {
       } = type.finalize()
 
       // setClientPropertyValue
-      expect(setClientPropertyValue(-1)).toBe(-1)
-      expect(setClientPropertyValue(0)).toBe(0)
-      expect(setClientPropertyValue(1)).toBe(1)
-      expect(setClientPropertyValue(1.1)).toBe(1.1)
-      expect(setClientPropertyValue(1.11)).toBe(1.11)
-      expect(() => setClientPropertyValue(null)).toThrow(
+      expect(setClientPropertyValue?.(-1)).toBe(-1)
+      expect(setClientPropertyValue?.(0)).toBe(0)
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(setClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValue?.(1.11)).toBe(1.11)
+      expect(() => setClientPropertyValue?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() =>
-        setClientPropertyValue("invalid" as unknown as number),
+        setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValue(-Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValue(Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientPropertyValue
-      expect(serializeClientPropertyValue(-1)).toBe(-1)
-      expect(serializeClientPropertyValue(0)).toBe(0)
-      expect(serializeClientPropertyValue(1)).toBe(1)
-      expect(serializeClientPropertyValue(1.1)).toBe(1.1)
-      expect(serializeClientPropertyValue(1.11)).toBe(1.11)
+      expect(serializeClientPropertyValue?.(-1)).toBe(-1)
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(serializeClientPropertyValue?.(1.11)).toBe(1.11)
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientPropertyValue(null)).toBeNull()
-      expect(serializeClientPropertyValue("invalid" as unknown as number)).toBe(
-        "invalid",
-      )
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
 
       // setClientQueryFilterValue
-      expect(setClientQueryFilterValue(-1)).toBe(-1)
-      expect(setClientQueryFilterValue(0)).toBe(0)
-      expect(setClientQueryFilterValue(1)).toBe(1)
-      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
-      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
-      expect(() => setClientQueryFilterValue(null)).toThrow(
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(0)).toBe(0)
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(setClientQueryFilterValue?.(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue?.(1.11)).toBe(1.11)
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() =>
-        setClientQueryFilterValue("invalid" as unknown as number),
+        setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientQueryFilterValue
-      expect(serializeClientQueryFilterValue(-1)).toBe("-1")
-      expect(serializeClientQueryFilterValue(0)).toBe("0")
-      expect(serializeClientQueryFilterValue(1)).toBe("1")
-      expect(serializeClientQueryFilterValue(1.1)).toBe("1.1")
-      expect(serializeClientQueryFilterValue(1.11)).toBe("1.11")
+      expect(serializeClientQueryFilterValue?.(-1)).toBe("-1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      expect(serializeClientQueryFilterValue?.(1.1)).toBe("1.1")
+      expect(serializeClientQueryFilterValue?.(1.11)).toBe("1.11")
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientQueryFilterValue(null)).toBe("null")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
       expect(
-        serializeClientQueryFilterValue("invalid" as unknown as number),
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
       ).toBe('"invalid"')
 
       // setClientPropertyValueFromResponse
-      expect(setClientPropertyValueFromResponse(-1)).toBe(-1)
-      expect(setClientPropertyValueFromResponse(0)).toBe(0)
-      expect(setClientPropertyValueFromResponse(1)).toBe(1)
-      expect(setClientPropertyValueFromResponse(1.1)).toBe(1.1)
-      expect(setClientPropertyValueFromResponse(1.11)).toBe(1.11)
-      expect(() => setClientPropertyValueFromResponse(null)).toThrow(
+      expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
+      expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() =>
-        setClientPropertyValueFromResponse("invalid" as unknown as number),
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValueFromResponse(-Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValueFromResponse(Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValueFromResponse("1.0")).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.("1.0")).toThrow(
         new HatchifyCoerceError("as a number"),
       )
 
@@ -847,83 +847,83 @@ describe("number", () => {
       } = type.finalize()
 
       // setClientPropertyValue
-      expect(setClientPropertyValue(-1)).toBe(-1)
-      expect(setClientPropertyValue(0)).toBe(0)
-      expect(setClientPropertyValue(1)).toBe(1)
-      expect(setClientPropertyValue(1.1)).toBe(1.1)
-      expect(setClientPropertyValue(null)).toBeNull()
-      expect(() => setClientPropertyValue(1.11)).toThrow(
+      expect(setClientPropertyValue?.(-1)).toBe(-1)
+      expect(setClientPropertyValue?.(0)).toBe(0)
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(setClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() => setClientPropertyValue?.(1.11)).toThrow(
         new HatchifyCoerceError("as multiples of 0.1"),
       )
       expect(() =>
-        setClientPropertyValue("invalid" as unknown as number),
+        setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValue(-Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValue(Infinity)).toThrow(
+      expect(() => setClientPropertyValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientPropertyValue
-      expect(serializeClientPropertyValue(-1)).toBe(-1)
-      expect(serializeClientPropertyValue(0)).toBe(0)
-      expect(serializeClientPropertyValue(1)).toBe(1)
-      expect(serializeClientPropertyValue(1.1)).toBe(1.1)
+      expect(serializeClientPropertyValue?.(-1)).toBe(-1)
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientPropertyValue(1.11)).toBe(1.11)
-      expect(serializeClientPropertyValue(null)).toBeNull()
-      expect(serializeClientPropertyValue("invalid" as unknown as number)).toBe(
-        "invalid",
-      )
+      expect(serializeClientPropertyValue?.(1.11)).toBe(1.11)
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
 
       // setClientQueryFilterValue
-      expect(setClientQueryFilterValue(-1)).toBe(-1)
-      expect(setClientQueryFilterValue(0)).toBe(0)
-      expect(setClientQueryFilterValue(1)).toBe(1)
-      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
-      expect(setClientQueryFilterValue(null)).toBeNull()
-      expect(() => setClientQueryFilterValue(1.11)).toThrow(
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(0)).toBe(0)
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(setClientQueryFilterValue?.(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() => setClientQueryFilterValue?.(1.11)).toThrow(
         new HatchifyCoerceError("as multiples of 0.1"),
       )
       expect(() =>
-        setClientQueryFilterValue("invalid" as unknown as number),
+        setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientQueryFilterValue(-Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientQueryFilterValue(Infinity)).toThrow(
+      expect(() => setClientQueryFilterValue?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
       // serializeClientQueryFilterValue
-      expect(serializeClientQueryFilterValue(-1)).toBe("-1")
-      expect(serializeClientQueryFilterValue(0)).toBe("0")
-      expect(serializeClientQueryFilterValue(1)).toBe("1")
-      expect(serializeClientQueryFilterValue(1.1)).toBe("1.1")
+      expect(serializeClientQueryFilterValue?.(-1)).toBe("-1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      expect(serializeClientQueryFilterValue?.(1.1)).toBe("1.1")
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientQueryFilterValue(1.11)).toBe("1.11")
-      expect(serializeClientQueryFilterValue(null)).toBe("null")
+      expect(serializeClientQueryFilterValue?.(1.11)).toBe("1.11")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
       expect(
-        serializeClientQueryFilterValue("invalid" as unknown as number),
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
       ).toBe('"invalid"')
 
       // setClientPropertyValueFromResponse
-      expect(setClientPropertyValueFromResponse(-1)).toBe(-1)
-      expect(setClientPropertyValueFromResponse(0)).toBe(0)
-      expect(setClientPropertyValueFromResponse(1)).toBe(1)
-      expect(setClientPropertyValueFromResponse(1.1)).toBe(1.1)
-      expect(setClientPropertyValueFromResponse(null)).toBeNull()
-      expect(() => setClientPropertyValueFromResponse(1.11)).toThrow(
+      expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
+      expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
+      expect(() => setClientPropertyValueFromResponse?.(1.11)).toThrow(
         new HatchifyCoerceError("as multiples of 0.1"),
       )
       expect(() =>
-        setClientPropertyValueFromResponse("invalid" as unknown as number),
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
-      expect(() => setClientPropertyValueFromResponse(-Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
-      expect(() => setClientPropertyValueFromResponse(Infinity)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
       )
 
@@ -1052,92 +1052,92 @@ describe("number", () => {
       } = type.finalize()
 
       // setClientPropertyValue
-      expect(setClientPropertyValue(1)).toBe(1)
-      expect(setClientPropertyValue(1.1)).toBe(1.1)
-      expect(setClientPropertyValue(1.11)).toBe(1.11)
-      expect(setClientPropertyValue(null)).toBeNull()
-      expect(() => setClientPropertyValue(-1)).toThrow(
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(setClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValue?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() => setClientPropertyValue?.(-1)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
-      expect(() => setClientPropertyValue(0)).toThrow(
+      expect(() => setClientPropertyValue?.(0)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
-      expect(() => setClientPropertyValue(0.9)).toThrow(
+      expect(() => setClientPropertyValue?.(0.9)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
-      expect(() => setClientPropertyValue(10.1)).toThrow(
+      expect(() => setClientPropertyValue?.(10.1)).toThrow(
         new HatchifyCoerceError("less than or equal to 10"),
       )
       expect(() =>
-        setClientPropertyValue("invalid" as unknown as number),
+        setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
 
       // serializeClientPropertyValue
-      expect(serializeClientPropertyValue(1)).toBe(1)
-      expect(serializeClientPropertyValue(1.1)).toBe(1.1)
-      expect(serializeClientPropertyValue(1.11)).toBe(1.11)
-      expect(serializeClientPropertyValue(null)).toBeNull()
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(serializeClientPropertyValue?.(1.11)).toBe(1.11)
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientPropertyValue(0)).toBe(0)
-      expect(serializeClientPropertyValue(0.9)).toBe(0.9)
-      expect(serializeClientPropertyValue(10.1)).toBe(10.1)
-      expect(serializeClientPropertyValue("invalid" as unknown as number)).toBe(
-        "invalid",
-      )
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(0.9)).toBe(0.9)
+      expect(serializeClientPropertyValue?.(10.1)).toBe(10.1)
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
 
       // setClientQueryFilterValue
-      expect(setClientQueryFilterValue(1)).toBe(1)
-      expect(setClientQueryFilterValue(1.1)).toBe(1.1)
-      expect(setClientQueryFilterValue(1.11)).toBe(1.11)
-      expect(setClientQueryFilterValue(null)).toBeNull()
-      expect(() => setClientQueryFilterValue(-1)).toThrow(
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(setClientQueryFilterValue?.(1.1)).toBe(1.1)
+      expect(setClientQueryFilterValue?.(1.11)).toBe(1.11)
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() => setClientQueryFilterValue?.(-1)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
-      expect(() => setClientQueryFilterValue(0)).toThrow(
+      expect(() => setClientQueryFilterValue?.(0)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
-      expect(() => setClientQueryFilterValue(0.9)).toThrow(
+      expect(() => setClientQueryFilterValue?.(0.9)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
-      expect(() => setClientQueryFilterValue(10.1)).toThrow(
+      expect(() => setClientQueryFilterValue?.(10.1)).toThrow(
         new HatchifyCoerceError("less than or equal to 10"),
       )
       expect(() =>
-        setClientQueryFilterValue("invalid" as unknown as number),
+        setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
 
       // serializeClientQueryFilterValue
-      expect(serializeClientQueryFilterValue(1)).toBe("1")
-      expect(serializeClientQueryFilterValue(1.1)).toBe("1.1")
-      expect(serializeClientQueryFilterValue(1.11)).toBe("1.11")
-      expect(serializeClientQueryFilterValue(null)).toBe("null")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      expect(serializeClientQueryFilterValue?.(1.1)).toBe("1.1")
+      expect(serializeClientQueryFilterValue?.(1.11)).toBe("1.11")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
       // This function expects valid data, so it won't throw an error.
-      expect(serializeClientQueryFilterValue(0)).toBe("0")
-      expect(serializeClientQueryFilterValue(0.9)).toBe("0.9")
-      expect(serializeClientQueryFilterValue(10.1)).toBe("10.1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(0.9)).toBe("0.9")
+      expect(serializeClientQueryFilterValue?.(10.1)).toBe("10.1")
       expect(
-        serializeClientQueryFilterValue("invalid" as unknown as number),
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
       ).toBe('"invalid"')
 
       // setClientPropertyValueFromResponse
-      expect(setClientPropertyValueFromResponse(1)).toBe(1)
-      expect(setClientPropertyValueFromResponse(1.1)).toBe(1.1)
-      expect(setClientPropertyValueFromResponse(1.11)).toBe(1.11)
-      expect(setClientPropertyValueFromResponse(null)).toBeNull()
-      expect(() => setClientPropertyValueFromResponse(-1)).toThrow(
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
+      expect(() => setClientPropertyValueFromResponse?.(-1)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
-      expect(() => setClientPropertyValueFromResponse(0)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(0)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
-      expect(() => setClientPropertyValueFromResponse(0.9)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(0.9)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
-      expect(() => setClientPropertyValueFromResponse(10.1)).toThrow(
+      expect(() => setClientPropertyValueFromResponse?.(10.1)).toThrow(
         new HatchifyCoerceError("less than or equal to 10"),
       )
       expect(() =>
-        setClientPropertyValueFromResponse("invalid" as unknown as number),
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
 
       // serializeORMPropertyValue

@@ -1,17 +1,17 @@
 import { HatchifyCoerceError } from "../../types"
 
-import { string } from "."
+import { text } from "."
 
-describe("string", () => {
-  describe("string()", () => {
-    const type = string()
+describe("text", () => {
+  describe("text()", () => {
+    const type = text()
 
     it("prepares correctly", () => {
       expect(type).toEqual({
-        name: "string()",
+        name: "text()",
         orm: {
           sequelize: {
-            type: "STRING",
+            type: "TEXT",
             typeArgs: [],
             allowNull: undefined,
             primaryKey: undefined,
@@ -20,8 +20,8 @@ describe("string", () => {
         control: {
           type: "String",
           allowNull: undefined,
-          min: undefined,
-          max: undefined,
+          min: 0,
+          max: Infinity,
           primary: undefined,
         },
         finalize: expect.any(Function),
@@ -57,10 +57,10 @@ describe("string", () => {
 
     it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
-        name: "string()",
+        name: "text()",
         orm: {
           sequelize: {
-            type: "STRING",
+            type: "TEXT",
             typeArgs: [255],
             allowNull: true,
             primaryKey: false,
@@ -70,7 +70,7 @@ describe("string", () => {
           type: "String",
           allowNull: true,
           min: 0,
-          max: 255,
+          max: Infinity,
           primary: false,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -80,15 +80,15 @@ describe("string", () => {
     })
   })
 
-  describe("string({required: true})", () => {
-    const type = string({ required: true })
+  describe("text({required: true})", () => {
+    const type = text({ required: true })
 
     it("prepares correctly", () => {
       expect(type).toEqual({
-        name: 'string({"required":true})',
+        name: 'text({"required":true})',
         orm: {
           sequelize: {
-            type: "STRING",
+            type: "TEXT",
             typeArgs: [],
             allowNull: false,
             primaryKey: undefined,
@@ -97,8 +97,8 @@ describe("string", () => {
         control: {
           type: "String",
           allowNull: false,
-          min: undefined,
-          max: undefined,
+          min: 0,
+          max: Infinity,
           primary: undefined,
         },
         finalize: expect.any(Function),
@@ -142,10 +142,10 @@ describe("string", () => {
 
     it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
-        name: 'string({"required":true})',
+        name: 'text({"required":true})',
         orm: {
           sequelize: {
-            type: "STRING",
+            type: "TEXT",
             typeArgs: [255],
             allowNull: false,
             primaryKey: false,
@@ -155,7 +155,7 @@ describe("string", () => {
           type: "String",
           allowNull: false,
           min: 0,
-          max: 255,
+          max: Infinity,
           primary: false,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -165,15 +165,15 @@ describe("string", () => {
     })
   })
 
-  describe("string({primary: true})", () => {
-    const type = string({ primary: true })
+  describe("text({primary: true})", () => {
+    const type = text({ primary: true })
 
     it("prepares correctly", () => {
       expect(type).toEqual({
-        name: 'string({"primary":true})',
+        name: 'text({"primary":true})',
         orm: {
           sequelize: {
-            type: "STRING",
+            type: "TEXT",
             typeArgs: [],
             allowNull: undefined,
             primaryKey: true,
@@ -182,94 +182,9 @@ describe("string", () => {
         control: {
           type: "String",
           allowNull: undefined,
-          min: undefined,
-          max: undefined,
-          primary: true,
-        },
-        finalize: expect.any(Function),
-      })
-    })
-
-    it("transforms correctly", () => {
-      const {
-        serializeORMPropertyValue,
-        setORMPropertyValue,
-        setORMQueryFilterValue,
-      } = type.finalize()
-
-      // serializeORMPropertyValue
-      expect(serializeORMPropertyValue("valid")).toBe("valid")
-      expect(() => serializeORMPropertyValue(null)).toThrow(
-        new HatchifyCoerceError("as a non-null value"),
-      )
-      expect(() => serializeORMPropertyValue(1 as unknown as string)).toThrow(
-        new HatchifyCoerceError("as a string"),
-      )
-
-      // setORMPropertyValue
-      expect(setORMPropertyValue("valid")).toBe("valid")
-      expect(() => setORMPropertyValue(null)).toThrow(
-        new HatchifyCoerceError("as a non-null value"),
-      )
-      expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
-        new HatchifyCoerceError("as a string"),
-      )
-
-      // setORMQueryFilterValue
-      expect(setORMQueryFilterValue("valid")).toBe("valid")
-      expect(() => setORMQueryFilterValue("null")).toThrow(
-        new HatchifyCoerceError("as a non-null value"),
-      )
-      expect(() => setORMQueryFilterValue("undefined")).toThrow(
-        new HatchifyCoerceError("as a non-null value"),
-      )
-    })
-
-    it("finalizes correctly", () => {
-      expect(type.finalize()).toEqual({
-        name: 'string({"primary":true})',
-        orm: {
-          sequelize: {
-            type: "STRING",
-            typeArgs: [255],
-            allowNull: false,
-            primaryKey: true,
-          },
-        },
-        control: {
-          type: "String",
-          allowNull: false,
           min: 0,
-          max: 255,
+          max: Infinity,
           primary: true,
-        },
-        serializeORMPropertyValue: expect.any(Function),
-        setORMPropertyValue: expect.any(Function),
-        setORMQueryFilterValue: expect.any(Function),
-      })
-    })
-  })
-
-  describe("string({min: 1, max: 10})", () => {
-    const type = string({ min: 1, max: 10 })
-
-    it("prepares correctly", () => {
-      expect(type).toEqual({
-        name: 'string({"min":1,"max":10})',
-        orm: {
-          sequelize: {
-            type: "STRING",
-            typeArgs: [10],
-            allowNull: undefined,
-            primaryKey: undefined,
-          },
-        },
-        control: {
-          type: "String",
-          allowNull: undefined,
-          min: 1,
-          max: 10,
-          primary: undefined,
         },
         finalize: expect.any(Function),
       })
@@ -286,12 +201,8 @@ describe("string", () => {
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
-      expect(serializeORMPropertyValue(null)).toBeNull()
-      expect(() => serializeORMPropertyValue("")).toThrow(
-        new HatchifyCoerceError("with length greater than or equal to 1"),
-      )
-      expect(() => serializeORMPropertyValue("a very long string")).toThrow(
-        new HatchifyCoerceError("with length less than or equal to 10"),
+      expect(() => serializeORMPropertyValue(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => serializeORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
@@ -299,12 +210,8 @@ describe("string", () => {
 
       // setORMPropertyValue
       expect(setORMPropertyValue("valid")).toBe("valid")
-      expect(setORMPropertyValue(null)).toBeNull()
-      expect(() => setORMPropertyValue("")).toThrow(
-        new HatchifyCoerceError("with length greater than or equal to 1"),
-      )
-      expect(() => setORMPropertyValue("a very long string")).toThrow(
-        new HatchifyCoerceError("with length less than or equal to 10"),
+      expect(() => setORMPropertyValue(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
@@ -312,33 +219,31 @@ describe("string", () => {
 
       // setORMQueryFilterValue
       expect(setORMQueryFilterValue("valid")).toBe("valid")
-      expect(setORMQueryFilterValue("null")).toBeNull()
-      expect(setORMQueryFilterValue("undefined")).toBeNull()
-      expect(() => setORMQueryFilterValue("")).toThrow(
-        new HatchifyCoerceError("with length greater than or equal to 1"),
+      expect(() => setORMQueryFilterValue("null")).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
       )
-      expect(() => setORMQueryFilterValue("a very long string")).toThrow(
-        new HatchifyCoerceError("with length less than or equal to 10"),
+      expect(() => setORMQueryFilterValue("undefined")).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
       )
     })
 
     it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
-        name: 'string({"min":1,"max":10})',
+        name: 'text({"primary":true})',
         orm: {
           sequelize: {
-            type: "STRING",
-            typeArgs: [10],
-            allowNull: true,
-            primaryKey: false,
+            type: "TEXT",
+            typeArgs: [255],
+            allowNull: false,
+            primaryKey: true,
           },
         },
         control: {
           type: "String",
-          allowNull: true,
-          min: 1,
-          max: 10,
-          primary: false,
+          allowNull: false,
+          min: 0,
+          max: Infinity,
+          primary: true,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
