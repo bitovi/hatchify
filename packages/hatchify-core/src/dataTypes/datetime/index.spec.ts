@@ -90,11 +90,6 @@ describe("datetime", () => {
           primary: false,
           step: 0,
         },
-        setClientPropertyValue: expect.any(Function),
-        serializeClientPropertyValue: expect.any(Function),
-        setClientQueryFilterValue: expect.any(Function),
-        serializeClientQueryFilterValue: expect.any(Function),
-        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -197,11 +192,6 @@ describe("datetime", () => {
           primary: false,
           step: 0,
         },
-        setClientPropertyValue: expect.any(Function),
-        serializeClientPropertyValue: expect.any(Function),
-        setClientQueryFilterValue: expect.any(Function),
-        serializeClientQueryFilterValue: expect.any(Function),
-        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -304,11 +294,6 @@ describe("datetime", () => {
           primary: true,
           step: 0,
         },
-        setClientPropertyValue: expect.any(Function),
-        serializeClientPropertyValue: expect.any(Function),
-        setClientQueryFilterValue: expect.any(Function),
-        serializeClientQueryFilterValue: expect.any(Function),
-        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -412,11 +397,6 @@ describe("datetime", () => {
           primary: false,
           step: "day",
         },
-        setClientPropertyValue: expect.any(Function),
-        serializeClientPropertyValue: expect.any(Function),
-        setClientQueryFilterValue: expect.any(Function),
-        serializeClientQueryFilterValue: expect.any(Function),
-        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -458,19 +438,9 @@ describe("datetime", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
-        setClientPropertyValue,
-        serializeClientPropertyValue,
-        setClientQueryFilterValue,
-        serializeClientQueryFilterValue,
-        setClientPropertyValueFromResponse,
       } = type.finalize()
 
       // todo: HATCH-348
-      expect(setClientPropertyValue(null)).toEqual(null)
-      expect(serializeClientPropertyValue(null)).toEqual(null)
-      expect(setClientQueryFilterValue(null)).toEqual(null)
-      expect(serializeClientQueryFilterValue(null)).toEqual("")
-      expect(setClientPropertyValueFromResponse(null)).toEqual(null)
 
       // serializeORMPropertyValue
       expect(
@@ -539,11 +509,6 @@ describe("datetime", () => {
           primary: false,
           step: 0,
         },
-        setClientPropertyValue: expect.any(Function),
-        serializeClientPropertyValue: expect.any(Function),
-        setClientQueryFilterValue: expect.any(Function),
-        serializeClientQueryFilterValue: expect.any(Function),
-        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),

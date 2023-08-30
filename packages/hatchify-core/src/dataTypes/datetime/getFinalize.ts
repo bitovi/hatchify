@@ -35,11 +35,6 @@ export function getFinalize(
     orm: finalizeOrm(props.orm),
 
     // todo: HATCH-348
-    setClientPropertyValue: () => null,
-    serializeClientPropertyValue: () => null,
-    setClientQueryFilterValue: () => null,
-    serializeClientQueryFilterValue: () => "",
-    setClientPropertyValueFromResponse: () => null,
 
     // Passed  - Any crazy value the client might send as a POST or PATCH
     // Returns - A type the ORM can use
