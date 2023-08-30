@@ -1,3 +1,3 @@
-import type { PartialStringProps } from "../string"
+import type { PartialDataTypeProps } from "../../types"
 
-export type PartialTextProps = Omit<PartialStringProps, "min" | "max">
+export type PartialTextProps = PartialDataTypeProps
