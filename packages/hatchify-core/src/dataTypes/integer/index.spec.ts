@@ -32,10 +32,90 @@ describe("integer", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.(-1)).toBe(-1)
+      expect(setClientPropertyValue?.(0)).toBe(0)
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() =>
+        setClientPropertyValue?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValue?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValue?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.(-1)).toBe(-1)
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(0)).toBe(0)
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() =>
+        setClientQueryFilterValue?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.(-1)).toBe("-1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+      expect(
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
+      ).toBe('"invalid"')
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
+      expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
+      expect(() =>
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -108,6 +188,11 @@ describe("integer", () => {
           primary: false,
           step: 1,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -144,10 +229,97 @@ describe("integer", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.(-1)).toBe(-1)
+      expect(setClientPropertyValue?.(0)).toBe(0)
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(() => setClientPropertyValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() =>
+        setClientPropertyValue?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValue?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValue?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.(-1)).toBe(-1)
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(0)).toBe(0)
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() =>
+        setClientQueryFilterValue?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.(-1)).toBe("-1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+      expect(
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
+      ).toBe('"invalid"')
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
+      expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() =>
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -227,6 +399,11 @@ describe("integer", () => {
           primary: false,
           step: 1,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -263,10 +440,90 @@ describe("integer", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.(-1)).toBe(-1)
+      expect(setClientPropertyValue?.(0)).toBe(0)
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() =>
+        setClientPropertyValue?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValue?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValue?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.(-1)).toBe(-1)
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(0)).toBe(0)
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() =>
+        setClientQueryFilterValue?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.(-1)).toBe("-1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+      expect(
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
+      ).toBe('"invalid"')
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
+      expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
+      expect(() =>
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -338,6 +595,11 @@ describe("integer", () => {
           primary: false,
           step: 1,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -374,10 +636,96 @@ describe("integer", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.(-1)).toBe(-1)
+      expect(setClientPropertyValue?.(0)).toBe(0)
+      expect(setClientPropertyValue?.(1)).toBe(1)
+      expect(() => setClientPropertyValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() =>
+        setClientPropertyValue?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValue?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValue?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.(-1)).toBe(-1)
+      expect(serializeClientPropertyValue?.(0)).toBe(0)
+      expect(serializeClientPropertyValue?.(1)).toBe(1)
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+      expect(serializeClientPropertyValue?.(1.1)).toBe(1.1)
+      expect(
+        serializeClientPropertyValue?.("invalid" as unknown as number),
+      ).toBe("invalid")
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.(-1)).toBe(-1)
+      expect(setClientQueryFilterValue?.(0)).toBe(0)
+      expect(setClientQueryFilterValue?.(1)).toBe(1)
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() =>
+        setClientQueryFilterValue?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientQueryFilterValue?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.(-1)).toBe("-1")
+      expect(serializeClientQueryFilterValue?.(0)).toBe("0")
+      expect(serializeClientQueryFilterValue?.(1)).toBe("1")
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+      expect(
+        serializeClientQueryFilterValue?.("invalid" as unknown as number),
+      ).toBe('"invalid"')
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
+      expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
+      expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() =>
+        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      ).toThrow(new HatchifyCoerceError("as a number"))
+      expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
+        new HatchifyCoerceError("different than Infinity"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(1.1)).toThrow(
+        new HatchifyCoerceError("as multiples of 1"),
+      )
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue(-1)).toBe(-1)
@@ -457,6 +805,11 @@ describe("integer", () => {
           primary: true,
           step: 1,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),

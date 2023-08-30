@@ -440,6 +440,8 @@ describe("datetime", () => {
         setORMQueryFilterValue,
       } = type.finalize()
 
+      // todo: HATCH-348
+
       // serializeORMPropertyValue
       expect(
         serializeORMPropertyValue(new Date("2023-01-01T00:00:00.000Z")),

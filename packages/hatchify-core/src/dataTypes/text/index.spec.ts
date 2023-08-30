@@ -197,6 +197,8 @@ describe("text", () => {
         setORMQueryFilterValue,
       } = type.finalize()
 
+      // todo: HATCH-347
+
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
       expect(() => serializeORMPropertyValue(null)).toThrow(

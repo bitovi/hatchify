@@ -16,7 +16,7 @@ import type {
 import type {
   SchemalessResourceRelationship,
   SchemalessResourceRelationshipObject,
-} from "@hatchifyjs/rest-client/dist/services"
+} from "@hatchifyjs/rest-client"
 
 type Relationship = Record<
   string,

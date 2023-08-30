@@ -1,3 +1,5 @@
+export type UserValue = number | string | Date | object | null | undefined
+
 export type ValueInRequest = number | string | Date | object | null | undefined
 
 export * from "../assembler/types"
@@ -19,8 +21,8 @@ export interface PartialDataTypeProps {
   required?: boolean
 }
 
-export interface PartialControlType {
-  type: string
+export type PartialControlType = {
+  type: "Boolean" | "Number" | "String" | "Datetime"
   allowNull?: boolean
   primary?: boolean
 }
@@ -65,6 +67,16 @@ export interface FinalAttribute<
   > {
   orm: FinalORMTypeTemplate
   control: Required<PartialControlTypeTemplate>
+  // todo: client-side optional until types catch up
+  setClientPropertyValue?: (userValue: UserValue) => PrimitiveType | null
+  serializeClientPropertyValue?: (
+    value: PrimitiveType | null,
+  ) => PrimitiveType | null
+  setClientQueryFilterValue?: (queryValue: UserValue) => PrimitiveType | null
+  serializeClientQueryFilterValue?: (value: PrimitiveType | null) => string
+  setClientPropertyValueFromResponse?: (
+    jsonValue: ValueInRequest,
+  ) => PrimitiveType | null
   setORMPropertyValue: (jsonValue: ValueInRequest) => PrimitiveType | null
   setORMQueryFilterValue: (queryValue: string) => PrimitiveType | null
   serializeORMPropertyValue: (
