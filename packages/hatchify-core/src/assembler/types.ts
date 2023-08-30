@@ -15,7 +15,31 @@ import type {
 } from "../dataTypes/string"
 import type { FinalAttribute, PartialAttribute } from "../types"
 
-export interface PartialSchema {
+export type PartialAttributeRecord = Record<
+  string,
+  | PartialAttribute<
+      PartialNumberORM,
+      PartialNumberControlType,
+      number,
+      FinalNumberORM
+    >
+  | PartialAttribute<
+      PartialStringORM,
+      PartialStringControlType,
+      string,
+      FinalStringORM
+    >
+  | PartialAttribute<
+      PartialDatetimeORM,
+      PartialDatetimeControlType,
+      Date,
+      FinalDatetimeORM
+    >
+>
+
+export interface PartialSchema<
+  TAttributes extends PartialAttributeRecord = PartialAttributeRecord,
+> {
   name: string
   id?: PartialAttribute<
     PartialNumberORM,
@@ -23,28 +47,9 @@ export interface PartialSchema {
     number,
     FinalNumberORM
   >
-  attributes: {
-    [attributeName: string]:
-      | PartialAttribute<
-          PartialNumberORM,
-          PartialNumberControlType,
-          number,
-          FinalNumberORM
-        >
-      | PartialAttribute<
-          PartialStringORM,
-          PartialStringControlType,
-          string,
-          FinalStringORM
-        >
-      | PartialAttribute<
-          PartialDatetimeORM,
-          PartialDatetimeControlType,
-          Date,
-          FinalDatetimeORM
-        >
-  }
+  attributes: TAttributes
 }
+
 export interface FinalSchema {
   name: string
   id: FinalAttribute<
@@ -76,7 +81,10 @@ export interface FinalSchema {
   }
 }
 
-export type PartialSchemaWithPrimaryAttribute = Omit<PartialSchema, "id"> & {
+export type PartialSchemaWithPrimaryAttribute = Omit<
+  PartialSchema<PartialAttributeRecord>,
+  "id"
+> & {
   id: PartialAttribute<
     PartialNumberORM,
     PartialNumberControlType,

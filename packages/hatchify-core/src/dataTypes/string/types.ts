@@ -9,7 +9,7 @@ export interface PartialStringProps extends PartialDataTypeProps {
   max?: number
 }
 
-export interface PartialStringControlType extends PartialControlType {
+export interface PartialStringControlType extends PartialControlType<"String"> {
   type: "String"
   min?: number
   max?: number

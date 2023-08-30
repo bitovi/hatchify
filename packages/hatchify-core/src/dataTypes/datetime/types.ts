@@ -10,7 +10,8 @@ export interface PartialDatetimeProps extends PartialDataTypeProps {
   step?: "day" | number
 }
 
-export interface PartialDatetimeControlType extends PartialControlType {
+export interface PartialDatetimeControlType
+  extends PartialControlType<"Datetime"> {
   type: "Datetime"
   min?: Date | typeof Infinity
   max?: Date | typeof Infinity

@@ -73,6 +73,11 @@ describe("string", () => {
           max: 255,
           primary: false,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -158,6 +163,11 @@ describe("string", () => {
           max: 255,
           primary: false,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -243,6 +253,11 @@ describe("string", () => {
           max: 255,
           primary: true,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -280,7 +295,19 @@ describe("string", () => {
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
       } = type.finalize()
+
+      // todo: HATCH-347
+      expect(setClientPropertyValue(null)).toEqual(null)
+      expect(serializeClientPropertyValue(null)).toEqual(null)
+      expect(setClientQueryFilterValue(null)).toEqual(null)
+      expect(serializeClientQueryFilterValue(null)).toEqual("")
+      expect(setClientPropertyValueFromResponse(null)).toEqual(null)
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
@@ -338,6 +365,11 @@ describe("string", () => {
           max: 10,
           primary: false,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
