@@ -1,3 +1,4 @@
+// todo: remote vite from hathciy-core w/o breaking frontend packages
 import { defineConfig } from "vite"
 import dts from "vite-plugin-dts"
 // https://vitejs.dev/config/
