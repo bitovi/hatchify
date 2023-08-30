@@ -247,7 +247,7 @@ const postgresOnlyTestCases = [
     description:
       "returns correct data using the $ilike operator for an array of strings (non-case sensitive)",
     operator: "$ilike",
-    queryParam: "filter[name][$ilike]=[jOhN, jAnE]",
+    queryParam: "filter[name][$ilike]=jOhN,jAnE",
     expectedResult: [john, jane],
     expectedError: undefined,
   },
