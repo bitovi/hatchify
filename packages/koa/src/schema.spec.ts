@@ -1,4 +1,4 @@
-import { datetime, integer, string } from "@hatchifyjs/hatchify-core"
+import { datetime, integer, string, text } from "@hatchifyjs/hatchify-core"
 import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
@@ -16,6 +16,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
             type: "DATE",
             validate: { isAfter: "2022-12-31T00:00:00.000Z" },
           },
+          bio: "TEXT",
         },
       }
 
@@ -72,7 +73,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           return 0
         })
 
-        expect(sortedColumns).toHaveLength(5)
+        expect(sortedColumns).toHaveLength(6)
         expect(sortedColumns[0]).toMatchObject({
           name: "age",
           notnull: dialect === "postgres" ? "YES" : 0,
@@ -80,25 +81,31 @@ describe.each(dbDialects)("Operators", (dialect) => {
           type: dialect === "postgres" ? "integer" : "INTEGER",
         })
         expect(sortedColumns[1]).toMatchObject({
+          name: "bio",
+          notnull: dialect === "postgres" ? "YES" : 0,
+          pk: 0,
+          type: dialect === "postgres" ? "text" : "TEXT",
+        })
+        expect(sortedColumns[2]).toMatchObject({
           name: "hire_date",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
           type:
             dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
         })
-        expect(sortedColumns[2]).toMatchObject({
+        expect(sortedColumns[3]).toMatchObject({
           name: "id",
           notnull: dialect === "postgres" ? "NO" : 0,
           pk: 1,
           type: dialect === "postgres" ? "integer" : "INTEGER",
         })
-        expect(sortedColumns[3]).toMatchObject({
+        expect(sortedColumns[4]).toMatchObject({
           name: "name",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
           type: dialect === "postgres" ? "character varying" : "VARCHAR(255)",
         })
-        expect(sortedColumns[4]).toMatchObject({
+        expect(sortedColumns[5]).toMatchObject({
           name: "years_worked",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
@@ -127,6 +134,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     age: 21,
                     yearsWorked: 1,
                     hireDate: "2023-01-01T00:00:00.000Z",
+                    bio: "bla bla",
                   },
                 },
               },
@@ -141,6 +149,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     age: 22,
                     yearsWorked: 3,
                     hireDate: "2023-01-01T00:00:00.000Z",
+                    bio: "bla bla",
                   },
                 },
               },
@@ -169,6 +178,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 age: 21,
                 yearsWorked: 1,
                 hireDate: "2023-01-01T00:00:00.000Z",
+                bio: "bla bla",
               },
             },
           })
@@ -186,6 +196,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 age: 22,
                 yearsWorked: 3,
                 hireDate: "2023-01-01T00:00:00.000Z",
+                bio: "bla bla",
               },
             },
           })
@@ -317,6 +328,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 21,
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
               {
@@ -327,6 +339,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 22,
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
             ],
@@ -355,6 +368,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 22,
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
             ],
@@ -415,6 +429,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 22,
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
               {
@@ -425,6 +440,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 21,
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
             ],
@@ -453,6 +469,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 21,
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
             ],
@@ -472,6 +489,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           age: integer({ min: 0 }),
           yearsWorked: integer({ min: 0 }),
           hireDate: datetime({ min: new Date("2022-12-31T00:00:00.000Z") }),
+          bio: text(),
         },
       }
 
@@ -527,7 +545,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           }
           return 0
         })
-        expect(sortedColumns).toHaveLength(5)
+        expect(sortedColumns).toHaveLength(6)
         expect(sortedColumns[0]).toMatchObject({
           name: "age",
           notnull: dialect === "postgres" ? "YES" : 0,
@@ -535,25 +553,31 @@ describe.each(dbDialects)("Operators", (dialect) => {
           type: dialect === "postgres" ? "integer" : "INTEGER",
         })
         expect(sortedColumns[1]).toMatchObject({
+          name: "bio",
+          notnull: dialect === "postgres" ? "YES" : 0,
+          pk: 0,
+          type: dialect === "postgres" ? "text" : "TEXT",
+        })
+        expect(sortedColumns[2]).toMatchObject({
           name: "hire_date",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
           type:
             dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
         })
-        expect(sortedColumns[2]).toMatchObject({
+        expect(sortedColumns[3]).toMatchObject({
           name: "id",
           notnull: dialect === "postgres" ? "NO" : 0,
           pk: 1,
           type: dialect === "postgres" ? "integer" : "INTEGER",
         })
-        expect(sortedColumns[3]).toMatchObject({
+        expect(sortedColumns[4]).toMatchObject({
           name: "name",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
           type: dialect === "postgres" ? "character varying" : "VARCHAR(10)",
         })
-        expect(sortedColumns[4]).toMatchObject({
+        expect(sortedColumns[5]).toMatchObject({
           name: "years_worked",
           notnull: dialect === "postgres" ? "YES" : 0,
           pk: 0,
@@ -582,6 +606,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     age: 21,
                     yearsWorked: 1,
                     hireDate: "2023-01-01T00:00:00.000Z",
+                    bio: "bla bla",
                   },
                 },
               },
@@ -596,6 +621,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     age: 22,
                     yearsWorked: 3,
                     hireDate: "2023-01-01T00:00:00.000Z",
+                    bio: "bla bla",
                   },
                 },
               },
@@ -624,6 +650,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 age: 21,
                 yearsWorked: 1,
                 hireDate: "2023-01-01T00:00:00.000Z",
+                bio: "bla bla",
               },
             },
           })
@@ -641,6 +668,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 age: 22,
                 yearsWorked: 3,
                 hireDate: "2023-01-01T00:00:00.000Z",
+                bio: "bla bla",
               },
             },
           })
@@ -706,6 +734,14 @@ describe.each(dbDialects)("Operators", (dialect) => {
                 source: { pointer: "/data/attributes/hireDate" },
                 title: "Unexpected value.",
               },
+              {
+                status: 422,
+                code: "unexpected-value",
+                detail:
+                  "Payload must have 'bio' as a non-undefined value but received 'null' instead.",
+                source: { pointer: "/data/attributes/bio" },
+                title: "Unexpected value.",
+              },
             ],
           })
         })
@@ -729,6 +765,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 21,
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
               {
@@ -739,6 +776,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 22,
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
             ],
@@ -767,6 +805,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 22,
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
             ],
@@ -827,6 +866,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 22,
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
               {
@@ -837,6 +877,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 21,
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
             ],
@@ -865,6 +906,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   age: 21,
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
                 },
               },
             ],
