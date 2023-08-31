@@ -52,7 +52,7 @@ export class Hatchify extends HatchifyNode {
 export const errorHandlerMiddleware = errorMiddleware
 
 export function hatchifyKoa(
-  models: HatchifyModel[],
+  models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
   options: HatchifyOptions = {},
 ): Hatchify {
   return new Hatchify(models, options)
