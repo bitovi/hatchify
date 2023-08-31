@@ -3,7 +3,6 @@ import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import type { Schema } from "@hatchifyjs/rest-client"
 import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
@@ -22,8 +21,15 @@ export const Patient = {
   },
 }
 
-const ArticleSchema = { name: "Article" } as Schema
-const schemas = { Article: ArticleSchema }
+const Article = {
+  name: "Article",
+  displayAttribute: "name",
+  attributes: {
+    author: { type: "STRING", allowNull: false },
+    tag: { type: "STRING", allowNull: false },
+  },
+}
+const schemas = { Article }
 const schemaMap = {
   Article: { type: "article", endpoint: "articles" },
   Person: { type: "person", endpoint: "people" },
@@ -31,84 +37,60 @@ const schemaMap = {
 }
 const sourceConfig = { baseUrl, schemaMap }
 
-describe("Integration test with Hatchify Koa backend", async () => {
-  it("works", async () => {
+describe("Testing CRUD operations against Hatchify backend", async () => {
+  it("successfully runs createOne, updateOne, and deleteOne", async () => {
     const app = new Koa()
-    const hatchedKoa = hatchifyKoa([Patient], {
+    const hatchedKoa = hatchifyKoa([Article], {
       prefix: "/api",
       database: {
         dialect: "sqlite",
         storage: ":memory:",
-        logging: true,
       },
     })
-
     app.use(cors())
-
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
-
-    app.listen(3001, () => {
-      console.log("Started on port 3001")
-    })
+    app.listen(3001)
 
     const jsonApi = jsonapi("http://localhost:3001/api", {
-      Patient: { endpoint: "patients" },
+      Article: { endpoint: "articles" },
     })
+    const hatchedReactRest = hatchifyReactRest({ Article }, jsonApi)
 
-    const hatchedReactRest = hatchifyReactRest({ Patient }, jsonApi)
-
-    await hatchedReactRest.Patient.createOne({
+    await hatchedReactRest.Article.createOne({
       attributes: {
-        name: "John",
-        currentState: "cs",
-        currentStateDate: "csd",
-        dateAddedToSystem: "dats",
-        provider: "p",
+        author: "John Doe",
+        tag: "Hatchify",
       },
     })
-
-    const [firstPatientsQuery] = await hatchedReactRest.Patient.findAll({})
-
-    expect(firstPatientsQuery.length === 1)
-    expect(firstPatientsQuery[0]).toEqual({
+    const createdArticleQuery = await hatchedReactRest.Article.findOne("1")
+    expect(createdArticleQuery).toEqual({
       id: "1",
-      __schema: "Patient",
-      name: "John",
-      currentState: "cs",
-      currentStateDate: "csd",
-      dateAddedToSystem: "dats",
-      provider: "p",
+      __schema: "Article",
+      author: "John Doe",
+      tag: "Hatchify",
     })
 
-    await hatchedReactRest.Patient.updateOne({
+    await hatchedReactRest.Article.updateOne({
       id: "1",
       attributes: {
-        name: "John_updated",
-        currentState: "cs_updated",
-        currentStateDate: "csd_updated",
-        dateAddedToSystem: "dats_updated",
-        provider: "p_updated",
+        author: "John Doe Updated",
+        tag: "Hatchify Updated",
       },
     })
-
-    const patient = await hatchedReactRest.Patient.findOne("1")
-
-    expect(patient).toEqual({
+    const updatedArticleQuery = await hatchedReactRest.Article.findOne("1")
+    expect(updatedArticleQuery).toEqual({
       id: "1",
-      __schema: "Patient",
-      name: "John_updated",
-      currentState: "cs_updated",
-      currentStateDate: "csd_updated",
-      dateAddedToSystem: "dats_updated",
-      provider: "p_updated",
+      __schema: "Article",
+      author: "John Doe Updated",
+      tag: "Hatchify Updated",
     })
 
-    await hatchedReactRest.Patient.deleteOne("1")
-
-    const [secondPatientsQuery] = await hatchedReactRest.Patient.findAll({})
-
-    expect(secondPatientsQuery.length === 0)
+    await hatchedReactRest.Article.deleteOne("1")
+    const deletedArticleQuery = await hatchedReactRest.Article.findOne(
+      "1",
+    ).catch((e) => e)
+    expect(deletedArticleQuery[0].status).toEqual(404)
   })
 })
 
