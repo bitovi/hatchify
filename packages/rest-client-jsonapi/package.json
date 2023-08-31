@@ -27,7 +27,11 @@
     "@hatchifyjs/rest-client": "^0.0.1-14"
   },
   "devDependencies": {
+    "@hatchifyjs/koa": "^0.1.3",
+    "@koa/cors": "^4.0.0",
+    "@types/koa__cors": "^4.0.0",
     "@vitest/coverage-c8": "^0.32.2",
+    "koa": "^2.14.2",
     "msw": "^1.2.1",
     "vite": "^4.3.1",
     "vite-plugin-dts": "^2.3.0",
