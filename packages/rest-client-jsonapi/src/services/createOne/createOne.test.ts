@@ -1,25 +1,14 @@
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
+import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
 import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
+import { testBackendEndpointConfig } from "../../setupTests"
 import { createOne } from "./createOne"
-import hatchifyReactRest from "@hatchifyjs/react-rest"
-
-export const Patient = {
-  name: "Patient",
-  displayAttribute: "name",
-  attributes: {
-    name: { type: "STRING", allowNull: false },
-    currentState: { type: "STRING", allowNull: false },
-    currentStateDate: { type: "STRING", allowNull: false },
-    dateAddedToSystem: { type: "STRING", allowNull: false },
-    provider: { type: "STRING", allowNull: false },
-  },
-}
 
 const Article = {
   name: "Article",
@@ -41,7 +30,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
   it("successfully runs createOne, updateOne, and deleteOne", async () => {
     const app = new Koa()
     const hatchedKoa = hatchifyKoa([Article], {
-      prefix: "/api",
+      prefix: `/${testBackendEndpointConfig.api}`,
       database: {
         dialect: "sqlite",
         storage: ":memory:",
@@ -53,7 +42,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     app.listen(3001)
 
     const jsonApi = jsonapi("http://localhost:3001/api", {
-      Article: { endpoint: "articles" },
+      Article: { endpoint: `${testBackendEndpointConfig.schema}` },
     })
     const hatchedReactRest = hatchifyReactRest({ Article }, jsonApi)
 
