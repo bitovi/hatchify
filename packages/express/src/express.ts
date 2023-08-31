@@ -1,5 +1,9 @@
 import { Hatchify as HatchifyNode, buildExportWrapper } from "@hatchifyjs/node"
-import type { HatchifyModel, HatchifyOptions } from "@hatchifyjs/node"
+import type {
+  HatchifyModel,
+  HatchifyOptions,
+  PartialSchema,
+} from "@hatchifyjs/node"
 
 import { buildMiddlewareForModel, errorMiddleware } from "./middleware/express"
 import type { MiddlewareFunctionsExpress } from "./middleware/express"
@@ -17,7 +21,10 @@ import type { MiddlewareFunctionsExpress } from "./middleware/express"
  *
  */
 export class Hatchify extends HatchifyNode {
-  constructor(models: HatchifyModel[], options: HatchifyOptions = {}) {
+  constructor(
+    models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
+    options: HatchifyOptions = {},
+  ) {
     super(models, options)
   }
 
@@ -45,7 +52,7 @@ export class Hatchify extends HatchifyNode {
 export const errorHandlerMiddleware = errorMiddleware
 
 export function hatchifyExpress(
-  models: HatchifyModel[],
+  models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
   options: HatchifyOptions = {},
 ): Hatchify {
   return new Hatchify(models, options)
