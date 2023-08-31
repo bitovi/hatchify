@@ -36,7 +36,7 @@ type Components = {
   }
 }
 
-type HatchifyApp = {
+export type HatchifyApp = {
   components: Components
   model: ReactRest<SchemaRecord>
   state: {
