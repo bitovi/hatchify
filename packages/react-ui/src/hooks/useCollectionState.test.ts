@@ -1,22 +1,21 @@
-import type { Schemas } from "@hatchifyjs/rest-client"
 import { describe, expect, it, vi } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import useCollectionState from "./useCollectionState"
+import { assembler, integer } from "@hatchifyjs/hatchify-core"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
+import useCollectionState from "./useCollectionState"
 
-const schemas: Schemas = {
+const partialSchemas = {
   Todo: {
     name: "Todo",
-    displayAttribute: "name",
     attributes: {
-      name: "string",
-      created: "date",
-      important: "boolean",
+      importance: integer(),
     },
   },
 }
 
-const fakeRestClient = hatchifyReactRest(schemas, {
+const finalSchemas = assembler(partialSchemas)
+
+const fakeRestClient = hatchifyReactRest(partialSchemas, {
   version: 0,
   findAll: () =>
     Promise.resolve([
@@ -40,7 +39,7 @@ const fakeRestClient = hatchifyReactRest(schemas, {
 describe("useCollectionState", () => {
   it("works", async () => {
     const { result } = renderHook(() =>
-      useCollectionState(schemas, schemas.Todo.name, fakeRestClient, {
+      useCollectionState(finalSchemas, partialSchemas, "Todo", fakeRestClient, {
         defaultSelected: { all: false, ids: [] },
         onSelectedChange: vi.fn(),
       }),
@@ -86,7 +85,8 @@ describe("useCollectionState", () => {
         ids: [],
       },
       setSelected: expect.any(Function),
-      allSchemas: schemas,
+      finalSchemas,
+      partialSchemas,
       schemaName: "Todo",
       filter: undefined,
       setFilter: expect.any(Function),

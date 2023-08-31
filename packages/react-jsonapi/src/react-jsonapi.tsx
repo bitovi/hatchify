@@ -1,6 +1,7 @@
 import createClient from "@hatchifyjs/rest-client-jsonapi"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
+import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
+import type { PartialSchemas } from "@hatchifyjs/rest-client"
 
 interface SourceSchema {
   type?: string
@@ -8,12 +9,12 @@ interface SourceSchema {
 }
 export type SchemaMap = Record<string, SourceSchema>
 
-export function reactJsonapi(
-  schema: SchemaRecord,
+export function reactJsonapi<TSchemas extends PartialSchemas>(
+  partialSchemas: TSchemas,
   baseUrl: string,
   schemaMap: SchemaMap,
-): ReactRest<SchemaRecord> {
+): HatchifyReactRest<TSchemas> {
   const jsonapiClient = createClient(baseUrl, schemaMap)
 
-  return hatchifyReactRest(schema, jsonapiClient)
+  return hatchifyReactRest(partialSchemas, jsonapiClient)
 }

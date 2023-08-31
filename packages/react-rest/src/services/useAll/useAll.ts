@@ -1,15 +1,17 @@
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { findAll, getMeta, subscribeToAll } from "@hatchifyjs/rest-client"
-
 import type {
+  FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
   Meta,
   MetaError,
   QueryList,
-  Record,
+  RecordType,
   RequestMetaData,
-  Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 
 /**
  * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
@@ -27,21 +29,37 @@ const useMemoizedQuery = (query: QueryList) => {
  * Fetches a list of records using the rest-client findAll function,
  * subscribes to the store for updates to the list, returns the list.
  */
-export const useAll = (
+export const useAll = <
+  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   dataSource: Source,
-  allSchemas: Schemas,
-  schemaName: string,
+  allSchemas: FinalSchemas,
+  schemaName: TSchemaName,
   query: QueryList,
-): [Record[], Meta] => {
+): [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, Meta] => {
+  if (typeof schemaName !== "string") {
+    throw new Error(
+      `Expected schemaName to be a string, received ${typeof schemaName}`,
+    )
+  }
+
   const memoizedQuery = useMemoizedQuery(query)
-  const [data, setData] = useState<Record[]>([])
+  const [data, setData] = useState<
+    Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>
+  >([])
   const [requestMeta, setRequestMeta] = useState<RequestMetaData>()
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
   const fetchAll = useCallback(() => {
     setLoading(true)
-    findAll(dataSource, allSchemas, schemaName, memoizedQuery)
+    findAll<TSchemas, GetSchemaNames<TSchemas>>(
+      dataSource,
+      allSchemas,
+      schemaName,
+      memoizedQuery,
+    )
       .then(([data, requestMeta]) => {
         setError(undefined)
         setData(data)
@@ -61,7 +79,11 @@ export const useAll = (
   }, [fetchAll])
 
   useEffect(() => {
-    return subscribeToAll(schemaName, query, fetchAll)
+    return subscribeToAll<TSchemas, GetSchemaNames<TSchemas>>(
+      schemaName,
+      query,
+      fetchAll,
+    )
   }, [schemaName, fetchAll])
 
   const meta = useMemo(

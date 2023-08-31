@@ -4,7 +4,9 @@ import type {
   RecordRelationship,
   Schemas,
   ResourceRelationship,
+  FinalSchemas,
 } from "../../types"
+import { isSchemasV2 } from "../schema"
 
 type Relationship = globalThis.Record<
   string,
@@ -29,7 +31,7 @@ export function keyResourcesById(data: Resource[]): {
  * does not have a schema for.
  */
 export function isMissingSchema(
-  allSchemas: Schemas,
+  allSchemas: Schemas | FinalSchemas,
   resource: ResourceRelationship | ResourceRelationship[],
 ): boolean {
   if (Array.isArray(resource)) {
@@ -75,18 +77,18 @@ export function resourceToRecordRelationship(
  * Merges the attribute data of the related records into the top-level records.
  */
 export function flattenResourcesIntoRecords(
-  allSchemas: Schemas,
+  allSchemas: Schemas | FinalSchemas,
   resources: Resource[],
   topLevelSchemaName: string,
 ): Record[]
 export function flattenResourcesIntoRecords(
-  allSchemas: Schemas,
+  allSchemas: Schemas | FinalSchemas,
   resources: Resource[],
   topLevelRecordSchemaName: string,
   id: string,
 ): Record | undefined
 export function flattenResourcesIntoRecords(
-  allSchemas: Schemas,
+  allSchemas: Schemas | FinalSchemas,
   resources: Resource[],
   topLevelRecordSchemaName: string,
   id?: string,
@@ -107,11 +109,18 @@ export function flattenResourcesIntoRecords(
               return acc
             }
 
-            acc[key] = Array.isArray(value)
-              ? value.map((item) =>
-                  resourceToRecordRelationship(allSchemas, resourcesById, item),
-                )
-              : resourceToRecordRelationship(allSchemas, resourcesById, value)
+            // v2 schemas do not support relationships yet
+            if (!isSchemasV2(allSchemas)) {
+              acc[key] = Array.isArray(value)
+                ? value.map((item) =>
+                    resourceToRecordRelationship(
+                      allSchemas,
+                      resourcesById,
+                      item,
+                    ),
+                  )
+                : resourceToRecordRelationship(allSchemas, resourcesById, value)
+            }
 
             return acc
           },

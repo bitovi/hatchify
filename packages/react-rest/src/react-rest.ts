@@ -1,6 +1,6 @@
 import { hatchifyReactRest } from "./services"
 
-export type { ReactRest, SchemaRecord } from "./services"
+export type { HatchifyReactRest } from "./services"
 export type { Schema } from "@hatchifyjs/rest-client"
 
 export {

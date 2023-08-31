@@ -13,7 +13,7 @@ const styles = {
 
 export const MuiList: React.FC<XCollectionProps> = (props) => {
   const { columns, Empty } = useCompoundComponents(
-    props.allSchemas[props.schemaName],
+    props.finalSchemas[props.schemaName],
     props.children,
   )
 
