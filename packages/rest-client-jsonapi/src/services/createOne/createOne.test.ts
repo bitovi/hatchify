@@ -8,6 +8,7 @@ import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { createOne } from "./createOne"
+import hatchifyReactRest from "@hatchifyjs/react-rest"
 
 export const Patient = {
   name: "Patient",
@@ -48,12 +49,66 @@ describe("Integration test with Hatchify Koa backend", async () => {
     await hatchedKoa.createDatabase()
 
     app.listen(3001, () => {
-      console.log("🟢 Started on port 3001 🟢")
+      console.log("Started on port 3001")
     })
 
-    const data = await fetch("http://localhost:3001/api/patients")
-    const json = await data.json()
-    console.log("📊", json)
+    const jsonApi = jsonapi("http://localhost:3001/api", {
+      Patient: { endpoint: "patients" },
+    })
+
+    const hatchedReactRest = hatchifyReactRest({ Patient }, jsonApi)
+
+    await hatchedReactRest.Patient.createOne({
+      attributes: {
+        name: "John",
+        currentState: "cs",
+        currentStateDate: "csd",
+        dateAddedToSystem: "dats",
+        provider: "p",
+      },
+    })
+
+    const [firstPatientsQuery] = await hatchedReactRest.Patient.findAll({})
+
+    expect(firstPatientsQuery.length === 1)
+    expect(firstPatientsQuery[0]).toEqual({
+      id: "1",
+      __schema: "Patient",
+      name: "John",
+      currentState: "cs",
+      currentStateDate: "csd",
+      dateAddedToSystem: "dats",
+      provider: "p",
+    })
+
+    await hatchedReactRest.Patient.updateOne({
+      id: "1",
+      attributes: {
+        name: "John_updated",
+        currentState: "cs_updated",
+        currentStateDate: "csd_updated",
+        dateAddedToSystem: "dats_updated",
+        provider: "p_updated",
+      },
+    })
+
+    const patient = await hatchedReactRest.Patient.findOne("1")
+
+    expect(patient).toEqual({
+      id: "1",
+      __schema: "Patient",
+      name: "John_updated",
+      currentState: "cs_updated",
+      currentStateDate: "csd_updated",
+      dateAddedToSystem: "dats_updated",
+      provider: "p_updated",
+    })
+
+    await hatchedReactRest.Patient.deleteOne("1")
+
+    const [secondPatientsQuery] = await hatchedReactRest.Patient.findAll({})
+
+    expect(secondPatientsQuery.length === 0)
   })
 })
 
