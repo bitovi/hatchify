@@ -1,9 +1,16 @@
-import { assembler } from "@hatchifyjs/hatchify-core"
-import type {
+// import { assembler, string, integer } from "@hatchifyjs/hatchify-core"
+import {
+  assembler,
+  string,
+  integer,
+  datetime,
+} from "../../../../hatchify-core/dist/src/hatchify-core"
+import {
   GetSchemaFromName,
   GetSchemaNames,
   Meta,
   PartialSchemas,
+  QueryOne,
   RestClient,
 } from "@hatchifyjs/rest-client"
 import { subscribeToAll } from "@hatchifyjs/rest-client"
@@ -13,7 +20,7 @@ import type {
   RecordType,
   RequestMetaData,
 } from "@hatchifyjs/rest-client"
-import { createStore, findAll } from "@hatchifyjs/rest-client"
+import { createStore, findAll, findOne } from "@hatchifyjs/rest-client"
 import { useAll } from ".."
 
 export type HatchifyReactRest<TSchemas extends PartialSchemas> = {
@@ -26,6 +33,11 @@ export type HatchifyReactRest<TSchemas extends PartialSchemas> = {
         Array<RecordType<GetSchemaFromName<TSchemas, SchemaName>>>,
         RequestMetaData,
       ]
+    >
+    findOne: (
+      query: QueryOne | string,
+    ) => Promise<
+      RecordType<GetSchemaFromName<TSchemas, SchemaName>> | undefined
     >
     // hooks
     useAll: (
@@ -61,6 +73,13 @@ export const hatchifyReactRest = <const TSchemas extends PartialSchemas>(
             schemaName,
             query || {},
           ),
+        findOne: (query) =>
+          findOne<TSchemas, GetSchemaNames<TSchemas>>(
+            restClient,
+            finalSchemas,
+            schemaName,
+            query,
+          ),
         // hooks
         useAll: (query) =>
           useAll<TSchemas, GetSchemaNames<TSchemas>>(
@@ -87,44 +106,44 @@ export const hatchifyReactRest = <const TSchemas extends PartialSchemas>(
 }
 
 // todo: leaving for testing, remove before merge to main
-// const partialTodo = {
-//   name: "Todo",
-//   attributes: {
-//     age: integer(),
-//     importance: integer(),
-//   },
-// }
+const partialTodo = {
+  name: "Todo",
+  attributes: {
+    title: string(),
+    age: integer(),
+    importance: integer(),
+    created: datetime(),
+  },
+}
 
-// const partialUser = {
-//   name: "User",
-//   attributes: {
-//     age: integer({ required: true }),
-//     importance: {
-//       control: { type: "String" } as any,
-//     } as any,
-//   },
-// }
+const partialUser = {
+  name: "User",
+  attributes: {
+    name: string(),
+    age: integer({ required: true }),
+  },
+}
 
-// const app = hatchifyReactRest(
-//   { Todo: partialTodo, User: partialUser },
-//   undefined as any,
-// )
+const app = hatchifyReactRest(
+  { Todo: partialTodo, User: partialUser },
+  undefined as any,
+)
 
-// async function test() {
-//   const [a] = await app.Todo.findAll({})
-//   const [b] = await app.User.findAll({})
-//   a[0].id
-//   a[0].age
-//   a[0].importance
-//   a[0].adsfaasdfaskldhfk
-//   b[0].id
-//   b[0].age
-//   b[0].importance
-//   // b[0].asdf
+async function test() {
+  const [a] = await app.Todo.findAll({})
+  const [b] = await app.User.findAll({})
+  a[0].id
+  a[0].age
+  a[0].importance
+  a[0].adsfaasdfaskldhfk
+  b[0].id
+  b[0].age
+  b[0].importance
+  // b[0].asdf
 
-//   const [aa] = app.Todo.useAll({})
-//   aa[0].id
-//   aa[0].age
-//   aa[0].importance
-//   // aa[0].asdfas
-// }
+  const [aa] = app.Todo.useAll({})
+  aa[0].id
+  aa[0].age
+  aa[0].importance
+  // aa[0].asdfas
+}

@@ -51,17 +51,30 @@ export type IsString<TValue> = TValue extends StringAsString ? true : false
 export type RecordType<TPartialSchema extends PartialSchema> = {
   id: string
 } & {
-  [AttributeName in keyof TPartialSchema["attributes"]]: IsNumber<
-    TPartialSchema["attributes"][AttributeName]["control"]["type"]
-  > extends true
-    ? number
-    : IsString<
-        TPartialSchema["attributes"][AttributeName]["control"]["type"]
-      > extends true
-    ? string
-    : unknown
+  [AttributeName in keyof TPartialSchema["attributes"]]: GetTypedAttribute<
+    TPartialSchema["attributes"],
+    AttributeName
+  >
+}
+
+export type CreateType<TPartialSchema extends PartialSchema> = {
+  attributes: {
+    [AttributeName in keyof TPartialSchema["attributes"]]: GetTypedAttribute<
+      TPartialSchema["attributes"],
+      AttributeName
+    >
+  }
 }
 
 export type GetAttributes<TSchema extends PartialSchema> = {
   [AttributeName in keyof TSchema["attributes"]]: TSchema["attributes"][AttributeName]
 }
+
+export type GetTypedAttribute<
+  TAttributes extends PartialSchema["attributes"],
+  TAttributeName extends keyof TAttributes,
+> = IsNumber<TAttributes[TAttributeName]["control"]["type"]> extends true
+  ? number
+  : IsString<TAttributes[TAttributeName]["control"]["type"]> extends true
+  ? string
+  : unknown
