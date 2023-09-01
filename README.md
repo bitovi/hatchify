@@ -35,7 +35,7 @@ Unlike code generation tools—which allow you to write your schema and then gen
 - [Troubleshooting / Known issues](#troubleshooting--known-issues)
 - [Need help or have questions?](#need-help-or-have-questions)
 
-## Project Setup
+# Project Setup
 
 In this guide, we will be setting up a project containing a HatchifyJS
 frontend and backend. Our frontend will use React and MUI, and our backend
@@ -72,7 +72,7 @@ following steps:
    libraries:
 
    ```bash
-   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/hatchify-core @hatchifyjs/koa @hatchifyjs/react
+   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/koa @hatchifyjs/react
    ```
 
 5. Install the following dev packages to run our backend server:
@@ -163,7 +163,7 @@ following steps:
     }
     ```
 
-## Schemas
+# Schemas
 
 A schema is a definition of a resource used in our HatchifyJS system. We
 use these shared schemas across our backend and frontend to create
@@ -190,10 +190,7 @@ under the hood to talk to your database.
 
 ```ts
 // hatchify-app/schemas/User.ts
-import { string, hasMany } from "@hatchifyjs/core"
-import type { PartialSchema } from "@hatchifyjs/core"
-
-export const User: PartialSchema = {
+export const User = {
   name: "User",
   attributes: {
     name: "STRING",
@@ -206,10 +203,7 @@ export const User: PartialSchema = {
 
 ```ts
 // hatchify-app/schemas/Todo.ts
-import { string, datetime, integer, boolean, hasMany } from "@hatchifyjs/core"
-import type { PartialSchema } from "@hatchifyjs/core"
-
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     name: "STRING",
@@ -223,7 +217,7 @@ export const Todo: PartialSchema = {
 You can find all of the possible data types for a schema's `attributes`
 [here](https://sequelize.org/docs/v6/other-topics/other-data-types/).
 
-### Model Relationships
+## Model Relationships
 
 HatchifyJS can help you define and build complex relationships between
 different models within your application. In the previous code snippets,
@@ -238,7 +232,7 @@ with it.
 For more information on these relationships and the options available
 check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/associations/).
 
-## Backend - The Hatchify Middleware
+# Backend - The Hatchify Middleware
 
 **✏️ Create an** `index.ts` **inside of the “backend” directory:**
 
@@ -251,16 +245,13 @@ import { Todo } from "../schemas/Todo"
 import { User } from "../schemas/User"
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa(
-  { Todo, User },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: "example.sqlite",
-    },
+const hatchedKoa = hatchifyKoa([Todo, User], {
+  prefix: "/api",
+  database: {
+    dialect: "sqlite",
+    storage: "example.sqlite",
   },
-)
+})
 
 app.use(cors())
 app.use(hatchedKoa.middleware.allModels.all)
@@ -298,11 +289,11 @@ You can navigate to the following endpoints to get a list of users and todos
 Now that we have our basic backend up and running we can start
 looking at how to make changes and further develop our example.
 
-### Using the server endpoints
+## Using the server endpoints
 
 You can now make requests to your endpoint to test your applications. The following are examples of how to do this with `curl`, but you don't need to follow along just yet—we'll seed the database for our example app later on.
 
-#### Creating a resource
+### Creating a resource
 
 ```bash
 curl 'http://localhost:3000/api/todos' \
@@ -342,7 +333,7 @@ curl --request POST 'http://localhost:3000/api/users' \
 }'
 ```
 
-#### Listing resources
+### Listing resources
 
 You can make GET requests with HatchifyJS middleware, and you can make
 your requests even more powerful with query strings. For example:
@@ -353,7 +344,7 @@ your requests even more powerful with query strings. For example:
 
 You can check out the [querystring library](https://github.com/bitovi/querystring-parser), which HatchifyJS uses under the hood, for more information.
 
-#### Fetching a single resource
+### Fetching a single resource
 
 Just like fetching a list of resources, we’re able to fetch an
 individual resource with or without its related records. For example:
@@ -361,7 +352,7 @@ individual resource with or without its related records. For example:
 - [http://localhost:3000/api/users/1](http://localhost:3000/api/users/1)
 - [http://localhost:3000/api/users/1?include=todos](http://localhost:3000/api/users/1?include=todos)
 
-#### Updating a resource
+### Updating a resource
 
 ```bash
 curl --request PATCH 'http://localhost:3000/api/users/1' \
@@ -388,13 +379,13 @@ curl --request PATCH 'http://localhost:3000/api/users/1' \
 }'
 ```
 
-#### Deleting a resource
+### Deleting a resource
 
 ```bash
 curl --request DELETE 'http://localhost:3000/api/users/1'
 ```
 
-### Seeding data
+## Seeding data
 
 **✏️ Run the following commands in your terminal to seed some data**
 
@@ -488,7 +479,7 @@ curl 'http://localhost:3000/api/users' \
 }'
 ```
 
-## Frontend with React and MUI
+# Frontend with React and MUI
 
 Now that our backend is configured and running we can use the same
 schemas that we defined earlier to quickly "hatch" our frontend. The first
@@ -512,7 +503,7 @@ overview of what each of these does:
 Once we create our HatchifyJS app, we can pull the `Collection` component from
 the `Todo` key and render it.
 
-### Rendering a List
+## Rendering a List
 
 **✏️ Modify the contents of `frontend/main.tsx`:**
 
@@ -580,7 +571,7 @@ should see:
 And that’s it! With minimal code and some HatchifyJS magic, we've used our
 well-defined schemas to create a database, a running backend with REST endpoints, and a frontend that handles the JSX and data-fetching for us.
 
-## Next Steps
+# Next Steps
 
 - [Schema, database, and service API naming](./doc/naming.md)
 - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
@@ -589,7 +580,7 @@ well-defined schemas to create a database, a running backend with REST endpoints
 - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
 - [Using virtual fields](./doc/next-steps/virtual-fields.md)
 
-## Troubleshooting / Known issues
+# Troubleshooting / Known issues
 
 ```bash
 TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts" for .../hatchify-app/backend/index.ts
@@ -597,7 +588,7 @@ TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts" for .../hat
 
 You might be on Node 20. If so, please use Node 18.
 
-## Need help or have questions?
+# Need help or have questions?
 
 This project is supported by [Bitovi](https://bitovi.com/), a Javascript
 consultancy. You can get help or ask questions on our:
