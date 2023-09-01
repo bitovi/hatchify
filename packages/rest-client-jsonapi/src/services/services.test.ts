@@ -16,7 +16,7 @@ const Article = {
 }
 
 describe("Testing CRUD operations against Hatchify backend", async () => {
-  it("successfully runs createOne, updateOne, and deleteOne", async () => {
+  it("successfully runs CRUD operations", async () => {
     const app = new Koa()
     const hatchedKoa = hatchifyKoa([Article], {
       prefix: `/${testBackendEndpointConfig.api}`,
@@ -44,31 +44,34 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         tag: "Hatchify",
       },
     })
-    const createdArticleQuery = await hatchedReactRest.Article.findOne("1")
-    expect(createdArticleQuery).toEqual({
-      id: "1",
+    const [articles] = await hatchedReactRest.Article.findAll({})
+    const [article] = articles
+    const { id } = article
+    expect(articles.length === 1)
+    expect(article).toEqual({
+      id,
       __schema: "Article",
       author: "John Doe",
       tag: "Hatchify",
     })
 
     await hatchedReactRest.Article.updateOne({
-      id: "1",
+      id,
       attributes: {
         author: "John Doe Updated",
         tag: "Hatchify Updated",
       },
     })
-    const updatedArticleQuery = await hatchedReactRest.Article.findOne("1")
+    const updatedArticleQuery = await hatchedReactRest.Article.findOne(id)
     expect(updatedArticleQuery).toEqual({
-      id: "1",
+      id,
       __schema: "Article",
       author: "John Doe Updated",
       tag: "Hatchify Updated",
     })
 
-    await hatchedReactRest.Article.deleteOne("1")
-    await expect(() => hatchedReactRest.Article.findOne("1")).rejects.toThrow()
+    await hatchedReactRest.Article.deleteOne(id)
+    await expect(() => hatchedReactRest.Article.findOne(id)).rejects.toThrow()
     expect.assertions(3) // Useful for confirming that assertions were actually called against asynchronous functions
   })
 })
