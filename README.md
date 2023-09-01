@@ -196,11 +196,9 @@ import type { PartialSchema } from "@hatchifyjs/core"
 export const User: PartialSchema = {
   name: "User",
   attributes: {
-    name: string({ required: true }),
+    name: "STRING",
   },
-  relationships: {
-    todo: hasMany(), // 👀
-  },
+  hasMany: [{ target: "Todo", options: { as: "todos" } }], // 👀
 }
 ```
 
@@ -214,14 +212,11 @@ import type { PartialSchema } from "@hatchifyjs/core"
 export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
-    name: string({ required: true }),
-    dueDate: datetime(),
-    importance: integer(),
-    complete: boolean({ default: false }),
+    name: "STRING",
+    dueDate: "DATE",
+    importance: "INTEGER",
   },
-  relationships: {
-    belongsTo: hasMany(), // 👀
-  },
+  belongsTo: [{ target: "User", options: { as: "user" } }], // 👀
 }
 ```
 
