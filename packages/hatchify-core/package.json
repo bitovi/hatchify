@@ -16,7 +16,7 @@
     "prepublish": "npm run clean && npm run build",
     "prepublishOnly": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint vite.config.ts src",
+    "eslint": "eslint .",
     "eslint:fix": "eslint --fix .",
     "depcheck": "depcheck .",
     "test": "jest --coverage",
