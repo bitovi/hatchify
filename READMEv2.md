@@ -208,7 +208,7 @@ export const User: PartialSchema = {
 
 ```ts
 // hatchify-app/schemas/Todo.ts
-import { string, datetime, integer, belongsTo } from "@hatchifyjs/core"
+import { string, datetime, integer, boolean, belongsTo } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
 export const Todo: PartialSchema = {
@@ -217,6 +217,7 @@ export const Todo: PartialSchema = {
     name: string(),
     dueDate: datetime(),
     importance: integer(),
+    complete: boolean({ default: false }), // 🛑
   },
   relationships: {
     user: belongsTo(), // 🛑
