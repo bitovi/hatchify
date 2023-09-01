@@ -199,7 +199,7 @@ export const User: PartialSchema = {
     name: string(),
   },
   relationships: {
-    todo: hasMany(), // 🛑
+    todos: hasMany(), // 🛑
   },
 }
 ```
@@ -219,7 +219,7 @@ export const Todo: PartialSchema = {
     importance: integer(),
   },
   relationships: {
-    belongsTo: hasMany(), // 🛑
+    user: belongsTo(), // 🛑
   },
 }
 ```
