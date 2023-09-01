@@ -72,7 +72,7 @@ following steps:
    libraries:
 
    ```bash
-   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/koa @hatchifyjs/react
+   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/hatchify-core @hatchifyjs/koa @hatchifyjs/react
    ```
 
 5. Install the following dev packages to run our backend server:
@@ -190,12 +190,17 @@ under the hood to talk to your database.
 
 ```ts
 // hatchify-app/schemas/User.ts
-export const User = {
+import { string, hasMany } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
+
+export const User: PartialSchema = {
   name: "User",
   attributes: {
-    name: "STRING",
+    name: string(),
   },
-  hasMany: [{ target: "Todo", options: { as: "todos" } }], // 👀
+  relationships: {
+    todos: hasMany(), // 🛑
+  },
 }
 ```
 
@@ -203,14 +208,19 @@ export const User = {
 
 ```ts
 // hatchify-app/schemas/Todo.ts
-export const Todo = {
+import { string, datetime, integer, belongsTo } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
+
+export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
-    name: "STRING",
-    dueDate: "DATE",
-    importance: "INTEGER",
+    name: string(),
+    dueDate: datetime(),
+    importance: integer(),
   },
-  belongsTo: [{ target: "User", options: { as: "user" } }], // 👀
+  relationships: {
+    user: belongsTo(), // 🛑
+  },
 }
 ```
 
@@ -245,13 +255,16 @@ import { Todo } from "../schemas/Todo"
 import { User } from "../schemas/User"
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa([Todo, User], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: "example.sqlite",
+const hatchedKoa = hatchifyKoa(
+  { Todo, User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: "example.sqlite",
+    },
   },
-})
+)
 
 app.use(cors())
 app.use(hatchedKoa.middleware.allModels.all)
