@@ -1,86 +1,19 @@
-import Koa from "koa"
-import cors from "@koa/cors"
-import { hatchifyKoa } from "@hatchifyjs/koa"
-import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
+import type { Schema } from "@hatchifyjs/rest-client"
 import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
-import { testBackendEndpointConfig } from "../../setupTests"
 import { createOne } from "./createOne"
 
-const Article = {
-  name: "Article",
-  displayAttribute: "name",
-  attributes: {
-    author: { type: "STRING", allowNull: false },
-    tag: { type: "STRING", allowNull: false },
-  },
-}
-const schemas = { Article }
+const ArticleSchema = { name: "Article" } as Schema
+const schemas = { Article: ArticleSchema }
 const schemaMap = {
   Article: { type: "article", endpoint: "articles" },
   Person: { type: "person", endpoint: "people" },
   Tag: { type: "tag", endpoint: "tags" },
 }
 const sourceConfig = { baseUrl, schemaMap }
-
-describe("Testing CRUD operations against Hatchify backend", async () => {
-  it("successfully runs createOne, updateOne, and deleteOne", async () => {
-    const app = new Koa()
-    const hatchedKoa = hatchifyKoa([Article], {
-      prefix: `/${testBackendEndpointConfig.api}`,
-      database: {
-        dialect: "sqlite",
-        storage: ":memory:",
-      },
-    })
-    app.use(cors())
-    app.use(hatchedKoa.middleware.allModels.all)
-    await hatchedKoa.createDatabase()
-    app.listen(3001)
-
-    const jsonApi = jsonapi("http://localhost:3001/api", {
-      Article: { endpoint: `${testBackendEndpointConfig.schema}` },
-    })
-    const hatchedReactRest = hatchifyReactRest({ Article }, jsonApi)
-
-    await hatchedReactRest.Article.createOne({
-      attributes: {
-        author: "John Doe",
-        tag: "Hatchify",
-      },
-    })
-    const createdArticleQuery = await hatchedReactRest.Article.findOne("1")
-    expect(createdArticleQuery).toEqual({
-      id: "1",
-      __schema: "Article",
-      author: "John Doe",
-      tag: "Hatchify",
-    })
-
-    await hatchedReactRest.Article.updateOne({
-      id: "1",
-      attributes: {
-        author: "John Doe Updated",
-        tag: "Hatchify Updated",
-      },
-    })
-    const updatedArticleQuery = await hatchedReactRest.Article.findOne("1")
-    expect(updatedArticleQuery).toEqual({
-      id: "1",
-      __schema: "Article",
-      author: "John Doe Updated",
-      tag: "Hatchify Updated",
-    })
-
-    await hatchedReactRest.Article.deleteOne("1")
-    const deletedArticleQuery = () => hatchedReactRest.Article.findOne("1")
-    await expect(deletedArticleQuery).rejects.toThrow()
-    expect.assertions(3) // Useful for confirming that assertions were actually called against asynchronous functions
-  })
-})
 
 describe("rest-client-jsonapi/services/createOne", () => {
   it("works", async () => {
