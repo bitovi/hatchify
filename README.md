@@ -31,6 +31,8 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Rendering an empty list](<./doc/next-steps/[empty-list.md](doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)>)
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
   - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
+  - [Using virtual fields](./doc/next-steps/virtual-fields.md)
+- [Troubleshooting / Known issues](#troubleshooting--known-issues)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 ## Project Setup
@@ -586,10 +588,11 @@ well-defined schemas to create a database, a running backend with REST endpoints
 ## Next Steps
 
 - [Schema, database, and service API naming](./doc/naming.md)
-- [Using Postgres DB](./doc/next-steps/using-postgres-db.md)
+- [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
 - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
 - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
+- [Using virtual fields](./doc/next-steps/virtual-fields.md)
 
 ## Troubleshooting / Known issues
 

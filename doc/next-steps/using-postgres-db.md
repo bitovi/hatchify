@@ -1,21 +1,21 @@
-# Using Postgres
+# Using PostgreSQL
 
-This guide is a continuation of Hatchify's [Getting Started Guide](../../README.md#project-setup) and will teach you how to set Postgres as your database. You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but this tutorial will focus on Postgres.
+This guide is a continuation of Hatchify's [Getting Started Guide](../../README.md#project-setup) and will teach you how to set PostgreSQL as your database. You can configure your Hatchify backend to use any of the databases supported by [Sequelize](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor), but this tutorial will focus on PostgreSQL.
 
 There are two primary steps we must perform:
 
-1. Install Postgres
-2. Create a Postgres database instance
-3. Update the Getting Started Guide app to use Postgres
+1. Install PostgreSQL
+2. Create a PostgreSQL database instance
+3. Update the Getting Started Guide app to use PostgreSQL
 
 > **Note:** the ✏️ icon indicates when to follow along!
 
-## Install Postgres
+## Install PostgreSQL
 
-There are many different ways to install Postgres (brew, choco, downloading the installer for their website). In order to simplify this tutorial, we will be using Docker to get Postgres. We will
+There are many different ways to install PostgreSQL (brew, choco, downloading the installer for their website). In order to simplify this tutorial, we will be using Docker to get PostgreSQL. We will
 then create a `hatchyify-app` database.
 
-✏️ Perform the following steps to install Postgres:
+✏️ Perform the following steps to install PostgreSQL:
 
 1. If you don't have Docker installed on your computer yet, download it from [Docker's official website](https://www.docker.com/products/docker-desktop/).
 
@@ -23,18 +23,18 @@ then create a `hatchyify-app` database.
    docker pull postgres
    ```
 
-2. To create and run Postgres database, run the following command:
+2. To create and run PostgreSQL database, run the following command:
 
    ``` bash
    docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
    ```
 
-   This installs the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
+   This installs the official PostgreSQL image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
 
    - `POSTGRES_PASSWORD=example_password`
    - `POSTGRES_USER=example_user`
 
-   This also runs Postgres on port 5432.
+   This also runs PostgreSQL on port 5432.
 
 To check that it worked, run the command:
 
@@ -47,25 +47,25 @@ You should see your container details, and the status should be "Up". You can st
 
 ## Create a Database
 
-We need to create a `hatchify_app` database inside postgres. We will
+We need to create a `hatchify_app` database inside PostgreSQL. We will
 use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 ✏️ Perform the following steps to create the `hatchify_app` database:
 
 1. Download and run [DBeaver](https://dbeaver.io/download/).
 
-2. Configure a postgres connection. The following is what needs to be specified to connect to the Postgres in docker:
+2. Configure a PostgreSQL connection. The following is what needs to be specified to connect to the PostgreSQL in docker:
 
   ![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
 
   __Click__ the "Test Connection" button to test the connection. If successful, click __Finish__ and go onto the next step.
 
   If the connection is not successful, make sure you aren't running a
-  conflicting Postgres instance (`lsof -i tcp:5432`).  
+  conflicting PostgreSQL instance (`lsof -i tcp:5432`).  
 
   For more information on creating a connection, [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/) shows how to create a connection in DBeaver.
 
-3. Select "Create New Database" on the postgres connection's _Databases_ folder.
+3. Select "Create New Database" on the PostgreSQL connection's _Databases_ folder.
 
    ![DBeaver_23_1_3](https://github.com/bitovi/hatchify/assets/78602/be362599-1378-4344-a1dc-b2cf3cb158fb)
 
@@ -73,9 +73,9 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
    ![image](https://github.com/bitovi/hatchify/assets/78602/f1c95ae6-a877-4284-ba40-046bd566fcaa)
 
-## Update the Getting Started Guide app to use Postgres
+## Update the Getting Started Guide app to use PostgreSQL
 
-Finally, we need to change our app to use the Postgres database
+Finally, we need to change our app to use the PostgreSQL database
 we just created. As we are dealing with potentially sensitive
 database passwords, we are also going to change the app to load
 database configuration from an environment file. Read more about
@@ -88,7 +88,7 @@ the benefits of storing config in the environment [here](https://12factor.net/co
     ``` bash
     npm uninstall sqlite3
     ```
-2.  Install Postgres' package and [dotenv](https://www.npmjs.com/package/dotenv):
+2.  Install PostgreSQL' package and [dotenv](https://www.npmjs.com/package/dotenv):
 
     ``` bash
     npm install pg dotenv
@@ -97,7 +97,7 @@ the benefits of storing config in the environment [here](https://12factor.net/co
     [dotenv](https://www.npmjs.com/package/dotenv) will load our
     configuration.
 
-3.  Install Postgres' types package:
+3.  Install PostgreSQL' types package:
 
     ``` bash
     npm install -D @types/pg
@@ -112,11 +112,11 @@ the benefits of storing config in the environment [here](https://12factor.net/co
 5. Fill your .env file with the following content:
 
    ```bash
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USERNAME=example_user
-   DB_PASSWORD=example_password
-   DB_NAME=hatchify_app
+   PG_DB_HOST=localhost
+   PG_DB_PORT=5432
+   PG_DB_USERNAME=example_user
+   PG_DB_PASSWORD=example_password
+   PG_DB_NAME=hatchify_app
    ```
 
 6. Edit your Hatchify app's server (`backend/index.ts`) to use your newly created database:
@@ -138,11 +138,11 @@ the benefits of storing config in the environment [here](https://12factor.net/co
      prefix: "/api",
      database: {
        dialect: "postgres",               // 👀
-       host: process.env.DB_HOST,         // 👀
-       port: Number(process.env.DB_PORT), // 👀
-       username: process.env.DB_USERNAME, // 👀
-       password: process.env.DB_PASSWORD, // 👀
-       database: process.env.DB_NAME,     // 👀
+       host: process.env.PG_DB_HOST,         // 👀
+       port: Number(process.env.PG_DB_PORT), // 👀
+       username: process.env.PG_DB_USERNAME, // 👀
+       password: process.env.PG_DB_PASSWORD, // 👀
+       database: process.env.PG_DB_NAME,     // 👀
      },
    })
   
@@ -165,7 +165,7 @@ the benefits of storing config in the environment [here](https://12factor.net/co
 
 
 
-> **Note:** the new Postgres db we just created is empty, so you'll need to seed it just like we did in the [getting started guide](../../README.md#seeding-data)
+> **Note:** the new PostgreSQL db we just created is empty, so you'll need to seed it just like we did in the [getting started guide](../../README.md#seeding-data)
 
 #### The following options are allowed within the db options object:
 

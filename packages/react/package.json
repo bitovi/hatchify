@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react",
-  "version": "0.0.1-32",
+  "version": "0.0.1-39",
   "main": "./dist/react.js",
   "module": "./dist/react.mjs",
   "types": "./dist/react.d.ts",
@@ -24,10 +24,10 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/design-mui": "^0.0.1-26",
+    "@hatchifyjs/design-mui": "^0.0.1-32",
     "@hatchifyjs/hatchify-core": "^0.0.1-1",
-    "@hatchifyjs/react-ui": "^0.0.1-18",
-    "@hatchifyjs/rest-client-jsonapi": "^0.0.1-17"
+    "@hatchifyjs/react-ui": "^0.0.1-23",
+    "@hatchifyjs/rest-client-jsonapi": "^0.0.1-22"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

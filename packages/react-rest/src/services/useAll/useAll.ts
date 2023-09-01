@@ -64,6 +64,10 @@ export const useAll = (
     return subscribeToAll(schemaName, query, fetchAll)
   }, [schemaName, fetchAll])
 
-  const meta = getMeta(error, loading, false, requestMeta)
+  const meta = useMemo(
+    () => getMeta(error, loading, false, requestMeta),
+    [error, loading, requestMeta],
+  )
+
   return [data, meta]
 }

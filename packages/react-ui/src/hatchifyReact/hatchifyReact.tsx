@@ -36,7 +36,7 @@ type Components = {
   }
 }
 
-type HatchifyApp = {
+export type HatchifyApp = {
   components: Components
   model: ReactRest<SchemaRecord>
   state: {
@@ -46,7 +46,7 @@ type HatchifyApp = {
         onSelectedChange,
         fields,
         include,
-      }: {
+      }?: {
         defaultSelected?: HatchifyCollectionProps["defaultSelected"]
         onSelectedChange?: HatchifyCollectionProps["onSelectedChange"]
         fields?: Fields

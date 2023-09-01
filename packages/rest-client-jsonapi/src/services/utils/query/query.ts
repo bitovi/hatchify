@@ -102,10 +102,21 @@ export function filterToQueryParam(filter: Filters): string {
   const DATE_REGEX = new RegExp(
     /([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]))/i,
   )
+  const likeOperators = ["istarts", "iends", "icontains"]
 
   for (let i = 0; i < filter.length; i++) {
     const { operator, field, value } = filter[i]
-    if (operator === "empty" || operator === "nempty") {
+    if (likeOperators.includes(operator)) {
+      const wildcardOperator =
+        operator === "istarts"
+          ? `${value}%`
+          : operator === "iends"
+          ? `%${value}`
+          : `%${value}%`
+      q.push(
+        `filter[${field}][$ilike]=${encodeURIComponent(`${wildcardOperator}`)}`,
+      )
+    } else if (operator === "empty" || operator === "nempty") {
       q.push(
         `filter[${field}][${operator === "empty" ? "$eq" : "$ne"}]=${null}`,
       )

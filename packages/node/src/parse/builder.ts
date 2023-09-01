@@ -9,7 +9,9 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
-import { UnexpectedValueError } from "../error"
+import { HatchifyError, UnexpectedValueError } from "../error"
+import { codes, statusCodes } from "../error/constants"
+import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
 interface QueryStringParser<T> {
@@ -18,13 +20,38 @@ interface QueryStringParser<T> {
   orm: "sequelize"
 }
 
+function handleSqliteLike(querystring: string, dbType: string): string {
+  // if not postgres (sqlite)
+  // 1. throw error if like is used (temporary)
+  // 2. ilike needs to be changed to like before parsing query
+  // 3. TODO - HATCH-329 if query includes an array, it needs to be changed to an OR query
+  // (sqlite doesn't support Op.any like postgres)
+  if (dbType === "sqlite") {
+    if (querystring.includes("[$like]")) {
+      throw new HatchifyError({
+        code: codes.ERR_INVALID_PARAMETER,
+        title: "SQLITE does not support like",
+        status: statusCodes.UNPROCESSABLE_ENTITY,
+        detail: "SQLITE does not support like. Please use ilike",
+        parameter: querystring,
+      })
+    }
+
+    return querystring.replaceAll("[$ilike]", "[$like]")
+  }
+
+  return querystring
+}
+
 export function buildFindOptions(
+  hatchify: Hatchify,
   model: HatchifyModel,
   querystring: string,
   id?: Identifier,
 ): QueryStringParser<FindOptions> {
-  const ops: QueryStringParser<FindOptions> =
-    querystringParser.parse(querystring)
+  const ops: QueryStringParser<FindOptions> = querystringParser.parse(
+    handleSqliteLike(querystring, hatchify.orm.getDialect()),
+  )
 
   if (ops.errors.length) {
     throw ops.errors.map(

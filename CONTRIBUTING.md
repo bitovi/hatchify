@@ -110,7 +110,7 @@ Run `npm ci` within the cloned repository folder.
 
 ### 3. Prepare local databases to run tests
 
-#### 3.1. With SQLite
+#### 3.1. With SQLite (required)
 
 No further configuration is required to test Hatchify against a SQLite database. However, if your feature relies on column type constraints from the database, SQLite does not check these by default. Instead, use validations on your models' columns:
 
@@ -139,7 +139,87 @@ export const Todo = {
 
 A list of all validations that can be used in an attribute's type configuration can be found [here](https://sequelize.org/docs/v6/core-concepts/validations-and-constraints/).
 
-#### 3.2. With a database engine in a Docker container (recommended)
+#### 3.2 With Postgres (required)
+
+##### Install Postgres
+
+✏️ Perform the following steps to install Postgres:
+
+1. If you don't have Docker installed on your computer yet, download it from [Docker's official website](https://www.docker.com/products/docker-desktop/).
+
+   ```bash
+   docker pull postgres
+   ```
+
+2. To create and run Postgres database, run the following command:
+
+   ``` bash
+   docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
+   ```
+
+   This installs the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
+
+   - `POSTGRES_PASSWORD=example_password`
+   - `POSTGRES_USER=example_user`
+
+   This also runs Postgres on port 5432.
+
+To check that it worked, run the command:
+
+``` bash
+docker ps -a
+```
+
+You should see your container details, and the status should be "Up". You can stop your container with the command: `docker stop ${containerId}` and start it again with the command: `docker start ${containerId}`.
+
+
+##### Create a Database
+
+We need to create a `postgres` database inside postgres. We will
+use [DBeaver](https://dbeaver.io/download/), to create the database.
+
+✏️ Perform the following steps to create the `postgres` database:
+
+1. Download and run [DBeaver](https://dbeaver.io/download/).
+
+2. Configure a postgres connection. The following is what needs to be specified to connect to the Postgres in docker:
+
+  ![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
+
+  __Click__ the "Test Connection" button to test the connection. If successful, click __Finish__ and go onto the next step.
+
+  If the connection is not successful, make sure you aren't running a
+  conflicting Postgres instance (`lsof -i tcp:5432`).  
+
+  For more information on creating a connection, [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/) shows how to create a connection in DBeaver.
+
+3. Select "Create New Database" on the postgres connection's _Databases_ folder.
+
+   ![DBeaver_23_1_3](https://github.com/bitovi/hatchify/assets/78602/be362599-1378-4344-a1dc-b2cf3cb158fb)
+
+4. Enter `postgres` and click "OK".
+
+   ![image](https://github.com/bitovi/hatchify/assets/78602/f1c95ae6-a877-4284-ba40-046bd566fcaa)
+
+##### Create a .env file with your environment variables
+
+1. Run the following command in the root directory of your project to create a new .env file to store your credentials:
+
+   ``` bash
+   echo > .env
+   ```
+
+2. Fill your .env file with the following content:
+
+   ```bash
+   PG_DB_HOST=localhost
+   PG_DB_PORT=5432
+   PG_DB_USERNAME=example_user
+   PG_DB_PASSWORD=example_password
+   PG_DB_NAME=postgres
+   ```
+
+#### 3.3. With a database engine in a Docker container (recommended)
 
 If you have Docker installed, use any of the following commands to start fresh local databases of the dialect of your choice:
 

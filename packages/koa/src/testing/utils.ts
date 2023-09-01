@@ -10,9 +10,12 @@ import request from "supertest"
 import { Hatchify, errorHandlerMiddleware } from "../koa"
 
 type Method = "get" | "post" | "patch" | "delete"
+type dbDialect = "postgres" | "sqlite"
+export const dbDialects: dbDialect[] = ["postgres", "sqlite"]
 
 export async function startServerWith(
   models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
+  dialect: dbDialect = "sqlite",
 ): Promise<{
   fetch: (
     path: string,
@@ -27,15 +30,15 @@ export async function startServerWith(
   const app = new Koa()
   const hatchify = new Hatchify(models, {
     prefix: "/api",
-    ...(process.env.DB_CONFIG === "postgres"
+    ...(dialect === "postgres"
       ? {
           database: {
-            dialect: "postgres",
-            host: process.env.DB_HOST,
-            port: Number(process.env.DB_PORT),
-            username: process.env.DB_USERNAME,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
+            dialect,
+            host: process.env.PG_DB_HOST,
+            port: Number(process.env.PG_DB_PORT),
+            username: process.env.PG_DB_USERNAME,
+            password: process.env.PG_DB_PASSWORD,
+            database: process.env.PG_DB_NAME,
           },
         }
       : {}),
@@ -64,9 +67,17 @@ export async function startServerWith(
     return response
   }
 
+  async function teardown() {
+    if (dialect === "postgres") {
+      // drop all tables
+      await hatchify.orm.drop({})
+    }
+    return hatchify.orm.close()
+  }
+
   return {
     fetch,
-    teardown: async () => hatchify.orm.close(),
+    teardown,
     hatchify,
   }
 }
