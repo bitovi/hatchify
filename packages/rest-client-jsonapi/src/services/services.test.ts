@@ -72,6 +72,6 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     await hatchedReactRest.Article.deleteOne(id)
     await expect(() => hatchedReactRest.Article.findOne(id)).rejects.toThrow()
-    expect.assertions(3) // Useful for confirming that assertions were actually called against asynchronous functions
+    expect.assertions(4) // Useful for confirming that assertions were actually called against asynchronous functions
   })
 })
