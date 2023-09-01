@@ -215,7 +215,7 @@ export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
-    due_date: datetime(),
+    dueDate: datetime(),
     importance: integer(),
     complete: boolean({ default: false }),
   },
