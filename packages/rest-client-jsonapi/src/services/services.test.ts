@@ -30,9 +30,12 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     await hatchedKoa.createDatabase()
     app.listen(3001)
 
-    const jsonApi = jsonapi("http://localhost:3001/api", {
-      Article: { endpoint: `${testBackendEndpointConfig.schema}` },
-    })
+    const jsonApi = jsonapi(
+      `http://localhost:3001/${testBackendEndpointConfig.api}`,
+      {
+        Article: { endpoint: `${testBackendEndpointConfig.schema}` },
+      },
+    )
     const hatchedReactRest = hatchifyReactRest({ Article }, jsonApi)
 
     await hatchedReactRest.Article.createOne({
