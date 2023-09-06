@@ -111,9 +111,6 @@ export function getFinalize(
     // Throws  - If the data is bad ❓
     // Example : '2023-07-17T01:45:28.778Z' => new Date('2023-07-17T01:45:28.778Z')
     //         : throw "'4 $core' is not a valid date";
-    // todo: Roye is this incorrect? `ValueInRequest` can be `Date` object,
-    // this won't come in via json. this function fails on string, should
-    // it check if it's a valid iso8601 string first and then coerce?
     setORMPropertyValue: (jsonValue: ValueInRequest): Date | null => {
       return coerce(jsonValue, control)
     },
