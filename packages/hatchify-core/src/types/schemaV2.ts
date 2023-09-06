@@ -1,6 +1,6 @@
-export type UserValue = number | string | Date | object | null | undefined
-
 export type ValueInRequest = number | string | Date | object | null | undefined
+
+export type UserValue = ValueInRequest
 
 export type SerializedValue = number | string | object | null
 

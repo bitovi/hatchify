@@ -7,10 +7,11 @@ import type {
   PartialDatetimeControlType,
   PartialDatetimeORM,
 } from "./types"
-import { HatchifyCoerceError, UserValue } from "../../types"
+import { HatchifyCoerceError } from "../../types"
 import type {
   FinalAttribute,
   PartialAttribute,
+  UserValue,
   ValueInRequest,
 } from "../../types"
 
