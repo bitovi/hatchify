@@ -4,8 +4,6 @@ import {
   deleteOne,
   findAll,
   findOne,
-  subscribeToAll,
-  subscribeToOne,
   transformSchema,
   updateOne,
 } from "@hatchifyjs/rest-client"
@@ -18,7 +16,6 @@ import type {
   QueryList,
   QueryOne,
   Record,
-  Unsubscribe,
   UpdateData,
   RequestMetaData,
 } from "@hatchifyjs/rest-client"
@@ -51,15 +48,6 @@ export type ReactRest<Schema extends SchemaRecord> = {
       Meta,
       Record | undefined | null,
     ]
-    // subscribes
-    subscribeToAll: (
-      query: QueryList | undefined,
-      callback: (data: Record[]) => void,
-    ) => Unsubscribe
-    subscribeToOne: (
-      id: string,
-      callback: (data: Record) => void,
-    ) => Unsubscribe
   }
 }
 
@@ -103,11 +91,6 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
         useAll(dataSource, newSchemas, schema.name, query ?? {}),
       useOne: (query) => useOne(dataSource, newSchemas, schema.name, query),
       useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schema.name),
-      // subscribes
-      subscribeToAll: (query, callback) =>
-        subscribeToAll(schema.name, query, callback),
-      subscribeToOne: (id, callback) =>
-        subscribeToOne(schema.name, id, callback),
     }
 
     return acc
