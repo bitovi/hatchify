@@ -1,4 +1,4 @@
-import { belongsTo } from "./belongsTo"
+import { belongsTo } from "."
 
 describe("belongsTo", () => {
   it("belongsTo()", () => {
