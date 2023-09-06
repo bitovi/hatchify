@@ -2,6 +2,8 @@ export type UserValue = number | string | Date | object | null | undefined
 
 export type ValueInRequest = number | string | Date | object | null | undefined
 
+export type SerializedValue = number | string | object | null
+
 export * from "../assembler/types"
 
 export class HatchifyCoerceError extends Error {
@@ -71,9 +73,11 @@ export interface FinalAttribute<
   setClientPropertyValue?: (userValue: UserValue) => PrimitiveType | null
   serializeClientPropertyValue?: (
     value: PrimitiveType | null,
-  ) => PrimitiveType | null
+  ) => SerializedValue
   setClientQueryFilterValue?: (queryValue: UserValue) => PrimitiveType | null
-  serializeClientQueryFilterValue?: (value: PrimitiveType | null) => string
+  serializeClientQueryFilterValue?: (
+    value: PrimitiveType | null,
+  ) => SerializedValue
   setClientPropertyValueFromResponse?: (
     jsonValue: ValueInRequest,
   ) => PrimitiveType | null
