@@ -3,3 +3,5 @@
 export * from "./src/types"
 export { assembler } from "./src/assembler"
 export * from "./src/dataTypes"
+export * from "./src/relationships"
+export * from "./src/util/singularize"

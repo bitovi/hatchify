@@ -18,6 +18,10 @@ import type {
   PartialStringControlType,
   PartialStringORM,
 } from "../dataTypes/string"
+import type {
+  FinalRelationship,
+  PartialRelationship,
+} from "../relationships/types"
 import type { FinalAttribute, PartialAttribute } from "../types"
 
 export type PartialAttributeRecord = Record<
@@ -59,7 +63,31 @@ export interface PartialSchema<
     FinalNumberORM
   >
   attributes: TAttributes
+  relationships?: Record<string, PartialRelationship>
 }
+
+export type FinalAttributeRecord = Record<
+  string,
+  | FinalAttribute<
+      PartialNumberORM,
+      PartialNumberControlType,
+      number,
+      FinalNumberORM
+    >
+  | FinalAttribute<
+      PartialStringORM,
+      PartialStringControlType,
+      string,
+      FinalStringORM
+    >
+  | FinalAttribute<
+      PartialDatetimeORM,
+      PartialDatetimeControlType,
+      Date,
+      FinalDatetimeORM
+    >
+  | FinalAttribute<PartialEnumORM, PartialEnumControlType, string, FinalEnumORM>
+>
 
 export interface FinalSchema {
   name: string
@@ -69,33 +97,12 @@ export interface FinalSchema {
     number,
     FinalNumberORM
   >
-  attributes: {
-    [attributeName: string]:
-      | FinalAttribute<
-          PartialNumberORM,
-          PartialNumberControlType,
-          number,
-          FinalNumberORM
-        >
-      | FinalAttribute<
-          PartialStringORM,
-          PartialStringControlType,
-          string,
-          FinalStringORM
-        >
-      | FinalAttribute<
-          PartialDatetimeORM,
-          PartialDatetimeControlType,
-          Date,
-          FinalDatetimeORM
-        >
-      | FinalAttribute<
-          PartialEnumORM,
-          PartialEnumControlType,
-          string,
-          FinalEnumORM
-        >
-  }
+  attributes: FinalAttributeRecord
+  relationships?: Record<string, FinalRelationship>
+}
+
+export interface SemiFinalSchema extends Omit<FinalSchema, "relationships"> {
+  relationships?: Record<string, PartialRelationship | FinalRelationship>
 }
 
 export type PartialSchemaWithPrimaryAttribute = Omit<

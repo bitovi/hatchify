@@ -1,8 +1,11 @@
-import type { FinalSchema, PartialSchemaWithPrimaryAttribute } from "./types"
+import type {
+  PartialSchemaWithPrimaryAttribute,
+  SemiFinalSchema,
+} from "./types"
 
 export function finalizeSchema(
   schema: PartialSchemaWithPrimaryAttribute,
-): FinalSchema {
+): SemiFinalSchema {
   return {
     ...schema,
     id: schema.id.finalize(),

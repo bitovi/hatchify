@@ -173,7 +173,16 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
         modelAssociation = associations[relationshipName]
       }
 
-      if (modelAssociation) {
+      if (!modelAssociation) {
+        relationshipErrors.push(
+          new RelationshipPathError({
+            detail: `Payload must include an identifiable relationship path (${Object.keys(
+              hatchify.associationsLookup,
+            ).join(", ")}).`,
+            pointer: `/data/relationships/${relationshipName}`,
+          }),
+        )
+      } else {
         const modelName = modelAssociation.model
         const expectObject =
           model.hasOne?.some(({ target }) => target === modelName) ||
@@ -199,13 +208,6 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
             }),
           )
         }
-      } else {
-        relationshipErrors.push(
-          new RelationshipPathError({
-            detail: "Payload must include an identifiable relationship path.",
-            pointer: `/data/relationships/${relationshipName}`,
-          }),
-        )
       }
 
       return [...acc, ...relationshipErrors]
