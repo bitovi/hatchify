@@ -1,8 +1,7 @@
 import type { HatchifyModel } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 
-import { startServerWith } from "./testing/utils"
-import { dbDialects } from "./testing/utils"
+import { dbDialects, startServerWith } from "./testing/utils"
 
 const userData = [
   {
