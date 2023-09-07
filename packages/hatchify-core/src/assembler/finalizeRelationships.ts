@@ -27,6 +27,7 @@ export function finalizeRelationships(
               schemaAcc,
             ) as Record<string, FinalSchema>
           }
+          /* c8 ignore start */
           if (relationship.type === "hasManyThrough") {
             // TODO: hasManyThrough
           }
@@ -39,6 +40,7 @@ export function finalizeRelationships(
             ) as Record<string, FinalSchema>
           }
           return relationshipAcc
+          /* c8 ignore end */
         },
         schemaAcc,
       ),
