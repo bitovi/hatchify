@@ -1,6 +1,8 @@
 import {
+  belongsTo,
   datetime,
   enumerate,
+  hasMany,
   integer,
   string,
   text,
@@ -12,6 +14,14 @@ import { dbDialects, startServerWith } from "./testing/utils"
 describe.each(dbDialects)("Operators", (dialect) => {
   describe(`${dialect} - schema`, () => {
     describe(`${dialect} - v1`, () => {
+      const Todo: HatchifyModel = {
+        name: "Todo",
+        attributes: {
+          name: "STRING",
+        },
+        belongsTo: [{ target: "User", options: { as: "user" } }],
+      }
+
       const User: HatchifyModel = {
         name: "User",
         attributes: {
@@ -28,20 +38,36 @@ describe.each(dbDialects)("Operators", (dialect) => {
             values: ["active", "inactive"],
           },
         },
+        hasMany: [{ target: "Todo", options: { as: "todos" } }],
       }
 
       let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
       let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
       let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+      let todoId: number
 
       beforeAll(async () => {
         ;({ fetch, hatchify, teardown } = await startServerWith(
-          [User],
+          [Todo, User],
           dialect,
         ))
+        ;({
+          body: {
+            data: { id: todoId },
+          },
+        } = await fetch("/api/todos", {
+          method: "post",
+          body: {
+            data: { type: "Todo", attributes: { name: "Test", userId: null } },
+          },
+        }))
       })
 
       afterAll(async () => {
+        await fetch(`/api/todos/${todoId}`, {
+          method: "delete",
+        })
+
         await teardown()
       })
 
@@ -136,11 +162,9 @@ describe.each(dbDialects)("Operators", (dialect) => {
         let postUser2: any
 
         beforeAll(async () => {
-          ;[
-            { status: postStatus1, body: postUser1 },
-            { status: postStatus2, body: postUser2 },
-          ] = await Promise.all([
-            fetch("/api/users", {
+          ;({ status: postStatus1, body: postUser1 } = await fetch(
+            "/api/users",
+            {
               method: "post",
               body: {
                 data: {
@@ -153,10 +177,23 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     bio: "bla bla",
                     status: "active",
                   },
+                  relationships: {
+                    todos: {
+                      data: [
+                        {
+                          type: "Todo",
+                          id: todoId.toString(),
+                        },
+                      ],
+                    },
+                  },
                 },
               },
-            }),
-            fetch("/api/users", {
+            },
+          ))
+          ;({ status: postStatus2, body: postUser2 } = await fetch(
+            "/api/users",
+            {
               method: "post",
               body: {
                 data: {
@@ -171,8 +208,8 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   },
                 },
               },
-            }),
-          ])
+            },
+          ))
         })
 
         afterAll(async () => {
@@ -531,10 +568,69 @@ describe.each(dbDialects)("Operators", (dialect) => {
             },
           })
         })
+
+        it("supports include", async () => {
+          const { status: getStatus, body: getUsers } = await fetch(
+            "/api/users?include=todos",
+          )
+
+          expect(getStatus).toBe(200)
+          expect(getUsers).toEqual({
+            jsonapi: { version: "1.0" },
+            data: [
+              {
+                type: "User",
+                id: "1",
+                attributes: {
+                  name: "John Doe",
+                  age: 21,
+                  yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
+                  status: "active",
+                },
+                relationships: { todos: { data: [{ type: "Todo", id: "1" }] } },
+              },
+              {
+                type: "User",
+                id: "2",
+                attributes: {
+                  name: "Jane Doe",
+                  age: 22,
+                  yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
+                  status: "active",
+                },
+                relationships: { todos: { data: [] } },
+              },
+            ],
+            included: [
+              {
+                type: "Todo",
+                id: "1",
+                attributes: {
+                  name: "Test",
+                },
+              },
+            ],
+            meta: { unpaginatedCount: 2 },
+          })
+        })
       })
     })
 
     describe(`${dialect} - v2`, () => {
+      const Todo: PartialSchema = {
+        name: "Todo",
+        attributes: {
+          name: string(),
+        },
+        relationships: {
+          user: belongsTo(),
+        },
+      }
+
       const User: PartialSchema = {
         name: "User",
         attributes: {
@@ -545,20 +641,38 @@ describe.each(dbDialects)("Operators", (dialect) => {
           bio: text(),
           status: enumerate({ values: ["active", "inactive"] }),
         },
+        relationships: {
+          todos: hasMany(),
+        },
       }
 
       let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
       let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
       let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+      let todoId: number
 
       beforeAll(async () => {
         ;({ fetch, hatchify, teardown } = await startServerWith(
-          { User },
+          { Todo, User },
           dialect,
         ))
+        ;({
+          body: {
+            data: { id: todoId },
+          },
+        } = await fetch("/api/todos", {
+          method: "post",
+          body: {
+            data: { type: "Todo", attributes: { name: "Test", userId: null } },
+          },
+        }))
       })
 
       afterAll(async () => {
+        await fetch(`/api/todos/${todoId}`, {
+          method: "delete",
+        })
+
         await teardown()
       })
 
@@ -652,11 +766,9 @@ describe.each(dbDialects)("Operators", (dialect) => {
         let postUser2: any
 
         beforeAll(async () => {
-          ;[
-            { status: postStatus1, body: postUser1 },
-            { status: postStatus2, body: postUser2 },
-          ] = await Promise.all([
-            fetch("/api/users", {
+          ;({ status: postStatus1, body: postUser1 } = await fetch(
+            "/api/users",
+            {
               method: "post",
               body: {
                 data: {
@@ -669,10 +781,23 @@ describe.each(dbDialects)("Operators", (dialect) => {
                     bio: "bla bla",
                     status: "active",
                   },
+                  relationships: {
+                    todos: {
+                      data: [
+                        {
+                          type: "Todo",
+                          id: todoId.toString(),
+                        },
+                      ],
+                    },
+                  },
                 },
               },
-            }),
-            fetch("/api/users", {
+            },
+          ))
+          ;({ status: postStatus2, body: postUser2 } = await fetch(
+            "/api/users",
+            {
               method: "post",
               body: {
                 data: {
@@ -687,8 +812,8 @@ describe.each(dbDialects)("Operators", (dialect) => {
                   },
                 },
               },
-            }),
-          ])
+            },
+          ))
         })
 
         afterAll(async () => {
@@ -992,6 +1117,56 @@ describe.each(dbDialects)("Operators", (dialect) => {
             meta: {
               unpaginatedCount: 2,
             },
+          })
+        })
+
+        it("supports include", async () => {
+          const { status: getStatus, body: getUsers } = await fetch(
+            "/api/users?include=todos",
+          )
+
+          expect(getStatus).toBe(200)
+          expect(getUsers).toEqual({
+            jsonapi: { version: "1.0" },
+            data: [
+              {
+                type: "User",
+                id: "1",
+                attributes: {
+                  name: "John Doe",
+                  age: 21,
+                  yearsWorked: 1,
+                  hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
+                  status: "active",
+                },
+                relationships: { todos: { data: [{ type: "Todo", id: "1" }] } },
+              },
+              {
+                type: "User",
+                id: "2",
+                attributes: {
+                  name: "Jane Doe",
+                  age: 22,
+                  yearsWorked: 3,
+                  hireDate: "2023-01-01T00:00:00.000Z",
+                  bio: "bla bla",
+                  status: "active",
+                },
+                relationships: { todos: { data: [] } },
+              },
+            ],
+            included: [
+              {
+                type: "Todo",
+                id: "1",
+                attributes: {
+                  name: "Test",
+                  userId: 1,
+                },
+              },
+            ],
+            meta: { unpaginatedCount: 2 },
           })
         })
       })
