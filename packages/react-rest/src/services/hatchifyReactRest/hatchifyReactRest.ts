@@ -1,4 +1,3 @@
-// import { assembler, string, integer } from "@hatchifyjs/hatchify-core"
 import { assembler, string, integer, datetime } from "@hatchifyjs/hatchify-core"
 import {
   GetSchemaFromName,
@@ -131,6 +130,7 @@ async function test() {
   a[0].age
   a[0].importance
   a[0].adsfaasdfaskldhfk
+  a[0].created
   b[0].id
   b[0].age
   b[0].importance
