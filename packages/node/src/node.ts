@@ -116,21 +116,18 @@ export class Hatchify {
 
     this._pluralToSingularModelNames = Object.entries(
       this._sequelizeModels,
-    ).reduce(
-      (acc, [singular, value]) => {
-        if (definedPlurals.has(singular)) {
-          return {
-            ...acc,
-            [definedPlurals.get(singular).toLowerCase()]: singular,
-          }
-        }
+    ).reduce((acc, [singular, value]) => {
+      if (definedPlurals.has(singular)) {
         return {
           ...acc,
-          [pluralize(singular.toLowerCase())]: singular,
+          [definedPlurals.get(singular).toLowerCase()]: singular,
         }
-      },
-      {},
-    )
+      }
+      return {
+        ...acc,
+        [pluralize(singular.toLowerCase())]: singular,
+      }
+    }, {})
 
     // Store the route prefix if the user set one
     this._prefix = options.prefix ?? ""
