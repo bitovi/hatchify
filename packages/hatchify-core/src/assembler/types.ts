@@ -18,7 +18,7 @@ import type {
   PartialStringControlType,
   PartialStringORM,
 } from "../dataTypes/string"
-import {
+import type {
   FinalTextORM,
   PartialTextControlType,
   PartialTextORM,
