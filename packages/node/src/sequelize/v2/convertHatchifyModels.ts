@@ -43,6 +43,6 @@ export function convertHatchifyModels(
     associationsLookup: {},
     models: sequelize.models as SequelizeModelsCollection,
     virtuals: {},
-    plurals: definedPlurals(hatchifyModels)
+    plurals: definedPlurals(hatchifyModels),
   }
 }

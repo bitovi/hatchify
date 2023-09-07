@@ -117,10 +117,10 @@ export class Hatchify {
     this._pluralToSingularModelNames = Object.entries(
       this._sequelizeModels,
     ).reduce((acc, [singular, value]) => {
-      if (definedPlurals.has(singular)) {
+      if (definedPlurals[singular]) {
         return {
           ...acc,
-          [definedPlurals.get(singular).toLowerCase()]: singular,
+          [definedPlurals[singular].toLowerCase()]: singular,
         }
       }
       return {
