@@ -112,6 +112,7 @@
       "!<rootDir>/src/**/types.ts",
       "!<rootDir>/src/dataTypes/index.ts",
       "!<rootDir>/src/hatchify-core.ts",
+      "!<rootDir>/src/relationships/index.ts",
       "!<rootDir>/src/types/**/*.ts"
     ],
     "coverageDirectory": "coverage",

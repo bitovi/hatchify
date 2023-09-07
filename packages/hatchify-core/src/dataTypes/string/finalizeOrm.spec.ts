@@ -5,7 +5,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [],
           allowNull: undefined,
         },
@@ -14,7 +14,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [],
           allowNull: null as unknown as boolean,
         },
@@ -23,7 +23,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [],
           allowNull: true,
         },
@@ -32,7 +32,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [],
           allowNull: false,
         },
@@ -44,7 +44,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [],
           primaryKey: undefined,
         },
@@ -53,7 +53,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [],
           primaryKey: null as unknown as boolean,
         },
@@ -62,7 +62,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [],
           primaryKey: true,
         },
@@ -71,7 +71,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [],
           primaryKey: false,
         },
@@ -83,7 +83,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [],
         },
       }).sequelize.typeArgs,
@@ -91,7 +91,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [0],
         },
       }).sequelize.typeArgs,
@@ -99,7 +99,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [25],
         },
       }).sequelize.typeArgs,
@@ -107,7 +107,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [255],
         },
       }).sequelize.typeArgs,
@@ -115,7 +115,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "String",
+          type: "STRING",
           typeArgs: [1000],
         },
       }).sequelize.typeArgs,

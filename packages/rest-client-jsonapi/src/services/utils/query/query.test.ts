@@ -5,6 +5,7 @@ import {
   filterToQueryParam,
   getQueryParams,
   includeToQueryParam,
+  isFields,
   pageToQueryParam,
   sortToQueryParam,
 } from "./query"
@@ -389,6 +390,20 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       )
 
       expect(pageToQueryParam(3)).toEqual("page[number]=3")
+    })
+  })
+
+  describe("isFields", () => {
+    it("works", () => {
+      expect(isFields(null)).toEqual(false)
+      expect(isFields(undefined)).toEqual(false)
+      expect(isFields("title")).toEqual(false)
+      expect(isFields(["title", "body"])).toEqual(false)
+      expect(isFields({})).toEqual(true)
+      expect(isFields({ Book: ["title", "body"] })).toEqual(true)
+      expect(
+        isFields({ Book: ["title", "body"], Person: ["name", "email"] }),
+      ).toEqual(true)
     })
   })
 })

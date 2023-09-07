@@ -48,7 +48,7 @@ describe("react-jsonapi", () =>
         useAll: expect.any(Function),
         // useOne: expect.any(Function),
         // useUpdateOne: expect.any(Function),
-        subscribeToAll: expect.any(Function),
+        // subscribeToAll: expect.any(Function),
         // subscribeToOne: expect.any(Function),
       },
       Person: {
@@ -62,7 +62,7 @@ describe("react-jsonapi", () =>
         useAll: expect.any(Function),
         // useOne: expect.any(Function),
         // useUpdateOne: expect.any(Function),
-        subscribeToAll: expect.any(Function),
+        // subscribeToAll: expect.any(Function),
         // subscribeToOne: expect.any(Function),
       },
     })

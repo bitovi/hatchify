@@ -195,6 +195,12 @@ export function getQueryParams(
   }
 
   if (fields) {
+    if (!isFields(fields)) {
+      throw new Error(
+        "fields must be an object of `{ [schemaName]: string[] }`",
+      )
+    }
+
     const fieldsParam = fieldsToQueryParam(
       schemaMap,
       allSchemas,
@@ -229,3 +235,6 @@ export function getQueryParams(
 
   return params.length ? `?${params.join("&")}` : ""
 }
+
+export const isFields = (query: unknown): query is Fields =>
+  typeof query === "object" && query !== null && !Array.isArray(query)

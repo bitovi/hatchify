@@ -1,4 +1,4 @@
-import { assembler } from "@hatchifyjs/hatchify-core"
+import { assembler, singularize } from "@hatchifyjs/hatchify-core"
 import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 import type { ICreateHatchifyModel } from "@hatchifyjs/sequelize-create-with-associations"
 import type JSONAPISerializer from "json-api-serializer"
@@ -28,6 +28,63 @@ export function convertHatchifyModels(
         }),
         {},
       ),
+      ...Object.entries(schema.relationships ?? {}).reduce(
+        (acc, [as, relationship]) => {
+          if (relationship.type === "belongsTo") {
+            return {
+              ...acc,
+              belongsTo: [
+                ...acc.belongsTo,
+                {
+                  target: relationship.targetSchema,
+                  options: { as },
+                },
+              ],
+            }
+          }
+          if (relationship.type === "hasOne") {
+            return {
+              ...acc,
+              hasOne: [
+                ...acc.hasOne,
+                {
+                  target: relationship.targetSchema,
+                  options: { as },
+                },
+              ],
+            }
+          }
+          if (relationship.type === "hasMany") {
+            return {
+              ...acc,
+              hasMany: [
+                ...acc.hasMany,
+                {
+                  target: relationship.targetSchema,
+                  options: { as },
+                },
+              ],
+            }
+          }
+          if (relationship.type === "hasManyThrough") {
+            return {
+              ...acc,
+              belongsToMany: [
+                ...acc.belongsToMany,
+                {
+                  target: relationship.targetSchema,
+                  options: {
+                    as,
+                    through: relationship.through,
+                  },
+                },
+              ],
+            }
+          }
+          return acc
+        },
+        { belongsTo: [], hasMany: [], hasOne: [], belongsToMany: [] },
+      ),
     }
 
     sequelize.models[schema.name][HatchifySymbolModel] = model
@@ -36,10 +93,31 @@ export function convertHatchifyModels(
   })
 
   // Create the serializer schema for the model
-  hatchifyModels.forEach((model) => registerSchema(serializer, model, {}, "id"))
+  const associationsLookup = hatchifyModels.reduce((modelAcc, model) => {
+    const associations = Object.entries(
+      finalSchemas[model.name].relationships ?? {},
+    ).reduce((relationshipAcc, [relationshipName, { type, targetSchema }]) => {
+      sequelize.models[model.name][type](sequelize.models[targetSchema], {
+        as: relationshipName,
+      })
+
+      return {
+        ...relationshipAcc,
+        [relationshipName]: {
+          type,
+          model: targetSchema,
+          key: `${singularize(relationshipName)}_id`,
+        },
+      }
+    }, {})
+
+    registerSchema(serializer, model, associations, "id")
+
+    return { ...modelAcc, [model.name]: associations }
+  }, {})
 
   return {
-    associationsLookup: {},
+    associationsLookup,
     models: sequelize.models as SequelizeModelsCollection,
     virtuals: {},
   }

@@ -1,21 +1,21 @@
+import { getFinalize } from "./getFinalize"
 import { getPartialControl } from "./getPartialControl"
 import { getPartialOrm } from "./getPartialOrm"
-import type { PartialAttribute } from "../../types"
-import { getFinalize } from "../string"
 import type {
-  FinalStringORM,
-  PartialStringControlType,
-  PartialStringORM,
-  PartialStringProps,
-} from "../string"
+  FinalTextORM,
+  PartialTextControlType,
+  PartialTextORM,
+  PartialTextProps,
+} from "./types"
+import type { PartialAttribute } from "../../types"
 
 export function text(
-  props?: PartialStringProps,
+  props?: PartialTextProps,
 ): PartialAttribute<
-  PartialStringORM,
-  PartialStringControlType,
+  PartialTextORM,
+  PartialTextControlType,
   string,
-  FinalStringORM
+  FinalTextORM
 > {
   return {
     name: `text(${props ? JSON.stringify(props) : ""})`,
