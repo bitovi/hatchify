@@ -9,7 +9,7 @@ node_modules
 /packages/*/coverage
 
 # misc
-.vscode
+.vscode/settings.json
 .DS_Store
 Thumbs.db
 *.tsbuildinfo
