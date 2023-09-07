@@ -3,7 +3,7 @@ import hatchifyReactRest from "@hatchifyjs/react-rest"
 import createJsonapiClient from "@hatchifyjs/rest-client-jsonapi"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
-import WithoutHooks from "./WithoutHooks"
+// import WithoutHooks from "./WithoutHooks"
 
 export const hatchedReactRest = hatchifyReactRest(
   { Todo, User },
@@ -21,8 +21,8 @@ const App: React.FC = () => {
       <Users />
       <hr />
       <hr />
-      <h1>Without Hooks</h1>
-      <WithoutHooks />
+      {/* <h1>Without Hooks</h1>
+      <WithoutHooks /> */}
     </div>
   )
 }

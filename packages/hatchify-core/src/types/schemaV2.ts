@@ -3,6 +3,7 @@ export type UserValue = number | string | Date | object | null | undefined
 export type ValueInRequest = number | string | Date | object | null | undefined
 
 export * from "../assembler/types"
+export * from "../relationships/types"
 
 export class HatchifyCoerceError extends Error {
   constructor(message: string) {
@@ -10,7 +11,7 @@ export class HatchifyCoerceError extends Error {
   }
 }
 
-export class HatchifyInvalidInputError extends Error {
+export class HatchifyInvalidSchemaError extends Error {
   constructor(message: string) {
     super(message)
   }

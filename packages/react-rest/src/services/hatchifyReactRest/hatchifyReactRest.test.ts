@@ -44,8 +44,6 @@ describe("react-rest/services/hatchifyReactRest", () => {
         useAll: expect.any(Function),
         useOne: expect.any(Function),
         useUpdateOne: expect.any(Function),
-        subscribeToAll: expect.any(Function),
-        subscribeToOne: expect.any(Function),
       },
       Person: {
         createOne: expect.any(Function),
@@ -58,8 +56,6 @@ describe("react-rest/services/hatchifyReactRest", () => {
         useAll: expect.any(Function),
         useOne: expect.any(Function),
         useUpdateOne: expect.any(Function),
-        subscribeToAll: expect.any(Function),
-        subscribeToOne: expect.any(Function),
       },
     })
   })
@@ -102,8 +98,6 @@ describe("react-rest/services/hatchifyReactRest", () => {
         useAll: expect.any(Function),
         useOne: expect.any(Function),
         useUpdateOne: expect.any(Function),
-        subscribeToAll: expect.any(Function),
-        subscribeToOne: expect.any(Function),
       },
       Person: {
         createOne: expect.any(Function),
@@ -116,8 +110,6 @@ describe("react-rest/services/hatchifyReactRest", () => {
         useAll: expect.any(Function),
         useOne: expect.any(Function),
         useUpdateOne: expect.any(Function),
-        subscribeToAll: expect.any(Function),
-        subscribeToOne: expect.any(Function),
       },
     })
   })

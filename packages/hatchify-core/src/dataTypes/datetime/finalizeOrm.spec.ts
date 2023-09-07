@@ -5,7 +5,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Datetime",
+          type: "DATE",
           typeArgs: [],
           allowNull: undefined,
         },
@@ -14,7 +14,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Datetime",
+          type: "DATE",
           typeArgs: [],
           allowNull: null as unknown as boolean,
         },
@@ -23,7 +23,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Datetime",
+          type: "DATE",
           typeArgs: [],
           allowNull: true,
         },
@@ -32,7 +32,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Datetime",
+          type: "DATE",
           typeArgs: [],
           allowNull: false,
         },
@@ -44,7 +44,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Datetime",
+          type: "DATE",
           typeArgs: [],
           primaryKey: undefined,
         },
@@ -53,7 +53,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Datetime",
+          type: "DATE",
           typeArgs: [],
           primaryKey: null as unknown as boolean,
         },
@@ -62,7 +62,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Datetime",
+          type: "DATE",
           typeArgs: [],
           primaryKey: true,
         },
@@ -71,7 +71,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Datetime",
+          type: "DATE",
           typeArgs: [],
           primaryKey: false,
         },

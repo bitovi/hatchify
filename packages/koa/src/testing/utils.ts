@@ -5,17 +5,18 @@ import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 import { Deserializer } from "jsonapi-serializer"
 import Koa from "koa"
+import type { Dialect } from "sequelize"
 import request from "supertest"
 
 import { Hatchify, errorHandlerMiddleware } from "../koa"
 
 type Method = "get" | "post" | "patch" | "delete"
-type dbDialect = "postgres" | "sqlite"
-export const dbDialects: dbDialect[] = ["postgres", "sqlite"]
+
+export const dbDialects: Dialect[] = ["postgres", "sqlite"]
 
 export async function startServerWith(
   models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
-  dialect: dbDialect = "sqlite",
+  dialect: Dialect = "sqlite",
 ): Promise<{
   fetch: (
     path: string,
@@ -30,18 +31,21 @@ export async function startServerWith(
   const app = new Koa()
   const hatchify = new Hatchify(models, {
     prefix: "/api",
-    ...(dialect === "postgres"
-      ? {
-          database: {
-            dialect,
+    database: {
+      dialect,
+      logging: false,
+      ...(dialect === "postgres"
+        ? {
             host: process.env.PG_DB_HOST,
             port: Number(process.env.PG_DB_PORT),
             username: process.env.PG_DB_USERNAME,
             password: process.env.PG_DB_PASSWORD,
             database: process.env.PG_DB_NAME,
-          },
-        }
-      : {}),
+          }
+        : {
+            storage: ":memory:",
+          }),
+    },
   })
   app.use(errorHandlerMiddleware)
   app.use(hatchify.middleware.allModels.all)
