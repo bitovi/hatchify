@@ -8,6 +8,7 @@ import { toSequelize } from "./toSequelize"
 import { registerSchema } from "../../serialize"
 import { HatchifySymbolModel } from "../../types"
 import type { HatchifyModel, SequelizeModelsCollection } from "../../types"
+import { definedPlurals } from "../definedPlurals"
 
 export function convertHatchifyModels(
   sequelize: Sequelize,
@@ -120,5 +121,6 @@ export function convertHatchifyModels(
     associationsLookup,
     models: sequelize.models as SequelizeModelsCollection,
     virtuals: {},
+    plurals: definedPlurals(hatchifyModels),
   }
 }
