@@ -19,6 +19,11 @@ import type {
   PartialStringORM,
 } from "../dataTypes/string"
 import type {
+  FinalTextORM,
+  PartialTextControlType,
+  PartialTextORM,
+} from "../dataTypes/text/types"
+import type {
   FinalRelationship,
   PartialRelationship,
 } from "../relationships/types"
@@ -49,6 +54,12 @@ export type PartialAttributeRecord = Record<
       PartialEnumControlType,
       string,
       FinalEnumORM
+    >
+  | PartialAttribute<
+      PartialTextORM,
+      PartialTextControlType,
+      string,
+      FinalTextORM
     >
 >
 

@@ -29,7 +29,7 @@ export function toSequelize(
             ...acc,
             [attributeName]: {
               ...omit(sequelize, ["type", "typeArgs"]),
-              type: DataTypes[sequelize.type](...sequelize.typeArgs),
+              type: DataTypes[sequelize.type](...(sequelize.typeArgs ?? [])),
               validate: {
                 setORMPropertyValue,
               },
