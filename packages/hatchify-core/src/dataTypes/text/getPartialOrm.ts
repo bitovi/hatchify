@@ -1,15 +1,11 @@
-import type { PartialTextProps } from "./types"
-import type { PartialStringORM } from "../string"
-import { getPartialOrm as getStringPartialOrm } from "../string"
+import type { PartialTextORM, PartialTextProps } from "./types"
 
-export function getPartialOrm(props?: PartialTextProps): PartialStringORM {
-  const stringOrm = getStringPartialOrm({ ...props, min: 0, max: Infinity })
-
+export function getPartialOrm(props?: PartialTextProps): PartialTextORM {
   return {
-    ...stringOrm,
     sequelize: {
-      ...stringOrm.sequelize,
       type: "TEXT",
+      allowNull: props?.required == null ? props?.required : !props.required,
+      primaryKey: props?.primary,
     },
   }
 }

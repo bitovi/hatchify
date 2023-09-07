@@ -1,0 +1,11 @@
+import type { FinalTextORM, PartialTextORM } from "./types"
+
+export function finalizeOrm({ sequelize }: PartialTextORM): FinalTextORM {
+  return {
+    sequelize: {
+      ...sequelize,
+      allowNull: sequelize.allowNull !== false && !sequelize.primaryKey,
+      primaryKey: !!sequelize.primaryKey,
+    },
+  }
+}

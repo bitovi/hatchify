@@ -5,8 +5,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "DECIMAL",
-          typeArgs: [],
+          type: "TEXT",
           allowNull: undefined,
         },
       }).sequelize.allowNull,
@@ -14,8 +13,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "DECIMAL",
-          typeArgs: [],
+          type: "TEXT",
           allowNull: null as unknown as boolean,
         },
       }).sequelize.allowNull,
@@ -23,8 +21,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "DECIMAL",
-          typeArgs: [],
+          type: "TEXT",
           allowNull: true,
         },
       }).sequelize.allowNull,
@@ -32,8 +29,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "DECIMAL",
-          typeArgs: [],
+          type: "TEXT",
           allowNull: false,
         },
       }).sequelize.allowNull,
@@ -44,8 +40,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "DECIMAL",
-          typeArgs: [],
+          type: "TEXT",
           primaryKey: undefined,
         },
       }).sequelize.primaryKey,
@@ -53,8 +48,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "DECIMAL",
-          typeArgs: [],
+          type: "TEXT",
           primaryKey: null as unknown as boolean,
         },
       }).sequelize.primaryKey,
@@ -62,8 +56,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "DECIMAL",
-          typeArgs: [],
+          type: "TEXT",
           primaryKey: true,
         },
       }).sequelize.primaryKey,
@@ -71,8 +64,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "DECIMAL",
-          typeArgs: [],
+          type: "TEXT",
           primaryKey: false,
         },
       }).sequelize.primaryKey,

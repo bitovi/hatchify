@@ -12,7 +12,6 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [],
             allowNull: undefined,
             primaryKey: undefined,
           },
@@ -61,7 +60,6 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [255],
             allowNull: true,
             primaryKey: false,
           },
@@ -89,7 +87,6 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [],
             allowNull: false,
             primaryKey: undefined,
           },
@@ -146,7 +143,6 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [255],
             allowNull: false,
             primaryKey: false,
           },
@@ -174,7 +170,6 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [],
             allowNull: undefined,
             primaryKey: true,
           },
@@ -233,7 +228,6 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [255],
             allowNull: false,
             primaryKey: true,
           },
