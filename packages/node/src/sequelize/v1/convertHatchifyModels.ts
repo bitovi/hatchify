@@ -18,6 +18,7 @@ import type {
   Virtuals,
 } from "../../types"
 import { pluralize } from "../../utils/pluralize"
+import { definedPlurals } from "../definedPlurals"
 
 export function convertHatchifyModels(
   sequelize: Sequelize,
@@ -153,5 +154,6 @@ export function convertHatchifyModels(
     associationsLookup,
     models: sequelize.models as SequelizeModelsCollection,
     virtuals,
+    plurals: definedPlurals(models),
   }
 }

@@ -105,6 +105,7 @@ export class Hatchify {
       associationsLookup,
       models: sequelizeModels,
       virtuals,
+      plurals: definedPlurals,
     } = Array.isArray(models)
       ? convertHatchifyV1Models(this._sequelize, this._serializer, models)
       : convertHatchifyV2Models(this._sequelize, this._serializer, models)
@@ -116,10 +117,18 @@ export class Hatchify {
     this._pluralToSingularModelNames = Object.entries(
       this._sequelizeModels,
     ).reduce(
-      (acc, [singular, value]) => ({
-        ...acc,
-        [pluralize(singular.toLowerCase())]: singular,
-      }),
+      (acc, [singular, value]) => {
+        if (definedPlurals.has(singular)) {
+          return {
+            ...acc,
+            [definedPlurals.get(singular).toLowerCase()]: singular,
+          }
+        }
+        return {
+          ...acc,
+          [pluralize(singular.toLowerCase())]: singular,
+        }
+      },
       {},
     )
 
