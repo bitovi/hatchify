@@ -102,7 +102,8 @@ describe("Naming rules", () => {
   //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-310
   const pluralNameTestCases: TestCase[] = [
     {
-      description: "Ensure pluralName creates route with correct name (Schema.pluralName)",
+      description:
+        "Ensure pluralName creates route with correct name (Schema.pluralName)",
       models: [
         {
           name: "SalesPerson",
@@ -939,7 +940,7 @@ describe("Naming rules", () => {
   it.each(cases)(
     "$description",
     async ({ description, models, database, requests }) => {
-      ;({ fetch, teardown, hatchify } = await startServerWith(models))
+      ; ({ fetch, teardown, hatchify } = await startServerWith(models))
 
       for (const request of requests) {
         const { expected, options, url } = request

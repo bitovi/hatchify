@@ -136,8 +136,8 @@ type ModelAttributes<M extends Model = Model, TAttributes = unknown> = {
    * The description of a database column
    */
   [name in keyof TAttributes]:
-    | DataType
-    | ModelAttributeColumnOptionsWithInclude<M>
+  | DataType
+  | ModelAttributeColumnOptionsWithInclude<M>
 }
 
 /**
