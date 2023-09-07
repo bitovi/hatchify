@@ -1,10 +1,5 @@
 // import { assembler, string, integer } from "@hatchifyjs/hatchify-core"
-import {
-  assembler,
-  string,
-  integer,
-  datetime,
-} from "../../../../hatchify-core/dist/src/hatchify-core"
+import { assembler, string, integer, datetime } from "@hatchifyjs/hatchify-core"
 import {
   GetSchemaFromName,
   GetSchemaNames,
