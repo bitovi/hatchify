@@ -76,7 +76,7 @@ describe("string", () => {
       // setORMPropertyValue
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(setORMPropertyValue(null)).toBeNull()
-      expect(() => setORMPropertyValue(Symbol() as unknown as string)).toThrow(
+      expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
 
