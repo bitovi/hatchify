@@ -146,10 +146,14 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               name: "Walk the dog",
               due_date: "2024-12-12T00:00:00.000Z",
             },
-            relationships: { user: { data: { type: "User", id: user.data.id } } },
+            relationships: {
+              user: { data: { type: "User", id: user.data.id } },
+            },
           },
         ],
-        included: [{ type: "User", id: user.data.id, attributes: { name: "John Doe" } }],
+        included: [
+          { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+        ],
         meta: { unpaginatedCount: 1 },
       })
     })
