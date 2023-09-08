@@ -9,7 +9,11 @@ import {
 } from "@hatchifyjs/hatchify-core"
 import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 
-import { dbDialects, startServerWith } from "./testing/utils"
+import {
+  dbDialects,
+  getDatabaseColumns,
+  startServerWith,
+} from "./testing/utils"
 
 describe.each(dbDialects)("schema", (dialect) => {
   describe(`${dialect}`, () => {
@@ -72,87 +76,53 @@ describe.each(dbDialects)("schema", (dialect) => {
       })
 
       it("should create a snake_case table with id, name, age, years_worked and hire_date columns", async () => {
-        let columns
-        if (dialect === "sqlite") {
-          ;[columns] = await hatchify._sequelize.query(
-            'SELECT * FROM pragma_table_info("user")',
-          )
-        }
-        if (dialect === "postgres") {
-          const [result] = await hatchify._sequelize.query(
-            `SELECT * FROM information_schema.columns
-            WHERE table_name = 'user'`,
-          )
-          const [constraints] = await hatchify._sequelize.query(
-            `SELECT constraint_name, column_name
-            FROM information_schema.key_column_usage
-            WHERE table_name = 'user'`,
-          )
-          const pk = constraints.find(
-            (constraint) => constraint.constraint_name === "user_pkey",
-          )
-          columns = result.map((column) => ({
-            name: column.column_name,
-            notnull: column.is_nullable,
-            pk: column.column_name === pk.column_name ? 1 : 0,
-            type: column.data_type,
-          }))
-        }
+        const sortedColumns = await getDatabaseColumns("user", hatchify)
 
-        const sortedColumns = columns.sort((a, b) => {
-          if (a.name < b.name) {
-            return -1
-          }
-          if (a.name > b.name) {
-            return 1
-          }
-          return 0
-        })
-
-        expect(sortedColumns).toHaveLength(7)
-        expect(sortedColumns[0]).toMatchObject({
-          name: "age",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "integer" : "INTEGER",
-        })
-        expect(sortedColumns[1]).toMatchObject({
-          name: "bio",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "text" : "TEXT",
-        })
-        expect(sortedColumns[2]).toMatchObject({
-          name: "hire_date",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type:
-            dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
-        })
-        expect(sortedColumns[3]).toMatchObject({
-          name: "id",
-          notnull: dialect === "postgres" ? "NO" : 0,
-          pk: 1,
-          type: dialect === "postgres" ? "integer" : "INTEGER",
-        })
-        expect(sortedColumns[4]).toMatchObject({
-          name: "name",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "character varying" : "VARCHAR(255)",
-        })
-        expect(sortedColumns[5]).toMatchObject({
-          name: "status",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
-        })
-        expect(sortedColumns[6]).toMatchObject({
-          name: "years_worked",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "integer" : "INTEGER",
-        })
+        expect(sortedColumns).toEqual([
+          {
+            name: "age",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "integer" : "INTEGER",
+          },
+          {
+            name: "bio",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "text" : "TEXT",
+          },
+          {
+            name: "hire_date",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type:
+              dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
+          },
+          {
+            name: "id",
+            notnull: dialect === "postgres" ? "NO" : 0,
+            pk: 1,
+            type: dialect === "postgres" ? "integer" : "INTEGER",
+          },
+          {
+            name: "name",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "character varying" : "VARCHAR(255)",
+          },
+          {
+            name: "status",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
+          },
+          {
+            name: "years_worked",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "integer" : "INTEGER",
+          },
+        ])
       })
 
       describe("should have API with core features working", () => {
@@ -677,86 +647,53 @@ describe.each(dbDialects)("schema", (dialect) => {
       })
 
       it("should create a snake_case table with id, age, years_worked and hired_date columns", async () => {
-        let columns
-        if (dialect === "sqlite") {
-          ;[columns] = await hatchify._sequelize.query(
-            'SELECT * FROM pragma_table_info("user")',
-          )
-        }
-        if (dialect === "postgres") {
-          const [result] = await hatchify._sequelize.query(
-            `SELECT * FROM information_schema.columns
-            WHERE table_name = 'user'`,
-          )
-          const [constraints] = await hatchify._sequelize.query(
-            `SELECT constraint_name, column_name
-            FROM information_schema.key_column_usage
-            WHERE table_name = 'user'`,
-          )
-          const pk = constraints.find(
-            (constraint) => constraint.constraint_name === "user_pkey",
-          )
-          columns = result.map((column) => ({
-            name: column.column_name,
-            notnull: column.is_nullable,
-            pk: column.column_name === pk.column_name ? 1 : 0,
-            type: column.data_type,
-          }))
-        }
+        const sortedColumns = await getDatabaseColumns("user", hatchify)
 
-        const sortedColumns = columns.sort((a, b) => {
-          if (a.name < b.name) {
-            return -1
-          }
-          if (a.name > b.name) {
-            return 1
-          }
-          return 0
-        })
-        expect(sortedColumns).toHaveLength(7)
-        expect(sortedColumns[0]).toMatchObject({
-          name: "age",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "integer" : "INTEGER",
-        })
-        expect(sortedColumns[1]).toMatchObject({
-          name: "bio",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "text" : "TEXT",
-        })
-        expect(sortedColumns[2]).toMatchObject({
-          name: "hire_date",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type:
-            dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
-        })
-        expect(sortedColumns[3]).toMatchObject({
-          name: "id",
-          notnull: dialect === "postgres" ? "NO" : 0,
-          pk: 1,
-          type: dialect === "postgres" ? "integer" : "INTEGER",
-        })
-        expect(sortedColumns[4]).toMatchObject({
-          name: "name",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "character varying" : "VARCHAR(10)",
-        })
-        expect(sortedColumns[5]).toMatchObject({
-          name: "status",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
-        })
-        expect(sortedColumns[6]).toMatchObject({
-          name: "years_worked",
-          notnull: dialect === "postgres" ? "YES" : 0,
-          pk: 0,
-          type: dialect === "postgres" ? "integer" : "INTEGER",
-        })
+        expect(sortedColumns).toEqual([
+          {
+            name: "age",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "integer" : "INTEGER",
+          },
+          {
+            name: "bio",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "text" : "TEXT",
+          },
+          {
+            name: "hire_date",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type:
+              dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
+          },
+          {
+            name: "id",
+            notnull: dialect === "postgres" ? "NO" : 0,
+            pk: 1,
+            type: dialect === "postgres" ? "integer" : "INTEGER",
+          },
+          {
+            name: "name",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "character varying" : "VARCHAR(10)",
+          },
+          {
+            name: "status",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
+          },
+          {
+            name: "years_worked",
+            notnull: dialect === "postgres" ? "YES" : 0,
+            pk: 0,
+            type: dialect === "postgres" ? "integer" : "INTEGER",
+          },
+        ])
       })
 
       describe("should have API with core features working", () => {

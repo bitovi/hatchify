@@ -72,10 +72,7 @@ export async function startServerWith(
   }
 
   async function teardown() {
-    if (dialect === "postgres") {
-      // drop all tables
-      await hatchify.orm.drop({})
-    }
+    await hatchify.orm.drop({ cascade: true })
     return hatchify.orm.close()
   }
 
@@ -135,6 +132,59 @@ async function parse(result) {
     serialized,
     deserialized,
   }
+}
+
+interface DatabaseColumn {
+  name: string
+  notnull: "YES" | "NO"
+  pk: 0 | 1
+  type: string
+}
+
+export async function getDatabaseColumns(
+  tableName: string,
+  hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"],
+): Promise<DatabaseColumn[]> {
+  const dialect = hatchify.orm.getDialect()
+  let columns: DatabaseColumn[] = []
+
+  if (dialect === "sqlite") {
+    ;[columns] = await hatchify._sequelize.query(
+      `SELECT name, "notnull", pk, type FROM pragma_table_info('${tableName}')`,
+    )
+  } else if (dialect === "postgres") {
+    const [[result], [constraints]] = await Promise.all([
+      hatchify._sequelize.query(
+        `SELECT column_name, is_nullable, data_type FROM information_schema.columns WHERE table_name = '${tableName}'`,
+      ),
+      hatchify._sequelize.query(
+        `SELECT column_name, constraint_name FROM information_schema.key_column_usage WHERE table_name = '${tableName}'`,
+      ),
+    ])
+
+    columns = result.map((column) => ({
+      name: column.column_name,
+      notnull: column.is_nullable,
+      pk:
+        column.column_name ===
+        constraints.find(
+          (constraint) => constraint.constraint_name === "user_pkey",
+        ).column_name
+          ? 1
+          : 0,
+      type: column.data_type,
+    }))
+  }
+
+  return columns.sort((a, b) => {
+    if (a.name < b.name) {
+      return -1
+    }
+    if (a.name > b.name) {
+      return 1
+    }
+    return 0
+  })
 }
 
 export async function GET(server, path) {
