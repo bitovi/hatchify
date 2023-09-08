@@ -140,8 +140,8 @@ async function parse(result) {
 
 interface DatabaseColumn {
   name: string
-  notnull: "YES" | "NO"
-  pk: 0 | 1
+  notnull: boolean
+  pk: boolean
   type: string
 }
 
@@ -153,9 +153,15 @@ export async function getDatabaseColumns(
   let columns: DatabaseColumn[] = []
 
   if (dialect === "sqlite") {
-    ;[columns] = await hatchify._sequelize.query(
+    const [result] = await hatchify._sequelize.query(
       `SELECT name, "notnull", pk, type FROM pragma_table_info('${tableName}')`,
     )
+
+    columns = result.map((column) => ({
+      ...column,
+      notnull: column.notnull === 1,
+      pk: column.pk === 1,
+    }))
   } else if (dialect === "postgres") {
     const [[result], [constraints]] = await Promise.all([
       hatchify._sequelize.query(
@@ -168,14 +174,12 @@ export async function getDatabaseColumns(
 
     columns = result.map((column) => ({
       name: column.column_name,
-      notnull: column.is_nullable,
+      notnull: column.is_nullable === "NO",
       pk:
         column.column_name ===
         constraints.find(
-          (constraint) => constraint.constraint_name === "user_pkey",
-        ).column_name
-          ? 1
-          : 0,
+          (constraint) => constraint.constraint_name === `${tableName}_pkey`,
+        ).column_name,
       type: column.data_type,
     }))
   }
