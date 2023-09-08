@@ -31,10 +31,7 @@ describe.each(dbDialects)("schema", (dialect) => {
         attributes: {
           name: { type: "STRING", validate: { len: [1, 10] } },
           age: { type: "INTEGER", validate: { min: 0 } },
-          yearsWorked: {
-            type: "INTEGER",
-            validate: { min: 0 },
-          },
+          yearsWorked: { type: "INTEGER", validate: { min: 0 } },
           hireDate: {
             type: "DATE",
             validate: { isAfter: "2022-12-31T00:00:00.000Z" },
