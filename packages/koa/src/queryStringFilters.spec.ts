@@ -294,7 +294,7 @@ dotenv.config({
   path: ".env",
 })
 
-describe.each(dbDialects)("Operators", (dialect) => {
+describe.each(dbDialects)("queryStringFilters", (dialect) => {
   const User: HatchifyModel = {
     name: "User",
     attributes: {

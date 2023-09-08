@@ -2,7 +2,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
 
-describe.each(dbDialects)("Operators", (dialect) => {
+describe.each(dbDialects)("Relationships", (dialect) => {
   describe(`${dialect} - Users and Todos`, () => {
     const User: HatchifyModel = {
       name: "User",

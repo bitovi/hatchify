@@ -11,9 +11,9 @@ import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
 
-describe.each(dbDialects)("Operators", (dialect) => {
-  describe(`${dialect} - schema`, () => {
-    describe(`${dialect} - v1`, () => {
+describe.each(dbDialects)("schema", (dialect) => {
+  describe(`${dialect}`, () => {
+    describe("v1", () => {
       const Todo: HatchifyModel = {
         name: "Todo",
         attributes: {
@@ -620,7 +620,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
       })
     })
 
-    describe(`${dialect} - v2`, () => {
+    describe("v2", () => {
       const Todo: PartialSchema = {
         name: "Todo",
         attributes: {
