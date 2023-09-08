@@ -31,7 +31,10 @@ describe.each(dbDialects)("schema", (dialect) => {
         attributes: {
           name: { type: "STRING", validate: { len: [1, 10] } },
           age: { type: "INTEGER", validate: { min: 0 } },
-          yearsWorked: { type: "INTEGER", validate: { min: 0 } },
+          yearsWorked: {
+            type: "INTEGER",
+            validate: { min: 0 },
+          },
           hireDate: {
             type: "DATE",
             validate: { isAfter: "2022-12-31T00:00:00.000Z" },
@@ -81,45 +84,45 @@ describe.each(dbDialects)("schema", (dialect) => {
         expect(sortedColumns).toEqual([
           {
             name: "age",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "bio",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "text" : "TEXT",
           },
           {
             name: "hire_date",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type:
               dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
           },
           {
             name: "id",
-            notnull: dialect === "postgres" ? "NO" : 0,
-            pk: 1,
+            notnull: dialect !== "sqlite",
+            pk: true,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "name",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "character varying" : "VARCHAR(255)",
           },
           {
             name: "status",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
           },
           {
             name: "years_worked",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ])
@@ -652,45 +655,45 @@ describe.each(dbDialects)("schema", (dialect) => {
         expect(sortedColumns).toEqual([
           {
             name: "age",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "bio",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "text" : "TEXT",
           },
           {
             name: "hire_date",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type:
               dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
           },
           {
             name: "id",
-            notnull: dialect === "postgres" ? "NO" : 0,
-            pk: 1,
+            notnull: dialect !== "sqlite",
+            pk: true,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "name",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "character varying" : "VARCHAR(10)",
           },
           {
             name: "status",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
           },
           {
             name: "years_worked",
-            notnull: dialect === "postgres" ? "YES" : 0,
-            pk: 0,
+            notnull: false,
+            pk: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ])
