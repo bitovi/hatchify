@@ -3,6 +3,7 @@ import type {
   QueryOne,
   Resource,
   Schemas,
+  FinalSchemas,
 } from "@hatchifyjs/rest-client"
 import {
   convertToHatchifyResources,
@@ -17,7 +18,7 @@ import type { JsonApiResource } from "../jsonapi"
  */
 export async function findOne(
   config: SourceConfig,
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas | Schemas,
   schemaName: string,
   query: QueryOne,
 ): Promise<Resource[]> {

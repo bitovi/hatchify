@@ -77,18 +77,18 @@ export function resourceToRecordRelationship(
  * Merges the attribute data of the related records into the top-level records.
  */
 export function flattenResourcesIntoRecords(
-  allSchemas: Schemas | FinalSchemas,
+  allSchemas: FinalSchemas,
   resources: Resource[],
   topLevelSchemaName: string,
 ): Record[]
 export function flattenResourcesIntoRecords(
-  allSchemas: Schemas | FinalSchemas,
+  allSchemas: FinalSchemas,
   resources: Resource[],
   topLevelRecordSchemaName: string,
   id: string,
 ): Record | undefined
 export function flattenResourcesIntoRecords(
-  allSchemas: Schemas | FinalSchemas,
+  allSchemas: FinalSchemas,
   resources: Resource[],
   topLevelRecordSchemaName: string,
   id?: string,
@@ -131,7 +131,11 @@ export function flattenResourcesIntoRecords(
       return {
         id: resource.id,
         __schema: resource.__schema,
-        ...resource.attributes,
+        ...setClientPropertyValuesFromResponse(
+          allSchemas,
+          resource.__schema,
+          resource.attributes || {},
+        ),
         ...(relationships ? relationships : {}),
       }
     })
@@ -141,4 +145,72 @@ export function flattenResourcesIntoRecords(
   }
 
   return flattened
+}
+
+/**
+ * Coerces the value from the server into the value expected by the client.
+ */
+export const setClientPropertyValuesFromResponse = (
+  allSchemas: FinalSchemas,
+  schemaName: string,
+  attributes: globalThis.Record<string, any>,
+): globalThis.Record<string, unknown> => {
+  return Object.entries(attributes).reduce((acc, [key, value]) => {
+    const attribute = allSchemas[schemaName].attributes[key]
+    if (attribute != null && attribute.setClientPropertyValueFromResponse) {
+      acc[key] = attribute?.setClientPropertyValueFromResponse(value)
+    } else {
+      acc[key] = value
+    }
+    return acc
+  }, {} as globalThis.Record<string, unknown>)
+}
+
+/**
+ * Coerces the value from the internal client data into something that can be sent with JSON.
+ */
+export const serializeClientPropertyValuesForRequest = (
+  allSchemas: FinalSchemas,
+  schemaName: string,
+  attributes: globalThis.Record<string, any>,
+): globalThis.Record<string, unknown> => {
+  return Object.entries(attributes).reduce((acc, [key, value]) => {
+    const attribute = allSchemas[schemaName].attributes[key]
+
+    if (
+      attribute != null &&
+      attribute.setClientPropertyValue &&
+      attribute.serializeClientPropertyValue
+    ) {
+      const coerced = attribute.setClientPropertyValue(value)
+      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo: arthur, fix with stricter typing
+    } else {
+      acc[key] = value
+    }
+    return acc
+  }, {} as globalThis.Record<string, unknown>)
+}
+
+/**
+ * Coerces the value from the internal client data into something that can be sent through a filter query.
+ */
+export const serializeClientQueryFilterValuesForRequest = (
+  allSchemas: FinalSchemas,
+  schemaName: string,
+  filters: globalThis.Record<string, any>,
+): globalThis.Record<string, unknown> => {
+  return Object.entries(filters).reduce((acc, [key, value]) => {
+    const attribute = allSchemas[schemaName].attributes[key]
+    if (
+      attribute != null &&
+      attribute.setClientQueryFilterValue &&
+      attribute.serializeClientQueryFilterValue
+    ) {
+      const coerced = attribute.setClientQueryFilterValue(value)
+      acc[key] = attribute.serializeClientQueryFilterValue(coerced as any) // todo: arthur, fix with stricter typing
+    } else {
+      acc[key] = value
+    }
+    return acc
+  }, {} as globalThis.Record<string, unknown>)
 }

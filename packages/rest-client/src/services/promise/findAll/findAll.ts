@@ -8,7 +8,11 @@ import type {
   FinalSchemas,
   PartialSchemas,
 } from "../../types"
-import { flattenResourcesIntoRecords } from "../../utils"
+import {
+  SchemaNameNotStringError,
+  flattenResourcesIntoRecords,
+  schemaNameIsString,
+} from "../../utils"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,
@@ -25,10 +29,8 @@ export const findAll = async <
 ): Promise<
   [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, RequestMetaData]
 > => {
-  if (typeof schemaName !== "string") {
-    throw new Error(
-      `Expected schemaName to be a string, received ${typeof schemaName}`,
-    )
+  if (!schemaNameIsString(schemaName)) {
+    throw new SchemaNameNotStringError(schemaName)
   }
 
   const [resources, requestMetaData] = await dataSource.findAll(

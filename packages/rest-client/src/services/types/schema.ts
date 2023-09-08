@@ -44,9 +44,11 @@ export type GetSchemaFromName<
 
 export type NumberAsString = "number" | "Number"
 export type StringAsString = "string" | "String"
+export type DateAsString = "datetime" | "Datetime"
 
 export type IsNumber<TValue> = TValue extends NumberAsString ? true : false
 export type IsString<TValue> = TValue extends StringAsString ? true : false
+export type IsDate<TValue> = TValue extends DateAsString ? true : false
 
 export type RecordType<TPartialSchema extends PartialSchema> = {
   id: string
@@ -58,12 +60,19 @@ export type RecordType<TPartialSchema extends PartialSchema> = {
 }
 
 export type CreateType<TPartialSchema extends PartialSchema> = {
+  __schema: TPartialSchema["name"]
   attributes: {
     [AttributeName in keyof TPartialSchema["attributes"]]: GetTypedAttribute<
       TPartialSchema["attributes"],
       AttributeName
     >
   }
+}
+
+export type UpdateType<TPartialSchema extends PartialSchema> = {
+  id: string
+} & {
+  attributes: Partial<CreateType<TPartialSchema>["attributes"]>
 }
 
 export type GetAttributes<TSchema extends PartialSchema> = {
@@ -77,4 +86,6 @@ export type GetTypedAttribute<
   ? number
   : IsString<TAttributes[TAttributeName]["control"]["type"]> extends true
   ? string
+  : IsDate<TAttributes[TAttributeName]["control"]["type"]> extends true
+  ? Date | string // Date object or ISO string
   : unknown

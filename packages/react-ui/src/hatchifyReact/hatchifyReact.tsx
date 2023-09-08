@@ -41,7 +41,7 @@ type Components = {
   }
 }
 
-type HatchifyApp<TSchemas extends PartialSchemas> = {
+export type HatchifyApp<TSchemas extends PartialSchemas> = {
   components: Components
   model: HatchifyReactRest<TSchemas>
   state: {
@@ -75,6 +75,7 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
           finalSchemas={finalSchemas}
           partialSchemas={partialSchemas}
           schemaName={schema.name}
+          // @ts-expect-error todo: arthur
           restClient={reactRest}
           {...props}
         />

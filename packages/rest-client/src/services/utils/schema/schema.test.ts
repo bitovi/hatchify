@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest"
 import type { Schema as OldSchema } from "@hatchifyjs/hatchify-core"
 import type { Schema } from "../../types"
-import { transformDataType, transformSchema } from "./schema"
+import {
+  schemaNameIsString,
+  transformDataType,
+  transformSchema,
+} from "./schema"
 
 describe("rest-client/services/utils/schema", () => {
   describe("transformDataType", () => {
@@ -126,6 +130,15 @@ describe("rest-client/services/utils/schema", () => {
 
       const result = transformSchema(schema)
       expect(result).toEqual(expected)
+    })
+  })
+
+  describe("scehmaNameIsString", () => {
+    it("works", () => {
+      expect(schemaNameIsString("Foo")).toBe(true)
+      expect(schemaNameIsString("Bar")).toBe(true)
+      expect(schemaNameIsString(5)).toBe(false)
+      expect(schemaNameIsString(true)).toBe(false)
     })
   })
 })

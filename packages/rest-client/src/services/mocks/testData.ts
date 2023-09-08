@@ -1,57 +1,59 @@
-import type { Schema, Source } from "../types"
+import { assembler, string } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+import type { Source } from "../types"
 
-export const ArticleSchema: Schema = {
+export const ArticleSchema: PartialSchema = {
   name: "Article",
-  displayAttribute: "title",
   attributes: {
-    title: { type: "string" },
-    body: { type: "string" },
+    title: string(),
+    body: string(),
   },
-  relationships: {
-    author: {
-      type: "one",
-      schema: "Person",
-    },
-    tags: {
-      type: "many",
-      schema: "Tag",
-    },
-  },
+  // todo: v2 relationships
+  // relationships: {
+  //   author: {
+  //     type: "one",
+  //     schema: "Person",
+  //   },
+  //   tags: {
+  //     type: "many",
+  //     schema: "Tag",
+  //   },
+  // },
 }
 
-export const PersonSchema: Schema = {
+export const PersonSchema: PartialSchema = {
   name: "Person",
-  displayAttribute: "name",
   attributes: {
-    name: { type: "string" },
+    name: string(),
   },
-  relationships: {
-    authored: {
-      type: "many",
-      schema: "Article",
-    },
-  },
+  // todo: v2 relationships
+  // relationships: {
+  //   authored: {
+  //     type: "many",
+  //     schema: "Article",
+  //   },
+  // },
 }
 
-export const TagSchema: Schema = {
+export const TagSchema: PartialSchema = {
   name: "Tag",
-  displayAttribute: "title",
   attributes: {
-    title: { type: "string" },
+    title: string(),
   },
-  relationships: {
-    articles: {
-      type: "many",
-      schema: "Article",
-    },
-  },
+  // todo: v2 relationships
+  // relationships: {
+  //   articles: {
+  //     type: "many",
+  //     schema: "Article",
+  //   },
+  // },
 }
 
-export const schemas = {
+export const schemas = assembler({
   Article: ArticleSchema,
   Person: PersonSchema,
   Tag: TagSchema,
-}
+})
 
 export const schemaMap = {
   Article: { type: "article", endpoint: "articles" },

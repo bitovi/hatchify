@@ -5,8 +5,11 @@ import type {
   Meta,
   MetaError,
   QueryOne,
-  Record,
-  Schemas,
+  PartialSchemas,
+  GetSchemaNames,
+  FinalSchemas,
+  RecordType,
+  GetSchemaFromName,
   Source,
 } from "@hatchifyjs/rest-client"
 
@@ -22,24 +25,34 @@ const useMemoizedQuery = (query: QueryOne) => {
  * Fetches a single records using the rest-client findOne function,
  * subscribes to the store for updates to the record, returns the record.
  */
-export const useOne = (
+export const useOne = <
+  const TSchemas extends PartialSchemas,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   dataSource: Source,
-  allSchemas: Schemas,
-  schemaName: string,
+  allSchemas: FinalSchemas,
+  schemaName: TSchemaName,
   query: QueryOne | string,
-): [Record | undefined, Meta] => {
+): [RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined, Meta] => {
   const memoizedQuery = useMemoizedQuery(
     typeof query === "string" ? { id: query } : { ...query },
   )
 
-  const [data, setData] = useState<Record | undefined>(undefined)
+  const [data, setData] = useState<
+    RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined
+  >(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
   const fetchOne = useCallback(() => {
     setLoading(true)
 
-    findOne(dataSource, allSchemas, schemaName, memoizedQuery)
+    findOne<TSchemas, GetSchemaNames<TSchemas>>(
+      dataSource,
+      allSchemas,
+      schemaName,
+      memoizedQuery,
+    )
       .then((data) => {
         setError(undefined)
         setData(data)
@@ -60,7 +73,11 @@ export const useOne = (
   useEffect(() => {
     // todo: should use subscribeToOne here once store + can-query-logic is implemented
     // for now, subscribe to any change and refetch data
-    return subscribeToAll(schemaName, undefined, fetchOne)
+    return subscribeToAll<TSchemas, GetSchemaNames<TSchemas>>(
+      schemaName,
+      undefined,
+      fetchOne,
+    )
   }, [schemaName, fetchOne, memoizedQuery.id])
 
   const meta = useMemo(

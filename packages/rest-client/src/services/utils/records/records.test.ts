@@ -6,7 +6,16 @@ import {
   isMissingSchema,
   resourceToRecordRelationship,
   flattenResourcesIntoRecords,
+  setClientPropertyValuesFromResponse,
+  serializeClientPropertyValuesForRequest,
 } from "./records"
+import {
+  HatchifyCoerceError,
+  assembler,
+  datetime,
+  integer,
+  string,
+} from "@hatchifyjs/hatchify-core"
 
 describe("rest-client/utils/records", () => {
   describe("keyResourcesById", () => {
@@ -118,9 +127,9 @@ describe("rest-client/utils/records", () => {
         },
       ]
 
-      expect(flattenResourcesIntoRecords(schemas, testData, "Article")).toEqual(
-        expected,
-      )
+      expect(
+        flattenResourcesIntoRecords(schemas as any, testData, "Article"),
+      ).toEqual(expected)
     })
 
     it("works for a single resource", () => {
@@ -141,8 +150,99 @@ describe("rest-client/utils/records", () => {
       }
 
       expect(
-        flattenResourcesIntoRecords(schemas, testData, "Article", "article-2"),
+        flattenResourcesIntoRecords(
+          schemas as any,
+          testData,
+          "Article",
+          "article-2",
+        ),
       ).toEqual(expected)
+    })
+  })
+
+  describe.only("setClientPropertyValuesFromResponse", () => {
+    const finalSchemas = assembler({
+      Article: {
+        name: "Article",
+        attributes: {
+          title: string({ required: true }),
+          created: datetime({ step: "day" }),
+          views: integer({ max: 1000 }),
+        },
+      },
+    })
+
+    it("works", () => {
+      expect(
+        setClientPropertyValuesFromResponse(finalSchemas, "Article", {
+          title: "foo",
+          created: "2021-01-01T00:00:00.000Z",
+          views: 1,
+        }),
+      ).toEqual({
+        title: "foo",
+        created: new Date("2021-01-01T00:00:00.000Z"),
+        views: 1,
+      })
+
+      expect(() =>
+        setClientPropertyValuesFromResponse(finalSchemas, "Article", {
+          title: "bar",
+          created: "2021-01-01T01:00:00.000Z",
+          views: 500,
+        }),
+      ).toThrow(new HatchifyCoerceError("as multiples of day"))
+
+      expect(() =>
+        setClientPropertyValuesFromResponse(finalSchemas, "Article", {
+          title: "bar",
+          created: "2021-01-01T00:00:00.000Z",
+          views: 1001,
+        }),
+      ).toThrow(new HatchifyCoerceError("less than or equal to 1000"))
+    })
+  })
+
+  describe.only("serializeClientPropertyValuesForRequest", () => {
+    it("works", () => {
+      const finalSchemas = assembler({
+        Article: {
+          name: "Article",
+          attributes: {
+            title: string({ required: true }),
+            created: datetime({ step: "day" }),
+            views: integer({ max: 1000 }),
+          },
+        },
+      })
+
+      expect(
+        serializeClientPropertyValuesForRequest(finalSchemas, "Article", {
+          title: "foo",
+          created: new Date("2021-01-01T00:00:00.000Z"),
+          views: 1,
+        }),
+      ).toEqual({
+        title: "foo",
+        created: "2021-01-01T00:00:00.000Z",
+        views: 1,
+      })
+
+      expect(() =>
+        serializeClientPropertyValuesForRequest(finalSchemas, "Article", {
+          title: "bar",
+          created: new Date("2021-01-01T01:00:00.000Z"),
+          views: 500,
+        }),
+      ).toThrow(new HatchifyCoerceError("as multiples of day"))
+
+      expect(() =>
+        serializeClientPropertyValuesForRequest(finalSchemas, "Article", {
+          title: "bar",
+          created: new Date("2021-01-01T00:00:00.000Z"),
+          views: 1001,
+        }),
+      ).toThrow(new HatchifyCoerceError("less than or equal to 1000"))
     })
   })
 })

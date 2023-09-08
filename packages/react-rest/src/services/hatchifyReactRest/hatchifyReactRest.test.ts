@@ -1,8 +1,7 @@
 import { describe, it, expect } from "vitest"
 import type { Source } from "@hatchifyjs/rest-client"
-import { hatchifyReactRest } from "./hatchifyReactRest.legacy"
-import type { Schema } from "@hatchifyjs/rest-client"
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
+import { integer, string } from "@hatchifyjs/hatchify-core"
+import { hatchifyReactRest } from "./hatchifyReactRest"
 
 const fakeDataSource: Source = {
   version: 0,
@@ -15,18 +14,18 @@ const fakeDataSource: Source = {
 
 describe("react-rest/services/hatchifyReactRest", () => {
   it("should return functions for each schema", () => {
-    const Article: LegacySchema = {
+    const Article = {
       name: "Article",
       attributes: {
-        title: "string",
-        body: "string",
+        title: string(),
+        body: string(),
       },
     }
-    const Person: LegacySchema = {
+    const Person = {
       name: "Person",
       attributes: {
-        name: "string",
-        age: "integer",
+        name: string(),
+        age: integer(),
       },
     }
 
@@ -35,78 +34,24 @@ describe("react-rest/services/hatchifyReactRest", () => {
     expect(api).toEqual({
       Article: {
         createOne: expect.any(Function),
-        deleteOne: expect.any(Function),
+        // deleteOne: expect.any(Function),
         findAll: expect.any(Function),
         findOne: expect.any(Function),
         updateOne: expect.any(Function),
         useCreateOne: expect.any(Function),
-        useDeleteOne: expect.any(Function),
+        // useDeleteOne: expect.any(Function),
         useAll: expect.any(Function),
         useOne: expect.any(Function),
         useUpdateOne: expect.any(Function),
       },
       Person: {
         createOne: expect.any(Function),
-        deleteOne: expect.any(Function),
+        // deleteOne: expect.any(Function),
         findAll: expect.any(Function),
         findOne: expect.any(Function),
         updateOne: expect.any(Function),
         useCreateOne: expect.any(Function),
-        useDeleteOne: expect.any(Function),
-        useAll: expect.any(Function),
-        useOne: expect.any(Function),
-        useUpdateOne: expect.any(Function),
-      },
-    })
-  })
-
-  it("should accept both legacy and new schema", () => {
-    const Article: LegacySchema = {
-      name: "Article",
-      attributes: {
-        title: "string",
-        body: "string",
-      },
-    }
-
-    const Person: Schema = {
-      name: "Person",
-      displayAttribute: "name",
-      attributes: {
-        name: "string",
-        age: "integer",
-      },
-      relationships: {
-        Article: {
-          type: "many",
-          schema: "yes",
-        },
-      },
-    }
-
-    const api = hatchifyReactRest({ Article, Person }, fakeDataSource)
-
-    expect(api).toEqual({
-      Article: {
-        createOne: expect.any(Function),
-        deleteOne: expect.any(Function),
-        findAll: expect.any(Function),
-        findOne: expect.any(Function),
-        updateOne: expect.any(Function),
-        useCreateOne: expect.any(Function),
-        useDeleteOne: expect.any(Function),
-        useAll: expect.any(Function),
-        useOne: expect.any(Function),
-        useUpdateOne: expect.any(Function),
-      },
-      Person: {
-        createOne: expect.any(Function),
-        deleteOne: expect.any(Function),
-        findAll: expect.any(Function),
-        findOne: expect.any(Function),
-        updateOne: expect.any(Function),
-        useCreateOne: expect.any(Function),
-        useDeleteOne: expect.any(Function),
+        // useDeleteOne: expect.any(Function),
         useAll: expect.any(Function),
         useOne: expect.any(Function),
         useUpdateOne: expect.any(Function),

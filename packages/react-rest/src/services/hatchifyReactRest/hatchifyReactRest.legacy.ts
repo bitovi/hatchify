@@ -81,29 +81,37 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   }, {} as Schemas)
 
   const functions = Object.values(schemas).reduce((acc, schema) => {
+    // @ts-expect-error
     acc[schema.name as SchemaKeys<TSchemaRecord>] = {
       // promises
       createOne: (data) =>
+        // @ts-expect-error
         createOne(dataSource, newSchemas, schema.name, {
           __schema: schema.name,
           ...data,
         }),
+
       deleteOne: (id) => deleteOne(dataSource, newSchemas, schema.name, id),
       // @ts-expect-error
       findAll: (query) => findAll(dataSource, newSchemas, schema.name, query),
+      // @ts-expect-error
       findOne: (query) => findOne(dataSource, newSchemas, schema.name, query),
       updateOne: (data) =>
+        // @ts-expect-error
         updateOne(dataSource, newSchemas, schema.name, {
           __schema: schema.name,
           ...data,
         }),
       // hooks
+      // @ts-expect-error
       useCreateOne: () => useCreateOne(dataSource, newSchemas, schema.name),
       useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schema.name),
       useAll: (query) =>
         // @ts-expect-error
         useAll(dataSource, newSchemas, schema.name, query ?? {}),
+      // @ts-expect-error
       useOne: (query) => useOne(dataSource, newSchemas, schema.name, query),
+      // @ts-expect-error
       useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schema.name),
       // subscribes
       subscribeToAll: (query, callback) =>

@@ -2,8 +2,9 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "@hatchifyjs/rest-client"
-import type { Schema, Source } from "@hatchifyjs/rest-client"
+import type { Source } from "@hatchifyjs/rest-client"
 import { useCreateOne } from "./useCreateOne"
+import { assembler, string } from "@hatchifyjs/hatchify-core"
 
 const fakeDataSource: Source = {
   version: 0,
@@ -21,12 +22,12 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = {
-  name: "Article",
-  displayAttribute: "title",
-  attributes: { title: "string", body: "string" },
-} as Schema
-const schemas = { Article: ArticleSchema }
+const schemas = assembler({
+  Article: {
+    name: "Article",
+    attributes: { title: string(), body: string() },
+  },
+})
 
 describe("react-rest/services/useCreateOne", () => {
   it("should create a record", async () => {

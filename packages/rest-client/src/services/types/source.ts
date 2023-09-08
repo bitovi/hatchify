@@ -31,17 +31,17 @@ export interface SourceV0 {
     query: QueryList,
   ) => Promise<[Resources: Resource[], Meta: RequestMetaData]>
   findOne: (
-    allSchemas: Schemas,
+    allSchemas: Schemas | FinalSchemas,
     schemaName: string,
     query: QueryOne,
   ) => Promise<Resource[]>
   createOne: (
-    allSchemas: Schemas,
+    allSchemas: Schemas | FinalSchemas,
     schemaName: string,
     data: RestClientCreateData,
   ) => Promise<Resource[]>
   updateOne: (
-    allSchemas: Schemas,
+    allSchemas: Schemas | FinalSchemas,
     schemaName: string,
     data: RestClientUpdateData,
   ) => Promise<Resource[] | null>

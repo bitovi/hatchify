@@ -1,15 +1,17 @@
 import type {
   Source,
-  Record,
   QueryOne,
-  Schemas,
   PartialSchemas,
   GetSchemaNames,
   RecordType,
   GetSchemaFromName,
   FinalSchemas,
 } from "../../types"
-import { flattenResourcesIntoRecords } from "../../utils"
+import {
+  SchemaNameNotStringError,
+  flattenResourcesIntoRecords,
+  schemaNameIsString,
+} from "../../utils"
 
 /**
  * Fetches a single resource from a data source, inserts it into the store,
@@ -17,7 +19,7 @@ import { flattenResourcesIntoRecords } from "../../utils"
  */
 export const findOne = async <
   const TSchemas extends PartialSchemas,
-  const TSchemaName extends GetSchemaNames<TSchemas> | string,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,
   allSchemas: FinalSchemas,
@@ -26,10 +28,8 @@ export const findOne = async <
 ): Promise<
   RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined
 > => {
-  if (typeof schemaName !== "string") {
-    throw new Error(
-      `Expected schemaName to be a string, received ${typeof schemaName}`,
-    )
+  if (!schemaNameIsString(schemaName)) {
+    throw new SchemaNameNotStringError(schemaName)
   }
 
   const updatedQuery = typeof query === "string" ? { id: query } : { ...query }

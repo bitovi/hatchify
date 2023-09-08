@@ -1,6 +1,8 @@
 import type {
+  FinalSchemas,
   Resource,
   RestClientUpdateData,
+  Schema,
   Schemas,
   SourceConfig,
 } from "@hatchifyjs/rest-client"
@@ -17,13 +19,13 @@ import type { JsonApiResource } from "../jsonapi"
  */
 export async function updateOne(
   config: SourceConfig,
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas | Schemas,
   schemaName: string,
   data: RestClientUpdateData,
 ): Promise<Resource[] | null> {
   const jsonApiResource = hatchifyResourceToJsonApiResource(
     config,
-    allSchemas[schemaName],
+    allSchemas[schemaName] as Schema, // todo: v2 relationships
     schemaName,
     data,
   )

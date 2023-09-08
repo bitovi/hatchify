@@ -5,8 +5,9 @@ import {
   createStore,
   flattenResourcesIntoRecords,
 } from "@hatchifyjs/rest-client"
-import type { Schema, Source, Subscription } from "@hatchifyjs/rest-client"
+import type { Source, Subscription } from "@hatchifyjs/rest-client"
 import { useOne } from "./useOne"
+import { assembler, string } from "@hatchifyjs/hatchify-core"
 
 const fakeData = [
   {
@@ -30,12 +31,12 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = {
-  name: "Article",
-  displayAttribute: "title",
-  attributes: { title: "string", body: "string" },
-} as Schema
-const schemas = { Article: ArticleSchema }
+const schemas = assembler({
+  Article: {
+    name: "Article",
+    attributes: { title: string(), body: string() },
+  },
+})
 
 describe("react-rest/services/useOne", () => {
   it("should fetch a record", async () => {
