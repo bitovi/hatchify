@@ -72,7 +72,11 @@ export async function startServerWith(
   }
 
   async function teardown() {
-    await hatchify.orm.drop({ cascade: true })
+    if (dialect !== "sqlite") {
+      // SQLite will throw if we try to drop
+      await hatchify.orm.drop({ cascade: true })
+    }
+
     return hatchify.orm.close()
   }
 
