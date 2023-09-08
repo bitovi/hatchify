@@ -63,6 +63,7 @@ export function convertHatchifyModels(
       model.attributes,
       {
         validate: model.validation || {},
+        schema: model.namespace || "",
         underscored: true,
         createdAt: false,
         updatedAt: false,

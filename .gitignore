@@ -19,3 +19,4 @@ example.sqlite
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/hatchify-app/
