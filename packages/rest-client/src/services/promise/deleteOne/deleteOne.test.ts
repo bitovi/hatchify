@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest"
 import { createStore } from "../../store"
-import type { Schema, Source } from "../../types"
+import type { Source } from "../../types"
 import { deleteOne } from "./deleteOne"
+import { assembler, string } from "@hatchifyjs/hatchify-core"
 
 const fakeDataSource: Source = {
   version: 0,
@@ -12,12 +13,12 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const ArticleSchema = {
-  name: "Article",
-  displayAttribute: "title",
-  attributes: { title: "string", body: "string" },
-} as Schema
-const schemas = { Article: ArticleSchema }
+const schemas = assembler({
+  Article: {
+    name: "Article",
+    attributes: { title: string(), body: string() },
+  },
+})
 
 describe("rest-client/services/promise/deleteOne", () => {
   const data = "1"

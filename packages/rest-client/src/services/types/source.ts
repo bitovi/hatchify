@@ -46,7 +46,7 @@ export interface SourceV0 {
     data: RestClientUpdateData,
   ) => Promise<Resource[] | null>
   deleteOne: (
-    allSchemas: Schemas,
+    allSchemas: Schemas | FinalSchemas,
     schemaName: string,
     id: string,
   ) => Promise<void>

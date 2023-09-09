@@ -1,14 +1,24 @@
 import { useCallback, useMemo, useState } from "react"
 import { deleteOne, getMeta } from "@hatchifyjs/rest-client"
-import type { Meta, MetaError, Schemas, Source } from "@hatchifyjs/rest-client"
+import type {
+  FinalSchemas,
+  GetSchemaNames,
+  PartialSchemas,
+  Meta,
+  MetaError,
+  Source,
+} from "@hatchifyjs/rest-client"
 
 /**
  * Returns a function that delete a record using the rest-client updateOne,
  */
-export const useDeleteOne = (
+export const useDeleteOne = <
+  const TSchemas extends PartialSchemas,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   dataSource: Source,
-  allSchemas: Schemas,
-  schemaName: string,
+  allSchemas: FinalSchemas,
+  schemaName: TSchemaName,
 ): [(id: string) => void, Meta] => {
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
@@ -16,7 +26,12 @@ export const useDeleteOne = (
   const remove = useCallback(
     (id: string) => {
       setLoading(true)
-      deleteOne(dataSource, allSchemas, schemaName, id)
+      deleteOne<TSchemas, GetSchemaNames<TSchemas>>(
+        dataSource,
+        allSchemas,
+        schemaName,
+        id,
+      )
         .then(() => setError(undefined))
         .catch((error) => {
           setError(error)

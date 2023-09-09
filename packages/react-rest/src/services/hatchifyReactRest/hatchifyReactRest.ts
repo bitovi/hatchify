@@ -2,7 +2,7 @@ import {
   assembler,
   // string, integer, datetime
 } from "@hatchifyjs/hatchify-core"
-import type {
+import {
   CreateType,
   GetSchemaFromName,
   GetSchemaNames,
@@ -18,11 +18,12 @@ import type {
 import {
   createStore,
   createOne,
+  deleteOne,
   updateOne,
   findAll,
   findOne,
 } from "@hatchifyjs/rest-client"
-import { useAll, useCreateOne, useOne, useUpdateOne } from ".."
+import { useAll, useCreateOne, useOne, useUpdateOne, useDeleteOne } from ".."
 
 export type HatchifyReactRest<TSchemas extends PartialSchemas> = {
   [SchemaName in keyof TSchemas]: {
@@ -52,6 +53,7 @@ export type HatchifyReactRest<TSchemas extends PartialSchemas> = {
         "__schema"
       >,
     ) => Promise<RecordType<GetSchemaFromName<TSchemas, SchemaName>> | null>
+    deleteOne: (id: string) => Promise<void>
     // hooks
     useAll: (
       query?: QueryList,
@@ -79,6 +81,7 @@ export type HatchifyReactRest<TSchemas extends PartialSchemas> = {
       Meta,
       RecordType<GetSchemaFromName<TSchemas, SchemaName>> | null | undefined,
     ]
+    useDeleteOne: () => [(id: string) => void, Meta]
     // subscribes
     // subscribeToAll: (
     //   query: QueryList | undefined,
@@ -130,6 +133,13 @@ export const hatchifyReactRest = <const TSchemas extends PartialSchemas>(
             schemaName,
             data,
           ),
+        deleteOne: (id) =>
+          deleteOne<TSchemas, GetSchemaNames<TSchemas>>(
+            restClient,
+            finalSchemas,
+            schemaName,
+            id,
+          ),
         // hooks
         useAll: (query) =>
           useAll<TSchemas, GetSchemaNames<TSchemas>>(
@@ -157,13 +167,12 @@ export const hatchifyReactRest = <const TSchemas extends PartialSchemas>(
             finalSchemas,
             schemaName,
           ),
-        // subscribes
-        // subscribeToAll: (query, callback) =>
-        //   subscribeToAll<TSchemas, GetSchemaNames<TSchemas>>(
-        //     schemaName,
-        //     query,
-        //     callback,
-        //   ),
+        useDeleteOne: () =>
+          useDeleteOne<TSchemas, GetSchemaNames<TSchemas>>(
+            restClient,
+            finalSchemas,
+            schemaName,
+          ),
       }
 
       return acc
