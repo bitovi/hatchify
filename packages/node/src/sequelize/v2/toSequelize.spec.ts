@@ -92,7 +92,9 @@ describe("toSequelize", () => {
           await schemas.Todo.build({
             importance: 1,
           }).save(),
-        ).toMatchObject({ dataValues: { id: 1, importance: 1 } })
+        ).toMatchObject({
+          dataValues: { id: expect.any(Number), importance: 1 },
+        })
       })
 
       it("enforces minimum value", async () => {
@@ -129,7 +131,7 @@ describe("toSequelize", () => {
 
       it("does not require values for optional attributes", async () => {
         expect(await schemas.Todo.build({}).save()).toMatchObject({
-          dataValues: { id: 2 },
+          dataValues: { id: expect.any(Number) },
         })
       })
     })
@@ -140,7 +142,9 @@ describe("toSequelize", () => {
           await schemas.Todo.create({
             importance: 1,
           }),
-        ).toMatchObject({ dataValues: { id: 2, importance: 1 } })
+        ).toMatchObject({
+          dataValues: { id: expect.any(Number), importance: 1 },
+        })
       })
 
       it("enforces minimum value", async () => {
@@ -177,7 +181,7 @@ describe("toSequelize", () => {
 
       it("does not require values for optional attributes", async () => {
         expect(await schemas.Todo.create({})).toMatchObject({
-          dataValues: { id: 3 },
+          dataValues: { id: expect.any(Number) },
         })
       })
     })
