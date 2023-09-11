@@ -1,4 +1,4 @@
-import { assembler } from "@hatchifyjs/hatchify-core"
+import { assembler, integer, string } from "@hatchifyjs/hatchify-core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   Fields,
@@ -21,28 +21,41 @@ import { HatchifyColumn } from "../components/HatchifyColumn"
 import { HatchifyEmpty } from "../components/HatchifyEmpty"
 import useCollectionState from "../hooks/useCollectionState"
 
-type HatchifyCollectionProps = Omit<
-  InternalHatchifyCollectionProps,
+type HatchifyCollectionProps<
+  TSchemas extends PartialSchemas,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = Omit<
+  InternalHatchifyCollectionProps<TSchemas, TSchemaName>,
   "finalSchemas" | "partialSchemas" | "schemaName" | "restClient"
 >
 
-type HatchifyColumnProps =
+type HatchifyColumnProps<
+  TSchemas extends PartialSchemas,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> =
   | Omit<AdditionalColumnProps, "allSchemas" | "schemaName">
-  | Omit<ReplaceColumnProps, "allSchemas" | "schemaName">
-  | Omit<OverwriteColumnProps, "allSchemas" | "schemaName">
+  | Omit<ReplaceColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
+  | Omit<
+      OverwriteColumnProps<TSchemas, TSchemaName>,
+      "allSchemas" | "schemaName"
+    >
 
-type Components = {
-  [schemaName: string]: {
+type Components<TSchemas extends PartialSchemas> = {
+  [SchemaName in keyof TSchemas]: {
     // core
-    Collection: (props: HatchifyCollectionProps) => React.ReactElement
+    Collection: (
+      props: HatchifyCollectionProps<TSchemas, SchemaName>,
+    ) => React.ReactElement
     // compound
-    Column: (props: HatchifyColumnProps) => React.ReactElement
+    Column: (
+      props: HatchifyColumnProps<TSchemas, SchemaName>,
+    ) => React.ReactElement
     Empty: (props: HatchifyEmptyProps) => React.ReactElement
   }
 }
 
 export type HatchifyApp<TSchemas extends PartialSchemas> = {
-  components: Components
+  components: Components<TSchemas>
   model: HatchifyReactRest<TSchemas>
   state: {
     [SchemaName in keyof TSchemas]: {
@@ -52,8 +65,14 @@ export type HatchifyApp<TSchemas extends PartialSchemas> = {
         fields,
         include,
       }?: {
-        defaultSelected?: HatchifyCollectionProps["defaultSelected"]
-        onSelectedChange?: HatchifyCollectionProps["onSelectedChange"]
+        defaultSelected?: HatchifyCollectionProps<
+          TSchemas,
+          SchemaName
+        >["defaultSelected"]
+        onSelectedChange?: HatchifyCollectionProps<
+          TSchemas,
+          SchemaName
+        >["onSelectedChange"]
         fields?: Fields
         include?: Include
       }) => CollectionState<TSchemas, SchemaName>
@@ -68,31 +87,34 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
   const finalSchemas = assembler(partialSchemas)
   const reactRest = hatchifyReactRest(partialSchemas, restClient)
 
-  const components = Object.values(finalSchemas).reduce((acc, schema) => {
-    acc[schema.name] = {
-      Collection: (props) => (
-        <HatchifyCollection
-          finalSchemas={finalSchemas}
-          partialSchemas={partialSchemas}
-          schemaName={schema.name}
-          // @ts-expect-error todo: arthur
-          restClient={reactRest}
-          {...props}
-        />
-      ),
-      Column: (props) => (
-        // todo fix ts!!!
-        <HatchifyColumn
-          allSchemas={finalSchemas as any} // todo:arthur
-          schemaName={schema.name}
-          {...props}
-        />
-      ),
-      Empty: (props) => <HatchifyEmpty {...props} />,
-    }
+  const components = Object.entries(partialSchemas).reduce(
+    (acc, [schemaName, schema]) => {
+      const key = schemaName as keyof typeof acc
+      acc[key] = {
+        Collection: (props) => (
+          <HatchifyCollection<TSchemas, GetSchemaNames<TSchemas>>
+            finalSchemas={finalSchemas}
+            partialSchemas={partialSchemas}
+            schemaName={schema.name}
+            restClient={reactRest}
+            {...props}
+          />
+        ),
+        Column: (props) => (
+          // todo fix ts!!!
+          <HatchifyColumn<TSchemas, GetSchemaNames<TSchemas>>
+            allSchemas={finalSchemas as any} // todo:arthur
+            schemaName={schema.name}
+            {...props}
+          />
+        ),
+        Empty: (props) => <HatchifyEmpty {...props} />,
+      }
 
-    return acc
-  }, {} as HatchifyApp<TSchemas>["components"])
+      return acc
+    },
+    {} as HatchifyApp<TSchemas>["components"],
+  )
 
   const state = Object.entries(partialSchemas).reduce(
     (acc, [schemaName, schema]) => {
@@ -130,20 +152,25 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
 }
 
 // todo: leaving for testing, remove before merge to main
-// const partialTodo = {
-//   name: "Todo",
-//   attributes: {
-//     date: integer(),
-//     importance: integer(),
-//     name: string(),
-//   },
-// }
+const partialTodo = {
+  name: "Todo",
+  attributes: {
+    date: integer(),
+    importance: integer(),
+    name: string(),
+  },
+}
 
-// const app = hatchifyReact({ Todo: partialTodo }, undefined as any)
+const app = hatchifyReact({ Todo: partialTodo }, undefined as any)
 
-// const [records] = app.model.Todo.useAll()
-// records[0].id
-// records[0].date
-// records[0].name
-// records[0].importance
-// records[0].asdf
+const [records] = app.model.Todo.useAll()
+records[0].id
+records[0].date
+records[0].name
+records[0].importance
+
+const List = app.components.Todo.Collection
+const Column = app.components.Todo.Column
+function Test() {
+  return <Column type="replace" field="name" />
+}
