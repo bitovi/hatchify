@@ -1,34 +1,57 @@
 import { useCallback, useMemo, useState } from "react"
 import { createOne, getMeta } from "@hatchifyjs/rest-client"
 import type {
-  CreateData,
+  CreateType,
+  FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
+  PartialSchemas,
+  RecordType,
   Meta,
   MetaError,
-  Record,
-  Schemas,
   Source,
 } from "@hatchifyjs/rest-client"
+
+type CreateData<
+  TSchemas extends PartialSchemas,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = Omit<CreateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
+
+type CreatedRecord<
+  TSchemas extends PartialSchemas,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined
 
 /**
  * Returns a function that creates a new record using the rest-client createOne,
  * @todo metadata, and the last created record.
  */
-export const useCreateOne = (
+export const useCreateOne = <
+  const TSchemas extends PartialSchemas,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   dataSource: Source,
-  allSchemas: Schemas,
-  schemaName: string,
-): [(data: CreateData) => void, Meta, Record?] => {
-  const [data, setData] = useState<Record | undefined>(undefined)
+  allSchemas: FinalSchemas,
+  schemaName: TSchemaName,
+): [
+  (data: CreateData<TSchemas, TSchemaName>) => void,
+  Meta,
+  CreatedRecord<TSchemas, TSchemaName>,
+] => {
+  const [data, setData] =
+    useState<CreatedRecord<TSchemas, TSchemaName>>(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
   const create = useCallback(
-    (data: CreateData) => {
+    (data: CreateData<TSchemas, TSchemaName>) => {
       setLoading(true)
-      createOne(dataSource, allSchemas, schemaName, {
-        ...data,
-        __schema: schemaName,
-      })
+      createOne<TSchemas, GetSchemaNames<TSchemas>>(
+        dataSource,
+        allSchemas,
+        schemaName,
+        data,
+      )
         .then((data) => {
           setError(undefined)
           setData(data)

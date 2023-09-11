@@ -1,4 +1,9 @@
-import type { Schemas } from "@hatchifyjs/rest-client"
+import type {
+  GetSchemaFromName,
+  GetSchemaNames,
+  PartialSchemas,
+  Schemas,
+} from "@hatchifyjs/rest-client"
 import type {
   FlatRecord,
   ValueComponent,
@@ -28,26 +33,39 @@ export type AdditionalColumnProps = {
 } & { renderValue?: Render; ValueComponent?: ValueComponent }
 
 // todo: renderValue and ValueComponent should be optional, but only one can be provided
-export type ReplaceColumnProps = {
+export type ReplaceColumnProps<
+  TSchemas extends PartialSchemas,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = {
   allSchemas: Schemas
-  schemaName: string
+  schemaName: TSchemaName
   type: "replace"
   label?: string
-  field: string
+  field: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
 } & { renderValue?: RenderValue; ValueComponent?: ValueComponent }
 
 // todo: renderValue and ValueComponent should be optional, but only one can be provided
-export type OverwriteColumnProps = {
+export type OverwriteColumnProps<
+  TSchemas extends PartialSchemas,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = {
   allSchemas: Schemas
-  schemaName: string
+  schemaName: TSchemaName
   type?: never
   label?: string
-  field: string
+  // todo: should field be never for overwrite?
+  field: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
 } & { renderValue?: RenderValue; ValueComponent?: ValueComponent }
 
-export const HatchifyColumn: React.FC<
-  AdditionalColumnProps | ReplaceColumnProps | OverwriteColumnProps
-> = () => {
+export function HatchifyColumn<
+  const TSchemas extends PartialSchemas,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
+  props:
+    | AdditionalColumnProps
+    | ReplaceColumnProps<TSchemas, TSchemaName>
+    | OverwriteColumnProps<TSchemas, TSchemaName>,
+): null {
   return null
 }
 

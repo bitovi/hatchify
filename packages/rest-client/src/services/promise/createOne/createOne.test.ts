@@ -1,7 +1,8 @@
 import { describe, it, expect, vi } from "vitest"
 import { createStore } from "../../store"
 import { createOne } from "./createOne"
-import { fakeDataSource, schemas } from "../../mocks/testData"
+import { fakeDataSource } from "../../mocks/testData"
+import { assembler, string } from "@hatchifyjs/hatchify-core"
 
 describe("rest-client/services/promise/createOne", () => {
   const data = {
@@ -15,6 +16,16 @@ describe("rest-client/services/promise/createOne", () => {
     title: "baz",
     body: "baz-body",
   }
+
+  const schemas = assembler({
+    Article: {
+      name: "Article",
+      attributes: {
+        title: string(),
+        body: string(),
+      },
+    },
+  })
 
   it("should return the new record", async () => {
     createStore(["Article"])
@@ -49,5 +60,11 @@ describe("rest-client/services/promise/createOne", () => {
     await expect(
       createOne(errorDataSource, schemas, "Article", data),
     ).rejects.toEqual(errors)
+  })
+
+  it("should throw error if schema name is not a string", async () => {
+    await expect(
+      createOne(fakeDataSource, schemas, 1 as any, data),
+    ).rejects.toThrowError()
   })
 })

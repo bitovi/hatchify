@@ -2,6 +2,7 @@ export type {
   Attribute,
   AttributeObject,
   CreateData,
+  CreateType,
   EnumObject,
   Fields,
   FilterArray,
@@ -36,6 +37,7 @@ export type {
   Subscription,
   Unsubscribe,
   UpdateData,
+  UpdateType,
 } from "./services"
 
 export {
@@ -51,6 +53,8 @@ export {
   isSchemaV2,
   isSchemasV2,
   keyResourcesById,
+  schemaNameIsString,
+  SchemaNameNotStringError,
   subscribeToAll,
   subscribeToOne,
   transformSchema,

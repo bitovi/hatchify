@@ -8,10 +8,10 @@ import type {
   MetaError,
   QueryList,
   RecordType,
+  PartialSchemas,
   RequestMetaData,
   Source,
 } from "@hatchifyjs/rest-client"
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 
 /**
  * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
@@ -30,7 +30,7 @@ const useMemoizedQuery = (query: QueryList) => {
  * subscribes to the store for updates to the list, returns the list.
  */
 export const useAll = <
-  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemas extends PartialSchemas,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,
@@ -38,12 +38,6 @@ export const useAll = <
   schemaName: TSchemaName,
   query: QueryList,
 ): [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, Meta] => {
-  if (typeof schemaName !== "string") {
-    throw new Error(
-      `Expected schemaName to be a string, received ${typeof schemaName}`,
-    )
-  }
-
   const memoizedQuery = useMemoizedQuery(query)
   const [data, setData] = useState<
     Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>

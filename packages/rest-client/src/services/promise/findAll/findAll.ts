@@ -1,4 +1,3 @@
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 import type {
   Source,
   QueryList,
@@ -7,15 +6,20 @@ import type {
   GetSchemaFromName,
   RecordType,
   FinalSchemas,
+  PartialSchemas,
 } from "../../types"
-import { flattenResourcesIntoRecords } from "../../utils"
+import {
+  SchemaNameNotStringError,
+  flattenResourcesIntoRecords,
+  schemaNameIsString,
+} from "../../utils"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,
  * notifies subscribers, and returns them as records.
  */
 export const findAll = async <
-  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemas extends PartialSchemas,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,
@@ -25,10 +29,8 @@ export const findAll = async <
 ): Promise<
   [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, RequestMetaData]
 > => {
-  if (typeof schemaName !== "string") {
-    throw new Error(
-      `Expected schemaName to be a string, received ${typeof schemaName}`,
-    )
+  if (!schemaNameIsString(schemaName)) {
+    throw new SchemaNameNotStringError(schemaName)
   }
 
   const [resources, requestMetaData] = await dataSource.findAll(

@@ -9,16 +9,16 @@ const TestSchema = {
   },
   Person: {
     name: "Person",
-    displayAttribute: "name",
     attributes: {
       age: integer(),
     },
-    relationships: {
-      Article: {
-        type: "many",
-        schema: "yes",
-      },
-    },
+    // todo: v2 relationships
+    // relationships: {
+    //   Article: {
+    //     type: "many",
+    //     schema: "yes",
+    //   },
+    // },
   },
 }
 
@@ -38,30 +38,30 @@ describe("react-jsonapi", () =>
 
     expect(reactRest).toEqual({
       Article: {
-        // createOne: expect.any(Function),
-        // deleteOne: expect.any(Function),
+        createOne: expect.any(Function),
+        deleteOne: expect.any(Function),
         findAll: expect.any(Function),
-        // findOne: expect.any(Function),
-        // updateOne: expect.any(Function),
-        // useCreateOne: expect.any(Function),
-        // useDeleteOne: expect.any(Function),
+        findOne: expect.any(Function),
+        updateOne: expect.any(Function),
+        useCreateOne: expect.any(Function),
+        useDeleteOne: expect.any(Function),
         useAll: expect.any(Function),
-        // useOne: expect.any(Function),
-        // useUpdateOne: expect.any(Function),
+        useOne: expect.any(Function),
+        useUpdateOne: expect.any(Function),
         // subscribeToAll: expect.any(Function),
         // subscribeToOne: expect.any(Function),
       },
       Person: {
-        // createOne: expect.any(Function),
-        // deleteOne: expect.any(Function),
+        createOne: expect.any(Function),
+        deleteOne: expect.any(Function),
         findAll: expect.any(Function),
-        // findOne: expect.any(Function),
-        // updateOne: expect.any(Function),
-        // useCreateOne: expect.any(Function),
-        // useDeleteOne: expect.any(Function),
+        findOne: expect.any(Function),
+        updateOne: expect.any(Function),
+        useCreateOne: expect.any(Function),
+        useDeleteOne: expect.any(Function),
         useAll: expect.any(Function),
-        // useOne: expect.any(Function),
-        // useUpdateOne: expect.any(Function),
+        useOne: expect.any(Function),
+        useUpdateOne: expect.any(Function),
         // subscribeToAll: expect.any(Function),
         // subscribeToOne: expect.any(Function),
       },

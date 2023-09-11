@@ -44,24 +44,48 @@ export type GetSchemaFromName<
 
 export type NumberAsString = "number" | "Number"
 export type StringAsString = "string" | "String"
+export type DateAsString = "datetime" | "Datetime"
 
 export type IsNumber<TValue> = TValue extends NumberAsString ? true : false
 export type IsString<TValue> = TValue extends StringAsString ? true : false
+export type IsDate<TValue> = TValue extends DateAsString ? true : false
 
 export type RecordType<TPartialSchema extends PartialSchema> = {
   id: string
 } & {
-  [AttributeName in keyof TPartialSchema["attributes"]]: IsNumber<
-    TPartialSchema["attributes"][AttributeName]["control"]["type"]
-  > extends true
-    ? number
-    : IsString<
-        TPartialSchema["attributes"][AttributeName]["control"]["type"]
-      > extends true
-    ? string
-    : unknown
+  [AttributeName in keyof TPartialSchema["attributes"]]: GetTypedAttribute<
+    TPartialSchema["attributes"],
+    AttributeName
+  >
+}
+
+export type CreateType<TPartialSchema extends PartialSchema> = {
+  __schema: TPartialSchema["name"]
+  attributes: {
+    [AttributeName in keyof TPartialSchema["attributes"]]: GetTypedAttribute<
+      TPartialSchema["attributes"],
+      AttributeName
+    >
+  }
+}
+
+export type UpdateType<TPartialSchema extends PartialSchema> = {
+  id: string
+} & {
+  attributes: Partial<CreateType<TPartialSchema>["attributes"]>
 }
 
 export type GetAttributes<TSchema extends PartialSchema> = {
   [AttributeName in keyof TSchema["attributes"]]: TSchema["attributes"][AttributeName]
 }
+
+export type GetTypedAttribute<
+  TAttributes extends PartialSchema["attributes"],
+  TAttributeName extends keyof TAttributes,
+> = IsNumber<TAttributes[TAttributeName]["control"]["type"]> extends true
+  ? number
+  : IsString<TAttributes[TAttributeName]["control"]["type"]> extends true
+  ? string
+  : IsDate<TAttributes[TAttributeName]["control"]["type"]> extends true
+  ? Date | string // Date object or ISO string
+  : unknown
