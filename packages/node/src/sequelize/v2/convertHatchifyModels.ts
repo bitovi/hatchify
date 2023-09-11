@@ -97,9 +97,17 @@ export function convertHatchifyModels(
   const associationsLookup = hatchifyModels.reduce((modelAcc, model) => {
     const associations = Object.entries(
       finalSchemas[model.name].relationships ?? {},
-    ).reduce((relationshipAcc, [relationshipName, { type, targetSchema }]) => {
+    ).reduce((relationshipAcc, [relationshipName, relationship]) => {
+      const { type, targetSchema } = relationship
+
       sequelize.models[model.name][type](sequelize.models[targetSchema], {
         as: relationshipName,
+        ...("sourceAttribute" in relationship
+          ? { foreignKey: relationship.sourceAttribute }
+          : {}),
+        ...("targetAttribute" in relationship
+          ? { foreignKey: relationship.targetAttribute }
+          : {}),
       })
 
       return {

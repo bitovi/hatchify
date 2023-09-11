@@ -78,6 +78,12 @@ describe("toSequelize", () => {
           }),
         ).toMatchObject({ dataValues: { id: null, importance: 0.1 } })
       })
+
+      it("does not enforce values for optional attributes", () => {
+        expect(schemas.Todo.build({})).toMatchObject({
+          dataValues: { id: null },
+        })
+      })
     })
 
     describe("save", () => {
@@ -120,6 +126,12 @@ describe("toSequelize", () => {
           }).save(),
         ).rejects.toThrow("as multiples of 1")
       })
+
+      it("does not require values for optional attributes", async () => {
+        expect(await schemas.Todo.build({}).save()).toMatchObject({
+          dataValues: { id: 2 },
+        })
+      })
     })
 
     describe("create", () => {
@@ -161,6 +173,12 @@ describe("toSequelize", () => {
             importance: 0.1,
           }),
         ).rejects.toThrow("as multiples of 1")
+      })
+
+      it("does not require values for optional attributes", async () => {
+        expect(await schemas.Todo.create({})).toMatchObject({
+          dataValues: { id: 3 },
+        })
       })
     })
   })
