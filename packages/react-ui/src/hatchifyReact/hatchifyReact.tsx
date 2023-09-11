@@ -1,4 +1,3 @@
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type { Source, Schemas, Fields, Include } from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
@@ -56,13 +55,12 @@ export type HatchifyApp = {
   }
 }
 
-export function hatchifyReact(
-  legacySchemas: Record<string, LegacySchema>,
-  dataSource: Source,
-): HatchifyApp {
-  const reactRest = hatchifyReactRest(legacySchemas, dataSource)
+export function hatchifyReact(dataSource: Source): HatchifyApp {
+  const { completeSchemaMap } = dataSource
 
-  const schemas = Object.values(legacySchemas).reduce((acc, schema) => {
+  const reactRest = hatchifyReactRest(completeSchemaMap, dataSource)
+
+  const schemas = Object.values(completeSchemaMap).reduce((acc, schema) => {
     acc[schema.name] = transformSchema(schema)
     return acc
   }, {} as Schemas)

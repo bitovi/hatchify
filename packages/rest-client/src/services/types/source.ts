@@ -1,4 +1,4 @@
-import type { Schemas } from "./schema"
+import type { Schema, Schemas } from "./schema"
 import type { QueryList, QueryOne } from "./query"
 import type {
   RestClientCreateData,
@@ -6,15 +6,29 @@ import type {
   RestClientUpdateData,
 } from "./data"
 import type { RequestMetaData } from "./meta"
+import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 
-interface SourceSchema {
+type EitherSchema = Schema | LegacySchema
+
+type SourceSchema = EitherSchema & {
   type?: string
-  endpoint: string
 }
+
+type WithRequiredProperty<Type, Key extends keyof Type> = Type & {
+  [Property in Key]-?: Type[Property]
+}
+
+// interface SourceSchema extends Pick<LegacySchema, "name" | "attributes"> {
+//   type?: string
+//   pluralName?: string
+// }
 
 export type SchemaMap = Record<string, SourceSchema>
 
-export type RequiredSchemaMap = Record<string, Required<SourceSchema>>
+export type RequiredSchemaMap = Record<
+  string,
+  WithRequiredProperty<SourceSchema, "type">
+>
 
 export interface SourceConfig {
   baseUrl: string
@@ -25,6 +39,7 @@ export interface SourceConfig {
 // their may be a need to return related resources
 export interface SourceV0 {
   version: 0
+  completeSchemaMap: RequiredSchemaMap
   findAll: (
     allSchemas: Schemas,
     schemaName: string,

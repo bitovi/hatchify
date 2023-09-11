@@ -9,11 +9,7 @@ import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
 
 export const hatchedReact = hatchifyReact(
-  { Todo, User },
-  createJsonapiClient("http://localhost:3000/api", {
-    Todo: { endpoint: "todos" },
-    User: { endpoint: "users" },
-  }),
+  createJsonapiClient("http://localhost:3000/api", { Todo, User }),
 )
 
 const TodoList = hatchedReact.components.Todo.Collection

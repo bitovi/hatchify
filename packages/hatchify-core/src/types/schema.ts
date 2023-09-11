@@ -19,4 +19,5 @@ export interface Schema {
   hasMany?: Relationship[]
   belongsTo?: Relationship[]
   belongsToMany?: Relationship[]
+  pluralName?: string
 }

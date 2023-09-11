@@ -32,7 +32,7 @@ export async function findAll(
 
   const json = await fetchJsonApi<JsonApiResource[]>(
     "GET",
-    `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}${queryParams}`,
+    `${config.baseUrl}/${config.schemaMap[schemaName].pluralName}${queryParams}`,
   )
 
   return Promise.resolve([
