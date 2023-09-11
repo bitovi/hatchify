@@ -32,7 +32,7 @@ function HatchifyCollection<
   children,
   defaultSelected,
   onSelectedChange,
-}: HatchifyCollectionProps<TSchemas, TSchemaName>) {
+}: HatchifyCollectionProps<TSchemas, TSchemaName>): JSX.Element {
   const { Collection } = useHatchifyPresentation()
   // todo: relationships not implemented in v2 yet
   // const defaultInclude = getDefaultInclude(allSchemas, schemaName)

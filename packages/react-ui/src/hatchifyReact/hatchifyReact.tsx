@@ -1,4 +1,4 @@
-import { assembler, integer, string } from "@hatchifyjs/hatchify-core"
+import { assembler } from "@hatchifyjs/hatchify-core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   Fields,
@@ -151,26 +151,26 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
   }
 }
 
-// todo: leaving for testing, remove before merge to main
-const partialTodo = {
-  name: "Todo",
-  attributes: {
-    date: integer(),
-    importance: integer(),
-    name: string(),
-  },
-}
+// // todo: leaving for testing, remove before merge to main
+// const partialTodo = {
+//   name: "Todo",
+//   attributes: {
+//     date: integer(),
+//     importance: integer(),
+//     name: string(),
+//   },
+// }
 
-const app = hatchifyReact({ Todo: partialTodo }, undefined as any)
+// const app = hatchifyReact({ Todo: partialTodo }, undefined as any)
 
-const [records] = app.model.Todo.useAll()
-records[0].id
-records[0].date
-records[0].name
-records[0].importance
+// const [records] = app.model.Todo.useAll()
+// records[0].id
+// records[0].date
+// records[0].name
+// records[0].importance
 
-const List = app.components.Todo.Collection
-const Column = app.components.Todo.Column
-function Test() {
-  return <Column type="replace" field="name" />
-}
+// const List = app.components.Todo.Collection
+// const Column = app.components.Todo.Column
+// function Test() {
+//   return <Column type="replace" field="name" />
+// }

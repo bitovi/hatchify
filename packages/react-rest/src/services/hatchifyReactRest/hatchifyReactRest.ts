@@ -2,7 +2,7 @@ import {
   assembler,
   // string, integer, datetime
 } from "@hatchifyjs/hatchify-core"
-import {
+import type {
   CreateType,
   GetSchemaFromName,
   GetSchemaNames,

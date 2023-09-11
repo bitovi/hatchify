@@ -65,7 +65,7 @@ export function HatchifyColumn<
     | AdditionalColumnProps
     | ReplaceColumnProps<TSchemas, TSchemaName>
     | OverwriteColumnProps<TSchemas, TSchemaName>,
-) {
+): null {
   return null
 }
 
