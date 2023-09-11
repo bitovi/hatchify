@@ -138,46 +138,116 @@ async function parse(result) {
   }
 }
 
+interface ForeignKey {
+  schemaName: string
+  tableName: string
+  columnName: string
+}
+
 interface DatabaseColumn {
   name: string
-  notnull: "YES" | "NO"
-  pk: 0 | 1
+  allowNull: boolean
+  primary: boolean
   type: string
+  foreignKeys?: ForeignKey[]
 }
 
 export async function getDatabaseColumns(
-  tableName: string,
   hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"],
+  tableName: string,
+  schemaName = "public",
 ): Promise<DatabaseColumn[]> {
   const dialect = hatchify.orm.getDialect()
   let columns: DatabaseColumn[] = []
 
   if (dialect === "sqlite") {
-    ;[columns] = await hatchify._sequelize.query(
-      `SELECT name, "notnull", pk, type FROM pragma_table_info('${tableName}')`,
-    )
+    const [[result], constraints] = await Promise.all([
+      hatchify._sequelize.query(
+        `SELECT name, "notnull", pk, type FROM pragma_table_info('${tableName}')`,
+      ),
+      hatchify._sequelize.query(`PRAGMA foreign_key_list(${tableName})`),
+    ])
+
+    columns = result.map((column) => {
+      const foreignKeys = constraints.reduce(
+        (acc, constraint) =>
+          constraint.from === column.name
+            ? [
+                ...acc,
+                {
+                  tableName: constraint.table,
+                  columnName: constraint.to,
+                },
+              ]
+            : acc,
+        [],
+      )
+
+      return {
+        name: column.name,
+        allowNull: column.notnull === 0,
+        primary: column.pk === 1,
+        type: column.type,
+        ...(foreignKeys.length ? { foreignKeys } : {}),
+      }
+    })
   } else if (dialect === "postgres") {
     const [[result], [constraints]] = await Promise.all([
       hatchify._sequelize.query(
-        `SELECT column_name, is_nullable, data_type FROM information_schema.columns WHERE table_name = '${tableName}'`,
+        `
+        SELECT column_name, is_nullable, data_type
+        FROM information_schema.columns
+        WHERE table_schema = :schemaName AND table_name = :tableName`,
+        { replacements: { schemaName, tableName } },
       ),
       hatchify._sequelize.query(
-        `SELECT column_name, constraint_name FROM information_schema.key_column_usage WHERE table_name = '${tableName}'`,
+        `
+        SELECT
+          tc.constraint_type AS type,
+          kcu.column_name AS column,
+          ccu.table_schema AS "foreignSchema",
+          ccu.table_name AS "foreignTable",
+          ccu.column_name AS "foreignColumn"
+        FROM information_schema.table_constraints AS tc
+        JOIN information_schema.key_column_usage AS kcu
+          ON tc.constraint_name = kcu.constraint_name
+          AND tc.table_schema = kcu.table_schema
+        JOIN information_schema.constraint_column_usage AS ccu
+          ON ccu.constraint_name = tc.constraint_name
+        WHERE tc.table_schema = :schemaName AND tc.table_name = :tableName`,
+        { replacements: { schemaName, tableName } },
       ),
     ])
 
-    columns = result.map((column) => ({
-      name: column.column_name,
-      notnull: column.is_nullable,
-      pk:
-        column.column_name ===
-        constraints.find(
-          (constraint) => constraint.constraint_name === "user_pkey",
-        ).column_name
-          ? 1
-          : 0,
-      type: column.data_type,
-    }))
+    columns = result.map((column) => {
+      const foreignKeys = constraints.reduce(
+        (acc, constraint) =>
+          constraint.column === column.column_name &&
+          constraint.type === "FOREIGN KEY"
+            ? [
+                ...acc,
+                {
+                  schemaName: constraint.foreignSchema,
+                  tableName: constraint.foreignTable,
+                  columnName: constraint.foreignColumn,
+                },
+              ]
+            : acc,
+        [],
+      )
+
+      return {
+        name: column.column_name,
+        allowNull: column.is_nullable === "YES",
+        primary: constraints.some(
+          (constraint) =>
+            constraint.column === column.column_name &&
+            constraint.type === "PRIMARY KEY",
+        ),
+        type: column.data_type,
+        ...(foreignKeys.length ? { foreignKeys } : {}),
+      }
+    })
   }
 
   return columns.sort((a, b) => {

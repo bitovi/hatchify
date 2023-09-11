@@ -75,7 +75,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           version: "1.0",
         },
         data: {
-          id: "1",
+          id: expect.any(String),
           type: "User",
           attributes: {
             name: "John Doe",
@@ -90,16 +90,20 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         data: [
           {
             type: "Todo",
-            id: "1",
+            id: todo.data.id,
             attributes: {
               name: "Walk the dog",
               due_date: "2024-12-12T00:00:00.000Z",
               importance: 6,
             },
-            relationships: { user: { data: { type: "User", id: "1" } } },
+            relationships: {
+              user: { data: { type: "User", id: user.data.id } },
+            },
           },
         ],
-        included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+        included: [
+          { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+        ],
         meta: { unpaginatedCount: 1 },
       })
 
@@ -112,15 +116,19 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         data: [
           {
             type: "Todo",
-            id: "1",
+            id: todo.data.id,
             attributes: {
               name: "Walk the dog",
               due_date: "2024-12-12T00:00:00.000Z",
             },
-            relationships: { user: { data: { type: "User", id: "1" } } },
+            relationships: {
+              user: { data: { type: "User", id: user.data.id } },
+            },
           },
         ],
-        included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+        included: [
+          { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+        ],
         meta: { unpaginatedCount: 1 },
       })
 
@@ -133,15 +141,19 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         data: [
           {
             type: "Todo",
-            id: "1",
+            id: todo.data.id,
             attributes: {
               name: "Walk the dog",
               due_date: "2024-12-12T00:00:00.000Z",
             },
-            relationships: { user: { data: { type: "User", id: "1" } } },
+            relationships: {
+              user: { data: { type: "User", id: user.data.id } },
+            },
           },
         ],
-        included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+        included: [
+          { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+        ],
         meta: { unpaginatedCount: 1 },
       })
     })

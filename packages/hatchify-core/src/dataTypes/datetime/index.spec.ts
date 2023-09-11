@@ -117,6 +117,7 @@ describe("datetime", () => {
         new Date("2023-01-01T00:00:00.000Z"),
       )
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1)).toThrow(
         new HatchifyCoerceError("as an ISO 8601 date string"),
       )
@@ -293,6 +294,9 @@ describe("datetime", () => {
       )
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue(1)).toThrow(
         new HatchifyCoerceError("as an ISO 8601 date string"),
@@ -474,6 +478,9 @@ describe("datetime", () => {
       )
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue(1)).toThrow(
         new HatchifyCoerceError("as an ISO 8601 date string"),
@@ -664,6 +671,7 @@ describe("datetime", () => {
         new Date("2023-01-01T00:00:00.000Z"),
       )
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1)).toThrow(
         new HatchifyCoerceError("as an ISO 8601 date string"),
       )
@@ -868,6 +876,7 @@ describe("datetime", () => {
         new Date("2023-01-01T00:00:00.000Z"),
       )
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1)).toThrow(
         new HatchifyCoerceError("as an ISO 8601 date string"),
       )
