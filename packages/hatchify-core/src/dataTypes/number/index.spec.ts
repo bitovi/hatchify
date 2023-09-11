@@ -136,6 +136,7 @@ describe("number", () => {
       expect(setORMPropertyValue(1.11)).toBe(1.11)
 
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -339,6 +340,9 @@ describe("number", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -536,6 +540,7 @@ describe("number", () => {
       expect(setORMPropertyValue(1.1)).toBe(1.1)
       expect(setORMPropertyValue(1.11)).toBe(1.11)
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -741,6 +746,9 @@ describe("number", () => {
       expect(setORMPropertyValue(1.11)).toBe(1.11)
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
@@ -1166,6 +1174,7 @@ describe("number", () => {
       expect(setORMPropertyValue(1.1)).toBe(1.1)
       expect(setORMPropertyValue(1.11)).toBe(1.11)
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(-1)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
