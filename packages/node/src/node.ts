@@ -98,6 +98,18 @@ export class Hatchify {
     // Prepare the ORM instance and keep references to the different Models
     this._sequelize = createSequelizeInstance(options.database)
 
+    if (this._sequelize.getDialect() === "sqlite") {
+      const gc = this._sequelize.connectionManager.getConnection
+      this._sequelize.connectionManager.getConnection = async function (
+        ...args: Parameters<typeof gc>
+      ) {
+        // const { getLoadablePath } = await import("sqlite-regex")
+        const db = await gc.apply(this, args)
+        // db.loadExtension(getLoadablePath())
+        db.run("PRAGMA case_sensitive_like=ON")
+        return db
+      }
+    }
     this._serializer = new JSONAPISerializer()
 
     // Fetch the hatchify models and associations look up

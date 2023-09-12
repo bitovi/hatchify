@@ -238,10 +238,6 @@ const testCases = [
     queryParam: "filter[onSite][$nin]=true&filter[manager][$nin]=true",
     expectedResult: [jane],
   },
-]
-
-const postgresOnlyTestCases = [
-  // TODO - we need to support this in SQLite too as part of HATCH-329
   {
     description:
       "returns correct data using the $ilike operator for an array of strings (non-case sensitive)",
@@ -252,41 +248,42 @@ const postgresOnlyTestCases = [
   },
 ]
 
+// const postgresOnlyTestCases: Array<{
+//   description: string
+//   operator: string
+//   queryParam: string
+//   expectedResult: typeof userData
+// }> = []
+
 // like not supported by SQLite
 const SQLiteOnlyTestCases = [
   {
     description:
-      "throws error when attempting to use the $like operator for end of a string",
+      "converts to regex when attempting to use the $like operator for end of a string",
     operator: "$like",
     queryParam: `filter[name][$like]=${encodeURIComponent("%ne")}`,
-    expectedErrorSource: {
-      parameter: `filter[name][$like]=${encodeURIComponent("%ne")}`,
-    },
+    expectedResult: [jane],
   },
   {
     description:
-      "throws error when attempting to use the $like operator for beginning of a string",
+      "converts to regex when attempting to use the $like operator for beginning of a string",
     operator: "$like",
     queryParam: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
-    expectedErrorSource: {
-      parameter: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
-    },
+    expectedResult: [john],
   },
   {
     description:
-      "throws error when attempting to use the $like operator for middle of a string",
+      "converts to regex when attempting to use the $like operator for middle of a string",
     operator: "$like",
     queryParam: `filter[name][$like]=${encodeURIComponent("%an%")}`,
-    expectedErrorSource: {
-      parameter: `filter[name][$like]=${encodeURIComponent("%an%")}`,
-    },
+    expectedResult: [jane],
   },
   {
     description:
-      "throws error when attempting to use the $like operator for entirety of a string (non-case sensitive)",
+      "converts to regex when attempting to use the $like operator for entirety of a string",
     operator: "$like",
     queryParam: "filter[name][$like]=John",
-    expectedErrorSource: { parameter: "filter[name][$like]=John" },
+    expectedResult: [john],
   },
 ]
 
@@ -345,50 +342,27 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
     await teardown()
   })
 
-  it.each(testCases)(
-    `${dialect} - $description`,
-    async ({ expectedResult, queryParam }) => {
-      const { body } = await fetch(`/api/users/?${queryParam}`)
-      const users = body.data.map(({ attributes }) => attributes)
-      expect(users).toEqual(
-        expectedResult.map((er) => ({
-          ...er,
-          startDate: new Date(er.startDate).toISOString(),
-        })),
-      )
-    },
-  )
-
-  if (dialect === "postgres") {
-    it.each(postgresOnlyTestCases)(
-      `${dialect} - $description`,
-      async ({ expectedResult, queryParam }) => {
-        const { body } = await fetch(`/api/users/?${queryParam}`)
-        const users = body.data.map(({ attributes }) => attributes)
-        expect(users).toEqual(
-          expectedResult.map((er) => ({
-            ...er,
-            startDate: new Date(er.startDate).toISOString(),
-          })),
-        )
-      },
+  const validator = async ({ expectedResult, queryParam }) => {
+    const { body } = await fetch(`/api/users/?${queryParam}`)
+    if (body.errors) {
+      throw body.errors
+    }
+    const users = body.data.map(({ attributes }) => attributes)
+    expect(users).toEqual(
+      expectedResult.map((er) => ({
+        ...er,
+        startDate: new Date(er.startDate).toISOString(),
+      })),
     )
   }
 
+  it.each(testCases)(`${dialect} - $description`, validator)
+
+  // if (dialect === "postgres") {
+  //   it.each(postgresOnlyTestCases)(`${dialect} - $description`, validator)
+  // }
+
   if (dialect === "sqlite") {
-    it.each(SQLiteOnlyTestCases)(
-      `${dialect} - $description`,
-      async ({ expectedErrorSource, queryParam }) => {
-        const result = await fetch(`/api/users/?${queryParam}`)
-        const error = JSON.parse(result.error.text)
-        expect(error.errors[0]).toEqual({
-          status: 422,
-          code: "invalid-parameter",
-          detail: "SQLITE does not support like. Please use ilike",
-          source: expectedErrorSource,
-          title: "SQLITE does not support like",
-        })
-      },
-    )
+    it.each(SQLiteOnlyTestCases)(`${dialect} - $description`, validator)
   }
 })

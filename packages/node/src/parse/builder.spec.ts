@@ -187,6 +187,116 @@ describe("builder", () => {
         }),
       ])
     })
+
+    it("does not convert LIKE for Sqlite", async () => {
+      const options = buildFindOptions(
+        hatchify,
+        Todo,
+        "filter[name][$like]=test%25",
+      )
+
+      expect(options).toEqual({
+        data: {
+          where: { name: { [Op.like]: "test%" } },
+        },
+        errors: [],
+        orm: "sequelize",
+      })
+    })
+
+    it("converts LIKE ANY for Sqlite", async () => {
+      const options = buildFindOptions(
+        hatchify,
+        Todo,
+        "filter[name][$like]=test,foo",
+      )
+
+      expect(options).toEqual({
+        data: {
+          where: {
+            name: {
+              [Op.or]: [{ [Op.like]: "test" }, { [Op.like]: "foo" }],
+            },
+          },
+        },
+        errors: [],
+        orm: "sequelize",
+      })
+    })
+
+    it("converts ILIKE for Sqlite", async () => {
+      const options = buildFindOptions(
+        hatchify,
+        Todo,
+        "filter[name][$ilike]=test",
+      )
+
+      expect(options).toEqual({
+        data: {
+          where: {
+            [Op.and]: [
+              {
+                attribute: {
+                  args: [
+                    {
+                      col: "name",
+                    },
+                  ],
+                  fn: "upper",
+                },
+                comparator: Op.like,
+                logic: "TEST",
+              },
+            ],
+          },
+        },
+        errors: [],
+        orm: "sequelize",
+      })
+    })
+
+    it("converts ILIKE ANY for Sqlite", async () => {
+      const options = buildFindOptions(
+        hatchify,
+        Todo,
+        "filter[name][$ilike]=test,foo",
+      )
+
+      expect(options).toEqual({
+        data: {
+          where: {
+            [Op.or]: [
+              {
+                attribute: {
+                  args: [
+                    {
+                      col: "name",
+                    },
+                  ],
+                  fn: "upper",
+                },
+                comparator: Op.like,
+                logic: "TEST",
+              },
+              {
+                attribute: {
+                  args: [
+                    {
+                      col: "name",
+                    },
+                  ],
+                  fn: "upper",
+                },
+                comparator: Op.like,
+                logic: "FOO",
+              },
+            ],
+          },
+        },
+        errors: [],
+        orm: "sequelize",
+      })
+    })
   })
 
   describe("buildCreateOptions", () => {
