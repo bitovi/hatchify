@@ -259,28 +259,28 @@ const testCases = [
 const SQLiteOnlyTestCases = [
   {
     description:
-      "converts to regex when attempting to use the $like operator for end of a string",
+      "does not error when attempting to use the $like operator for end of a string",
     operator: "$like",
     queryParam: `filter[name][$like]=${encodeURIComponent("%ne")}`,
     expectedResult: [jane],
   },
   {
     description:
-      "converts to regex when attempting to use the $like operator for beginning of a string",
+      "does not error when attempting to use the $like operator for beginning of a string",
     operator: "$like",
     queryParam: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
     expectedResult: [john],
   },
   {
     description:
-      "converts to regex when attempting to use the $like operator for middle of a string",
+      "does not error when attempting to use the $like operator for middle of a string",
     operator: "$like",
     queryParam: `filter[name][$like]=${encodeURIComponent("%an%")}`,
     expectedResult: [jane],
   },
   {
     description:
-      "converts to regex when attempting to use the $like operator for entirety of a string",
+      "does not error when attempting to use the $like operator for entirety of a string",
     operator: "$like",
     queryParam: "filter[name][$like]=John",
     expectedResult: [john],
