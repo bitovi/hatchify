@@ -110,6 +110,7 @@ export const testMeta = {
 
 export const fakeDataSource: Source = {
   version: 0,
+  completeSchemaMap: {},
   findAll: () => Promise.resolve([testData, testMeta]),
   findOne: () =>
     Promise.resolve([testData[0], testData[2], testData[3], testData[4]]),

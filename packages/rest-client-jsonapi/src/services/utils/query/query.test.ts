@@ -51,8 +51,8 @@ describe("rest-client-jsonapi/services/utils/query", () => {
     },
   }
   const schemaMap = {
-    Book: { type: "book_type", endpoint: "books" },
-    Person: { type: "person_type", endpoint: "people" },
+    Book: { type: "book_type", ...schemas["Book"] },
+    Person: { type: "person_type", ...schemas["Person"] },
   }
 
   describe("fieldsToQueryParam", () => {

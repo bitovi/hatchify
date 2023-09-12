@@ -5,6 +5,7 @@ import type { Schema } from "@hatchifyjs/rest-client"
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 
 const fakeDataSource: Source = {
+  completeSchemaMap: {},
   version: 0,
   findAll: () => Promise.resolve([[], {}]),
   findOne: () => Promise.resolve([]),

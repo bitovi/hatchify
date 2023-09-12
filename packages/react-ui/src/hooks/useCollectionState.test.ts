@@ -18,6 +18,7 @@ const schemas: Schemas = {
 
 const fakeRestClient = hatchifyReactRest(schemas, {
   version: 0,
+  completeSchemaMap: {},
   findAll: () =>
     Promise.resolve([
       [
