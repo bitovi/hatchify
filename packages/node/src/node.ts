@@ -3,6 +3,7 @@ import type { IAssociation } from "@hatchifyjs/sequelize-create-with-association
 import JSONAPISerializer from "json-api-serializer"
 import { match } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
+import type { Database } from "sqlite3"
 
 import type { HatchifyErrorOptions } from "./error"
 import { HatchifyError } from "./error"
@@ -99,14 +100,16 @@ export class Hatchify {
     this._sequelize = createSequelizeInstance(options.database)
 
     if (this._sequelize.getDialect() === "sqlite") {
+      // const { getLoadablePath } = await import("sqlite-regex")
       const gc = this._sequelize.connectionManager.getConnection
       this._sequelize.connectionManager.getConnection = async function (
         ...args: Parameters<typeof gc>
       ) {
-        // const { getLoadablePath } = await import("sqlite-regex")
-        const db = await gc.apply(this, args)
+        const db: Database = await gc.apply(this, args)
         // db.loadExtension(getLoadablePath())
-        db.run("PRAGMA case_sensitive_like=ON")
+        await new Promise((resolve) =>
+          db.run("PRAGMA case_sensitive_like=ON", resolve),
+        )
         return db
       }
     }
