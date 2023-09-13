@@ -201,6 +201,17 @@ describe("builder", () => {
       ])
     })
 
+    it("handles unknown relationships", async () => {
+      await expect(async () =>
+        buildFindOptions(hatchify, Todo, "filter[invalid.name]=invalid"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'filter[invalid.name]' where 'invalid' is one of the includes.`,
+          parameter: `filter[invalid.name]`,
+        }),
+      ])
+    })
+
     it("handles unknown sort fields", async () => {
       await expect(async () =>
         buildFindOptions(hatchify, Todo, "sort=invalid"),

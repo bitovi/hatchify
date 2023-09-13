@@ -7,7 +7,6 @@ import type {
   FindOptions,
   Identifier,
   UpdateOptions,
-  WhereOptions,
 } from "sequelize"
 
 import { HatchifyError, UnexpectedValueError } from "../error"
@@ -44,9 +43,13 @@ function handleSqliteLike(querystring: string, dbType: string): string {
   return querystring
 }
 
+interface Include {
+  association: string
+}
+
 function renameRelationshipFilters(
   model: HatchifyModel,
-  where: WhereOptions<any> | undefined,
+  ops: QueryStringParser<FindOptions>,
 ) {
   const errors: Error[] = []
 
@@ -87,6 +90,23 @@ function renameRelationshipFilters(
         }
       }
 
+      const [relationshipName] = key.split(".")
+
+      const relationshipNames = (
+        !ops.data.include || Array.isArray(ops.data.include)
+          ? ((ops.data.include ?? []) as Include[])
+          : [ops.data.include as Include]
+      ).map((include) => include.association)
+
+      if (!relationshipNames.includes(relationshipName)) {
+        errors.push(
+          new UnexpectedValueError({
+            detail: `URL must have 'filter[${key}]' where '${relationshipName}' is one of the includes.`,
+            parameter: `filter[${key}]`,
+          }),
+        )
+      }
+
       return {
         ...acc,
         [`$${key}$`]: _renameRelationshipFilters(where[key]),
@@ -94,7 +114,7 @@ function renameRelationshipFilters(
     }, {})
   }
 
-  return { where: _renameRelationshipFilters(where), errors }
+  return { where: _renameRelationshipFilters(ops.data.where), errors }
 }
 
 export function buildFindOptions(
@@ -121,7 +141,7 @@ export function buildFindOptions(
     return ops
   }
 
-  const { where, errors } = renameRelationshipFilters(model, ops.data.where)
+  const { where, errors } = renameRelationshipFilters(model, ops)
   ops.data.where = where
   ops.errors.push(...errors)
 
