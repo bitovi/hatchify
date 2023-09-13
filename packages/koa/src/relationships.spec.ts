@@ -560,6 +560,91 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         })
       })
     })
+
+    it("should allow relationship filtering (HATCH-376)", async () => {
+      const todos = await Promise.all(
+        [1, 2].map((importance) =>
+          fetch("/api/todos", {
+            method: "post",
+            body: {
+              data: {
+                type: "Todo",
+                attributes: {
+                  name: "Walk the dog",
+                  due_date: "2024-12-12T00:00:00.000Z",
+                  importance,
+                },
+              },
+            },
+          }),
+        ),
+      )
+
+      const { body: user } = await fetch("/api/users", {
+        method: "post",
+        body: {
+          data: {
+            type: "User",
+            attributes: {
+              name: "John",
+            },
+            relationships: {
+              todos: {
+                data: todos.map(
+                  ({
+                    body: {
+                      data: { id },
+                    },
+                  }) => ({
+                    type: "Todo",
+                    id,
+                  }),
+                ),
+              },
+            },
+          },
+        },
+      })
+
+      const { body } = await fetch(
+        "/api/users?include=todos&filter[name]=John&filter[todos.importance]=1",
+      )
+
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        data: [
+          {
+            type: "User",
+            id: user.data.id,
+            attributes: {
+              name: "John",
+            },
+            relationships: {
+              todos: {
+                data: [
+                  {
+                    type: "Todo",
+                    id: todos[0].body.data.id,
+                  },
+                ],
+              },
+            },
+          },
+        ],
+        included: [
+          {
+            type: "Todo",
+            id: todos[0].body.data.id,
+            attributes: {
+              name: "Walk the dog",
+              due_date: "2024-12-12T00:00:00.000Z",
+              importance: 1,
+            },
+          },
+        ],
+        meta: { unpaginatedCount: 1 },
+      })
+    })
   })
 
   describe(`${dialect} - No Relationships`, () => {
