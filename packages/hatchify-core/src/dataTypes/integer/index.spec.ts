@@ -135,6 +135,7 @@ describe("integer", () => {
       expect(setORMPropertyValue(1)).toBe(1)
 
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -342,6 +343,9 @@ describe("integer", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -542,6 +546,7 @@ describe("integer", () => {
       expect(setORMPropertyValue(0)).toBe(0)
       expect(setORMPropertyValue(1)).toBe(1)
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -747,6 +752,9 @@ describe("integer", () => {
       expect(setORMPropertyValue(1)).toBe(1)
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),

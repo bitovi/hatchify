@@ -45,20 +45,9 @@ export function buildFindOptions(
     return ops
   }
 
-  Object.keys(ops.data.where || {}).forEach((attribute) => {
-    if (attribute !== "id" && !model.attributes[attribute]) {
-      ops.errors.push(
-        new UnexpectedValueError({
-          detail: `URL must have 'filter[x]' where 'x' is one of ${Object.keys(
-            model.attributes,
-          )
-            .map((attribute) => `'${attribute}'`)
-            .join(", ")}.`,
-          parameter: `filter[${attribute}]`,
-        }),
-      )
-    }
-  })
+  const { where, errors } = renameRelationshipFilters(model, ops)
+  ops.data.where = where
+  ops.errors.push(...errors)
 
   if (Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {

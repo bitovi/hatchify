@@ -45,6 +45,7 @@ describe("string", () => {
       // setORMPropertyValue
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
@@ -125,6 +126,9 @@ describe("string", () => {
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
@@ -210,6 +214,9 @@ describe("string", () => {
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
@@ -300,6 +307,7 @@ describe("string", () => {
       // setORMPropertyValue
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue("")).toThrow(
         new HatchifyCoerceError("with length greater than or equal to 1"),
       )

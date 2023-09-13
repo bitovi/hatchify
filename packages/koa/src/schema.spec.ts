@@ -76,50 +76,50 @@ describe.each(dbDialects)("schema", (dialect) => {
       })
 
       it("should create a snake_case table with id, name, age, years_worked and hire_date columns", async () => {
-        const sortedColumns = await getDatabaseColumns("user", hatchify)
+        const sortedColumns = await getDatabaseColumns(hatchify, "user")
 
         expect(sortedColumns).toEqual([
           {
             name: "age",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "bio",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "text" : "TEXT",
           },
           {
             name: "hire_date",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type:
               dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
           },
           {
             name: "id",
-            notnull: dialect !== "sqlite",
-            pk: true,
+            allowNull: dialect === "sqlite",
+            primary: true,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "name",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "character varying" : "VARCHAR(255)",
           },
           {
             name: "status",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
           },
           {
             name: "years_worked",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ])
@@ -647,50 +647,50 @@ describe.each(dbDialects)("schema", (dialect) => {
       })
 
       it("should create a snake_case table with id, age, years_worked and hired_date columns", async () => {
-        const sortedColumns = await getDatabaseColumns("user", hatchify)
+        const sortedColumns = await getDatabaseColumns(hatchify, "user")
 
         expect(sortedColumns).toEqual([
           {
             name: "age",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "bio",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "text" : "TEXT",
           },
           {
             name: "hire_date",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type:
               dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
           },
           {
             name: "id",
-            notnull: dialect !== "sqlite",
-            pk: true,
+            allowNull: dialect === "sqlite",
+            primary: true,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "name",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "character varying" : "VARCHAR(10)",
           },
           {
             name: "status",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
           },
           {
             name: "years_worked",
-            notnull: false,
-            pk: false,
+            allowNull: true,
+            primary: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ])
@@ -859,14 +859,6 @@ describe.each(dbDialects)("schema", (dialect) => {
                   /Payload must have 'hireDate' after or on 2022-12-31T00:00:00\.000Z but received '(.*?)' instead\./,
                 ),
                 source: { pointer: "/data/attributes/hireDate" },
-                title: "Unexpected value.",
-              },
-              {
-                status: 422,
-                code: "unexpected-value",
-                detail:
-                  "Payload must have 'bio' as a non-undefined value but received 'null' instead.",
-                source: { pointer: "/data/attributes/bio" },
                 title: "Unexpected value.",
               },
               {
