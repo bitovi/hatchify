@@ -100,10 +100,7 @@ export function buildFindOptions(
   querystring: string,
   id?: Identifier,
 ): QueryStringParser<FindOptions> {
-  const ops: QueryStringParser<FindOptions> = handleSqliteLike(
-    querystringParser.parse(querystring),
-    hatchify.orm.getDialect(),
-  )
+  let ops: QueryStringParser<FindOptions> = querystringParser.parse(querystring)
 
   if (ops.errors.length) {
     throw ops.errors.map(
@@ -120,8 +117,16 @@ export function buildFindOptions(
   }
 
   const { where, errors } = renameRelationshipFilters(model, ops)
-  ops.data.where = where
-  ops.errors.push(...errors)
+  ops = {
+    ...ops,
+    data: {
+      ...ops.data,
+      where,
+    },
+    errors: ops.errors.concat(errors),
+  }
+
+  ops = handleSqliteLike(ops, hatchify.orm.getDialect())
 
   if (Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {
