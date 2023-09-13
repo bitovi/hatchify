@@ -7,6 +7,7 @@ import type {
   FindOptions,
   Identifier,
   UpdateOptions,
+  WhereOptions,
 } from "sequelize"
 
 import { HatchifyError, UnexpectedValueError } from "../error"
@@ -43,6 +44,59 @@ function handleSqliteLike(querystring: string, dbType: string): string {
   return querystring
 }
 
+function renameRelationshipFilters(
+  model: HatchifyModel,
+  where: WhereOptions<any> | undefined,
+) {
+  const errors: Error[] = []
+
+  function _renameRelationshipFilters(where) {
+    if (typeof where !== "object") {
+      return where
+    }
+
+    if (Array.isArray(where)) {
+      return where.map(_renameRelationshipFilters)
+    }
+
+    return [
+      ...Object.getOwnPropertyNames(where),
+      ...Object.getOwnPropertySymbols(where),
+    ].reduce((acc, key) => {
+      if (typeof key === "symbol") {
+        return { ...acc, [key]: _renameRelationshipFilters(where[key]) }
+      }
+
+      if (!key.includes(".")) {
+        if (key !== "id" && !model.attributes[key]) {
+          errors.push(
+            new UnexpectedValueError({
+              detail: `URL must have 'filter[x]' where 'x' is one of ${Object.keys(
+                model.attributes,
+              )
+                .map((attribute) => `'${attribute}'`)
+                .join(", ")}.`,
+              parameter: `filter[${key}]`,
+            }),
+          )
+        }
+
+        return {
+          ...acc,
+          [key]: _renameRelationshipFilters(where[key]),
+        }
+      }
+
+      return {
+        ...acc,
+        [`$${key}$`]: _renameRelationshipFilters(where[key]),
+      }
+    }, {})
+  }
+
+  return { where: _renameRelationshipFilters(where), errors }
+}
+
 export function buildFindOptions(
   hatchify: Hatchify,
   model: HatchifyModel,
@@ -67,20 +121,9 @@ export function buildFindOptions(
     return ops
   }
 
-  Object.keys(ops.data.where || {}).forEach((attribute) => {
-    if (attribute !== "id" && !model.attributes[attribute]) {
-      ops.errors.push(
-        new UnexpectedValueError({
-          detail: `URL must have 'filter[x]' where 'x' is one of ${Object.keys(
-            model.attributes,
-          )
-            .map((attribute) => `'${attribute}'`)
-            .join(", ")}.`,
-          parameter: `filter[${attribute}]`,
-        }),
-      )
-    }
-  })
+  const { where, errors } = renameRelationshipFilters(model, ops.data.where)
+  ops.data.where = where
+  ops.errors.push(...errors)
 
   if (Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {

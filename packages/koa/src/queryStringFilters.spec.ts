@@ -311,25 +311,19 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
 
   beforeAll(async () => {
     ;({ fetch, teardown } = await startServerWith([User], dialect))
-    await fetch("/api/users", {
-      method: "post",
-      body: {
-        data: {
-          type: "User",
-          attributes: userData[0],
-        },
-      },
-    })
-
-    await fetch("/api/users", {
-      method: "post",
-      body: {
-        data: {
-          type: "User",
-          attributes: userData[1],
-        },
-      },
-    })
+    await Promise.all(
+      userData.map((attributes) =>
+        fetch("/api/users", {
+          method: "post",
+          body: {
+            data: {
+              type: "User",
+              attributes,
+            },
+          },
+        }),
+      ),
+    )
   })
 
   afterAll(async () => {
