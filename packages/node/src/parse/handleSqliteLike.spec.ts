@@ -1,4 +1,5 @@
-import { FindOptions, Op } from "sequelize"
+import type { FindOptions } from "sequelize"
+import { Op } from "sequelize"
 
 import type { QueryStringParser } from "./builder"
 import { handleSqliteLike } from "./handleSqliteLike"
@@ -32,11 +33,11 @@ const iLikeAnyQuery: QueryStringParser<FindOptions> = {
   orm: "sequelize",
 }
 
-const nonSqliteTestList: [string, QueryStringParser<FindOptions>][] = [
+const nonSqliteTestList: Array<[string, QueryStringParser<FindOptions>]> = [
   ["LIKE", likeQuery],
   ["LIKE ANY", likeAnyQuery],
   ["ILIKE", iLikeQuery],
-  ["ILIKE ANY", iLikeAnyQuery]
+  ["ILIKE ANY", iLikeAnyQuery],
 ]
 
 describe("handleSqliteLike", () => {
