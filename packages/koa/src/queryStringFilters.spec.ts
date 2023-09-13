@@ -248,14 +248,7 @@ const testCases = [
   },
 ]
 
-// const postgresOnlyTestCases: Array<{
-//   description: string
-//   operator: string
-//   queryParam: string
-//   expectedResult: typeof userData
-// }> = []
-
-// like not supported by SQLite
+// LIKE / LIKE ANY now supported by SQLite with some clever query rewriting.  Make sure it's working.
 const SQLiteOnlyTestCases = [
   {
     description:
@@ -357,10 +350,6 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
   }
 
   it.each(testCases)(`${dialect} - $description`, validator)
-
-  // if (dialect === "postgres") {
-  //   it.each(postgresOnlyTestCases)(`${dialect} - $description`, validator)
-  // }
 
   if (dialect === "sqlite") {
     it.each(SQLiteOnlyTestCases)(`${dialect} - $description`, validator)
