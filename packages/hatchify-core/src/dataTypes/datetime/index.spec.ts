@@ -81,7 +81,7 @@ describe("datetime", () => {
       expect(
         serializeClientQueryFilterValue?.(new Date("2023-01-01T00:00:00.000Z")),
       ).toEqual("2023-01-01T00:00:00.000Z")
-      expect(serializeClientQueryFilterValue?.(null)).toBeNull()
+      expect(serializeClientQueryFilterValue?.(null)).toEqual("null")
 
       // setClientPropertyValueFromResponse
       expect(
@@ -622,7 +622,7 @@ describe("datetime", () => {
       expect(
         serializeClientQueryFilterValue?.(new Date("2023-01-01T00:00:00.000Z")),
       ).toEqual("2023-01-01T00:00:00.000Z")
-      expect(serializeClientQueryFilterValue?.(null)).toBeNull()
+      expect(serializeClientQueryFilterValue?.(null)).toEqual("null")
       expect(() =>
         serializeClientQueryFilterValue?.(
           new Date("2024-01-01T010:00:00.000Z"),
@@ -823,7 +823,7 @@ describe("datetime", () => {
       expect(
         serializeClientQueryFilterValue?.(new Date("2023-01-01T00:00:00.000Z")),
       ).toEqual("2023-01-01T00:00:00.000Z")
-      expect(serializeClientQueryFilterValue?.(null)).toBeNull()
+      expect(serializeClientQueryFilterValue?.(null)).toEqual("null")
       expect(() =>
         serializeClientQueryFilterValue?.(new Date("2024-01-01T00:00:00.000Z")),
       ).toThrow(
