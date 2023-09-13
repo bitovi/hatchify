@@ -105,6 +105,7 @@ export class Hatchify {
       associationsLookup,
       models: sequelizeModels,
       virtuals,
+      plurals: definedPlurals,
     } = Array.isArray(models)
       ? convertHatchifyV1Models(this._sequelize, this._serializer, models)
       : convertHatchifyV2Models(this._sequelize, this._serializer, models)
@@ -115,13 +116,18 @@ export class Hatchify {
 
     this._pluralToSingularModelNames = Object.entries(
       this._sequelizeModels,
-    ).reduce(
-      (acc, [singular, value]) => ({
+    ).reduce((acc, [singular, value]) => {
+      if (definedPlurals[singular]) {
+        return {
+          ...acc,
+          [definedPlurals[singular].toLowerCase()]: singular,
+        }
+      }
+      return {
         ...acc,
         [pluralize(singular.toLowerCase())]: singular,
-      }),
-      {},
-    )
+      }
+    }, {})
 
     // Store the route prefix if the user set one
     this._prefix = options.prefix ?? ""

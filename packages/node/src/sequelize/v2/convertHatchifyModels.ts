@@ -8,6 +8,7 @@ import { toSequelize } from "./toSequelize"
 import { registerSchema } from "../../serialize"
 import { HatchifySymbolModel } from "../../types"
 import type { HatchifyModel, SequelizeModelsCollection } from "../../types"
+import { definedPlurals } from "../definedPlurals"
 
 export function convertHatchifyModels(
   sequelize: Sequelize,
@@ -96,9 +97,17 @@ export function convertHatchifyModels(
   const associationsLookup = hatchifyModels.reduce((modelAcc, model) => {
     const associations = Object.entries(
       finalSchemas[model.name].relationships ?? {},
-    ).reduce((relationshipAcc, [relationshipName, { type, targetSchema }]) => {
+    ).reduce((relationshipAcc, [relationshipName, relationship]) => {
+      const { type, targetSchema } = relationship
+
       sequelize.models[model.name][type](sequelize.models[targetSchema], {
         as: relationshipName,
+        ...("sourceAttribute" in relationship
+          ? { foreignKey: relationship.sourceAttribute }
+          : {}),
+        ...("targetAttribute" in relationship
+          ? { foreignKey: relationship.targetAttribute }
+          : {}),
       })
 
       return {
@@ -120,5 +129,6 @@ export function convertHatchifyModels(
     associationsLookup,
     models: sequelize.models as SequelizeModelsCollection,
     virtuals: {},
+    plurals: definedPlurals(hatchifyModels),
   }
 }

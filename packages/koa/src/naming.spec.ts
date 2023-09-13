@@ -100,15 +100,16 @@ describe("Naming rules", () => {
   ]
 
   //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-310
-  /* const pluralNameTestCases: TestCase[] = [
+  const pluralNameTestCases: TestCase[] = [
     {
-      description: "Ensure pluralName creates route with correct name (Schema.pluralName)",
+      description:
+        "Ensure pluralName creates route with correct name (Schema.pluralName)",
       models: [
         {
           name: "SalesPerson",
           pluralName: "SalesPeople",
           attributes: {
-            firstName: "Mary",
+            name: "STRING",
           },
         },
       ],
@@ -130,13 +131,11 @@ describe("Naming rules", () => {
               jsonapi: {
                 version: "1.0",
               },
-              meta: { unpaginatedCount: 1 },
               data: {
-                  type: "SalesPerson",
-                  id: "1",
-                  attributes: { name: "Mary" },
-                },
-              ,
+                type: "SalesPerson",
+                id: "1",
+                attributes: { name: "Mary" },
+              },
             },
             status: 200,
           },
@@ -154,7 +153,7 @@ describe("Naming rules", () => {
       ],
       database: [],
     },
-  ] */
+  ]
 
   const attributeNameTestCases: TestCase[] = [
     {
@@ -913,7 +912,7 @@ describe("Naming rules", () => {
 
   const [skippedCases, cases] = [
     ...schemaNameTestCases,
-    /*  ...pluralNameTestCases,*/
+    ...pluralNameTestCases,
     ...attributeNameTestCases,
     ...belongsToTestCases,
     ...hasManyTestCases,

@@ -1,8 +1,7 @@
 import type { HatchifyModel } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 
-import { startServerWith } from "./testing/utils"
-import { dbDialects } from "./testing/utils"
+import { dbDialects, startServerWith } from "./testing/utils"
 
 const userData = [
   {
@@ -295,7 +294,7 @@ dotenv.config({
   path: ".env",
 })
 
-describe.each(dbDialects)("Operators", (dialect) => {
+describe.each(dbDialects)("queryStringFilters", (dialect) => {
   const User: HatchifyModel = {
     name: "User",
     attributes: {
