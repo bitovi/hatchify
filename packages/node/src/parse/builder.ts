@@ -10,6 +10,7 @@ import type {
 } from "sequelize"
 
 import { handleSqliteLike } from "./handleSqliteLike"
+import { handleWhere } from "./handleWhere"
 import { UnexpectedValueError } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
@@ -18,80 +19,6 @@ export interface QueryStringParser<T> {
   data: T
   errors: Error[]
   orm: "sequelize"
-}
-
-interface Include {
-  association: string
-}
-
-function renameRelationshipFilters(
-  model: HatchifyModel,
-  ops: QueryStringParser<FindOptions>,
-) {
-  const errors: Error[] = []
-
-  function _renameRelationshipFilters(where) {
-    if (typeof where !== "object") {
-      return where
-    }
-
-    if (Array.isArray(where)) {
-      return where.map(_renameRelationshipFilters)
-    }
-
-    return [
-      ...Object.getOwnPropertyNames(where),
-      ...Object.getOwnPropertySymbols(where),
-    ].reduce((acc, key) => {
-      if (typeof key === "symbol") {
-        return { ...acc, [key]: _renameRelationshipFilters(where[key]) }
-      }
-
-      if (!key.includes(".")) {
-        if (key !== "id" && !model.attributes[key]) {
-          errors.push(
-            new UnexpectedValueError({
-              detail: `URL must have 'filter[x]' where 'x' is one of ${Object.keys(
-                model.attributes,
-              )
-                .map((attribute) => `'${attribute}'`)
-                .join(", ")}.`,
-              parameter: `filter[${key}]`,
-            }),
-          )
-        }
-
-        return {
-          ...acc,
-          [key]: _renameRelationshipFilters(where[key]),
-        }
-      }
-
-      const [relationshipName] = key.split(".")
-
-      const relationshipNames = (
-        !ops.data.include || Array.isArray(ops.data.include)
-          ? ((ops.data.include ?? []) as Include[])
-          : [ops.data.include as Include]
-      ).map((include) => include.association)
-
-      if (!relationshipNames.includes(relationshipName)) {
-        errors.push(
-          new UnexpectedValueError({
-            detail: `URL must have 'filter[${key}]' where '${relationshipName}' is one of the includes.`,
-            parameter: `filter[${key}]`,
-          }),
-        )
-      }
-
-      return {
-        ...acc,
-        [`$${key}$`]: _renameRelationshipFilters(where[key]),
-      }
-    }, {})
-  }
-
-  return { where: _renameRelationshipFilters(ops.data.where), errors }
 }
 
 export function buildFindOptions(
@@ -116,16 +43,7 @@ export function buildFindOptions(
     return ops
   }
 
-  const { where, errors } = renameRelationshipFilters(model, ops)
-  ops = {
-    ...ops,
-    data: {
-      ...ops.data,
-      where,
-    },
-    errors: ops.errors.concat(errors),
-  }
-
+  ops = handleWhere(ops, model)
   ops = handleSqliteLike(ops, hatchify.orm.getDialect())
 
   if (Array.isArray(ops.data.attributes)) {

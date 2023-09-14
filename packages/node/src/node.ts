@@ -100,13 +100,12 @@ export class Hatchify {
     this._sequelize = createSequelizeInstance(options.database)
 
     if (this._sequelize.getDialect() === "sqlite") {
-      // const { getLoadablePath } = await import("sqlite-regex")
       const gc = this._sequelize.connectionManager.getConnection
       this._sequelize.connectionManager.getConnection = async function (
         ...args: Parameters<typeof gc>
       ) {
         const db: Database = await gc.apply(this, args)
-        // db.loadExtension(getLoadablePath())
+
         await new Promise((resolve) =>
           db.run("PRAGMA case_sensitive_like=ON", resolve),
         )
