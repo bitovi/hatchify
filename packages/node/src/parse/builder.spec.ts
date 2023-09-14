@@ -124,38 +124,6 @@ describe("builder", () => {
       })
     })
 
-    it("handles ILIKE on a relationship", () => {
-      const options = buildFindOptions(
-        hatchify,
-        Todo,
-        "include=user&filter[user.name][$ilike]=%25Test%25",
-      )
-
-      expect(options).toEqual({
-        data: {
-          where: {
-            [Op.and]: [
-              {
-                attribute: {
-                  args: [
-                    {
-                      col: "$user.name$",
-                    },
-                  ],
-                  fn: "upper",
-                },
-                comparator: Op.like,
-                logic: "TEST",
-              },
-            ],
-          },
-          include: [{ association: "user", include: [] }],
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
     it("handles zero pagination parameters", async () => {
       await expect(async () =>
         buildFindOptions(hatchify, Todo, "page[number]=0&page[size]=0"),

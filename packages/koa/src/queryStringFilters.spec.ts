@@ -19,8 +19,7 @@ const userData = [
     manager: false,
   },
 ]
-const john = userData[0]
-const jane = userData[1]
+const [john, jane] = userData
 
 const testCases = [
   //string
@@ -94,6 +93,16 @@ const testCases = [
     operator: "$ilike",
     queryParam: `filter[name][$ilike]=${encodeURIComponent("%aN%")}`,
     expectedResult: [jane],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator on a relationship",
+    operator: "$ilike",
+    queryParam: `include=todos&filter[todos.name][$ilike]=${encodeURIComponent(
+      "%Ne",
+    )}`,
+    expectedResult: [john],
     expectedError: undefined,
   },
   {
@@ -285,6 +294,14 @@ dotenv.config({
 })
 
 describe.each(dbDialects)("queryStringFilters", (dialect) => {
+  const Todo: HatchifyModel = {
+    name: "Todo",
+    attributes: {
+      name: "STRING",
+    },
+    belongsTo: [{ target: "User", options: { as: "user" } }],
+  }
+
   const User: HatchifyModel = {
     name: "User",
     attributes: {
@@ -294,26 +311,69 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
       onSite: "BOOLEAN",
       manager: "BOOLEAN",
     },
+    hasMany: [{ target: "Todo", options: { as: "todos" } }],
   }
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    ;({ fetch, teardown } = await startServerWith([User], dialect))
-    await Promise.all(
-      userData.map((attributes) =>
-        fetch("/api/users", {
+    ;({ fetch, teardown } = await startServerWith([Todo, User], dialect))
+    const todos = await Promise.all(
+      ["One", "Two"].map((name) =>
+        fetch("/api/todos", {
           method: "post",
           body: {
             data: {
-              type: "User",
-              attributes,
+              type: "Todo",
+              attributes: {
+                name,
+              },
             },
           },
         }),
       ),
     )
+
+    await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: john,
+          relationships: {
+            todos: {
+              data: [
+                {
+                  type: "Todo",
+                  id: todos[0].body.data.id,
+                },
+              ],
+            },
+          },
+        },
+      },
+    })
+
+    await fetch("/api/users", {
+      method: "post",
+      body: {
+        data: {
+          type: "User",
+          attributes: jane,
+          relationships: {
+            todos: {
+              data: [
+                {
+                  type: "Todo",
+                  id: todos[1].body.data.id,
+                },
+              ],
+            },
+          },
+        },
+      },
+    })
   })
 
   afterAll(async () => {
