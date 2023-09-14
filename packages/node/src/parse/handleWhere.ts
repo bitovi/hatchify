@@ -56,7 +56,7 @@ export function handleWhere(
       )
     }
 
-    return [null, `$${key}$`]
+    return [null, `$${getColumnName(key)}$`]
   })
 
   return {

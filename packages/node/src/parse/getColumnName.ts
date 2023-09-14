@@ -1,7 +1,10 @@
 import { noCase } from "no-case"
 import type { Dialect } from "sequelize"
 
-export function getColumnName(attributeName: string, dialect: Dialect): string {
+export function getColumnName(
+  attributeName: string,
+  escapeStyle?: Dialect,
+): string {
   if (!attributeName.includes(".")) {
     return noCase(attributeName, { delimiter: "_" })
   }
@@ -14,5 +17,11 @@ export function getColumnName(attributeName: string, dialect: Dialect): string {
     )
     .join(".")
 
-  return dialect === "sqlite" ? `\`${columnName}\`` : `"${columnName}"`
+  if (escapeStyle === "sqlite") {
+    return `\`${columnName}\``
+  }
+  if (escapeStyle === "postgres") {
+    return `"${columnName}"`
+  }
+  return columnName
 }
