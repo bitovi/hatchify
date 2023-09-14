@@ -1,9 +1,14 @@
 import { noCase } from "no-case"
+import type { Dialect } from "sequelize"
 
-export function getColumnName(attributeName: string): string {
-  return attributeName
+export function getColumnName(attributeName: string, dialect: Dialect): string {
+  const columnName = attributeName
     .replaceAll("$", "")
     .split(".")
-    .map((part) => noCase(part, { delimiter: "_" }))
+    .map((part, index, { length }) =>
+      index === length - 1 ? noCase(part, { delimiter: "_" }) : part,
+    )
     .join(".")
+
+  return dialect === "sqlite" ? `\`${columnName}\`` : `"${columnName}"`
 }
