@@ -9,112 +9,16 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
-import { HatchifyError, UnexpectedValueError } from "../error"
-import { codes, statusCodes } from "../error/constants"
+import { handleSqliteLike } from "./handleSqliteLike"
+import { handleWhere } from "./handleWhere"
+import { UnexpectedValueError } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
-interface QueryStringParser<T> {
+export interface QueryStringParser<T> {
   data: T
   errors: Error[]
   orm: "sequelize"
-}
-
-function handleSqliteLike(querystring: string, dbType: string): string {
-  // if not postgres (sqlite)
-  // 1. throw error if like is used (temporary)
-  // 2. ilike needs to be changed to like before parsing query
-  // 3. TODO - HATCH-329 if query includes an array, it needs to be changed to an OR query
-  // (sqlite doesn't support Op.any like postgres)
-  if (dbType === "sqlite") {
-    if (querystring.includes("[$like]")) {
-      throw new HatchifyError({
-        code: codes.ERR_INVALID_PARAMETER,
-        title: "SQLITE does not support like",
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        detail: "SQLITE does not support like. Please use ilike",
-        parameter: querystring,
-      })
-    }
-
-    return querystring.replaceAll("[$ilike]", "[$like]")
-  }
-
-  return querystring
-}
-
-interface Include {
-  association: string
-}
-
-function renameRelationshipFilters(
-  model: HatchifyModel,
-  ops: QueryStringParser<FindOptions>,
-) {
-  const errors: Error[] = []
-
-  function _renameRelationshipFilters(where) {
-    if (typeof where !== "object") {
-      return where
-    }
-
-    if (Array.isArray(where)) {
-      return where.map(_renameRelationshipFilters)
-    }
-
-    return [
-      ...Object.getOwnPropertyNames(where),
-      ...Object.getOwnPropertySymbols(where),
-    ].reduce((acc, key) => {
-      if (typeof key === "symbol") {
-        return { ...acc, [key]: _renameRelationshipFilters(where[key]) }
-      }
-
-      if (!key.includes(".")) {
-        if (key !== "id" && !model.attributes[key]) {
-          errors.push(
-            new UnexpectedValueError({
-              detail: `URL must have 'filter[x]' where 'x' is one of ${Object.keys(
-                model.attributes,
-              )
-                .map((attribute) => `'${attribute}'`)
-                .join(", ")}.`,
-              parameter: `filter[${key}]`,
-            }),
-          )
-        }
-
-        return {
-          ...acc,
-          [key]: _renameRelationshipFilters(where[key]),
-        }
-      }
-
-      const [relationshipName] = key.split(".")
-
-      const relationshipNames = (
-        !ops.data.include || Array.isArray(ops.data.include)
-          ? ((ops.data.include ?? []) as Include[])
-          : [ops.data.include as Include]
-      ).map((include) => include.association)
-
-      if (!relationshipNames.includes(relationshipName)) {
-        errors.push(
-          new UnexpectedValueError({
-            detail: `URL must have 'filter[${key}]' where '${relationshipName}' is one of the includes.`,
-            parameter: `filter[${key}]`,
-          }),
-        )
-      }
-
-      return {
-        ...acc,
-        [`$${key}$`]: _renameRelationshipFilters(where[key]),
-      }
-    }, {})
-  }
-
-  return { where: _renameRelationshipFilters(ops.data.where), errors }
 }
 
 export function buildFindOptions(
@@ -123,9 +27,7 @@ export function buildFindOptions(
   querystring: string,
   id?: Identifier,
 ): QueryStringParser<FindOptions> {
-  const ops: QueryStringParser<FindOptions> = querystringParser.parse(
-    handleSqliteLike(querystring, hatchify.orm.getDialect()),
-  )
+  let ops: QueryStringParser<FindOptions> = querystringParser.parse(querystring)
 
   if (ops.errors.length) {
     throw ops.errors.map(
@@ -141,9 +43,8 @@ export function buildFindOptions(
     return ops
   }
 
-  const { where, errors } = renameRelationshipFilters(model, ops)
-  ops.data.where = where
-  ops.errors.push(...errors)
+  ops = handleWhere(ops, model)
+  ops = handleSqliteLike(ops, hatchify.orm.getDialect())
 
   if (Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {

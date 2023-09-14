@@ -157,7 +157,7 @@ export async function getDatabaseColumns(
   tableName: string,
   schemaName = "public",
 ): Promise<DatabaseColumn[]> {
-  const dialect = hatchify.orm.getDialect()
+  const dialect: Dialect = hatchify.orm.getDialect()
   let columns: DatabaseColumn[] = []
 
   if (dialect === "sqlite") {

@@ -3,6 +3,7 @@ import type { IAssociation } from "@hatchifyjs/sequelize-create-with-association
 import JSONAPISerializer from "json-api-serializer"
 import { match } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
+import type { Database } from "sqlite3"
 
 import type { HatchifyErrorOptions } from "./error"
 import { HatchifyError } from "./error"
@@ -98,6 +99,19 @@ export class Hatchify {
     // Prepare the ORM instance and keep references to the different Models
     this._sequelize = createSequelizeInstance(options.database)
 
+    if (this._sequelize.getDialect() === "sqlite") {
+      const gc = this._sequelize.connectionManager.getConnection
+      this._sequelize.connectionManager.getConnection = async function (
+        ...args: Parameters<typeof gc>
+      ) {
+        const db: Database = await gc.apply(this, args)
+
+        await new Promise((resolve) =>
+          db.run("PRAGMA case_sensitive_like=ON", resolve),
+        )
+        return db
+      }
+    }
     this._serializer = new JSONAPISerializer()
 
     // Fetch the hatchify models and associations look up
