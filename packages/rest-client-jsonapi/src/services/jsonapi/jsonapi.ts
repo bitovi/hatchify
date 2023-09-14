@@ -30,7 +30,7 @@ export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
   // Default `type` to `schemaMap` key if not set in `schemaMap`
   const completeSchemaMap = Object.entries(schemaMap).reduce(
     (acc, [key, value]) => {
-      const plural = value.pluralName
+      const endpoint = value.pluralName
         ? value.pluralName
             .split(/(?=[A-Z])/)
             .join("-")
@@ -42,8 +42,9 @@ export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
       acc[key] = {
         ...value,
         type: value.type || key,
-        pluralName: plural,
+        pluralName: value.pluralName || `${key}s`,
         name: value.name,
+        endpoint: endpoint,
         attributes: { ...value.attributes },
       }
       return acc

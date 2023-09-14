@@ -27,7 +27,6 @@ const TestSchema: SchemaRecord = {
 const ArticleMap = {
   article: {
     type: "Article",
-    endpoint: "article",
   },
 }
 describe("react-jsonapi", () =>

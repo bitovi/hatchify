@@ -12,16 +12,12 @@ type EitherSchema = Schema | LegacySchema
 
 type SourceSchema = EitherSchema & {
   type?: string
+  endpoint?: string
 }
 
 type WithRequiredProperty<Type, Key extends keyof Type> = Type & {
   [Property in Key]-?: Type[Property]
 }
-
-// interface SourceSchema extends Pick<LegacySchema, "name" | "attributes"> {
-//   type?: string
-//   pluralName?: string
-// }
 
 export type SchemaMap = Record<string, SourceSchema>
 

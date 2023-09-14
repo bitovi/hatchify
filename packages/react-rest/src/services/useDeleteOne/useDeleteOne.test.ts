@@ -7,6 +7,7 @@ import { useDeleteOne } from "./useDeleteOne"
 
 const fakeDataSource: Source = {
   version: 0,
+  completeSchemaMap: {},
   findAll: () => Promise.resolve([[], {}]),
   findOne: () => Promise.resolve([]),
   createOne: () => Promise.resolve([]),
