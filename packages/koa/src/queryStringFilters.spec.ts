@@ -3,7 +3,7 @@ import * as dotenv from "dotenv"
 
 import { dbDialects, startServerWith } from "./testing/utils"
 
-const userData = [
+const [john, jane] = [
   {
     name: "John",
     age: 25,
@@ -19,7 +19,6 @@ const userData = [
     manager: false,
   },
 ]
-const [john, jane] = userData
 
 const testCases = [
   //string
