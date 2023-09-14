@@ -319,7 +319,7 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
 
   beforeAll(async () => {
     ;({ fetch, teardown } = await startServerWith([Todo, User], dialect))
-    const todos = await Promise.all(
+    const [{ body: todo1 }, { body: todo2 }] = await Promise.all(
       ["One", "Two"].map((name) =>
         fetch("/api/todos", {
           method: "post",
@@ -346,7 +346,7 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
               data: [
                 {
                   type: "Todo",
-                  id: todos[0].body.data.id,
+                  id: todo1.data.id,
                 },
               ],
             },
@@ -366,7 +366,7 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
               data: [
                 {
                   type: "Todo",
-                  id: todos[1].body.data.id,
+                  id: todo2.data.id,
                 },
               ],
             },
