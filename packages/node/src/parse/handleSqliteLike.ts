@@ -41,7 +41,7 @@ export function handleSqliteLike(
             return [
               (ilClause[Op.any] as string[]).map((token) =>
                 Sequelize.where(
-                  Sequelize.fn("upper", Sequelize.col(key)),
+                  Sequelize.fn("upper", Sequelize.col(key.replaceAll("$", ""))),
                   Op.like,
                   (token as string).toUpperCase(),
                 ),
@@ -56,7 +56,7 @@ export function handleSqliteLike(
             // because Op.and is expected to be an array but if the array is
             // length 1 then the actual SQL can discard using any ANDs
             const token = Sequelize.where(
-              Sequelize.fn("upper", Sequelize.col(key)),
+              Sequelize.fn("upper", Sequelize.col(key.replaceAll("$", ""))),
               Op.like,
               (ilClause as string).toUpperCase(),
             )
