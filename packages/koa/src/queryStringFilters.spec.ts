@@ -98,7 +98,7 @@ const testCases = [
     description:
       "returns correct data using the $ilike operator on a relationship",
     operator: "$ilike",
-    queryParam: `include=todos&filter[todos.name][$ilike]=${encodeURIComponent(
+    queryParam: `include=todos&filter[todos.somethingElse][$ilike]=${encodeURIComponent(
       "%Ne",
     )}`,
     expectedResult: [john],
@@ -297,6 +297,7 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
     name: "Todo",
     attributes: {
       name: "STRING",
+      somethingElse: "STRING",
     },
     belongsTo: [{ target: "User", options: { as: "user" } }],
   }
@@ -327,6 +328,7 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
               type: "Todo",
               attributes: {
                 name,
+                somethingElse: name,
               },
             },
           },

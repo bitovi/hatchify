@@ -1,6 +1,7 @@
 import type { FindOptions } from "sequelize"
 
 import type { QueryStringParser } from "./builder"
+import { getColumnName } from "./getColumnName"
 import { walk } from "./walk"
 import { UnexpectedValueError } from "../error"
 import type { HatchifyModel } from "../types"
@@ -54,7 +55,7 @@ export function handleWhere(
       )
     }
 
-    return [null, `$${key}$`]
+    return [null, `$${getColumnName(key)}$`]
   })
 
   return {

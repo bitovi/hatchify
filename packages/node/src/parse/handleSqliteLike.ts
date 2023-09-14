@@ -2,6 +2,7 @@ import type { FindOptions } from "sequelize"
 import { Op, Sequelize } from "sequelize"
 
 import type { QueryStringParser } from "./builder"
+import { getColumnName } from "./getColumnName"
 import { walk } from "./walk"
 
 export function handleSqliteLike(
@@ -41,7 +42,7 @@ export function handleSqliteLike(
             return [
               (ilClause[Op.any] as string[]).map((token) =>
                 Sequelize.where(
-                  Sequelize.fn("upper", Sequelize.col(key.replaceAll("$", ""))),
+                  Sequelize.fn("upper", Sequelize.col(getColumnName(key))),
                   Op.like,
                   (token as string).toUpperCase(),
                 ),
@@ -56,7 +57,7 @@ export function handleSqliteLike(
             // because Op.and is expected to be an array but if the array is
             // length 1 then the actual SQL can discard using any ANDs
             const token = Sequelize.where(
-              Sequelize.fn("upper", Sequelize.col(key.replaceAll("$", ""))),
+              Sequelize.fn("upper", Sequelize.col(getColumnName(key))),
               Op.like,
               (ilClause as string).toUpperCase(),
             )
