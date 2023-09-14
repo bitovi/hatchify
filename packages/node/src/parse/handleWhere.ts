@@ -56,7 +56,7 @@ export function handleWhere(
       )
     }
 
-    return [null, `$${getColumnName(key, dialect)}$`]
+    return [null, `$${key}$`]
   })
 
   return {
