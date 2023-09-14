@@ -4,6 +4,7 @@ import { noCase } from "no-case"
 import type {
   CreateOptions,
   DestroyOptions,
+  Dialect,
   FindOptions,
   Identifier,
   UpdateOptions,
@@ -27,6 +28,7 @@ export function buildFindOptions(
   querystring: string,
   id?: Identifier,
 ): QueryStringParser<FindOptions> {
+  const dialect = hatchify.orm.getDialect() as Dialect
   let ops: QueryStringParser<FindOptions> = querystringParser.parse(querystring)
 
   if (ops.errors.length) {
@@ -43,8 +45,8 @@ export function buildFindOptions(
     return ops
   }
 
-  ops = handleWhere(ops, model)
-  ops = handleSqliteLike(ops, hatchify.orm.getDialect())
+  ops = handleWhere(ops, model, dialect)
+  ops = handleSqliteLike(ops, dialect)
 
   if (Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {

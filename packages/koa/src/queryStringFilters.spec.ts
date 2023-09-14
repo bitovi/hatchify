@@ -98,7 +98,7 @@ const testCases = [
     description:
       "returns correct data using the $ilike operator on a relationship",
     operator: "$ilike",
-    queryParam: `include=todos&filter[todos.somethingElse][$ilike]=${encodeURIComponent(
+    queryParam: `include=userTodos&filter[userTodos.somethingElse][$ilike]=${encodeURIComponent(
       "%Ne",
     )}`,
     expectedResult: [john],
@@ -293,8 +293,8 @@ dotenv.config({
 })
 
 describe.each(dbDialects)("queryStringFilters", (dialect) => {
-  const Todo: HatchifyModel = {
-    name: "Todo",
+  const UserTodo: HatchifyModel = {
+    name: "UserTodo",
     attributes: {
       name: "STRING",
       somethingElse: "STRING",
@@ -311,21 +311,21 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
       onSite: "BOOLEAN",
       manager: "BOOLEAN",
     },
-    hasMany: [{ target: "Todo", options: { as: "todos" } }],
+    hasMany: [{ target: "UserTodo", options: { as: "userTodos" } }],
   }
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    ;({ fetch, teardown } = await startServerWith([Todo, User], dialect))
+    ;({ fetch, teardown } = await startServerWith([UserTodo, User], dialect))
     const [{ body: todo1 }, { body: todo2 }] = await Promise.all(
       ["One", "Two"].map((name) =>
-        fetch("/api/todos", {
+        fetch("/api/user-todos", {
           method: "post",
           body: {
             data: {
-              type: "Todo",
+              type: "UserTodo",
               attributes: {
                 name,
                 somethingElse: name,
@@ -343,10 +343,10 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
           type: "User",
           attributes: john,
           relationships: {
-            todos: {
+            userTodos: {
               data: [
                 {
-                  type: "Todo",
+                  type: "UserTodo",
                   id: todo1.data.id,
                 },
               ],
@@ -363,10 +363,10 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
           type: "User",
           attributes: jane,
           relationships: {
-            todos: {
+            userTodos: {
               data: [
                 {
-                  type: "Todo",
+                  type: "UserTodo",
                   id: todo2.data.id,
                 },
               ],
