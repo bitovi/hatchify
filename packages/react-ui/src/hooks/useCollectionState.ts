@@ -43,7 +43,6 @@ export default function useCollectionState(
   restClient: ReactRest<Schemas>,
   defaultPage?: PaginationObject,
   defaultSort?: SortObject,
-  defaultFilter?: Filters,
   baseFilter?: Filters,
   {
     defaultSelected,
@@ -59,7 +58,7 @@ export default function useCollectionState(
 ): CollectionState {
   const { page, setPage } = usePage(defaultPage)
   const { sort, sortQueryString, setSort } = useSort(defaultSort)
-  const { filter, setFilter } = useFilter(defaultFilter)
+  const { filter, setFilter } = useFilter()
   const { selected, setSelected } = useSelected(
     defaultSelected,
     onSelectedChange,

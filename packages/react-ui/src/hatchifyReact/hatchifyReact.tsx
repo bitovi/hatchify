@@ -56,7 +56,6 @@ export type HatchifyApp = {
         include,
         defaultPage,
         defaultSort,
-        defaultFilter,
         baseFilter,
       }?: {
         defaultSelected?: HatchifyCollectionProps["defaultSelected"]
@@ -65,7 +64,6 @@ export type HatchifyApp = {
         include?: Include
         defaultPage?: PaginationObject
         defaultSort?: SortObject
-        defaultFilter?: Filters
         baseFilter?: Filters
       }) => CollectionState
     }
@@ -116,7 +114,6 @@ export function hatchifyReact(
         include,
         defaultPage,
         defaultSort,
-        defaultFilter,
         baseFilter,
       } = {}) =>
         useCollectionState(
@@ -125,7 +122,6 @@ export function hatchifyReact(
           reactRest,
           defaultPage,
           defaultSort,
-          defaultFilter,
           baseFilter,
           {
             defaultSelected,

@@ -13,7 +13,6 @@ export interface HatchifyCollectionProps {
   onSelectedChange?: HatchifyCollectionSelected["setSelected"]
   defaultPage?: { number: number; size: number }
   defaultSort?: SortObject
-  defaultFilter?: Filters
   baseFilter?: Filters
 }
 
@@ -26,7 +25,6 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
   onSelectedChange,
   defaultPage,
   defaultSort,
-  defaultFilter,
   baseFilter,
 }) => {
   const { Collection } = useHatchifyPresentation()
@@ -42,7 +40,6 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
     },
     defaultPage,
     defaultSort,
-    defaultFilter,
     baseFilter,
   )
 
