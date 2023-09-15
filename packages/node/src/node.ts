@@ -483,7 +483,7 @@ export class Hatchify {
         await this._sequelize.createSchema(namespace, {})
       }
     })
-    return this._sequelize.sync({ force: true })
+    return this._sequelize.sync({ alter: true })
   }
 }
 
