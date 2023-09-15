@@ -10,6 +10,7 @@ node_modules
 
 # misc
 .vscode/settings.json
+.vscode/launch.json
 .DS_Store
 Thumbs.db
 *.tsbuildinfo
@@ -19,4 +20,3 @@ example.sqlite
 /test-results/
 /playwright-report/
 /playwright/.cache/
-/hatchify-app/
