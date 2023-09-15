@@ -4,6 +4,7 @@ import type {
   Filters,
   Include,
   Meta,
+  PaginationObject,
   Record,
   Schemas,
 } from "@hatchifyjs/rest-client"
@@ -40,7 +41,7 @@ export default function useCollectionState(
   allSchemas: Schemas,
   schemaName: string,
   restClient: ReactRest<Schemas>,
-  defaultPage?: { number: number; size: number },
+  defaultPage?: PaginationObject,
   defaultSort?: SortObject,
   defaultFilter?: Filters,
   baseFilter?: Filters,
@@ -63,7 +64,6 @@ export default function useCollectionState(
     defaultSelected,
     onSelectedChange,
   )
-  console.log("🟠", page)
   const [data, meta] = restClient[schemaName].useAll(
     {
       page,

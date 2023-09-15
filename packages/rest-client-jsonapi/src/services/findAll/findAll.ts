@@ -1,10 +1,10 @@
 import type {
+  Filters,
+  QueryList,
+  RequestMetaData,
+  Resource,
   Schemas,
   SourceConfig,
-  QueryList,
-  Resource,
-  RequestMetaData,
-  Filters,
 } from "@hatchifyjs/rest-client"
 import type { JsonApiResource } from "../jsonapi"
 import {
@@ -24,7 +24,6 @@ export async function findAll(
   query: QueryList,
   baseFilter?: Filters,
 ): Promise<[Resources: Resource[], Meta: RequestMetaData]> {
-  console.log("⚪", baseFilter)
   const queryParams = getQueryParams(
     config.schemaMap,
     allSchemas,

@@ -15,24 +15,15 @@ import type {
 /**
  * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
  */
-const useMemoizedQuery = (query: QueryList) => {
-  const stringifiedQuery = JSON.stringify(query)
+function useMemoByStringify(filterOrQuery: Filters): Filters
+function useMemoByStringify(filterOrQuery: QueryList): QueryList
+function useMemoByStringify(filterOrQuery: Filters | QueryList) {
+  const stringifiedQuery = JSON.stringify(filterOrQuery)
 
   // todo: query (nested objects) are causing infinite re-renders, need a better solution
   return useMemo(() => {
-    return query
+    return filterOrQuery
   }, [stringifiedQuery])
-}
-
-/**
- * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
- */
-const useMemoizedFilter = (filter: Filters) => {
-  const stringifiedFilter = JSON.stringify(filter)
-
-  return useMemo(() => {
-    return filter
-  }, [stringifiedFilter])
 }
 
 /**
@@ -46,16 +37,12 @@ export const useAll = (
   query: QueryList,
   baseFilter?: Filters,
 ): [Record[], Meta] => {
-  const memoizedQuery = useMemoizedQuery(query)
-  const memoizedBaseFilter = useMemoizedFilter(baseFilter)
+  const memoizedQuery = useMemoByStringify(query)
+  const memoizedBaseFilter = useMemoByStringify(baseFilter)
   const [data, setData] = useState<Record[]>([])
   const [requestMeta, setRequestMeta] = useState<RequestMetaData>()
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
-
-  console.log("🟢", query)
-  console.log("🔴", baseFilter)
-  console.log("🟪", memoizedBaseFilter)
 
   const fetchAll = useCallback(() => {
     setLoading(true)

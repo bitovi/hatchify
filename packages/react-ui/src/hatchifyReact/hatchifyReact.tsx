@@ -1,11 +1,12 @@
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type {
-  Source,
-  Schemas,
   Fields,
-  Include,
   Filters,
+  Include,
+  PaginationObject,
+  Schemas,
+  Source,
 } from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
@@ -62,7 +63,7 @@ export type HatchifyApp = {
         onSelectedChange?: HatchifyCollectionProps["onSelectedChange"]
         fields?: Fields
         include?: Include
-        defaultPage?: { number: number; size: number }
+        defaultPage?: PaginationObject
         defaultSort?: SortObject
         defaultFilter?: Filters
         baseFilter?: Filters

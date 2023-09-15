@@ -19,7 +19,6 @@ export const findAll = async (
   query: QueryList,
   baseFilter?: Filters,
 ): Promise<[Records: Record[], RequestMetaData: RequestMetaData]> => {
-  console.log("🟤", baseFilter)
   const [resources, requestMetaData] = await dataSource.findAll(
     allSchemas,
     schemaName,

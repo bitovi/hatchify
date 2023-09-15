@@ -9,16 +9,16 @@ import {
 } from "@hatchifyjs/rest-client"
 import type {
   CreateData,
+  Filters,
   Meta,
-  Schema,
-  Schemas,
-  Source,
   QueryList,
   QueryOne,
   Record,
-  UpdateData,
   RequestMetaData,
-  Filters,
+  Schema,
+  Schemas,
+  Source,
+  UpdateData,
 } from "@hatchifyjs/rest-client"
 import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
 
@@ -89,13 +89,7 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
       useCreateOne: () => useCreateOne(dataSource, newSchemas, schema.name),
       useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schema.name),
       useAll: (query, baseFilter) =>
-        useAll(
-          dataSource,
-          newSchemas,
-          schema.name,
-          query ?? {},
-          baseFilter ?? {},
-        ),
+        useAll(dataSource, newSchemas, schema.name, query ?? {}, baseFilter),
       useOne: (query) => useOne(dataSource, newSchemas, schema.name, query),
       useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schema.name),
     }

@@ -16,8 +16,13 @@ export type FilterObject = {
 
 export type Filters = FilterArray | FilterObject | string | undefined // why do we want undefined as a possible option? should we remove it?
 
+export interface PaginationObject {
+  number: number
+  size: number
+}
+
 export type QueryList = Selector & {
-  page?: unknown
+  page?: PaginationObject
   sort?: string[] | string
   filter?: Filters
 }

@@ -219,15 +219,10 @@ export function getQueryParams(
     }
   }
 
-  console.log(0, baseFilter)
   if (baseFilter) {
-    console.log(1, baseFilter)
     const baseFilterParam = filterToQueryParam(baseFilter)
-    console.log(2, baseFilterParam)
     if (baseFilterParam) {
-      console.log(3, params)
       params.push(baseFilterParam)
-      console.log(4, params)
     }
   }
 
@@ -244,8 +239,6 @@ export function getQueryParams(
       params.push(pageParam)
     }
   }
-
-  console.log("🟡", params)
 
   return params.length ? `?${params.join("&")}` : ""
 }
