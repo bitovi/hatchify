@@ -33,14 +33,14 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
     allSchemas,
     schemaName,
     restClient,
+    defaultPage,
+    defaultSort,
+    baseFilter,
     {
       defaultSelected,
       onSelectedChange,
       include: defaultInclude,
     },
-    defaultPage,
-    defaultSort,
-    baseFilter,
   )
 
   return <Collection {...collectionState}>{children}</Collection>

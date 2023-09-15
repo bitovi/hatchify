@@ -182,7 +182,7 @@ export function getQueryParams(
     filter?: Filters
     page?: unknown
   },
-  baseFilter: Filters,
+  baseFilter?: Filters,
 ): string {
   const params = []
   const { fields, include, sort, filter, page } = query
