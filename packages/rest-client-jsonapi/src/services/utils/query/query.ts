@@ -182,6 +182,7 @@ export function getQueryParams(
     filter?: Filters
     page?: unknown
   },
+  baseFilter: Filters,
 ): string {
   const params = []
   const { fields, include, sort, filter, page } = query
@@ -218,6 +219,18 @@ export function getQueryParams(
     }
   }
 
+  console.log(0, baseFilter)
+  if (baseFilter) {
+    console.log(1, baseFilter)
+    const baseFilterParam = filterToQueryParam(baseFilter)
+    console.log(2, baseFilterParam)
+    if (baseFilterParam) {
+      console.log(3, params)
+      params.push(baseFilterParam)
+      console.log(4, params)
+    }
+  }
+
   if (filter) {
     const filterParam = filterToQueryParam(filter)
     if (filterParam) {
@@ -231,6 +244,8 @@ export function getQueryParams(
       params.push(pageParam)
     }
   }
+
+  console.log("🟡", params)
 
   return params.length ? `?${params.join("&")}` : ""
 }

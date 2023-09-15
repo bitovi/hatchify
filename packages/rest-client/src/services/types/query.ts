@@ -14,7 +14,7 @@ export type FilterObject = {
   [key: string]: string | string[] | number | number[] | boolean | boolean[]
 }
 
-export type Filters = FilterArray | FilterObject | string | undefined
+export type Filters = FilterArray | FilterObject | string | undefined // why do we want undefined as a possible option? should we remove it?
 
 export type QueryList = Selector & {
   page?: unknown

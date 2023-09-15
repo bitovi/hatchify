@@ -1,6 +1,6 @@
-import type { Schemas } from "@hatchifyjs/rest-client"
+import type { Filters, Schemas } from "@hatchifyjs/rest-client"
 import type { ReactRest } from "@hatchifyjs/react-rest"
-import type { HatchifyCollectionSelected } from "../../presentation"
+import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
 import { useHatchifyPresentation } from ".."
 import useCollectionState from "../../hooks/useCollectionState"
 
@@ -11,6 +11,10 @@ export interface HatchifyCollectionProps {
   children?: React.ReactNode | null
   defaultSelected?: HatchifyCollectionSelected["selected"]
   onSelectedChange?: HatchifyCollectionSelected["setSelected"]
+  defaultPage?: { number: number; size: number }
+  defaultSort?: SortObject
+  defaultFilter?: Filters
+  baseFilter?: Filters
 }
 
 export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
@@ -20,6 +24,10 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
   children,
   defaultSelected,
   onSelectedChange,
+  defaultPage,
+  defaultSort,
+  defaultFilter,
+  baseFilter,
 }) => {
   const { Collection } = useHatchifyPresentation()
   const defaultInclude = getDefaultInclude(allSchemas, schemaName)
@@ -32,6 +40,10 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
       onSelectedChange,
       include: defaultInclude,
     },
+    defaultPage,
+    defaultSort,
+    defaultFilter,
+    baseFilter,
   )
 
   return <Collection {...collectionState}>{children}</Collection>

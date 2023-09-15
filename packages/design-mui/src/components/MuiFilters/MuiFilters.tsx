@@ -15,8 +15,9 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   page,
   setPage,
 }) => {
+  console.log("🐲", queryFilter)
   const fields = getSupportedFields(allSchemas, schemaName)
-  const defaultFilter = { field: fields[0], operator: "icontains", value: "" }
+  const defaultFilter = { field: fields[0], operator: "icontains", value: "" } // here's where we need to pass in the default filter if there is one
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)

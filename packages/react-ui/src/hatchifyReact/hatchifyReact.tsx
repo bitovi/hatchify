@@ -1,6 +1,12 @@
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
-import type { Source, Schemas, Fields, Include } from "@hatchifyjs/rest-client"
+import type {
+  Source,
+  Schemas,
+  Fields,
+  Include,
+  Filters,
+} from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
 import type { CollectionState } from "../hooks/useCollectionState"
@@ -15,6 +21,7 @@ import { HatchifyCollection } from "../components/HatchifyCollection"
 import { HatchifyColumn } from "../components/HatchifyColumn"
 import { HatchifyEmpty } from "../components/HatchifyEmpty"
 import useCollectionState from "../hooks/useCollectionState"
+import type { SortObject } from "../presentation"
 
 type HatchifyCollectionProps = Omit<
   InternalHatchifyCollectionProps,
@@ -46,11 +53,19 @@ export type HatchifyApp = {
         onSelectedChange,
         fields,
         include,
+        defaultPage,
+        defaultSort,
+        defaultFilter,
+        baseFilter,
       }?: {
         defaultSelected?: HatchifyCollectionProps["defaultSelected"]
         onSelectedChange?: HatchifyCollectionProps["onSelectedChange"]
         fields?: Fields
         include?: Include
+        defaultPage?: { number: number; size: number }
+        defaultSort?: SortObject
+        defaultFilter?: Filters
+        baseFilter?: Filters
       }) => CollectionState
     }
   }
@@ -98,13 +113,26 @@ export function hatchifyReact(
         onSelectedChange,
         fields,
         include,
+        defaultPage,
+        defaultSort,
+        defaultFilter,
+        baseFilter,
       } = {}) =>
-        useCollectionState(schemas, schema.name, reactRest, {
-          defaultSelected,
-          onSelectedChange,
-          fields,
-          include,
-        }),
+        useCollectionState(
+          schemas,
+          schema.name,
+          reactRest,
+          defaultPage,
+          defaultSort,
+          defaultFilter,
+          baseFilter,
+          {
+            defaultSelected,
+            onSelectedChange,
+            fields,
+            include,
+          },
+        ),
     }
     return acc
   }, {} as HatchifyApp["state"])

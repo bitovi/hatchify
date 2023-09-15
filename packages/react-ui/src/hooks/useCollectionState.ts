@@ -12,6 +12,7 @@ import type {
   HatchifyCollectionPage,
   HatchifyCollectionSelected,
   HatchifyCollectionSort,
+  SortObject,
 } from "../presentation"
 import usePage from "./usePage"
 import useSort from "./useSort"
@@ -39,6 +40,10 @@ export default function useCollectionState(
   allSchemas: Schemas,
   schemaName: string,
   restClient: ReactRest<Schemas>,
+  defaultPage?: { number: number; size: number },
+  defaultSort?: SortObject,
+  defaultFilter?: Filters,
+  baseFilter?: Filters,
   {
     defaultSelected,
     onSelectedChange,
@@ -51,21 +56,24 @@ export default function useCollectionState(
     include?: Include
   } = {},
 ): CollectionState {
-  const { page, setPage } = usePage()
-  const { sort, sortQueryString, setSort } = useSort()
-  const { filter, setFilter } = useFilter()
+  const { page, setPage } = usePage(defaultPage)
+  const { sort, sortQueryString, setSort } = useSort(defaultSort)
+  const { filter, setFilter } = useFilter(defaultFilter)
   const { selected, setSelected } = useSelected(
     defaultSelected,
     onSelectedChange,
   )
-
-  const [data, meta] = restClient[schemaName].useAll({
-    page,
-    sort: sortQueryString,
-    filter,
-    fields,
-    include,
-  })
+  console.log("🟠", page)
+  const [data, meta] = restClient[schemaName].useAll(
+    {
+      page,
+      sort: sortQueryString,
+      filter,
+      fields,
+      include,
+    },
+    baseFilter,
+  )
 
   useEffect(() => {
     setSelected({
