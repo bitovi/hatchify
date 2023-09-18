@@ -41,19 +41,22 @@ export default function useCollectionState(
   allSchemas: Schemas,
   schemaName: string,
   restClient: ReactRest<Schemas>,
-  defaultPage?: PaginationObject,
-  defaultSort?: SortObject,
-  baseFilter?: Filters,
   {
     defaultSelected,
     onSelectedChange,
     fields,
     include,
+    defaultPage,
+    defaultSort,
+    baseFilter,
   }: {
     defaultSelected?: HatchifyCollectionSelected["selected"]
     onSelectedChange?: HatchifyCollectionSelected["setSelected"]
     fields?: Fields
     include?: Include
+    defaultPage?: PaginationObject
+    defaultSort?: SortObject
+    baseFilter?: Filters
   } = {},
 ): CollectionState {
   const { page, setPage } = usePage(defaultPage)

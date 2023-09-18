@@ -116,20 +116,15 @@ export function hatchifyReact(
         defaultSort,
         baseFilter,
       } = {}) =>
-        useCollectionState(
-          schemas,
-          schema.name,
-          reactRest,
+        useCollectionState(schemas, schema.name, reactRest, {
+          defaultSelected,
+          onSelectedChange,
+          fields,
+          include,
           defaultPage,
           defaultSort,
           baseFilter,
-          {
-            defaultSelected,
-            onSelectedChange,
-            fields,
-            include,
-          },
-        ),
+        }),
     }
     return acc
   }, {} as HatchifyApp["state"])
