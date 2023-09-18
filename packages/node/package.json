@@ -30,7 +30,7 @@
   "dependencies": {
     "@bitovi/querystring-parser": "^0.7.7",
     "@bitovi/sequelize-querystring-parser": "^0.2.7",
-    "@hatchifyjs/hatchify-core": "^0.1.0",
+    "@hatchifyjs/hatchify-core": "^0.1.2",
     "@hatchifyjs/sequelize-create-with-associations": "^0.6.3",
     "@types/lodash": "^4.14.196",
     "co-body": "^6.1.0",
