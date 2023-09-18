@@ -7,40 +7,41 @@ export function buildThrough(targetSchema: string | null) {
   return function through(
     throughOrAttributes?: ThroughOrAttributes,
   ): PartialHasManyThroughRelationship {
+    const baseFields = {
+      type: "hasManyThrough" as const,
+      targetSchema,
+    }
+
     if (throughOrAttributes == null) {
       return {
-        type: "hasManyThrough",
-        targetSchema,
+        ...baseFields,
         through: null,
-        throughTargetAttribute: null,
         throughSourceAttribute: null,
+        throughTargetAttribute: null,
       }
     }
 
     if (typeof throughOrAttributes === "string") {
       return {
-        type: "hasManyThrough",
-        targetSchema,
+        ...baseFields,
         through: throughOrAttributes,
-        throughTargetAttribute: null,
         throughSourceAttribute: null,
+        throughTargetAttribute: null,
       }
     }
 
     if ("sourceKey" in throughOrAttributes) {
       return {
-        type: "hasManyThrough",
-        targetSchema,
+        ...baseFields,
         through: null,
-        throughTargetAttribute: null,
         throughSourceAttribute: null,
+        throughTargetAttribute: null,
         ...throughOrAttributes,
       }
     }
 
     return {
-      type: "hasManyThrough",
-      targetSchema,
+      ...baseFields,
       through: null,
       ...throughOrAttributes,
     }

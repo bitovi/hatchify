@@ -9,7 +9,7 @@ import { buildParserForModel, buildParserForModelStandalone } from "."
 const RelationshipPathDetail =
   "URL must have 'include' as one or more of 'lipitorUser', 'xanaxUser'."
 
-describe("index", () => {
+describe("indexNamespace", () => {
   const LipitorUser: HatchifyModel = {
     name: "User",
     namespace: "Lipitor",
