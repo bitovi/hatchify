@@ -26,14 +26,9 @@ const fakeRestClient = hatchifyReactRest(schemas, {
           __schema: "Todo",
           attributes: { name: "foo", created: "2021-01-01", important: true },
         },
-        {
-          id: "2",
-          __schema: "Todo",
-          attributes: { name: "bar", created: "2021-01-02", important: true },
-        },
       ],
       {
-        unpaginatedCount: 2,
+        unpaginatedCount: 1,
       },
     ]),
   findOne: () => Promise.resolve([]),
@@ -63,13 +58,6 @@ describe("useCollectionState", () => {
           created: "2021-01-01",
           important: true,
         },
-        {
-          __schema: "Todo",
-          id: "2",
-          name: "bar",
-          created: "2021-01-02",
-          important: true,
-        },
       ],
       meta: {
         error: undefined,
@@ -80,7 +68,7 @@ describe("useCollectionState", () => {
         isStale: false,
         isSuccess: true,
         meta: {
-          unpaginatedCount: 2,
+          unpaginatedCount: 1,
         },
         status: "success",
       },

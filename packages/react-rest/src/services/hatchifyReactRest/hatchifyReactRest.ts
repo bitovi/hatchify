@@ -9,7 +9,6 @@ import {
 } from "@hatchifyjs/rest-client"
 import type {
   CreateData,
-  Filters,
   Meta,
   QueryList,
   QueryOne,
@@ -42,7 +41,7 @@ export type ReactRest<Schema extends SchemaRecord> = {
     // hooks
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     useDeleteOne: () => [(id: string) => void, Meta]
-    useAll: (query?: QueryList, baseFilter?: Filters) => [Record[], Meta]
+    useAll: (query?: QueryList) => [Record[], Meta]
     useOne: (query: QueryOne | string) => [Record | undefined, Meta]
     useUpdateOne: () => [
       (data: UpdateData) => void,
@@ -88,8 +87,8 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
       // hooks
       useCreateOne: () => useCreateOne(dataSource, newSchemas, schema.name),
       useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schema.name),
-      useAll: (query, baseFilter) =>
-        useAll(dataSource, newSchemas, schema.name, query ?? {}, baseFilter),
+      useAll: (query) =>
+        useAll(dataSource, newSchemas, schema.name, query ?? {}),
       useOne: (query) => useOne(dataSource, newSchemas, schema.name, query),
       useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schema.name),
     }

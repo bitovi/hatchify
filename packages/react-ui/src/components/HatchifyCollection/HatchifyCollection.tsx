@@ -1,4 +1,8 @@
-import type { Filters, Schemas } from "@hatchifyjs/rest-client"
+import type {
+  Filters,
+  PaginationObject,
+  Schemas,
+} from "@hatchifyjs/rest-client"
 import type { ReactRest } from "@hatchifyjs/react-rest"
 import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
 import { useHatchifyPresentation } from ".."
@@ -11,7 +15,7 @@ export interface HatchifyCollectionProps {
   children?: React.ReactNode | null
   defaultSelected?: HatchifyCollectionSelected["selected"]
   onSelectedChange?: HatchifyCollectionSelected["setSelected"]
-  defaultPage?: { number: number; size: number }
+  defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters
 }
