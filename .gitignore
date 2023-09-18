@@ -10,7 +10,6 @@ node_modules
 
 # misc
 .vscode/settings.json
-.vscode/launch.json
 .DS_Store
 Thumbs.db
 *.tsbuildinfo

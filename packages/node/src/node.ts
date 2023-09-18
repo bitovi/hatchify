@@ -473,16 +473,17 @@ export class Hatchify {
    * @category Testing Use
    */
   async createDatabase(): Promise<Sequelize> {
-    const namespaces = Object.keys(this.models)
-      .map((k) => this.models[k]?.namespace)
-      .filter((k) => k !== undefined)
-    // create namespace/schema if it does not exist
-    namespaces.forEach(async (namespace) => {
-      // Added if to stop typescript from nagging
-      if (namespace) {
-        await this._sequelize.createSchema(namespace, {})
-      }
-    })
+    const uniqueNamespaces = Object.values(this.models).reduce(
+      (acc, { namespace }) => (namespace ? acc.add(namespace) : acc),
+      new Set<string>(),
+    )
+
+    await Promise.all(
+      [...uniqueNamespaces].map((namespace) =>
+        this._sequelize.createSchema(namespace, {}),
+      ),
+    )
+
     return this._sequelize.sync({ alter: true })
   }
 }
