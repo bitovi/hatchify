@@ -15,7 +15,10 @@ export function toSequelize(
       ...acc,
       [schemaName]: sequelize.define<Model<HatchifyModel["attributes"]>>(
         finalizedSchema.name,
-        Object.entries(finalizedSchema.attributes).reduce(
+        Object.entries({
+          id: finalizedSchema.id,
+          ...finalizedSchema.attributes,
+        }).reduce(
           (
             acc,
             [

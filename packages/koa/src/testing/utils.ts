@@ -186,7 +186,7 @@ export async function getDatabaseColumns(
       return {
         name: column.name,
         allowNull: column.notnull === 0,
-        primary: column.pk === 1,
+        primary: column.pk !== 0,
         type: column.type,
         ...(foreignKeys.length ? { foreignKeys } : {}),
       }

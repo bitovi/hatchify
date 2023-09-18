@@ -199,7 +199,7 @@ export const User: PartialSchema = {
     name: string({ required: true }),
   },
   relationships: {
-    todos: hasMany(), // 🛑
+    todos: hasMany(),
   },
 }
 ```
@@ -220,7 +220,7 @@ export const Todo: PartialSchema = {
     complete: boolean({ default: false }), // 🛑
   },
   relationships: {
-    user: belongsTo(), // 🛑
+    user: belongsTo(),
   },
 }
 ```
