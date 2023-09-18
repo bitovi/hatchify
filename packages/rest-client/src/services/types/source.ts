@@ -1,5 +1,5 @@
 import type { Schemas } from "./schema"
-import type { QueryList, QueryOne } from "./query"
+import type { Filters, QueryList, QueryOne } from "./query"
 import type {
   RestClientCreateData,
   Resource,
@@ -29,6 +29,7 @@ export interface SourceV0 {
     allSchemas: Schemas,
     schemaName: string,
     query: QueryList,
+    baseFilter?: Filters,
   ) => Promise<[Resources: Resource[], Meta: RequestMetaData]>
   findOne: (
     allSchemas: Schemas,

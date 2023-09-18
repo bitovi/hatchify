@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react"
 import { findAll, getMeta, subscribeToAll } from "@hatchifyjs/rest-client"
 
 import type {
+  Filters,
   Meta,
   MetaError,
   QueryList,
@@ -14,12 +15,14 @@ import type {
 /**
  * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
  */
-const useMemoizedQuery = (query: QueryList) => {
-  const stringifiedQuery = JSON.stringify(query)
+function useMemoByStringify(filterOrQuery: Filters): Filters
+function useMemoByStringify(filterOrQuery: QueryList): QueryList
+function useMemoByStringify(filterOrQuery: Filters | QueryList) {
+  const stringifiedQuery = JSON.stringify(filterOrQuery)
 
   // todo: query (nested objects) are causing infinite re-renders, need a better solution
   return useMemo(() => {
-    return query
+    return filterOrQuery
   }, [stringifiedQuery])
 }
 
@@ -32,8 +35,10 @@ export const useAll = (
   allSchemas: Schemas,
   schemaName: string,
   query: QueryList,
+  baseFilter?: Filters,
 ): [Record[], Meta] => {
-  const memoizedQuery = useMemoizedQuery(query)
+  const memoizedQuery = useMemoByStringify(query)
+  const memoizedBaseFilter = useMemoByStringify(baseFilter)
   const [data, setData] = useState<Record[]>([])
   const [requestMeta, setRequestMeta] = useState<RequestMetaData>()
   const [error, setError] = useState<MetaError | undefined>(undefined)
@@ -41,7 +46,13 @@ export const useAll = (
 
   const fetchAll = useCallback(() => {
     setLoading(true)
-    findAll(dataSource, allSchemas, schemaName, memoizedQuery)
+    findAll(
+      dataSource,
+      allSchemas,
+      schemaName,
+      memoizedQuery,
+      memoizedBaseFilter,
+    )
       .then(([data, requestMeta]) => {
         setError(undefined)
         setData(data)

@@ -1,11 +1,15 @@
 import { useMemo, useState } from "react"
 import type { HatchifyCollectionSort, SortObject } from "../presentation"
 
-export default function useSort(): HatchifyCollectionSort {
-  const [sort, setSort] = useState<SortObject>({
-    direction: undefined,
-    sortBy: undefined,
-  })
+export default function useSort(
+  defaultSort?: SortObject,
+): HatchifyCollectionSort {
+  const [sort, setSort] = useState<SortObject>(
+    defaultSort ?? {
+      direction: undefined,
+      sortBy: undefined,
+    },
+  )
 
   const sortQueryString = useMemo(() => {
     if (sort.sortBy === undefined) {
