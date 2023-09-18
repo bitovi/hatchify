@@ -26,9 +26,14 @@ const fakeRestClient = hatchifyReactRest(schemas, {
           __schema: "Todo",
           attributes: { name: "foo", created: "2021-01-01", important: true },
         },
+        {
+          id: "2",
+          __schema: "Todo",
+          attributes: { name: "bar", created: "2021-01-02", important: true },
+        },
       ],
       {
-        unpaginatedCount: 1,
+        unpaginatedCount: 2,
       },
     ]),
   findOne: () => Promise.resolve([]),
@@ -43,6 +48,9 @@ describe("useCollectionState", () => {
       useCollectionState(schemas, schemas.Todo.name, fakeRestClient, {
         defaultSelected: { all: false, ids: [] },
         onSelectedChange: vi.fn(),
+        defaultPage: { size: 1, number: 2 },
+        defaultSort: { direction: "desc", sortBy: "id" },
+        baseFilter: [{ field: "id", value: "1", operator: "$eq" }],
       }),
     )
 
@@ -55,6 +63,13 @@ describe("useCollectionState", () => {
           created: "2021-01-01",
           important: true,
         },
+        {
+          __schema: "Todo",
+          id: "2",
+          name: "bar",
+          created: "2021-01-02",
+          important: true,
+        },
       ],
       meta: {
         error: undefined,
@@ -65,21 +80,15 @@ describe("useCollectionState", () => {
         isStale: false,
         isSuccess: true,
         meta: {
-          unpaginatedCount: 1,
+          unpaginatedCount: 2,
         },
         status: "success",
       },
       fields: undefined,
       include: undefined,
-      page: {
-        size: 10,
-        number: 1,
-      },
+      page: { size: 1, number: 2 },
       setPage: expect.any(Function),
-      sort: {
-        direction: undefined,
-        sortBy: undefined,
-      },
+      sort: { direction: "desc", sortBy: "id" },
       setSort: expect.any(Function),
       selected: {
         all: false,
