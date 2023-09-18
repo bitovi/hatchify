@@ -40,10 +40,18 @@ const fakeRestClient = hatchifyReactRest(schemas, {
 describe("useCollectionState", () => {
   it("works", async () => {
     const { result } = renderHook(() =>
-      useCollectionState(schemas, schemas.Todo.name, fakeRestClient, {
-        defaultSelected: { all: false, ids: [] },
-        onSelectedChange: vi.fn(),
-      }),
+      useCollectionState(
+        schemas,
+        schemas.Todo.name,
+        fakeRestClient,
+        undefined,
+        undefined,
+        undefined,
+        {
+          defaultSelected: { all: false, ids: [] },
+          onSelectedChange: vi.fn(),
+        },
+      ),
     )
 
     const expected = {
