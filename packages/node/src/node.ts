@@ -474,7 +474,7 @@ export class Hatchify {
    */
   async createDatabase(): Promise<Sequelize> {
     const uniqueNamespaces = Object.values(this.models).reduce(
-      (acc, { namespace }) => (namespace ? acc.add(namespace) : acc),
+      (acc, model) => (model?.namespace ? acc.add(model.namespace) : acc),
       new Set<string>(),
     )
 
