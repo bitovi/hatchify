@@ -331,6 +331,33 @@ export class Hatchify {
         return isPathWithModelIdResult.params
       }
     }
+    // with namespace
+    const isPathWithNameSpaceModelId = match<{
+      namespace: string
+      model: string
+      id: Identifier
+    }>(this._prefix + "/:namespace/:model/:id", {
+      decode: decodeURIComponent,
+      strict: false,
+      sensitive: false,
+      end: false,
+    })
+
+    const isPathWithNameSpaceModelIdResult = isPathWithNameSpaceModelId(path)
+    if (isPathWithNameSpaceModelIdResult) {
+      let modelName = isPathWithNameSpaceModelIdResult.params.model
+      if (!modelName.includes(".")) {
+        modelName =
+          isPathWithNameSpaceModelIdResult.params.namespace + "." + modelName
+      }
+      const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
+
+      if (endpointName) {
+        isPathWithNameSpaceModelIdResult.params.model = endpointName
+
+        return isPathWithNameSpaceModelIdResult.params
+      }
+    }
 
     const isPathWithModel = match<{ model: string }>(this._prefix + "/:model", {
       decode: decodeURIComponent,
@@ -349,6 +376,33 @@ export class Hatchify {
         isPathWithModelResult.params.model = endpointName
 
         return isPathWithModelResult.params
+      }
+    }
+
+    // with namespace/model
+    const isPathWithNamespaceModel = match<{
+      namespace: string
+      model: string
+    }>(this._prefix + "/:namespace/:model", {
+      decode: decodeURIComponent,
+      strict: false,
+      sensitive: false,
+      end: false,
+    })
+
+    const isPathWithNamespaceModelResult = isPathWithNamespaceModel(path)
+    if (isPathWithNamespaceModelResult) {
+      let modelName = isPathWithNamespaceModelResult.params.model
+      if (!modelName.includes(".")) {
+        modelName =
+          isPathWithNamespaceModelResult.params.namespace + "." + modelName
+      }
+      const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
+
+      if (endpointName) {
+        isPathWithNamespaceModelResult.params.model = endpointName
+
+        return isPathWithNamespaceModelResult.params
       }
     }
 
@@ -419,6 +473,17 @@ export class Hatchify {
    * @category Testing Use
    */
   async createDatabase(): Promise<Sequelize> {
+    const uniqueNamespaces = Object.values(this.models).reduce(
+      (acc, model) => (model?.namespace ? acc.add(model.namespace) : acc),
+      new Set<string>(),
+    )
+
+    await Promise.all(
+      [...uniqueNamespaces].map((namespace) =>
+        this._sequelize.createSchema(namespace, {}),
+      ),
+    )
+
     return this._sequelize.sync({ alter: true })
   }
 }

@@ -28,6 +28,11 @@ export function convertHatchifyModels(
   const virtuals: Virtuals = {}
   const primaryKeys: Record<string, string> = {}
   models.forEach((model) => {
+    // add namespace to model.name
+    const modelName = model.name
+    if (model.namespace && model.namespace.length > 0) {
+      model.name = model.namespace + "." + model.name
+    }
     for (const attributeKey in model.attributes) {
       const attribute = model.attributes[attributeKey]
       const parsedAttribute = parseAttribute(attribute)
@@ -63,11 +68,12 @@ export function convertHatchifyModels(
       model.attributes,
       {
         validate: model.validation || {},
+        schema: model.namespace || "",
         underscored: true,
         createdAt: false,
         updatedAt: false,
         freezeTableName: true,
-        tableName: snakeCase(model.name),
+        tableName: snakeCase(modelName),
       },
     )
 
