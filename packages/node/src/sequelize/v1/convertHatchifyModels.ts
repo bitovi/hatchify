@@ -20,10 +20,6 @@ import type {
 import { pluralize } from "../../utils/pluralize"
 import { definedPlurals } from "../definedPlurals"
 
-function getModelFullName(model: HatchifyModel): string {
-  return [model.namespace, model.name].filter((x) => x).join(".")
-}
-
 export function convertHatchifyModels(
   sequelize: Sequelize,
   serializer: JSONAPISerializer,
@@ -32,8 +28,11 @@ export function convertHatchifyModels(
   const virtuals: Virtuals = {}
   const primaryKeys: Record<string, string> = {}
   models.forEach((model) => {
-    const modelFullName = getModelFullName(model)
-
+    // add namespace to model.name
+    const modelName = model.name
+    if (model.namespace && model.namespace.length > 0) {
+      model.name = model.namespace + "." + model.name
+    }
     for (const attributeKey in model.attributes) {
       const attribute = model.attributes[attributeKey]
       const parsedAttribute = parseAttribute(attribute)
@@ -50,10 +49,10 @@ export function convertHatchifyModels(
       }
 
       if (type instanceof DataTypes.VIRTUAL) {
-        if (virtuals[modelFullName]) {
-          virtuals[modelFullName][attributeKey] = updatedInclude || []
+        if (virtuals[model.name]) {
+          virtuals[model.name][attributeKey] = updatedInclude || []
         } else {
-          virtuals[modelFullName] = {
+          virtuals[model.name] = {
             [attributeKey]: updatedInclude || [],
           }
         }
@@ -65,7 +64,7 @@ export function convertHatchifyModels(
     }
 
     const temp = sequelize.define<Model<HatchifyModel["attributes"]>>(
-      modelFullName,
+      model.name,
       model.attributes,
       {
         validate: model.validation || {},
@@ -74,12 +73,12 @@ export function convertHatchifyModels(
         createdAt: false,
         updatedAt: false,
         freezeTableName: true,
-        tableName: snakeCase(model.name),
+        tableName: snakeCase(modelName),
       },
     )
 
     // GET THE PRIMARY KEY
-    primaryKeys[modelFullName] = temp.primaryKeyAttribute
+    primaryKeys[model.name] = temp.primaryKeyAttribute
 
     temp[HatchifySymbolModel] = model
   })
@@ -87,8 +86,6 @@ export function convertHatchifyModels(
   const associationsLookup: Record<string, Record<string, IAssociation>> = {}
 
   models.forEach((model) => {
-    const modelFullName = getModelFullName(model)
-
     const relationshipTypes = [
       "belongsTo",
       "belongsToMany",
@@ -107,7 +104,7 @@ export function convertHatchifyModels(
               new HatchifyError({
                 title:
                   "Unknown Model association for " +
-                  modelFullName +
+                  model.name +
                   " in " +
                   relationshipType,
                 status: statusCodes.CONFLICT,
@@ -126,7 +123,7 @@ export function convertHatchifyModels(
             )
 
           // Pull the models off sequelize.models
-          const current = sequelize.models[modelFullName]
+          const current = sequelize.models[model.name]
           const associated = sequelize.models[target]
 
           // Create the relationship
@@ -147,8 +144,8 @@ export function convertHatchifyModels(
                   : options?.through.model
                 : undefined,
           }
-          associationsLookup[modelFullName] = {
-            ...associationsLookup[modelFullName],
+          associationsLookup[model.name] = {
+            ...associationsLookup[model.name],
             [associationName]: modelAssociation,
           }
           associations[associationName] = modelAssociation
@@ -156,7 +153,7 @@ export function convertHatchifyModels(
       }
     })
     // Create the serializer schema for the model
-    registerSchema(serializer, model, associations, primaryKeys[modelFullName])
+    registerSchema(serializer, model, associations, primaryKeys[model.name])
   })
 
   return {
