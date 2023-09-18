@@ -177,8 +177,8 @@ describe("finalizeRelationships", () => {
           name: "TodoUser",
           id: getDefaultPrimaryAttribute().finalize(),
           attributes: {
-            userId: integer().finalize(),
-            todoId: integer().finalize(),
+            userId: integer({ required: true }).finalize(),
+            todoId: integer({ required: true }).finalize(),
           },
         },
       }),
