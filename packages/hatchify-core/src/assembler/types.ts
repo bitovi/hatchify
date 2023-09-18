@@ -1,3 +1,8 @@
+import {
+  FinalBooleanORM,
+  PartialBooleanControlType,
+  PartialBooleanORM,
+} from "../dataTypes/boolean"
 import type {
   FinalDatetimeORM,
   PartialDatetimeControlType,
@@ -60,6 +65,12 @@ export type PartialAttributeRecord = Record<
       PartialTextControlType,
       string,
       FinalTextORM
+    >
+  | PartialAttribute<
+      PartialBooleanORM,
+      PartialBooleanControlType,
+      boolean,
+      FinalBooleanORM
     >
 >
 

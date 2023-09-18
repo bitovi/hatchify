@@ -1,3 +1,4 @@
+export { boolean } from "./boolean"
 export { datetime } from "./datetime"
 export { enumerate } from "./enumerate"
 export { integer } from "./integer"

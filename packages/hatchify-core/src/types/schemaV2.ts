@@ -1,4 +1,11 @@
-export type ValueInRequest = number | string | Date | object | null | undefined
+export type ValueInRequest =
+  | boolean
+  | number
+  | string
+  | Date
+  | object
+  | null
+  | undefined
 
 export type UserValue = ValueInRequest
 
