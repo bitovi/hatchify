@@ -9,7 +9,9 @@ import { Hatchify } from "./koa"
 import { GET, POST, createServer } from "./testing/utils"
 
 describe("JSON:API Tests", () => {
-  let app: Koa, hatchify: Hatchify, server: Server
+  let app: Koa
+  let hatchify: Hatchify
+  let server: Server
   const Model: HatchifyModel = {
     name: "Model",
     namespace: "TestSchema",

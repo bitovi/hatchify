@@ -12,7 +12,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
       },
       hasMany: [{ target: "Todo", options: { as: "todos" } }],
     }
-
     const Todo: HatchifyModel = {
       name: "Todo",
       attributes: {
@@ -44,7 +43,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           pointer: "/data/attributes/name",
         },
       }
-
       const response = await fetch("/api/todos", {
         method: "post",
         body: {
@@ -79,7 +77,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           pointer: "/data/relationships/user/data",
         },
       }
-
       const { body: user } = await fetch("/api/users", {
         method: "post",
         body: {
@@ -91,7 +88,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           },
         },
       })
-
       const { status, body } = await fetch("/api/todos", {
         method: "post",
         body: {
@@ -126,7 +122,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           pointer: "/data/attributes/role",
         },
       }
-
       const response = await fetch("/api/users", {
         method: "post",
         body: {
@@ -161,7 +156,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           pointer: "/data",
         },
       }
-
       const response = await fetch("/api/todos", {
         method: "post",
         body: {
@@ -198,7 +192,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           pointer: "/data/type",
         },
       }
-
       const response = await fetch("/api/todos", {
         method: "post",
         body: {
@@ -234,7 +227,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           pointer: "/data/type",
         },
       }
-
       const response = await fetch("/api/todos", {
         method: "post",
         body: {
@@ -337,7 +329,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           parameter: "id",
         },
       }
-
       const response = await fetch("/api/todos/-1", {
         method: "patch",
         body: {
@@ -369,7 +360,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           parameter: "id",
         },
       }
-
       const response = await fetch("/api/todos/-1", {
         method: "delete",
       })
@@ -402,7 +392,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
             parameter: "page[size]",
           },
         }
-
         const { status, body } = await fetch("/api/todos?page[number]=1")
 
         expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
@@ -422,7 +411,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
             parameter: "page[size]",
           },
         }
-
         const { status, body } = await fetch(
           "/api/todos?page[number]=1&page[size]=0",
         )
@@ -444,7 +432,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
             parameter: "page[number]",
           },
         }
-
         const { status, body } = await fetch("/api/todos?page[size]=1")
 
         expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
@@ -500,7 +487,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
             parameter: "page[number]",
           },
         }
-
         const { status, body } = await fetch(
           "/api/todos?page[number]=0&page[size]=1",
         )
@@ -580,7 +566,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           pointer: "/data/attributes/user/data",
         },
       }
-
       const { status, body } = await fetch("/api/todos", {
         method: "post",
         body: {
@@ -618,7 +603,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           parameter: "sort",
         },
       }
-
       const { status, body } = await fetch("/api/todos?sort=namee")
 
       expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
@@ -639,7 +623,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           parameter: "filter[namee]",
         },
       }
-
       const { status, body } = await fetch(
         "/api/todos?filter[namee][]=John+Doe",
       )
@@ -662,7 +645,6 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           parameter: "fields[todo]",
         },
       }
-
       const { status, body } = await fetch("/api/todos?fields[todo]=nam")
 
       expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)

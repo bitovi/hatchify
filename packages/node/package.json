@@ -95,6 +95,10 @@
               }
             }
           ],
+          "one-var": [
+            "error",
+            "never"
+          ],
           "prettier/prettier": [
             "error",
             {

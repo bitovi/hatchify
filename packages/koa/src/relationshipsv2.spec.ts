@@ -15,7 +15,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         firstName: string(),
       },
     }
-
     const Account: PartialSchema = {
       name: "Account",
       attributes: {
@@ -75,7 +74,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: account } = await fetch("/api/accounts", {
         method: "post",
         body: {
@@ -95,7 +93,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: accounts } = await fetch(
         "/api/accounts?include=salesPerson",
       )
@@ -159,7 +156,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         firstName: string(),
       },
     }
-
     const Account: PartialSchema = {
       name: "Account",
       attributes: {
@@ -219,7 +215,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: account } = await fetch("/api/accounts", {
         method: "post",
         body: {
@@ -239,7 +234,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: accounts } = await fetch(
         "/api/accounts?include=closerPerson",
       )
@@ -285,7 +279,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         firstName: string(),
       },
     }
-
     const Account: PartialSchema = {
       name: "Account",
       attributes: {
@@ -347,7 +340,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: account } = await fetch("/api/accounts", {
         method: "post",
         body: {
@@ -367,7 +359,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: accounts } = await fetch(
         "/api/accounts?include=salesPerson",
       )
@@ -413,7 +404,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         name: string(),
       },
     }
-
     const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
@@ -473,7 +463,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -495,7 +484,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPersons } = await fetch(
         "/api/sales-persons?include=accounts",
       )
@@ -543,7 +531,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         name: string(),
       },
     }
-
     const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
@@ -603,7 +590,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -625,7 +611,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPersons } = await fetch(
         "/api/sales-persons?include=accounts",
       )
@@ -673,7 +658,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         name: string(),
       },
     }
-
     const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
@@ -733,7 +717,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -755,7 +738,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPersons } = await fetch(
         "/api/sales-persons?include=accounts",
       )
@@ -803,7 +785,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         name: string(),
       },
     }
-
     const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
@@ -908,7 +889,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -930,7 +910,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPersons } = await fetch(
         "/api/sales-persons?include=accounts,accountSalesPersons",
       )
@@ -992,7 +971,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         name: string(),
       },
     }
-
     const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
@@ -1097,7 +1075,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -1119,7 +1096,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPersons } = await fetch(
         "/api/sales-persons?include=accounts,accountSalesPersons",
       )
@@ -1182,7 +1158,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         name: string(),
       },
     }
-
     const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
@@ -1287,7 +1262,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -1309,7 +1283,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPersons } = await fetch(
         "/api/sales-persons?include=accounts,commissions",
       )
@@ -1372,7 +1345,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         name: string(),
       },
     }
-
     const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
@@ -1480,7 +1452,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -1502,7 +1473,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPersons } = await fetch(
         "/api/sales-persons?include=accounts,accountSalesPersons",
       )
@@ -1566,7 +1536,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         accountSaleTypeId: integer(),
       },
     }
-
     const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
@@ -1676,7 +1645,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -1699,7 +1667,6 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         },
       })
-
       const { body: salesPersons } = await fetch(
         "/api/sales-persons?include=accounts,accountSalesPersons",
       )

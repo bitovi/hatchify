@@ -19,7 +19,6 @@ const [john, jane] = [
     manager: false,
   },
 ]
-
 const testCases = [
   //string
   {
@@ -255,7 +254,6 @@ const testCases = [
     expectedError: undefined,
   },
 ]
-
 // LIKE / LIKE ANY now supported by SQLite with some clever query rewriting.  Make sure it's working.
 const SQLiteOnlyTestCases = [
   {
@@ -301,7 +299,6 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
     },
     belongsTo: [{ target: "User", options: { as: "user" } }],
   }
-
   const User: HatchifyModel = {
     name: "User",
     attributes: {

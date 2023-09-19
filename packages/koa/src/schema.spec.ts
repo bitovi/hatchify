@@ -26,7 +26,6 @@ describe.each(dbDialects)("schema", (dialect) => {
         },
         belongsTo: [{ target: "User", options: { as: "user" } }],
       }
-
       const User: HatchifyModel = {
         name: "User",
         attributes: {
@@ -626,7 +625,6 @@ describe.each(dbDialects)("schema", (dialect) => {
           user: belongsTo(),
         },
       }
-
       const User: PartialSchema = {
         name: "User",
         attributes: {
