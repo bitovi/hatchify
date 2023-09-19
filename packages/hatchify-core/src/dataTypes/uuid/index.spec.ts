@@ -1,17 +1,18 @@
+import { UUID_REGEX } from "./constants"
 import { HatchifyCoerceError } from "../../types"
 
-import { text } from "."
+import { uuid } from "."
 
-describe("text", () => {
-  describe("text()", () => {
-    const type = text()
+describe("uuid", () => {
+  describe("uuid()", () => {
+    const type = uuid()
 
     it("prepares correctly", () => {
       expect(type).toEqual({
-        name: "text()",
+        name: "uuid()",
         orm: {
           sequelize: {
-            type: "TEXT",
+            type: "UUID",
             allowNull: undefined,
             primaryKey: undefined,
           },
@@ -19,10 +20,10 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: undefined,
-          min: 0,
-          max: Infinity,
+          min: 36,
+          max: 36,
           primary: undefined,
-          regex: undefined,
+          regex: UUID_REGEX,
         },
         finalize: expect.any(Function),
       })
@@ -36,32 +37,50 @@ describe("text", () => {
       } = type.finalize()
 
       // serializeORMPropertyValue
-      expect(serializeORMPropertyValue("valid")).toBe("valid")
+      expect(
+        serializeORMPropertyValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
       expect(serializeORMPropertyValue(null)).toBeNull()
+      expect(() => serializeORMPropertyValue("invalid")).toThrow(
+        new HatchifyCoerceError("with length greater than or equal to 36"),
+      )
+      expect(() =>
+        serializeORMPropertyValue("institut-ions-0999-ABCD-TestBranch00"),
+      ).toThrow(new HatchifyCoerceError(`with format of ${UUID_REGEX}`))
       expect(() => serializeORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
 
       // setORMPropertyValue
-      expect(setORMPropertyValue("valid")).toBe("valid")
+      expect(setORMPropertyValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")).toBe(
+        "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+      )
       expect(setORMPropertyValue(null)).toBeNull()
       expect(setORMPropertyValue(undefined)).toBeNull()
+      expect(() => setORMPropertyValue("invalid")).toThrow(
+        new HatchifyCoerceError("with length greater than or equal to 36"),
+      )
+      expect(() =>
+        setORMPropertyValue("institut-ions-0999-ABCD-TestBranch00"),
+      ).toThrow(new HatchifyCoerceError(`with format of ${UUID_REGEX}`))
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
 
       // setORMQueryFilterValue
-      expect(setORMQueryFilterValue("valid")).toBe("valid")
+      expect(
+        setORMQueryFilterValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
       expect(setORMQueryFilterValue("null")).toBeNull()
       expect(setORMQueryFilterValue("undefined")).toBeNull()
     })
 
     it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
-        name: "text()",
+        name: "uuid()",
         orm: {
           sequelize: {
-            type: "TEXT",
+            type: "UUID",
             allowNull: true,
             primaryKey: false,
           },
@@ -69,10 +88,10 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: true,
-          min: 0,
-          max: Infinity,
+          min: 36,
+          max: 36,
           primary: false,
-          regex: /(.*?)/,
+          regex: UUID_REGEX,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -81,15 +100,15 @@ describe("text", () => {
     })
   })
 
-  describe("text({required: true})", () => {
-    const type = text({ required: true })
+  describe("uuid({required: true})", () => {
+    const type = uuid({ required: true })
 
     it("prepares correctly", () => {
       expect(type).toEqual({
-        name: 'text({"required":true})',
+        name: 'uuid({"required":true})',
         orm: {
           sequelize: {
-            type: "TEXT",
+            type: "UUID",
             allowNull: false,
             primaryKey: undefined,
           },
@@ -97,10 +116,10 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: false,
-          min: 0,
-          max: Infinity,
+          min: 36,
+          max: 36,
           primary: undefined,
-          regex: undefined,
+          regex: UUID_REGEX,
         },
         finalize: expect.any(Function),
       })
@@ -114,28 +133,46 @@ describe("text", () => {
       } = type.finalize()
 
       // serializeORMPropertyValue
-      expect(serializeORMPropertyValue("valid")).toBe("valid")
+      expect(
+        serializeORMPropertyValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
       expect(() => serializeORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => serializeORMPropertyValue("invalid")).toThrow(
+        new HatchifyCoerceError("with length greater than or equal to 36"),
+      )
+      expect(() =>
+        serializeORMPropertyValue("institut-ions-0999-ABCD-TestBranch00"),
+      ).toThrow(new HatchifyCoerceError(`with format of ${UUID_REGEX}`))
       expect(() => serializeORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
 
       // setORMPropertyValue
-      expect(setORMPropertyValue("valid")).toBe("valid")
+      expect(setORMPropertyValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")).toBe(
+        "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+      )
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMPropertyValue(undefined)).toThrow(
         new HatchifyCoerceError("as a non-undefined value"),
       )
+      expect(() => setORMPropertyValue("invalid")).toThrow(
+        new HatchifyCoerceError("with length greater than or equal to 36"),
+      )
+      expect(() =>
+        setORMPropertyValue("institut-ions-0999-ABCD-TestBranch00"),
+      ).toThrow(new HatchifyCoerceError(`with format of ${UUID_REGEX}`))
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
 
       // setORMQueryFilterValue
-      expect(setORMQueryFilterValue("valid")).toBe("valid")
+      expect(
+        setORMQueryFilterValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
       expect(() => setORMQueryFilterValue("null")).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
@@ -146,10 +183,10 @@ describe("text", () => {
 
     it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
-        name: 'text({"required":true})',
+        name: 'uuid({"required":true})',
         orm: {
           sequelize: {
-            type: "TEXT",
+            type: "UUID",
             allowNull: false,
             primaryKey: false,
           },
@@ -157,10 +194,10 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: false,
-          min: 0,
-          max: Infinity,
+          min: 36,
+          max: 36,
           primary: false,
-          regex: /(.*?)/,
+          regex: UUID_REGEX,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -169,15 +206,15 @@ describe("text", () => {
     })
   })
 
-  describe("text({primary: true})", () => {
-    const type = text({ primary: true })
+  describe("uuid({primary: true})", () => {
+    const type = uuid({ primary: true })
 
     it("prepares correctly", () => {
       expect(type).toEqual({
-        name: 'text({"primary":true})',
+        name: 'uuid({"primary":true})',
         orm: {
           sequelize: {
-            type: "TEXT",
+            type: "UUID",
             allowNull: undefined,
             primaryKey: true,
           },
@@ -185,10 +222,10 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: undefined,
-          min: 0,
-          max: Infinity,
+          min: 36,
+          max: 36,
           primary: true,
-          regex: undefined,
+          regex: UUID_REGEX,
         },
         finalize: expect.any(Function),
       })
@@ -201,31 +238,47 @@ describe("text", () => {
         setORMQueryFilterValue,
       } = type.finalize()
 
-      // todo: HATCH-347
-
       // serializeORMPropertyValue
-      expect(serializeORMPropertyValue("valid")).toBe("valid")
+      expect(
+        serializeORMPropertyValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
       expect(() => serializeORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => serializeORMPropertyValue("invalid")).toThrow(
+        new HatchifyCoerceError("with length greater than or equal to 36"),
+      )
+      expect(() =>
+        serializeORMPropertyValue("institut-ions-0999-ABCD-TestBranch00"),
+      ).toThrow(new HatchifyCoerceError(`with format of ${UUID_REGEX}`))
       expect(() => serializeORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
 
       // setORMPropertyValue
-      expect(setORMPropertyValue("valid")).toBe("valid")
+      expect(setORMPropertyValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")).toBe(
+        "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+      )
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMPropertyValue(undefined)).toThrow(
         new HatchifyCoerceError("as a non-undefined value"),
       )
+      expect(() => setORMPropertyValue("invalid")).toThrow(
+        new HatchifyCoerceError("with length greater than or equal to 36"),
+      )
+      expect(() =>
+        setORMPropertyValue("institut-ions-0999-ABCD-TestBranch00"),
+      ).toThrow(new HatchifyCoerceError(`with format of ${UUID_REGEX}`))
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
 
       // setORMQueryFilterValue
-      expect(setORMQueryFilterValue("valid")).toBe("valid")
+      expect(
+        setORMQueryFilterValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
       expect(() => setORMQueryFilterValue("null")).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
@@ -236,10 +289,10 @@ describe("text", () => {
 
     it("finalizes correctly", () => {
       expect(type.finalize()).toEqual({
-        name: 'text({"primary":true})',
+        name: 'uuid({"primary":true})',
         orm: {
           sequelize: {
-            type: "TEXT",
+            type: "UUID",
             allowNull: false,
             primaryKey: true,
           },
@@ -247,10 +300,10 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: false,
-          min: 0,
-          max: Infinity,
+          min: 36,
+          max: 36,
           primary: true,
-          regex: /(.*?)/,
+          regex: UUID_REGEX,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),

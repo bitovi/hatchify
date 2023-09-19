@@ -104,7 +104,10 @@ describe("assembler", () => {
           "max" in assembledTodo.attributes.importance.control &&
             assembledTodo.attributes.importance.control.max,
         ).toBe(Infinity)
-        expect(assembledTodo.attributes.importance.control.primary).toBe(false)
+        expect(
+          "primary" in assembledTodo.attributes.importance.control &&
+            assembledTodo.attributes.importance.control.primary,
+        ).toBe(false)
 
         expect(
           assembledTodo.attributes.importance.orm.sequelize.allowNull,
@@ -115,10 +118,8 @@ describe("assembler", () => {
             assembledTodo.attributes.importance.orm.sequelize.autoIncrement,
         ).toBe(false)
         expect(
-          assembledTodo.attributes.importance.orm.sequelize.primaryKey,
-        ).toBe(false)
-        expect(
-          assembledTodo.attributes.importance.orm.sequelize.primaryKey,
+          "primaryKey" in assembledTodo.attributes.importance.orm.sequelize &&
+            assembledTodo.attributes.importance.orm.sequelize.primaryKey,
         ).toBe(false)
       })
     })

@@ -33,5 +33,9 @@ export function coerce(
     )
   }
 
+  if (control.regex && !control.regex.test(value)) {
+    throw new HatchifyCoerceError(`with format of ${control.regex}`)
+  }
+
   return value
 }

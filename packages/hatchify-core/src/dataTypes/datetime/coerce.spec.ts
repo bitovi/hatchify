@@ -17,10 +17,10 @@ describe("coerce", () => {
 
   it("handles non-strings", () => {
     expect(() => coerce(1, { type: "Datetime" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as an ISO 8601 date and time string"),
     )
     expect(() => coerce({}, { type: "Datetime" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as an ISO 8601 date and time string"),
     )
     expect(() =>
       coerce(
@@ -29,21 +29,21 @@ describe("coerce", () => {
         },
         { type: "Datetime" },
       ),
-    ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+    ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
   })
 
   it("handles non-datetime strings", () => {
     expect(() => coerce("", { type: "Datetime" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as an ISO 8601 date and time string"),
     )
     expect(() => coerce("invalid date", { type: "Datetime" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as an ISO 8601 date and time string"),
     )
     expect(() => coerce("2023-01-01", { type: "Datetime" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as an ISO 8601 date and time string"),
     )
     expect(() => coerce("1/1/2023", { type: "Datetime" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as an ISO 8601 date and time string"),
     )
   })
 

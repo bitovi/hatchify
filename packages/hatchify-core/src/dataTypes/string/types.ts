@@ -7,12 +7,14 @@ import type {
 export interface PartialStringProps extends PartialDataTypeProps {
   min?: number
   max?: number
+  regex?: RegExp
 }
 
 export interface PartialStringControlType extends PartialControlType {
   type: "String"
   min?: number
   max?: number
+  regex?: RegExp
 }
 
 export interface PartialStringORM {

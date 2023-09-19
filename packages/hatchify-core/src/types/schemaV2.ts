@@ -32,7 +32,7 @@ export interface PartialDataTypeProps {
 }
 
 export type PartialControlType = {
-  type: "Boolean" | "Number" | "String" | "Datetime"
+  type: "Boolean" | "Number" | "String" | "Datetime" | "Dateonly"
   allowNull?: boolean
   primary?: boolean
 }
