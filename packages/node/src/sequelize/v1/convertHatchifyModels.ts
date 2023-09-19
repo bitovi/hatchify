@@ -1,10 +1,11 @@
 import querystringParser from "@bitovi/sequelize-querystring-parser"
+import { pascalCaseToCamelCase } from "@hatchifyjs/hatchify-core"
 import type {
   IAssociation,
   ICreateHatchifyModel,
 } from "@hatchifyjs/sequelize-create-with-associations"
 import type JSONAPISerializer from "json-api-serializer"
-import { camelCase, snakeCase } from "lodash"
+import { snakeCase } from "lodash"
 import { DataTypes } from "sequelize"
 import type { Model, Sequelize } from "sequelize"
 
@@ -68,7 +69,7 @@ export function convertHatchifyModels(
       model.attributes,
       {
         validate: model.validation || {},
-        schema: model.namespace || "",
+        schema: snakeCase(model.namespace) || "",
         underscored: true,
         createdAt: false,
         updatedAt: false,
@@ -116,7 +117,7 @@ export function convertHatchifyModels(
           //Get association name for lookup
           const associationName =
             options?.as ??
-            camelCase(
+            pascalCaseToCamelCase(
               ["belongsToMany", "hasMany"].includes(relationshipType)
                 ? pluralize(target)
                 : target,

@@ -45,6 +45,7 @@ export function toSequelize(
           createdAt: false,
           updatedAt: false,
           freezeTableName: true,
+          schema: snakeCase(finalizedSchema.namespace) || "",
           tableName: snakeCase(finalizedSchema.name),
         },
       ),

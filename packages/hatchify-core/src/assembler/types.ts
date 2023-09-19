@@ -78,6 +78,7 @@ export interface PartialSchema<
   TAttributes extends PartialAttributeRecord = PartialAttributeRecord,
 > {
   name: string
+  namespace?: string
   id?: PartialAttribute<
     PartialNumberORM,
     PartialNumberControlType,
@@ -113,6 +114,7 @@ export type FinalAttributeRecord = Record<
 
 export interface FinalSchema {
   name: string
+  namespace?: string
   id: FinalAttribute<
     PartialNumberORM,
     PartialNumberControlType,

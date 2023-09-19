@@ -1,6 +1,7 @@
 import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
 import JSONAPISerializer from "json-api-serializer"
+import { snakeCase } from "lodash"
 import { match } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
 import type { Database } from "sqlite3"
@@ -480,7 +481,7 @@ export class Hatchify {
 
     await Promise.all(
       [...uniqueNamespaces].map((namespace) =>
-        this._sequelize.createSchema(namespace, {}),
+        this._sequelize.createSchema(snakeCase(namespace), {}),
       ),
     )
 
