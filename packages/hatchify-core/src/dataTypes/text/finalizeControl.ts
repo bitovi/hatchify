@@ -9,5 +9,6 @@ export function finalizeControl(
     min: props.min ?? 0,
     max: props.max ?? 255,
     primary: !!props.primary,
+    regex: props.regex ?? /(.*?)/,
   }
 }

@@ -4,6 +4,11 @@ import type {
   PartialBooleanORM,
 } from "../dataTypes/boolean"
 import type {
+  FinalDateonlyORM,
+  PartialDateonlyControlType,
+  PartialDateonlyORM,
+} from "../dataTypes/dateonly"
+import type {
   FinalDatetimeORM,
   PartialDatetimeControlType,
   PartialDatetimeORM,
@@ -28,6 +33,7 @@ import type {
   PartialTextControlType,
   PartialTextORM,
 } from "../dataTypes/text/types"
+import type { FinalUuidORM, PartialUuidORM } from "../dataTypes/uuid/types"
 import type {
   FinalRelationship,
   PartialRelationship,
@@ -37,16 +43,16 @@ import type { FinalAttribute, PartialAttribute } from "../types"
 export type PartialAttributeRecord = Record<
   string,
   | PartialAttribute<
-      PartialNumberORM,
-      PartialNumberControlType,
-      number,
-      FinalNumberORM
+      PartialBooleanORM,
+      PartialBooleanControlType,
+      boolean,
+      FinalBooleanORM
     >
   | PartialAttribute<
-      PartialStringORM,
-      PartialStringControlType,
+      PartialDateonlyORM,
+      PartialDateonlyControlType,
       string,
-      FinalStringORM
+      FinalDateonlyORM
     >
   | PartialAttribute<
       PartialDatetimeORM,
@@ -61,16 +67,28 @@ export type PartialAttributeRecord = Record<
       FinalEnumORM
     >
   | PartialAttribute<
+      PartialNumberORM,
+      PartialNumberControlType,
+      number,
+      FinalNumberORM
+    >
+  | PartialAttribute<
+      PartialStringORM,
+      PartialStringControlType,
+      string,
+      FinalStringORM
+    >
+  | PartialAttribute<
       PartialTextORM,
       PartialTextControlType,
       string,
       FinalTextORM
     >
   | PartialAttribute<
-      PartialBooleanORM,
-      PartialBooleanControlType,
-      boolean,
-      FinalBooleanORM
+      PartialUuidORM,
+      PartialStringControlType,
+      string,
+      FinalUuidORM
     >
 >
 
@@ -92,6 +110,25 @@ export interface PartialSchema<
 export type FinalAttributeRecord = Record<
   string,
   | FinalAttribute<
+      PartialBooleanORM,
+      PartialBooleanControlType,
+      boolean,
+      FinalBooleanORM
+    >
+  | FinalAttribute<
+      PartialDateonlyORM,
+      PartialDateonlyControlType,
+      string,
+      FinalDateonlyORM
+    >
+  | FinalAttribute<
+      PartialDatetimeORM,
+      PartialDatetimeControlType,
+      Date,
+      FinalDatetimeORM
+    >
+  | FinalAttribute<PartialEnumORM, PartialEnumControlType, string, FinalEnumORM>
+  | FinalAttribute<
       PartialNumberORM,
       PartialNumberControlType,
       number,
@@ -103,13 +140,7 @@ export type FinalAttributeRecord = Record<
       string,
       FinalStringORM
     >
-  | FinalAttribute<
-      PartialDatetimeORM,
-      PartialDatetimeControlType,
-      Date,
-      FinalDatetimeORM
-    >
-  | FinalAttribute<PartialEnumORM, PartialEnumControlType, string, FinalEnumORM>
+  | FinalAttribute<PartialTextORM, PartialTextControlType, string, FinalTextORM>
 >
 
 export interface FinalSchema {

@@ -2,10 +2,10 @@ import { getFinalize } from "./getFinalize"
 import { getPartialControl } from "./getPartialControl"
 import { getPartialOrm } from "./getPartialOrm"
 import type {
-  FinalStringORM,
-  PartialStringControlType,
-  PartialStringORM,
-  PartialStringProps,
+  FinalDateonlyORM,
+  PartialDateonlyControlType,
+  PartialDateonlyORM,
+  PartialDateonlyProps,
 } from "./types"
 import type { PartialAttribute } from "../../types"
 
@@ -14,21 +14,19 @@ export * from "./getPartialControl"
 export * from "./getPartialOrm"
 export * from "./types"
 
-export function string(
-  props?: PartialStringProps,
+export function dateonly(
+  props?: PartialDateonlyProps,
 ): PartialAttribute<
-  PartialStringORM,
-  PartialStringControlType,
+  PartialDateonlyORM,
+  PartialDateonlyControlType,
   string,
-  FinalStringORM
+  FinalDateonlyORM
 > {
   return {
-    name: `string(${
-      props ? JSON.stringify({ ...props, regex: props.regex?.toString() }) : ""
-    })`,
+    name: `dateonly(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    finalize: function finalizeString() {
+    finalize: function finalizeDateonly() {
       return getFinalize(this)
     },
   }

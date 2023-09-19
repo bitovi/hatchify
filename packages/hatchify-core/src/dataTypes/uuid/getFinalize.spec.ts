@@ -1,23 +1,24 @@
-import { string } from "."
+import { UUID_REGEX } from "./constants"
+
+import { uuid } from "."
 
 describe("getFinalize", () => {
   it("finalizes a partial attribute", () => {
-    expect(string()).toEqual({
-      name: "string()",
+    expect(uuid()).toEqual({
+      name: "uuid()",
       control: {
         allowNull: undefined,
-        max: undefined,
-        min: undefined,
+        max: 36,
+        min: 36,
         primary: undefined,
-        regex: undefined,
+        regex: UUID_REGEX,
         type: "String",
       },
       orm: {
         sequelize: {
           allowNull: undefined,
           primaryKey: undefined,
-          type: "STRING",
-          typeArgs: [],
+          type: "UUID",
         },
       },
       finalize: expect.any(Function),
