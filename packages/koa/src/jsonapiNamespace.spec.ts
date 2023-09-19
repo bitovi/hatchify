@@ -1,4 +1,5 @@
-import { Server } from "http"
+import type { Server } from "http"
+
 import { DataTypes } from "@hatchifyjs/node"
 import type { HatchifyModel } from "@hatchifyjs/node"
 import { Serializer } from "jsonapi-serializer"
