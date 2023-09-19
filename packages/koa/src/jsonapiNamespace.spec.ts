@@ -120,5 +120,15 @@ describe("JSON:API Tests", () => {
     expect(hasNamespace).toBeTruthy()
     expect(hasNamespace.status).toBe(200)
     expect(namespaceless).toStrictEqual(hasNamespace)
+
+    // make sure the response have only the requested fields
+    namespaceless.deserialized.forEach((record: any) => {
+      expect(record).toHaveProperty("first_name")
+      expect(record).not.toHaveProperty("last_name")
+    })
+    hasNamespace.deserialized.forEach((record: any) => {
+      expect(record).toHaveProperty("first_name")
+      expect(record).not.toHaveProperty("last_name")
+    })
   })
 })
