@@ -1,3 +1,5 @@
+import type { Server } from "http"
+
 import { DataTypes } from "@hatchifyjs/node"
 import type { HatchifyModel } from "@hatchifyjs/node"
 import { Serializer } from "jsonapi-serializer"
@@ -7,6 +9,7 @@ import { Hatchify } from "./koa"
 import { GET, POST, createServer } from "./testing/utils"
 
 describe("JSON:API Tests", () => {
+  let app: Koa, hatchify: Hatchify, server: Server
   const Model: HatchifyModel = {
     name: "Model",
     namespace: "TestSchema",
@@ -32,14 +35,21 @@ describe("JSON:API Tests", () => {
     return serial
   }
 
-  it("should handle JSON:API create body", async () => {
-    const app = new Koa()
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+  beforeAll(async () => {
+    app = new Koa()
+    hatchify = new Hatchify([Model], { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
-    const server = createServer(app)
+    server = createServer(app)
     await hatchify.createDatabase()
+  })
 
+  afterAll(async () => {
+    await hatchify.orm.close()
+    await server.close()
+  })
+
+  it("should handle JSON:API create body", async () => {
     //JK will separate cases into different it() tests
     const r1 = await POST(
       server,
@@ -81,7 +91,44 @@ describe("JSON:API Tests", () => {
     expect(find.status).toBe(200)
     expect(find.deserialized).toBeTruthy()
     expect(find.deserialized.id).toBe(r2.deserialized.id)
+  })
 
-    await hatchify.orm.close()
+  it("should be able to omit namespace when referring to fields that belongs to the same namespace", async () => {
+    const r1 = await POST(
+      server,
+      "/api/testschema.models",
+      serialize({
+        first_name: "firstName",
+        last_name: "lastName",
+        type: "TestSchema.Model",
+      }),
+      "application/vnd.api+json",
+    )
+    expect(r1).toBeTruthy()
+    expect(r1.status).toBe(200)
+
+    const namespaceless = await GET(
+      server,
+      "/api/test-schema/models?fields[Model]=first_name",
+    )
+    expect(namespaceless).toBeTruthy()
+    expect(namespaceless.status).toBe(200)
+    const hasNamespace = await GET(
+      server,
+      "/api/test-schema/models?fields[TestSchema.Model]=first_name",
+    )
+    expect(hasNamespace).toBeTruthy()
+    expect(hasNamespace.status).toBe(200)
+    expect(namespaceless).toStrictEqual(hasNamespace)
+
+    // make sure the response have only the requested fields
+    namespaceless.deserialized.forEach((record: any) => {
+      expect(record).toHaveProperty("first_name")
+      expect(record).not.toHaveProperty("last_name")
+    })
+    hasNamespace.deserialized.forEach((record: any) => {
+      expect(record).toHaveProperty("first_name")
+      expect(record).not.toHaveProperty("last_name")
+    })
   })
 })
