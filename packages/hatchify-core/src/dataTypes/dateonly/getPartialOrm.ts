@@ -9,6 +9,7 @@ export function getPartialOrm(
       typeArgs: [],
       allowNull: props?.required == null ? props?.required : !props.required,
       primaryKey: props?.primary,
+      defaultValue: props?.default,
     },
   }
 }

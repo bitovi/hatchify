@@ -64,6 +64,7 @@ describe("text", () => {
             type: "TEXT",
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -72,6 +73,7 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: false,
+          default: null,
           regex: /(.*?)/,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -152,6 +154,7 @@ describe("text", () => {
             type: "TEXT",
             allowNull: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -160,6 +163,7 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: false,
+          default: null,
           regex: /(.*?)/,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -242,6 +246,7 @@ describe("text", () => {
             type: "TEXT",
             allowNull: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
@@ -250,6 +255,7 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: true,
+          default: null,
           regex: /(.*?)/,
         },
         serializeORMPropertyValue: expect.any(Function),

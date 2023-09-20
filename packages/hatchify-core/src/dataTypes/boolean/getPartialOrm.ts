@@ -5,6 +5,7 @@ export function getPartialOrm(props?: PartialBooleanProps): PartialBooleanORM {
     sequelize: {
       type: "BOOLEAN",
       allowNull: props?.required == null ? props?.required : !props.required,
+      defaultValue: props?.default,
     },
   }
 }

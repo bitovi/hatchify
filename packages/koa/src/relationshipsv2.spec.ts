@@ -49,6 +49,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "sales_person_id",
             allowNull: true,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -190,6 +191,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "closer_person_id",
             allowNull: true,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -315,6 +317,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "finisher_id",
             allowNull: true,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -438,6 +441,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "sales_person_id",
             allowNull: true,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -565,6 +569,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "sales_person_id",
             allowNull: true,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -692,6 +697,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "sales_id",
             allowNull: true,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -823,6 +829,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('account_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -834,6 +844,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('sales_person_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -845,6 +859,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "account_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -858,12 +873,17 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('account_sales_person_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "sales_person_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -1009,6 +1029,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('account_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -1020,6 +1044,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('sales_person_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -1031,6 +1059,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "account_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -1044,12 +1073,17 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('account_sales_person_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "sales_person_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -1196,6 +1230,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('account_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -1207,6 +1245,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('sales_person_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -1218,6 +1260,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "account_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -1231,12 +1274,17 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('commission_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "sales_person_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -1386,6 +1434,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('account_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -1397,6 +1449,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('sales_person_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -1408,12 +1464,17 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('account_sales_person_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "the_account_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -1427,6 +1488,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "seller_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -1578,6 +1640,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('account_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -1589,6 +1655,10 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('sales_person_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
         ]),
@@ -1600,6 +1670,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "account_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {
@@ -1613,12 +1684,17 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             name: "id",
             allowNull: dialect === "sqlite",
             primary: true,
+            default:
+              dialect === "postgres"
+                ? "nextval('account_sales_person_id_seq'::regclass)"
+                : null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "sales_person_id",
             allowNull: false,
             primary: false,
+            default: null,
             type: dialect === "postgres" ? "integer" : "INTEGER",
             foreignKeys: [
               {

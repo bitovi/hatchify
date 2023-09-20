@@ -12,4 +12,18 @@ describe("getPartialOrm", () => {
     expect(getPartialOrm({ required: true }).sequelize.allowNull).toBe(false)
     expect(getPartialOrm({ required: false }).sequelize.allowNull).toBe(true)
   })
+
+  it("handles default", () => {
+    expect(
+      getPartialOrm({ default: undefined }).sequelize.defaultValue,
+    ).toBeUndefined()
+    expect(getPartialOrm({ default: null }).sequelize.defaultValue).toBeNull()
+    expect(getPartialOrm({ default: false }).sequelize.defaultValue).toBe(false)
+
+    const func = () => true
+
+    expect(getPartialOrm({ default: func }).sequelize.defaultValue).toEqual(
+      func,
+    )
+  })
 })

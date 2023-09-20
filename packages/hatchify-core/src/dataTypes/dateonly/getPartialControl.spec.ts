@@ -18,4 +18,16 @@ describe("getPartialControl", () => {
     expect(getPartialControl({ primary: true }).primary).toBe(true)
     expect(getPartialControl({ primary: false }).primary).toBe(false)
   })
+
+  it("handles default", () => {
+    expect(getPartialControl({ default: undefined }).default).toBeUndefined()
+    expect(getPartialControl({ default: null }).default).toBeNull()
+    expect(getPartialControl({ default: "1970-01-01" }).default).toBe(
+      "1970-01-01",
+    )
+
+    const func = () => "1970-01-01"
+
+    expect(getPartialControl({ default: func }).default).toEqual(func)
+  })
 })

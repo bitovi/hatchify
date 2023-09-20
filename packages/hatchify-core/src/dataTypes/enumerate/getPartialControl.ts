@@ -15,6 +15,7 @@ export function getPartialControl(
     type: "String",
     allowNull: props?.required == null ? props?.required : !props.required,
     primary: props?.primary,
+    default: props?.default,
     values: props.values,
   }
 }

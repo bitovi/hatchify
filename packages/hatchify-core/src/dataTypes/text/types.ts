@@ -1,7 +1,7 @@
 import type { PartialDataTypeProps } from "../../types"
 import type { PartialStringControlType } from "../string"
 
-export type PartialTextProps = PartialDataTypeProps
+export type PartialTextProps = PartialDataTypeProps<string>
 
 export type PartialTextControlType = PartialStringControlType
 
@@ -10,6 +10,7 @@ export interface PartialTextORM {
     type: "TEXT"
     allowNull?: boolean
     primaryKey?: boolean
+    defaultValue?: string | (() => string) | null
   }
 }
 

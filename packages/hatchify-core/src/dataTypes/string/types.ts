@@ -4,13 +4,13 @@ import type {
   PartialSequelizeDataType,
 } from "../../types"
 
-export interface PartialStringProps extends PartialDataTypeProps {
+export interface PartialStringProps extends PartialDataTypeProps<string> {
   min?: number
   max?: number
   regex?: RegExp
 }
 
-export interface PartialStringControlType extends PartialControlType {
+export interface PartialStringControlType extends PartialControlType<string> {
   type: "String"
   min?: number
   max?: number
@@ -18,9 +18,9 @@ export interface PartialStringControlType extends PartialControlType {
 }
 
 export interface PartialStringORM {
-  sequelize: PartialSequelizeDataType<number[] | string[]>
+  sequelize: PartialSequelizeDataType<number[] | string[], string>
 }
 
 export interface FinalStringORM {
-  sequelize: Required<PartialSequelizeDataType<number[] | string[]>>
+  sequelize: Required<PartialSequelizeDataType<number[] | string[], string>>
 }

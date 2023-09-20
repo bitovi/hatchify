@@ -24,4 +24,21 @@ describe("getPartialOrm", () => {
     expect(getPartialOrm({ primary: true }).sequelize.primaryKey).toBe(true)
     expect(getPartialOrm({ primary: false }).sequelize.primaryKey).toBe(false)
   })
+
+  it("handles default", () => {
+    expect(
+      getPartialOrm({ default: undefined }).sequelize.defaultValue,
+    ).toBeUndefined()
+    expect(getPartialOrm({ default: null }).sequelize.defaultValue).toBeNull()
+    expect(
+      getPartialOrm({ default: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678" })
+        .sequelize.defaultValue,
+    ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+
+    const func = () => "6ca2929f-c66d-4542-96a9-f1a6aa3d2678"
+
+    expect(getPartialOrm({ default: func }).sequelize.defaultValue).toEqual(
+      func,
+    )
+  })
 })

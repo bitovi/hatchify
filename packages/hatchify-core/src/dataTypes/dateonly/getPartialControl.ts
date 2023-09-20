@@ -9,5 +9,6 @@ export function getPartialControl(
     min: props?.min,
     max: props?.max,
     primary: props?.primary,
+    default: props?.default,
   }
 }

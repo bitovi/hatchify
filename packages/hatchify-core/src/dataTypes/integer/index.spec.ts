@@ -179,6 +179,7 @@ describe("integer", () => {
             allowNull: true,
             autoIncrement: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -187,6 +188,7 @@ describe("integer", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 1,
         },
         setClientPropertyValue: expect.any(Function),
@@ -393,6 +395,7 @@ describe("integer", () => {
             allowNull: false,
             autoIncrement: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -401,6 +404,7 @@ describe("integer", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 1,
         },
         setClientPropertyValue: expect.any(Function),
@@ -590,6 +594,7 @@ describe("integer", () => {
             allowNull: true,
             autoIncrement: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -598,6 +603,7 @@ describe("integer", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 1,
         },
         setClientPropertyValue: expect.any(Function),
@@ -803,6 +809,7 @@ describe("integer", () => {
             allowNull: false,
             autoIncrement: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
@@ -811,6 +818,7 @@ describe("integer", () => {
           min: -Infinity,
           max: Infinity,
           primary: true,
+          default: null,
           step: 1,
         },
         setClientPropertyValue: expect.any(Function),
