@@ -89,7 +89,8 @@ export type HatchifyAttributes = ModelAttributes<Model>
  */
 export interface BelongsToManyResult {
   target: string
-  options: BelongsToManyOptions
+  options: Omit<BelongsToManyOptions, "through"> &
+    Partial<Pick<BelongsToManyOptions, "through">>
 }
 
 /**

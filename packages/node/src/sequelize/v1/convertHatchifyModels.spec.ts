@@ -14,6 +14,14 @@ describe("convertHatchifyModels", () => {
       name: "STRING",
     },
     hasMany: [{ target: "Todo", options: { as: "todos" } }],
+    belongsToMany: [{ target: "UserCategory", options: {} }],
+  }
+
+  const UserCategory: HatchifyModel = {
+    name: "UserCategory",
+    attributes: {
+      name: "STRING",
+    },
   }
 
   const Todo: HatchifyModel = {
@@ -31,7 +39,11 @@ describe("convertHatchifyModels", () => {
   }
 
   it("works", () => {
-    const models = convertHatchifyModels(sequelize, serializer, [Todo, User])
+    const models = convertHatchifyModels(sequelize, serializer, [
+      Todo,
+      User,
+      UserCategory,
+    ])
 
     expect(models).toEqual({
       associationsLookup: {
@@ -50,11 +62,19 @@ describe("convertHatchifyModels", () => {
             model: "Todo",
             type: "hasMany",
           },
+          userCategorys: {
+            joinTable: "UserUserCategory",
+            key: "usercategory_id",
+            model: "UserCategory",
+            type: "belongsToMany",
+          },
         },
       },
       models: {
         Todo: expect.any(Function),
         User: expect.any(Function),
+        UserCategory: expect.any(Function),
+        UserUserCategory: expect.any(Function),
       },
       virtuals: {},
       plurals: {},

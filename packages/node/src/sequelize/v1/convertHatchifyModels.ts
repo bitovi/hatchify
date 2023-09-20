@@ -127,10 +127,19 @@ export function convertHatchifyModels(
           const current = sequelize.models[model.name]
           const associated = sequelize.models[target]
 
+          const throughName =
+            model.name < target
+              ? `${model.name}${target}`
+              : `${target}${model.name}`
+
           // Create the relationship
           current[relationshipType](associated, {
             ...options,
             as: associationName,
+            through:
+              relationshipType === "belongsToMany"
+                ? options.through ?? throughName
+                : undefined,
           })
 
           // Add association details to a lookup for each model
@@ -142,7 +151,7 @@ export function convertHatchifyModels(
               relationshipType === "belongsToMany"
                 ? typeof options.through === "string"
                   ? options?.through
-                  : options?.through.model
+                  : options?.through?.model ?? throughName
                 : undefined,
           }
           associationsLookup[model.name] = {
