@@ -60,7 +60,9 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   schemas: TSchemaRecord,
   dataSource: Source,
 ): ReactRest<TSchemaRecord> {
-  const storeKeys = Object.values(schemas).map((schema) => schema.name)
+  const storeKeys = Object.values(schemas).map((schema) =>
+    schema?.namespace ? `${schema.namespace}.${schema.name}` : schema.name,
+  )
   createStore(storeKeys)
 
   const newSchemas = Object.values(schemas).reduce((acc, schema) => {
@@ -70,28 +72,38 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   }, {} as Schemas)
 
   const functions = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name as SchemaKeys<TSchemaRecord>] = {
+    const schemaName = schema.namespace
+      ? `${schema.namespace}.${schema.name}`
+      : schema.name
+
+    const methods = {
       // promises
       createOne: (data) =>
-        createOne(dataSource, newSchemas, schema.name, {
+        createOne(dataSource, newSchemas, schemaName, {
           ...data,
-          __schema: schema.name,
+          __schema: schemaName,
         }),
-      deleteOne: (id) => deleteOne(dataSource, newSchemas, schema.name, id),
-      findAll: (query) => findAll(dataSource, newSchemas, schema.name, query),
-      findOne: (query) => findOne(dataSource, newSchemas, schema.name, query),
+      deleteOne: (id) => deleteOne(dataSource, newSchemas, schemaName, id),
+      findAll: (query) => findAll(dataSource, newSchemas, schemaName, query),
+      findOne: (query) => findOne(dataSource, newSchemas, schemaName, query),
       updateOne: (data) =>
-        updateOne(dataSource, newSchemas, schema.name, {
+        updateOne(dataSource, newSchemas, schemaName, {
           ...data,
-          __schema: schema.name,
+          __schema: schemaName,
         }),
       // hooks
-      useCreateOne: () => useCreateOne(dataSource, newSchemas, schema.name),
-      useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schema.name),
+      useCreateOne: () => useCreateOne(dataSource, newSchemas, schemaName),
+      useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schemaName),
       useAll: (query, baseFilter) =>
-        useAll(dataSource, newSchemas, schema.name, query ?? {}, baseFilter),
-      useOne: (query) => useOne(dataSource, newSchemas, schema.name, query),
-      useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schema.name),
+        useAll(dataSource, newSchemas, schemaName, query ?? {}, baseFilter),
+      useOne: (query) => useOne(dataSource, newSchemas, schemaName, query),
+      useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schemaName),
+    }
+
+    if (schema.namespace) {
+      acc[schema.namespace] = { [schema.name]: methods }
+    } else {
+      acc[schema.name as SchemaKeys<TSchemaRecord>] = methods
     }
 
     return acc
