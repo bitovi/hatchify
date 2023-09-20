@@ -217,7 +217,7 @@ export const Todo: PartialSchema = {
     name: string({ required: true }),
     dueDate: datetime(),
     importance: integer(),
-    complete: boolean({ default: false }), // 🛑 defaults are not implemented yet
+    complete: boolean({ default: false }),
   },
   relationships: {
     user: belongsTo(),

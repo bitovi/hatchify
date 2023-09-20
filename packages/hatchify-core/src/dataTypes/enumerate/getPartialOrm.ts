@@ -15,6 +15,7 @@ export function getPartialOrm(props: PartialEnumProps): PartialEnumORM {
       typeArgs: props.values,
       allowNull: props?.required == null ? props?.required : !props.required,
       primaryKey: props?.primary,
+      defaultValue: props?.default,
     },
   }
 }

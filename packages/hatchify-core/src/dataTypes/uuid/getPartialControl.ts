@@ -11,6 +11,7 @@ export function getPartialControl(
     min: 36,
     max: 36,
     primary: props?.primary,
+    default: props?.default,
     regex: UUID_REGEX,
   }
 }

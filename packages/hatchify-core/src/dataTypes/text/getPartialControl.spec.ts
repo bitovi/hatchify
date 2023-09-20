@@ -18,4 +18,14 @@ describe("getPartialControl", () => {
     expect(getPartialControl({ primary: true }).primary).toBe(true)
     expect(getPartialControl({ primary: false }).primary).toBe(false)
   })
+
+  it("handles default", () => {
+    expect(getPartialControl({ default: undefined }).default).toBeUndefined()
+    expect(getPartialControl({ default: null }).default).toBeNull()
+    expect(getPartialControl({ default: "test" }).default).toBe("test")
+
+    const func = () => "test"
+
+    expect(getPartialControl({ default: func }).default).toEqual(func)
+  })
 })

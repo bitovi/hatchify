@@ -70,4 +70,42 @@ describe("finalizeOrm", () => {
       }).sequelize.primaryKey,
     ).toBe(false)
   })
+
+  it("handles default", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "UUID",
+          defaultValue: undefined,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "UUID",
+          defaultValue: null,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "UUID",
+          defaultValue: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+        },
+      }).sequelize.defaultValue,
+    ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+
+    const func = () => "6ca2929f-c66d-4542-96a9-f1a6aa3d2678"
+
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "UUID",
+          defaultValue: func,
+        },
+      }).sequelize.defaultValue,
+    ).toEqual(func)
+  })
 })

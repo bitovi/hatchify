@@ -4,16 +4,18 @@ import type {
   PartialSequelizeDataType,
 } from "../../types"
 
-export type PartialUuidProps = PartialDataTypeProps
+export type PartialUuidProps = PartialDataTypeProps<string>
 
-export interface PartialUuidControlType extends PartialControlType {
+export interface PartialUuidControlType extends PartialControlType<string> {
   type: "String"
 }
 
 export interface PartialUuidORM {
-  sequelize: Omit<PartialSequelizeDataType<undefined>, "typeArgs">
+  sequelize: Omit<PartialSequelizeDataType<undefined, string>, "typeArgs">
 }
 
 export interface FinalUuidORM {
-  sequelize: Required<Omit<PartialSequelizeDataType<undefined>, "typeArgs">>
+  sequelize: Required<
+    Omit<PartialSequelizeDataType<undefined, string>, "typeArgs">
+  >
 }

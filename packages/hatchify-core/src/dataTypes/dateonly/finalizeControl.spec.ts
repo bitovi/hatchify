@@ -34,4 +34,22 @@ describe("finalizeControl", () => {
       false,
     )
   })
+
+  it("handles default", () => {
+    expect(
+      finalizeControl({ type: "Dateonly", default: undefined }).default,
+    ).toBeNull()
+    expect(
+      finalizeControl({ type: "Dateonly", default: null }).default,
+    ).toBeNull()
+    expect(
+      finalizeControl({ type: "Dateonly", default: "1970-01-01" }).default,
+    ).toBe("1970-01-01")
+
+    const func = () => "1970-01-01"
+
+    expect(
+      finalizeControl({ type: "Dateonly", default: func }).default,
+    ).toEqual(func)
+  })
 })

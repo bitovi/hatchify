@@ -35,4 +35,42 @@ describe("finalizeOrm", () => {
       }).sequelize.allowNull,
     ).toBe(false)
   })
+
+  it("handles default", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          defaultValue: undefined,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          defaultValue: null,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          defaultValue: true,
+        },
+      }).sequelize.defaultValue,
+    ).toBe(true)
+
+    const func = () => false
+
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          defaultValue: func,
+        },
+      }).sequelize.defaultValue,
+    ).toEqual(func)
+  })
 })

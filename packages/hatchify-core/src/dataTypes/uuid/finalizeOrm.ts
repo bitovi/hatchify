@@ -6,6 +6,7 @@ export function finalizeOrm({ sequelize }: PartialUuidORM): FinalUuidORM {
       ...sequelize,
       allowNull: sequelize.allowNull !== false && !sequelize.primaryKey,
       primaryKey: !!sequelize.primaryKey,
+      defaultValue: sequelize.defaultValue ?? null,
     },
   }
 }

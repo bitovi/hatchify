@@ -79,6 +79,48 @@ describe("finalizeOrm", () => {
     ).toBe(false)
   })
 
+  it("handles default", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "STRING",
+          typeArgs: [],
+          defaultValue: undefined,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "STRING",
+          typeArgs: [],
+          defaultValue: null,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "STRING",
+          typeArgs: [],
+          defaultValue: "foo",
+        },
+      }).sequelize.defaultValue,
+    ).toBe("foo")
+
+    const func = () => "bar"
+
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "STRING",
+          typeArgs: [],
+          defaultValue: func,
+        },
+      }).sequelize.defaultValue,
+    ).toEqual(func)
+  })
+
   it("handles typeArgs", () => {
     expect(
       finalizeOrm({

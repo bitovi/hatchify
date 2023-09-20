@@ -31,21 +31,34 @@ describe.each(dbDialects)("schema", (dialect) => {
       const User: HatchifyModel = {
         name: "User",
         attributes: {
-          name: { type: "STRING", validate: { len: [1, 10] } },
-          age: { type: "INTEGER", validate: { min: 0 } },
-          yearsWorked: { type: "INTEGER", validate: { min: 0 } },
+          name: {
+            type: "STRING",
+            validate: { len: [1, 10] },
+            defaultValue: "test",
+          },
+          age: { type: "INTEGER", validate: { min: 0 }, defaultValue: 1 },
+          yearsWorked: {
+            type: "INTEGER",
+            validate: { min: 0 },
+            defaultValue: 2,
+          },
           hireDate: {
             type: "DATE",
             validate: { isAfter: "2022-12-31T00:00:00.000Z" },
+            defaultValue: "2022-12-31T00:00:00.000Z",
           },
-          bio: "TEXT",
+          bio: { type: "TEXT", defaultValue: "test" },
           status: {
             type: "ENUM",
             values: ["active", "inactive"],
+            defaultValue: "active",
           },
-          isDeleted: "BOOLEAN",
-          birthday: "DATEONLY",
-          uuid: "UUID",
+          isDeleted: { type: "BOOLEAN", defaultValue: false },
+          birthday: { type: "DATEONLY", defaultValue: "1970-01-01" },
+          uuid: {
+            type: "UUID",
+            defaultValue: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+          },
         },
         hasMany: [{ target: "Todo", options: { as: "todos" } }],
       }
@@ -87,24 +100,32 @@ describe.each(dbDialects)("schema", (dialect) => {
           {
             name: "age",
             allowNull: true,
+            default: "1",
             primary: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "bio",
             allowNull: true,
+            default: dialect === "postgres" ? "'test'::text" : "'test'",
             primary: false,
             type: dialect === "postgres" ? "text" : "TEXT",
           },
           {
             name: "birthday",
             allowNull: true,
+            default:
+              dialect === "postgres" ? "'1970-01-01'::date" : "'1970-01-01'",
             primary: false,
             type: dialect === "postgres" ? "date" : "DATE",
           },
           {
             name: "hire_date",
             allowNull: true,
+            default:
+              dialect === "postgres"
+                ? "'2022-12-31 00:00:00+00'::timestamp with time zone"
+                : "'2022-12-31 00:00:00.000 +00:00'",
             primary: false,
             type:
               dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
@@ -112,36 +133,52 @@ describe.each(dbDialects)("schema", (dialect) => {
           {
             name: "id",
             allowNull: dialect === "sqlite",
+            default:
+              dialect === "postgres"
+                ? "nextval('user_id_seq'::regclass)"
+                : null,
             primary: true,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "is_deleted",
             allowNull: true,
+            default: dialect === "postgres" ? "false" : "0",
             primary: false,
             type: dialect === "postgres" ? "boolean" : "TINYINT(1)",
           },
           {
             name: "name",
             allowNull: true,
+            default:
+              dialect === "postgres" ? "'test'::character varying" : "'test'",
             primary: false,
             type: dialect === "postgres" ? "character varying" : "VARCHAR(255)",
           },
           {
             name: "status",
             allowNull: true,
+            default:
+              dialect === "postgres"
+                ? "'active'::enum_user_status"
+                : "'active'",
             primary: false,
             type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
           },
           {
             name: "uuid",
             allowNull: true,
+            default:
+              dialect === "postgres"
+                ? "'6ca2929f-c66d-4542-96a9-f1a6aa3d2678'::uuid"
+                : "'6ca2929f-c66d-4542-96a9-f1a6aa3d2678'",
             primary: false,
             type: dialect === "postgres" ? "uuid" : "UUID",
           },
           {
             name: "years_worked",
             allowNull: true,
+            default: "2",
             primary: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
@@ -306,6 +343,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                       age: -1,
                       yearsWorked: -1,
                       hireDate: "2022-01-01T00:00:00.000Z",
+                      bio: "test",
                       status: "invalid",
                       isDeleted: "invalid",
                       birthday: "Invalid date",
@@ -328,6 +366,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                       age: -1,
                       yearsWorked: -1,
                       hireDate: "2022-01-01T00:00:00.000Z",
+                      bio: "test",
                       status: "invalid",
                       isDeleted: "invalid",
                       birthday: "Invalid date",
@@ -350,6 +389,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                       age: -1,
                       yearsWorked: -1,
                       hireDate: "2022-01-01T00:00:00.000Z",
+                      bio: "test",
                       status: "invalid",
                       isDeleted: "invalid",
                       birthday: "Invalid date",
@@ -372,6 +412,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                       age: -1,
                       yearsWorked: -1,
                       hireDate: "2022-01-01T00:00:00.000Z",
+                      bio: "test",
                       status: "invalid",
                       isDeleted: "invalid",
                       birthday: "Invalid date",
@@ -397,6 +438,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                       age: -1,
                       yearsWorked: -1,
                       hireDate: "2022-01-01T00:00:00.000Z",
+                      bio: "test",
                       status: "invalid",
                       isDeleted: "invalid",
                       birthday: "Invalid date",
@@ -680,15 +722,21 @@ describe.each(dbDialects)("schema", (dialect) => {
       const User: PartialSchema = {
         name: "User",
         attributes: {
-          name: string({ min: 1, max: 10 }),
-          age: integer({ min: 0 }),
-          yearsWorked: integer({ min: 0 }),
-          hireDate: datetime({ min: new Date("2022-12-31T00:00:00.000Z") }),
-          bio: text(),
-          status: enumerate({ values: ["active", "inactive"] }),
-          isDeleted: boolean(),
-          birthday: dateonly(),
-          uuid: uuid(),
+          name: string({ min: 1, max: 10, default: "test" }),
+          age: integer({ min: 0, default: 1 }),
+          yearsWorked: integer({ min: 0, default: 2 }),
+          hireDate: datetime({
+            min: new Date("2022-12-31T00:00:00.000Z"),
+            default: new Date("2022-12-31T00:00:00.000Z"),
+          }),
+          bio: text({ default: "test" }),
+          status: enumerate({
+            values: ["active", "inactive"],
+            default: "active",
+          }),
+          isDeleted: boolean({ default: false }),
+          birthday: dateonly({ default: '"1970-01-01"' }),
+          uuid: uuid({ default: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678" }),
         },
         relationships: {
           todos: hasMany(),
@@ -732,24 +780,32 @@ describe.each(dbDialects)("schema", (dialect) => {
           {
             name: "age",
             allowNull: true,
+            default: "1",
             primary: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "bio",
             allowNull: true,
+            default: dialect === "postgres" ? "'test'::text" : "'test'",
             primary: false,
             type: dialect === "postgres" ? "text" : "TEXT",
           },
           {
             name: "birthday",
             allowNull: true,
+            default:
+              dialect === "postgres" ? "'1970-01-01'::date" : "'1970-01-01'",
             primary: false,
             type: dialect === "postgres" ? "date" : "DATE",
           },
           {
             name: "hire_date",
             allowNull: true,
+            default:
+              dialect === "postgres"
+                ? "'2022-12-31 00:00:00+00'::timestamp with time zone"
+                : "'2022-12-31 00:00:00.000 +00:00'",
             primary: false,
             type:
               dialect === "postgres" ? "timestamp with time zone" : "DATETIME",
@@ -757,36 +813,52 @@ describe.each(dbDialects)("schema", (dialect) => {
           {
             name: "id",
             allowNull: dialect === "sqlite",
+            default:
+              dialect === "postgres"
+                ? "nextval('user_id_seq'::regclass)"
+                : null,
             primary: true,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },
           {
             name: "is_deleted",
             allowNull: true,
+            default: dialect === "postgres" ? "false" : "0",
             primary: false,
             type: dialect === "postgres" ? "boolean" : "TINYINT(1)",
           },
           {
             name: "name",
             allowNull: true,
+            default:
+              dialect === "postgres" ? "'test'::character varying" : "'test'",
             primary: false,
             type: dialect === "postgres" ? "character varying" : "VARCHAR(10)",
           },
           {
             name: "status",
             allowNull: true,
+            default:
+              dialect === "postgres"
+                ? "'active'::enum_user_status"
+                : "'active'",
             primary: false,
             type: dialect === "postgres" ? "USER-DEFINED" : "TEXT",
           },
           {
             name: "uuid",
             allowNull: true,
+            default:
+              dialect === "postgres"
+                ? "'6ca2929f-c66d-4542-96a9-f1a6aa3d2678'::uuid"
+                : "'6ca2929f-c66d-4542-96a9-f1a6aa3d2678'",
             primary: false,
             type: dialect === "postgres" ? "uuid" : "UUID",
           },
           {
             name: "years_worked",
             allowNull: true,
+            default: "2",
             primary: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
           },

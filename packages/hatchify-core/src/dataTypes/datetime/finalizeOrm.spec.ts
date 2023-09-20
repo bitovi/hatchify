@@ -78,4 +78,49 @@ describe("finalizeOrm", () => {
       }).sequelize.primaryKey,
     ).toBe(false)
   })
+
+  it("handles default", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DATE",
+          typeArgs: [],
+          defaultValue: undefined,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DATE",
+          typeArgs: [],
+          defaultValue: null,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+
+    const now = new Date()
+
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DATE",
+          typeArgs: [],
+          defaultValue: now,
+        },
+      }).sequelize.defaultValue,
+    ).toBe(now)
+
+    const func = () => now
+
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DATE",
+          typeArgs: [],
+          defaultValue: func,
+        },
+      }).sequelize.defaultValue,
+    ).toEqual(func)
+  })
 })

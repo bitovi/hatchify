@@ -31,8 +31,11 @@ export function toSequelize(
           ) => ({
             ...acc,
             [attributeName]: {
-              ...omit(sequelize, ["type", "typeArgs"]),
+              ...omit(sequelize, ["defaultValue", "type", "typeArgs"]),
               type: DataTypes[sequelize.type](...(sequelize.typeArgs ?? [])),
+              ...(sequelize.defaultValue === null
+                ? {}
+                : { defaultValue: sequelize.defaultValue }),
               validate: {
                 setORMPropertyValue,
               },

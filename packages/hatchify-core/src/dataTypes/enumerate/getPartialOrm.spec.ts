@@ -37,6 +37,24 @@ describe("getPartialOrm", () => {
     )
   })
 
+  it("handles default", () => {
+    expect(
+      getPartialOrm({ values, default: undefined }).sequelize.defaultValue,
+    ).toBeUndefined()
+    expect(
+      getPartialOrm({ values, default: null }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      getPartialOrm({ values, default: "foo" }).sequelize.defaultValue,
+    ).toBe("foo")
+
+    const func = () => "bar"
+
+    expect(
+      getPartialOrm({ values, default: func }).sequelize.defaultValue,
+    ).toEqual(func)
+  })
+
   it("handles invalid values", () => {
     expect(() => getPartialOrm({} as unknown as PartialEnumProps)).toThrow(
       new HatchifyInvalidSchemaError(
