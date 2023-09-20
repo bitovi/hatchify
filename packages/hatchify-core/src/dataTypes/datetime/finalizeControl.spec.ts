@@ -34,4 +34,25 @@ describe("finalizeControl", () => {
       false,
     )
   })
+
+  it("handles default", () => {
+    expect(
+      finalizeControl({ type: "Datetime", default: undefined }).default,
+    ).toBeNull()
+    expect(
+      finalizeControl({ type: "Datetime", default: null }).default,
+    ).toBeNull()
+
+    const now = new Date()
+
+    expect(finalizeControl({ type: "Datetime", default: now }).default).toBe(
+      now,
+    )
+
+    const func = () => now
+
+    expect(
+      finalizeControl({ type: "Datetime", default: func }).default,
+    ).toEqual(func)
+  })
 })

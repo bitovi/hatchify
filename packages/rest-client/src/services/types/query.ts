@@ -16,8 +16,13 @@ export type FilterObject = {
 
 export type Filters = FilterArray | FilterObject | string | undefined
 
+export interface PaginationObject {
+  number: number
+  size: number
+}
+
 export type QueryList = Selector & {
-  page?: unknown
+  page?: PaginationObject
   sort?: string[] | string
   filter?: Filters
 }

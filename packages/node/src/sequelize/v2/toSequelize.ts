@@ -15,7 +15,10 @@ export function toSequelize(
       ...acc,
       [schemaName]: sequelize.define<Model<HatchifyModel["attributes"]>>(
         finalizedSchema.name,
-        Object.entries(finalizedSchema.attributes).reduce(
+        Object.entries({
+          id: finalizedSchema.id,
+          ...finalizedSchema.attributes,
+        }).reduce(
           (
             acc,
             [
@@ -28,8 +31,11 @@ export function toSequelize(
           ) => ({
             ...acc,
             [attributeName]: {
-              ...omit(sequelize, ["type", "typeArgs"]),
-              type: DataTypes[sequelize.type](...sequelize.typeArgs),
+              ...omit(sequelize, ["defaultValue", "type", "typeArgs"]),
+              type: DataTypes[sequelize.type](...(sequelize.typeArgs ?? [])),
+              ...(sequelize.defaultValue === null
+                ? {}
+                : { defaultValue: sequelize.defaultValue }),
               validate: {
                 setORMPropertyValue,
               },
@@ -42,6 +48,7 @@ export function toSequelize(
           createdAt: false,
           updatedAt: false,
           freezeTableName: true,
+          schema: snakeCase(finalizedSchema.namespace) || "",
           tableName: snakeCase(finalizedSchema.name),
         },
       ),

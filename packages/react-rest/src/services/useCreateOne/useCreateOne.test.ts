@@ -54,7 +54,9 @@ describe("react-rest/services/useCreateOne", () => {
       ])
     })
 
-    await result.current[0]({ title: "baz", body: "baz-body" })
+    await result.current[0]({
+      attributes: { title: "baz", body: "baz-body" },
+    })
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -116,7 +118,7 @@ describe("react-rest/services/useCreateOne", () => {
 
     fakeDataSource.createOne = () => Promise.reject(errors)
 
-    await result.current[0]({ title: "baz", body: "baz-body" })
+    await result.current[0]({ attributes: { title: "baz", body: "baz-body" } })
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -145,7 +147,7 @@ describe("react-rest/services/useCreateOne", () => {
         },
       ])
 
-    await result.current[0]({ title: "baz", body: "baz-body" })
+    await result.current[0]({ attributes: { title: "baz", body: "baz-body" } })
 
     await waitFor(() =>
       expect(result.current).toEqual([

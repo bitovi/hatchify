@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/rest-client",
-  "version": "0.0.1-13",
+  "version": "0.0.1-17",
   "main": "./dist/rest-client.js",
   "module": "./dist/rest-client.mjs",
   "types": "./dist/rest-client.d.ts",
@@ -24,7 +24,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/hatchify-core": "^0.0.1-1"
+    "@hatchifyjs/hatchify-core": "^0.1.0"
   },
   "devDependencies": {
     "@vitest/coverage-c8": "^0.32.2",

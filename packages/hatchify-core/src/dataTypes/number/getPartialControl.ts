@@ -10,5 +10,6 @@ export function getPartialControl(
     max: props?.max,
     primary: props?.primary,
     step: props?.step,
+    default: props?.default,
   }
 }

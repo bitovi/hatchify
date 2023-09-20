@@ -33,13 +33,18 @@ export function getFinalize(
     control,
     orm: finalizeOrm(props.orm),
 
+    // todo: HATCH-347
+
     // Passed  - Any crazy value the client might send as a POST or PATCH
     // Returns - A type the ORM can use
     // Throws  - If the data is bad ❓
     // Example : '2023-07-17T01:45:28.778Z' => new Date('2023-07-17T01:45:28.778Z')
     //         : throw "'4 $core' is not a valid date";
     setORMPropertyValue: (jsonValue: ValueInRequest): string | null => {
-      return coerce(jsonValue, control)
+      return coerce(
+        jsonValue === undefined && control.allowNull ? null : jsonValue,
+        control,
+      )
     },
 
     // Passed  - Any crazy STRING value the client might send as GET

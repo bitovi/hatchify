@@ -1,9 +1,22 @@
 import type {
+  RequiredSchemaMap,
   Resource,
   ResourceRelationship,
-  RequiredSchemaMap,
+  RestClientCreateData,
+  RestClientUpdateData,
+  Schema,
+  SourceConfig,
 } from "@hatchifyjs/rest-client"
-import type { JsonApiResource } from "../../jsonapi"
+import type {
+  JsonApiResource,
+  JsonApiResourceRelationship,
+  Relationship as JsonApiRelationship,
+  CreateJsonApiResource,
+} from "../../jsonapi"
+import type {
+  SchemalessResourceRelationship,
+  SchemalessResourceRelationshipObject,
+} from "@hatchifyjs/rest-client"
 
 type Relationship = Record<
   string,
@@ -77,4 +90,103 @@ export function convertToHatchifyResources(
   }
 
   return [jsonApiResourceToHatchifyResource(data, typeToSchema)]
+}
+
+/**
+ * Converts a single Hatchify relationship to a JSON:API relationship
+ */
+function hatchifyRelationshipToJsonApiRelationship(
+  config: SourceConfig,
+  schema: Schema,
+  typeName: string,
+  resourceRelationships:
+    | SchemalessResourceRelationship
+    | SchemalessResourceRelationship[],
+): JsonApiRelationship | JsonApiRelationship[] {
+  const jsonApiRelationships = ([] as SchemalessResourceRelationship[])
+    .concat(resourceRelationships)
+    .map((resourceRelationship) => {
+      const { id } = resourceRelationship
+      const type = Object.keys(schema?.relationships || {}).reduce(
+        (type, relationshipKey) => {
+          if (type) {
+            return type
+          }
+
+          const relationship = schema.relationships?.[relationshipKey]
+
+          if (relationship && relationshipKey === typeName) {
+            type =
+              config.schemaMap[relationship.schema]?.type ?? relationship.schema
+          }
+
+          return type
+        },
+        "",
+      )
+
+      return {
+        id,
+        type,
+      }
+    })
+
+  return Array.isArray(resourceRelationships)
+    ? jsonApiRelationships
+    : jsonApiRelationships[0]
+}
+
+/**
+ * Converts Hatchify relationship object to JSON:API relationship object
+ */
+export function convertToJsonApiRelationships(
+  config: SourceConfig,
+  schema: Schema,
+  resourceRelationships: SchemalessResourceRelationshipObject,
+): Record<string, JsonApiResourceRelationship> {
+  return Object.keys(resourceRelationships).reduce(
+    (jsonApiRelationshipObject, relationshipKey) => {
+      jsonApiRelationshipObject[relationshipKey] = {
+        data: hatchifyRelationshipToJsonApiRelationship(
+          config,
+          schema,
+          relationshipKey,
+          resourceRelationships[relationshipKey],
+        ),
+      }
+      return jsonApiRelationshipObject
+    },
+    {} as Record<string, JsonApiResourceRelationship>,
+  )
+}
+
+/**
+ * Converts a Hatchify resource into a JSON:API resource.
+ */
+export function hatchifyResourceToJsonApiResource(
+  config: SourceConfig,
+  schema: Schema,
+  schemaName: string,
+  hatchifyResource: RestClientCreateData | RestClientUpdateData,
+): JsonApiResource | CreateJsonApiResource {
+  const { attributes, relationships } = hatchifyResource
+  const id = "id" in hatchifyResource ? hatchifyResource?.id : null
+
+  const conditionalIdProperty = id ? { id } : null
+  const conditionalRelationshipsProperty = relationships
+    ? {
+        relationships: convertToJsonApiRelationships(
+          config,
+          schema,
+          relationships,
+        ),
+      }
+    : null
+
+  return {
+    ...conditionalIdProperty,
+    type: config.schemaMap[schemaName].type,
+    attributes,
+    ...conditionalRelationshipsProperty,
+  }
 }

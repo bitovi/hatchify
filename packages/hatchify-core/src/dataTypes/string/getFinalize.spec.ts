@@ -9,6 +9,7 @@ describe("getFinalize", () => {
         max: undefined,
         min: undefined,
         primary: undefined,
+        regex: undefined,
         type: "String",
       },
       orm: {

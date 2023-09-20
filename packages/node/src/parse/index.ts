@@ -41,7 +41,7 @@ async function findAllImpl(
   model: HatchifyModel,
   querystring: string,
 ) {
-  const { data, errors } = buildFindOptions(model, querystring)
+  const { data, errors } = buildFindOptions(hatchify, model, querystring)
   if (errors.length) {
     throw errors
   }
@@ -55,7 +55,7 @@ async function findOneImpl(
   querystring: string,
   id,
 ) {
-  const { data, errors } = buildFindOptions(model, querystring, id)
+  const { data, errors } = buildFindOptions(hatchify, model, querystring, id)
   if (errors.length) {
     throw errors
   }
@@ -68,7 +68,7 @@ async function findAndCountAllImpl(
   model: HatchifyModel,
   querystring: string,
 ) {
-  const { data, errors } = buildFindOptions(model, querystring)
+  const { data, errors } = buildFindOptions(hatchify, model, querystring)
   if (errors.length) {
     throw errors
   }

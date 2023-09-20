@@ -68,9 +68,18 @@ describe("assembler", () => {
     describe("attributes", () => {
       it("finalizes correctly", () => {
         expect(Todo.attributes.importance.control.allowNull).toBeUndefined()
-        expect(Todo.attributes.importance.control.min).toBe(0)
-        expect(Todo.attributes.importance.control.max).toBeUndefined()
-        expect(Todo.attributes.importance.control.primary).toBeUndefined()
+        expect(
+          "min" in Todo.attributes.importance.control &&
+            Todo.attributes.importance.control.min,
+        ).toBe(0)
+        expect(
+          "max" in Todo.attributes.importance.control &&
+            Todo.attributes.importance.control.max,
+        ).toBeUndefined()
+        expect(
+          "primary" in Todo.attributes.importance.control &&
+            Todo.attributes.importance.control.primary,
+        ).toBeUndefined()
 
         expect(
           Todo.attributes.importance.orm.sequelize.allowNull,
@@ -80,15 +89,25 @@ describe("assembler", () => {
             Todo.attributes.importance.orm.sequelize.autoIncrement,
         ).toBeUndefined()
         expect(
-          Todo.attributes.importance.orm.sequelize.primaryKey,
+          "primaryKey" in Todo.attributes.importance.orm.sequelize &&
+            Todo.attributes.importance.orm.sequelize.primaryKey,
         ).toBeUndefined()
 
         const { Todo: assembledTodo } = assembler({ Todo })
 
         expect(assembledTodo.attributes.importance.control.allowNull).toBe(true)
-        expect(assembledTodo.attributes.importance.control.min).toBe(0)
-        expect(assembledTodo.attributes.importance.control.max).toBe(Infinity)
-        expect(assembledTodo.attributes.importance.control.primary).toBe(false)
+        expect(
+          "min" in assembledTodo.attributes.importance.control &&
+            assembledTodo.attributes.importance.control.min,
+        ).toBe(0)
+        expect(
+          "max" in assembledTodo.attributes.importance.control &&
+            assembledTodo.attributes.importance.control.max,
+        ).toBe(Infinity)
+        expect(
+          "primary" in assembledTodo.attributes.importance.control &&
+            assembledTodo.attributes.importance.control.primary,
+        ).toBe(false)
 
         expect(
           assembledTodo.attributes.importance.orm.sequelize.allowNull,
@@ -99,10 +118,8 @@ describe("assembler", () => {
             assembledTodo.attributes.importance.orm.sequelize.autoIncrement,
         ).toBe(false)
         expect(
-          assembledTodo.attributes.importance.orm.sequelize.primaryKey,
-        ).toBe(false)
-        expect(
-          assembledTodo.attributes.importance.orm.sequelize.primaryKey,
+          "primaryKey" in assembledTodo.attributes.importance.orm.sequelize &&
+            assembledTodo.attributes.importance.orm.sequelize.primaryKey,
         ).toBe(false)
       })
     })

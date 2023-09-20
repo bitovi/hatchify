@@ -176,6 +176,17 @@ export interface HatchifyModel {
   name: string
 
   /**
+   * The Model `pluralName` defines the plural representation of the Model `name`
+   */
+  pluralName?: string
+
+  /**
+   * The Model `namespace` dictates the underlying database schema name as well
+   * as how your model can be accessed later through your Hatchify instance
+   */
+  namespace?: string
+
+  /**
    * Validation in Hatchify is directly tied to features within the Sequelize ORM
    * See the Sequelize [documentation for more information](https://sequelize.org/docs/v6/core-concepts/validations-and-constraints/#model-wide-validations)
    */

@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/express",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "Fullstack CRUD Application Solution",
   "main": "./dist/exports.js",
   "types": "./dist/exports.d.ts",
@@ -10,11 +10,11 @@
     "build:watch": "tsc --watch",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "depcheck": "depcheck .",
-    "test": "jest --coverage",
+    "test": "jest --coverage --runInBand",
     "docs": "typedoc",
     "docs:watch": "typedoc --watch",
-    "test:watch": "jest --watch",
-    "test:verbose": "jest --watch --verbose",
+    "test:watch": "jest --watch --runInBand",
+    "test:verbose": "jest --watch --verbose --runInBand",
     "typecheck": "tsc --noEmit",
     "eslint": "eslint .",
     "eslint:fix": "eslint --fix .",
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
-    "@hatchifyjs/node": "^0.2.3",
+    "@hatchifyjs/node": "^0.2.11",
     "jsonapi-serializer": "^3.6.7",
     "typedoc": "^0.23.21"
   },
@@ -90,6 +90,10 @@
                 "caseInsensitive": true
               }
             }
+          ],
+          "one-var": [
+            "error",
+            "never"
           ],
           "prettier/prettier": [
             "error",
