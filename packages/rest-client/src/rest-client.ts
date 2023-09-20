@@ -25,6 +25,7 @@ export type {
   SchemalessResourceRelationshipObject,
   Source,
   SourceConfig,
+  SourceSchema,
   Subscription,
   Unsubscribe,
   UpdateData,

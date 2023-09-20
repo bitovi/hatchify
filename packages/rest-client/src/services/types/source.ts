@@ -10,7 +10,7 @@ import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 
 type EitherSchema = Schema | LegacySchema
 
-type SourceSchema = EitherSchema & {
+export type SourceSchema = EitherSchema & {
   type?: string
   endpoint?: string
 }
