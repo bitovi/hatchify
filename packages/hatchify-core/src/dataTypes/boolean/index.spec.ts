@@ -64,11 +64,13 @@ describe("boolean", () => {
           sequelize: {
             type: "BOOLEAN",
             allowNull: true,
+            defaultValue: null,
           },
         },
         control: {
           type: "Boolean",
           allowNull: true,
+          default: null,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -148,11 +150,13 @@ describe("boolean", () => {
           sequelize: {
             type: "BOOLEAN",
             allowNull: false,
+            defaultValue: null,
           },
         },
         control: {
           type: "Boolean",
           allowNull: false,
+          default: null,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),

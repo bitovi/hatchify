@@ -74,6 +74,7 @@ describe("dateonly", () => {
             typeArgs: [],
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -82,6 +83,7 @@ describe("dateonly", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -171,6 +173,7 @@ describe("dateonly", () => {
             typeArgs: [],
             allowNull: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -179,6 +182,7 @@ describe("dateonly", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -268,6 +272,7 @@ describe("dateonly", () => {
             typeArgs: [],
             allowNull: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
@@ -276,6 +281,7 @@ describe("dateonly", () => {
           min: -Infinity,
           max: Infinity,
           primary: true,
+          default: null,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -367,6 +373,7 @@ describe("dateonly", () => {
             typeArgs: [],
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -375,6 +382,7 @@ describe("dateonly", () => {
           min: -Infinity,
           max: "2023-01-01",
           primary: false,
+          default: null,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),

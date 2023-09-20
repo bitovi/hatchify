@@ -83,6 +83,7 @@ describe("uuid", () => {
             type: "UUID",
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -91,6 +92,7 @@ describe("uuid", () => {
           min: 36,
           max: 36,
           primary: false,
+          default: null,
           regex: UUID_REGEX,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -189,6 +191,7 @@ describe("uuid", () => {
             type: "UUID",
             allowNull: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -197,6 +200,7 @@ describe("uuid", () => {
           min: 36,
           max: 36,
           primary: false,
+          default: null,
           regex: UUID_REGEX,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -295,6 +299,7 @@ describe("uuid", () => {
             type: "UUID",
             allowNull: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
@@ -303,6 +308,7 @@ describe("uuid", () => {
           min: 36,
           max: 36,
           primary: true,
+          default: null,
           regex: UUID_REGEX,
         },
         serializeORMPropertyValue: expect.any(Function),
