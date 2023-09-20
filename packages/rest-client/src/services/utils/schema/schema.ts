@@ -48,7 +48,7 @@ export function transformDataType(dataType: string): string {
  */
 export function transformSchema(schema: OldSchema): Schema {
   const resolved: Schema = {
-    name: schema.name,
+    name: schema.namespace ? `${schema.namespace}.${schema.name}` : schema.name,
     displayAttribute: Object.keys(schema.attributes)[0],
     attributes: {},
   }

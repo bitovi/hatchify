@@ -6,6 +6,8 @@ import type {
   RestClientUpdateData,
   Schema,
   SourceConfig,
+  SchemalessResourceRelationship,
+  SchemalessResourceRelationshipObject,
 } from "@hatchifyjs/rest-client"
 import type {
   JsonApiResource,
@@ -13,10 +15,6 @@ import type {
   Relationship as JsonApiRelationship,
   CreateJsonApiResource,
 } from "../../jsonapi"
-import type {
-  SchemalessResourceRelationship,
-  SchemalessResourceRelationshipObject,
-} from "@hatchifyjs/rest-client"
 
 type Relationship = Record<
   string,
@@ -55,7 +53,7 @@ export function jsonApiResourceToHatchifyResource(
         acc[key] = Array.isArray(value.data)
           ? value.data.map((v) => ({
               id: v.id.toString(),
-              __schema: typeToSchema[v.type],
+              __schema: typeToSchema[v.type], // If the schemaMap's keys for namespaced schemas don't include a dot (e.g. "Admin.User") then how do we get this to match?
             }))
           : {
               id: value.data.id.toString(),

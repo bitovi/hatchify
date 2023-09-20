@@ -12,6 +12,7 @@ export interface Relationship {
 
 export interface Schema {
   name: string
+  namespace?: string
   attributes: {
     [field: string]: Attribute
   }

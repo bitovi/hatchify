@@ -64,7 +64,7 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   createStore(storeKeys)
 
   const newSchemas = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] =
+    acc[schema.namespace ? `${schema.namespace}.${schema.name}` : schema.name] =
       "displayAttribute" in schema ? schema : transformSchema(schema)
     return acc
   }, {} as Schemas)
