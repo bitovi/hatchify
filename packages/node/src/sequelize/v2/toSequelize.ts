@@ -14,7 +14,7 @@ export function toSequelize(
     (acc, [schemaName, finalizedSchema]) => ({
       ...acc,
       [schemaName]: sequelize.define<Model<HatchifyModel["attributes"]>>(
-        finalizedSchema.name,
+        finalizedSchema.name.replaceAll(".", "__"),
         Object.entries({
           id: finalizedSchema.id,
           ...finalizedSchema.attributes,
