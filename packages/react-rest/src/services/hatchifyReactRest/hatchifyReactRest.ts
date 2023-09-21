@@ -101,7 +101,8 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
     }
 
     if (schema.namespace) {
-      acc[schema.namespace] = { [schema.name]: methods }
+      const key = `${schema.namespace}.${schema.name}`
+      acc[key] = methods
     } else {
       acc[schema.name as SchemaKeys<TSchemaRecord>] = methods
     }

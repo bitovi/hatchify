@@ -28,7 +28,7 @@ export function fieldsToQueryParam(
     }
 
     if (schemaMap[field] === undefined) {
-      throw new Error(`"${field}" is not a valid schema`)
+      throw new Error(`"${field}" is not a valid schema`) // update this to see if field is a valid namespace.schema
     }
 
     fieldsObj[schemaMap[field].type] = fields[field]
