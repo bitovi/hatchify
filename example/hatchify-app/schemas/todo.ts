@@ -14,7 +14,7 @@ export const Todo = {
   },
   belongsTo: [
     {
-      target: "Admin.User",
+      target: "Admin_User",
       options: {
         as: "adminUser",
         foreignKey: "adminUserId",
