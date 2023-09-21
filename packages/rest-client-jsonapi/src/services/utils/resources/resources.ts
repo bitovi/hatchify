@@ -53,7 +53,7 @@ export function jsonApiResourceToHatchifyResource(
         acc[key] = Array.isArray(value.data)
           ? value.data.map((v) => ({
               id: v.id.toString(),
-              __schema: typeToSchema[v.type], // If the schemaMap's keys for namespaced schemas don't include a dot (e.g. "Admin.User") then how do we get this to match?
+              __schema: typeToSchema[v.type],
             }))
           : {
               id: value.data.id.toString(),

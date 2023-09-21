@@ -44,11 +44,18 @@ export function transformDataType(dataType: string): string {
 }
 
 /**
+ * Create a single string from a schema's namespace, if it exists, and its name
+ */
+export function schemaNameWithNamespace(schema: OldSchema | Schema): string {
+  return schema?.namespace ? `${schema.namespace}_${schema.name}` : schema.name
+}
+
+/**
  * Transforms a legacy (sequelize based) schema into a new (shared hatchify) schema.
  */
 export function transformSchema(schema: OldSchema): Schema {
   const resolved: Schema = {
-    name: schema.namespace ? `${schema.namespace}.${schema.name}` : schema.name,
+    name: schemaNameWithNamespace(schema),
     displayAttribute: Object.keys(schema.attributes)[0],
     attributes: {},
   }

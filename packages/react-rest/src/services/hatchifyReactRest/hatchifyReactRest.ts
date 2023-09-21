@@ -4,6 +4,7 @@ import {
   deleteOne,
   findAll,
   findOne,
+  schemaNameWithNamespace,
   transformSchema,
   updateOne,
 } from "@hatchifyjs/rest-client"
@@ -61,20 +62,18 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   dataSource: Source,
 ): ReactRest<TSchemaRecord> {
   const storeKeys = Object.values(schemas).map((schema) =>
-    schema?.namespace ? `${schema.namespace}.${schema.name}` : schema.name,
+    schemaNameWithNamespace(schema),
   )
   createStore(storeKeys)
 
   const formattedSchemas = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.namespace ? `${schema.namespace}.${schema.name}` : schema.name] =
+    acc[schemaNameWithNamespace(schema)] =
       "displayAttribute" in schema ? schema : transformSchema(schema)
     return acc
   }, {} as Schemas)
 
-  const functions = Object.values(schemas).reduce((acc, schema) => {
-    const schemaName = schema.namespace
-      ? `${schema.namespace}.${schema.name}`
-      : schema.name
+  const models = Object.values(schemas).reduce((acc, schema) => {
+    const schemaName = schemaNameWithNamespace(schema)
 
     const methods = {
       // promises
@@ -114,7 +113,7 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
     }
 
     if (schema.namespace) {
-      const key = `${schema.namespace}.${schema.name}`
+      const key = `${schema.namespace}_${schema.name}`
       acc[key] = methods
     } else {
       acc[schema.name as SchemaKeys<TSchemaRecord>] = methods
@@ -123,5 +122,5 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
     return acc
   }, {} as ReactRest<TSchemaRecord>)
 
-  return functions
+  return models
 }

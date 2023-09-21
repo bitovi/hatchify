@@ -95,7 +95,7 @@ export function flattenResourcesIntoRecords(
 
   const flattened = resources
     .filter((resource) => {
-      return resource.__schema === topLevelRecordSchemaName // __schema will be undefined here so long as the schemaMap key and namespaced model (e.g. Admin.User) don't match (e.g. "AdminUser" !== "Admin.User")
+      return resource.__schema === topLevelRecordSchemaName
     })
     .map((resource) => {
       let relationships = undefined
