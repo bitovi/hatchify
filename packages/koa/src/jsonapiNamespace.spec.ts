@@ -2,11 +2,14 @@ import type { Server } from "http"
 
 import { DataTypes } from "@hatchifyjs/node"
 import type { HatchifyModel } from "@hatchifyjs/node"
+import dotenv from "dotenv"
 import { Serializer } from "jsonapi-serializer"
 import Koa from "koa"
 
 import { Hatchify } from "./koa"
 import { GET, POST, createServer } from "./testing/utils"
+
+dotenv.config({ path: ".env" })
 
 describe("JSON:API Tests", () => {
   let app: Koa
@@ -39,7 +42,19 @@ describe("JSON:API Tests", () => {
 
   beforeAll(async () => {
     app = new Koa()
-    hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify([Model], {
+      prefix: "/api",
+      database: {
+        dialect: "postgres",
+        host: process.env.PG_DB_HOST,
+        port: Number(process.env.PG_DB_PORT),
+        username: process.env.PG_DB_USERNAME,
+        password: process.env.PG_DB_PASSWORD,
+        database: process.env.PG_DB_NAME,
+        logging: false,
+      },
+    })
+
     app.use(hatchify.middleware.allModels.all)
 
     server = createServer(app)
@@ -47,6 +62,7 @@ describe("JSON:API Tests", () => {
   })
 
   afterAll(async () => {
+    await hatchify.orm.drop({ cascade: true })
     await hatchify.orm.close()
     await server.close()
   })
