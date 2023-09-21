@@ -54,7 +54,6 @@ describe("Naming rules", () => {
       ],
     },
   ]
-
   const cases: TestCase[] = [...databaseNamingTestCases]
 
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
@@ -69,11 +68,9 @@ describe("Naming rules", () => {
 
     for (const table of database) {
       const { columns: expectedColumns, tableName } = table
-
       const [dbResult] = await hatchify._sequelize.query(
         `SELECT name FROM pragma_table_info("${tableName}")`,
       )
-
       const columns = dbResult.map((row) => row.name)
 
       expect(columns).toEqual(expect.arrayContaining(expectedColumns))

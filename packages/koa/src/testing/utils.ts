@@ -60,7 +60,6 @@ export async function startServerWith(
     const method = options?.method || "get"
     const headers = options?.headers || {}
     const body = options?.body
-
     const response = request(server)[method](path)
 
     Object.entries(headers).forEach(([key, value]) => response.set(key, value))
@@ -87,6 +86,9 @@ export async function startServerWith(
   }
 }
 
+/**
+ * @deprecated Please use `startServerWith` and `fetch` instead
+ */
 export function createServer(
   app: Koa,
 ): http.Server<typeof http.IncomingMessage, typeof http.ServerResponse> {
@@ -157,13 +159,13 @@ export async function getDatabaseColumns(
   tableName: string,
   schemaName = "public",
 ): Promise<DatabaseColumn[]> {
-  const dialect = hatchify.orm.getDialect()
+  const dialect: Dialect = hatchify.orm.getDialect()
   let columns: DatabaseColumn[] = []
 
   if (dialect === "sqlite") {
     const [[result], constraints] = await Promise.all([
       hatchify._sequelize.query(
-        `SELECT name, "notnull", pk, type FROM pragma_table_info('${tableName}')`,
+        `SELECT name, "notnull", pk, type, dflt_value FROM pragma_table_info('${tableName}')`,
       ),
       hatchify._sequelize.query(`PRAGMA foreign_key_list(${tableName})`),
     ])
@@ -186,7 +188,8 @@ export async function getDatabaseColumns(
       return {
         name: column.name,
         allowNull: column.notnull === 0,
-        primary: column.pk === 1,
+        default: column.dflt_value,
+        primary: column.pk !== 0,
         type: column.type,
         ...(foreignKeys.length ? { foreignKeys } : {}),
       }
@@ -195,7 +198,7 @@ export async function getDatabaseColumns(
     const [[result], [constraints]] = await Promise.all([
       hatchify._sequelize.query(
         `
-        SELECT column_name, is_nullable, data_type
+        SELECT column_name, is_nullable, data_type, column_default
         FROM information_schema.columns
         WHERE table_schema = :schemaName AND table_name = :tableName`,
         { replacements: { schemaName, tableName } },
@@ -239,6 +242,7 @@ export async function getDatabaseColumns(
       return {
         name: column.column_name,
         allowNull: column.is_nullable === "YES",
+        default: column.column_default,
         primary: constraints.some(
           (constraint) =>
             constraint.column === column.column_name &&
@@ -261,17 +265,26 @@ export async function getDatabaseColumns(
   })
 }
 
+/**
+ * @deprecated Please use `startServerWith` and `fetch` instead
+ */
 export async function GET(server, path) {
   const result = await request(server).get(path).set("authorization", "test")
   return parse(result)
 }
 
+/**
+ * @deprecated Please use `startServerWith` and `fetch` instead
+ */
 export async function DELETE(server, path) {
   const result = await request(server).delete(path).set("authorization", "test")
 
   return await parse(result)
 }
 
+/**
+ * @deprecated Please use `startServerWith` and `fetch` instead
+ */
 export async function POST(server, path, payload, type = "application/json") {
   const result = await request(server)
     .post(path)
@@ -282,6 +295,9 @@ export async function POST(server, path, payload, type = "application/json") {
   return await parse(result)
 }
 
+/**
+ * @deprecated Please use `startServerWith` and `fetch` instead
+ */
 export async function PATCH(server, path, payload, type = "application/json") {
   const result = await request(server)
     .patch(path)
@@ -292,6 +308,9 @@ export async function PATCH(server, path, payload, type = "application/json") {
   return await parse(result)
 }
 
+/**
+ * @deprecated Please use `startServerWith` and `fetch` instead
+ */
 export async function PUT(server, path, payload, type = "application/json") {
   const result = await request(server)
     .put(path)

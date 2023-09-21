@@ -40,4 +40,13 @@ describe("coerce", () => {
       coerce("a very long string", { type: "String", max: 10 }),
     ).toThrow(new HatchifyCoerceError("with length less than or equal to 10"))
   })
+
+  it("handles regex", () => {
+    expect(() => coerce("", { type: "String", regex: /^\d+$/ })).toThrow(
+      new HatchifyCoerceError("with format of /^\\d+$/"),
+    )
+    expect(() => coerce("text", { type: "String", regex: /^\d+$/ })).toThrow(
+      new HatchifyCoerceError("with format of /^\\d+$/"),
+    )
+  })
 })

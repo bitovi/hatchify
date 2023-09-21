@@ -1,12 +1,14 @@
 import { finalizeSchema } from "./finalizeSchema"
-import { integer } from "../dataTypes"
+import { integer, uuid } from "../dataTypes"
+import { UUID_REGEX } from "../dataTypes/uuid/constants"
+import { uuidv4 } from "../util/uuidv4"
 
 describe("finalizeSchema", () => {
   it("finalizes a partial schema", () => {
     expect(
       finalizeSchema({
         name: "Todo",
-        id: integer({ required: true, autoIncrement: true }),
+        id: uuid({ required: true, default: uuidv4 }),
         attributes: {
           importance: integer({ min: 0 }),
         },
@@ -14,29 +16,24 @@ describe("finalizeSchema", () => {
     ).toEqual({
       name: "Todo",
       id: {
-        name: 'integer({"required":true,"autoIncrement":true})',
+        name: 'uuid({"required":true})',
         control: {
           allowNull: false,
-          max: Infinity,
-          min: -Infinity,
+          max: 36,
+          min: 36,
           primary: false,
-          step: 1,
-          type: "Number",
+          default: expect.any(Function),
+          regex: UUID_REGEX,
+          type: "String",
         },
         orm: {
           sequelize: {
             allowNull: false,
-            autoIncrement: true,
             primaryKey: false,
-            type: "INTEGER",
-            typeArgs: [],
+            defaultValue: expect.any(Function),
+            type: "UUID",
           },
         },
-        setClientPropertyValue: expect.any(Function),
-        serializeClientPropertyValue: expect.any(Function),
-        setClientQueryFilterValue: expect.any(Function),
-        serializeClientQueryFilterValue: expect.any(Function),
-        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -49,6 +46,7 @@ describe("finalizeSchema", () => {
             max: Infinity,
             min: 0,
             primary: false,
+            default: null,
             step: 1,
             type: "Number",
           },
@@ -57,6 +55,7 @@ describe("finalizeSchema", () => {
               allowNull: true,
               autoIncrement: false,
               primaryKey: false,
+              defaultValue: null,
               type: "INTEGER",
               typeArgs: [],
             },

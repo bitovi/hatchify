@@ -1,4 +1,11 @@
-export type ValueInRequest = number | string | Date | object | null | undefined
+export type ValueInRequest =
+  | boolean
+  | number
+  | string
+  | Date
+  | object
+  | null
+  | undefined
 
 export type UserValue = ValueInRequest
 
@@ -19,22 +26,25 @@ export class HatchifyInvalidSchemaError extends Error {
   }
 }
 
-export interface PartialDataTypeProps {
+export interface PartialDataTypeProps<PrimitiveType> {
   primary?: boolean
   required?: boolean
+  default?: PrimitiveType | (() => PrimitiveType) | null
 }
 
-export type PartialControlType = {
-  type: "Boolean" | "Number" | "String" | "Datetime"
+export type PartialControlType<PrimitiveType> = {
+  type: "Boolean" | "Number" | "String" | "Datetime" | "Dateonly"
   allowNull?: boolean
   primary?: boolean
+  default?: PrimitiveType | (() => PrimitiveType) | null
 }
 
-export interface PartialSequelizeDataType<PrimitiveType> {
+export interface PartialSequelizeDataType<ArgsType, PrimitiveType> {
   type: string
-  typeArgs: PrimitiveType
+  typeArgs: ArgsType
   allowNull?: boolean
   primaryKey?: boolean
+  defaultValue?: PrimitiveType | (() => PrimitiveType) | null
 }
 
 export interface PartialAttribute<

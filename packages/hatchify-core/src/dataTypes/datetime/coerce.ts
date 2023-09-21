@@ -19,7 +19,7 @@ export function coerce(
   }
 
   if (!(value instanceof Date)) {
-    throw new HatchifyCoerceError("as an ISO 8601 date string")
+    throw new HatchifyCoerceError("as an ISO 8601 date and time string")
   }
 
   if (control.min != null && value < control.min) {

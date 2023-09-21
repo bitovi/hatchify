@@ -11,6 +11,7 @@ export type {
   RestClientUpdateData,
   Meta,
   MetaError,
+  PaginationObject,
   QueryList,
   QueryOne,
   Record,

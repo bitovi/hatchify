@@ -1,20 +1,21 @@
 import { finalize } from "./finalize"
-import { integer, string } from "../../dataTypes"
+import { integer, string, uuid } from "../../dataTypes"
 import { HatchifyInvalidSchemaError } from "../../types"
 import type { SemiFinalSchema } from "../../types"
+import { uuidv4 } from "../../util/uuidv4"
 
 describe("finalize", () => {
   const schemas: Record<string, SemiFinalSchema> = {
     Todo: {
       name: "Todo",
-      id: integer({ required: true, autoIncrement: true }).finalize(),
+      id: uuid({ required: true, default: uuidv4 }).finalize(),
       attributes: {
         importance: integer({ min: 0 }).finalize(),
       },
     },
     User: {
       name: "User",
-      id: integer({ required: true, autoIncrement: true }).finalize(),
+      id: uuid({ required: true, default: uuidv4 }).finalize(),
       attributes: {
         name: string().finalize(),
       },

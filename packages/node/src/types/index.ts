@@ -89,7 +89,8 @@ export type HatchifyAttributes = ModelAttributes<Model>
  */
 export interface BelongsToManyResult {
   target: string
-  options: BelongsToManyOptions
+  options: Omit<BelongsToManyOptions, "through"> &
+    Partial<Pick<BelongsToManyOptions, "through">>
 }
 
 /**
@@ -178,6 +179,12 @@ export interface HatchifyModel {
    * The Model `pluralName` defines the plural representation of the Model `name`
    */
   pluralName?: string
+
+  /**
+   * The Model `namespace` dictates the underlying database schema name as well
+   * as how your model can be accessed later through your Hatchify instance
+   */
+  namespace?: string
 
   /**
    * Validation in Hatchify is directly tied to features within the Sequelize ORM

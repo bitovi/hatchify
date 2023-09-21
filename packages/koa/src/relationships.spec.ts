@@ -11,7 +11,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       },
       hasMany: [{ target: "Todo", options: { as: "todos" } }],
     }
-
     const Todo: HatchifyModel = {
       name: "Todo",
       attributes: {
@@ -47,7 +46,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           },
         },
       })
-
       const { body: user } = await fetch("/api/users", {
         method: "post",
         body: {
@@ -263,7 +261,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             },
           },
         })
-
         const { body: user } = await fetch("/api/users", {
           method: "post",
           body: {
@@ -285,7 +282,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             },
           },
         })
-
         const { body: userWithTodo } = await fetch(
           `/api/todos/${todo.data.id}?include=user`,
         )
@@ -326,7 +322,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             },
           },
         })
-
         const { body: todo } = await fetch("/api/todos", {
           method: "post",
           body: {
@@ -343,7 +338,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             },
           },
         })
-
         const { body: userWithTodo } = await fetch(
           `/api/todos/${todo.data.id}?include=user`,
         )
@@ -454,7 +448,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             },
           }),
         ])
-
         const { body: users } = await fetch(
           `/api/users?filter[name]=Pagination&page[number]=1&page[size]=1`,
         )
@@ -482,7 +475,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             },
           }),
         ])
-
         const { body: users } = await fetch(
           "/api/users?filter[name]=No+Pagination",
         )
@@ -560,6 +552,89 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         })
       })
     })
+
+    it("should allow relationship filtering (HATCH-376)", async () => {
+      const todos = await Promise.all(
+        [1, 2].map((importance) =>
+          fetch("/api/todos", {
+            method: "post",
+            body: {
+              data: {
+                type: "Todo",
+                attributes: {
+                  name: "Walk the dog",
+                  due_date: "2024-12-12T00:00:00.000Z",
+                  importance,
+                },
+              },
+            },
+          }),
+        ),
+      )
+      const { body: user } = await fetch("/api/users", {
+        method: "post",
+        body: {
+          data: {
+            type: "User",
+            attributes: {
+              name: "John",
+            },
+            relationships: {
+              todos: {
+                data: todos.map(
+                  ({
+                    body: {
+                      data: { id },
+                    },
+                  }) => ({
+                    type: "Todo",
+                    id,
+                  }),
+                ),
+              },
+            },
+          },
+        },
+      })
+      const { body } = await fetch(
+        "/api/users?include=todos&filter[name]=John&filter[todos.importance]=1",
+      )
+
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        data: [
+          {
+            type: "User",
+            id: user.data.id,
+            attributes: {
+              name: "John",
+            },
+            relationships: {
+              todos: {
+                data: [
+                  {
+                    type: "Todo",
+                    id: todos[0].body.data.id,
+                  },
+                ],
+              },
+            },
+          },
+        ],
+        included: [
+          {
+            type: "Todo",
+            id: todos[0].body.data.id,
+            attributes: {
+              name: "Walk the dog",
+              due_date: "2024-12-12T00:00:00.000Z",
+              importance: 1,
+            },
+          },
+        ],
+        meta: { unpaginatedCount: 1 },
+      })
+    })
   })
 
   describe(`${dialect} - No Relationships`, () => {
@@ -623,7 +698,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         },
       ],
     }
-
     const Account: HatchifyModel = {
       name: "Account",
       attributes: {
@@ -665,7 +739,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -687,7 +760,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           },
         },
       })
-
       const { body: accountWithSalesPersons } = await fetch(
         `/api/accounts/${account.data.id}?include=salesPersons`,
       )

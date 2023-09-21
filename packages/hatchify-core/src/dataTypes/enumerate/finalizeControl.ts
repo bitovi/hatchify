@@ -7,5 +7,6 @@ export function finalizeControl(
     ...props,
     allowNull: props.allowNull !== false && !props.primary,
     primary: !!props.primary,
+    default: props.default ?? null,
   }
 }

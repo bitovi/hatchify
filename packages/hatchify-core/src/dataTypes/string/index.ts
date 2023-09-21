@@ -23,7 +23,9 @@ export function string(
   FinalStringORM
 > {
   return {
-    name: `string(${props ? JSON.stringify(props) : ""})`,
+    name: `string(${
+      props ? JSON.stringify({ ...props, regex: props.regex?.toString() }) : ""
+    })`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
     finalize: function finalizeString() {

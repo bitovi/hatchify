@@ -1,8 +1,10 @@
 import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
 import JSONAPISerializer from "json-api-serializer"
+import { snakeCase } from "lodash"
 import { match } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
+import type { Database } from "sqlite3"
 
 import type { HatchifyErrorOptions } from "./error"
 import { HatchifyError } from "./error"
@@ -98,6 +100,19 @@ export class Hatchify {
     // Prepare the ORM instance and keep references to the different Models
     this._sequelize = createSequelizeInstance(options.database)
 
+    if (this._sequelize.getDialect() === "sqlite") {
+      const gc = this._sequelize.connectionManager.getConnection
+      this._sequelize.connectionManager.getConnection = async function (
+        ...args: Parameters<typeof gc>
+      ) {
+        const db: Database = await gc.apply(this, args)
+
+        await new Promise((resolve) =>
+          db.run("PRAGMA case_sensitive_like=ON", resolve),
+        )
+        return db
+      }
+    }
     this._serializer = new JSONAPISerializer()
 
     // Fetch the hatchify models and associations look up
@@ -317,6 +332,33 @@ export class Hatchify {
         return isPathWithModelIdResult.params
       }
     }
+    // with namespace
+    const isPathWithNameSpaceModelId = match<{
+      namespace: string
+      model: string
+      id: Identifier
+    }>(this._prefix + "/:namespace/:model/:id", {
+      decode: decodeURIComponent,
+      strict: false,
+      sensitive: false,
+      end: false,
+    })
+
+    const isPathWithNameSpaceModelIdResult = isPathWithNameSpaceModelId(path)
+    if (isPathWithNameSpaceModelIdResult) {
+      let modelName = isPathWithNameSpaceModelIdResult.params.model
+      if (!modelName.includes(".")) {
+        modelName =
+          isPathWithNameSpaceModelIdResult.params.namespace + "." + modelName
+      }
+      const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
+
+      if (endpointName) {
+        isPathWithNameSpaceModelIdResult.params.model = endpointName
+
+        return isPathWithNameSpaceModelIdResult.params
+      }
+    }
 
     const isPathWithModel = match<{ model: string }>(this._prefix + "/:model", {
       decode: decodeURIComponent,
@@ -335,6 +377,33 @@ export class Hatchify {
         isPathWithModelResult.params.model = endpointName
 
         return isPathWithModelResult.params
+      }
+    }
+
+    // with namespace/model
+    const isPathWithNamespaceModel = match<{
+      namespace: string
+      model: string
+    }>(this._prefix + "/:namespace/:model", {
+      decode: decodeURIComponent,
+      strict: false,
+      sensitive: false,
+      end: false,
+    })
+
+    const isPathWithNamespaceModelResult = isPathWithNamespaceModel(path)
+    if (isPathWithNamespaceModelResult) {
+      let modelName = isPathWithNamespaceModelResult.params.model
+      if (!modelName.includes(".")) {
+        modelName =
+          isPathWithNamespaceModelResult.params.namespace + "." + modelName
+      }
+      const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
+
+      if (endpointName) {
+        isPathWithNamespaceModelResult.params.model = endpointName
+
+        return isPathWithNamespaceModelResult.params
       }
     }
 
@@ -405,7 +474,23 @@ export class Hatchify {
    * @category Testing Use
    */
   async createDatabase(): Promise<Sequelize> {
-    return this._sequelize.sync({ alter: true })
+    const uniqueNamespaces = Object.values(this.models).reduce(
+      (acc, model) => (model?.namespace ? acc.add(model.namespace) : acc),
+      new Set<string>(),
+    )
+
+    await Promise.all(
+      [...uniqueNamespaces].map((namespace) =>
+        this._sequelize.createSchema(snakeCase(namespace), {}),
+      ),
+    )
+
+    try {
+      return await this._sequelize.sync({ alter: true })
+    } catch (ex) {
+      console.error("Sync Failed:", ex)
+      throw ex
+    }
   }
 }
 

@@ -50,10 +50,10 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(setClientPropertyValue?.(null)).toBeNull()
       expect(() => setClientPropertyValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientPropertyValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
 
       // serializeClientPropertyValue
@@ -71,10 +71,10 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(setClientQueryFilterValue?.(null)).toBeNull()
       expect(() => setClientQueryFilterValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientQueryFilterValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
 
       // serializeClientQueryFilterValue
@@ -94,11 +94,11 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() => setClientPropertyValueFromResponse?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setClientPropertyValueFromResponse?.("2010-01-01 12:12:12"),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
 
       // serializeORMPropertyValue
       expect(
@@ -106,11 +106,11 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(serializeORMPropertyValue(null)).toBeNull()
       expect(() => serializeORMPropertyValue(1 as unknown as Date)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as Date),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
 
       // setORMPropertyValue
       expect(setORMPropertyValue(new Date("2023-01-01T00:00:00.000Z"))).toEqual(
@@ -119,10 +119,10 @@ describe("datetime", () => {
       expect(setORMPropertyValue(null)).toBeNull()
       expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setORMPropertyValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
 
       // setORMQueryFilterValue
@@ -132,7 +132,7 @@ describe("datetime", () => {
       expect(setORMQueryFilterValue("null")).toBeNull()
       expect(setORMQueryFilterValue("undefined")).toBeNull()
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
     })
 
@@ -145,6 +145,7 @@ describe("datetime", () => {
             typeArgs: [],
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -153,6 +154,7 @@ describe("datetime", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 0,
         },
         setClientPropertyValue: expect.any(Function),
@@ -216,10 +218,10 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setClientPropertyValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientPropertyValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
 
       // serializeClientPropertyValue
@@ -241,10 +243,10 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setClientQueryFilterValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientQueryFilterValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
 
       // serializeClientQueryFilterValue
@@ -268,11 +270,11 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setClientPropertyValueFromResponse?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setClientPropertyValueFromResponse?.("2010-01-01 12:12:12"),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
 
       // serializeORMPropertyValue
       expect(
@@ -282,11 +284,11 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => serializeORMPropertyValue(1 as unknown as Date)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as Date),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
 
       // setORMPropertyValue
       expect(setORMPropertyValue(new Date("2023-01-01T00:00:00.000Z"))).toEqual(
@@ -299,10 +301,10 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setORMPropertyValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
 
       // setORMQueryFilterValue
@@ -316,7 +318,7 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
     })
 
@@ -329,6 +331,7 @@ describe("datetime", () => {
             typeArgs: [],
             allowNull: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -337,6 +340,7 @@ describe("datetime", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 0,
         },
         setClientPropertyValue: expect.any(Function),
@@ -400,10 +404,10 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setClientPropertyValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientPropertyValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
 
       // serializeClientPropertyValue
@@ -425,10 +429,10 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setClientQueryFilterValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientQueryFilterValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
 
       // serializeClientQueryFilterValue
@@ -452,11 +456,11 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setClientPropertyValueFromResponse?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setClientPropertyValueFromResponse?.("2010-01-01 12:12:12"),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
 
       // serializeORMPropertyValue
       expect(
@@ -466,11 +470,11 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => serializeORMPropertyValue(1 as unknown as Date)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as Date),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
 
       // setORMPropertyValue
       expect(setORMPropertyValue(new Date("2023-01-01T00:00:00.000Z"))).toEqual(
@@ -483,10 +487,10 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setORMPropertyValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
 
       // setORMQueryFilterValue
@@ -500,7 +504,7 @@ describe("datetime", () => {
         new HatchifyCoerceError("as a non-null value"),
       )
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
     })
 
@@ -513,6 +517,7 @@ describe("datetime", () => {
             typeArgs: [],
             allowNull: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
@@ -521,6 +526,7 @@ describe("datetime", () => {
           min: -Infinity,
           max: Infinity,
           primary: true,
+          default: null,
           step: 0,
         },
         setClientPropertyValue: expect.any(Function),
@@ -582,10 +588,10 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(setClientPropertyValue?.(null)).toBeNull()
       expect(() => setClientPropertyValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientPropertyValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setClientPropertyValue?.(new Date("2024-01-01T01:00:00.000Z")),
@@ -609,10 +615,10 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(setClientQueryFilterValue?.(null)).toBeNull()
       expect(() => setClientQueryFilterValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientQueryFilterValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setClientQueryFilterValue?.(new Date("2024-01-01T01:00:00.000Z")),
@@ -640,11 +646,11 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() => setClientPropertyValueFromResponse?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setClientPropertyValueFromResponse?.("2010-01-01 12:12:12"),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
       expect(() =>
         setClientPropertyValueFromResponse?.(
           new Date("2024-01-01T01:00:00.000Z"),
@@ -657,11 +663,11 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(serializeORMPropertyValue(null)).toBeNull()
       expect(() => serializeORMPropertyValue(1 as unknown as Date)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as Date),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
       expect(() =>
         serializeORMPropertyValue(new Date("2023-01-01T01:00:00.000Z")),
       ).toThrow(new HatchifyCoerceError("as multiples of day"))
@@ -673,10 +679,10 @@ describe("datetime", () => {
       expect(setORMPropertyValue(null)).toBeNull()
       expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setORMPropertyValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setORMPropertyValue(new Date("2023-01-01T01:00:00.000Z")),
@@ -689,7 +695,7 @@ describe("datetime", () => {
       expect(setORMQueryFilterValue("null")).toBeNull()
       expect(setORMQueryFilterValue("undefined")).toBeNull()
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setORMQueryFilterValue("2023-01-01T01:00:00.000Z")).toThrow(
         new HatchifyCoerceError("as multiples of day"),
@@ -705,6 +711,7 @@ describe("datetime", () => {
             typeArgs: [],
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -713,6 +720,7 @@ describe("datetime", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: "day",
         },
         setClientPropertyValue: expect.any(Function),
@@ -777,10 +785,10 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(setClientPropertyValue?.(null)).toBeNull()
       expect(() => setClientPropertyValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientPropertyValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setClientPropertyValue?.(new Date("2024-01-01T00:00:00.000Z")),
@@ -808,10 +816,10 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(setClientQueryFilterValue?.(null)).toBeNull()
       expect(() => setClientQueryFilterValue?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setClientQueryFilterValue?.("2010-01-01 12:12:12")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setClientQueryFilterValue?.(new Date("2024-01-01T00:00:00.000Z")),
@@ -841,11 +849,11 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() => setClientPropertyValueFromResponse?.(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setClientPropertyValueFromResponse?.("2010-01-01 12:12:12"),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
       expect(() =>
         setClientPropertyValueFromResponse?.(
           new Date("2024-01-01T00:00:00.000Z"),
@@ -860,11 +868,11 @@ describe("datetime", () => {
       ).toEqual(new Date("2023-01-01T00:00:00.000Z"))
       expect(serializeORMPropertyValue(null)).toBeNull()
       expect(() => serializeORMPropertyValue(1 as unknown as Date)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         serializeORMPropertyValue("invalid" as unknown as Date),
-      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+      ).toThrow(new HatchifyCoerceError("as an ISO 8601 date and time string"))
       expect(() =>
         serializeORMPropertyValue(new Date("2023-01-01T01:00:00.000Z")),
       ).toThrow(
@@ -878,10 +886,10 @@ describe("datetime", () => {
       expect(setORMPropertyValue(null)).toBeNull()
       expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1)).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setORMPropertyValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() =>
         setORMPropertyValue(new Date("2023-01-01T01:00:00.000Z")),
@@ -896,7 +904,7 @@ describe("datetime", () => {
       expect(setORMQueryFilterValue("null")).toBeNull()
       expect(setORMQueryFilterValue("undefined")).toBeNull()
       expect(() => setORMQueryFilterValue("invalid")).toThrow(
-        new HatchifyCoerceError("as an ISO 8601 date string"),
+        new HatchifyCoerceError("as an ISO 8601 date and time string"),
       )
       expect(() => setORMQueryFilterValue("2023-01-01T01:00:00.000Z")).toThrow(
         new HatchifyCoerceError("before or on 2023-01-01T00:00:00.000Z"),
@@ -912,6 +920,7 @@ describe("datetime", () => {
             typeArgs: [],
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -920,6 +929,7 @@ describe("datetime", () => {
           min: -Infinity,
           max: new Date("2023-01-01T00:00:00.000Z"),
           primary: false,
+          default: null,
           step: 0,
         },
         setClientPropertyValue: expect.any(Function),
