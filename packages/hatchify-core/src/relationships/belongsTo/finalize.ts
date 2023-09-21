@@ -1,5 +1,5 @@
 import type { PartialBelongsToRelationship } from "./types"
-import { integer } from "../../dataTypes"
+import { uuid } from "../../dataTypes"
 import { HatchifyInvalidSchemaError } from "../../types"
 import type { SemiFinalSchema } from "../../types"
 import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase"
@@ -30,7 +30,7 @@ export function finalize(
         ...schemas[sourceSchema].attributes,
         [sourceAttribute]:
           schemas[sourceSchema].attributes[sourceAttribute] ??
-          integer().finalize(),
+          uuid().finalize(),
       },
       relationships: {
         ...schemas[sourceSchema].relationships,

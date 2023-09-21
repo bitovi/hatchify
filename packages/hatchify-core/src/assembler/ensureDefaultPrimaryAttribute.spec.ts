@@ -1,32 +1,34 @@
 import { ensureDefaultPrimaryAttribute } from "./ensureDefaultPrimaryAttribute"
-import { integer } from "../dataTypes"
+import { uuid } from "../dataTypes"
+import { UUID_REGEX } from "../dataTypes/uuid/constants"
+import { uuidv4 } from "../util/uuidv4"
 
 describe("ensureDefaultPrimaryAttribute", () => {
   it("handles existing primary attribute", () => {
     expect(
       ensureDefaultPrimaryAttribute({
         name: "Todo",
-        id: integer({ required: true, autoIncrement: true }),
+        id: uuid({ required: true, default: uuidv4 }),
         attributes: {},
       }),
     ).toEqual({
       name: "Todo",
       id: {
-        name: 'integer({"required":true,"autoIncrement":true})',
+        name: 'uuid({"required":true})',
         control: {
-          type: "Number",
+          type: "String",
           allowNull: false,
-          min: undefined,
-          max: undefined,
+          default: expect.any(Function),
+          min: 36,
+          max: 36,
           primary: true,
-          step: 1,
+          regex: UUID_REGEX,
         },
         orm: {
           sequelize: {
-            type: "INTEGER",
-            typeArgs: [],
+            type: "UUID",
             allowNull: false,
-            autoIncrement: true,
+            defaultValue: expect.any(Function),
             primaryKey: true,
           },
         },
@@ -45,21 +47,21 @@ describe("ensureDefaultPrimaryAttribute", () => {
     ).toEqual({
       name: "Todo",
       id: {
-        name: 'integer({"primary":true,"autoIncrement":true,"required":true,"min":1})',
+        name: 'uuid({"primary":true,"required":true})',
         control: {
-          type: "Number",
+          type: "String",
           allowNull: false,
-          min: 1,
-          max: undefined,
+          default: expect.any(Function),
+          min: 36,
+          max: 36,
           primary: true,
-          step: 1,
+          regex: UUID_REGEX,
         },
         orm: {
           sequelize: {
-            type: "INTEGER",
-            typeArgs: [],
+            type: "UUID",
             allowNull: false,
-            autoIncrement: true,
+            defaultValue: expect.any(Function),
             primaryKey: true,
           },
         },

@@ -1,4 +1,4 @@
-import { assembler, integer } from "@hatchifyjs/hatchify-core"
+import { assembler, integer, uuid, uuidv4 } from "@hatchifyjs/hatchify-core"
 import { Sequelize } from "sequelize"
 import type { ModelStatic } from "sequelize"
 
@@ -15,7 +15,7 @@ describe("toSequelize", () => {
       assembler({
         Todo: {
           name: "Todo",
-          id: integer({ required: true, autoIncrement: true }),
+          id: uuid({ required: true, default: uuidv4 }),
           attributes: {
             importance: integer({ min: 0, max: 1 }),
           },
@@ -38,7 +38,9 @@ describe("toSequelize", () => {
           schemas.Todo.build({
             importance: 1,
           }),
-        ).toMatchObject({ dataValues: { id: null, importance: 1 } })
+        ).toMatchObject({
+          dataValues: { id: expect.any(String), importance: 1 },
+        })
       })
 
       it("does not enforce minimum value", () => {
@@ -47,7 +49,7 @@ describe("toSequelize", () => {
             importance: -1,
           }),
         ).toMatchObject({
-          dataValues: { id: null, importance: -1 },
+          dataValues: { id: expect.any(String), importance: -1 },
         })
       })
 
@@ -57,7 +59,7 @@ describe("toSequelize", () => {
             importance: 2,
           }),
         ).toMatchObject({
-          dataValues: { id: null, importance: 2 },
+          dataValues: { id: expect.any(String), importance: 2 },
         })
       })
 
@@ -67,7 +69,7 @@ describe("toSequelize", () => {
             importance: "not a number",
           }),
         ).toMatchObject({
-          dataValues: { id: null, importance: "not a number" },
+          dataValues: { id: expect.any(String), importance: "not a number" },
         })
       })
 
@@ -76,12 +78,14 @@ describe("toSequelize", () => {
           schemas.Todo.build({
             importance: 0.1,
           }),
-        ).toMatchObject({ dataValues: { id: null, importance: 0.1 } })
+        ).toMatchObject({
+          dataValues: { id: expect.any(String), importance: 0.1 },
+        })
       })
 
       it("does not enforce values for optional attributes", () => {
         expect(schemas.Todo.build({})).toMatchObject({
-          dataValues: { id: null },
+          dataValues: { id: expect.any(String) },
         })
       })
     })
@@ -93,7 +97,7 @@ describe("toSequelize", () => {
             importance: 1,
           }).save(),
         ).toMatchObject({
-          dataValues: { id: expect.any(Number), importance: 1 },
+          dataValues: { id: expect.any(String), importance: 1 },
         })
       })
 
@@ -131,7 +135,7 @@ describe("toSequelize", () => {
 
       it("does not require values for optional attributes", async () => {
         expect(await schemas.Todo.build({}).save()).toMatchObject({
-          dataValues: { id: expect.any(Number) },
+          dataValues: { id: expect.any(String) },
         })
       })
     })
@@ -143,7 +147,7 @@ describe("toSequelize", () => {
             importance: 1,
           }),
         ).toMatchObject({
-          dataValues: { id: expect.any(Number), importance: 1 },
+          dataValues: { id: expect.any(String), importance: 1 },
         })
       })
 
@@ -181,7 +185,7 @@ describe("toSequelize", () => {
 
       it("does not require values for optional attributes", async () => {
         expect(await schemas.Todo.create({})).toMatchObject({
-          dataValues: { id: expect.any(Number) },
+          dataValues: { id: expect.any(String) },
         })
       })
     })

@@ -262,7 +262,7 @@ describe.each(dbDialects)("schema", (dialect) => {
               version: "1.0",
             },
             data: {
-              id: "1",
+              id: postUser1.data.id,
               type: "User",
               attributes: {
                 name: "John Doe",
@@ -284,7 +284,7 @@ describe.each(dbDialects)("schema", (dialect) => {
               version: "1.0",
             },
             data: {
-              id: "2",
+              id: postUser2.data.id,
               type: "User",
               attributes: {
                 name: "Jane Doe",
@@ -470,7 +470,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "1",
+                id: postUser1.data.id,
                 type: "User",
                 attributes: {
                   name: "John Doe",
@@ -485,7 +485,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 },
               },
               {
-                id: "2",
+                id: postUser2.data.id,
                 type: "User",
                 attributes: {
                   name: "Jane Doe",
@@ -518,7 +518,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "2",
+                id: postUser2.data.id,
                 type: "User",
                 attributes: {
                   name: "Jane Doe",
@@ -551,14 +551,14 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "1",
+                id: postUser1.data.id,
                 type: "User",
                 attributes: {
                   yearsWorked: 1,
                 },
               },
               {
-                id: "2",
+                id: postUser2.data.id,
                 type: "User",
                 attributes: {
                   yearsWorked: 3,
@@ -583,7 +583,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "2",
+                id: postUser2.data.id,
                 type: "User",
                 attributes: {
                   name: "Jane Doe",
@@ -598,7 +598,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 },
               },
               {
-                id: "1",
+                id: postUser1.data.id,
                 type: "User",
                 attributes: {
                   name: "John Doe",
@@ -631,7 +631,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "1",
+                id: postUser1.data.id,
                 type: "User",
                 attributes: {
                   name: "John Doe",
@@ -663,7 +663,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             data: [
               {
                 type: "User",
-                id: "1",
+                id: postUser1.data.id,
                 attributes: {
                   name: "John Doe",
                   age: 21,
@@ -675,11 +675,13 @@ describe.each(dbDialects)("schema", (dialect) => {
                   birthday: "1970-01-01",
                   uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 },
-                relationships: { todos: { data: [{ type: "Todo", id: "1" }] } },
+                relationships: {
+                  todos: { data: [{ type: "Todo", id: todoId }] },
+                },
               },
               {
                 type: "User",
-                id: "2",
+                id: postUser2.data.id,
                 attributes: {
                   name: "Jane Doe",
                   age: 22,
@@ -697,7 +699,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             included: [
               {
                 type: "Todo",
-                id: "1",
+                id: todoId,
                 attributes: {
                   name: "Test",
                 },
@@ -812,13 +814,10 @@ describe.each(dbDialects)("schema", (dialect) => {
           },
           {
             name: "id",
-            allowNull: dialect === "sqlite",
-            default:
-              dialect === "postgres"
-                ? "nextval('user_id_seq'::regclass)"
-                : null,
+            allowNull: false,
+            default: null,
             primary: true,
-            type: dialect === "postgres" ? "integer" : "INTEGER",
+            type: dialect === "postgres" ? "uuid" : "UUID",
           },
           {
             name: "is_deleted",
@@ -942,7 +941,7 @@ describe.each(dbDialects)("schema", (dialect) => {
               version: "1.0",
             },
             data: {
-              id: "1",
+              id: expect.any(String),
               type: "User",
               attributes: {
                 name: "John Doe",
@@ -964,7 +963,7 @@ describe.each(dbDialects)("schema", (dialect) => {
               version: "1.0",
             },
             data: {
-              id: "2",
+              id: expect.any(String),
               type: "User",
               attributes: {
                 name: "Jane Doe",
@@ -1093,7 +1092,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "1",
+                id: postUser1.data.id,
                 type: "User",
                 attributes: {
                   name: "John Doe",
@@ -1108,7 +1107,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 },
               },
               {
-                id: "2",
+                id: postUser2.data.id,
                 type: "User",
                 attributes: {
                   name: "Jane Doe",
@@ -1141,7 +1140,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "2",
+                id: postUser2.data.id,
                 type: "User",
                 attributes: {
                   name: "Jane Doe",
@@ -1174,14 +1173,14 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "1",
+                id: postUser1.data.id,
                 type: "User",
                 attributes: {
                   yearsWorked: 1,
                 },
               },
               {
-                id: "2",
+                id: postUser2.data.id,
                 type: "User",
                 attributes: {
                   yearsWorked: 3,
@@ -1206,7 +1205,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "2",
+                id: postUser2.data.id,
                 type: "User",
                 attributes: {
                   name: "Jane Doe",
@@ -1221,7 +1220,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 },
               },
               {
-                id: "1",
+                id: postUser1.data.id,
                 type: "User",
                 attributes: {
                   name: "John Doe",
@@ -1254,7 +1253,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             },
             data: [
               {
-                id: "1",
+                id: postUser1.data.id,
                 type: "User",
                 attributes: {
                   name: "John Doe",
@@ -1286,7 +1285,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             data: [
               {
                 type: "User",
-                id: "1",
+                id: postUser1.data.id,
                 attributes: {
                   name: "John Doe",
                   age: 21,
@@ -1298,11 +1297,13 @@ describe.each(dbDialects)("schema", (dialect) => {
                   birthday: "1970-01-01",
                   uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 },
-                relationships: { todos: { data: [{ type: "Todo", id: "1" }] } },
+                relationships: {
+                  todos: { data: [{ type: "Todo", id: todoId }] },
+                },
               },
               {
                 type: "User",
-                id: "2",
+                id: postUser2.data.id,
                 attributes: {
                   name: "Jane Doe",
                   age: 22,
@@ -1320,10 +1321,10 @@ describe.each(dbDialects)("schema", (dialect) => {
             included: [
               {
                 type: "Todo",
-                id: "1",
+                id: todoId,
                 attributes: {
                   name: "Test",
-                  userId: 1,
+                  userId: postUser1.data.id,
                 },
               },
             ],

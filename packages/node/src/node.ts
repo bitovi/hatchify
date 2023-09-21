@@ -485,7 +485,12 @@ export class Hatchify {
       ),
     )
 
-    return this._sequelize.sync({ alter: true })
+    try {
+      return await this._sequelize.sync({ alter: true })
+    } catch (ex) {
+      console.error("Sync Failed:", ex)
+      throw ex
+    }
   }
 }
 
