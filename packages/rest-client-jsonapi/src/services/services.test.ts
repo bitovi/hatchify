@@ -34,7 +34,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       `http://localhost:3001/${testBackendEndpointConfig.api}`,
       { Article },
     )
-    const hatchedReactRest = hatchifyReactRest({ Article }, jsonApi)
+    const hatchedReactRest = hatchifyReactRest(jsonApi)
 
     await hatchedReactRest.Article.createOne({
       attributes: {

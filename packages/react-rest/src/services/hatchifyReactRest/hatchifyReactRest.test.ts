@@ -1,11 +1,26 @@
 import { describe, it, expect } from "vitest"
 import type { Source } from "@hatchifyjs/rest-client"
 import { hatchifyReactRest } from "./hatchifyReactRest"
-import type { Schema } from "@hatchifyjs/rest-client"
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 
 const fakeDataSource: Source = {
-  completeSchemaMap: {},
+  completeSchemaMap: {
+    Article: {
+      name: "Article",
+      type: "Article",
+      attributes: {
+        title: "string",
+        body: "string",
+      },
+    },
+    Person: {
+      name: "Person",
+      type: "Person",
+      attributes: {
+        name: "string",
+        age: "integer",
+      },
+    },
+  },
   version: 0,
   findAll: () => Promise.resolve([[], {}]),
   findOne: () => Promise.resolve([]),
@@ -16,22 +31,7 @@ const fakeDataSource: Source = {
 
 describe("react-rest/services/hatchifyReactRest", () => {
   it("should return functions for each schema", () => {
-    const Article: LegacySchema = {
-      name: "Article",
-      attributes: {
-        title: "string",
-        body: "string",
-      },
-    }
-    const Person: LegacySchema = {
-      name: "Person",
-      attributes: {
-        name: "string",
-        age: "integer",
-      },
-    }
-
-    const api = hatchifyReactRest({ Article, Person }, fakeDataSource)
+    const api = hatchifyReactRest(fakeDataSource)
 
     expect(api).toEqual({
       Article: {
@@ -62,30 +62,7 @@ describe("react-rest/services/hatchifyReactRest", () => {
   })
 
   it("should accept both legacy and new schema", () => {
-    const Article: LegacySchema = {
-      name: "Article",
-      attributes: {
-        title: "string",
-        body: "string",
-      },
-    }
-
-    const Person: Schema = {
-      name: "Person",
-      displayAttribute: "name",
-      attributes: {
-        name: "string",
-        age: "integer",
-      },
-      relationships: {
-        Article: {
-          type: "many",
-          schema: "yes",
-        },
-      },
-    }
-
-    const api = hatchifyReactRest({ Article, Person }, fakeDataSource)
+    const api = hatchifyReactRest(fakeDataSource)
 
     expect(api).toEqual({
       Article: {

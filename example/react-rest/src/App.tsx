@@ -31,12 +31,9 @@ const User: Schema = {
   },
 }
 
-const jsonapi = createClient("/api", {
-  Todo: { endpoint: "todos" },
-  User: { endpoint: "users" },
-})
+const jsonapi = createClient("/api", { Todo, User })
 
-const hatchedReactRest = hatchifyReactRest({ Todo, User }, jsonapi)
+const hatchedReactRest = hatchifyReactRest(jsonapi)
 
 function App() {
   const [todos, listState] = hatchedReactRest.Todo.useAll({ include: ["user"] })

@@ -6,11 +6,7 @@ import { User } from "../schemas/user"
 // import WithoutHooks from "./WithoutHooks"
 
 export const hatchedReactRest = hatchifyReactRest(
-  { Todo, User },
-  createJsonapiClient("http://localhost:3000/api", {
-    Todo: { ...Todo, endpoint: "todos" },
-    User: { ...User, endpoint: "users" },
-  }),
+  createJsonapiClient("http://localhost:3000/api", { Todo, User }),
 )
 
 const App: React.FC = () => {

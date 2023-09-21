@@ -16,7 +16,6 @@ import { Todo } from "../schemas/Todo"
 import { User } from "../schemas/User"
 
 export const hatchedReact = hatchifyReact(
-  { Todo, User },
   createJsonapiClient("http://localhost:3000/api", {
     Todo,
     User,

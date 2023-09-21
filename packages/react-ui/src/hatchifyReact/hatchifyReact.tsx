@@ -1,5 +1,4 @@
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
-import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
+import type { ReactRest } from "@hatchifyjs/react-rest"
 import type {
   Fields,
   Filters,
@@ -46,7 +45,7 @@ type Components = {
 
 export type HatchifyApp = {
   components: Components
-  model: ReactRest<SchemaRecord>
+  model: ReactRest
   state: {
     [schemaName: string]: {
       useCollectionState: ({
@@ -73,7 +72,7 @@ export type HatchifyApp = {
 export function hatchifyReact(dataSource: Source): HatchifyApp {
   const { completeSchemaMap } = dataSource
 
-  const reactRest = hatchifyReactRest(completeSchemaMap, dataSource)
+  const reactRest = hatchifyReactRest(dataSource)
 
   const schemas = Object.values(completeSchemaMap).reduce((acc, schema) => {
     acc[schema.name] = transformSchema(schema)

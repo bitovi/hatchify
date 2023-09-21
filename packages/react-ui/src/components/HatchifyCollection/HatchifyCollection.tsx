@@ -11,7 +11,7 @@ import useCollectionState from "../../hooks/useCollectionState"
 export interface HatchifyCollectionProps {
   allSchemas: Schemas
   schemaName: string
-  restClient: ReactRest<Schemas>
+  restClient: ReactRest
   children?: React.ReactNode | null
   defaultSelected?: HatchifyCollectionSelected["selected"]
   onSelectedChange?: HatchifyCollectionSelected["setSelected"]

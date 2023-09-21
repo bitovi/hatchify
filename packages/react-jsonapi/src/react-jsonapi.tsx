@@ -8,11 +8,8 @@ interface SourceSchema {
 }
 export type SchemaMap = Record<string, SourceSchema>
 
-export function reactJsonapi(
-  schema: SchemaRecord,
-  baseUrl: string,
-): ReactRest<SchemaRecord> {
+export function reactJsonapi(schema: SchemaRecord, baseUrl: string): ReactRest {
   const jsonapiClient = createClient(baseUrl, schema)
 
-  return hatchifyReactRest(schema, jsonapiClient)
+  return hatchifyReactRest(jsonapiClient)
 }

@@ -23,7 +23,6 @@ import { User } from "../schemas/User"
 import { useState } from "react" // 👀
 
 export const hatchedReact = hatchifyReact(
-  { Todo, User },
   createJsonapiClient("http://localhost:3000/api", {
     Todo,
     User,

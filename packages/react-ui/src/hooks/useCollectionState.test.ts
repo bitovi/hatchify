@@ -1,12 +1,12 @@
-import type { Schemas } from "@hatchifyjs/rest-client"
 import { describe, expect, it, vi } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import useCollectionState from "./useCollectionState"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 
-const schemas: Schemas = {
+const completeSchemaMap = {
   Todo: {
     name: "Todo",
+    type: "Todo",
     displayAttribute: "name",
     attributes: {
       name: "string",
@@ -15,10 +15,9 @@ const schemas: Schemas = {
     },
   },
 }
-
-const fakeRestClient = hatchifyReactRest(schemas, {
+const fakeRestClient = hatchifyReactRest({
   version: 0,
-  completeSchemaMap: {},
+  completeSchemaMap,
   findAll: () =>
     Promise.resolve([
       [
@@ -41,13 +40,18 @@ const fakeRestClient = hatchifyReactRest(schemas, {
 describe("useCollectionState", () => {
   it("works", async () => {
     const { result } = renderHook(() =>
-      useCollectionState(schemas, schemas.Todo.name, fakeRestClient, {
-        defaultSelected: { all: false, ids: [] },
-        onSelectedChange: vi.fn(),
-        defaultPage: { size: 1, number: 2 },
-        defaultSort: { direction: "desc", sortBy: "id" },
-        baseFilter: [{ field: "id", value: "1", operator: "$eq" }],
-      }),
+      useCollectionState(
+        completeSchemaMap,
+        completeSchemaMap.Todo.name,
+        fakeRestClient,
+        {
+          defaultSelected: { all: false, ids: [] },
+          onSelectedChange: vi.fn(),
+          defaultPage: { size: 1, number: 2 },
+          defaultSort: { direction: "desc", sortBy: "id" },
+          baseFilter: [{ field: "id", value: "1", operator: "$eq" }],
+        },
+      ),
     )
 
     const expected = {
@@ -84,7 +88,7 @@ describe("useCollectionState", () => {
         ids: [],
       },
       setSelected: expect.any(Function),
-      allSchemas: schemas,
+      allSchemas: completeSchemaMap,
       schemaName: "Todo",
       filter: undefined,
       setFilter: expect.any(Function),

@@ -8,7 +8,6 @@ import Layout from "./components"
 import { Category, Document } from "./schemas"
 
 const hatchedReact = hatchifyReact(
-  { Category, Document },
   createJsonapiClient("https://dummy.data/api", {
     Document: { ...Document, type: "document", endpoint: "documents" },
     Category: { ...Category, type: "category", endpoint: "categories" },
