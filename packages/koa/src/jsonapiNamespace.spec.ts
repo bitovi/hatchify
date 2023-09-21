@@ -2,11 +2,14 @@ import type { Server } from "http"
 
 import { DataTypes } from "@hatchifyjs/node"
 import type { HatchifyModel } from "@hatchifyjs/node"
+import dotenv from "dotenv"
 import { Serializer } from "jsonapi-serializer"
 import Koa from "koa"
 
 import { Hatchify } from "./koa"
 import { GET, POST, createServer } from "./testing/utils"
+
+dotenv.config({ path: ".env" })
 
 describe("JSON:API Tests", () => {
   let app: Koa
@@ -28,7 +31,7 @@ describe("JSON:API Tests", () => {
   }
 
   function serialize(data) {
-    const serializer = new Serializer("TestSchema.Model", {
+    const serializer = new Serializer("TestSchema_Model", {
       keyForAttribute: "snake_case",
       attributes: Object.keys(data),
       pluralizeType: false,
@@ -39,7 +42,19 @@ describe("JSON:API Tests", () => {
 
   beforeAll(async () => {
     app = new Koa()
-    hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify([Model], {
+      prefix: "/api",
+      database: {
+        dialect: "postgres",
+        host: process.env.PG_DB_HOST,
+        port: Number(process.env.PG_DB_PORT),
+        username: process.env.PG_DB_USERNAME,
+        password: process.env.PG_DB_PASSWORD,
+        database: process.env.PG_DB_NAME,
+        logging: false,
+      },
+    })
+
     app.use(hatchify.middleware.allModels.all)
 
     server = createServer(app)
@@ -47,6 +62,7 @@ describe("JSON:API Tests", () => {
   })
 
   afterAll(async () => {
+    await hatchify.orm.drop({ cascade: true })
     await hatchify.orm.close()
     await server.close()
   })
@@ -55,11 +71,11 @@ describe("JSON:API Tests", () => {
     //JK will separate cases into different it() tests
     const r1 = await POST(
       server,
-      "/api/testschema.models",
+      "/api/testschema_models",
       serialize({
         first_name: "firstName",
         last_name: "lastName",
-        type: "TestSchema.Model",
+        type: "TestSchema_Model",
       }),
       "application/vnd.api+json",
     )
@@ -74,7 +90,7 @@ describe("JSON:API Tests", () => {
       serialize({
         first_name: "firstName2",
         last_name: "lastName2",
-        type: "TestSchema.Model",
+        type: "TestSchema_Model",
       }),
       "application/vnd.api+json",
     )
@@ -98,11 +114,11 @@ describe("JSON:API Tests", () => {
   it("should be able to omit namespace when referring to fields that belongs to the same namespace", async () => {
     const r1 = await POST(
       server,
-      "/api/testschema.models",
+      "/api/testschema_models",
       serialize({
         first_name: "firstName",
         last_name: "lastName",
-        type: "TestSchema.Model",
+        type: "TestSchema_Model",
       }),
       "application/vnd.api+json",
     )
