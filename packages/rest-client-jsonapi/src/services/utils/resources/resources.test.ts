@@ -17,9 +17,17 @@ import type {
 describe("rest-client-jsonapi/services/utils/resources", () => {
   const typeToSchema = { article: "Article", person: "Person", tag: "Tag" }
   const schemaMap = {
-    Article: { type: "article", endpoint: "articles" },
-    Person: { type: "person", endpoint: "people" },
-    Tag: { type: "tag", endpoint: "tags" },
+    Article: {
+      ...({ name: "Article" } as Schema),
+      type: "article",
+      endpoint: "articles",
+    },
+    Person: {
+      ...({ name: "Person" } as Schema),
+      type: "person",
+      endpoint: "people",
+    },
+    Tag: { ...({ name: "Tag" } as Schema), type: "tag", endpoint: "tags" },
   }
 
   describe("getTypeToSchema", () => {
@@ -170,32 +178,30 @@ describe("rest-client-jsonapi/services/utils/resources", () => {
 
 describe("convertToJsonApiRelationships", () => {
   it("Correctly converts relationship objects with one or many relationships", () => {
-    const schema: Schema = {
-      name: "Article",
-      displayAttribute: "name",
-      attributes: {
-        title: "string",
-        body: "string",
-      },
-      relationships: {
-        person: {
-          type: "one",
-          schema: "Person",
+    const schemaMap = {
+      Article: {
+        name: "Article",
+        displayAttribute: "name",
+        type: "Article",
+        attributes: {
+          title: "string",
+          body: "string",
         },
-        tag: {
-          type: "many",
-          schema: "Tag",
+        relationships: {
+          person: {
+            type: "one",
+            schema: "Person",
+          },
+          tag: {
+            type: "many",
+            schema: "Tag",
+          },
         },
       },
+      Person: { name: "Person", type: "Person", attributes: {} },
+      Tag: { name: "Tag", type: "Tag", attributes: {} },
     }
-    const sourceConfig = {
-      baseUrl: "http://localhost:3000/api",
-      schemaMap: {
-        Article: { type: "Article", endpoint: "articles" },
-        Person: { type: "Person", endpoint: "people" },
-        Tag: { type: "Tag", endpoint: "tags" },
-      },
-    }
+    const sourceConfig = { baseUrl: "http://localhost:3000/api", schemaMap }
 
     const relationships: SchemalessResourceRelationshipObject = {
       person: { id: "1" },
@@ -213,31 +219,37 @@ describe("convertToJsonApiRelationships", () => {
     }
 
     expect(
-      convertToJsonApiRelationships(sourceConfig, schema, relationships),
+      convertToJsonApiRelationships(
+        sourceConfig,
+        schemaMap.Article as any,
+        relationships,
+      ),
     ).toEqual(expected)
   })
 
   it("Correctly converts relationship objects for schemas with custom-defined `type` values", () => {
-    const schema: Schema = {
-      name: "Article",
-      displayAttribute: "name",
-      attributes: {
-        title: "string",
-        body: "string",
-      },
-      relationships: {
-        person: {
-          type: "one",
-          schema: "Person",
+    const schemaMap = {
+      Article: {
+        name: "Article",
+        displayAttribute: "name",
+        type: "Article",
+        attributes: {
+          title: "string",
+          body: "string",
+        },
+        relationships: {
+          person: {
+            type: "one",
+            schema: "Person",
+          },
         },
       },
+      Person: { name: "Person", type: "person_custom", attributes: {} },
+      Tag: { name: "Tag", type: "Tag", attributes: {} },
     }
     const sourceConfig = {
       baseUrl: "http://localhost:3000/api",
-      schemaMap: {
-        Article: { type: "article", endpoint: "articles" },
-        Person: { type: "person_custom", endpoint: "people" },
-      },
+      schemaMap,
     }
 
     const relationships: SchemalessResourceRelationshipObject = {
@@ -249,7 +261,11 @@ describe("convertToJsonApiRelationships", () => {
     }
 
     expect(
-      convertToJsonApiRelationships(sourceConfig, schema, relationships),
+      convertToJsonApiRelationships(
+        sourceConfig,
+        schemaMap.Article as any,
+        relationships,
+      ),
     ).toEqual(expected)
   })
 })

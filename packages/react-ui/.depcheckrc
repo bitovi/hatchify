@@ -1,1 +1,1 @@
-ignores: ["@vitest/coverage-c8"]
+ignores: ["@vitest/coverage-c8", "@hatchifyjs/hatchify-core"]

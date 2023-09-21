@@ -11,9 +11,8 @@ export type SchemaMap = Record<string, SourceSchema>
 export function reactJsonapi(
   schema: SchemaRecord,
   baseUrl: string,
-  schemaMap: SchemaMap,
 ): ReactRest<SchemaRecord> {
-  const jsonapiClient = createClient(baseUrl, schemaMap)
+  const jsonapiClient = createClient(baseUrl, schema)
 
   return hatchifyReactRest(schema, jsonapiClient)
 }

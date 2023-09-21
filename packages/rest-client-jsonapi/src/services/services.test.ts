@@ -32,9 +32,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     const jsonApi = jsonapi(
       `http://localhost:3001/${testBackendEndpointConfig.api}`,
-      {
-        Article: { endpoint: `${testBackendEndpointConfig.schema}` },
-      },
+      { Article },
     )
     const hatchedReactRest = hatchifyReactRest({ Article }, jsonApi)
 

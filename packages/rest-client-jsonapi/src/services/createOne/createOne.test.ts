@@ -6,12 +6,18 @@ import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { createOne } from "./createOne"
 
-const ArticleSchema = { name: "Article" } as Schema
-const schemas = { Article: ArticleSchema }
 const schemaMap = {
-  Article: { type: "article", endpoint: "articles" },
-  Person: { type: "person", endpoint: "people" },
-  Tag: { type: "tag", endpoint: "tags" },
+  Article: {
+    ...({ name: "Article" } as Schema),
+    type: "article",
+    endpoint: "articles",
+  },
+  Person: {
+    ...({ name: "Person" } as Schema),
+    type: "person",
+    endpoint: "people",
+  },
+  Tag: { ...({ name: "Tag" } as Schema), type: "tag", endpoint: "tags" },
 }
 const sourceConfig = { baseUrl, schemaMap }
 
@@ -24,7 +30,7 @@ describe("rest-client-jsonapi/services/createOne", () => {
         ...data,
       },
     ]
-    const result = await createOne(sourceConfig, schemas, "Article", data)
+    const result = await createOne(sourceConfig, schemaMap, "Article", data)
     expect(result).toEqual(expected)
   })
 
@@ -52,7 +58,7 @@ describe("rest-client-jsonapi/services/createOne", () => {
     )
 
     await expect(() =>
-      createOne(sourceConfig, schemas, "Article", data),
+      createOne(sourceConfig, schemaMap, "Article", data),
     ).rejects.toEqual(errors)
   })
 
@@ -60,7 +66,7 @@ describe("rest-client-jsonapi/services/createOne", () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
     const data = { __schema: "Article", attributes: { title: "Hello, World!" } }
     const spy = vi.spyOn(dataSource, "createOne")
-    await dataSource.createOne(schemas, "Article", data)
-    expect(spy).toHaveBeenCalledWith(schemas, "Article", data)
+    await dataSource.createOne(schemaMap, "Article", data)
+    expect(spy).toHaveBeenCalledWith(schemaMap, "Article", data)
   })
 })
