@@ -1,21 +1,18 @@
-import { integer } from "../dataTypes"
-import type {
-  FinalNumberORM,
-  PartialNumberControlType,
-  PartialNumberORM,
-} from "../dataTypes/number"
+import { uuid } from "../dataTypes"
+import type { PartialStringControlType } from "../dataTypes/string"
+import type { FinalUuidORM, PartialUuidORM } from "../dataTypes/uuid/types"
 import type { PartialAttribute } from "../types"
+import { uuidv4 } from "../util/uuidv4"
 
 export function getDefaultPrimaryAttribute(): PartialAttribute<
-  PartialNumberORM,
-  PartialNumberControlType,
-  number,
-  FinalNumberORM
+  PartialUuidORM,
+  PartialStringControlType,
+  string,
+  FinalUuidORM
 > {
-  return integer({
+  return uuid({
     primary: true,
-    autoIncrement: true,
     required: true,
-    min: 1,
+    default: uuidv4,
   })
 }

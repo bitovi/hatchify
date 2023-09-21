@@ -1,6 +1,6 @@
 import type { PartialHasManyThroughRelationship } from "./types"
 import { getDefaultPrimaryAttribute } from "../../assembler/getDefaultPrimaryAttribute"
-import { integer } from "../../dataTypes"
+import { uuid } from "../../dataTypes"
 import { HatchifyInvalidSchemaError } from "../../types"
 import type { SemiFinalSchema } from "../../types"
 import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase"
@@ -58,8 +58,8 @@ export function finalize(
       name: through,
       id: getDefaultPrimaryAttribute().finalize(),
       attributes: {
-        [throughSourceAttribute]: integer({ required: true }).finalize(),
-        [throughTargetAttribute]: integer({ required: true }).finalize(),
+        [throughSourceAttribute]: uuid({ required: true }).finalize(),
+        [throughTargetAttribute]: uuid({ required: true }).finalize(),
       },
     },
   }

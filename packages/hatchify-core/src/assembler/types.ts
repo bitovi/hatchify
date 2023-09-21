@@ -98,10 +98,10 @@ export interface PartialSchema<
   name: string
   namespace?: string
   id?: PartialAttribute<
-    PartialNumberORM,
-    PartialNumberControlType,
-    number,
-    FinalNumberORM
+    PartialUuidORM,
+    PartialStringControlType,
+    string,
+    FinalUuidORM
   >
   attributes: TAttributes
   relationships?: Record<string, PartialRelationship>
@@ -141,16 +141,22 @@ export type FinalAttributeRecord = Record<
       FinalStringORM
     >
   | FinalAttribute<PartialTextORM, PartialTextControlType, string, FinalTextORM>
+  | FinalAttribute<
+      PartialUuidORM,
+      PartialStringControlType,
+      string,
+      FinalUuidORM
+    >
 >
 
 export interface FinalSchema {
   name: string
   namespace?: string
   id: FinalAttribute<
-    PartialNumberORM,
-    PartialNumberControlType,
-    number,
-    FinalNumberORM
+    PartialUuidORM,
+    PartialStringControlType,
+    string,
+    FinalUuidORM
   >
   attributes: FinalAttributeRecord
   relationships?: Record<string, FinalRelationship>
@@ -165,9 +171,9 @@ export type PartialSchemaWithPrimaryAttribute = Omit<
   "id"
 > & {
   id: PartialAttribute<
-    PartialNumberORM,
-    PartialNumberControlType,
-    number,
-    FinalNumberORM
+    PartialUuidORM,
+    PartialStringControlType,
+    string,
+    FinalUuidORM
   >
 }

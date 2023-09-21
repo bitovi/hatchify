@@ -1,15 +1,16 @@
 import { finalizeRelationships } from "./finalizeRelationships"
 import { getDefaultPrimaryAttribute } from "./getDefaultPrimaryAttribute"
 import type { SemiFinalSchema } from "./types"
-import { integer, string } from "../dataTypes"
+import { integer, string, uuid } from "../dataTypes"
 import { belongsTo, hasMany, hasOne } from "../relationships"
+import { uuidv4 } from "../util/uuidv4"
 
 describe("finalizeRelationships", () => {
   it("adds missing attributes and populates nulls - hasMany", () => {
     const schemas: Record<string, SemiFinalSchema> = {
       Todo: {
         name: "Todo",
-        id: integer({ required: true, autoIncrement: true }).finalize(),
+        id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           importance: integer({ min: 0 }).finalize(),
         },
@@ -19,7 +20,7 @@ describe("finalizeRelationships", () => {
       },
       User: {
         name: "User",
-        id: integer({ required: true, autoIncrement: true }).finalize(),
+        id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           name: string().finalize(),
         },
@@ -35,7 +36,7 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: integer().finalize(),
+            userId: uuid().finalize(),
           },
           relationships: {
             ...schemas.Todo.relationships,
@@ -65,7 +66,7 @@ describe("finalizeRelationships", () => {
     const schemas: Record<string, SemiFinalSchema> = {
       Todo: {
         name: "Todo",
-        id: integer({ required: true, autoIncrement: true }).finalize(),
+        id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           importance: integer({ min: 0 }).finalize(),
         },
@@ -75,7 +76,7 @@ describe("finalizeRelationships", () => {
       },
       User: {
         name: "User",
-        id: integer({ required: true, autoIncrement: true }).finalize(),
+        id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           name: string().finalize(),
         },
@@ -91,7 +92,7 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: integer().finalize(),
+            userId: uuid().finalize(),
           },
           relationships: {
             ...schemas.Todo.relationships,
@@ -121,7 +122,7 @@ describe("finalizeRelationships", () => {
     const schemas: Record<string, SemiFinalSchema> = {
       Todo: {
         name: "Todo",
-        id: integer({ required: true, autoIncrement: true }).finalize(),
+        id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           importance: integer({ min: 0 }).finalize(),
         },
@@ -131,7 +132,7 @@ describe("finalizeRelationships", () => {
       },
       User: {
         name: "User",
-        id: integer({ required: true, autoIncrement: true }).finalize(),
+        id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           name: string().finalize(),
         },
@@ -189,7 +190,7 @@ describe("finalizeRelationships", () => {
     const schemas: Record<string, SemiFinalSchema> = {
       Todo: {
         name: "Todo",
-        id: integer({ required: true, autoIncrement: true }).finalize(),
+        id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           importance: integer({ min: 0 }).finalize(),
         },
@@ -200,7 +201,7 @@ describe("finalizeRelationships", () => {
       },
       User: {
         name: "User",
-        id: integer({ required: true, autoIncrement: true }).finalize(),
+        id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           name: string().finalize(),
         },
@@ -216,8 +217,8 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: integer().finalize(),
-            user2Id: integer().finalize(),
+            userId: uuid().finalize(),
+            user2Id: uuid().finalize(),
           },
           relationships: {
             ...schemas.Todo.relationships,

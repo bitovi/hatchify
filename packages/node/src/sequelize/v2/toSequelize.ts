@@ -32,7 +32,12 @@ export function toSequelize(
             ...acc,
             [attributeName]: {
               ...omit(sequelize, ["defaultValue", "type", "typeArgs"]),
-              type: DataTypes[sequelize.type](...(sequelize.typeArgs ?? [])),
+              type:
+                "typeArgs" in sequelize
+                  ? DataTypes[sequelize.type](
+                      ...((sequelize.typeArgs as number[] | string[]) ?? []),
+                    )
+                  : DataTypes[sequelize.type],
               ...(sequelize.defaultValue === null
                 ? {}
                 : { defaultValue: sequelize.defaultValue }),
