@@ -70,10 +70,7 @@ export type HatchifyApp = {
   }
 }
 
-export function hatchifyReact(
-  legacySchemas: Record<string, LegacySchema>,
-  dataSource: Source,
-): HatchifyApp {
+export function hatchifyReact(dataSource: Source): HatchifyApp {
   const { completeSchemaMap } = dataSource
 
   const reactRest = hatchifyReactRest(completeSchemaMap, dataSource)
