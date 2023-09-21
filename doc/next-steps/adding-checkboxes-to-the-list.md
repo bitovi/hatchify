@@ -20,38 +20,31 @@ Update `/src/App.tsx` to the following:
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { Todo } from "../schemas/Todo"
 import { User } from "../schemas/User"
-import { useState } from "react"                                              // 👀
+import { useState } from "react" // 👀
 
 export const hatchedReact = hatchifyReact(
   { Todo, User },
   createJsonapiClient("http://localhost:3000/api", {
-    Todo: { endpoint: "todos" },
-    User: { endpoint: "users" },
+    Todo,
+    User,
   }),
 )
 
 const TodoList = hatchedReact.components.Todo.Collection
 
 const App: React.FC = () => {
-  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({ // 👀
-    all: false,                      
+  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
+    // 👀
+    all: false,
     ids: [],
   })
 
   return (
     <MuiProvider>
-                                                                              {/*👀*/}
-      <button
-        onClick={() => alert(`all: ${selected.all}, ids: ${selected.ids}`)} 
-      >                                                                
-        action
-      </button>
-                                                                              {/*👀*/}                       
-      <TodoList
-        defaultSelected={selected}
-        onSelectedChange={(selected) => setSelected(selected)}
-      >                                                  
-      </TodoList>
+      {/*👀*/}
+      <button onClick={() => alert(`all: ${selected.all}, ids: ${selected.ids}`)}>action</button>
+      {/*👀*/}
+      <TodoList defaultSelected={selected} onSelectedChange={(selected) => setSelected(selected)}></TodoList>
     </MuiProvider>
   )
 }
@@ -63,41 +56,33 @@ export default App
 
 - We will use the `useState` hook to store what checkboxes are checked. We need to import `useState` as follows:
 
-   ```tsx
-   import { useState } from "react"                                              // 👀
-   ```
+  ```tsx
+  import { useState } from "react" // 👀
+  ```
 
-- We use `useState` to store what records have been selected. 
+- We use `useState` to store what records have been selected.
 
-   ```tsx
-   const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({ // 👀
-    all: false,                      
+  ```tsx
+  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
+    // 👀
+    all: false,
     ids: [],
-   })
-   ```
+  })
+  ```
 
-   Note, that `selected.all` will indicate if the header is checked and `selected.ids` will indicate which
-   records are selected.
+  Note, that `selected.all` will indicate if the header is checked and `selected.ids` will indicate which
+  records are selected.
 
 - We create a button to tell the user what records have been selected and if the header has been checked.
 
-   ```tsx
-   <button
-        onClick={() => alert(`all: ${selected.all}, ids: ${selected.ids}`)} 
-      >
-      action
-   </button>
-   ```
+  ```tsx
+  <button onClick={() => alert(`all: ${selected.all}, ids: ${selected.ids}`)}>action</button>
+  ```
 
 - Finally, we specify what should be selected and listen to selected changes and update our `selected` state:
 
-   ```tsx
-   <TodoList
-        defaultSelected={selected}
-        onSelectedChange={(selected) => setSelected(selected)}
-      >                                                  
-   </TodoList>
-   ```
+  ```tsx
+  <TodoList defaultSelected={selected} onSelectedChange={(selected) => setSelected(selected)}></TodoList>
+  ```
 
-   Note, setting `onSelectedChange` is what tells `TodoList` to show the checkbox column. 
-
+  Note, setting `onSelectedChange` is what tells `TodoList` to show the checkbox column.

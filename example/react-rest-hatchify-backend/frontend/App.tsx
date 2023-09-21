@@ -8,8 +8,8 @@ import { User } from "../schemas/user"
 export const hatchedReactRest = hatchifyReactRest(
   { Todo, User },
   createJsonapiClient("http://localhost:3000/api", {
-    Todo: { endpoint: "todos" },
-    User: { endpoint: "users" },
+    Todo: { ...Todo, endpoint: "todos" },
+    User: { ...User, endpoint: "users" },
   }),
 )
 

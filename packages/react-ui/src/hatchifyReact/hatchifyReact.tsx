@@ -1,3 +1,4 @@
+import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type {
   Fields,
@@ -69,7 +70,10 @@ export type HatchifyApp = {
   }
 }
 
-export function hatchifyReact(dataSource: Source): HatchifyApp {
+export function hatchifyReact(
+  legacySchemas: Record<string, LegacySchema>,
+  dataSource: Source,
+): HatchifyApp {
   const { completeSchemaMap } = dataSource
 
   const reactRest = hatchifyReactRest(completeSchemaMap, dataSource)
