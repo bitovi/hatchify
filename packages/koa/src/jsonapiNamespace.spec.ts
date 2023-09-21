@@ -28,7 +28,7 @@ describe("JSON:API Tests", () => {
   }
 
   function serialize(data) {
-    const serializer = new Serializer("TestSchema.Model", {
+    const serializer = new Serializer("TestSchema_Model", {
       keyForAttribute: "snake_case",
       attributes: Object.keys(data),
       pluralizeType: false,
@@ -55,11 +55,11 @@ describe("JSON:API Tests", () => {
     //JK will separate cases into different it() tests
     const r1 = await POST(
       server,
-      "/api/testschema.models",
+      "/api/testschema_models",
       serialize({
         first_name: "firstName",
         last_name: "lastName",
-        type: "TestSchema.Model",
+        type: "TestSchema_Model",
       }),
       "application/vnd.api+json",
     )
@@ -74,7 +74,7 @@ describe("JSON:API Tests", () => {
       serialize({
         first_name: "firstName2",
         last_name: "lastName2",
-        type: "TestSchema.Model",
+        type: "TestSchema_Model",
       }),
       "application/vnd.api+json",
     )
@@ -98,11 +98,11 @@ describe("JSON:API Tests", () => {
   it("should be able to omit namespace when referring to fields that belongs to the same namespace", async () => {
     const r1 = await POST(
       server,
-      "/api/testschema.models",
+      "/api/testschema_models",
       serialize({
         first_name: "firstName",
         last_name: "lastName",
-        type: "TestSchema.Model",
+        type: "TestSchema_Model",
       }),
       "application/vnd.api+json",
     )
