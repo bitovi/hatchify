@@ -178,8 +178,8 @@ describe("finalizeRelationships", () => {
           name: "TodoUser",
           id: getDefaultPrimaryAttribute().finalize(),
           attributes: {
-            userId: integer({ required: true }).finalize(),
-            todoId: integer({ required: true }).finalize(),
+            userId: uuid({ required: true }).finalize(),
+            todoId: uuid({ required: true }).finalize(),
           },
         },
       }),
