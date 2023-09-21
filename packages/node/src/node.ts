@@ -347,9 +347,9 @@ export class Hatchify {
     const isPathWithNameSpaceModelIdResult = isPathWithNameSpaceModelId(path)
     if (isPathWithNameSpaceModelIdResult) {
       let modelName = isPathWithNameSpaceModelIdResult.params.model
-      if (!modelName.includes("__")) {
+      if (!modelName.includes("_")) {
         modelName =
-          isPathWithNameSpaceModelIdResult.params.namespace + "__" + modelName
+          isPathWithNameSpaceModelIdResult.params.namespace + "_" + modelName
       }
       const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
 
@@ -394,9 +394,9 @@ export class Hatchify {
     const isPathWithNamespaceModelResult = isPathWithNamespaceModel(path)
     if (isPathWithNamespaceModelResult) {
       let modelName = isPathWithNamespaceModelResult.params.model
-      if (!modelName.includes("__")) {
+      if (!modelName.includes("_")) {
         modelName =
-          isPathWithNamespaceModelResult.params.namespace + "__" + modelName
+          isPathWithNamespaceModelResult.params.namespace + "_" + modelName
       }
       const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
 
