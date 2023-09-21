@@ -65,7 +65,7 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   )
   createStore(storeKeys)
 
-  const newSchemas = Object.values(schemas).reduce((acc, schema) => {
+  const formattedSchemas = Object.values(schemas).reduce((acc, schema) => {
     acc[schema.namespace ? `${schema.namespace}.${schema.name}` : schema.name] =
       "displayAttribute" in schema ? schema : transformSchema(schema)
     return acc
@@ -79,25 +79,38 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
     const methods = {
       // promises
       createOne: (data) =>
-        createOne(dataSource, newSchemas, schemaName, {
+        createOne(dataSource, formattedSchemas, schemaName, {
           ...data,
           __schema: schemaName,
         }),
-      deleteOne: (id) => deleteOne(dataSource, newSchemas, schemaName, id),
-      findAll: (query) => findAll(dataSource, newSchemas, schemaName, query),
-      findOne: (query) => findOne(dataSource, newSchemas, schemaName, query),
+      deleteOne: (id) =>
+        deleteOne(dataSource, formattedSchemas, schemaName, id),
+      findAll: (query) =>
+        findAll(dataSource, formattedSchemas, schemaName, query),
+      findOne: (query) =>
+        findOne(dataSource, formattedSchemas, schemaName, query),
       updateOne: (data) =>
-        updateOne(dataSource, newSchemas, schemaName, {
+        updateOne(dataSource, formattedSchemas, schemaName, {
           ...data,
           __schema: schemaName,
         }),
       // hooks
-      useCreateOne: () => useCreateOne(dataSource, newSchemas, schemaName),
-      useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schemaName),
+      useCreateOne: () =>
+        useCreateOne(dataSource, formattedSchemas, schemaName),
+      useDeleteOne: () =>
+        useDeleteOne(dataSource, formattedSchemas, schemaName),
       useAll: (query, baseFilter) =>
-        useAll(dataSource, newSchemas, schemaName, query ?? {}, baseFilter),
-      useOne: (query) => useOne(dataSource, newSchemas, schemaName, query),
-      useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schemaName),
+        useAll(
+          dataSource,
+          formattedSchemas,
+          schemaName,
+          query ?? {},
+          baseFilter,
+        ),
+      useOne: (query) =>
+        useOne(dataSource, formattedSchemas, schemaName, query),
+      useUpdateOne: () =>
+        useUpdateOne(dataSource, formattedSchemas, schemaName),
     }
 
     if (schema.namespace) {
