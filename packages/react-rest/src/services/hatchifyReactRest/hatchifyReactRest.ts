@@ -75,7 +75,7 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   const models = Object.values(schemas).reduce((acc, schema) => {
     const schemaName = schemaNameWithNamespace(schema)
 
-    const methods = {
+    acc[schemaName] = {
       // promises
       createOne: (data) =>
         createOne(dataSource, formattedSchemas, schemaName, {
@@ -110,13 +110,6 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
         useOne(dataSource, formattedSchemas, schemaName, query),
       useUpdateOne: () =>
         useUpdateOne(dataSource, formattedSchemas, schemaName),
-    }
-
-    if (schema.namespace) {
-      const key = `${schema.namespace}_${schema.name}`
-      acc[key] = methods
-    } else {
-      acc[schema.name as SchemaKeys<TSchemaRecord>] = methods
     }
 
     return acc
