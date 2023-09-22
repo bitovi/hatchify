@@ -133,7 +133,7 @@ describe("JSON:API Tests", () => {
     expect(namespaceless.status).toBe(200)
     const hasNamespace = await GET(
       server,
-      "/api/test-schema/models?fields[TestSchema.Model]=first_name",
+      "/api/test-schema/models?fields[TestSchema_Model]=first_name",
     )
     expect(hasNamespace).toBeTruthy()
     expect(hasNamespace.status).toBe(200)

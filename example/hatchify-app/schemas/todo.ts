@@ -3,10 +3,14 @@
 export const Todo = {
   name: "Todo",
   attributes: {
-    name: {type: "STRING", allowNull: true },
-    due_date: {type: "DATE", allowNull: true },
-    importance: {type: "INTEGER", allowNull: true },
-    status: { type: "ENUM", allowNull: true, values: ["Pending", "Failed", "Completed"] }
+    name: { type: "STRING", allowNull: true },
+    due_date: { type: "DATE", allowNull: true },
+    importance: { type: "INTEGER", allowNull: true },
+    status: {
+      type: "ENUM",
+      allowNull: true,
+      values: ["Pending", "Failed", "Completed"],
+    },
   },
   belongsTo: [{ target: "User", options: { as: "user" } }],
 }

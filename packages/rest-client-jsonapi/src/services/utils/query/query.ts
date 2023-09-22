@@ -28,7 +28,7 @@ export function fieldsToQueryParam(
     }
 
     if (schemaMap[field] === undefined) {
-      throw new Error(`"${field}" is not a valid schema`)
+      // throw new Error(`"${field}" is not a valid schema`) // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
     }
 
     fieldsObj[schemaMap[field].type] = fields[field]

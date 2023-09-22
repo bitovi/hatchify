@@ -17,7 +17,10 @@ import type {
   OverwriteColumnProps,
 } from "../components/HatchifyColumn"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import { transformSchema } from "@hatchifyjs/rest-client"
+import {
+  schemaNameWithNamespace,
+  transformSchema,
+} from "@hatchifyjs/rest-client"
 import { HatchifyCollection } from "../components/HatchifyCollection"
 import { HatchifyColumn } from "../components/HatchifyColumn"
 import { HatchifyEmpty } from "../components/HatchifyEmpty"
@@ -77,16 +80,18 @@ export function hatchifyReact(
   const reactRest = hatchifyReactRest(legacySchemas, dataSource)
 
   const schemas = Object.values(legacySchemas).reduce((acc, schema) => {
-    acc[schema.name] = transformSchema(schema)
+    acc[schemaNameWithNamespace(schema)] = transformSchema(schema)
     return acc
   }, {} as Schemas)
 
   const components = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] = {
+    const schemaName = schemaNameWithNamespace(schema)
+
+    acc[schemaName] = {
       Collection: (props) => (
         <HatchifyCollection
           allSchemas={schemas}
-          schemaName={schema.name}
+          schemaName={schemaName}
           restClient={reactRest}
           {...props}
         />
@@ -95,7 +100,7 @@ export function hatchifyReact(
         // todo fix ts!!!
         <HatchifyColumn
           allSchemas={schemas}
-          schemaName={schema.name}
+          schemaName={schemaName}
           {...props}
         />
       ),
@@ -106,7 +111,9 @@ export function hatchifyReact(
   }, {} as HatchifyApp["components"])
 
   const state = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] = {
+    const schemaName = schemaNameWithNamespace(schema)
+
+    acc[schemaName] = {
       useCollectionState: ({
         defaultSelected,
         onSelectedChange,
