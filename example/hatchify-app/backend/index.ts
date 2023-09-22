@@ -2,25 +2,15 @@
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import { AdminUser } from "../schemas/adminUser"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
 
-import dotenv from "dotenv" // 👀
-dotenv.config() // 👀
-
 const app = new Koa()
-
-const hatchedKoa = hatchifyKoa([AdminUser, Todo, User], {
+const hatchedKoa = hatchifyKoa([Todo, User], {
   prefix: "/api",
   database: {
-    dialect: "postgres", // 👀
-    host: process.env.PG_DB_HOST, // 👀
-    port: Number(process.env.PG_DB_PORT), // 👀
-    username: process.env.PG_DB_USERNAME, // 👀
-    password: process.env.PG_DB_PASSWORD, // 👀
-    database: process.env.PG_DB_NAME, // 👀
-    logging: console.log,
+    dialect: "sqlite",
+    storage: "example.sqlite",
   },
 })
 

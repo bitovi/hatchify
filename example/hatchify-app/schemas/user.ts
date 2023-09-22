@@ -5,5 +5,5 @@ export const User = {
   attributes: {
     name: "STRING",
   },
-  hasMany: [{ target: "Todo", options: { as: "todos", foreignKey: "userId" } }],
+  hasMany: [{ target: "Todo", options: { as: "todos" } }],
 }

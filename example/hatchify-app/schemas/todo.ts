@@ -4,7 +4,7 @@ export const Todo = {
   name: "Todo",
   attributes: {
     name: { type: "STRING", allowNull: true },
-    due_date: { type: "DATE", allowNull: true }, // camelCase, not snake_case
+    due_date: { type: "DATE", allowNull: true },
     importance: { type: "INTEGER", allowNull: true },
     status: {
       type: "ENUM",
@@ -12,14 +12,5 @@ export const Todo = {
       values: ["Pending", "Failed", "Completed"],
     },
   },
-  belongsTo: [
-    {
-      target: "Admin_User",
-      options: {
-        as: "adminUser",
-        foreignKey: "adminUserId",
-      },
-    },
-    { target: "User", options: { as: "user", foreignKey: "userId" } },
-  ],
+  belongsTo: [{ target: "User", options: { as: "user" } }],
 }

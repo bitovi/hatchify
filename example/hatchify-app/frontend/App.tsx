@@ -5,35 +5,22 @@ import {
   MuiProvider,
   createJsonapiClient,
 } from "@hatchifyjs/react"
-import { AdminUser } from "../schemas/adminUser"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
 
 export const hatchedReact = hatchifyReact(
-  { AdminUser, Todo, User },
+  { Todo, User },
   createJsonapiClient("http://localhost:3000/api", {
     Todo: { endpoint: "todos" },
     User: { endpoint: "users" },
-    "Admin.User": { endpoint: "admin/users" }, //
   }),
 )
 
-// const TodoList = hatchedReact.components.Todo.Collection
-// const TodoColumn = hatchedReact.components.Todo.Column
-// const TodoEmptyList = hatchedReact.components.Todo.Empty
+const TodoList = hatchedReact.components.Todo.Collection
+const TodoColumn = hatchedReact.components.Todo.Column
+const TodoEmptyList = hatchedReact.components.Todo.Empty
 
 const App: React.FC = () => {
-  // const [todos] = hatchedReact.model.Todo.useAll({
-  //   include: ["user", "adminUser"],
-  // })
-  // console.log("📋", todos)
-
-  const [adminUsers] = hatchedReact.model["Admin.User"].useAll({
-    // filter: [{ field: "name", value: "John Admin", operator: "$eq" }],
-    include: ["todos"], // 👈 this is currently getting a 500 server error
-  })
-  console.log("👷", adminUsers)
-
   const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
     all: false,
     ids: [],
@@ -51,7 +38,7 @@ const App: React.FC = () => {
       <button onClick={onActionClick} style={{ margin: 10 }}>
         action
       </button>
-      {/* <TodoList
+      <TodoList
         defaultSelected={selected}
         onSelectedChange={(selected) => setSelected(selected)}
       >
@@ -71,7 +58,7 @@ const App: React.FC = () => {
             )
           }}
         />
-      </TodoList> */}
+      </TodoList>
     </MuiProvider>
   )
 }
