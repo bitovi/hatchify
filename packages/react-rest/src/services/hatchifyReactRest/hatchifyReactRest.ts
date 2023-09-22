@@ -72,7 +72,7 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
     return acc
   }, {} as Schemas)
 
-  const models = Object.values(schemas).reduce((acc, schema) => {
+  const functions = Object.values(schemas).reduce((acc, schema) => {
     const schemaName = schemaNameWithNamespace(schema)
 
     acc[
@@ -117,5 +117,5 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
     return acc
   }, {} as ReactRest<TSchemaRecord>)
 
-  return models
+  return functions
 }

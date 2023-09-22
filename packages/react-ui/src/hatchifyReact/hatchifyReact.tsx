@@ -84,7 +84,7 @@ export function hatchifyReact(
     return acc
   }, {} as Schemas)
 
-  const models = Object.values(schemas).reduce((acc, schema) => {
+  const components = Object.values(schemas).reduce((acc, schema) => {
     const schemaName = schemaNameWithNamespace(schema)
 
     acc[schemaName] = {
@@ -137,7 +137,7 @@ export function hatchifyReact(
   }, {} as HatchifyApp["state"])
 
   return {
-    components: models,
+    components,
     model: reactRest,
     state,
   }
