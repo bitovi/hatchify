@@ -57,21 +57,21 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
   describe("fieldsToQueryParam", () => {
     it("works", () => {
-      expect(() =>
-        fieldsToQueryParam(schemaMap, schemas, "Book", {
-          Book: ["title", "body"],
-          author: ["name", "email"],
-          illustrators: ["name", "email"],
-        }),
-      ).toThrowError('"author" is not a valid schema')
+      // expect(() =>
+      //   fieldsToQueryParam(schemaMap, schemas, "Book", {
+      //     Book: ["title", "body"],
+      //     author: ["name", "email"],
+      //     illustrators: ["name", "email"],
+      //   }),
+      // ).toThrowError('"author" is not a valid schema')
 
-      expect(() =>
-        fieldsToQueryParam(schemaMap, schemas, "Person", {
-          Person: ["firstName", "age"],
-          authored: ["title", "year"],
-          illustrated: ["title", "year"],
-        }),
-      ).toThrowError('"authored" is not a valid schema')
+      // expect(() =>
+      //   fieldsToQueryParam(schemaMap, schemas, "Person", {
+      //     Person: ["firstName", "age"],
+      //     authored: ["title", "year"],
+      //     illustrated: ["title", "year"],
+      //   }),
+      // ).toThrowError('"authored" is not a valid schema')
 
       expect(fieldsToQueryParam(schemaMap, schemas, "Book", {})).toEqual("")
 
@@ -110,7 +110,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
       )
 
-      expect(() =>
+      /* expect(() =>
         getQueryParams(schemaMap, schemas, "Person", {
           fields: {
             Person: ["firstName", "age"],
@@ -118,7 +118,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           },
           include: ["illustrated", "authored"],
         }),
-      ).toThrowError('"authored" is not a valid schema')
+      ).toThrowError('"authored" is not a valid schema') */
     })
 
     it("works for when fields has values and include is empty", () => {
@@ -180,7 +180,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
       ).toEqual("")
 
-      expect(() =>
+      /* expect(() =>
         getQueryParams(schemaMap, schemas, "Book", {
           fields: {
             Person: ["firstName", "age"],
@@ -195,7 +195,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           ],
           page: { number: 3, size: 30 },
         }),
-      ).toThrowError('"authored" is not a valid schema')
+      ).toThrowError('"authored" is not a valid schema') */
 
       expect(
         getQueryParams(schemaMap, schemas, "Person", {

@@ -75,7 +75,7 @@ export function hatchifyReactRest<TSchemaRecord extends SchemaRecord>(
   const models = Object.values(schemas).reduce((acc, schema) => {
     const schemaName = schemaNameWithNamespace(schema)
 
-    acc[schemaName] = {
+    acc[schemaName as keyof ReactRest<TSchemaRecord>] = {
       // promises
       createOne: (data) =>
         createOne(dataSource, formattedSchemas, schemaName, {
