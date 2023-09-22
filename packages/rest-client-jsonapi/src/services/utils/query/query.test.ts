@@ -57,21 +57,23 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
   describe("fieldsToQueryParam", () => {
     it("works", () => {
-      // expect(() =>
-      //   fieldsToQueryParam(schemaMap, schemas, "Book", {
-      //     Book: ["title", "body"],
-      //     author: ["name", "email"],
-      //     illustrators: ["name", "email"],
-      //   }),
-      // ).toThrowError('"author" is not a valid schema')
+      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
+      /* expect(() =>
+        fieldsToQueryParam(schemaMap, schemas, "Book", {
+          Book: ["title", "body"],
+          author: ["name", "email"],
+          illustrators: ["name", "email"],
+        }),
+      ).toThrowError('"author" is not a valid schema') */
 
-      // expect(() =>
-      //   fieldsToQueryParam(schemaMap, schemas, "Person", {
-      //     Person: ["firstName", "age"],
-      //     authored: ["title", "year"],
-      //     illustrated: ["title", "year"],
-      //   }),
-      // ).toThrowError('"authored" is not a valid schema')
+      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
+      /* expect(() =>
+        fieldsToQueryParam(schemaMap, schemas, "Person", {
+          Person: ["firstName", "age"],
+          authored: ["title", "year"],
+          illustrated: ["title", "year"],
+        }),
+      ).toThrowError('"authored" is not a valid schema') */
 
       expect(fieldsToQueryParam(schemaMap, schemas, "Book", {})).toEqual("")
 
@@ -110,6 +112,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
       )
 
+      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
       /* expect(() =>
         getQueryParams(schemaMap, schemas, "Person", {
           fields: {
@@ -180,6 +183,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
       ).toEqual("")
 
+      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
       /* expect(() =>
         getQueryParams(schemaMap, schemas, "Book", {
           fields: {
