@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/node",
-  "version": "0.2.6",
+  "version": "0.2.11",
   "description": "Fullstack CRUD Application Solution",
   "main": "./dist/exports.js",
   "types": "./dist/exports.d.ts",
@@ -30,8 +30,8 @@
   "dependencies": {
     "@bitovi/querystring-parser": "^0.7.7",
     "@bitovi/sequelize-querystring-parser": "^0.2.7",
-    "@hatchifyjs/hatchify-core": "^0.1.0",
-    "@hatchifyjs/sequelize-create-with-associations": "^0.6.2",
+    "@hatchifyjs/hatchify-core": "^0.1.2",
+    "@hatchifyjs/sequelize-create-with-associations": "^0.6.3",
     "@types/lodash": "^4.14.196",
     "co-body": "^6.1.0",
     "json-api-serializer": "^2.6.6",
@@ -94,6 +94,10 @@
                 "caseInsensitive": true
               }
             }
+          ],
+          "one-var": [
+            "error",
+            "never"
           ],
           "prettier/prettier": [
             "error",

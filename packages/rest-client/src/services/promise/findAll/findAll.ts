@@ -7,6 +7,7 @@ import type {
   RecordType,
   FinalSchemas,
   PartialSchemas,
+  Filters,
 } from "../../types"
 import {
   SchemaNameNotStringError,
@@ -26,6 +27,7 @@ export const findAll = async <
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryList,
+  baseFilter?: Filters,
 ): Promise<
   [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, RequestMetaData]
 > => {
@@ -37,6 +39,7 @@ export const findAll = async <
     allSchemas,
     schemaName,
     query,
+    baseFilter,
   )
 
   return [

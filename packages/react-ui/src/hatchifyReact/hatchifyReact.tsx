@@ -2,8 +2,10 @@ import { assembler } from "@hatchifyjs/hatchify-core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   Fields,
+  Filters,
   Include,
   RestClient,
+  PaginationObject,
   GetSchemaNames,
   PartialSchemas,
 } from "@hatchifyjs/rest-client"
@@ -20,6 +22,7 @@ import { HatchifyCollection } from "../components/HatchifyCollection"
 import { HatchifyColumn } from "../components/HatchifyColumn"
 import { HatchifyEmpty } from "../components/HatchifyEmpty"
 import useCollectionState from "../hooks/useCollectionState"
+import type { SortObject } from "../presentation"
 
 type HatchifyCollectionProps<
   TSchemas extends PartialSchemas,
@@ -64,6 +67,9 @@ export type HatchifyApp<TSchemas extends PartialSchemas> = {
         onSelectedChange,
         fields,
         include,
+        defaultPage,
+        defaultSort,
+        baseFilter,
       }?: {
         defaultSelected?: HatchifyCollectionProps<
           TSchemas,
@@ -75,6 +81,9 @@ export type HatchifyApp<TSchemas extends PartialSchemas> = {
         >["onSelectedChange"]
         fields?: Fields
         include?: Include
+        defaultPage?: PaginationObject
+        defaultSort?: SortObject
+        baseFilter?: Filters
       }) => CollectionState<TSchemas, SchemaName>
     }
   }
@@ -125,6 +134,9 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
           onSelectedChange,
           fields,
           include,
+          defaultPage,
+          defaultSort,
+          baseFilter,
         } = {}) =>
           useCollectionState<TSchemas, GetSchemaNames<TSchemas>>(
             finalSchemas,
@@ -136,6 +148,9 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
               onSelectedChange,
               fields,
               include,
+              defaultPage,
+              defaultSort,
+              baseFilter,
             },
           ),
       }

@@ -131,19 +131,25 @@ export function registerSchema(
   associations: Record<string, IAssociation>,
   primaryKey: string,
 ): void {
-  const relationships: { [key: string]: any } = {}
-  const associationsKeys = Object.keys(associations)
-  associationsKeys.forEach((associationsKey) => {
-    const association = associations[associationsKey]
-    relationships[associationsKey] = {
-      type: association.model,
-      deserialize: (data: any) => (data ? { id: data.id } : data),
-    }
-  })
   serializer.register(model.name, {
     id: primaryKey,
     whitelist: Object.keys(model.attributes),
-    relationships,
+    relationships: Object.entries(associations).reduce(
+      (acc, [associationName, { model }]) => ({
+        ...acc,
+        [associationName]: {
+          type: model,
+          deserialize: (data) =>
+            data
+              ? {
+                  // Numeric IDs are passed as strings in JSON:API
+                  id: isNaN(data.id) ? data.id : +data.id,
+                }
+              : data,
+        },
+      }),
+      {},
+    ),
     topLevelMeta: (_data, { unpaginatedCount }) =>
       unpaginatedCount != null
         ? {
@@ -160,10 +166,6 @@ const serializeWithoutUnsolicitedVirtuals = (
   attributes,
   virtualsForModel,
 ) => {
-  const blackListArray = attributes
-    ? virtualsForModel.filter((virtual) => !attributes.includes(virtual))
-    : virtualsForModel
-
   return hatchify.serializer.serialize(
     name,
     array,
@@ -172,7 +174,9 @@ const serializeWithoutUnsolicitedVirtuals = (
     undefined,
     {
       [name]: {
-        blacklist: blackListArray,
+        blacklist: attributes
+          ? virtualsForModel.filter((virtual) => !attributes.includes(virtual))
+          : virtualsForModel,
       },
     },
   )

@@ -22,6 +22,7 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: undefined,
+          regex: undefined,
         },
         finalize: expect.any(Function),
       })
@@ -44,6 +45,7 @@ describe("text", () => {
       // setORMPropertyValue
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
@@ -62,6 +64,7 @@ describe("text", () => {
             type: "TEXT",
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -70,6 +73,8 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: false,
+          default: null,
+          regex: /(.*?)/,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -97,6 +102,7 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: undefined,
+          regex: undefined,
         },
         finalize: expect.any(Function),
       })
@@ -123,6 +129,9 @@ describe("text", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
@@ -145,6 +154,7 @@ describe("text", () => {
             type: "TEXT",
             allowNull: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -153,6 +163,8 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: false,
+          default: null,
+          regex: /(.*?)/,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -180,6 +192,7 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: true,
+          regex: undefined,
         },
         finalize: expect.any(Function),
       })
@@ -208,6 +221,9 @@ describe("text", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
@@ -230,6 +246,7 @@ describe("text", () => {
             type: "TEXT",
             allowNull: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
@@ -238,6 +255,8 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: true,
+          default: null,
+          regex: /(.*?)/,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),

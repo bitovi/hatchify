@@ -18,6 +18,7 @@ export type {
   MetaError,
   NumberAsString,
   PartialSchemas,
+  PaginationObject,
   QueryList,
   QueryOne,
   Record,

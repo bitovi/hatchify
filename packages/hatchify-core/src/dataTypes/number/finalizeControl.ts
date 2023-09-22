@@ -10,5 +10,6 @@ export function finalizeControl(
     max: props.max ?? Infinity,
     primary: !!props.primary,
     step: props.step || 0,
+    default: props.default ?? null,
   }
 }

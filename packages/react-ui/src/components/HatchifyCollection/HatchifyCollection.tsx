@@ -1,10 +1,12 @@
 import type {
+  Filters,
+  PaginationObject,
   FinalSchemas,
   GetSchemaNames,
   PartialSchemas,
 } from "@hatchifyjs/rest-client"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
-import type { HatchifyCollectionSelected } from "../../presentation"
+import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
 import { useHatchifyPresentation } from ".."
 import useCollectionState from "../../hooks/useCollectionState"
 
@@ -19,6 +21,9 @@ export interface HatchifyCollectionProps<
   children?: React.ReactNode | null
   defaultSelected?: HatchifyCollectionSelected["selected"]
   onSelectedChange?: HatchifyCollectionSelected["setSelected"]
+  defaultPage?: PaginationObject
+  defaultSort?: SortObject
+  baseFilter?: Filters
 }
 
 function HatchifyCollection<
@@ -32,6 +37,9 @@ function HatchifyCollection<
   children,
   defaultSelected,
   onSelectedChange,
+  defaultPage,
+  defaultSort,
+  baseFilter,
 }: HatchifyCollectionProps<TSchemas, TSchemaName>): JSX.Element {
   const { Collection } = useHatchifyPresentation()
   // todo: relationships not implemented in v2 yet
@@ -46,6 +54,9 @@ function HatchifyCollection<
       defaultSelected,
       onSelectedChange,
       // include: defaultInclude,
+      defaultPage,
+      defaultSort,
+      baseFilter,
     },
   )
 

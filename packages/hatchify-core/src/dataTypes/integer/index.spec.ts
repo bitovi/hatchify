@@ -135,6 +135,7 @@ describe("integer", () => {
       expect(setORMPropertyValue(1)).toBe(1)
 
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -178,6 +179,7 @@ describe("integer", () => {
             allowNull: true,
             autoIncrement: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -186,6 +188,7 @@ describe("integer", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 1,
         },
         setClientPropertyValue: expect.any(Function),
@@ -342,6 +345,9 @@ describe("integer", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -389,6 +395,7 @@ describe("integer", () => {
             allowNull: false,
             autoIncrement: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -397,6 +404,7 @@ describe("integer", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 1,
         },
         setClientPropertyValue: expect.any(Function),
@@ -542,6 +550,7 @@ describe("integer", () => {
       expect(setORMPropertyValue(0)).toBe(0)
       expect(setORMPropertyValue(1)).toBe(1)
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -585,6 +594,7 @@ describe("integer", () => {
             allowNull: true,
             autoIncrement: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -593,6 +603,7 @@ describe("integer", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 1,
         },
         setClientPropertyValue: expect.any(Function),
@@ -748,6 +759,9 @@ describe("integer", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -795,6 +809,7 @@ describe("integer", () => {
             allowNull: false,
             autoIncrement: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
@@ -803,6 +818,7 @@ describe("integer", () => {
           min: -Infinity,
           max: Infinity,
           primary: true,
+          default: null,
           step: 1,
         },
         setClientPropertyValue: expect.any(Function),

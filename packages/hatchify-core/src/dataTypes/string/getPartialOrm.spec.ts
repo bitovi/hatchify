@@ -25,6 +25,22 @@ describe("getPartialOrm", () => {
     expect(getPartialOrm({ primary: false }).sequelize.primaryKey).toBe(false)
   })
 
+  it("handles default", () => {
+    expect(
+      getPartialOrm({ default: undefined }).sequelize.defaultValue,
+    ).toBeUndefined()
+    expect(getPartialOrm({ default: null }).sequelize.defaultValue).toBeNull()
+    expect(getPartialOrm({ default: "test" }).sequelize.defaultValue).toBe(
+      "test",
+    )
+
+    const func = () => "test"
+
+    expect(getPartialOrm({ default: func }).sequelize.defaultValue).toEqual(
+      func,
+    )
+  })
+
   it("handles typeArgs", () => {
     expect(getPartialOrm().sequelize.typeArgs).toEqual([])
     expect(getPartialOrm({}).sequelize.typeArgs).toEqual([])

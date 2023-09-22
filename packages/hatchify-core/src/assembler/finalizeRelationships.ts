@@ -2,6 +2,8 @@ import type { FinalSchema, SemiFinalSchema } from "./types"
 import { finalize as finalizeBelongsTo } from "../relationships/belongsTo/finalize"
 import { finalize as finalizeHasMany } from "../relationships/hasMany/finalize"
 import type { PartialHasManyRelationship } from "../relationships/hasMany/types"
+import { finalize as finalizeHasManyThrough } from "../relationships/hasManyThrough/finalize"
+import type { PartialHasManyThroughRelationship } from "../relationships/hasManyThrough/types"
 import { finalize as finalizeHasOne } from "../relationships/hasOne/finalize"
 
 export function finalizeRelationships(
@@ -16,31 +18,34 @@ export function finalizeRelationships(
               schemaName,
               relationship,
               relationshipName,
-              schemaAcc,
+              relationshipAcc,
             ) as Record<string, FinalSchema>
           }
+
           if (relationship.type === "hasMany") {
             return finalizeHasMany(
               schemaName,
               relationship as PartialHasManyRelationship,
               relationshipName,
-              schemaAcc,
+              relationshipAcc,
             ) as Record<string, FinalSchema>
           }
-          /* c8 ignore start */
+
           if (relationship.type === "hasManyThrough") {
-            // TODO: hasManyThrough
-          }
-          if (relationship.type === "hasOne") {
-            return finalizeHasOne(
+            return finalizeHasManyThrough(
               schemaName,
-              relationship,
+              relationship as PartialHasManyThroughRelationship,
               relationshipName,
-              schemaAcc,
+              relationshipAcc,
             ) as Record<string, FinalSchema>
           }
-          return relationshipAcc
-          /* c8 ignore end */
+
+          return finalizeHasOne(
+            schemaName,
+            relationship,
+            relationshipName,
+            relationshipAcc,
+          ) as Record<string, FinalSchema>
         },
         schemaAcc,
       ),

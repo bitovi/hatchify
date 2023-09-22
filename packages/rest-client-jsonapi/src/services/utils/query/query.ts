@@ -183,6 +183,7 @@ export function getQueryParams(
     filter?: Filters
     page?: unknown
   },
+  baseFilter?: Filters,
 ): string {
   const params = []
   const { fields, include, sort, filter, page } = query
@@ -216,6 +217,13 @@ export function getQueryParams(
     const sortParam = sortToQueryParam(sort)
     if (sortParam) {
       params.push(sortParam)
+    }
+  }
+
+  if (baseFilter) {
+    const baseFilterParam = filterToQueryParam(baseFilter)
+    if (baseFilterParam) {
+      params.push(baseFilterParam)
     }
   }
 

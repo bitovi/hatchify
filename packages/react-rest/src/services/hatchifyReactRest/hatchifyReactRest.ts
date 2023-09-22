@@ -6,14 +6,15 @@ import type {
   CreateType,
   GetSchemaFromName,
   GetSchemaNames,
-  Meta,
-  QueryList,
-  QueryOne,
   PartialSchemas,
   RecordType,
   RestClient,
-  RequestMetaData,
   UpdateType,
+  Filters,
+  Meta,
+  QueryList,
+  QueryOne,
+  RequestMetaData,
 } from "@hatchifyjs/rest-client"
 import {
   createStore,
@@ -57,6 +58,7 @@ export type HatchifyReactRest<TSchemas extends PartialSchemas> = {
     // hooks
     useAll: (
       query?: QueryList,
+      baseFilter?: Filters,
     ) => [Array<RecordType<GetSchemaFromName<TSchemas, SchemaName>>>, Meta]
     useOne: (
       query: QueryOne | string,
@@ -141,12 +143,13 @@ export const hatchifyReactRest = <const TSchemas extends PartialSchemas>(
             id,
           ),
         // hooks
-        useAll: (query) =>
+        useAll: (query, baseFilter) =>
           useAll<TSchemas, GetSchemaNames<TSchemas>>(
             restClient,
             finalSchemas,
             schemaName,
             query ?? {},
+            baseFilter,
           ),
         useOne: (query) =>
           useOne<TSchemas, GetSchemaNames<TSchemas>>(

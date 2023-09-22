@@ -43,8 +43,8 @@ export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
 
   return {
     version: 0,
-    findAll: (allSchemas, schemaName, query) =>
-      findAll(config, allSchemas, schemaName, query),
+    findAll: (allSchemas, schemaName, query, baseFilter) =>
+      findAll(config, allSchemas, schemaName, query, baseFilter),
     findOne: (allSchemas, schemaName, query) =>
       findOne(config, allSchemas, schemaName, query),
     createOne: (allSchemas, schemaName, data) =>

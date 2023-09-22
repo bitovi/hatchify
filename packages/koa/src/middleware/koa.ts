@@ -68,7 +68,6 @@ export function buildMiddlewareForModel(
           path: context.path,
           querystring: context.querystring,
         }
-
         const response = await genericFunction(request, next)
 
         if (response) {

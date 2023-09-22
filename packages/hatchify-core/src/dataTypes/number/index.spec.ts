@@ -136,6 +136,7 @@ describe("number", () => {
       expect(setORMPropertyValue(1.11)).toBe(1.11)
 
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -175,6 +176,7 @@ describe("number", () => {
             allowNull: true,
             autoIncrement: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -183,6 +185,7 @@ describe("number", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 0,
         },
         setClientPropertyValue: expect.any(Function),
@@ -339,6 +342,9 @@ describe("number", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -382,6 +388,7 @@ describe("number", () => {
             allowNull: false,
             autoIncrement: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -390,6 +397,7 @@ describe("number", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 0,
         },
         setClientPropertyValue: expect.any(Function),
@@ -536,6 +544,7 @@ describe("number", () => {
       expect(setORMPropertyValue(1.1)).toBe(1.1)
       expect(setORMPropertyValue(1.11)).toBe(1.11)
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -575,6 +584,7 @@ describe("number", () => {
             allowNull: true,
             autoIncrement: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -583,6 +593,7 @@ describe("number", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 0,
         },
         setClientPropertyValue: expect.any(Function),
@@ -742,6 +753,9 @@ describe("number", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue("invalid" as unknown as number)).toThrow(
         new HatchifyCoerceError("as a number"),
       )
@@ -785,6 +799,7 @@ describe("number", () => {
             allowNull: false,
             autoIncrement: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
@@ -793,6 +808,7 @@ describe("number", () => {
           min: -Infinity,
           max: Infinity,
           primary: true,
+          default: null,
           step: 0,
         },
         setClientPropertyValue: expect.any(Function),
@@ -990,6 +1006,7 @@ describe("number", () => {
             allowNull: true,
             autoIncrement: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -998,6 +1015,7 @@ describe("number", () => {
           min: -Infinity,
           max: Infinity,
           primary: false,
+          default: null,
           step: 0.1,
         },
         setClientPropertyValue: expect.any(Function),
@@ -1166,6 +1184,7 @@ describe("number", () => {
       expect(setORMPropertyValue(1.1)).toBe(1.1)
       expect(setORMPropertyValue(1.11)).toBe(1.11)
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(-1)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),
       )
@@ -1227,6 +1246,7 @@ describe("number", () => {
             allowNull: true,
             autoIncrement: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -1235,6 +1255,7 @@ describe("number", () => {
           min: 1,
           max: 10,
           primary: false,
+          default: null,
           step: 0,
         },
         setClientPropertyValue: expect.any(Function),
