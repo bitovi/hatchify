@@ -55,7 +55,7 @@ export async function startServerWith(
 
   async function fetch(
     path: string,
-    options?: { method?: Method; headers?: object; body: object },
+    options?: { method?: Method; headers?: object; body?: object },
   ) {
     const method = options?.method || "get"
     const headers = options?.headers || {}
