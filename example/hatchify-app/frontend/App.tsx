@@ -6,19 +6,26 @@ import {
   createJsonapiClient,
 } from "@hatchifyjs/react"
 import { Todo } from "../schemas/todo"
-import { User } from "../schemas/user"
+// import { User } from "../schemas/user"
 
 export const hatchedReact = hatchifyReact(
-  { Todo, User },
+  {
+    Todo,
+    // User
+  },
   createJsonapiClient("http://localhost:3000/api", {
     Todo: { endpoint: "todos" },
-    User: { endpoint: "users" },
+    // User: { endpoint: "users" },
   }),
 )
 
 const TodoList = hatchedReact.components.Todo.Collection
 const TodoColumn = hatchedReact.components.Todo.Column
 const TodoEmptyList = hatchedReact.components.Todo.Empty
+// hatchedReact.model.Todo.findAll({}).then(([todos]) => {
+//   console.log(todos)
+//   todos[0].
+// })
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({

@@ -49,13 +49,19 @@ export type DateAsString = "datetime" | "Datetime"
 export type IsNumber<TValue> = TValue extends NumberAsString ? true : false
 export type IsString<TValue> = TValue extends StringAsString ? true : false
 export type IsDate<TValue> = TValue extends DateAsString ? true : false
+export type IsMutateDate<TValue, TMutate> = TValue extends DateAsString
+  ? TMutate extends true
+    ? true
+    : false
+  : false
 
 export type RecordType<TPartialSchema extends PartialSchema> = {
   id: string
 } & {
   [AttributeName in keyof TPartialSchema["attributes"]]: GetTypedAttribute<
     TPartialSchema["attributes"],
-    AttributeName
+    AttributeName,
+    false
   >
 }
 
@@ -64,7 +70,8 @@ export type CreateType<TPartialSchema extends PartialSchema> = {
   attributes: {
     [AttributeName in keyof TPartialSchema["attributes"]]: GetTypedAttribute<
       TPartialSchema["attributes"],
-      AttributeName
+      AttributeName,
+      true
     >
   }
 }
@@ -82,10 +89,16 @@ export type GetAttributes<TSchema extends PartialSchema> = {
 export type GetTypedAttribute<
   TAttributes extends PartialSchema["attributes"],
   TAttributeName extends keyof TAttributes,
+  Mutate extends Boolean,
 > = IsNumber<TAttributes[TAttributeName]["control"]["type"]> extends true
   ? number
   : IsString<TAttributes[TAttributeName]["control"]["type"]> extends true
   ? string
+  : IsMutateDate<
+      TAttributes[TAttributeName]["control"]["type"],
+      Mutate
+    > extends true
+  ? Date | string
   : IsDate<TAttributes[TAttributeName]["control"]["type"]> extends true
-  ? Date | string // Date object or ISO string
+  ? Date
   : unknown

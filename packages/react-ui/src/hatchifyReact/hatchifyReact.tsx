@@ -1,4 +1,10 @@
-import { assembler } from "@hatchifyjs/hatchify-core"
+import {
+  assembler,
+  // integer,
+  // datetime,
+  // string,
+  // PartialSchema,
+} from "@hatchifyjs/hatchify-core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   Fields,
@@ -167,22 +173,31 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
 }
 
 // // todo: leaving for testing, remove before merge to main
-// const partialTodo = {
+// const Todo = {
 //   name: "Todo",
 //   attributes: {
-//     date: integer(),
-//     importance: integer(),
 //     name: string(),
-//   },
-// }
+//     importance: integer(),
+//     date: datetime(),
+//   }
+// } satisfies PartialSchema
 
-// const app = hatchifyReact({ Todo: partialTodo }, undefined as any)
+// const app = hatchifyReact({ Todo }, undefined as any)
 
 // const [records] = app.model.Todo.useAll()
-// records[0].id
-// records[0].date
-// records[0].name
-// records[0].importance
+// // records[0].
+
+// app.model.Todo.createOne({
+//   attributes: {
+//     importance: 123,
+//     name: "123",
+//     date: new Date()
+//   },
+// })
+
+// app.model.Todo.findAll({}).then((todos) => {
+//   todos[0][0].
+// })
 
 // const List = app.components.Todo.Collection
 // const Column = app.components.Todo.Column
