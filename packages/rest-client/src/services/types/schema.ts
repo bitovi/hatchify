@@ -6,6 +6,7 @@ export type Attribute = string | AttributeObject
 
 export interface Schema {
   name: string // "Article"
+  namespace?: string
   displayAttribute: string
   attributes: {
     [field: string]: Attribute
