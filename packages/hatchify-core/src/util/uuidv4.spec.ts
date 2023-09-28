@@ -9,13 +9,12 @@ describe("uuidv4", () => {
 })
 
 describe("getCrypto", () => {
+  /* eslint-disable */
   it("returns node crypto if available", () => {
-    // @ts-ignore
     expect(getCrypto()).toBe(require("crypto"))
   })
 
   it("returns window.crypto if available", () => {
-    /* eslint-disable */
     const originalProcess = process
     // @ts-ignore
     global.window = { crypto: "window.crypto" }
@@ -27,6 +26,6 @@ describe("getCrypto", () => {
     // @ts-ignore
     global.window = undefined
     process = originalProcess
-    /* eslint-enable */
   })
+  /* eslint-enable */
 })
