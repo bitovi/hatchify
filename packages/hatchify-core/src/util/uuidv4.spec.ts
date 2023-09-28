@@ -10,20 +10,23 @@ describe("uuidv4", () => {
 
 describe("getCrypto", () => {
   it("returns node crypto if available", () => {
+    // @ts-ignore
     expect(getCrypto()).toBe(require("crypto"))
   })
 
   it("returns window.crypto if available", () => {
+    /* eslint-disable */
     const originalProcess = process
-    // @ts-expect-error
+    // @ts-ignore
     global.window = { crypto: "window.crypto" }
-    // @ts-expect-error
+    // @ts-ignore
     process = undefined
 
     expect(getCrypto()).toBe("window.crypto")
 
-    // @ts-expect-error
+    // @ts-ignore
     global.window = undefined
     process = originalProcess
+    /* eslint-enable */
   })
 })
