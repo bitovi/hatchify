@@ -44,7 +44,7 @@ describe("builder", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Todo.name$": { [Op.eq]: "laundry" } },
           order: [
             ["due_date", "DESC"],
             ["name", "ASC"],

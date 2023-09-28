@@ -49,7 +49,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
 
@@ -110,7 +110,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
 
@@ -178,7 +178,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
 
@@ -398,7 +398,7 @@ describe("index", () => {
         include: [{ association: "user", include: [] }],
         limit: 5,
         offset: 10,
-        where: { name: { [Op.eq]: "laundry" } },
+        where: { "$Todo.name$": { [Op.eq]: "laundry" } },
       })
     })
   })
