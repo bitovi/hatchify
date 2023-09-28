@@ -94,7 +94,7 @@ describe("builder", () => {
     it("handles complex filters", () => {
       const options = buildFindOptions(
         hatchify,
-        Todo,
+        User,
         "include=parent,todos&filter[name]=Justin&filter[todos.importance]=1&filter[parent.parent.name]=John",
         1,
       )
@@ -105,7 +105,7 @@ describe("builder", () => {
             [Op.and]: [
               {
                 [Op.and]: [
-                  { name: { [Op.eq]: "Justin" } },
+                  { "$User.name$": { [Op.eq]: "Justin" } },
                   { "$todos.importance$": { [Op.eq]: 1 } },
                 ],
               },

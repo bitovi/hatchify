@@ -36,7 +36,7 @@ export function handleWhere(
         )
       }
 
-      return [null, key]
+      return [null, `$${model.name}.${key}$`]
     }
 
     const [relationshipName] = key.split(".")
