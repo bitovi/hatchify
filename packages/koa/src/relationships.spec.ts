@@ -760,6 +760,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           },
         },
       })
+
       const { body: accountWithSalesPersons } = await fetch(
         `/api/accounts/${account.data.id}?include=salesPersons`,
       )
@@ -774,6 +775,117 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           },
           relationships: {
             salesPersons: {
+              data: [{ type: "SalesPerson", id: salesPerson.data.id }],
+            },
+          },
+        },
+        included: [
+          {
+            type: "SalesPerson",
+            id: salesPerson.data.id,
+            attributes: {
+              firstName: salesPerson.data.attributes.firstName,
+            },
+          },
+        ],
+      })
+    })
+  })
+
+  describe(`${dialect} - Aliased belongsToMany relationships`, () => {
+    const SalesPerson: HatchifyModel = {
+      name: "SalesPerson",
+      attributes: {
+        firstName: "STRING",
+      },
+      belongsToMany: [
+        {
+          target: "Account",
+          options: {
+            as: "aliasedAccounts",
+            through: "AccountSalesPerson",
+          },
+        },
+      ],
+    }
+    const Account: HatchifyModel = {
+      name: "Account",
+      attributes: {
+        name: "STRING",
+      },
+      belongsToMany: [
+        {
+          target: "SalesPerson",
+          options: {
+            as: "aliasedSalesPersons",
+            through: "AccountSalesPerson",
+          },
+        },
+      ],
+    }
+
+    let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+    let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+    beforeAll(async () => {
+      ;({ fetch, teardown } = await startServerWith(
+        [SalesPerson, Account],
+        dialect,
+      ))
+    })
+
+    afterAll(async () => {
+      await teardown()
+    })
+
+    it("returns correct results when 'as' is provided", async () => {
+      const { body: account } = await fetch("/api/accounts", {
+        method: "post",
+        body: {
+          data: {
+            type: "Account",
+            attributes: {
+              name: "Bitovi",
+            },
+          },
+        },
+      })
+      const { body: salesPerson } = await fetch("/api/sales-persons", {
+        method: "post",
+        body: {
+          data: {
+            type: "SalesPerson",
+            attributes: {
+              firstName: "John",
+            },
+            relationships: {
+              aliasedAccounts: {
+                data: [
+                  {
+                    type: "Account",
+                    id: account.data.id,
+                  },
+                ],
+              },
+            },
+          },
+        },
+      })
+
+      const { body: accountWithSalesPersons } = await fetch(
+        `/api/accounts/${account.data.id}?include=aliasedSalesPersons`,
+      )
+
+      expect(accountWithSalesPersons).toEqual({
+        jsonapi: { version: "1.0" },
+        data: {
+          type: "Account",
+          id: account.data.id,
+          attributes: {
+            name: account.data.attributes.name,
+          },
+          relationships: {
+            aliasedSalesPersons: {
               data: [{ type: "SalesPerson", id: salesPerson.data.id }],
             },
           },
