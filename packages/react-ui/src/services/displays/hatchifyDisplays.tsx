@@ -37,9 +37,6 @@ export function getDefaultDisplayRender(
   const attType = attributeType.toLowerCase()
   const { String, Number, Boolean, Relationship, RelationshipList, Date } =
     defaultValueComponents
-  console.log("attribute", attribute)
-  console.log("attributeType", attributeType)
-  console.log("defaultValueComponents", defaultValueComponents)
 
   // @todo primitive lists?
   const defaultRender = ({ record }: { record: Record }) => {

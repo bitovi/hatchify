@@ -6,7 +6,7 @@ export const MuiBody: React.FC<
   XCollectionProps & { columns: HatchifyDisplay[]; Empty: () => JSX.Element }
 > = ({ columns, data, meta, selected, setSelected, Empty }) => {
   const selectable = selected !== undefined && setSelected !== undefined
-  console.log("columns", columns)
+
   if (meta.isLoading) {
     return (
       <TableBody>
