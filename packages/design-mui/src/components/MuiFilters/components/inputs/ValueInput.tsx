@@ -18,7 +18,7 @@ const ValueInput: React.FC<{
   return (
     <>
       <InputLabel id={labelId}>Value</InputLabel>
-      {fieldType === "string" && (
+      {fieldType === "String" && (
         <StringInput
           labelId={labelId}
           operator={operator}
@@ -35,7 +35,7 @@ const ValueInput: React.FC<{
           options={options}
         />
       )}
-      {fieldType === "date" && (
+      {fieldType === "Datetime" && (
         <DateInput labelId={labelId} value={value} onChange={onChange} />
       )}
     </>

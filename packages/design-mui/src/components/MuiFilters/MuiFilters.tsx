@@ -128,10 +128,7 @@ function getSupportedFields(
 ) {
   return Object.entries(allSchemas[schemaName].attributes)
     .filter(
-      ([, attr]) => ["Number", "String", "Date"].includes(attr.control.type), // todo: only `Number` in v2 at the moment
-      // typeof attr === "object"
-      //   ? attr.type === "string" || attr.type === "date" || attr.type === "enum"
-      //   : attr === "string" || attr === "date" || attr === "enum",
+      ([, attr]) => ["String", "Datetime"].includes(attr.control.type), // todo: v2 types
     )
     .map(([key]) => key)
 }

@@ -11,11 +11,9 @@ import { Todo } from "../schemas/todo"
 export const hatchedReact = hatchifyReact(
   {
     Todo,
-    // User
   },
   createJsonapiClient("http://localhost:3000/api", {
     Todo: { endpoint: "todos" },
-    // User: { endpoint: "users" },
   }),
 )
 

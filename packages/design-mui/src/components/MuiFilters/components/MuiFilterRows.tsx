@@ -24,11 +24,11 @@ interface Option {
 }
 
 type OperatorOption = {
-  [key in "enum" | "date" | "string"]: Option[]
+  [key in "enum" | "Datetime" | "String"]: Option[]
 }
 
 const operatorOptions: OperatorOption = {
-  string: [
+  String: [
     { operator: "icontains", text: "contains" },
     { operator: "istarts", text: "starts with" },
     { operator: "iends", text: "ends with" },
@@ -37,7 +37,7 @@ const operatorOptions: OperatorOption = {
     { operator: "nempty", text: "is not empty" },
     { operator: "$in", text: "is any of" },
   ],
-  date: [
+  Datetime: [
     { operator: "$eq", text: "is" },
     { operator: "$gt", text: "is after" },
     { operator: "$gte", text: "is on or after" },
@@ -204,5 +204,5 @@ export const getFieldType = (
   field: string,
 ): string => {
   const attribute = attributes[field]
-  return attribute.control.type // currently only "Number"
+  return attribute.control.type
 }

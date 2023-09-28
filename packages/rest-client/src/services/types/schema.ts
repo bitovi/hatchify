@@ -90,7 +90,7 @@ export type GetAttributes<TSchema extends PartialSchema> = {
 export type GetTypedAttribute<
   TAttributes extends PartialSchema["attributes"],
   TAttributeName extends keyof TAttributes,
-  Mutate extends Boolean,
+  Mutate extends boolean,
 > = IsNumber<TAttributes[TAttributeName]["control"]["type"]> extends true
   ? number
   : IsString<TAttributes[TAttributeName]["control"]["type"]> extends true
