@@ -1,4 +1,4 @@
-function getCrypto() {
+export function getCrypto() {
   return typeof process === "object" &&
     {}.toString.call(process) === "[object process]"
     ? require("crypto")
