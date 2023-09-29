@@ -4,20 +4,49 @@ import { getEndpoint } from "./schema"
 describe("rest-client-jsonapi/services/utils/schema", () => {
   describe("getEndpoint", () => {
     it("works", () => {
-      expect(getEndpoint("endpoint", "plural-name", "singular-name")).toEqual(
-        "endpoint",
+      // with endpoint
+      expect(getEndpoint("employees", undefined, "People", "Person")).toEqual(
+        "employees",
       )
-      expect(getEndpoint("endpoint", undefined, "singular-name")).toEqual(
-        "endpoint",
+      expect(getEndpoint("employees", undefined, undefined, "Person")).toEqual(
+        "employees",
       )
-      expect(getEndpoint(undefined, "PluralName", "SingularName")).toEqual(
-        "plural-name",
+      expect(getEndpoint("employees", "Admin", undefined, "Person")).toEqual(
+        "employees",
       )
-      expect(getEndpoint(undefined, undefined, "SingularName")).toEqual(
-        "singular-names",
+
+      // with namespace
+      expect(
+        getEndpoint(undefined, "Admin", undefined, "Admin_Person"),
+      ).toEqual("admin_persons")
+      expect(getEndpoint(undefined, "Admin", "People", "Admin_Person")).toEqual(
+        "admin_people",
       )
-      expect(getEndpoint(undefined, undefined, "Todos")).toEqual("todoss")
-      expect(getEndpoint(undefined, undefined, "Todo")).toEqual("todos")
+      expect(
+        getEndpoint(undefined, "Admin", "EmployedPeople", "Admin_Person"),
+      ).toEqual("admin_employed-people")
+      expect(
+        getEndpoint(undefined, "Admin", undefined, "Admin_EmployedPerson"),
+      ).toEqual("admin_employed-persons")
+
+      // with pluralName
+      expect(getEndpoint(undefined, undefined, "People", "Person")).toEqual(
+        "people",
+      )
+      expect(
+        getEndpoint(undefined, undefined, "EmployedPeople", "Person"),
+      ).toEqual("employed-people")
+
+      // without endpoint, namespace, or pluralName
+      expect(
+        getEndpoint(undefined, undefined, undefined, "EmployedPerson"),
+      ).toEqual("employed-persons")
+      expect(
+        getEndpoint(undefined, undefined, undefined, "EmployedPersons"),
+      ).toEqual("employed-personss")
+      expect(getEndpoint(undefined, undefined, undefined, "People")).toEqual(
+        "peoples",
+      )
     })
   })
 })

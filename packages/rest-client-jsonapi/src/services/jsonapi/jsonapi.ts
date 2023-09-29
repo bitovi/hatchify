@@ -36,7 +36,12 @@ export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
         name: value.name,
         attributes: { ...value.attributes },
         type: value.type || key,
-        endpoint: getEndpoint(value.endpoint, value.pluralName, key),
+        endpoint: getEndpoint(
+          value.endpoint,
+          value.namespace,
+          value.pluralName,
+          key,
+        ),
       }
       return acc
     },
