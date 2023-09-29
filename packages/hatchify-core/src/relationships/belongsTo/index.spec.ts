@@ -6,6 +6,7 @@ describe("belongsTo", () => {
       type: "belongsTo",
       targetSchema: null,
       sourceAttribute: null,
+      targetAttribute: null,
     })
   })
 
@@ -14,6 +15,7 @@ describe("belongsTo", () => {
       type: "belongsTo",
       targetSchema: "SalesPerson",
       sourceAttribute: null,
+      targetAttribute: null,
     })
   })
 
@@ -23,6 +25,7 @@ describe("belongsTo", () => {
         type: "belongsTo",
         targetSchema: "SalesPerson",
         sourceAttribute: "finisherId",
+        targetAttribute: null,
       },
     )
   })

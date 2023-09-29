@@ -25,7 +25,12 @@ describe("finalize", () => {
   it("populates targetSchema and targetAttribute", () => {
     const { User } = finalize(
       "User",
-      { type: "hasOne", targetSchema: null, targetAttribute: null },
+      {
+        type: "hasOne",
+        targetSchema: null,
+        targetAttribute: null,
+        sourceAttribute: null,
+      },
       "todo",
       schemas,
     )
@@ -34,6 +39,7 @@ describe("finalize", () => {
       type: "hasOne",
       targetSchema: "Todo",
       targetAttribute: "userId",
+      sourceAttribute: "id",
     })
   })
 
@@ -44,6 +50,7 @@ describe("finalize", () => {
         type: "hasOne",
         targetSchema: "Todo",
         targetAttribute: "assigneeId",
+        sourceAttribute: null,
       },
       "todo",
       schemas,
@@ -55,6 +62,7 @@ describe("finalize", () => {
       type: "hasOne",
       targetSchema: "Todo",
       targetAttribute: "assigneeId",
+      sourceAttribute: "id",
     })
   })
 
@@ -65,6 +73,7 @@ describe("finalize", () => {
         type: "hasOne",
         targetSchema: "User",
         targetAttribute: "managerId",
+        sourceAttribute: null,
       },
       "manager",
       schemas,
@@ -76,6 +85,7 @@ describe("finalize", () => {
       type: "hasOne",
       targetSchema: "User",
       targetAttribute: "managerId",
+      sourceAttribute: "id",
     })
   })
 
@@ -87,6 +97,7 @@ describe("finalize", () => {
           type: "hasOne",
           targetSchema: "Invalid",
           targetAttribute: null,
+          sourceAttribute: null,
         },
         "todo",
         schemas,

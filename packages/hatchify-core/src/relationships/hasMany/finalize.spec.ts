@@ -29,6 +29,7 @@ describe("finalize", () => {
         type: "hasMany",
         targetSchema: null,
         targetAttribute: null,
+        sourceAttribute: null,
         through: jest.fn(),
       },
       "todos",
@@ -39,6 +40,7 @@ describe("finalize", () => {
       type: "hasMany",
       targetSchema: "Todo",
       targetAttribute: "userId",
+      sourceAttribute: "id",
     })
   })
 
@@ -49,6 +51,7 @@ describe("finalize", () => {
         type: "hasMany",
         targetSchema: "Todo",
         targetAttribute: "assigneeId",
+        sourceAttribute: "id",
         through: jest.fn(),
       },
       "todos",
@@ -61,6 +64,7 @@ describe("finalize", () => {
       type: "hasMany",
       targetSchema: "Todo",
       targetAttribute: "assigneeId",
+      sourceAttribute: "id",
     })
   })
 
@@ -71,6 +75,7 @@ describe("finalize", () => {
         type: "hasMany",
         targetSchema: "User",
         targetAttribute: "managerId",
+        sourceAttribute: "id",
         through: jest.fn(),
       },
       "employees",
@@ -83,6 +88,7 @@ describe("finalize", () => {
       type: "hasMany",
       targetSchema: "User",
       targetAttribute: "managerId",
+      sourceAttribute: "id",
     })
   })
 
@@ -94,6 +100,7 @@ describe("finalize", () => {
           type: "hasMany",
           targetSchema: "Invalid",
           targetAttribute: null,
+          sourceAttribute: null,
           through: jest.fn(),
         },
         "todos",

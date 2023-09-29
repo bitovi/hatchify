@@ -25,7 +25,12 @@ describe("finalize", () => {
   it("populates targetSchema and sourceAttribute", () => {
     const { Todo } = finalize(
       "Todo",
-      { type: "belongsTo", targetSchema: null, sourceAttribute: null },
+      {
+        type: "belongsTo",
+        targetSchema: null,
+        sourceAttribute: null,
+        targetAttribute: null,
+      },
       "user",
       schemas,
     )
@@ -34,6 +39,7 @@ describe("finalize", () => {
       type: "belongsTo",
       targetSchema: "User",
       sourceAttribute: "userId",
+      targetAttribute: "id",
     })
   })
 
@@ -44,6 +50,7 @@ describe("finalize", () => {
         type: "belongsTo",
         targetSchema: "User",
         sourceAttribute: "assigneeId",
+        targetAttribute: null,
       },
       "user",
       schemas,
@@ -55,6 +62,7 @@ describe("finalize", () => {
       type: "belongsTo",
       targetSchema: "User",
       sourceAttribute: "assigneeId",
+      targetAttribute: "id",
     })
   })
 
@@ -65,6 +73,7 @@ describe("finalize", () => {
         type: "belongsTo",
         targetSchema: "User",
         sourceAttribute: "managerId",
+        targetAttribute: null,
       },
       "manager",
       schemas,
@@ -76,6 +85,7 @@ describe("finalize", () => {
       type: "belongsTo",
       targetSchema: "User",
       sourceAttribute: "managerId",
+      targetAttribute: "id",
     })
   })
 
@@ -87,6 +97,7 @@ describe("finalize", () => {
           type: "belongsTo",
           targetSchema: "Invalid",
           sourceAttribute: null,
+          targetAttribute: null,
         },
         "user",
         schemas,
