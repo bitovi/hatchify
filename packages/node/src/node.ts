@@ -1,8 +1,10 @@
 import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
 import JSONAPISerializer from "json-api-serializer"
+import { snakeCase } from "lodash"
 import { match } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
+import type { Database } from "sqlite3"
 
 import type { HatchifyErrorOptions } from "./error"
 import { HatchifyError } from "./error"
@@ -98,6 +100,19 @@ export class Hatchify {
     // Prepare the ORM instance and keep references to the different Models
     this._sequelize = createSequelizeInstance(options.database)
 
+    if (this._sequelize.getDialect() === "sqlite") {
+      const gc = this._sequelize.connectionManager.getConnection
+      this._sequelize.connectionManager.getConnection = async function (
+        ...args: Parameters<typeof gc>
+      ) {
+        const db: Database = await gc.apply(this, args)
+
+        await new Promise((resolve) =>
+          db.run("PRAGMA case_sensitive_like=ON", resolve),
+        )
+        return db
+      }
+    }
     this._serializer = new JSONAPISerializer()
 
     // Fetch the hatchify models and associations look up
@@ -105,6 +120,7 @@ export class Hatchify {
       associationsLookup,
       models: sequelizeModels,
       virtuals,
+      plurals: definedPlurals,
     } = Array.isArray(models)
       ? convertHatchifyV1Models(this._sequelize, this._serializer, models)
       : convertHatchifyV2Models(this._sequelize, this._serializer, models)
@@ -115,13 +131,18 @@ export class Hatchify {
 
     this._pluralToSingularModelNames = Object.entries(
       this._sequelizeModels,
-    ).reduce(
-      (acc, [singular, value]) => ({
+    ).reduce((acc, [singular, value]) => {
+      if (definedPlurals[singular]) {
+        return {
+          ...acc,
+          [definedPlurals[singular].toLowerCase()]: singular,
+        }
+      }
+      return {
         ...acc,
         [pluralize(singular.toLowerCase())]: singular,
-      }),
-      {},
-    )
+      }
+    }, {})
 
     // Store the route prefix if the user set one
     this._prefix = options.prefix ?? ""
@@ -311,6 +332,33 @@ export class Hatchify {
         return isPathWithModelIdResult.params
       }
     }
+    // with namespace
+    const isPathWithNameSpaceModelId = match<{
+      namespace: string
+      model: string
+      id: Identifier
+    }>(this._prefix + "/:namespace/:model/:id", {
+      decode: decodeURIComponent,
+      strict: false,
+      sensitive: false,
+      end: false,
+    })
+
+    const isPathWithNameSpaceModelIdResult = isPathWithNameSpaceModelId(path)
+    if (isPathWithNameSpaceModelIdResult) {
+      let modelName = isPathWithNameSpaceModelIdResult.params.model
+      if (!modelName.includes("_")) {
+        modelName =
+          isPathWithNameSpaceModelIdResult.params.namespace + "_" + modelName
+      }
+      const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
+
+      if (endpointName) {
+        isPathWithNameSpaceModelIdResult.params.model = endpointName
+
+        return isPathWithNameSpaceModelIdResult.params
+      }
+    }
 
     const isPathWithModel = match<{ model: string }>(this._prefix + "/:model", {
       decode: decodeURIComponent,
@@ -329,6 +377,33 @@ export class Hatchify {
         isPathWithModelResult.params.model = endpointName
 
         return isPathWithModelResult.params
+      }
+    }
+
+    // with namespace/model
+    const isPathWithNamespaceModel = match<{
+      namespace: string
+      model: string
+    }>(this._prefix + "/:namespace/:model", {
+      decode: decodeURIComponent,
+      strict: false,
+      sensitive: false,
+      end: false,
+    })
+
+    const isPathWithNamespaceModelResult = isPathWithNamespaceModel(path)
+    if (isPathWithNamespaceModelResult) {
+      let modelName = isPathWithNamespaceModelResult.params.model
+      if (!modelName.includes("_")) {
+        modelName =
+          isPathWithNamespaceModelResult.params.namespace + "_" + modelName
+      }
+      const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
+
+      if (endpointName) {
+        isPathWithNamespaceModelResult.params.model = endpointName
+
+        return isPathWithNamespaceModelResult.params
       }
     }
 
@@ -399,7 +474,32 @@ export class Hatchify {
    * @category Testing Use
    */
   async createDatabase(): Promise<Sequelize> {
-    return this._sequelize.sync({ alter: true })
+    if (this._sequelize.getDialect() === "postgres") {
+      const existingNamespaces = (await this._sequelize.showAllSchemas(
+        {},
+      )) as unknown as string[]
+
+      const uniqueNamespaces = Object.values(this.models).reduce(
+        (acc, model) =>
+          model?.namespace && !existingNamespaces.includes(model.namespace)
+            ? acc.add(model.namespace)
+            : acc,
+        new Set<string>(),
+      )
+
+      await Promise.all(
+        [...uniqueNamespaces].map((namespace) =>
+          this._sequelize.createSchema(snakeCase(namespace), {}),
+        ),
+      )
+    }
+
+    try {
+      return await this._sequelize.sync({ alter: true })
+    } catch (ex) {
+      console.error("Sync Failed:", ex)
+      throw ex
+    }
   }
 }
 

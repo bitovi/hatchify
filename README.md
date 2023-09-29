@@ -207,7 +207,7 @@ export const Todo = {
   name: "Todo",
   attributes: {
     name: "STRING",
-    due_date: "DATE",
+    dueDate: "DATE",
     importance: "INTEGER",
   },
   belongsTo: [{ target: "User", options: { as: "user" } }], // 👀

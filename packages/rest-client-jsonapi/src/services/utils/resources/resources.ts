@@ -6,6 +6,8 @@ import type {
   RestClientUpdateData,
   Schema,
   SourceConfig,
+  SchemalessResourceRelationship,
+  SchemalessResourceRelationshipObject,
 } from "@hatchifyjs/rest-client"
 import type {
   JsonApiResource,
@@ -13,10 +15,6 @@ import type {
   Relationship as JsonApiRelationship,
   CreateJsonApiResource,
 } from "../../jsonapi"
-import type {
-  SchemalessResourceRelationship,
-  SchemalessResourceRelationshipObject,
-} from "@hatchifyjs/rest-client/dist/services"
 
 type Relationship = Record<
   string,

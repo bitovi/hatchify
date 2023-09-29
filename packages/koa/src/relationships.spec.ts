@@ -2,7 +2,7 @@ import type { HatchifyModel } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
 
-describe.each(dbDialects)("Operators", (dialect) => {
+describe.each(dbDialects)("Relationships", (dialect) => {
   describe(`${dialect} - Users and Todos`, () => {
     const User: HatchifyModel = {
       name: "User",
@@ -11,7 +11,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
       },
       hasMany: [{ target: "Todo", options: { as: "todos" } }],
     }
-
     const Todo: HatchifyModel = {
       name: "Todo",
       attributes: {
@@ -47,7 +46,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
           },
         },
       })
-
       const { body: user } = await fetch("/api/users", {
         method: "post",
         body: {
@@ -75,7 +73,7 @@ describe.each(dbDialects)("Operators", (dialect) => {
           version: "1.0",
         },
         data: {
-          id: "1",
+          id: expect.any(String),
           type: "User",
           attributes: {
             name: "John Doe",
@@ -90,16 +88,20 @@ describe.each(dbDialects)("Operators", (dialect) => {
         data: [
           {
             type: "Todo",
-            id: "1",
+            id: todo.data.id,
             attributes: {
               name: "Walk the dog",
               due_date: "2024-12-12T00:00:00.000Z",
               importance: 6,
             },
-            relationships: { user: { data: { type: "User", id: "1" } } },
+            relationships: {
+              user: { data: { type: "User", id: user.data.id } },
+            },
           },
         ],
-        included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+        included: [
+          { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+        ],
         meta: { unpaginatedCount: 1 },
       })
 
@@ -112,15 +114,19 @@ describe.each(dbDialects)("Operators", (dialect) => {
         data: [
           {
             type: "Todo",
-            id: "1",
+            id: todo.data.id,
             attributes: {
               name: "Walk the dog",
               due_date: "2024-12-12T00:00:00.000Z",
             },
-            relationships: { user: { data: { type: "User", id: "1" } } },
+            relationships: {
+              user: { data: { type: "User", id: user.data.id } },
+            },
           },
         ],
-        included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+        included: [
+          { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+        ],
         meta: { unpaginatedCount: 1 },
       })
 
@@ -133,15 +139,19 @@ describe.each(dbDialects)("Operators", (dialect) => {
         data: [
           {
             type: "Todo",
-            id: "1",
+            id: todo.data.id,
             attributes: {
               name: "Walk the dog",
               due_date: "2024-12-12T00:00:00.000Z",
             },
-            relationships: { user: { data: { type: "User", id: "1" } } },
+            relationships: {
+              user: { data: { type: "User", id: user.data.id } },
+            },
           },
         ],
-        included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+        included: [
+          { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+        ],
         meta: { unpaginatedCount: 1 },
       })
     })
@@ -251,7 +261,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
             },
           },
         })
-
         const { body: user } = await fetch("/api/users", {
           method: "post",
           body: {
@@ -273,7 +282,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
             },
           },
         })
-
         const { body: userWithTodo } = await fetch(
           `/api/todos/${todo.data.id}?include=user`,
         )
@@ -314,7 +322,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
             },
           },
         })
-
         const { body: todo } = await fetch("/api/todos", {
           method: "post",
           body: {
@@ -331,7 +338,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
             },
           },
         })
-
         const { body: userWithTodo } = await fetch(
           `/api/todos/${todo.data.id}?include=user`,
         )
@@ -442,7 +448,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
             },
           }),
         ])
-
         const { body: users } = await fetch(
           `/api/users?filter[name]=Pagination&page[number]=1&page[size]=1`,
         )
@@ -470,7 +475,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
             },
           }),
         ])
-
         const { body: users } = await fetch(
           "/api/users?filter[name]=No+Pagination",
         )
@@ -548,6 +552,87 @@ describe.each(dbDialects)("Operators", (dialect) => {
         })
       })
     })
+
+    it("should allow relationship filtering (HATCH-376)", async () => {
+      const todos = await Promise.all(
+        [1, 2].map((importance) =>
+          fetch("/api/todos", {
+            method: "post",
+            body: {
+              data: {
+                type: "Todo",
+                attributes: {
+                  name: "Walk the dog",
+                  due_date: "2024-12-12T00:00:00.000Z",
+                  importance,
+                },
+              },
+            },
+          }),
+        ),
+      )
+      const { body: user } = await fetch("/api/users", {
+        method: "post",
+        body: {
+          data: {
+            type: "User",
+            attributes: {
+              name: "John",
+            },
+            relationships: {
+              todos: {
+                data: todos.map(
+                  ({
+                    body: {
+                      data: { id },
+                    },
+                  }) => ({
+                    type: "Todo",
+                    id,
+                  }),
+                ),
+              },
+            },
+          },
+        },
+      })
+      const { body } = await fetch(
+        "/api/todos?include=user&filter[importance][$eq]=1&filter[name][$ilike]=walk%25&filter[user.name][$ilike]=john%25",
+      )
+
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        data: [
+          {
+            type: "Todo",
+            id: todos[0].body.data.id,
+            attributes: {
+              name: "Walk the dog",
+              due_date: "2024-12-12T00:00:00.000Z",
+              importance: 1,
+            },
+            relationships: {
+              user: {
+                data: {
+                  type: "User",
+                  id: user.data.id,
+                },
+              },
+            },
+          },
+        ],
+        included: [
+          {
+            type: "User",
+            id: user.data.id,
+            attributes: {
+              name: "John",
+            },
+          },
+        ],
+        meta: { unpaginatedCount: 1 },
+      })
+    })
   })
 
   describe(`${dialect} - No Relationships`, () => {
@@ -611,7 +696,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
         },
       ],
     }
-
     const Account: HatchifyModel = {
       name: "Account",
       attributes: {
@@ -653,7 +737,6 @@ describe.each(dbDialects)("Operators", (dialect) => {
           },
         },
       })
-
       const { body: salesPerson } = await fetch("/api/sales-persons", {
         method: "post",
         body: {
@@ -690,6 +773,117 @@ describe.each(dbDialects)("Operators", (dialect) => {
           },
           relationships: {
             salesPersons: {
+              data: [{ type: "SalesPerson", id: salesPerson.data.id }],
+            },
+          },
+        },
+        included: [
+          {
+            type: "SalesPerson",
+            id: salesPerson.data.id,
+            attributes: {
+              firstName: salesPerson.data.attributes.firstName,
+            },
+          },
+        ],
+      })
+    })
+  })
+
+  describe(`${dialect} - Aliased belongsToMany relationships`, () => {
+    const SalesPerson: HatchifyModel = {
+      name: "SalesPerson",
+      attributes: {
+        firstName: "STRING",
+      },
+      belongsToMany: [
+        {
+          target: "Account",
+          options: {
+            as: "aliasedAccounts",
+            through: "AccountSalesPerson",
+          },
+        },
+      ],
+    }
+    const Account: HatchifyModel = {
+      name: "Account",
+      attributes: {
+        name: "STRING",
+      },
+      belongsToMany: [
+        {
+          target: "SalesPerson",
+          options: {
+            as: "aliasedSalesPersons",
+            through: "AccountSalesPerson",
+          },
+        },
+      ],
+    }
+
+    let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+    let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+    beforeAll(async () => {
+      ;({ fetch, teardown } = await startServerWith(
+        [SalesPerson, Account],
+        dialect,
+      ))
+    })
+
+    afterAll(async () => {
+      await teardown()
+    })
+
+    it("returns correct results when 'as' is provided", async () => {
+      const { body: account } = await fetch("/api/accounts", {
+        method: "post",
+        body: {
+          data: {
+            type: "Account",
+            attributes: {
+              name: "Bitovi",
+            },
+          },
+        },
+      })
+      const { body: salesPerson } = await fetch("/api/sales-persons", {
+        method: "post",
+        body: {
+          data: {
+            type: "SalesPerson",
+            attributes: {
+              firstName: "John",
+            },
+            relationships: {
+              aliasedAccounts: {
+                data: [
+                  {
+                    type: "Account",
+                    id: account.data.id,
+                  },
+                ],
+              },
+            },
+          },
+        },
+      })
+
+      const { body: accountWithSalesPersons } = await fetch(
+        `/api/accounts/${account.data.id}?include=aliasedSalesPersons`,
+      )
+
+      expect(accountWithSalesPersons).toEqual({
+        jsonapi: { version: "1.0" },
+        data: {
+          type: "Account",
+          id: account.data.id,
+          attributes: {
+            name: account.data.attributes.name,
+          },
+          relationships: {
+            aliasedSalesPersons: {
               data: [{ type: "SalesPerson", id: salesPerson.data.id }],
             },
           },

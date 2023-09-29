@@ -2,11 +2,9 @@
 
 This guide explains how to use Hatchify `namespace` property to create Postgres schemas.
 
-
 ## Define models with namespaces
 
 To add a schema to a namespace, a key called `namespace` shoud be added to a schema definition, with a string value following PascalCase convention for example `AstraZeneca`.
-
 
 ```javaScript
 User = {
@@ -21,13 +19,12 @@ User = {
 
 For example, to create 2 namespaces **AstraZeneca** and **Pfizer** with each having a **User** and a **Todo** Models, all we have to do is add `namespace` property to each model schema.
 
-By default if the `namespace` is not given, it will default to `public` namespace. 
-
+By default if the `namespace` is not given, it will default to `public` namespace.
 
 ```javaScript
 const Schemas = {
   // AstraZeneca namespace schemas
-  "AstraZeneca.User": {
+  "AstraZeneca_User": {
     name: "User",
     namespace: "AstraZeneca",
     attributes: {
@@ -35,7 +32,7 @@ const Schemas = {
       // attributes here
     }
   }
-  "AstraZeneca.Todo": {
+  "AstraZeneca_Todo": {
     name: "Todo",
     namespace: "AstraZeneca",
     attributes: {
@@ -45,7 +42,7 @@ const Schemas = {
   },
 
 // Pfizer schemas, could be put in their own file
-  "Pfizer.User": {
+  "Pfizer_User": {
     name: "User",
     namespace: "Pfizer",
     attributes: {
@@ -53,7 +50,7 @@ const Schemas = {
       // attributes here
     }
   },
-  "Bar.Todo": {
+  "Bar_Todo": {
     name: "Todo",
     namespace: "Pfizer",
     attributes: {
@@ -73,19 +70,19 @@ const hatchedKoa = hatchifyKoa(Object.values(Schemas), {
 
 **Database Implications**
 
-- Creates `AstraZeneca.user`, `AstraZeneca.todo`, `pfizer.user`, and `pfizer.todo` tables with their related columns coming from `attributes` keys like `name` and `title`.
+- Creates `AstraZeneca_user`, `AstraZeneca_todo`, `pfizer_user`, and `pfizer_todo` tables with their related columns coming from `attributes` keys like `name` and `title`.
 
 **API implications**
 
-To call the created API end-point remember the Service URL path names are `kebab-case`.  (Ex: `/astra-zeneca`)
+To call the created API end-point remember the Service URL path names are `kebab-case`. (Ex: `/astra-zeneca`)
 
- _Note: Query parameters are `camelCase`._
+_Note: Query parameters are `camelCase`._
 
 ```
 GET /api/[namespace-name]/[schema]
 ```
 
-In our example, to get all Users of ***AstraZeneca*** we do:
+In our example, to get all Users of _**AstraZeneca**_ we do:
 
 ```
 GET /api/astra-zeneca/users
@@ -93,10 +90,10 @@ GET /api/astra-zeneca/users
 
 To include fields we can do:
 
+```
+GET /api/astra-zeneca/todos?fields[AstraZeneca_Todo]=title
+```
 
-```
-GET /api/astra-zeneca/todos?fields[AstraZeneca.Todo]=title
-```
 _Note: When refering to fields that belongs to the same namespace we could omit that namespace like:_
 
 ```

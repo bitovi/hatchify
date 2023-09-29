@@ -4,43 +4,23 @@ import { noCase } from "no-case"
 import type {
   CreateOptions,
   DestroyOptions,
+  Dialect,
   FindOptions,
   Identifier,
   UpdateOptions,
 } from "sequelize"
 
-import { HatchifyError, UnexpectedValueError } from "../error"
-import { codes, statusCodes } from "../error/constants"
+import { handleSqliteDateNestedColumns } from "./handleSqliteDateNestedColumns"
+import { handleSqliteLike } from "./handleSqliteLike"
+import { handleWhere } from "./handleWhere"
+import { UnexpectedValueError } from "../error"
 import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
 
-interface QueryStringParser<T> {
+export interface QueryStringParser<T> {
   data: T
   errors: Error[]
   orm: "sequelize"
-}
-
-function handleSqliteLike(querystring: string, dbType: string): string {
-  // if not postgres (sqlite)
-  // 1. throw error if like is used (temporary)
-  // 2. ilike needs to be changed to like before parsing query
-  // 3. TODO - HATCH-329 if query includes an array, it needs to be changed to an OR query
-  // (sqlite doesn't support Op.any like postgres)
-  if (dbType === "sqlite") {
-    if (querystring.includes("[$like]")) {
-      throw new HatchifyError({
-        code: codes.ERR_INVALID_PARAMETER,
-        title: "SQLITE does not support like",
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        detail: "SQLITE does not support like. Please use ilike",
-        parameter: querystring,
-      })
-    }
-
-    return querystring.replaceAll("[$ilike]", "[$like]")
-  }
-
-  return querystring
 }
 
 export function buildFindOptions(
@@ -49,9 +29,8 @@ export function buildFindOptions(
   querystring: string,
   id?: Identifier,
 ): QueryStringParser<FindOptions> {
-  const ops: QueryStringParser<FindOptions> = querystringParser.parse(
-    handleSqliteLike(querystring, hatchify.orm.getDialect()),
-  )
+  const dialect = hatchify.orm.getDialect() as Dialect
+  let ops: QueryStringParser<FindOptions> = querystringParser.parse(querystring)
 
   if (ops.errors.length) {
     throw ops.errors.map(
@@ -67,20 +46,12 @@ export function buildFindOptions(
     return ops
   }
 
-  Object.keys(ops.data.where || {}).forEach((attribute) => {
-    if (attribute !== "id" && !model.attributes[attribute]) {
-      ops.errors.push(
-        new UnexpectedValueError({
-          detail: `URL must have 'filter[x]' where 'x' is one of ${Object.keys(
-            model.attributes,
-          )
-            .map((attribute) => `'${attribute}'`)
-            .join(", ")}.`,
-          parameter: `filter[${attribute}]`,
-        }),
-      )
-    }
-  })
+  ops = handleWhere(ops, model)
+
+  if (dialect === "sqlite") {
+    ops = handleSqliteDateNestedColumns(ops, dialect)
+    ops = handleSqliteLike(ops, dialect)
+  }
 
   if (Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {

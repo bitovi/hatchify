@@ -1,6 +1,6 @@
 import { getPartialOrm } from "./getPartialOrm"
 import type { PartialEnumProps } from "./types"
-import { HatchifyInvalidInputError } from "../../types"
+import { HatchifyInvalidSchemaError } from "../../types"
 
 describe("getPartialOrm", () => {
   const values = ["foo", "bar"]
@@ -37,37 +37,55 @@ describe("getPartialOrm", () => {
     )
   })
 
+  it("handles default", () => {
+    expect(
+      getPartialOrm({ values, default: undefined }).sequelize.defaultValue,
+    ).toBeUndefined()
+    expect(
+      getPartialOrm({ values, default: null }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      getPartialOrm({ values, default: "foo" }).sequelize.defaultValue,
+    ).toBe("foo")
+
+    const func = () => "bar"
+
+    expect(
+      getPartialOrm({ values, default: func }).sequelize.defaultValue,
+    ).toEqual(func)
+  })
+
   it("handles invalid values", () => {
     expect(() => getPartialOrm({} as unknown as PartialEnumProps)).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
       getPartialOrm({ values: null } as unknown as PartialEnumProps),
     ).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
       getPartialOrm({ values: 1 } as unknown as PartialEnumProps),
     ).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
       getPartialOrm({ values: "foo" } as unknown as PartialEnumProps),
     ).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
       getPartialOrm({ values: [] } as unknown as PartialEnumProps),
     ).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )

@@ -28,7 +28,7 @@ export function fieldsToQueryParam(
     }
 
     if (schemaMap[field] === undefined) {
-      throw new Error(`"${field}" is not a valid schema`)
+      // throw new Error(`"${field}" is not a valid schema`) // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
     }
 
     fieldsObj[schemaMap[field].type] = fields[field]
@@ -182,6 +182,7 @@ export function getQueryParams(
     filter?: Filters
     page?: unknown
   },
+  baseFilter?: Filters,
 ): string {
   const params = []
   const { fields, include, sort, filter, page } = query
@@ -194,6 +195,12 @@ export function getQueryParams(
   }
 
   if (fields) {
+    if (!isFields(fields)) {
+      throw new Error(
+        "fields must be an object of `{ [schemaName]: string[] }`",
+      )
+    }
+
     const fieldsParam = fieldsToQueryParam(
       schemaMap,
       allSchemas,
@@ -209,6 +216,13 @@ export function getQueryParams(
     const sortParam = sortToQueryParam(sort)
     if (sortParam) {
       params.push(sortParam)
+    }
+  }
+
+  if (baseFilter) {
+    const baseFilterParam = filterToQueryParam(baseFilter)
+    if (baseFilterParam) {
+      params.push(baseFilterParam)
     }
   }
 
@@ -228,3 +242,6 @@ export function getQueryParams(
 
   return params.length ? `?${params.join("&")}` : ""
 }
+
+export const isFields = (query: unknown): query is Fields =>
+  typeof query === "object" && query !== null && !Array.isArray(query)

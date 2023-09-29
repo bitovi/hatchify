@@ -1,6 +1,18 @@
-export type ValueInRequest = number | string | Date | object | null | undefined
+export type ValueInRequest =
+  | boolean
+  | number
+  | string
+  | Date
+  | object
+  | null
+  | undefined
+
+export type UserValue = ValueInRequest
+
+export type SerializedValue = number | string | object | null
 
 export * from "../assembler/types"
+export * from "../relationships/types"
 
 export class HatchifyCoerceError extends Error {
   constructor(message: string) {
@@ -8,28 +20,31 @@ export class HatchifyCoerceError extends Error {
   }
 }
 
-export class HatchifyInvalidInputError extends Error {
+export class HatchifyInvalidSchemaError extends Error {
   constructor(message: string) {
     super(message)
   }
 }
 
-export interface PartialDataTypeProps {
+export interface PartialDataTypeProps<PrimitiveType> {
   primary?: boolean
   required?: boolean
+  default?: PrimitiveType | (() => PrimitiveType) | null
 }
 
-export interface PartialControlType {
-  type: string
+export type PartialControlType<PrimitiveType> = {
+  type: "Boolean" | "Number" | "String" | "Datetime" | "Dateonly"
   allowNull?: boolean
   primary?: boolean
+  default?: PrimitiveType | (() => PrimitiveType) | null
 }
 
-export interface PartialSequelizeDataType<PrimitiveType> {
+export interface PartialSequelizeDataType<ArgsType, PrimitiveType> {
   type: string
-  typeArgs: PrimitiveType
+  typeArgs: ArgsType
   allowNull?: boolean
   primaryKey?: boolean
+  defaultValue?: PrimitiveType | (() => PrimitiveType) | null
 }
 
 export interface PartialAttribute<
@@ -65,6 +80,18 @@ export interface FinalAttribute<
   > {
   orm: FinalORMTypeTemplate
   control: Required<PartialControlTypeTemplate>
+  // todo: client-side optional until types catch up
+  setClientPropertyValue?: (userValue: UserValue) => PrimitiveType | null
+  serializeClientPropertyValue?: (
+    value: PrimitiveType | null,
+  ) => SerializedValue
+  setClientQueryFilterValue?: (queryValue: UserValue) => PrimitiveType | null
+  serializeClientQueryFilterValue?: (
+    value: PrimitiveType | null,
+  ) => SerializedValue
+  setClientPropertyValueFromResponse?: (
+    jsonValue: ValueInRequest,
+  ) => PrimitiveType | null
   setORMPropertyValue: (jsonValue: ValueInRequest) => PrimitiveType | null
   setORMQueryFilterValue: (queryValue: string) => PrimitiveType | null
   serializeORMPropertyValue: (

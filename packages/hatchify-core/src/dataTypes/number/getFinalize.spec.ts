@@ -1,15 +1,15 @@
-import { integer } from "../integer"
+import { number } from "./index"
 
 describe("getFinalize", () => {
   it("finalizes a partial attribute", () => {
-    expect(integer()).toEqual({
-      name: "integer()",
+    expect(number()).toEqual({
+      name: "number()",
       control: {
         allowNull: undefined,
         max: undefined,
         min: undefined,
         primary: undefined,
-        step: 1,
+        step: undefined,
         type: "Number",
       },
       orm: {
@@ -17,7 +17,7 @@ describe("getFinalize", () => {
           allowNull: undefined,
           autoIncrement: undefined,
           primaryKey: undefined,
-          type: "INTEGER",
+          type: "DECIMAL",
           typeArgs: [],
         },
       },

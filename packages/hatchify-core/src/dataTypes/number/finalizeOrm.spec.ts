@@ -5,7 +5,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Number",
+          type: "DECIMAL",
           typeArgs: [],
           allowNull: undefined,
         },
@@ -14,7 +14,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Number",
+          type: "DECIMAL",
           typeArgs: [],
           allowNull: null as unknown as boolean,
         },
@@ -23,7 +23,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Number",
+          type: "DECIMAL",
           typeArgs: [],
           allowNull: true,
         },
@@ -32,7 +32,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Number",
+          type: "DECIMAL",
           typeArgs: [],
           allowNull: false,
         },
@@ -44,7 +44,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Number",
+          type: "DECIMAL",
           typeArgs: [],
           primaryKey: undefined,
         },
@@ -53,7 +53,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Number",
+          type: "DECIMAL",
           typeArgs: [],
           primaryKey: null as unknown as boolean,
         },
@@ -62,7 +62,7 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Number",
+          type: "DECIMAL",
           typeArgs: [],
           primaryKey: true,
         },
@@ -71,11 +71,53 @@ describe("finalizeOrm", () => {
     expect(
       finalizeOrm({
         sequelize: {
-          type: "Number",
+          type: "DECIMAL",
           typeArgs: [],
           primaryKey: false,
         },
       }).sequelize.primaryKey,
     ).toBe(false)
+  })
+
+  it("handles default", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          defaultValue: undefined,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          defaultValue: null,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          defaultValue: 1,
+        },
+      }).sequelize.defaultValue,
+    ).toBe(1)
+
+    const func = () => 1
+
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          defaultValue: func,
+        },
+      }).sequelize.defaultValue,
+    ).toEqual(func)
   })
 })

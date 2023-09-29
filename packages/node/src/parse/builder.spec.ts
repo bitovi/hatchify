@@ -16,6 +16,8 @@ describe("builder", () => {
     attributes: {
       name: "STRING",
     },
+    belongsTo: [{ target: "User", options: { as: "user" } }],
+    hasMany: [{ target: "Todo", options: { as: "todos" } }],
   }
   const Todo: HatchifyModel = {
     name: "Todo",
@@ -42,7 +44,7 @@ describe("builder", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Todo.name$": { [Op.eq]: "laundry" } },
           order: [
             ["due_date", "DESC"],
             ["name", "ASC"],
@@ -83,6 +85,39 @@ describe("builder", () => {
           where: { id: 1 },
           limit: 10,
           offset: 0,
+        },
+        errors: [],
+        orm: "sequelize",
+      })
+    })
+
+    it("handles complex filters", () => {
+      const options = buildFindOptions(
+        hatchify,
+        User,
+        "include=parent,todos&filter[name]=Justin&filter[todos.importance]=1&filter[parent.parent.name]=John",
+        1,
+      )
+
+      expect(options).toEqual({
+        data: {
+          where: {
+            [Op.and]: [
+              {
+                [Op.and]: [
+                  { "$User.name$": { [Op.eq]: "Justin" } },
+                  { "$todos.importance$": { [Op.eq]: 1 } },
+                ],
+              },
+              {
+                "$parent.parent.name$": { [Op.eq]: "John" },
+              },
+            ],
+          },
+          include: [
+            { association: "parent", include: [] },
+            { association: "todos", include: [] },
+          ],
         },
         errors: [],
         orm: "sequelize",
@@ -162,6 +197,17 @@ describe("builder", () => {
         new UnexpectedValueError({
           detail: `URL must have 'filter[x]' where 'x' is one of 'name', 'due_date', 'importance'.`,
           parameter: "filter[namee]",
+        }),
+      ])
+    })
+
+    it("handles unknown relationships", async () => {
+      await expect(async () =>
+        buildFindOptions(hatchify, Todo, "filter[invalid.name]=invalid"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'filter[invalid.name]' where 'invalid' is one of the includes.`,
+          parameter: `filter[invalid.name]`,
         }),
       ])
     })

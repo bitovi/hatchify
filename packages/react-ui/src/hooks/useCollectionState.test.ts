@@ -43,6 +43,9 @@ describe("useCollectionState", () => {
       useCollectionState(schemas, schemas.Todo.name, fakeRestClient, {
         defaultSelected: { all: false, ids: [] },
         onSelectedChange: vi.fn(),
+        defaultPage: { size: 1, number: 2 },
+        defaultSort: { direction: "desc", sortBy: "id" },
+        baseFilter: [{ field: "id", value: "1", operator: "$eq" }],
       }),
     )
 
@@ -71,15 +74,9 @@ describe("useCollectionState", () => {
       },
       fields: undefined,
       include: undefined,
-      page: {
-        size: 10,
-        number: 1,
-      },
+      page: { size: 1, number: 2 },
       setPage: expect.any(Function),
-      sort: {
-        direction: undefined,
-        sortBy: undefined,
-      },
+      sort: { direction: "desc", sortBy: "id" },
       setSort: expect.any(Function),
       selected: {
         all: false,

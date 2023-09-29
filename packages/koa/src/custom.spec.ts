@@ -20,7 +20,6 @@ describe("Internal Tests", () => {
       },
     },
   }
-
   const Model2: HatchifyModel = {
     name: "Model2",
     attributes: {
@@ -34,7 +33,6 @@ describe("Internal Tests", () => {
       },
     },
   }
-
   const Model3: HatchifyModel = {
     name: "Model3",
     attributes: {
@@ -52,11 +50,9 @@ describe("Internal Tests", () => {
   it("should handle custom user routes", async () => {
     const app = new Koa()
     const router = new KoaRouter()
-
     const hatchify = new Hatchify([Model, Model2, Model3], {
       prefix: "/api",
     })
-
     const server = createServer(app)
     await hatchify.createDatabase()
 
@@ -105,9 +101,7 @@ describe("Internal Tests", () => {
   it("should handle allModel custom routes", async () => {
     const app = new Koa()
     const router = new KoaRouter()
-
     const hatchify = new Hatchify([Model, Model2, Model3], {})
-
     const server = createServer(app)
     await hatchify.createDatabase()
 
@@ -134,9 +128,7 @@ describe("Internal Tests", () => {
   it("should handle custom user auth example", async () => {
     const app = new Koa()
     const router = new KoaRouter()
-
     const hatchify = new Hatchify([Model], { prefix: "/api" })
-
     const server = createServer(app)
     await hatchify.createDatabase()
 
@@ -173,9 +165,7 @@ describe("Internal Tests", () => {
   it("should handle custom user auth missing header", async () => {
     const app = new Koa()
     const router = new KoaRouter()
-
     const hatchify = new Hatchify([Model], { prefix: "/api" })
-
     const server = createServer(app)
     await hatchify.createDatabase()
 

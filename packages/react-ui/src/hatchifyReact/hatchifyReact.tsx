@@ -1,6 +1,13 @@
 import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
-import type { Source, Schemas, Fields, Include } from "@hatchifyjs/rest-client"
+import type {
+  Fields,
+  Filters,
+  Include,
+  PaginationObject,
+  Schemas,
+  Source,
+} from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
 import type { CollectionState } from "../hooks/useCollectionState"
@@ -10,11 +17,15 @@ import type {
   OverwriteColumnProps,
 } from "../components/HatchifyColumn"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import { transformSchema } from "@hatchifyjs/rest-client"
+import {
+  schemaNameWithNamespace,
+  transformSchema,
+} from "@hatchifyjs/rest-client"
 import { HatchifyCollection } from "../components/HatchifyCollection"
 import { HatchifyColumn } from "../components/HatchifyColumn"
 import { HatchifyEmpty } from "../components/HatchifyEmpty"
 import useCollectionState from "../hooks/useCollectionState"
+import type { SortObject } from "../presentation"
 
 type HatchifyCollectionProps = Omit<
   InternalHatchifyCollectionProps,
@@ -36,7 +47,7 @@ type Components = {
   }
 }
 
-type HatchifyApp = {
+export type HatchifyApp = {
   components: Components
   model: ReactRest<SchemaRecord>
   state: {
@@ -46,11 +57,17 @@ type HatchifyApp = {
         onSelectedChange,
         fields,
         include,
+        defaultPage,
+        defaultSort,
+        baseFilter,
       }?: {
         defaultSelected?: HatchifyCollectionProps["defaultSelected"]
         onSelectedChange?: HatchifyCollectionProps["onSelectedChange"]
         fields?: Fields
         include?: Include
+        defaultPage?: PaginationObject
+        defaultSort?: SortObject
+        baseFilter?: Filters
       }) => CollectionState
     }
   }
@@ -63,16 +80,18 @@ export function hatchifyReact(
   const reactRest = hatchifyReactRest(legacySchemas, dataSource)
 
   const schemas = Object.values(legacySchemas).reduce((acc, schema) => {
-    acc[schema.name] = transformSchema(schema)
+    acc[schemaNameWithNamespace(schema)] = transformSchema(schema)
     return acc
   }, {} as Schemas)
 
   const components = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] = {
+    const schemaName = schemaNameWithNamespace(schema)
+
+    acc[schemaName] = {
       Collection: (props) => (
         <HatchifyCollection
           allSchemas={schemas}
-          schemaName={schema.name}
+          schemaName={schemaName}
           restClient={reactRest}
           {...props}
         />
@@ -81,7 +100,7 @@ export function hatchifyReact(
         // todo fix ts!!!
         <HatchifyColumn
           allSchemas={schemas}
-          schemaName={schema.name}
+          schemaName={schemaName}
           {...props}
         />
       ),
@@ -92,18 +111,26 @@ export function hatchifyReact(
   }, {} as HatchifyApp["components"])
 
   const state = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] = {
+    const schemaName = schemaNameWithNamespace(schema)
+
+    acc[schemaName] = {
       useCollectionState: ({
         defaultSelected,
         onSelectedChange,
         fields,
         include,
+        defaultPage,
+        defaultSort,
+        baseFilter,
       } = {}) =>
         useCollectionState(schemas, schema.name, reactRest, {
           defaultSelected,
           onSelectedChange,
           fields,
           include,
+          defaultPage,
+          defaultSort,
+          baseFilter,
         }),
     }
     return acc

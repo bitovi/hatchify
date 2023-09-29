@@ -6,6 +6,7 @@ export function finalizeOrm({ sequelize }: PartialEnumORM): FinalEnumORM {
       ...sequelize,
       allowNull: sequelize.allowNull !== false && !sequelize.primaryKey,
       primaryKey: !!sequelize.primaryKey,
+      defaultValue: sequelize.defaultValue ?? null,
     },
   }
 }

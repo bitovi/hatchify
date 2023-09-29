@@ -12,7 +12,6 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [],
             allowNull: undefined,
             primaryKey: undefined,
           },
@@ -23,6 +22,7 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: undefined,
+          regex: undefined,
         },
         finalize: expect.any(Function),
       })
@@ -45,6 +45,7 @@ describe("text", () => {
       // setORMPropertyValue
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
@@ -61,9 +62,9 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [255],
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -72,6 +73,8 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: false,
+          default: null,
+          regex: /(.*?)/,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -89,7 +92,6 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [],
             allowNull: false,
             primaryKey: undefined,
           },
@@ -100,6 +102,7 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: undefined,
+          regex: undefined,
         },
         finalize: expect.any(Function),
       })
@@ -125,6 +128,9 @@ describe("text", () => {
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
@@ -146,9 +152,9 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [255],
             allowNull: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
@@ -157,6 +163,8 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: false,
+          default: null,
+          regex: /(.*?)/,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
@@ -174,7 +182,6 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [],
             allowNull: undefined,
             primaryKey: true,
           },
@@ -185,6 +192,7 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: true,
+          regex: undefined,
         },
         finalize: expect.any(Function),
       })
@@ -196,6 +204,8 @@ describe("text", () => {
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // todo: HATCH-347
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
@@ -210,6 +220,9 @@ describe("text", () => {
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
       )
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
@@ -231,9 +244,9 @@ describe("text", () => {
         orm: {
           sequelize: {
             type: "TEXT",
-            typeArgs: [255],
             allowNull: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
@@ -242,6 +255,8 @@ describe("text", () => {
           min: 0,
           max: Infinity,
           primary: true,
+          default: null,
+          regex: /(.*?)/,
         },
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),

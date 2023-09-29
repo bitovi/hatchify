@@ -98,17 +98,17 @@ describe("Naming rules", () => {
       ],
     },
   ]
-
   //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-310
-  /* const pluralNameTestCases: TestCase[] = [
+  const pluralNameTestCases: TestCase[] = [
     {
-      description: "Ensure pluralName creates route with correct name (Schema.pluralName)",
+      description:
+        "Ensure pluralName creates route with correct name (Schema.pluralName)",
       models: [
         {
           name: "SalesPerson",
           pluralName: "SalesPeople",
           attributes: {
-            firstName: "Mary",
+            name: "STRING",
           },
         },
       ],
@@ -130,13 +130,11 @@ describe("Naming rules", () => {
               jsonapi: {
                 version: "1.0",
               },
-              meta: { unpaginatedCount: 1 },
               data: {
-                  type: "SalesPerson",
-                  id: "1",
-                  attributes: { name: "Mary" },
-                },
-              ,
+                type: "SalesPerson",
+                id: "1",
+                attributes: { name: "Mary" },
+              },
             },
             status: 200,
           },
@@ -154,8 +152,7 @@ describe("Naming rules", () => {
       ],
       database: [],
     },
-  ] */
-
+  ]
   const attributeNameTestCases: TestCase[] = [
     {
       description:
@@ -203,7 +200,6 @@ describe("Naming rules", () => {
       ],
     },
   ]
-
   //Temporarily skipped, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-320
   const belongsToTestCases: TestCase[] = [
     {
@@ -376,7 +372,6 @@ describe("Naming rules", () => {
       ],
     },
   ]
-
   const belongsToManyTestCases: TestCase[] = [
     {
       description:
@@ -651,7 +646,6 @@ describe("Naming rules", () => {
       ],
     },
   ]
-
   const hasManyTestCases: TestCase[] = [
     {
       description:
@@ -910,10 +904,9 @@ describe("Naming rules", () => {
       ],
     },
   ]
-
   const [skippedCases, cases] = [
     ...schemaNameTestCases,
-    /*  ...pluralNameTestCases,*/
+    ...pluralNameTestCases,
     ...attributeNameTestCases,
     ...belongsToTestCases,
     ...hasManyTestCases,
@@ -946,7 +939,6 @@ describe("Naming rules", () => {
       for (const request of requests) {
         const { expected, options, url } = request
         const { body: expectedBody, status: expectedStatus } = expected
-
         const { body, status } = await fetch(url, options)
 
         expect(body).toStrictEqual(expectedBody)
@@ -955,11 +947,9 @@ describe("Naming rules", () => {
 
       for (const table of database) {
         const { columns: expectedColumns, tableName } = table
-
         const [dbResult] = await hatchify._sequelize.query(
           `SELECT name FROM pragma_table_info("${tableName}")`,
         )
-
         const columns = dbResult.map((row) => row.name)
 
         expect(columns).toEqual(expect.arrayContaining(expectedColumns))

@@ -1,6 +1,6 @@
 import { getPartialControl } from "./getPartialControl"
 import type { PartialEnumProps } from "./types"
-import { HatchifyInvalidInputError } from "../../types"
+import { HatchifyInvalidSchemaError } from "../../types"
 
 describe("getPartialControl", () => {
   const values = ["foo", "bar"]
@@ -29,37 +29,49 @@ describe("getPartialControl", () => {
     expect(getPartialControl({ values, primary: false }).primary).toBe(false)
   })
 
+  it("handles default", () => {
+    expect(
+      getPartialControl({ values, default: undefined }).default,
+    ).toBeUndefined()
+    expect(getPartialControl({ values, default: null }).default).toBeNull()
+    expect(getPartialControl({ values, default: "foo" }).default).toBe("foo")
+
+    const func = () => "bar"
+
+    expect(getPartialControl({ values, default: func }).default).toEqual(func)
+  })
+
   it("handles invalid values", () => {
     expect(() => getPartialControl({} as unknown as PartialEnumProps)).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
       getPartialControl({ values: null } as unknown as PartialEnumProps),
     ).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
       getPartialControl({ values: 1 } as unknown as PartialEnumProps),
     ).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
       getPartialControl({ values: "foo" } as unknown as PartialEnumProps),
     ).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
       getPartialControl({ values: [] } as unknown as PartialEnumProps),
     ).toThrow(
-      new HatchifyInvalidInputError(
+      new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )

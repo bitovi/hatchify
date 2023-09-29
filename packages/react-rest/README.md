@@ -19,7 +19,6 @@
     - [Fetching users and populating a select](#fetching-users-and-populating-a-select)
     - [Creating a todo with a user](#creating-a-todo-with-a-user)
 - [Alternatives to hooks](#alternatives-to-hooks)
-  - [Subscriptions](#subscriptions)
 
 <a id="what-is-react-rest?"></a>
 
@@ -804,7 +803,7 @@ For more information on react-rest, read on.
 
 ## Alternatives to hooks
 
-Sometimes we need to fetch data outside of our React components. For these cases, react-rest provides us with promise-based equivalents as well as subscribe functions for when we want to listen to any changes.
+Sometimes we need to fetch data outside of our React components. For these cases, react-rest provides us with promise-based equivalents.
 
 | hooks        | promises  |
 | ------------ | --------- |
@@ -813,23 +812,3 @@ Sometimes we need to fetch data outside of our React components. For these cases
 | useDeleteOne | deleteOne |
 | useAll       | findAll   |
 | useOne       | findOne   |
-
-<a id="subscriptions"></a>
-
-### Subscriptions
-
-To fire a callback whenever data is manipulated, you can use the subscribe functions:
-
-```ts
-const unsubscribe = hatchedReactRest.Todo.subscribeToAll(query, (data) => {
-  console.log("changes:", data)
-})
-```
-
-```ts
-const unsubscribe = hatchedReactRest.Todo.subscribeToOne(id, (data) => {
-  console.log("changes:", data)
-})
-```
-
-> **Note:** we named the return of the subscription method `unsubscribe` above because it's a function that can be called to do just that; i.e. `unsubscribe()`

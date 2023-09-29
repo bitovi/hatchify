@@ -49,6 +49,7 @@ describe("enumerate", () => {
       // setORMPropertyValue
       expect(setORMPropertyValue("valid")).toBe("valid")
       expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
@@ -74,12 +75,14 @@ describe("enumerate", () => {
             typeArgs: values,
             allowNull: true,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
           type: "String",
           allowNull: true,
           primary: false,
+          default: null,
           values,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -137,6 +140,9 @@ describe("enumerate", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
@@ -166,12 +172,14 @@ describe("enumerate", () => {
             typeArgs: values,
             allowNull: false,
             primaryKey: false,
+            defaultValue: null,
           },
         },
         control: {
           type: "String",
           allowNull: false,
           primary: false,
+          default: null,
           values,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -229,6 +237,9 @@ describe("enumerate", () => {
       expect(() => setORMPropertyValue(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
       expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
         new HatchifyCoerceError("as a string"),
       )
@@ -258,12 +269,14 @@ describe("enumerate", () => {
             typeArgs: values,
             allowNull: false,
             primaryKey: true,
+            defaultValue: null,
           },
         },
         control: {
           type: "String",
           allowNull: false,
           primary: true,
+          default: null,
           values,
         },
         serializeORMPropertyValue: expect.any(Function),

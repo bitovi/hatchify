@@ -20,11 +20,12 @@ describe("convertHatchifyModels", () => {
     const models = convertHatchifyModels(sequelize, serializer, { User })
 
     expect(models).toEqual({
-      associationsLookup: {},
+      associationsLookup: { User: {} },
       models: {
         User: expect.any(Function),
       },
       virtuals: {},
+      plurals: {},
     })
   })
 })
