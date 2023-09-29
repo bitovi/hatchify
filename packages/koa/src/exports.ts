@@ -2,8 +2,9 @@ import type { Middleware } from "koa"
 
 export * from "./koa"
 
-export { DataTypes, Op } from "@hatchifyjs/node"
+export { DataTypes, Op, UnexpectedValueError } from "@hatchifyjs/node"
 export type {
+  HatchifyError,
   HatchifyModel,
   HatchifyOptions,
   BelongsToManyResult,

@@ -7,28 +7,28 @@ import { handleSqliteLike } from "./handleSqliteLike"
 describe("handleSqliteLike", () => {
   const likeQuery: QueryStringParser<FindOptions> = {
     data: {
-      where: { name: { [Op.like]: "test%" } },
+      where: { "$User.name$": { [Op.like]: "test%" } },
     },
     errors: [],
     orm: "sequelize",
   }
   const likeAnyQuery: QueryStringParser<FindOptions> = {
     data: {
-      where: { name: { [Op.like]: { [Op.any]: ["test", "foo"] } } },
+      where: { "$User.name$": { [Op.like]: { [Op.any]: ["test", "foo"] } } },
     },
     errors: [],
     orm: "sequelize",
   }
   const iLikeQuery: QueryStringParser<FindOptions> = {
     data: {
-      where: { name: { [Op.iLike]: "test" } },
+      where: { "$User.name$": { [Op.iLike]: "test" } },
     },
     errors: [],
     orm: "sequelize",
   }
   const iLikeAnyQuery: QueryStringParser<FindOptions> = {
     data: {
-      where: { name: { [Op.iLike]: { [Op.any]: ["test", "foo"] } } },
+      where: { "$User.name$": { [Op.iLike]: { [Op.any]: ["test", "foo"] } } },
     },
     errors: [],
     orm: "sequelize",
@@ -56,7 +56,7 @@ describe("handleSqliteLike", () => {
       expect(handleSqliteLike(likeAnyQuery, "sqlite")).toEqual({
         data: {
           where: {
-            name: {
+            "$User.name$": {
               [Op.or]: [{ [Op.like]: "test" }, { [Op.like]: "foo" }],
             },
           },
@@ -75,7 +75,7 @@ describe("handleSqliteLike", () => {
                 attribute: {
                   args: [
                     {
-                      col: "name",
+                      col: "`User.name`",
                     },
                   ],
                   fn: "upper",
@@ -100,7 +100,7 @@ describe("handleSqliteLike", () => {
                 attribute: {
                   args: [
                     {
-                      col: "name",
+                      col: "`User.name`",
                     },
                   ],
                   fn: "upper",
@@ -112,7 +112,7 @@ describe("handleSqliteLike", () => {
                 attribute: {
                   args: [
                     {
-                      col: "name",
+                      col: "`User.name`",
                     },
                   ],
                   fn: "upper",

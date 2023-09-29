@@ -249,7 +249,7 @@ const hatchedKoa = hatchifyKoa([Todo, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: "example.sqlite",
+    storage: ":memory:",
   },
 })
 

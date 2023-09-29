@@ -44,7 +44,7 @@ describe("builder", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Todo.name$": { [Op.eq]: "laundry" } },
           order: [
             ["due_date", "DESC"],
             ["name", "ASC"],
@@ -94,7 +94,7 @@ describe("builder", () => {
     it("handles complex filters", () => {
       const options = buildFindOptions(
         hatchify,
-        Todo,
+        User,
         "include=parent,todos&filter[name]=Justin&filter[todos.importance]=1&filter[parent.parent.name]=John",
         1,
       )
@@ -105,7 +105,7 @@ describe("builder", () => {
             [Op.and]: [
               {
                 [Op.and]: [
-                  { name: { [Op.eq]: "Justin" } },
+                  { "$User.name$": { [Op.eq]: "Justin" } },
                   { "$todos.importance$": { [Op.eq]: 1 } },
                 ],
               },
