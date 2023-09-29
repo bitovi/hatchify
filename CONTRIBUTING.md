@@ -153,7 +153,7 @@ A list of all validations that can be used in an attribute's type configuration 
 
 2. To create and run Postgres database, run the following command:
 
-   ``` bash
+   ```bash
    docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
    ```
 
@@ -166,12 +166,11 @@ A list of all validations that can be used in an attribute's type configuration 
 
 To check that it worked, run the command:
 
-``` bash
+```bash
 docker ps -a
 ```
 
 You should see your container details, and the status should be "Up". You can stop your container with the command: `docker stop ${containerId}` and start it again with the command: `docker start ${containerId}`.
-
 
 ##### Create a Database
 
@@ -184,14 +183,14 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 2. Configure a postgres connection. The following is what needs to be specified to connect to the Postgres in docker:
 
-  ![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
+![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
 
-  __Click__ the "Test Connection" button to test the connection. If successful, click __Finish__ and go onto the next step.
+**Click** the "Test Connection" button to test the connection. If successful, click **Finish** and go onto the next step.
 
-  If the connection is not successful, make sure you aren't running a
-  conflicting Postgres instance (`lsof -i tcp:5432`).  
+If the connection is not successful, make sure you aren't running a
+conflicting Postgres instance (`lsof -i tcp:5432`).
 
-  For more information on creating a connection, [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/) shows how to create a connection in DBeaver.
+For more information on creating a connection, [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/) shows how to create a connection in DBeaver.
 
 3. Select "Create New Database" on the postgres connection's _Databases_ folder.
 
@@ -205,7 +204,7 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 1. Run the following command in the root directory of your project to create a new .env file to store your credentials:
 
-   ``` bash
+   ```bash
    echo > .env
    ```
 
@@ -398,7 +397,6 @@ npx nx eslint @hatchifyjs/koa
 │       ├── tsconfig.json
 │       ├── tsconfig.node.json
 │       └── vite.config.ts
-├── example.sqlite                              # Your local SQLite database data file
 ├── nx.json                                     # NX configuration (Package-Based Repo)
 ├── package-lock.json
 ├── package.json
@@ -532,3 +530,63 @@ npx nx eslint @hatchifyjs/koa
 │   └── getting-started-react-rest.spec.ts
 └── tsconfig.json
 ```
+
+## Making releases
+
+**ALL packages** MUST follow the Semantic Versioning guidelines in the form of `MAJOR.MINOR.PATCH` for
+
+- `MAJOR` version when you make incompatible API changes,
+- `MINOR` version when you add functionality in a backwards-compatible manner, and
+- `PATCH` version when you make backwards-compatible bug fixes.
+
+Before making any release please make sure that:
+
+- You have write access to the GitHub repository you want to publish.
+- Have an [npm](https://www.npmjs.com) account and are logged in on the CLI tool (`npm whoami`).
+- Your user is a collaborator on npm. You can ask an existing collaborator to add you. Existing collaborators can be listed via `npm owner ls @hatchify/<packagename>` or on the npm module page (e.g. [@hatchifyjs/koa](https://www.npmjs.com/package/@hatchifyjs/koa)).
+
+### Releasing Hatchify packages
+
+All Hatchify packages have the same structure which allows making releases through npm scripts.
+
+To make a release:
+
+1. Move to the `master` branch
+2. Fetch all latest changes from the repository
+3. Reinstall all Node modules in their latest version
+
+   ```
+   git checkout master
+   git fetch --all && git rebase
+   npm cache verify
+   rm -rf node_modules
+   npm install
+   ```
+
+4. Then run `npm run release:<versiontype>`. For example, to make a `PATCH` release:
+
+   ```
+   npm run release:patch
+   ```
+
+This will run the tests, build, bump the version number accordingly and publish the module to [npm](https://www.npmjs.com/).
+
+#### Making pre-releases
+
+If you’re already a branch being used for pre-releases, you can run the following to make the next pre-release:
+
+```
+npm run release:pre
+```
+
+If you’re making the first pre-release, you can run one of the following commands, depending on how you need to bump the version:
+
+- Major: `npm version premajor --preid=pre && npm publish --tag=pre`
+- Minor: `npm version preminor --preid=pre && npm publish --tag=pre`
+- Patch: `npm version prepatch --preid=pre && npm publish --tag=pre`
+
+#### Publishing release notes
+
+After you have released the package, you will need to update the release on GitHub. Make sure the newly created tag has been pushed to GitHub (`git push --tags`).
+
+Then go to `https://github.com/bitovi/hatchify/releases` and edit the most recent tag. Give it a title and add any notes or links to issues, then click `Update release`.

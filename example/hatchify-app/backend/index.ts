@@ -15,7 +15,7 @@ const hatchedKoa = hatchifyKoa(
     prefix: "/api",
     database: {
       dialect: "sqlite",
-      storage: "example.sqlite",
+      storage: ":memory:",
     },
   },
 )

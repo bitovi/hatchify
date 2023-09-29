@@ -1,4 +1,4 @@
-import type { Dialect, FindOptions } from "sequelize"
+import type { FindOptions } from "sequelize"
 
 import type { QueryStringParser } from "./builder"
 import { getColumnName } from "./getColumnName"
@@ -13,11 +13,10 @@ interface Include {
 export function handleWhere(
   ops: QueryStringParser<FindOptions>,
   model: HatchifyModel,
-  dialect: Dialect,
 ): QueryStringParser<FindOptions> {
   const errors: Error[] = []
 
-  const where = walk<typeof ops.data.where>(ops.data.where, (key) => {
+  const where = walk(ops.data.where, (key, value) => {
     if (typeof key !== "string") {
       return [null, key]
     }
@@ -36,7 +35,7 @@ export function handleWhere(
         )
       }
 
-      return [null, key]
+      return [null, `$${getColumnName(`${model.name}.${key}`)}$`]
     }
 
     const [relationshipName] = key.split(".")

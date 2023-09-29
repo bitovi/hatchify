@@ -7,14 +7,14 @@ const [john, jane] = [
   {
     name: "John",
     age: 25,
-    startDate: "2020-05-05",
+    startDate: "2020-05-05T00:00:00.000Z",
     onSite: true,
     manager: false,
   },
   {
     name: "Jane",
     age: 35,
-    startDate: "2021-01-05",
+    startDate: "2021-01-05T00:00:00.000Z",
     onSite: false,
     manager: false,
   },
@@ -191,19 +191,19 @@ const testCases = [
   {
     description: "returns correct data using the $gt operator with a date",
     operator: "$gt",
-    queryParam: "filter[startDate][$gt]=2020-12-12",
+    queryParam: "filter[startDate][$gt]=2020-12-12T00:00:00.000Z",
     expectedResult: [jane],
   },
   {
     description: "returns correct data using the $lt operator with a date",
     operator: "$lt",
-    queryParam: "filter[startDate][$lt]=2020-12-12",
+    queryParam: "filter[startDate][$lt]=2020-12-12T00:00:00.000Z",
     expectedResult: [john],
   },
   {
     description: "returns correct data using the $lte operator with a date",
     operator: "$lte",
-    queryParam: "filter[startDate][$lte]=2020-05-05",
+    queryParam: "filter[startDate][$lte]=2020-05-05T00:00:00.000Z",
     expectedResult: [john],
   },
   {
