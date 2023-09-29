@@ -597,31 +597,12 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         },
       })
       const { body } = await fetch(
-        "/api/users?include=todos&filter[name]=John&filter[todos.importance]=1",
+        "/api/todos?include=user&filter[importance][$eq]=1&filter[name][$ilike]=walk%25&filter[user.name][$ilike]=john%25",
       )
 
       expect(body).toEqual({
         jsonapi: { version: "1.0" },
         data: [
-          {
-            type: "User",
-            id: user.data.id,
-            attributes: {
-              name: "John",
-            },
-            relationships: {
-              todos: {
-                data: [
-                  {
-                    type: "Todo",
-                    id: todos[0].body.data.id,
-                  },
-                ],
-              },
-            },
-          },
-        ],
-        included: [
           {
             type: "Todo",
             id: todos[0].body.data.id,
@@ -629,6 +610,23 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               name: "Walk the dog",
               due_date: "2024-12-12T00:00:00.000Z",
               importance: 1,
+            },
+            relationships: {
+              user: {
+                data: {
+                  type: "User",
+                  id: user.data.id,
+                },
+              },
+            },
+          },
+        ],
+        included: [
+          {
+            type: "User",
+            id: user.data.id,
+            attributes: {
+              name: "John",
             },
           },
         ],

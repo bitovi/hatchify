@@ -62,7 +62,7 @@ describe("indexNamespace", () => {
           include: [{ association: "lipitorUser", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
 
@@ -125,7 +125,7 @@ describe("indexNamespace", () => {
           include: [{ association: "xanaxUser", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
 
@@ -193,7 +193,7 @@ describe("indexNamespace", () => {
           include: [{ association: "xanaxUser", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
 
@@ -415,7 +415,7 @@ describe("indexNamespace", () => {
         include: [{ association: "xanaxUser", include: [] }],
         limit: 5,
         offset: 10,
-        where: { name: { [Op.eq]: "laundry" } },
+        where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
       })
     })
   })
