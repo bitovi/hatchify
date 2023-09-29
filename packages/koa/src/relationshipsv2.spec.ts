@@ -1,10 +1,4 @@
-import {
-  belongsTo,
-  hasMany,
-  string,
-  uuid,
-  uuidv4,
-} from "@hatchifyjs/hatchify-core"
+import { belongsTo, hasMany, string, uuid, uuidv4 } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
 import {

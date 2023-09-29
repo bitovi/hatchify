@@ -5,8 +5,8 @@ import {
   hasMany,
   integer,
   string,
-} from "@hatchifyjs/hatchify-core"
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+} from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import { Op } from "sequelize"
 
 import { RelationshipPathError, UnexpectedValueError } from "../error"

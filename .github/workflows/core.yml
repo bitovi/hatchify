@@ -1,4 +1,4 @@
-name: "@hatchifyjs/hatchify-core"
+name: "@hatchifyjs/core"
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
       - name: Publish
         uses: ./.github/actions/job-publish
         with:
-          directory: hatchify-core
+          directory: core
           npm-token: ${{ secrets.NPM_TOKEN }}
           github-token: ${{ github.token }}
           segment: ${{ github.event.inputs.segment }}

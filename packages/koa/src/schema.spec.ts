@@ -9,7 +9,7 @@ import {
   string,
   text,
   uuid,
-} from "@hatchifyjs/hatchify-core"
+} from "@hatchifyjs/core"
 import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
 
 import {

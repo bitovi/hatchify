@@ -1,6 +1,6 @@
 import "sqlite3"
-import { string } from "@hatchifyjs/hatchify-core"
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+import { string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 
 import { Hatchify } from "./node"
 import { HatchifySymbolModel } from "./types"

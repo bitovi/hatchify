@@ -1,4 +1,4 @@
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
+import type { Schema as LegacySchema } from "@hatchifyjs/core"
 import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
 import type {
   Fields,

@@ -1,4 +1,4 @@
-import { string } from "@hatchifyjs/hatchify-core"
+import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 import KoaRouter from "@koa/router"
 import Koa from "koa"

@@ -1,4 +1,4 @@
-import type { FinalSchema } from "@hatchifyjs/hatchify-core"
+import type { FinalSchema } from "@hatchifyjs/core"
 import { omit, snakeCase } from "lodash"
 import { DataTypes } from "sequelize"
 import type { Model, ModelStatic, Sequelize } from "sequelize"

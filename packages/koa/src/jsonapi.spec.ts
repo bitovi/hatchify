@@ -1,4 +1,4 @@
-import { string } from "@hatchifyjs/hatchify-core"
+import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 import { Serializer } from "jsonapi-serializer"
 import Koa from "koa"

@@ -1,4 +1,4 @@
-import { isISO8601DatetimeString } from "@hatchifyjs/hatchify-core"
+import { isISO8601DatetimeString } from "@hatchifyjs/core"
 import type { Dialect, FindOptions } from "sequelize"
 
 import type { QueryStringParser } from "./builder"
