@@ -164,17 +164,22 @@ export function convertHatchifyModels(
             sourceKey: relationship.sourceKey,
           },
         )
+      } else if (type === "belongsTo") {
+        sequelize.models[getFullModelName(model)][type](
+          sequelize.models[targetSchema],
+          {
+            as: relationshipName,
+            foreignKey: relationship.sourceAttribute,
+            targetKey: relationship.targetAttribute,
+          },
+        )
       } else {
         sequelize.models[getFullModelName(model)][type](
           sequelize.models[targetSchema],
           {
             as: relationshipName,
-            ...("sourceAttribute" in relationship
-              ? { foreignKey: relationship.sourceAttribute }
-              : {}),
-            ...("targetAttribute" in relationship
-              ? { foreignKey: relationship.targetAttribute }
-              : {}),
+            foreignKey: relationship.targetAttribute,
+            sourceKey: relationship.sourceAttribute,
           },
         )
       }
