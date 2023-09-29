@@ -153,7 +153,7 @@ A list of all validations that can be used in an attribute's type configuration 
 
 2. To create and run Postgres database, run the following command:
 
-   ``` bash
+   ```bash
    docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
    ```
 
@@ -166,12 +166,11 @@ A list of all validations that can be used in an attribute's type configuration 
 
 To check that it worked, run the command:
 
-``` bash
+```bash
 docker ps -a
 ```
 
 You should see your container details, and the status should be "Up". You can stop your container with the command: `docker stop ${containerId}` and start it again with the command: `docker start ${containerId}`.
-
 
 ##### Create a Database
 
@@ -184,14 +183,14 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 2. Configure a postgres connection. The following is what needs to be specified to connect to the Postgres in docker:
 
-  ![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
+![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
 
-  __Click__ the "Test Connection" button to test the connection. If successful, click __Finish__ and go onto the next step.
+**Click** the "Test Connection" button to test the connection. If successful, click **Finish** and go onto the next step.
 
-  If the connection is not successful, make sure you aren't running a
-  conflicting Postgres instance (`lsof -i tcp:5432`).  
+If the connection is not successful, make sure you aren't running a
+conflicting Postgres instance (`lsof -i tcp:5432`).
 
-  For more information on creating a connection, [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/) shows how to create a connection in DBeaver.
+For more information on creating a connection, [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/) shows how to create a connection in DBeaver.
 
 3. Select "Create New Database" on the postgres connection's _Databases_ folder.
 
@@ -205,7 +204,7 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 1. Run the following command in the root directory of your project to create a new .env file to store your credentials:
 
-   ``` bash
+   ```bash
    echo > .env
    ```
 
@@ -398,7 +397,6 @@ npx nx eslint @hatchifyjs/koa
 │       ├── tsconfig.json
 │       ├── tsconfig.node.json
 │       └── vite.config.ts
-├── example.sqlite                              # Your local SQLite database data file
 ├── nx.json                                     # NX configuration (Package-Based Repo)
 ├── package-lock.json
 ├── package.json

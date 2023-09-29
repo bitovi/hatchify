@@ -27,7 +27,6 @@ Create an `index.ts` file containing the following 'Hello World' example code
 
 ```typescript
 import Koa from "koa"
-import path from "path"
 import { hatchifyKoa, DataTypes } from "@hatchifyjs/koa"
 
 const User = {
@@ -43,7 +42,7 @@ const hatchedKoa = hatchifyKoa([User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -111,7 +110,6 @@ Create an `index.ts` file containing the following 'Hello World' example code
 
 ```typescript
 import Koa from "koa"
-import path from "path"
 import { hatchifyKoa, DataTypes } from "@hatchifyjs/koa"
 
 const User = {
@@ -127,7 +125,7 @@ const hatchedKoa = hatchifyKoa([User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -145,7 +143,7 @@ app.use(async (ctx) => {
 })()
 ```
 
-At this point you have created a Koa application with Hatchify connected as Middleware. In this above example we are configuring Hatchify to use sqlite as a database and to store any of our data in the `example.sqlite` file.
+At this point you have created a Koa application with Hatchify connected as Middleware. In this above example we are configuring Hatchify to use sqlite as a database and to store any of our data in memory.
 
 The most important step in working with Hatchify is creating Models that define the data within your application. Lets take a look at this example `models.ts` file containing two different exported Models:
 
@@ -188,7 +186,6 @@ Now that we have a Schema defined, we can update our application code accordingl
 
 ```typescript
 import Koa from "koa"
-import path from "path"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import { Player, Team } from "./models"
 
@@ -197,7 +194,7 @@ const hatchedKoa = hatchifyKoa([Player, Team], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -295,7 +292,6 @@ npm install @types/koa__router --save-dev
 ```typescript
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import path from "path"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import { Player, Team, User } from "./models"
 
@@ -306,7 +302,7 @@ const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -346,7 +342,7 @@ const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 ```
@@ -416,7 +412,6 @@ Here is a more complete example using many of the Hatchify built in helpers to p
 ```typescript
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import path from "path"
 import { hatchifyKoa, Op } from "@hatchifyjs/koa"
 import { Player, Team, User } from "./models"
 
@@ -427,7 +422,7 @@ const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -471,7 +466,6 @@ We will create a query parameter alias that takes the string `today` and turns i
 ```typescript
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import path from "path"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import { Player, Team, User } from "./models"
 
@@ -482,7 +476,7 @@ const hatchedKoa = hatchifyKoa([Player, Team, User], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
@@ -559,7 +553,6 @@ The following example code shows one way of tackling this problem:
 ```typescript
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import path from "path"
 import { hatchifyKoa, Op } from "@hatchifyjs/koa"
 import { Assignment, Employee } from "./models"
 
@@ -570,7 +563,7 @@ const hatchedKoa = hatchifyKoa([Assignment, Employee], {
   prefix: "/api",
   database: {
     dialect: "sqlite",
-    storage: path.join(__dirname, "example.sqlite"),
+    storage: ":memory:",
   },
 })
 
