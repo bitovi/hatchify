@@ -32,6 +32,7 @@
   "dependencies": {
     "@hatchifyjs/hatchify-core": "^0.1.5",
     "@hatchifyjs/node": "^0.2.13",
+    "dotenv": "^16.3.1",
     "jsonapi-serializer": "^3.6.7",
     "typedoc": "^0.23.21"
   },
