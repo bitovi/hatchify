@@ -5,6 +5,7 @@ import { getColumnName } from "./getColumnName"
 import { walk } from "./walk"
 import { UnexpectedValueError } from "../error"
 import type { HatchifyModel } from "../types"
+import { getFullModelName } from "../utils/getFullModelName"
 
 interface Include {
   association: string
@@ -35,7 +36,7 @@ export function handleWhere(
         )
       }
 
-      return [null, `$${getColumnName(`${model.name}.${key}`)}$`]
+      return [null, `$${getColumnName(`${getFullModelName(model)}.${key}`)}$`]
     }
 
     const [relationshipName] = key.split(".")

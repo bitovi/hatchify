@@ -16,7 +16,7 @@ const Todo: Schema = {
   attributes: {
     name: "string",
     important: "boolean",
-    due_date: "date",
+    dueDate: "date",
   },
   relationships: {
     user: {

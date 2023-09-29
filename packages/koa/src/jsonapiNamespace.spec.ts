@@ -1,7 +1,7 @@
 import type { Server } from "http"
 
-import { DataTypes } from "@hatchifyjs/node"
-import type { HatchifyModel } from "@hatchifyjs/node"
+import { string } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/node"
 import dotenv from "dotenv"
 import { Serializer } from "jsonapi-serializer"
 import Koa from "koa"
@@ -15,24 +15,18 @@ describe("JSON:API Tests", () => {
   let app: Koa
   let hatchify: Hatchify
   let server: Server
-  const Model: HatchifyModel = {
+  const TestSchema_Model: PartialSchema = {
     name: "Model",
     namespace: "TestSchema",
     attributes: {
-      first_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      last_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      firstName: string({ required: true }),
+      lastName: string({ required: true }),
     },
   }
 
   function serialize(data) {
     const serializer = new Serializer("TestSchema_Model", {
-      keyForAttribute: "snake_case",
+      keyForAttribute: "camelCase",
       attributes: Object.keys(data),
       pluralizeType: false,
     })
@@ -42,18 +36,21 @@ describe("JSON:API Tests", () => {
 
   beforeAll(async () => {
     app = new Koa()
-    hatchify = new Hatchify([Model], {
-      prefix: "/api",
-      database: {
-        dialect: "postgres",
-        host: process.env.PG_DB_HOST,
-        port: Number(process.env.PG_DB_PORT),
-        username: process.env.PG_DB_USERNAME,
-        password: process.env.PG_DB_PASSWORD,
-        database: process.env.PG_DB_NAME,
-        logging: false,
+    hatchify = new Hatchify(
+      { TestSchema_Model },
+      {
+        prefix: "/api",
+        database: {
+          dialect: "postgres",
+          host: process.env.PG_DB_HOST,
+          port: Number(process.env.PG_DB_PORT),
+          username: process.env.PG_DB_USERNAME,
+          password: process.env.PG_DB_PASSWORD,
+          database: process.env.PG_DB_NAME,
+          logging: false,
+        },
       },
-    })
+    )
 
     app.use(hatchify.middleware.allModels.all)
 
@@ -73,8 +70,8 @@ describe("JSON:API Tests", () => {
       server,
       "/api/testschema_models",
       serialize({
-        first_name: "firstName",
-        last_name: "lastName",
+        firstName: "firstName",
+        lastName: "lastName",
         type: "TestSchema_Model",
       }),
       "application/vnd.api+json",
@@ -88,8 +85,8 @@ describe("JSON:API Tests", () => {
       server,
       "/api/testschema/models",
       serialize({
-        first_name: "firstName2",
-        last_name: "lastName2",
+        firstName: "firstName2",
+        lastName: "lastName2",
         type: "TestSchema_Model",
       }),
       "application/vnd.api+json",
@@ -116,8 +113,8 @@ describe("JSON:API Tests", () => {
       server,
       "/api/testschema_models",
       serialize({
-        first_name: "firstName",
-        last_name: "lastName",
+        firstName: "firstName",
+        lastName: "lastName",
         type: "TestSchema_Model",
       }),
       "application/vnd.api+json",
@@ -127,13 +124,13 @@ describe("JSON:API Tests", () => {
 
     const namespaceless = await GET(
       server,
-      "/api/test-schema/models?fields[Model]=first_name",
+      "/api/test-schema/models?fields[Model]=firstName",
     )
     expect(namespaceless).toBeTruthy()
     expect(namespaceless.status).toBe(200)
     const hasNamespace = await GET(
       server,
-      "/api/test-schema/models?fields[TestSchema_Model]=first_name",
+      "/api/test-schema/models?fields[TestSchema_Model]=firstName",
     )
     expect(hasNamespace).toBeTruthy()
     expect(hasNamespace.status).toBe(200)

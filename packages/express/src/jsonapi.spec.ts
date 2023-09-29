@@ -1,5 +1,5 @@
-import { DataTypes } from "@hatchifyjs/node"
-import type { HatchifyModel } from "@hatchifyjs/node"
+import { string } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/node"
 import Express from "express"
 import { Serializer } from "jsonapi-serializer"
 
@@ -7,23 +7,17 @@ import { Hatchify } from "./express"
 import { GET, POST } from "./testing/utils"
 
 describe("JSON:API Tests", () => {
-  const Model: HatchifyModel = {
+  const Model: PartialSchema = {
     name: "Model",
     attributes: {
-      first_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      last_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      firstName: string({ required: true }),
+      lastName: string({ required: true }),
     },
   }
 
   function serialize(data) {
     const serializer = new Serializer("Model", {
-      keyForAttribute: "snake_case",
+      keyForAttribute: "camelCase",
       attributes: Object.keys(data),
       pluralizeType: false,
     })
@@ -33,7 +27,7 @@ describe("JSON:API Tests", () => {
 
   it("should handle JSON:API create body", async () => {
     const app = Express()
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    const hatchify = new Hatchify({ Model }, { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
     const server = app
@@ -43,8 +37,8 @@ describe("JSON:API Tests", () => {
       server,
       "/api/models",
       serialize({
-        first_name: "firstName",
-        last_name: "lastName",
+        firstName: "firstName",
+        lastName: "lastName",
       }),
       "application/vnd.api+json",
     )
@@ -53,8 +47,8 @@ describe("JSON:API Tests", () => {
       server,
       "/api/models",
       serialize({
-        first_name: "firstName2",
-        last_name: "lastName2",
+        firstName: "firstName2",
+        lastName: "lastName2",
       }),
       "application/vnd.api+json",
     )
@@ -63,8 +57,8 @@ describe("JSON:API Tests", () => {
       server,
       "/api/models",
       serialize({
-        first_name: "firstName3",
-        last_name: "lastName3",
+        firstName: "firstName3",
+        lastName: "lastName3",
       }),
       "application/vnd.api+json",
     )

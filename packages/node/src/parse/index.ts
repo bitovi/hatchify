@@ -10,6 +10,7 @@ import { buildDestroyOptions, buildFindOptions } from "./builder"
 import { validateFindOptions, validateStructure } from "./validator"
 import type { Hatchify } from "../node"
 import type { HatchifyModel, JSONObject } from "../types"
+import { getFullModelName } from "../utils/getFullModelName"
 
 /**
  * Provides a set of exported functions, per Model, that
@@ -82,7 +83,10 @@ async function createImpl<T extends HatchifyModel = HatchifyModel>(
   body: any,
 ) {
   validateStructure(body, model, hatchify)
-  const parsedBody = await hatchify.serializer.deserialize(model.name, body)
+  const parsedBody = await hatchify.serializer.deserialize(
+    getFullModelName(model),
+    body,
+  )
 
   return {
     body: parsedBody,
@@ -97,7 +101,10 @@ async function updateImpl(
   id,
 ) {
   validateStructure(body, model, hatchify)
-  const parsedBody = await hatchify.serializer.deserialize(model.name, body)
+  const parsedBody = await hatchify.serializer.deserialize(
+    getFullModelName(model),
+    body,
+  )
 
   return {
     body: parsedBody,
