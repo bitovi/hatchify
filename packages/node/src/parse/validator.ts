@@ -8,6 +8,7 @@ import {
 import type { HatchifyError } from "../error/types"
 import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
+import { getFullModelName } from "../utils/getFullModelName"
 
 function isObject(value: any): boolean {
   return value && typeof value === "object" && !Array.isArray(value)
@@ -23,7 +24,8 @@ export function validateFindOptions<T extends HatchifyModel = HatchifyModel>(
       ? options.include
       : [options.include]
 
-    const associations = hatchify.associationsLookup[model.name] || {}
+    const associations =
+      hatchify.associationsLookup[getFullModelName(model)] || {}
     const includeErrors: Error[] = []
 
     if (include.length && !Object.keys(associations).length) {
@@ -99,10 +101,10 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
     ]
   }
 
-  if (body.data.type !== model.name) {
+  if (body.data.type !== getFullModelName(model)) {
     throw [
       new UnexpectedValueError({
-        detail: `Payload must have 'type' as '${model.name}'.`,
+        detail: `Payload must have 'type' as '${getFullModelName(model)}'.`,
         pointer: "/data/type",
       }),
     ]

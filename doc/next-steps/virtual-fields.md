@@ -24,11 +24,10 @@ export const User = {
     },
   },
   hasMany: [{ target: "Todo", options: { as: "todos" } }],
-};
-
+}
 ```
 
-2. Start or restart your server.  To restart, type `rs` if running the `dev:backend` script, or use `ctrl+c` to stop the server before starting again from the command line.
+2. Start or restart your server. To restart, type `rs` if running the `dev:backend` script, or use `ctrl+c` to stop the server before starting again from the command line.
 
 3. Create a new Todo
 
@@ -41,7 +40,7 @@ $ curl 'http://localhost:3000/api/todos' \
     "attributes": {
       "id": "101",
       "name": "Walk the dog",
-      "due_date": "2024-12-12",
+      "dueDate": "2024-12-12",
       "importance": 6
     }
   }
@@ -102,5 +101,5 @@ $ curl 'http://localhost:3000/api/users?fields%5BUser%5D=name,hasTodos&include=t
 You will get the appropriate data for each user.
 
 ```bash
-{"jsonapi":{"version":"1.0"},"meta":{"unpaginatedCount":1},"data":[{"type":"User","id":"1","attributes":{"hasTodos":true},"relationships":{"todos":{"data":[{"type":"Todo","id":"101"}]}}},{"type":"User","id":"2","attributes":{"hasTodos":false},"relationships":{"todos":{"data":[]}}}],"included":[{"type":"Todo","id":"101","attributes":{"name":"Walk the dog","due_date":null,"importance":6,"status":null}}]}
+{"jsonapi":{"version":"1.0"},"meta":{"unpaginatedCount":1},"data":[{"type":"User","id":"1","attributes":{"hasTodos":true},"relationships":{"todos":{"data":[{"type":"Todo","id":"101"}]}}},{"type":"User","id":"2","attributes":{"hasTodos":false},"relationships":{"todos":{"data":[]}}}],"included":[{"type":"Todo","id":"101","attributes":{"name":"Walk the dog","dueDate":null,"importance":6,"status":null}}]}
 ```

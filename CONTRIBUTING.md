@@ -120,7 +120,7 @@ export const Todo = {
   name: "Todo",
   attributes: {
     name: "STRING",
-    due_date: {
+    dueDate: {
       type: "DATE",
       validate: {
         isDate: true,

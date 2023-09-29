@@ -5,6 +5,7 @@ import type { Model } from "sequelize"
 
 import type { Hatchify } from "../node"
 import type { HatchifyModel } from "../types"
+import { getFullModelName } from "../utils/getFullModelName"
 
 /**
  * Provides a set of exported functions, per Model, that
@@ -131,7 +132,7 @@ export function registerSchema(
   associations: Record<string, IAssociation>,
   primaryKey: string,
 ): void {
-  serializer.register(model.name, {
+  serializer.register(getFullModelName(model), {
     id: primaryKey,
     whitelist: Object.keys(model.attributes),
     relationships: Object.entries(associations).reduce(

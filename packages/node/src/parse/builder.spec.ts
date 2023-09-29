@@ -1,3 +1,11 @@
+import {
+  belongsTo,
+  datetime,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/hatchify-core"
 import { Op } from "sequelize"
 
 import {
@@ -8,45 +16,48 @@ import {
 } from "./builder"
 import { UnexpectedValueError } from "../error"
 import { Hatchify } from "../node"
-import type { HatchifyModel } from "../types"
 
 describe("builder", () => {
-  const User: HatchifyModel = {
+  const User: PartialSchema = {
     name: "User",
     attributes: {
-      name: "STRING",
+      name: string(),
     },
-    belongsTo: [{ target: "User", options: { as: "user" } }],
-    hasMany: [{ target: "Todo", options: { as: "todos" } }],
+    relationships: {
+      user: belongsTo(),
+      todos: hasMany(),
+    },
   }
-  const Todo: HatchifyModel = {
+  const Todo: PartialSchema = {
     name: "Todo",
     attributes: {
-      name: "STRING",
-      due_date: "DATE",
-      importance: "INTEGER",
+      name: string(),
+      dueDate: datetime(),
+      importance: integer(),
     },
-    belongsTo: [{ target: "User", options: { as: "user" } }],
+    relationships: {
+      user: belongsTo(),
+    },
   }
-  const hatchify = new Hatchify([User, Todo], { prefix: "/api" })
+  const hatchify = new Hatchify({ User, Todo }, { prefix: "/api" })
 
   describe("buildFindOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildFindOptions(
         hatchify,
         Todo,
-        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5&sort=-due_date,name",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5&sort=-dueDate,name",
       )
 
       expect(options).toEqual({
         data: {
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
           where: { "$Todo.name$": { [Op.eq]: "laundry" } },
           order: [
-            ["due_date", "DESC"],
+            ["dueDate", "DESC"],
             ["name", "ASC"],
           ],
         },
@@ -59,12 +70,12 @@ describe("builder", () => {
       const options = buildFindOptions(
         hatchify,
         Todo,
-        "fields[todo]=name,due_date",
+        "fields[todo]=name,dueDate",
       )
 
       expect(options).toEqual({
         data: {
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           where: {},
         },
         errors: [],
@@ -184,7 +195,7 @@ describe("builder", () => {
         buildFindOptions(hatchify, Todo, "fields[todo]=invalid"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
-          detail: `URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance'.`,
+          detail: `URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance'.`,
           parameter: `fields[todo]`,
         }),
       ])
@@ -195,7 +206,7 @@ describe("builder", () => {
         buildFindOptions(hatchify, Todo, "filter[namee][]=test"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
-          detail: `URL must have 'filter[x]' where 'x' is one of 'name', 'due_date', 'importance'.`,
+          detail: `URL must have 'filter[x]' where 'x' is one of 'name', 'dueDate', 'importance'.`,
           parameter: "filter[namee]",
         }),
       ])
@@ -217,7 +228,7 @@ describe("builder", () => {
         buildFindOptions(hatchify, Todo, "sort=invalid"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
-          detail: `URL must have 'sort' as comma separated values containing one or more of 'name', 'due_date', 'importance'.`,
+          detail: `URL must have 'sort' as comma separated values containing one or more of 'name', 'dueDate', 'importance'.`,
           parameter: `sort`,
         }),
       ])
@@ -225,7 +236,7 @@ describe("builder", () => {
 
     it("handles invalid query string", async () => {
       await expect(async () =>
-        buildFindOptions(hatchify, Todo, "fields=name,due_date"),
+        buildFindOptions(hatchify, Todo, "fields=name,dueDate"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: "Incorrect format was provided for fields.",
@@ -238,12 +249,12 @@ describe("builder", () => {
   describe("buildCreateOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildCreateOptions(
-        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(options).toEqual({
         data: {
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
@@ -255,7 +266,7 @@ describe("builder", () => {
     })
 
     it("handles invalid query string", () => {
-      const options = buildCreateOptions("fields=name,due_date")
+      const options = buildCreateOptions("fields=name,dueDate")
 
       expect(options).toEqual({
         data: {},
@@ -272,12 +283,12 @@ describe("builder", () => {
   describe("buildUpdateOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildUpdateOptions(
-        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(options).toEqual({
         data: {
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
@@ -289,11 +300,11 @@ describe("builder", () => {
     })
 
     it("does not add ID attribute if not specified", () => {
-      const options = buildUpdateOptions("fields[todo]=name,due_date")
+      const options = buildUpdateOptions("fields[todo]=name,dueDate")
 
       expect(options).toEqual({
         data: {
-          attributes: ["name", "due_date"],
+          attributes: ["name", "dueDate"],
           where: {},
         },
         errors: [],
@@ -337,7 +348,7 @@ describe("builder", () => {
 
     it("handles invalid query string", async () => {
       await expect(async () =>
-        buildUpdateOptions("fields=name,due_date"),
+        buildUpdateOptions("fields=name,dueDate"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: "Incorrect format was provided for fields.",
@@ -350,12 +361,12 @@ describe("builder", () => {
   describe("buildDestroyOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildDestroyOptions(
-        "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(options).toEqual({
         data: {
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
@@ -367,11 +378,11 @@ describe("builder", () => {
     })
 
     it("does not add ID attribute if not specified", () => {
-      const options = buildDestroyOptions("fields[todo]=name,due_date")
+      const options = buildDestroyOptions("fields[todo]=name,dueDate")
 
       expect(options).toEqual({
         data: {
-          attributes: ["name", "due_date"],
+          attributes: ["name", "dueDate"],
           where: {},
         },
         errors: [],
@@ -415,7 +426,7 @@ describe("builder", () => {
 
     it("handles invalid query string", async () => {
       await expect(async () =>
-        buildDestroyOptions("fields=name,due_date"),
+        buildDestroyOptions("fields=name,dueDate"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: "Incorrect format was provided for fields.",

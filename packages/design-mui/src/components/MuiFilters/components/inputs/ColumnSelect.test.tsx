@@ -10,7 +10,7 @@ describe("components/MuiFilters/inputs/ColumnSelect", () => {
     render(
       <ColumnSelect
         labelId=""
-        fields={["name", "status", "due_date"]}
+        fields={["name", "status", "dueDate"]}
         value="name"
         onChange={(value) => onChange(value)}
       />,

@@ -1,4 +1,12 @@
-import type { HatchifyModel } from "@hatchifyjs/node"
+import {
+  belongsTo,
+  boolean,
+  datetime,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 
 import { dbDialects, startServerWith } from "./testing/utils"
@@ -291,31 +299,35 @@ dotenv.config({
 })
 
 describe.each(dbDialects)("queryStringFilters", (dialect) => {
-  const UserTodo: HatchifyModel = {
+  const UserTodo: PartialSchema = {
     name: "UserTodo",
     attributes: {
-      name: "STRING",
-      somethingElse: "STRING",
+      name: string(),
+      somethingElse: string(),
     },
-    belongsTo: [{ target: "User", options: { as: "user" } }],
+    relationships: {
+      user: belongsTo(),
+    },
   }
-  const User: HatchifyModel = {
+  const User: PartialSchema = {
     name: "User",
     attributes: {
-      name: "STRING",
-      age: "INTEGER",
-      startDate: "DATE",
-      onSite: "BOOLEAN",
-      manager: "BOOLEAN",
+      name: string(),
+      age: integer(),
+      startDate: datetime(),
+      onSite: boolean(),
+      manager: boolean(),
     },
-    hasMany: [{ target: "UserTodo", options: { as: "userTodos" } }],
+    relationships: {
+      userTodos: hasMany(),
+    },
   }
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    ;({ fetch, teardown } = await startServerWith([UserTodo, User], dialect))
+    ;({ fetch, teardown } = await startServerWith({ UserTodo, User }, dialect))
     const [{ body: todo1 }, { body: todo2 }] = await Promise.all(
       ["One", "Two"].map((name) =>
         fetch("/api/user-todos", {
