@@ -2,6 +2,7 @@ import type {
   Attribute,
   EnumObject,
   FilterArray,
+  Schemas,
 } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
@@ -9,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import ColumnSelect from "./inputs/ColumnSelect"
 import OperatorSelect from "./inputs/OperatorSelect"
 import ValueInput from "./inputs/ValueInput"
+import { capitalize } from "lodash"
 
 type ChangeParams =
   | {
@@ -60,28 +62,42 @@ const operatorOptions: OperatorOption = {
 }
 
 export const MuiFilterRows: React.FC<{
-  attributes: Record<string, Attribute>
   fields: string[]
   filters: FilterArray
+  allSchemas: Schemas
+  schemaName: string
   setFilters: (filters: FilterArray) => void
   removeFilter: (index: number) => void
-}> = ({ attributes, fields, filters, setFilters, removeFilter }) => {
+}> = ({
+  allSchemas,
+  fields,
+  filters,
+  schemaName,
+  setFilters,
+  removeFilter,
+}) => {
   const onChange = ({ field, value, index }: ChangeParams) => {
     const newFilters = [...filters]
 
     // modifying column select
     if (field === "field") {
+      //Get correct attributes for comparison
+      const { baseAttributes: newAttributes, baseField: newField } =
+        getFieldAndAttributes(allSchemas, value, schemaName)
+      const { baseAttributes: currentAttributes, baseField: currentField } =
+        getFieldAndAttributes(allSchemas, newFilters[index].field, schemaName)
+
       // change the operator if existing operator does not exist on new column
       newFilters[index].operator = getAvailableOperator(
-        value,
+        newField,
         newFilters[index].operator,
-        attributes,
+        newAttributes,
       )
 
       // reset the filter value if switching from one field type to another
       if (
-        getFieldType(attributes, value) !==
-        getFieldType(attributes, newFilters[index].field)
+        getFieldType(newAttributes, newField) !==
+        getFieldType(currentAttributes, currentField)
       ) {
         newFilters[index].value = ""
       }
@@ -108,55 +124,65 @@ export const MuiFilterRows: React.FC<{
 
   return (
     <Grid container spacing={1} alignItems="center" justifyContent="center">
-      {filters.map((filter, index) => (
-        <Fragment key={index}>
-          <Grid item xs={1}>
-            <IconButton aria-label="close" onClick={() => removeFilter(index)}>
-              <CloseIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={3}>
-            <ColumnSelect
-              labelId={`${index}-column-label`}
-              value={filter.field}
-              fields={fields}
-              onChange={(value) =>
-                onChange({
-                  field: "field",
-                  value,
-                  index: index,
-                })
-              }
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <OperatorSelect
-              labelId={`${index}-operator-label`}
-              value={filter.operator}
-              options={getPossibleOptions(filter.field, attributes)}
-              onChange={(value) =>
-                onChange({
-                  field: "operator",
-                  value,
-                  index: index,
-                })
-              }
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <ValueInput
-              labelId={`${index}-value-label`}
-              fieldType={getFieldType(attributes, filter.field)}
-              value={filter.value}
-              operator={filter.operator}
-              onChange={(value: any) =>
-                onChange({ field: "value", value, index })
-              }
-              options={(attributes[filter.field] as EnumObject)?.values}
-            />
-          </Grid>
-        </Fragment>
-      ))}
+      {filters.map((filter, index) => {
+        const { baseAttributes, baseField } = getFieldAndAttributes(
+          allSchemas,
+          filter.field,
+          schemaName,
+        )
+        return (
+          <Fragment key={index}>
+            <Grid item xs={1}>
+              <IconButton
+                aria-label="close"
+                onClick={() => removeFilter(index)}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={3}>
+              <ColumnSelect
+                labelId={`${index}-column-label`}
+                value={filter.field}
+                fields={fields}
+                onChange={(value) =>
+                  onChange({
+                    field: "field",
+                    value,
+                    index: index,
+                  })
+                }
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <OperatorSelect
+                labelId={`${index}-operator-label`}
+                value={filter.operator}
+                options={getPossibleOptions(baseField, baseAttributes)}
+                onChange={(value) =>
+                  onChange({
+                    field: "operator",
+                    value,
+                    index: index,
+                  })
+                }
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <ValueInput
+                labelId={`${index}-value-label`}
+                fieldType={getFieldType(baseAttributes, baseField)}
+                value={filter.value}
+                operator={filter.operator}
+                onChange={(value: any) =>
+                  onChange({ field: "value", value, index })
+                }
+                options={(baseAttributes[filter.field] as EnumObject)?.values}
+              />
+            </Grid>
+          </Fragment>
+        )
+      })}
     </Grid>
   )
 }
@@ -210,4 +236,18 @@ export const getFieldType = (
 ): string => {
   const attribute = attributes[field]
   return typeof attribute === "string" ? attribute : attribute.type
+}
+
+export const getFieldAndAttributes = (
+  allSchemas: Schemas,
+  field: string,
+  schemaName: string,
+): { baseAttributes: Record<string, Attribute>; baseField: string } => {
+  const baseField = field.includes(".") ? field.split(".")[1] : field
+
+  const baseAttributes =
+    allSchemas[
+      field.includes(".") ? capitalize(field.split(".")[0]) : schemaName
+    ].attributes
+  return { baseAttributes, baseField }
 }

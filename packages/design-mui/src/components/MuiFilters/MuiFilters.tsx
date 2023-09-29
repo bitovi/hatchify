@@ -6,16 +6,26 @@ import { MuiFilterRows } from "./components/MuiFilterRows"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
+import { capitalize } from "lodash"
 
 export const MuiFilters: React.FC<XCollectionProps> = ({
   allSchemas,
+  include,
   schemaName,
   filter: queryFilter,
   setFilter: setQueryFilter,
   page,
   setPage,
 }) => {
-  const fields = getSupportedFields(allSchemas, schemaName)
+  //get related schemas that are included in the table
+  const relatedSchemas = Object.entries(
+    allSchemas[schemaName].relationships || {},
+  )
+    .map(([key]) => key)
+    .filter((item) => include?.includes(item))
+
+  const fields = getSupportedFields(allSchemas, schemaName, relatedSchemas)
+
   const defaultFilter = { field: fields[0], operator: "icontains", value: "" }
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -80,7 +90,8 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
         <Grid container spacing={1} width="39.5rem" padding="0.75rem">
           <Grid item xs={12}>
             <MuiFilterRows
-              attributes={allSchemas[schemaName].attributes}
+              allSchemas={allSchemas}
+              schemaName={schemaName}
               fields={fields}
               filters={filters}
               setFilters={setFilters}
@@ -124,14 +135,42 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
 function getSupportedFields(
   allSchemas: XCollectionProps["allSchemas"],
   schemaName: XCollectionProps["schemaName"],
+  relatedSchemas: string[],
 ) {
-  return Object.entries(allSchemas[schemaName].attributes)
-    .filter(([, attr]) =>
-      typeof attr === "object"
-        ? attr.type === "string" || attr.type === "date" || attr.type === "enum"
-        : attr === "string" || attr === "date" || attr === "enum",
-    )
-    .map(([key]) => key)
+  const fieldSet: string[] = []
+  const relatedFields = () => {
+    for (let i = 0; i < relatedSchemas.length; i++) {
+      fieldSet.push(
+        ...Object.entries(allSchemas[capitalize(relatedSchemas[i])].attributes)
+          .filter(([, attr]) =>
+            typeof attr === "object"
+              ? attr.type === "string" ||
+                attr.type === "date" ||
+                attr.type === "enum"
+              : attr === "string" || attr === "date" || attr === "enum",
+          )
+          .map(([key]) => {
+            return `${relatedSchemas[i]}.${key}`
+          }),
+      )
+    }
+  }
+
+  fieldSet.push(
+    ...Object.entries(allSchemas[schemaName].attributes)
+      .filter(([, attr]) =>
+        typeof attr === "object"
+          ? attr.type === "string" ||
+            attr.type === "date" ||
+            attr.type === "enum"
+          : attr === "string" || attr === "date" || attr === "enum",
+      )
+      .map(([key]) => key),
+  )
+
+  relatedFields()
+
+  return fieldSet
 }
 
 export default MuiFilters
