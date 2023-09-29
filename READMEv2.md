@@ -72,7 +72,7 @@ following steps:
    libraries:
 
    ```bash
-   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/hatchify-core @hatchifyjs/koa @hatchifyjs/react
+   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/core @hatchifyjs/koa @hatchifyjs/react
    ```
 
 5. Install the following dev packages to run our backend server:
@@ -190,7 +190,7 @@ under the hood to talk to your database.
 
 ```ts
 // hatchify-app/schemas.ts
-import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/hatchify-core"
+import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
 
 export const Todo: PartialSchema = {
   name: "Todo",

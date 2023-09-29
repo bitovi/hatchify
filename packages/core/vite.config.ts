@@ -6,7 +6,7 @@ import dts from "vite-plugin-dts"
 export default defineConfig({
   build: {
     lib: {
-      entry: "hatchify-core.ts",
+      entry: "core.ts",
       formats: ["es", "cjs"],
     },
     rollupOptions: {
