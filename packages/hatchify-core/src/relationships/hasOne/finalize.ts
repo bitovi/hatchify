@@ -1,5 +1,5 @@
 import type { PartialHasOneRelationship } from "./types"
-import { integer } from "../../dataTypes"
+import { uuid } from "../../dataTypes"
 import { HatchifyInvalidSchemaError } from "../../types"
 import type { FinalAttributeRecord, SemiFinalSchema } from "../../types"
 import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase"
@@ -37,7 +37,7 @@ export function finalize(
   const attributes: FinalAttributeRecord = {
     ...schemas[targetSchema].attributes,
     [targetAttribute]:
-      schemas[targetSchema].attributes[targetAttribute] ?? integer().finalize(),
+      schemas[targetSchema].attributes[targetAttribute] ?? uuid().finalize(),
   }
 
   return {

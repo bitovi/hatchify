@@ -14,7 +14,7 @@ export function toSequelize(
     (acc, [schemaName, finalizedSchema]) => ({
       ...acc,
       [schemaName]: sequelize.define<Model<HatchifyModel["attributes"]>>(
-        finalizedSchema.name,
+        finalizedSchema.name.replaceAll(".", "_"),
         Object.entries({
           id: finalizedSchema.id,
           ...finalizedSchema.attributes,
@@ -31,8 +31,16 @@ export function toSequelize(
           ) => ({
             ...acc,
             [attributeName]: {
-              ...omit(sequelize, ["type", "typeArgs"]),
-              type: DataTypes[sequelize.type](...(sequelize.typeArgs ?? [])),
+              ...omit(sequelize, ["defaultValue", "type", "typeArgs"]),
+              type:
+                "typeArgs" in sequelize
+                  ? DataTypes[sequelize.type](
+                      ...((sequelize.typeArgs as number[] | string[]) ?? []),
+                    )
+                  : DataTypes[sequelize.type],
+              ...(sequelize.defaultValue === null
+                ? {}
+                : { defaultValue: sequelize.defaultValue }),
               validate: {
                 setORMPropertyValue,
               },

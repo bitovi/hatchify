@@ -1,7 +1,7 @@
 import { coerce } from "./coerce"
 import { finalizeControl } from "./finalizeControl"
 import { finalizeOrm } from "./finalizeOrm"
-import { isISO8601DateString } from "./isISO8601DateString"
+import { isISO8601DatetimeString } from "./isISO8601DatetimeString"
 import type {
   FinalDatetimeORM,
   PartialDatetimeControlType,
@@ -44,8 +44,8 @@ export function getFinalize(
     //         : throw "'4 $core' is not a valid date";
     setClientPropertyValue: (userValue: UserValue): Date | null => {
       if (typeof userValue === "string") {
-        if (!isISO8601DateString(userValue)) {
-          throw new HatchifyCoerceError("as an ISO 8601 date string")
+        if (!isISO8601DatetimeString(userValue)) {
+          throw new HatchifyCoerceError("as an ISO 8601 date and time string")
         }
 
         return coerce(new Date(userValue), control)
@@ -69,8 +69,8 @@ export function getFinalize(
     // Example : ?filter[age]=xyz ... xyz => throw "xyz is not a number";
     setClientQueryFilterValue: (userValue: UserValue): Date | null => {
       if (typeof userValue === "string") {
-        if (!isISO8601DateString(userValue)) {
-          throw new HatchifyCoerceError("as an ISO 8601 date string")
+        if (!isISO8601DatetimeString(userValue)) {
+          throw new HatchifyCoerceError("as an ISO 8601 date and time string")
         }
 
         return coerce(new Date(userValue), control)
@@ -82,10 +82,10 @@ export function getFinalize(
     // Passed  - Any value someone might try to query by
     // Returns - A STRING value that can be sent as part of the query string.
     // Example : true => "true";
-    serializeClientQueryFilterValue: (value: Date | null): string | null => {
+    serializeClientQueryFilterValue: (value: Date | null): string => {
       const coerced = coerce(value, control)
 
-      return coerced === null ? null : coerced.toISOString()
+      return coerced ? coerced.toISOString() : JSON.stringify(null)
     },
 
     // Passed  - Any crazy STRING value the client might send as GET
@@ -96,8 +96,8 @@ export function getFinalize(
       jsonValue: ValueInRequest,
     ): Date | null => {
       if (typeof jsonValue === "string") {
-        if (!isISO8601DateString(jsonValue)) {
-          throw new HatchifyCoerceError("as an ISO 8601 date string")
+        if (!isISO8601DatetimeString(jsonValue)) {
+          throw new HatchifyCoerceError("as an ISO 8601 date and time string")
         }
 
         return coerce(new Date(jsonValue), control)
@@ -130,8 +130,8 @@ export function getFinalize(
         throw new HatchifyCoerceError("as a non-null value")
       }
 
-      if (!isISO8601DateString(queryValue)) {
-        throw new HatchifyCoerceError("as an ISO 8601 date string")
+      if (!isISO8601DatetimeString(queryValue)) {
+        throw new HatchifyCoerceError("as an ISO 8601 date and time string")
       }
 
       return coerce(new Date(queryValue), control)

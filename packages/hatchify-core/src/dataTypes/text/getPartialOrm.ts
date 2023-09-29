@@ -6,6 +6,7 @@ export function getPartialOrm(props?: PartialTextProps): PartialTextORM {
       type: "TEXT",
       allowNull: props?.required == null ? props?.required : !props.required,
       primaryKey: props?.primary,
+      defaultValue: props?.default,
     },
   }
 }

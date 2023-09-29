@@ -55,7 +55,7 @@ export async function startServerWith(
 
   async function fetch(
     path: string,
-    options?: { method?: Method; headers?: object; body: object },
+    options?: { method?: Method; headers?: object; body?: object },
   ) {
     const method = options?.method || "get"
     const headers = options?.headers || {}
@@ -86,6 +86,9 @@ export async function startServerWith(
   }
 }
 
+/**
+ * @deprecated Please use `startServerWith` and `fetch` instead
+ */
 export function createServer(
   app: Koa,
 ): http.Server<typeof http.IncomingMessage, typeof http.ServerResponse> {
@@ -162,7 +165,7 @@ export async function getDatabaseColumns(
   if (dialect === "sqlite") {
     const [[result], constraints] = await Promise.all([
       hatchify._sequelize.query(
-        `SELECT name, "notnull", pk, type FROM pragma_table_info('${tableName}')`,
+        `SELECT name, "notnull", pk, type, dflt_value FROM pragma_table_info('${tableName}')`,
       ),
       hatchify._sequelize.query(`PRAGMA foreign_key_list(${tableName})`),
     ])
@@ -185,6 +188,7 @@ export async function getDatabaseColumns(
       return {
         name: column.name,
         allowNull: column.notnull === 0,
+        default: column.dflt_value,
         primary: column.pk !== 0,
         type: column.type,
         ...(foreignKeys.length ? { foreignKeys } : {}),
@@ -194,7 +198,7 @@ export async function getDatabaseColumns(
     const [[result], [constraints]] = await Promise.all([
       hatchify._sequelize.query(
         `
-        SELECT column_name, is_nullable, data_type
+        SELECT column_name, is_nullable, data_type, column_default
         FROM information_schema.columns
         WHERE table_schema = :schemaName AND table_name = :tableName`,
         { replacements: { schemaName, tableName } },
@@ -238,6 +242,7 @@ export async function getDatabaseColumns(
       return {
         name: column.column_name,
         allowNull: column.is_nullable === "YES",
+        default: column.column_default,
         primary: constraints.some(
           (constraint) =>
             constraint.column === column.column_name &&

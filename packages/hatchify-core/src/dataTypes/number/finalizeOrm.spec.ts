@@ -78,4 +78,46 @@ describe("finalizeOrm", () => {
       }).sequelize.primaryKey,
     ).toBe(false)
   })
+
+  it("handles default", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          defaultValue: undefined,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          defaultValue: null,
+        },
+      }).sequelize.defaultValue,
+    ).toBeNull()
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          defaultValue: 1,
+        },
+      }).sequelize.defaultValue,
+    ).toBe(1)
+
+    const func = () => 1
+
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          defaultValue: func,
+        },
+      }).sequelize.defaultValue,
+    ).toEqual(func)
+  })
 })

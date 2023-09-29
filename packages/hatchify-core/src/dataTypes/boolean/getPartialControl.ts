@@ -6,5 +6,6 @@ export function getPartialControl(
   return {
     type: "Boolean",
     allowNull: props?.required == null ? props?.required : !props.required,
+    default: props?.default,
   }
 }

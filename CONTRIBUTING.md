@@ -397,7 +397,6 @@ npx nx eslint @hatchifyjs/koa
 │       ├── tsconfig.json
 │       ├── tsconfig.node.json
 │       └── vite.config.ts
-├── example.sqlite                              # Your local SQLite database data file
 ├── nx.json                                     # NX configuration (Package-Based Repo)
 ├── package-lock.json
 ├── package.json

@@ -184,32 +184,13 @@ before, specifically Sequelize, this should look pretty familiar to you.
 HatchifyJS uses Sequelize, a Node.js- and TypeScript-compatible ORM,
 under the hood to talk to your database.
 
-**✏️ Create a** `schemas/User.ts`**:**
+**✏️ Create a** `schemas.ts`**:**
 
 > **Note:** Take note of lines commented with the 👀 emoji.
 
 ```ts
-// hatchify-app/schemas/User.ts
-import { string, hasMany } from "@hatchifyjs/core"
-import type { PartialSchema } from "@hatchifyjs/core"
-
-export const User: PartialSchema = {
-  name: "User",
-  attributes: {
-    name: string({ required: true }),
-  },
-  relationships: {
-    todos: hasMany(),
-  },
-}
-```
-
-**✏️ Create a** `schemas/Todo.ts`**:**
-
-```ts
-// hatchify-app/schemas/Todo.ts
-import { string, datetime, integer, boolean, belongsTo } from "@hatchifyjs/core"
-import type { PartialSchema } from "@hatchifyjs/core"
+// hatchify-app/schemas.ts
+import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/hatchify-core"
 
 export const Todo: PartialSchema = {
   name: "Todo",
@@ -221,6 +202,16 @@ export const Todo: PartialSchema = {
   },
   relationships: {
     user: belongsTo(),
+  },
+}
+
+export const User: PartialSchema = {
+  name: "User",
+  attributes: {
+    name: string({ required: true }),
+  },
+  relationships: {
+    todos: hasMany(),
   },
 }
 ```
@@ -252,8 +243,7 @@ check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/a
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import { Todo } from "../schemas/Todo"
-import { User } from "../schemas/User"
+import { Todo, User } from "../schemas"
 
 const app = new Koa()
 const hatchedKoa = hatchifyKoa(
@@ -262,7 +252,7 @@ const hatchedKoa = hatchifyKoa(
     prefix: "/api",
     database: {
       dialect: "sqlite",
-      storage: "example.sqlite",
+      storage: ":memory:",
     },
   },
 )
@@ -552,8 +542,7 @@ following:**
 ```tsx
 // hatchify-app/frontend/App.tsx
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo } from "../schemas/Todo"
-import { User } from "../schemas/User"
+import { Todo, User } from "../schemas"
 
 export const hatchedReact = hatchifyReact(
   { Todo, User },

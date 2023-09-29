@@ -32,4 +32,20 @@ describe("finalizeControl", () => {
       false,
     )
   })
+
+  it("handles default", () => {
+    expect(
+      finalizeControl({ type: "Number", default: undefined }).default,
+    ).toBeNull()
+    expect(
+      finalizeControl({ type: "Number", default: null }).default,
+    ).toBeNull()
+    expect(finalizeControl({ type: "Number", default: 1 }).default).toBe(1)
+
+    const func = () => 1
+
+    expect(finalizeControl({ type: "Number", default: func }).default).toEqual(
+      func,
+    )
+  })
 })

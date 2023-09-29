@@ -16,7 +16,7 @@ describe("indexNamespace", () => {
     attributes: {
       name: "STRING",
     },
-    hasMany: [{ target: "Pfizer.Todo", options: { as: "lipitorTodos" } }],
+    hasMany: [{ target: "Pfizer_Todo", options: { as: "lipitorTodos" } }],
   }
   const XanaxUser: HatchifyModel = {
     name: "User",
@@ -24,7 +24,7 @@ describe("indexNamespace", () => {
     attributes: {
       name: "STRING",
     },
-    hasMany: [{ target: "Pfizer.Todo", options: { as: "xanaxTodos" } }],
+    hasMany: [{ target: "Pfizer_Todo", options: { as: "xanaxTodos" } }],
   }
 
   const Todo: HatchifyModel = {
@@ -40,8 +40,8 @@ describe("indexNamespace", () => {
       },
     },
     belongsTo: [
-      { target: "Lipitor.User", options: { as: "lipitorUser" } },
-      { target: "Xanax.User", options: { as: "xanaxUser" } },
+      { target: "Lipitor_User", options: { as: "lipitorUser" } },
+      { target: "Xanax_User", options: { as: "xanaxUser" } },
     ],
   }
 
@@ -62,7 +62,7 @@ describe("indexNamespace", () => {
           include: [{ association: "lipitorUser", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
 
@@ -125,7 +125,7 @@ describe("indexNamespace", () => {
           include: [{ association: "xanaxUser", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
 
@@ -193,7 +193,7 @@ describe("indexNamespace", () => {
           include: [{ association: "xanaxUser", include: [] }],
           limit: 5,
           offset: 10,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
 
@@ -251,7 +251,7 @@ describe("indexNamespace", () => {
       it("works with serialized body", async () => {
         const body = {
           data: {
-            type: "Pfizer.Todo",
+            type: "Pfizer_Todo",
             attributes: {
               name: "Laundry",
               due_date: "2024-12-02",
@@ -270,7 +270,7 @@ describe("indexNamespace", () => {
       it("works with ID", async () => {
         const body = {
           data: {
-            type: "Pfizer.Todo",
+            type: "Pfizer_Todo",
             attributes: {
               name: "Laundry",
               due_date: "2024-12-02",
@@ -289,7 +289,7 @@ describe("indexNamespace", () => {
       it("works without ID", async () => {
         const body = {
           data: {
-            type: "Pfizer.Todo",
+            type: "Pfizer_Todo",
             attributes: {
               name: "Laundry",
               due_date: "2024-12-02",
@@ -397,7 +397,7 @@ describe("indexNamespace", () => {
 
   describe("buildParserForModel", () => {
     it("builds a parser for a model", async () => {
-      const parser = buildParserForModel(hatchedNode, "Pfizer.Todo")
+      const parser = buildParserForModel(hatchedNode, "Pfizer_Todo")
 
       expect(parser.findAll).toEqual(expect.any(Function))
       expect(parser.findAndCountAll).toEqual(expect.any(Function))
@@ -415,7 +415,7 @@ describe("indexNamespace", () => {
         include: [{ association: "xanaxUser", include: [] }],
         limit: 5,
         offset: 10,
-        where: { name: { [Op.eq]: "laundry" } },
+        where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
       })
     })
   })

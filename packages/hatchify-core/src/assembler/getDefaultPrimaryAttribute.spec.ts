@@ -1,24 +1,27 @@
 import { getDefaultPrimaryAttribute } from "./getDefaultPrimaryAttribute"
+import { UUID_REGEX } from "../dataTypes/uuid/constants"
 
 describe("getDefaultPrimaryAttribute", () => {
   it("creates an integer attribute", () => {
-    expect(getDefaultPrimaryAttribute()).toEqual({
-      name: 'integer({"primary":true,"autoIncrement":true,"required":true,"min":1})',
+    const attribute = getDefaultPrimaryAttribute()
+
+    expect(attribute).toEqual({
+      name: 'uuid({"primary":true,"required":true})',
       control: {
         allowNull: false,
-        max: undefined,
-        min: 1,
+        max: 36,
+        min: 36,
+        default: expect.any(Function),
         primary: true,
-        step: 1,
-        type: "Number",
+        regex: UUID_REGEX,
+        type: "String",
       },
       orm: {
         sequelize: {
           allowNull: false,
-          autoIncrement: true,
+          defaultValue: expect.any(Function),
           primaryKey: true,
-          type: "INTEGER",
-          typeArgs: [],
+          type: "UUID",
         },
       },
       finalize: expect.any(Function),
