@@ -1,5 +1,5 @@
 import querystringParser from "@bitovi/sequelize-querystring-parser"
-import { pascalCaseToCamelCase } from "@hatchifyjs/hatchify-core"
+import { pascalCaseToCamelCase } from "@hatchifyjs/core"
 import type {
   IAssociation,
   ICreateHatchifyModel,

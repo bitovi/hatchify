@@ -36,7 +36,7 @@
     "vitest": "^0.30.1"
   },
   "dependencies": {
-    "@hatchifyjs/hatchify-core": "^0.1.3",
+    "@hatchifyjs/core": "^0.1.3",
     "@hatchifyjs/react-rest": "^0.0.1-24",
     "@hatchifyjs/rest-client": "^0.0.1-18",
     "lodash": "^4.17.21",

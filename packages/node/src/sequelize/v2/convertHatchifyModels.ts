@@ -1,9 +1,5 @@
-import {
-  assembler,
-  pascalCaseToCamelCase,
-  singularize,
-} from "@hatchifyjs/hatchify-core"
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+import { assembler, pascalCaseToCamelCase, singularize } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type { ICreateHatchifyModel } from "@hatchifyjs/sequelize-create-with-associations"
 import type JSONAPISerializer from "json-api-serializer"
 import type { Sequelize } from "sequelize"

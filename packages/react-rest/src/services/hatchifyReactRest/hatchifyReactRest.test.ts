@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest"
 import type { Source } from "@hatchifyjs/rest-client"
 import { hatchifyReactRest } from "./hatchifyReactRest"
 import type { Schema } from "@hatchifyjs/rest-client"
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
+import type { Schema as LegacySchema } from "@hatchifyjs/core"
 
 const fakeDataSource: Source = {
   version: 0,

@@ -1,4 +1,4 @@
-import { assembler, integer, uuid, uuidv4 } from "@hatchifyjs/hatchify-core"
+import { assembler, integer, uuid, uuidv4 } from "@hatchifyjs/core"
 import { Sequelize } from "sequelize"
 import type { ModelStatic } from "sequelize"
 

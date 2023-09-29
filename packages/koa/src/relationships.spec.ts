@@ -1,10 +1,4 @@
-import {
-  belongsTo,
-  datetime,
-  hasMany,
-  integer,
-  string,
-} from "@hatchifyjs/hatchify-core"
+import { belongsTo, datetime, hasMany, integer, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
