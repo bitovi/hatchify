@@ -27,7 +27,6 @@ Create an `index.ts` file containing the following 'Hello World' example code
 
 ```typescript
 import Koa from "koa"
-import path from "path"
 import { hatchifyKoa, DataTypes } from "@hatchifyjs/koa"
 
 const User = {
@@ -111,7 +110,6 @@ Create an `index.ts` file containing the following 'Hello World' example code
 
 ```typescript
 import Koa from "koa"
-import path from "path"
 import { hatchifyKoa, DataTypes } from "@hatchifyjs/koa"
 
 const User = {
@@ -188,7 +186,6 @@ Now that we have a Schema defined, we can update our application code accordingl
 
 ```typescript
 import Koa from "koa"
-import path from "path"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import { Player, Team } from "./models"
 
@@ -295,7 +292,6 @@ npm install @types/koa__router --save-dev
 ```typescript
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import path from "path"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import { Player, Team, User } from "./models"
 
@@ -416,7 +412,6 @@ Here is a more complete example using many of the Hatchify built in helpers to p
 ```typescript
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import path from "path"
 import { hatchifyKoa, Op } from "@hatchifyjs/koa"
 import { Player, Team, User } from "./models"
 
@@ -471,7 +466,6 @@ We will create a query parameter alias that takes the string `today` and turns i
 ```typescript
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import path from "path"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import { Player, Team, User } from "./models"
 
@@ -559,7 +553,6 @@ The following example code shows one way of tackling this problem:
 ```typescript
 import Koa from "koa"
 import KoaRouter from "@koa/router"
-import path from "path"
 import { hatchifyKoa, Op } from "@hatchifyjs/koa"
 import { Assignment, Employee } from "./models"
 
