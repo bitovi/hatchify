@@ -1,4 +1,5 @@
-import type { HatchifyModel } from "@hatchifyjs/node"
+import { belongsTo, hasMany, hasOne, string } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/node"
 
 import { startServerWith } from "./testing/utils"
 
@@ -23,7 +24,7 @@ interface Table {
 interface TestCase {
   skip?: boolean
   description: string
-  models: HatchifyModel[]
+  models: Record<string, PartialSchema>
   requests: Request[]
   database: Table[]
 }
@@ -32,14 +33,14 @@ describe("Naming rules", () => {
   const schemaNameTestCases: TestCase[] = [
     {
       description: "Ensure basic schema for SalesPerson works (Schema.name)",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
         },
-      ],
+      },
       requests: [
         {
           url: "/api/sales-persons",
@@ -48,7 +49,7 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { name: "Mary" },
               },
             },
@@ -60,7 +61,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { name: "Mary" },
               },
             },
@@ -81,7 +82,7 @@ describe("Naming rules", () => {
               data: [
                 {
                   type: "SalesPerson",
-                  id: "1",
+                  id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                   attributes: { name: "Mary" },
                 },
               ],
@@ -98,20 +99,20 @@ describe("Naming rules", () => {
       ],
     },
   ]
-  //Temporarily commented, fix will be done by: https://bitovi.atlassian.net/browse/HATCH-310
+
   const pluralNameTestCases: TestCase[] = [
     {
       description:
         "Ensure pluralName creates route with correct name (Schema.pluralName)",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           pluralName: "SalesPeople",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
         },
-      ],
+      },
       requests: [
         {
           url: "/api/sales-people",
@@ -120,7 +121,7 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { name: "Mary" },
               },
             },
@@ -132,7 +133,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { name: "Mary" },
               },
             },
@@ -157,14 +158,14 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure attribute's names create correct rows and can be fetched (Schema.attributes.ATTRIBUTE_NAME)",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            firstName: "STRING",
+            firstName: string(),
           },
         },
-      ],
+      },
       requests: [
         {
           url: "/api/sales-persons",
@@ -173,6 +174,7 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "SalesPerson",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "John Doe" },
               },
             },
@@ -183,7 +185,7 @@ describe("Naming rules", () => {
                 version: "1.0",
               },
               data: {
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 type: "SalesPerson",
                 attributes: { firstName: "John Doe" },
               },
@@ -205,23 +207,23 @@ describe("Naming rules", () => {
     {
       skip: true,
       description: "Ensure belongsTo creates rows and is returned in include",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          belongsTo: [
-            { target: "SalesPerson", options: { as: "closerPerson" } },
-          ],
+          relationships: {
+            closerPerson: belongsTo("SalesPerson"),
+          },
         },
-      ],
+      },
       requests: [
         {
           url: "/api/accounts",
@@ -230,7 +232,7 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "Account",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Acme" },
                 relationships: {
                   closerPerson: { type: "SalesPerson", id: "322" },
@@ -245,7 +247,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "Account",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Acme" },
                 relationships: {
                   closerPerson: { type: "SalesPerson", id: "322" },
@@ -267,7 +269,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "Account",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Acme" },
                 relationships: {
                   closerPerson: { type: "SalesPerson", id: "322" },
@@ -288,26 +290,25 @@ describe("Naming rules", () => {
     {
       skip: true,
       description: "Ensure belongsTo foreign key is correctly created",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          belongsTo: [
-            {
-              target: "SalesPerson",
-              options: { as: "closerPerson", foreignKey: "finisher_id" },
-            },
-          ],
+          relationships: {
+            closerPerson: belongsTo("SalesPerson", {
+              sourceAttribute: "finisherId",
+            }),
+          },
         },
-      ],
+      },
       requests: [
         {
           url: "/api/accounts",
@@ -316,7 +317,7 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "Account",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Acme" },
                 relationships: {
                   closerPerson: { type: "SalesPerson", id: "322" },
@@ -331,7 +332,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "Account",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Acme" },
                 relationships: {
                   closerPerson: { type: "SalesPerson", id: "322" },
@@ -353,7 +354,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "Account",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Acme" },
                 relationships: {
                   closerPerson: { type: "SalesPerson", id: "322" },
@@ -376,34 +377,29 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure belongsToMany attributes are correctly created as rows and can be fetched (relationships.belongsToMany.options.foreignKey)",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            firstName: "STRING",
+            firstName: string(),
           },
-          belongsToMany: [
-            {
-              target: "Account",
-              options: {
-                foreignKey: "seller_id",
-                through: "account_sales_person",
-              },
-            },
-          ],
+          relationships: {
+            accounts: hasMany().through({
+              throughSourceAttribute: "sellerId",
+              throughTargetAttribute: "accountId",
+            }),
+          },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          hasOne: [
-            {
-              target: "SalesPerson",
-            },
-          ],
+          relationships: {
+            salesPerson: hasOne(),
+          },
         },
-      ],
+      },
       requests: [],
       database: [
         {
@@ -415,31 +411,26 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure belongsToMany through works properly (relationships.belongsToMany.options.through)",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            firstName: "STRING",
+            firstName: string(),
           },
-          belongsToMany: [
-            {
-              target: "Account",
-              options: { through: "sales_account" },
-            },
-          ],
+          relationships: {
+            accounts: hasMany("Account").through("SalesAccount"),
+          },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          hasOne: [
-            {
-              target: "SalesPerson",
-            },
-          ],
+          relationships: {
+            salesPerson: hasOne(),
+          },
         },
-      ],
+      },
       requests: [],
       database: [
         {
@@ -452,32 +443,26 @@ describe("Naming rules", () => {
     {
       skip: true,
       description: "Ensure belongsToMany alias (as) is correctly returned",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            firstName: "STRING",
+            firstName: string(),
           },
-          belongsToMany: [
-            {
-              target: "Account",
-              options: { as: "salesAccounts", through: "sales_account" },
-            },
-          ],
+          relationships: {
+            salesAccounts: hasMany("Account").through("SalesAccount"),
+          },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          belongsToMany: [
-            {
-              target: "SalesPerson",
-              options: { as: "salesPerson", through: "sales_account" },
-            },
-          ],
+          relationships: {
+            salesPersons: hasMany("SalesPerson").through("SalesAccount"),
+          },
         },
-      ],
+      },
       requests: [
         {
           url: "/api/accounts",
@@ -486,7 +471,7 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "Account",
-                id: "456",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { name: "Ana" },
               },
             },
@@ -498,7 +483,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "Account",
-                id: "456",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { name: "Ana" },
               },
             },
@@ -512,11 +497,16 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Mary" },
                 relationships: {
                   salesAccounts: {
-                    data: [{ type: "Account", id: "456" }],
+                    data: [
+                      {
+                        type: "Account",
+                        id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                      },
+                    ],
                   },
                 },
               },
@@ -529,7 +519,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Mary" },
               },
             },
@@ -550,11 +540,16 @@ describe("Naming rules", () => {
               data: [
                 {
                   type: "SalesPerson",
-                  id: "1",
+                  id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                   attributes: { firstName: "Mary" },
                   relationships: {
                     salesAccounts: {
-                      data: [{ type: "Account", id: "456" }],
+                      data: [
+                        {
+                          type: "Account",
+                          id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                        },
+                      ],
                     },
                   },
                 },
@@ -569,34 +564,29 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure belongsToMany foreignKey is correctly created (relationships.belongsToMany.foreignKey)",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            firstName: "STRING",
+            firstName: string(),
           },
-          belongsToMany: [
-            {
-              target: "Account",
-              options: {
-                foreignKey: "seller_id",
-                through: "account_sales_person",
-              },
-            },
-          ],
+          relationships: {
+            salesAccounts: hasMany("Account").through({
+              throughSourceAttribute: "sellerId",
+              throughTargetAttribute: "accountId",
+            }),
+          },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          hasOne: [
-            {
-              target: "SalesPerson",
-            },
-          ],
+          relationships: {
+            salesPerson: hasOne(),
+          },
         },
-      ],
+      },
       requests: [],
       database: [
         {
@@ -608,35 +598,29 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure belongsToMany otherKey works properly (relationships.belongsToMany.otherKey)",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            firstName: "STRING",
+            firstName: string(),
           },
-          belongsToMany: [
-            {
-              target: "Account",
-              options: {
-                otherKey: "sold_account_id",
-                through: "account_sales_person",
-              },
-            },
-          ],
+          relationships: {
+            salesAccounts: hasMany("Account").through({
+              throughSourceAttribute: "salesPersonId",
+              throughTargetAttribute: "soldAccountId",
+            }),
+          },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          hasOne: [
-            {
-              target: "SalesPerson",
-              options: { as: "salesperson" },
-            },
-          ],
+          relationships: {
+            salesPerson: hasOne("SalesPerson"),
+          },
         },
-      ],
+      },
       requests: [],
       database: [
         {
@@ -650,26 +634,26 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure hasMany creates rows and is returned in include (relationships.hasMany)",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            firstName: "STRING",
+            firstName: string(),
           },
-          hasMany: [{ target: "Account" }],
+          relationships: {
+            accounts: hasMany(),
+          },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          belongsTo: [
-            {
-              target: "SalesPerson",
-            },
-          ],
+          relationships: {
+            salesPerson: belongsTo(),
+          },
         },
-      ],
+      },
       requests: [
         {
           url: "/api/accounts",
@@ -678,7 +662,7 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "Account",
-                id: "456",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { name: "Developer" },
               },
             },
@@ -690,7 +674,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "Account",
-                id: "456",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { name: "Developer" },
               },
             },
@@ -704,10 +688,17 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Mary" },
                 relationships: {
-                  accounts: { data: [{ type: "Account", id: "456" }] },
+                  accounts: {
+                    data: [
+                      {
+                        type: "Account",
+                        id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                      },
+                    ],
+                  },
                 },
               },
             },
@@ -719,7 +710,7 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Mary" },
               },
             },
@@ -742,18 +733,28 @@ describe("Naming rules", () => {
               data: [
                 {
                   type: "SalesPerson",
-                  id: "1",
+                  id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                   attributes: { firstName: "Mary" },
                   relationships: {
-                    accounts: { data: [{ type: "Account", id: "456" }] },
+                    accounts: {
+                      data: [
+                        {
+                          type: "Account",
+                          id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                        },
+                      ],
+                    },
                   },
                 },
               ],
               included: [
                 {
                   type: "Account",
-                  id: "456",
-                  attributes: { name: "Developer" },
+                  id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                  attributes: {
+                    name: "Developer",
+                    salesPersonId: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                  },
                 },
               ],
             },
@@ -773,35 +774,30 @@ describe("Naming rules", () => {
       skip: true,
       description:
         "Ensure hasMany foreignKey row is correctly created (relationships.hasMany.foreignKey)",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            firstName: "STRING",
+            firstName: string(),
           },
-          hasMany: [
-            {
-              target: "Account",
-              options: {
-                as: "openedAccounts",
-                foreignKey: "opening_sales_person_id",
-              },
-            },
-          ],
+          relationships: {
+            openedAccounts: hasMany("Account", {
+              targetAttribute: "openingSalesPersonId",
+            }),
+          },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          belongsTo: [
-            {
-              target: "SalesPerson",
-              options: { as: "closerPerson", foreignKey: "finisher_id" },
-            },
-          ],
+          relationships: {
+            closerPerson: belongsTo("SalesPerson", {
+              sourceAttribute: "finisherId",
+            }),
+          },
         },
-      ],
+      },
       requests: [],
       database: [
         {
@@ -813,27 +809,28 @@ describe("Naming rules", () => {
     {
       skip: true,
       description: "Ensure hasMany alias (as) is correctly addressed",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            firstName: "STRING",
+            firstName: string(),
           },
-          hasMany: [{ target: "Account", options: { as: "managingAccounts" } }],
+          relationships: {
+            managingAccounts: hasMany("Account"),
+          },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
-          belongsTo: [
-            {
-              target: "SalesPerson",
-              options: { as: "closerPerson", foreignKey: "finisher_id" },
-            },
-          ],
+          relationships: {
+            closerPerson: belongsTo("SalesPerson", {
+              sourceAttribute: "finisherId",
+            }),
+          },
         },
-      ],
+      },
       requests: [
         {
           url: "/api/sales-persons",
@@ -842,11 +839,16 @@ describe("Naming rules", () => {
             body: {
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Mary" },
                 relationships: {
                   managingAccounts: {
-                    data: [{ type: "Account", id: "456" }],
+                    data: [
+                      {
+                        type: "Account",
+                        id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                      },
+                    ],
                   },
                 },
               },
@@ -859,11 +861,16 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Mary" },
                 relationships: {
                   managingAccounts: {
-                    data: [{ type: "Account", id: "456" }],
+                    data: [
+                      {
+                        type: "Account",
+                        id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                      },
+                    ],
                   },
                 },
               },
@@ -883,11 +890,16 @@ describe("Naming rules", () => {
               },
               data: {
                 type: "SalesPerson",
-                id: "1",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
                 attributes: { firstName: "Mary" },
                 relationships: {
                   managingAccounts: {
-                    data: [{ type: "Account", id: "456" }],
+                    data: [
+                      {
+                        type: "Account",
+                        id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                      },
+                    ],
                   },
                 },
               },
@@ -904,6 +916,7 @@ describe("Naming rules", () => {
       ],
     },
   ]
+
   const [skippedCases, cases] = [
     ...schemaNameTestCases,
     ...pluralNameTestCases,

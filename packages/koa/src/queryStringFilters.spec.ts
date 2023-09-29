@@ -1,4 +1,12 @@
-import type { HatchifyModel } from "@hatchifyjs/node"
+import {
+  belongsTo,
+  boolean,
+  datetime,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 
 import { dbDialects, startServerWith } from "./testing/utils"
@@ -7,14 +15,14 @@ const [john, jane] = [
   {
     name: "John",
     age: 25,
-    startDate: "2020-05-05",
+    startDate: "2020-05-05T00:00:00.000Z",
     onSite: true,
     manager: false,
   },
   {
     name: "Jane",
     age: 35,
-    startDate: "2021-01-05",
+    startDate: "2021-01-05T00:00:00.000Z",
     onSite: false,
     manager: false,
   },
@@ -191,19 +199,19 @@ const testCases = [
   {
     description: "returns correct data using the $gt operator with a date",
     operator: "$gt",
-    queryParam: "filter[startDate][$gt]=2020-12-12",
+    queryParam: "filter[startDate][$gt]=2020-12-12T00:00:00.000Z",
     expectedResult: [jane],
   },
   {
     description: "returns correct data using the $lt operator with a date",
     operator: "$lt",
-    queryParam: "filter[startDate][$lt]=2020-12-12",
+    queryParam: "filter[startDate][$lt]=2020-12-12T00:00:00.000Z",
     expectedResult: [john],
   },
   {
     description: "returns correct data using the $lte operator with a date",
     operator: "$lte",
-    queryParam: "filter[startDate][$lte]=2020-05-05",
+    queryParam: "filter[startDate][$lte]=2020-05-05T00:00:00.000Z",
     expectedResult: [john],
   },
   {
@@ -291,31 +299,35 @@ dotenv.config({
 })
 
 describe.each(dbDialects)("queryStringFilters", (dialect) => {
-  const UserTodo: HatchifyModel = {
+  const UserTodo: PartialSchema = {
     name: "UserTodo",
     attributes: {
-      name: "STRING",
-      somethingElse: "STRING",
+      name: string(),
+      somethingElse: string(),
     },
-    belongsTo: [{ target: "User", options: { as: "user" } }],
+    relationships: {
+      user: belongsTo(),
+    },
   }
-  const User: HatchifyModel = {
+  const User: PartialSchema = {
     name: "User",
     attributes: {
-      name: "STRING",
-      age: "INTEGER",
-      startDate: "DATE",
-      onSite: "BOOLEAN",
-      manager: "BOOLEAN",
+      name: string(),
+      age: integer(),
+      startDate: datetime(),
+      onSite: boolean(),
+      manager: boolean(),
     },
-    hasMany: [{ target: "UserTodo", options: { as: "userTodos" } }],
+    relationships: {
+      userTodos: hasMany(),
+    },
   }
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    ;({ fetch, teardown } = await startServerWith([UserTodo, User], dialect))
+    ;({ fetch, teardown } = await startServerWith({ UserTodo, User }, dialect))
     const [{ body: todo1 }, { body: todo2 }] = await Promise.all(
       ["One", "Two"].map((name) =>
         fetch("/api/user-todos", {

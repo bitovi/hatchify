@@ -10,6 +10,7 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
+import { handleSqliteDateNestedColumns } from "./handleSqliteDateNestedColumns"
 import { handleSqliteLike } from "./handleSqliteLike"
 import { handleWhere } from "./handleWhere"
 import { UnexpectedValueError } from "../error"
@@ -45,15 +46,22 @@ export function buildFindOptions(
     return ops
   }
 
-  ops = handleWhere(ops, model, dialect)
-  ops = handleSqliteLike(ops, dialect)
+  ops = handleWhere(ops, model)
+
+  if (dialect === "sqlite") {
+    ops = handleSqliteDateNestedColumns(ops, dialect)
+    ops = handleSqliteLike(ops, dialect)
+  }
 
   if (Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {
       ops.data.attributes.unshift("id")
     }
 
-    const modelName = noCase(model.name, { delimiter: "-" })
+    const modelName = [model.namespace, model.name]
+      .filter((x) => x)
+      .map((x) => noCase(x as string, { delimiter: "-" }))
+      .join("-")
 
     ops.data.attributes.forEach((attribute: string) => {
       if (attribute !== "id" && !model.attributes[attribute]) {

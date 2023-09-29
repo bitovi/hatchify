@@ -1,10 +1,11 @@
-import type { Dialect, FindOptions } from "sequelize"
+import type { FindOptions } from "sequelize"
 
 import type { QueryStringParser } from "./builder"
 import { getColumnName } from "./getColumnName"
 import { walk } from "./walk"
 import { UnexpectedValueError } from "../error"
 import type { HatchifyModel } from "../types"
+import { getFullModelName } from "../utils/getFullModelName"
 
 interface Include {
   association: string
@@ -13,11 +14,10 @@ interface Include {
 export function handleWhere(
   ops: QueryStringParser<FindOptions>,
   model: HatchifyModel,
-  dialect: Dialect,
 ): QueryStringParser<FindOptions> {
   const errors: Error[] = []
 
-  const where = walk<typeof ops.data.where>(ops.data.where, (key) => {
+  const where = walk(ops.data.where, (key, value) => {
     if (typeof key !== "string") {
       return [null, key]
     }
@@ -36,7 +36,7 @@ export function handleWhere(
         )
       }
 
-      return [null, key]
+      return [null, `$${getColumnName(`${getFullModelName(model)}.${key}`)}$`]
     }
 
     const [relationshipName] = key.split(".")

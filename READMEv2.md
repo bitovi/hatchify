@@ -252,7 +252,7 @@ const hatchedKoa = hatchifyKoa(
     prefix: "/api",
     database: {
       dialect: "sqlite",
-      storage: "example.sqlite",
+      storage: ":memory:",
     },
   },
 )
@@ -307,7 +307,7 @@ curl 'http://localhost:3000/api/todos' \
     "type": "Todo",
     "attributes": {
       "name": "Walk the dog",
-      "due_date": "2024-12-12",
+      "dueDate": "2024-12-12",
       "importance": 6
     }
   }
@@ -402,7 +402,7 @@ curl 'http://localhost:3000/api/todos' \
     "attributes": {
       "id": "101",
       "name": "Walk the dog",
-      "due_date": "2024-12-12",
+      "dueDate": "2024-12-12",
       "importance": 6
     }
   }
@@ -416,7 +416,7 @@ curl 'http://localhost:3000/api/todos' \
     "attributes": {
       "id": "102",
       "name": "Laundry",
-      "due_date": "2024-12-02",
+      "dueDate": "2024-12-02",
       "importance": 1
     }
   }
@@ -430,7 +430,7 @@ curl 'http://localhost:3000/api/todos' \
     "attributes": {
       "id": "103",
       "name": "Making Calls",
-      "due_date": "2024-12-31",
+      "dueDate": "2024-12-31",
       "importance": 7
     }
   }

@@ -31,7 +31,7 @@ export function convertHatchifyModels(
   models.forEach((model) => {
     // add namespace to model.name
     const modelName = model.name
-    if (model.namespace && model.namespace.length > 0) {
+    if (model.namespace) {
       model.name = model.namespace + "_" + model.name
     }
     for (const attributeKey in model.attributes) {

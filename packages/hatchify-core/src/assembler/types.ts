@@ -97,6 +97,8 @@ export interface PartialSchema<
 > {
   name: string
   namespace?: string
+  pluralName?: string
+  displayName?: string
   id?: PartialAttribute<
     PartialUuidORM,
     PartialStringControlType,
@@ -152,6 +154,8 @@ export type FinalAttributeRecord = Record<
 export interface FinalSchema {
   name: string
   namespace?: string
+  pluralName?: string
+  displayName?: string
   id: FinalAttribute<
     PartialUuidORM,
     PartialStringControlType,

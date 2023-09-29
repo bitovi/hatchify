@@ -1,32 +1,44 @@
-import type { HatchifyModel } from "@hatchifyjs/node"
+import {
+  belongsTo,
+  datetime,
+  enumerate,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
 
 describe.each(dbDialects)("Error Code Tests", (dialect) => {
   describe(`${dialect}`, () => {
-    const User: HatchifyModel = {
+    const User: PartialSchema = {
       name: "User",
       attributes: {
-        name: "STRING",
-        role: { type: "ENUM", values: ["user", "admin"] },
+        name: string(),
+        role: enumerate({ values: ["user", "admin"] }),
       },
-      hasMany: [{ target: "Todo", options: { as: "todos" } }],
+      relationships: {
+        todos: hasMany(),
+      },
     }
-    const Todo: HatchifyModel = {
+    const Todo: PartialSchema = {
       name: "Todo",
       attributes: {
-        name: { type: "STRING", allowNull: false },
-        due_date: "DATE",
-        importance: "INTEGER",
+        name: string({ required: true }),
+        dueDate: datetime(),
+        importance: integer(),
       },
-      belongsTo: [{ target: "User", options: { as: "user" } }],
+      relationships: {
+        user: belongsTo(),
+      },
     }
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
     beforeAll(async () => {
-      ;({ fetch, teardown } = await startServerWith([User, Todo], dialect))
+      ;({ fetch, teardown } = await startServerWith({ User, Todo }, dialect))
     })
 
     afterAll(async () => {
@@ -49,7 +61,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           data: {
             type: "Todo",
             attributes: {
-              due_date: "2024-12-12",
+              dueDate: "2024-12-12",
               importance: 6,
             },
           },
@@ -95,7 +107,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
             type: "Todo",
             attributes: {
               name: "Something B for user 1",
-              due_date: "2024-12-12",
+              dueDate: "2024-12-12",
               importance: 7,
             },
             relationships: {
@@ -117,7 +129,8 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
         status: 422,
         code: "unexpected-value",
         title: "Unexpected value.",
-        detail: "User must have 'role' as one of 'user', 'admin'.",
+        detail:
+          "Payload must have 'role' as one of 'user', 'admin' but received 'invalid' instead.",
         source: {
           pointer: "/data/attributes/role",
         },
@@ -164,7 +177,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
             attributes: {
               id: "101",
               name: "Walk the dog",
-              due_date: "2024-12-12",
+              dueDate: "2024-12-12",
               importance: 6,
             },
           },
@@ -199,7 +212,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
             attributes: {
               id: "101",
               name: "Walk the dog",
-              due_date: "2024-12-12",
+              dueDate: "2024-12-12",
               importance: 6,
             },
           },
@@ -235,7 +248,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
             attributes: {
               id: "101",
               name: "Walk the dog",
-              due_date: "2024-12-12",
+              dueDate: "2024-12-12",
               importance: 6,
             },
           },
@@ -329,15 +342,21 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           parameter: "id",
         },
       }
-      const response = await fetch("/api/todos/-1", {
-        method: "patch",
-        body: {
-          data: {
-            type: "Todo",
-            attributes: { name: "Updated" },
+
+      const response = await fetch(
+        "/api/todos/00000000-0000-0000-0000-000000000000",
+        {
+          method: "patch",
+          body: {
+            data: {
+              type: "Todo",
+              attributes: {
+                name: "Updated",
+              },
+            },
           },
         },
-      })
+      )
 
       expect(response).toBeTruthy()
 
@@ -360,9 +379,12 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
           parameter: "id",
         },
       }
-      const response = await fetch("/api/todos/-1", {
-        method: "delete",
-      })
+      const response = await fetch(
+        "/api/todos/00000000-0000-0000-0000-000000000000",
+        {
+          method: "delete",
+        },
+      )
 
       expect(response).toBeTruthy()
 
@@ -573,7 +595,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
             type: "Todo",
             attributes: {
               name: "A todo for user 1",
-              due_date: "2024-12-12",
+              dueDate: "2024-12-12",
               importance: 8,
             },
             relationships: {
@@ -598,7 +620,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
         code: "unexpected-value",
         title: "Unexpected value.",
         detail:
-          "URL must have 'sort' as comma separated values containing one or more of 'name', 'due_date', 'importance'.",
+          "URL must have 'sort' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.",
         source: {
           parameter: "sort",
         },
@@ -618,7 +640,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
         code: "unexpected-value",
         title: "Unexpected value.",
         detail:
-          "URL must have 'filter[x]' where 'x' is one of 'name', 'due_date', 'importance'.",
+          "URL must have 'filter[x]' where 'x' is one of 'name', 'dueDate', 'importance', 'userId'.",
         source: {
           parameter: "filter[namee]",
         },
@@ -640,7 +662,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
         code: "unexpected-value",
         title: "Unexpected value.",
         detail:
-          "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance'.",
+          "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.",
         source: {
           parameter: "fields[todo]",
         },

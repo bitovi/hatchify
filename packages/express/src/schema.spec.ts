@@ -1,28 +1,22 @@
-import { DataTypes } from "@hatchifyjs/node"
-import type { HatchifyModel } from "@hatchifyjs/node"
+import { string } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/node"
 import Express from "express"
 
 import { Hatchify } from "./express"
 import { GET } from "./testing/utils"
 
 describe("Schema Tests", () => {
-  const Model: HatchifyModel = {
+  const Model: PartialSchema = {
     name: "Model",
     attributes: {
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      firstName: string({ required: true }),
+      lastName: string({ required: true }),
     },
   }
 
   it("should create fetch the schema for a specific model", async () => {
     const app = Express()
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    const hatchify = new Hatchify({ Model }, { prefix: "/api" })
     app.use((_req, res) => {
       res.json(hatchify.schema.Model)
     })

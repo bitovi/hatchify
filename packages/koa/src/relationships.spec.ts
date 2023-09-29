@@ -1,31 +1,42 @@
-import type { HatchifyModel } from "@hatchifyjs/node"
+import {
+  belongsTo,
+  datetime,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"
 
 describe.each(dbDialects)("Relationships", (dialect) => {
   describe(`${dialect} - Users and Todos`, () => {
-    const User: HatchifyModel = {
+    const User: PartialSchema = {
       name: "User",
       attributes: {
-        name: "STRING",
+        name: string(),
       },
-      hasMany: [{ target: "Todo", options: { as: "todos" } }],
+      relationships: {
+        todos: hasMany(),
+      },
     }
-    const Todo: HatchifyModel = {
+    const Todo: PartialSchema = {
       name: "Todo",
       attributes: {
-        name: "STRING",
-        due_date: "DATE",
-        importance: "INTEGER",
+        name: string(),
+        dueDate: datetime(),
+        importance: integer(),
       },
-      belongsTo: [{ target: "User", options: { as: "user" } }],
+      relationships: {
+        user: belongsTo(),
+      },
     }
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
     beforeAll(async () => {
-      ;({ fetch, teardown } = await startServerWith([User, Todo], dialect))
+      ;({ fetch, teardown } = await startServerWith({ User, Todo }, dialect))
     })
 
     afterAll(async () => {
@@ -40,7 +51,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             type: "Todo",
             attributes: {
               name: "Walk the dog",
-              due_date: "2024-12-12T00:00:00.000Z",
+              dueDate: "2024-12-12T00:00:00.000Z",
               importance: 6,
             },
           },
@@ -91,8 +102,9 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             id: todo.data.id,
             attributes: {
               name: "Walk the dog",
-              due_date: "2024-12-12T00:00:00.000Z",
+              dueDate: "2024-12-12T00:00:00.000Z",
               importance: 6,
+              userId: user.data.id,
             },
             relationships: {
               user: { data: { type: "User", id: user.data.id } },
@@ -106,7 +118,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       })
 
       const { body: todosWithFields } = await fetch(
-        "/api/todos?include=user&fields[Todo]=name,due_date&fields[User]=name",
+        "/api/todos?include=user&fields[Todo]=name,dueDate&fields[User]=name",
       )
 
       expect(todosWithFields).toEqual({
@@ -117,7 +129,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             id: todo.data.id,
             attributes: {
               name: "Walk the dog",
-              due_date: "2024-12-12T00:00:00.000Z",
+              dueDate: "2024-12-12T00:00:00.000Z",
             },
             relationships: {
               user: { data: { type: "User", id: user.data.id } },
@@ -131,7 +143,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       })
 
       const { body: todosWithIdField } = await fetch(
-        "/api/todos?include=user&fields[Todo]=id,name,due_date&fields[User]=name",
+        "/api/todos?include=user&fields[Todo]=id,name,dueDate&fields[User]=name",
       )
 
       expect(todosWithIdField).toEqual({
@@ -142,7 +154,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             id: todo.data.id,
             attributes: {
               name: "Walk the dog",
-              due_date: "2024-12-12T00:00:00.000Z",
+              dueDate: "2024-12-12T00:00:00.000Z",
             },
             relationships: {
               user: { data: { type: "User", id: user.data.id } },
@@ -190,7 +202,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             type: "Todo",
             attributes: {
               name: "Walk the dog",
-              due_date: "2024-12-12T00:00:00.000Z",
+              dueDate: "2024-12-12T00:00:00.000Z",
               importance: 6,
             },
             relationships: {
@@ -209,8 +221,9 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           id: todo.data.id,
           attributes: {
             name: "Walk the dog",
-            due_date: "2024-12-12T00:00:00.000Z",
+            dueDate: "2024-12-12T00:00:00.000Z",
             importance: 6,
+            ...(dialect === "sqlite" ? {} : { userId: null }),
           },
         },
       })
@@ -255,7 +268,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               type: "Todo",
               attributes: {
                 name: "Walk the dog",
-                due_date: "2024-12-12T00:00:00.000Z",
+                dueDate: "2024-12-12T00:00:00.000Z",
                 importance: 6,
               },
             },
@@ -293,8 +306,9 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             id: todo.data.id,
             attributes: {
               name: todo.data.attributes.name,
-              due_date: todo.data.attributes.due_date,
+              dueDate: todo.data.attributes.dueDate,
               importance: todo.data.attributes.importance,
+              userId: user.data.id,
             },
             relationships: {
               user: { data: { type: "User", id: user.data.id } },
@@ -329,7 +343,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               type: "Todo",
               attributes: {
                 name: "Walk the dog",
-                due_date: "2024-12-12T00:00:00.000Z",
+                dueDate: "2024-12-12T00:00:00.000Z",
                 importance: 7,
               },
               relationships: {
@@ -349,8 +363,9 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             id: todo.data.id,
             attributes: {
               name: todo.data.attributes.name,
-              due_date: todo.data.attributes.due_date,
+              dueDate: todo.data.attributes.dueDate,
               importance: todo.data.attributes.importance,
+              userId: user.data.id,
             },
             relationships: {
               user: { data: { type: "User", id: user.data.id } },
@@ -382,11 +397,11 @@ describe.each(dbDialects)("Relationships", (dialect) => {
                   data: [
                     {
                       type: "Todo",
-                      id: -1,
+                      id: "00000000-0000-0000-0000-000000000001",
                     },
                     {
                       type: "Todo",
-                      id: -2,
+                      id: "00000000-0000-0000-0000-000000000002",
                     },
                   ],
                 },
@@ -563,7 +578,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
                 type: "Todo",
                 attributes: {
                   name: "Walk the dog",
-                  due_date: "2024-12-12T00:00:00.000Z",
+                  dueDate: "2024-12-12T00:00:00.000Z",
                   importance,
                 },
               },
@@ -597,38 +612,37 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         },
       })
       const { body } = await fetch(
-        "/api/users?include=todos&filter[name]=John&filter[todos.importance]=1",
+        "/api/todos?include=user&filter[importance][$eq]=1&filter[name][$ilike]=walk%25&filter[user.name][$ilike]=john%25",
       )
 
       expect(body).toEqual({
         jsonapi: { version: "1.0" },
         data: [
           {
-            type: "User",
-            id: user.data.id,
+            type: "Todo",
+            id: todos[0].body.data.id,
             attributes: {
-              name: "John",
+              name: "Walk the dog",
+              dueDate: "2024-12-12T00:00:00.000Z",
+              importance: 1,
+              userId: user.data.id,
             },
             relationships: {
-              todos: {
-                data: [
-                  {
-                    type: "Todo",
-                    id: todos[0].body.data.id,
-                  },
-                ],
+              user: {
+                data: {
+                  type: "User",
+                  id: user.data.id,
+                },
               },
             },
           },
         ],
         included: [
           {
-            type: "Todo",
-            id: todos[0].body.data.id,
+            type: "User",
+            id: user.data.id,
             attributes: {
-              name: "Walk the dog",
-              due_date: "2024-12-12T00:00:00.000Z",
-              importance: 1,
+              name: "John",
             },
           },
         ],
@@ -638,12 +652,12 @@ describe.each(dbDialects)("Relationships", (dialect) => {
   })
 
   describe(`${dialect} - No Relationships`, () => {
-    const Todo: HatchifyModel = {
+    const Todo: PartialSchema = {
       name: "Todo",
       attributes: {
-        name: "STRING",
-        due_date: "DATE",
-        importance: "INTEGER",
+        name: string(),
+        dueDate: datetime(),
+        importance: integer(),
       },
     }
 
@@ -651,7 +665,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
     beforeAll(async () => {
-      ;({ fetch, teardown } = await startServerWith([Todo], dialect))
+      ;({ fetch, teardown } = await startServerWith({ Todo }, dialect))
     })
 
     afterAll(async () => {
@@ -684,33 +698,23 @@ describe.each(dbDialects)("Relationships", (dialect) => {
   })
 
   describe(`${dialect} - Accounts and Sales People`, () => {
-    const SalesPerson: HatchifyModel = {
+    const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
-        firstName: "STRING",
+        firstName: string(),
       },
-      belongsToMany: [
-        {
-          target: "Account",
-          options: {
-            through: "AccountSalesPerson",
-          },
-        },
-      ],
+      relationships: {
+        accounts: hasMany().through(),
+      },
     }
-    const Account: HatchifyModel = {
+    const Account: PartialSchema = {
       name: "Account",
       attributes: {
-        name: "STRING",
+        name: string(),
       },
-      belongsToMany: [
-        {
-          target: "SalesPerson",
-          options: {
-            through: "AccountSalesPerson",
-          },
-        },
-      ],
+      relationships: {
+        salesPersons: hasMany().through(),
+      },
     }
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
@@ -718,7 +722,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
 
     beforeAll(async () => {
       ;({ fetch, teardown } = await startServerWith(
-        [SalesPerson, Account],
+        { SalesPerson, Account },
         dialect,
       ))
     })
@@ -793,35 +797,29 @@ describe.each(dbDialects)("Relationships", (dialect) => {
   })
 
   describe(`${dialect} - Aliased belongsToMany relationships`, () => {
-    const SalesPerson: HatchifyModel = {
+    const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
-        firstName: "STRING",
+        firstName: string(),
       },
-      belongsToMany: [
-        {
-          target: "Account",
-          options: {
-            as: "aliasedAccounts",
-            through: "AccountSalesPerson",
-          },
-        },
-      ],
+      relationships: {
+        aliasedAccounts: hasMany("Account").through({
+          throughSourceAttribute: "salesPersonId",
+          throughTargetAttribute: "accountId",
+        }),
+      },
     }
-    const Account: HatchifyModel = {
+    const Account: PartialSchema = {
       name: "Account",
       attributes: {
-        name: "STRING",
+        name: string(),
       },
-      belongsToMany: [
-        {
-          target: "SalesPerson",
-          options: {
-            as: "aliasedSalesPersons",
-            through: "AccountSalesPerson",
-          },
-        },
-      ],
+      relationships: {
+        aliasedSalesPersons: hasMany("SalesPerson").through({
+          throughSourceAttribute: "accountId",
+          throughTargetAttribute: "salesPersonId",
+        }),
+      },
     }
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
@@ -829,7 +827,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
 
     beforeAll(async () => {
       ;({ fetch, teardown } = await startServerWith(
-        [SalesPerson, Account],
+        { SalesPerson, Account },
         dialect,
       ))
     })
