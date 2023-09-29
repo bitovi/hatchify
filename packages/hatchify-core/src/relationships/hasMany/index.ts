@@ -5,6 +5,7 @@ export function hasMany(
   schemaName?: string,
   props?: {
     targetAttribute: string
+    sourceAttribute?: string
   },
 ): PartialHasManyRelationship {
   const targetSchema = schemaName ?? null
@@ -13,6 +14,7 @@ export function hasMany(
     type: "hasMany",
     targetSchema,
     targetAttribute: props?.targetAttribute ?? null,
+    sourceAttribute: props?.sourceAttribute ?? null,
     through: buildThrough(targetSchema),
   }
 }

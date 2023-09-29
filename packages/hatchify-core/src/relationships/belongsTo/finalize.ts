@@ -21,6 +21,7 @@ export function finalize(
 
   const sourceAttribute =
     relationship.sourceAttribute ?? `${relationshipName}Id`
+  const targetAttribute = relationship.targetAttribute ?? "id"
 
   return {
     ...schemas,
@@ -38,6 +39,7 @@ export function finalize(
           type: "belongsTo",
           targetSchema,
           sourceAttribute,
+          targetAttribute,
         },
       },
     },

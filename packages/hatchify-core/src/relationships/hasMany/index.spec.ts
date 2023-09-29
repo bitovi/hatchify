@@ -8,6 +8,7 @@ describe("hasMany", () => {
       type: "hasMany",
       targetSchema: null,
       targetAttribute: null,
+      sourceAttribute: null,
       through: expect.any(Function),
     })
 
@@ -63,6 +64,7 @@ describe("hasMany", () => {
       type: "hasMany",
       targetSchema: "SalesPerson",
       targetAttribute: null,
+      sourceAttribute: null,
       through: expect.any(Function),
     })
 
@@ -118,6 +120,7 @@ describe("hasMany", () => {
       type: "hasMany",
       targetSchema: "SalesPerson",
       targetAttribute: "salesId",
+      sourceAttribute: null,
       through: expect.any(Function),
     })
   })

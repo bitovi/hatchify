@@ -25,6 +25,7 @@ export function finalize(
 
   const targetAttribute =
     relationship.targetAttribute ?? `${pascalCaseToCamelCase(sourceSchema)}Id`
+  const sourceAttribute = relationship.sourceAttribute ?? "id"
 
   const relationships: Record<string, PartialRelationship | FinalRelationship> =
     {
@@ -33,6 +34,7 @@ export function finalize(
         type: "hasMany",
         targetSchema,
         targetAttribute,
+        sourceAttribute,
       },
     }
 

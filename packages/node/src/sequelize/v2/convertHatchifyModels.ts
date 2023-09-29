@@ -46,7 +46,11 @@ export function convertHatchifyModels(
                 ...acc.belongsTo,
                 {
                   target: relationship.targetSchema,
-                  options: { as, foreignKey: relationship.sourceAttribute },
+                  options: {
+                    as,
+                    foreignKey: relationship.sourceAttribute,
+                    targetKey: relationship.targetAttribute,
+                  },
                 },
               ],
             }
@@ -58,7 +62,11 @@ export function convertHatchifyModels(
                 ...acc.hasOne,
                 {
                   target: relationship.targetSchema,
-                  options: { as, foreignKey: relationship.targetAttribute },
+                  options: {
+                    as,
+                    foreignKey: relationship.targetAttribute,
+                    sourceKey: relationship.sourceAttribute,
+                  },
                 },
               ],
             }
@@ -70,7 +78,11 @@ export function convertHatchifyModels(
                 ...acc.hasMany,
                 {
                   target: relationship.targetSchema,
-                  options: { as, foreignKey: relationship.targetAttribute },
+                  options: {
+                    as,
+                    foreignKey: relationship.targetAttribute,
+                    sourceKey: relationship.sourceAttribute,
+                  },
                 },
               ],
             }
@@ -152,17 +164,22 @@ export function convertHatchifyModels(
             sourceKey: relationship.sourceKey,
           },
         )
+      } else if (type === "belongsTo") {
+        sequelize.models[getFullModelName(model)][type](
+          sequelize.models[targetSchema],
+          {
+            as: relationshipName,
+            foreignKey: relationship.sourceAttribute,
+            targetKey: relationship.targetAttribute,
+          },
+        )
       } else {
         sequelize.models[getFullModelName(model)][type](
           sequelize.models[targetSchema],
           {
             as: relationshipName,
-            ...("sourceAttribute" in relationship
-              ? { foreignKey: relationship.sourceAttribute }
-              : {}),
-            ...("targetAttribute" in relationship
-              ? { foreignKey: relationship.targetAttribute }
-              : {}),
+            foreignKey: relationship.targetAttribute,
+            sourceKey: relationship.sourceAttribute,
           },
         )
       }
