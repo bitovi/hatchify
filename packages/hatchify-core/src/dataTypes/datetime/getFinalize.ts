@@ -82,10 +82,10 @@ export function getFinalize(
     // Passed  - Any value someone might try to query by
     // Returns - A STRING value that can be sent as part of the query string.
     // Example : true => "true";
-    serializeClientQueryFilterValue: (value: Date | null): string | null => {
+    serializeClientQueryFilterValue: (value: Date | null): string => {
       const coerced = coerce(value, control)
 
-      return coerced === null ? null : coerced.toISOString()
+      return coerced ? coerced.toISOString() : JSON.stringify(null)
     },
 
     // Passed  - Any crazy STRING value the client might send as GET

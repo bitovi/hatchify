@@ -16,7 +16,10 @@ import type {
   OverwriteColumnProps,
 } from "../components/HatchifyColumn"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import { transformSchema } from "@hatchifyjs/rest-client"
+import {
+  schemaNameWithNamespace,
+  transformSchema,
+} from "@hatchifyjs/rest-client"
 import { HatchifyCollection } from "../components/HatchifyCollection"
 import { HatchifyColumn } from "../components/HatchifyColumn"
 import { HatchifyEmpty } from "../components/HatchifyEmpty"
@@ -70,21 +73,23 @@ export type HatchifyApp = {
 }
 
 export function hatchifyReact(dataSource: Source): HatchifyApp {
-  const { completeSchemaMap } = dataSource
+  const { completeSchemaMap: schemas } = dataSource
 
   const reactRest = hatchifyReactRest(dataSource)
 
-  const schemas = Object.values(completeSchemaMap).reduce((acc, schema) => {
-    acc[schema.name] = transformSchema(schema)
+  const formattedSchemas = Object.values(schemas).reduce((acc, schema) => {
+    acc[schemaNameWithNamespace(schema)] = transformSchema(schema)
     return acc
   }, {} as Schemas)
 
   const components = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] = {
+    const schemaName = schemaNameWithNamespace(schema)
+
+    acc[schemaName] = {
       Collection: (props) => (
         <HatchifyCollection
-          allSchemas={schemas}
-          schemaName={schema.name}
+          allSchemas={formattedSchemas}
+          schemaName={schemaName}
           restClient={reactRest}
           {...props}
         />
@@ -92,8 +97,8 @@ export function hatchifyReact(dataSource: Source): HatchifyApp {
       Column: (props) => (
         // todo fix ts!!!
         <HatchifyColumn
-          allSchemas={schemas}
-          schemaName={schema.name}
+          allSchemas={formattedSchemas}
+          schemaName={schemaName}
           {...props}
         />
       ),
@@ -104,7 +109,9 @@ export function hatchifyReact(dataSource: Source): HatchifyApp {
   }, {} as HatchifyApp["components"])
 
   const state = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] = {
+    const schemaName = schemaNameWithNamespace(schema)
+
+    acc[schemaName] = {
       useCollectionState: ({
         defaultSelected,
         onSelectedChange,
@@ -114,7 +121,7 @@ export function hatchifyReact(dataSource: Source): HatchifyApp {
         defaultSort,
         baseFilter,
       } = {}) =>
-        useCollectionState(schemas, schema.name, reactRest, {
+        useCollectionState(formattedSchemas, schema.name, reactRest, {
           defaultSelected,
           onSelectedChange,
           fields,

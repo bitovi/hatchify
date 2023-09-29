@@ -347,9 +347,9 @@ export class Hatchify {
     const isPathWithNameSpaceModelIdResult = isPathWithNameSpaceModelId(path)
     if (isPathWithNameSpaceModelIdResult) {
       let modelName = isPathWithNameSpaceModelIdResult.params.model
-      if (!modelName.includes(".")) {
+      if (!modelName.includes("_")) {
         modelName =
-          isPathWithNameSpaceModelIdResult.params.namespace + "." + modelName
+          isPathWithNameSpaceModelIdResult.params.namespace + "_" + modelName
       }
       const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
 
@@ -394,9 +394,9 @@ export class Hatchify {
     const isPathWithNamespaceModelResult = isPathWithNamespaceModel(path)
     if (isPathWithNamespaceModelResult) {
       let modelName = isPathWithNamespaceModelResult.params.model
-      if (!modelName.includes(".")) {
+      if (!modelName.includes("_")) {
         modelName =
-          isPathWithNamespaceModelResult.params.namespace + "." + modelName
+          isPathWithNamespaceModelResult.params.namespace + "_" + modelName
       }
       const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
 
@@ -474,16 +474,25 @@ export class Hatchify {
    * @category Testing Use
    */
   async createDatabase(): Promise<Sequelize> {
-    const uniqueNamespaces = Object.values(this.models).reduce(
-      (acc, model) => (model?.namespace ? acc.add(model.namespace) : acc),
-      new Set<string>(),
-    )
+    if (this._sequelize.getDialect() === "postgres") {
+      const existingNamespaces = (await this._sequelize.showAllSchemas(
+        {},
+      )) as unknown as string[]
 
-    await Promise.all(
-      [...uniqueNamespaces].map((namespace) =>
-        this._sequelize.createSchema(snakeCase(namespace), {}),
-      ),
-    )
+      const uniqueNamespaces = Object.values(this.models).reduce(
+        (acc, model) =>
+          model?.namespace && !existingNamespaces.includes(model.namespace)
+            ? acc.add(model.namespace)
+            : acc,
+        new Set<string>(),
+      )
+
+      await Promise.all(
+        [...uniqueNamespaces].map((namespace) =>
+          this._sequelize.createSchema(snakeCase(namespace), {}),
+        ),
+      )
+    }
 
     try {
       return await this._sequelize.sync({ alter: true })

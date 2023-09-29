@@ -4,6 +4,7 @@ import {
   deleteOne,
   findAll,
   findOne,
+  schemaNameWithNamespace,
   transformSchema,
   updateOne,
 } from "@hatchifyjs/rest-client"
@@ -59,38 +60,55 @@ export type ReactRest = {
 export function hatchifyReactRest(dataSource: Source): ReactRest {
   const { completeSchemaMap: schemas } = dataSource
 
-  const storeKeys = Object.values(schemas).map((schema) => schema.name)
+  const storeKeys = Object.values(schemas).map((schema) =>
+    schemaNameWithNamespace(schema),
+  )
   createStore(storeKeys)
 
-  const newSchemas = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] =
+  const formattedSchemas = Object.values(schemas).reduce((acc, schema) => {
+    acc[schemaNameWithNamespace(schema)] =
       "displayAttribute" in schema ? schema : transformSchema(schema)
     return acc
   }, {} as Schemas)
 
   const functions = Object.values(schemas).reduce((acc, schema) => {
-    acc[schema.name] = {
+    const schemaName = schemaNameWithNamespace(schema)
+
+    acc[schemaName] = {
       // promises
       createOne: (data) =>
-        createOne(dataSource, newSchemas, schema.name, {
+        createOne(dataSource, formattedSchemas, schemaName, {
           ...data,
-          __schema: schema.name,
+          __schema: schemaName,
         }),
-      deleteOne: (id) => deleteOne(dataSource, newSchemas, schema.name, id),
-      findAll: (query) => findAll(dataSource, newSchemas, schema.name, query),
-      findOne: (query) => findOne(dataSource, newSchemas, schema.name, query),
+      deleteOne: (id) =>
+        deleteOne(dataSource, formattedSchemas, schemaName, id),
+      findAll: (query) =>
+        findAll(dataSource, formattedSchemas, schemaName, query),
+      findOne: (query) =>
+        findOne(dataSource, formattedSchemas, schemaName, query),
       updateOne: (data) =>
-        updateOne(dataSource, newSchemas, schema.name, {
+        updateOne(dataSource, formattedSchemas, schemaName, {
           ...data,
-          __schema: schema.name,
+          __schema: schemaName,
         }),
       // hooks
-      useCreateOne: () => useCreateOne(dataSource, newSchemas, schema.name),
-      useDeleteOne: () => useDeleteOne(dataSource, newSchemas, schema.name),
+      useCreateOne: () =>
+        useCreateOne(dataSource, formattedSchemas, schemaName),
+      useDeleteOne: () =>
+        useDeleteOne(dataSource, formattedSchemas, schemaName),
       useAll: (query, baseFilter) =>
-        useAll(dataSource, newSchemas, schema.name, query ?? {}, baseFilter),
-      useOne: (query) => useOne(dataSource, newSchemas, schema.name, query),
-      useUpdateOne: () => useUpdateOne(dataSource, newSchemas, schema.name),
+        useAll(
+          dataSource,
+          formattedSchemas,
+          schemaName,
+          query ?? {},
+          baseFilter,
+        ),
+      useOne: (query) =>
+        useOne(dataSource, formattedSchemas, schemaName, query),
+      useUpdateOne: () =>
+        useUpdateOne(dataSource, formattedSchemas, schemaName),
     }
 
     return acc
