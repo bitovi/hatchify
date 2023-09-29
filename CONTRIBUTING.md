@@ -530,3 +530,63 @@ npx nx eslint @hatchifyjs/koa
 │   └── getting-started-react-rest.spec.ts
 └── tsconfig.json
 ```
+
+## Making releases
+
+**ALL packages** MUST follow the Semantic Versioning guidelines in the form of `MAJOR.MINOR.PATCH` for
+
+- `MAJOR` version when you make incompatible API changes,
+- `MINOR` version when you add functionality in a backwards-compatible manner, and
+- `PATCH` version when you make backwards-compatible bug fixes.
+
+Before making any release please make sure that:
+
+- You have write access to the GitHub repository you want to publish.
+- Have an [npm](https://www.npmjs.com) account and are logged in on the CLI tool (`npm whoami`).
+- Your user is a collaborator on npm. You can ask an existing collaborator to add you. Existing collaborators can be listed via `npm owner ls @hatchify/<packagename>` or on the npm module page (e.g. [@hatchifyjs/koa](https://www.npmjs.com/package/@hatchifyjs/koa)).
+
+### Releasing Hatchify packages
+
+All Hatchify packages have the same structure which allows making releases through npm scripts.
+
+To make a release:
+
+1. Move to the `master` branch
+2. Fetch all latest changes from the repository
+3. Reinstall all Node modules in their latest version
+
+   ```
+   git checkout master
+   git fetch --all && git rebase
+   npm cache verify
+   rm -rf node_modules
+   npm install
+   ```
+
+4. Then run `npm run release:<versiontype>`. For example, to make a `PATCH` release:
+
+   ```
+   npm run release:patch
+   ```
+
+This will run the tests, build, bump the version number accordingly and publish the module to [npm](https://www.npmjs.com/).
+
+#### Making pre-releases
+
+If you’re already a branch being used for pre-releases, you can run the following to make the next pre-release:
+
+```
+npm run release:pre
+```
+
+If you’re making the first pre-release, you can run one of the following commands, depending on how you need to bump the version:
+
+- Major: `npm version premajor --preid=pre && npm publish --tag=pre`
+- Minor: `npm version preminor --preid=pre && npm publish --tag=pre`
+- Patch: `npm version prepatch --preid=pre && npm publish --tag=pre`
+
+#### Publishing release notes
+
+After you have released the package, you will need to update the release on GitHub. Make sure the newly created tag has been pushed to GitHub (`git push --tags`).
+
+Then go to `https://github.com/bitovi/hatchify/releases` and edit the most recent tag. Give it a title and add any notes or links to issues, then click `Update release`.
