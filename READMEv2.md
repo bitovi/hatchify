@@ -192,29 +192,34 @@ under the hood to talk to your database.
 // hatchify-app/schemas.ts
 import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/hatchify-core"
 
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
     dueDate: datetime(),
     importance: integer(),
+    // 🛑 only string, datetime, integer ready on frontend
     complete: boolean({ default: false }),
   },
+  // 🛑 relationships not ready for frontend
   relationships: {
     user: belongsTo(),
   },
-}
+} satisfies PartialSchema
 
-export const User: PartialSchema = {
+export const User = {
   name: "User",
   attributes: {
     name: string({ required: true }),
   },
+  // 🛑 relationships not ready for frontend
   relationships: {
     todos: hasMany(),
   },
-}
+} satisfies PartialSchema
 ```
+
+> **Note:** It is important to use _satisfies PartialSchema_ when typing our schemas. By using the satisfies keyword, we can make sure our schema objects are typed correctly and also get the benefit of type inference when passing our schemas into our hatchify functions.
 
 You can find all of the possible data types for a schema's `attributes`
 [here](https://sequelize.org/docs/v6/other-topics/other-data-types/).
