@@ -30,9 +30,8 @@
   "dependencies": {
     "@bitovi/querystring-parser": "^0.7.7",
     "@bitovi/sequelize-querystring-parser": "^0.2.7",
-    "@hatchifyjs/core": "^0.1.5",
+    "@hatchifyjs/core": "^0.1.7",
     "@hatchifyjs/sequelize-create-with-associations": "^0.6.4",
-    "@types/lodash": "^4.14.196",
     "co-body": "^6.1.0",
     "json-api-serializer": "^2.6.6",
     "lodash": "^4.17.21",
@@ -44,6 +43,7 @@
     "@types/co-body": "^6.1.0",
     "@types/jest": "^29.2.1",
     "@types/json-api-serializer": "^2.6.3",
+    "@types/lodash": "^4.14.199",
     "@types/node": "^18.16.18",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
