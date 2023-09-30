@@ -243,7 +243,7 @@ check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/a
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import { Todo, User } from "../schemas"
+import { Todo, User } from "../schemas/schemas"
 
 const app = new Koa()
 const hatchedKoa = hatchifyKoa(
