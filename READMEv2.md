@@ -305,7 +305,7 @@ curl 'http://localhost:3000/api/todos' \
 --data '{
   "data": {
     "type": "Todo",
-    "id": "70737494-5feb-11ee-8c99-0242ac120002",
+    "id": "notrandm-uuid-uuid-todo-000000000001",
     "attributes": {
       "name": "Walk the dog",
       "dueDate": "2024-12-12",
@@ -324,14 +324,14 @@ curl --request POST 'http://localhost:3000/api/users' \
 --data '{
   "data": {
     "type": "User",
-    "id": "66917da6-5ff8-11ee-8c99-0242ac120002",
+    "id": "notrandm-uuid-uuid-user-000000000001",
     "attributes": {
       "name": "John Doe"
     },
     "relationships": {
       "todos": {
         "data": [
-          { "type": "Todo", "id": "70737494-5feb-11ee-8c99-0242ac120002" }
+          { "type": "Todo", "id": "notrandm-uuid-uuid-todo-000000000001" }
         ]
       }
     }
@@ -355,31 +355,21 @@ You can check out the [querystring library](https://github.com/bitovi/querystrin
 Just like fetching a list of resources, we’re able to fetch an
 individual resource with or without its related records. For example:
 
-- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002](http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002)
-- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002?include=todos](http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002?include=todos)
+- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002](http://localhost:3000/api/users/notrandm-uuid-uuid-user-000000000001)
+- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002?include=todos](http://localhost:3000/api/users/notrandm-uuid-uuid-user-000000000001?include=todos)
 
 ### Updating a resource
 
 ```bash
-curl --request PATCH 'http://localhost:3000/api/users/1' \
+curl --request PATCH 'http://localhost:3000/api/users/notrandm-uuid-uuid-user-000000000001' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
   "data": {
     "type": "User",
-    "id": "66917da6-5ff8-11ee-8c99-0242ac120002",
+    "id": "notrandm-uuid-uuid-user-000000000001",
     "attributes": {
       "name": "New name",
       "type": "User"
-    },
-    "relationships": {
-      "todos": {
-        "data": [
-          {
-            "id": "100",
-            "type": "Todo"
-          }
-        ]
-      }
     }
   }
 }'
@@ -388,7 +378,7 @@ curl --request PATCH 'http://localhost:3000/api/users/1' \
 ### Deleting a resource
 
 ```bash
-curl --request DELETE 'http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002'
+curl --request DELETE 'http://localhost:3000/api/users/notrandm-uuid-uuid-user-000000000001'
 ```
 
 ## Seeding data
@@ -402,7 +392,7 @@ curl 'http://localhost:3000/api/todos' \
   "data": {
     "type": "Todo",
     "attributes": {
-      "id": "101",
+      "id": "notrandm-uuid-uuid-todo-000000000002",
       "name": "Walk the dog",
       "dueDate": "2024-12-12",
       "importance": 6
@@ -416,7 +406,7 @@ curl 'http://localhost:3000/api/todos' \
   "data": {
     "type": "Todo",
     "attributes": {
-      "id": "102",
+      "id": "notrandm-uuid-uuid-todo-000000000003",
       "name": "Laundry",
       "dueDate": "2024-12-02",
       "importance": 1
@@ -430,7 +420,7 @@ curl 'http://localhost:3000/api/todos' \
   "data": {
     "type": "Todo",
     "attributes": {
-      "id": "103",
+      "id": "notrandm-uuid-uuid-todo-000000000004",
       "name": "Making Calls",
       "dueDate": "2024-12-31",
       "importance": 7
@@ -451,11 +441,11 @@ curl 'http://localhost:3000/api/users' \
         "data": [
           {
             "type": "Todo",
-            "id": "101"
+            "id": "notrandm-uuid-uuid-todo-000000000002"
           },
           {
             "type": "Todo",
-            "id": "103"
+            "id": "notrandm-uuid-uuid-todo-000000000004"
           }
         ]
       }
@@ -476,7 +466,7 @@ curl 'http://localhost:3000/api/users' \
         "data": [
           {
             "type": "Todo",
-            "id": "102"
+            "id": "notrandm-uuid-uuid-todo-000000000003"
           }
         ]
       }
