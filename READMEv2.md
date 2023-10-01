@@ -534,7 +534,7 @@ following:**
 ```tsx
 // hatchify-app/frontend/App.tsx
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo, User } from "../schemas"
+import { Todo, User } from "../schemas/schemas"
 
 export const hatchedReact = hatchifyReact(
   { Todo, User },
