@@ -305,6 +305,7 @@ curl 'http://localhost:3000/api/todos' \
 --data '{
   "data": {
     "type": "Todo",
+    "id": "70737494-5feb-11ee-8c99-0242ac120002",
     "attributes": {
       "name": "Walk the dog",
       "dueDate": "2024-12-12",
@@ -323,13 +324,14 @@ curl --request POST 'http://localhost:3000/api/users' \
 --data '{
   "data": {
     "type": "User",
+    "id": "66917da6-5ff8-11ee-8c99-0242ac120002",
     "attributes": {
       "name": "John Doe"
     },
     "relationships": {
       "todos": {
         "data": [
-          { "type": "Todo", "id": "1" }
+          { "type": "Todo", "id": "70737494-5feb-11ee-8c99-0242ac120002" }
         ]
       }
     }
@@ -353,8 +355,8 @@ You can check out the [querystring library](https://github.com/bitovi/querystrin
 Just like fetching a list of resources, we’re able to fetch an
 individual resource with or without its related records. For example:
 
-- [http://localhost:3000/api/users/1](http://localhost:3000/api/users/1)
-- [http://localhost:3000/api/users/1?include=todos](http://localhost:3000/api/users/1?include=todos)
+- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002](http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002)
+- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002?include=todos](http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002?include=todos)
 
 ### Updating a resource
 
@@ -364,7 +366,7 @@ curl --request PATCH 'http://localhost:3000/api/users/1' \
 --data '{
   "data": {
     "type": "User",
-    "id": "1",
+    "id": "66917da6-5ff8-11ee-8c99-0242ac120002",
     "attributes": {
       "name": "New name",
       "type": "User"
@@ -386,7 +388,7 @@ curl --request PATCH 'http://localhost:3000/api/users/1' \
 ### Deleting a resource
 
 ```bash
-curl --request DELETE 'http://localhost:3000/api/users/1'
+curl --request DELETE 'http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002'
 ```
 
 ## Seeding data
