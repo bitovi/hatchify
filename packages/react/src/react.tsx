@@ -1,4 +1,4 @@
-export type { Schema } from "@hatchifyjs/hatchify-core"
+export type { Schema } from "@hatchifyjs/core"
 export { default as hatchifyReact } from "@hatchifyjs/react-ui"
 export type { FlatRecord, HatchifyApp } from "@hatchifyjs/react-ui"
 export {

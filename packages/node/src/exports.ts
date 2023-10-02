@@ -32,4 +32,4 @@ export type { SerializeFunctions } from "./serialize"
 
 export { Op } from "sequelize"
 
-export type { PartialSchema } from "@hatchifyjs/hatchify-core"
+export type { PartialSchema } from "@hatchifyjs/core"

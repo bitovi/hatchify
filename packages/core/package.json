@@ -1,14 +1,14 @@
 {
-  "name": "@hatchifyjs/hatchify-core",
-  "version": "0.1.5",
-  "main": "./dist/hatchify-core.js",
-  "module": "./dist/hatchify-core.mjs",
-  "types": "./dist/hatchify-core.d.ts",
+  "name": "@hatchifyjs/core",
+  "version": "0.1.7",
+  "main": "./dist/core.js",
+  "module": "./dist/core.mjs",
+  "types": "./dist/core.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/hatchify-core.js",
-      "import": "./dist/hatchify-core.mjs",
-      "types": "./hatchify-core.ts"
+      "require": "./dist/core.js",
+      "import": "./dist/core.mjs",
+      "types": "./core.ts"
     },
     "./package.json": "./package.json"
   },
@@ -116,7 +116,7 @@
       "<rootDir>/src/**/*.ts",
       "!<rootDir>/src/**/types.ts",
       "!<rootDir>/src/dataTypes/index.ts",
-      "!<rootDir>/src/hatchify-core.ts",
+      "!<rootDir>/src/core.ts",
       "!<rootDir>/src/relationships/index.ts",
       "!<rootDir>/src/types/**/*.ts"
     ],

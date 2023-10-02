@@ -13,7 +13,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "@hatchifyjs/design-mui",
-        "@hatchifyjs/hatchify-core",
+        "@hatchifyjs/core",
         "@hatchifyjs/react-ui",
         "@hatchifyjs/rest-client-jsonapi",
         "react",

@@ -25,7 +25,7 @@ test("works", async ({ page, request }) => {
   // validate frontend is running
   await page.goto(frontend)
   await expect(page.getByText("Name")).toBeVisible()
-  await expect(page.getByText("Due Date")).toBeVisible()
+  await expect(page.getByText("DueDate")).toBeVisible()
   await expect(page.getByText("Importance")).toBeVisible()
   await expect(page.getByText("user")).toBeVisible()
 
@@ -36,7 +36,7 @@ test("works", async ({ page, request }) => {
         type: "Todo",
         attributes: {
           name: "Walk the dog",
-          due_date: "2023-07-05T20:30:52.767Z",
+          dueDate: "2023-07-05T20:30:52.767Z",
           importance: 6,
         },
       },

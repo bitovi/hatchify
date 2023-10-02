@@ -1,59 +1,44 @@
-import { DataTypes } from "@hatchifyjs/node"
-import type { HatchifyModel } from "@hatchifyjs/node"
+import { string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/node"
 import Express from "express"
 
 import { Hatchify } from "./express"
 import { GET } from "./testing/utils"
 
 describe("Internal Tests", () => {
-  const Model: HatchifyModel = {
+  const Model: PartialSchema = {
     name: "Model",
     attributes: {
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      firstName: string({ required: true }),
+      lastName: string({ required: true }),
     },
   }
 
-  const Model2: HatchifyModel = {
+  const Model2: PartialSchema = {
     name: "Model2",
     attributes: {
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      firstName: string({ required: true }),
+      lastName: string({ required: true }),
     },
   }
 
-  const Model3: HatchifyModel = {
+  const Model3: PartialSchema = {
     name: "Model3",
     attributes: {
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      firstName: string({ required: true }),
+      lastName: string({ required: true }),
     },
   }
 
   it("should handle custom user routes", async () => {
     const app = Express()
 
-    const hatchify = new Hatchify([Model, Model2, Model3], {
-      prefix: "/api",
-    })
+    const hatchify = new Hatchify(
+      { Model, Model2, Model3 },
+      {
+        prefix: "/api",
+      },
+    )
 
     const server = app
     await hatchify.createDatabase()
@@ -102,7 +87,7 @@ describe("Internal Tests", () => {
   it("should handle allModel custom routes", async () => {
     const app = Express()
 
-    const hatchify = new Hatchify([Model, Model2, Model3], {})
+    const hatchify = new Hatchify({ Model, Model2, Model3 }, {})
 
     const server = app
     await hatchify.createDatabase()
@@ -127,7 +112,7 @@ describe("Internal Tests", () => {
   it("should handle custom user auth example", async () => {
     const app = Express()
 
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    const hatchify = new Hatchify({ Model }, { prefix: "/api" })
 
     const server = app
     await hatchify.createDatabase()
@@ -162,7 +147,7 @@ describe("Internal Tests", () => {
   it("should handle custom user auth missing header", async () => {
     const app = Express()
 
-    const hatchify = new Hatchify([Model], { prefix: "/api" })
+    const hatchify = new Hatchify({ Model }, { prefix: "/api" })
 
     const server = app
     await hatchify.createDatabase()

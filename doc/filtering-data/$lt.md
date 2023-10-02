@@ -1,4 +1,3 @@
-
 # $lt
 
 Records that are less than the given value will be returned.
@@ -6,12 +5,12 @@ Records that are less than the given value will be returned.
 ## Compatibility
 
 This operator is compatible with the following types:
- `string`, `date`,  `number`
+`string`, `date`, `number`
 
- ** A note on string comparison **
- 
- Strings are compared lexicographically. Capital letters [A-Z] are smaller than lowercase [a-z]. Shorter strings are also smaller. This is similar to dictionary order.
- "Workout" < "workout" > "out".
+** A note on string comparison **
+
+Strings are compared lexicographically. Capital letters [A-Z] are smaller than lowercase [a-z]. Shorter strings are also smaller. This is similar to dictionary order.
+"Workout" < "workout" > "out".
 
 ## Examples
 
@@ -24,7 +23,7 @@ All examples use this example data:
             "id": "1",
             "attributes": {
                 "name": "Workout",
-                "due_date": "2024-12-12T06:00:00.000Z",
+                "dueDate": "2024-12-12T06:00:00.000Z",
                 "importance": 6,
                 "completed": false
             },
@@ -34,7 +33,7 @@ All examples use this example data:
             "id": "2",
             "attributes": {
                 "name": "take out trash",
-                "due_date": "2023-05-09T05:00:00.000Z",
+                "dueDate": "2023-05-09T05:00:00.000Z",
                 "importance": 9,
                 "completed": false
             },
@@ -44,7 +43,7 @@ All examples use this example data:
             "id": "3",
             "attributes": {
                 "name": "buy more icecream",
-                "due_date": "2023-07-20T05:00:00.000Z",
+                "dueDate": "2023-07-20T05:00:00.000Z",
                 "importance": 9,
                 "completed": true
             },
@@ -64,7 +63,7 @@ This filter will match the following records:<br>
             "id": "1",
             "attributes": {
                 "name": "Workout",
-                "due_date": "2024-12-12T06:00:00.000Z",
+                "dueDate": "2024-12-12T06:00:00.000Z",
                 "importance": 6,
                 "completed": false
             },
@@ -82,7 +81,7 @@ This filter will match the following records:<br>
             "id": "1",
             "attributes": {
                 "name": "Workout",
-                "due_date": "2024-12-12T06:00:00.000Z",
+                "dueDate": "2024-12-12T06:00:00.000Z",
                 "importance": 6,
                 "completed": false
             },
@@ -92,7 +91,7 @@ This filter will match the following records:<br>
             "id": "3",
             "attributes": {
                 "name": "buy more icecream",
-                "due_date": "2023-07-20T05:00:00.000Z",
+                "dueDate": "2023-07-20T05:00:00.000Z",
                 "importance": 9,
                 "completed": true
             },
@@ -115,7 +114,7 @@ This filter will match the following records:<br>
             "id": "1",
             "attributes": {
                 "name": "Workout",
-                "due_date": "2024-12-12T06:00:00.000Z",
+                "dueDate": "2024-12-12T06:00:00.000Z",
                 "importance": 6,
                 "completed": false
             },
@@ -125,8 +124,9 @@ This filter will match the following records:<br>
             "id": "3",
             "attributes": {
                 "name": "buy more icecream",
-                "due_date": "2023-07-20T05:00:00.000Z",
+                "dueDate": "2023-07-20T05:00:00.000Z",
                 "importance": 9,
                 "completed": true
             },
         }
+```

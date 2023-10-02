@@ -22,45 +22,47 @@ describe("finalize", () => {
     },
   }
 
-  it("populates targetSchema and targetAttribute", () => {
-    const { User } = finalize(
-      "User",
+  it("populates targetSchema and sourceAttribute", () => {
+    const { Todo } = finalize(
+      "Todo",
       {
-        type: "hasMany",
+        type: "belongsTo",
         targetSchema: null,
+        sourceAttribute: null,
         targetAttribute: null,
-        through: jest.fn(),
       },
-      "todos",
+      "user",
       schemas,
     )
 
-    expect(User.relationships?.todos).toEqual({
-      type: "hasMany",
-      targetSchema: "Todo",
-      targetAttribute: "userId",
+    expect(Todo.relationships?.user).toEqual({
+      type: "belongsTo",
+      targetSchema: "User",
+      sourceAttribute: "userId",
+      targetAttribute: "id",
     })
   })
 
-  it("keeps provided targetSchema and targetAttribute", () => {
-    const { Todo, User } = finalize(
-      "User",
+  it("keeps provided targetSchema and sourceAttribute", () => {
+    const { Todo } = finalize(
+      "Todo",
       {
-        type: "hasMany",
-        targetSchema: "Todo",
-        targetAttribute: "assigneeId",
-        through: jest.fn(),
+        type: "belongsTo",
+        targetSchema: "User",
+        sourceAttribute: "assigneeId",
+        targetAttribute: null,
       },
-      "todos",
+      "user",
       schemas,
     )
 
     expect(Todo.attributes.assigneeId).toBeDefined()
 
-    expect(User.relationships?.todos).toEqual({
-      type: "hasMany",
-      targetSchema: "Todo",
-      targetAttribute: "assigneeId",
+    expect(Todo.relationships?.user).toEqual({
+      type: "belongsTo",
+      targetSchema: "User",
+      sourceAttribute: "assigneeId",
+      targetAttribute: "id",
     })
   })
 
@@ -68,35 +70,36 @@ describe("finalize", () => {
     const { User } = finalize(
       "User",
       {
-        type: "hasMany",
+        type: "belongsTo",
         targetSchema: "User",
-        targetAttribute: "managerId",
-        through: jest.fn(),
+        sourceAttribute: "managerId",
+        targetAttribute: null,
       },
-      "employees",
+      "manager",
       schemas,
     )
 
     expect(User.attributes.managerId).toBeDefined()
 
-    expect(User.relationships?.employees).toEqual({
-      type: "hasMany",
+    expect(User.relationships?.manager).toEqual({
+      type: "belongsTo",
       targetSchema: "User",
-      targetAttribute: "managerId",
+      sourceAttribute: "managerId",
+      targetAttribute: "id",
     })
   })
 
   it("handles non-existing targetSchema", () => {
     expect(() =>
       finalize(
-        "User",
+        "Todo",
         {
-          type: "hasMany",
+          type: "belongsTo",
           targetSchema: "Invalid",
+          sourceAttribute: null,
           targetAttribute: null,
-          through: jest.fn(),
         },
-        "todos",
+        "user",
         schemas,
       ),
     ).toThrow(new HatchifyInvalidSchemaError("Schema 'Invalid' is undefined"))

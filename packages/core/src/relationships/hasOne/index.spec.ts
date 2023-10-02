@@ -6,6 +6,7 @@ describe("hasOne", () => {
       type: "hasOne",
       targetSchema: null,
       targetAttribute: null,
+      sourceAttribute: null,
     })
   })
 
@@ -14,6 +15,7 @@ describe("hasOne", () => {
       type: "hasOne",
       targetSchema: "SalesPerson",
       targetAttribute: null,
+      sourceAttribute: null,
     })
   })
 
@@ -22,6 +24,7 @@ describe("hasOne", () => {
       type: "hasOne",
       targetSchema: "SalesPerson",
       targetAttribute: "salesId",
+      sourceAttribute: null,
     })
   })
 })

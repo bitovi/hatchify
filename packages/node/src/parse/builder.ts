@@ -58,7 +58,10 @@ export function buildFindOptions(
       ops.data.attributes.unshift("id")
     }
 
-    const modelName = noCase(model.name, { delimiter: "-" })
+    const modelName = [model.namespace, model.name]
+      .filter((x) => x)
+      .map((x) => noCase(x as string, { delimiter: "-" }))
+      .join("-")
 
     ops.data.attributes.forEach((attribute: string) => {
       if (attribute !== "id" && !model.attributes[attribute]) {

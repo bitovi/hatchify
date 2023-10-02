@@ -1,4 +1,4 @@
-import { HatchifyCoerceError } from "@hatchifyjs/hatchify-core"
+import { HatchifyCoerceError } from "@hatchifyjs/core"
 import type { ValidationErrorItem } from "sequelize"
 
 import { databaseErrorHandler } from "./databaseErrorHandler"

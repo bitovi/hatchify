@@ -1,20 +1,16 @@
 import "sqlite3"
+import { string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
+
 import { Hatchify } from "./node"
-import type { HatchifyModel } from "./types"
-import { DataTypes, HatchifySymbolModel } from "./types"
+import { HatchifySymbolModel } from "./types"
 
 describe("Internal Tests", () => {
-  const Model: HatchifyModel = {
+  const Model: PartialSchema = {
     name: "Model",
     attributes: {
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      firstName: string({ required: true }),
+      lastName: string({ required: true }),
     },
   }
 
@@ -24,7 +20,7 @@ describe("Internal Tests", () => {
   })
 
   it("should test url is valid hatchify shape", async () => {
-    hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify({ Model }, { prefix: "/api" })
 
     // Test expected good paths
     expect(hatchify.isValidHatchifyRoute("GET", "/api/models/1")).toBe(true)
@@ -42,7 +38,7 @@ describe("Internal Tests", () => {
   })
 
   it("should test case difference for model name in url", async () => {
-    hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify({ Model }, { prefix: "/api" })
 
     // Test some with all lowercase
     expect(hatchify.getHatchifyModelNameForRoute("/api/models")).toBe("Model")
@@ -63,12 +59,12 @@ describe("Internal Tests", () => {
 
   it("only has one valid endpoint name per model name", async () => {
     hatchify = new Hatchify(
-      [
-        {
+      {
+        Person: {
           ...Model,
           name: "Person",
         },
-      ],
+      },
       { prefix: "/api" },
     )
 
@@ -83,7 +79,7 @@ describe("Internal Tests", () => {
   })
 
   it("should test return false for unknown model names in url", async () => {
-    hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify({ Model }, { prefix: "/api" })
 
     // Test expected bad paths
     expect(hatchify.getHatchifyModelNameForRoute("/api/Unknown")).toBe(false)
@@ -91,7 +87,7 @@ describe("Internal Tests", () => {
   })
 
   it("should test the existance of hatchify symbol on models", async () => {
-    hatchify = new Hatchify([Model], { prefix: "/api" })
+    hatchify = new Hatchify({ Model }, { prefix: "/api" })
 
     const model2 = hatchify.model.Model[HatchifySymbolModel]
     expect(model2).toBeTruthy()

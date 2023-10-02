@@ -1,19 +1,21 @@
-import type { PartialHasOneRelationship } from "./types"
+import type { PartialHasManyRelationship } from "./types"
 import { uuid } from "../../dataTypes"
 import { HatchifyInvalidSchemaError } from "../../types"
 import type { FinalAttributeRecord, SemiFinalSchema } from "../../types"
 import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase"
 import { pascalCaseToCamelCase } from "../../util/pascalCaseToCamelCase"
+import { singularize } from "../../util/singularize"
 import type { FinalRelationship, PartialRelationship } from "../types"
 
 export function finalize(
   sourceSchema: string,
-  relationship: PartialHasOneRelationship,
+  relationship: PartialHasManyRelationship,
   relationshipName: string,
   schemas: Record<string, SemiFinalSchema>,
 ): Record<string, SemiFinalSchema> {
   const targetSchema =
-    relationship.targetSchema ?? camelCaseToPascalCase(relationshipName)
+    relationship.targetSchema ??
+    camelCaseToPascalCase(singularize(relationshipName))
 
   if (!schemas[targetSchema]) {
     throw new HatchifyInvalidSchemaError(
@@ -23,14 +25,16 @@ export function finalize(
 
   const targetAttribute =
     relationship.targetAttribute ?? `${pascalCaseToCamelCase(sourceSchema)}Id`
+  const sourceAttribute = relationship.sourceAttribute ?? "id"
 
   const relationships: Record<string, PartialRelationship | FinalRelationship> =
     {
       ...schemas[sourceSchema].relationships,
       [relationshipName]: {
-        type: "hasOne",
+        type: "hasMany",
         targetSchema,
         targetAttribute,
+        sourceAttribute,
       },
     }
 

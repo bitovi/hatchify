@@ -17,7 +17,7 @@ export default defineConfig({
         "react-router-dom",
         "uuid",
         "lodash",
-        "@hatchifyjs/hatchify-core",
+        "@hatchifyjs/core",
         "@hatchifyjs/react-rest",
         "@hatchifyjs/rest-client",
       ],

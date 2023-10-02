@@ -1,31 +1,36 @@
-import type { HatchifyModel } from "@hatchifyjs/node"
+import { belongsTo, datetime, hasMany, integer, string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/node"
 
 import { startServerWith } from "./testing/utils"
 
 describe("Relationships", () => {
-  const User: HatchifyModel = {
+  const User: PartialSchema = {
     name: "User",
     attributes: {
-      name: "STRING",
+      name: string(),
     },
-    hasMany: [{ target: "Todo", options: { as: "todos" } }],
+    relationships: {
+      todos: hasMany(),
+    },
   }
 
-  const Todo: HatchifyModel = {
+  const Todo: PartialSchema = {
     name: "Todo",
     attributes: {
-      name: "STRING",
-      due_date: "DATE",
-      importance: "INTEGER",
+      name: string(),
+      dueDate: datetime(),
+      importance: integer(),
     },
-    belongsTo: [{ target: "User", options: { as: "user" } }],
+    relationships: {
+      user: belongsTo(),
+    },
   }
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeAll(async () => {
-    ;({ fetch, teardown } = await startServerWith([User, Todo]))
+    ;({ fetch, teardown } = await startServerWith({ User, Todo }))
   })
 
   afterAll(async () => {
@@ -40,7 +45,7 @@ describe("Relationships", () => {
           type: "Todo",
           attributes: {
             name: "Walk the dog",
-            due_date: "2024-12-12T00:00:00.000Z",
+            dueDate: "2024-12-12T00:00:00.000Z",
             importance: 6,
           },
         },
@@ -74,7 +79,7 @@ describe("Relationships", () => {
         version: "1.0",
       },
       data: {
-        id: "1",
+        id: user.data.id,
         type: "User",
         attributes: {
           name: "John Doe",
@@ -89,21 +94,24 @@ describe("Relationships", () => {
       data: [
         {
           type: "Todo",
-          id: "1",
+          id: todo.data.id,
           attributes: {
             name: "Walk the dog",
-            due_date: "2024-12-12T00:00:00.000Z",
+            dueDate: "2024-12-12T00:00:00.000Z",
             importance: 6,
+            userId: user.data.id,
           },
-          relationships: { user: { data: { type: "User", id: "1" } } },
+          relationships: { user: { data: { type: "User", id: user.data.id } } },
         },
       ],
-      included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      included: [
+        { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+      ],
       meta: { unpaginatedCount: 1 },
     })
 
     const { body: todosWithFields } = await fetch(
-      "/api/todos?include=user&fields[Todo]=name,due_date&fields[User]=name",
+      "/api/todos?include=user&fields[Todo]=name,dueDate&fields[User]=name",
     )
 
     expect(todosWithFields).toEqual({
@@ -111,20 +119,22 @@ describe("Relationships", () => {
       data: [
         {
           type: "Todo",
-          id: "1",
+          id: todo.data.id,
           attributes: {
             name: "Walk the dog",
-            due_date: "2024-12-12T00:00:00.000Z",
+            dueDate: "2024-12-12T00:00:00.000Z",
           },
-          relationships: { user: { data: { type: "User", id: "1" } } },
+          relationships: { user: { data: { type: "User", id: user.data.id } } },
         },
       ],
-      included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      included: [
+        { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+      ],
       meta: { unpaginatedCount: 1 },
     })
 
     const { body: todosWithIdField } = await fetch(
-      "/api/todos?include=user&fields[Todo]=id,name,due_date&fields[User]=name",
+      "/api/todos?include=user&fields[Todo]=id,name,dueDate&fields[User]=name",
     )
 
     expect(todosWithIdField).toEqual({
@@ -132,15 +142,17 @@ describe("Relationships", () => {
       data: [
         {
           type: "Todo",
-          id: "1",
+          id: todo.data.id,
           attributes: {
             name: "Walk the dog",
-            due_date: "2024-12-12T00:00:00.000Z",
+            dueDate: "2024-12-12T00:00:00.000Z",
           },
-          relationships: { user: { data: { type: "User", id: "1" } } },
+          relationships: { user: { data: { type: "User", id: user.data.id } } },
         },
       ],
-      included: [{ type: "User", id: "1", attributes: { name: "John Doe" } }],
+      included: [
+        { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
+      ],
       meta: { unpaginatedCount: 1 },
     })
   })
@@ -154,7 +166,7 @@ describe("Relationships", () => {
             type: "Todo",
             attributes: {
               name: "Walk the dog",
-              due_date: "2024-12-12T00:00:00.000Z",
+              dueDate: "2024-12-12T00:00:00.000Z",
               importance: 6,
             },
           },
@@ -194,8 +206,9 @@ describe("Relationships", () => {
           id: todo.data.id,
           attributes: {
             name: todo.data.attributes.name,
-            due_date: todo.data.attributes.due_date,
+            dueDate: todo.data.attributes.dueDate,
             importance: todo.data.attributes.importance,
+            userId: user.data.id,
           },
           relationships: { user: { data: { type: "User", id: user.data.id } } },
         },
@@ -229,7 +242,7 @@ describe("Relationships", () => {
             type: "Todo",
             attributes: {
               name: "Walk the dog",
-              due_date: "2024-12-12T00:00:00.000Z",
+              dueDate: "2024-12-12T00:00:00.000Z",
               importance: 7,
             },
             relationships: {
@@ -250,8 +263,9 @@ describe("Relationships", () => {
           id: todo.data.id,
           attributes: {
             name: todo.data.attributes.name,
-            due_date: todo.data.attributes.due_date,
+            dueDate: todo.data.attributes.dueDate,
             importance: todo.data.attributes.importance,
+            userId: user.data.id,
           },
           relationships: { user: { data: { type: "User", id: user.data.id } } },
         },
