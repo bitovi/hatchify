@@ -2,12 +2,17 @@
 
 This page links to all the other API documentation. This is like a big cheat sheet.
 
+## Schema
+
 <pre>
-export const Todo: <a href="./naming.md">PartialSchema</a> = {
-  name: "Todo",
+import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
+  
+export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
+  <a href="./naming.md#schemaname">name</a>: "SalesPerson",
+  <a href="./naming.md#schemapluralname">pluralName</a>: "SalesPeople",
   attributes: {
-    name: string({ required: true }),
-    dueDate: datetime(),
+    <a href="./naming.md#schemaattributesattribute_name">name</a>: <a href="./attribute-types/string.md">string</a>({ required: true }),
+    dueDate: <a href="./attribute-types/datetime">datetime</a>(),
     importance: integer(),
     complete: boolean({ default: false }),
   },
@@ -17,3 +22,37 @@ export const Todo: <a href="./naming.md">PartialSchema</a> = {
 }
 </pre>
 
+## Backend
+
+<pre>
+const hatchedKoa = hatchifyKoa(
+  { SalesPerson },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+    },
+  }
+)
+</pre>
+
+- `.middleware`
+  - `.allModels`
+    - `.all`
+    - `.crud`
+    - `.findAndCountAll`
+    - `.findOne`
+    - `.create`
+    - `.update`
+    - `.destroy`
+ - `.[MODEL_NAME]
+    - `.all`
+    - `.crud`
+    - `.findAndCountAll`
+    - `.findOne`
+    - `.create`
+    - `.update`
+    - `.destroy`
+
+## Frontend
