@@ -69,22 +69,38 @@ Currently, any other step value will result in a [`<input type="datetime-local">
 
 ```js
 {
-  type: "String",
-  allowNull: true, 
- max: 255
+  type: "Date",
+  allowNull: Boolean, 
+  min: ISODateString | -Infinity,
+  max: ISODateString | Infinity,
+  step: DateStepNumber | DateStepString
 }
 ```
 
 
 ### Sequelize Type
 
+If `step="day"`:
+
 ```js
 {
- type: "STRING",
- typeArgs: [255],
- allowNull: true
+  type: "DATEONLY",
+  typeArgs: [],
+  allowNull: Boolean
 }
 ```
+
+Else:
+
+```js
+{
+  type: "DATE",
+  typeArgs: [],
+  allowNull: Boolean
+}
+```
+
+
   
 </details>
 
