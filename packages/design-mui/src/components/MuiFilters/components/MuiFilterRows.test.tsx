@@ -12,7 +12,7 @@ const schemas: Schemas = {
     name: "Todo",
     displayAttribute: "name",
     attributes: {
-      name: { type: "string" },
+      name: { type: "string", allowNull: false },
       date: { type: "date" },
       important: { type: "boolean" },
       status: { type: "enum", values: ["Pending", "Failed", "Complete"] },
@@ -28,7 +28,7 @@ const schemas: Schemas = {
     name: "User",
     displayAttribute: "name",
     attributes: {
-      name: { type: "string" },
+      name: "string",
     },
     relationships: {
       todo: {
@@ -189,11 +189,12 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
       },
     ])
   })
+
   describe("getFieldAndAttributes", () => {
     it("works", () => {
       expect(getFieldAndAttributes(schemas, "name", "Todo")).toEqual({
         baseAttributes: {
-          name: { type: "string" },
+          name: { type: "string", allowNull: false },
           date: { type: "date" },
           important: { type: "boolean" },
           status: {
@@ -207,7 +208,7 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
     it("Gets the correct field from a relationship field", () => {
       expect(getFieldAndAttributes(schemas, "user.name", "Todo")).toEqual({
         baseAttributes: {
-          name: { type: "string" },
+          name: "string",
         },
         baseField: "name",
       })
@@ -223,6 +224,46 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
       expect(
         getAvailableOperator("name", "$gt", schemas["User"].attributes),
       ).toEqual("icontains")
+    })
+
+    it("Does not include empty/nempty if the field is required", async () => {
+      const setFilters = vi.fn()
+      render(
+        <MuiFilterRows
+          allSchemas={schemas}
+          schemaName="Todo"
+          fields={["name", "date", "status"]}
+          filters={[
+            { field: "name", operator: "icontains", value: "Walk the dog" },
+          ]}
+          setFilters={setFilters}
+          removeFilter={vi.fn()}
+        />,
+      )
+      const dropdowns = screen.getAllByRole("button")
+      await userEvent.click(dropdowns[2])
+      const emptySelection = screen.queryByText("is empty")
+
+      expect(emptySelection).toBeNull()
+    })
+
+    it("Sets the type correctly if attribute is not an object", async () => {
+      const setFilters = vi.fn()
+      render(
+        <MuiFilterRows
+          allSchemas={schemas}
+          schemaName="User"
+          fields={["name"]}
+          filters={[{ field: "name", operator: "icontains", value: "Mary" }]}
+          setFilters={setFilters}
+          removeFilter={vi.fn()}
+        />,
+      )
+      const dropdowns = screen.getAllByRole("button")
+      await userEvent.click(dropdowns[2])
+      const emptySelection = screen.queryByText("starts with")
+
+      expect(emptySelection).toBeTruthy()
     })
   })
 })

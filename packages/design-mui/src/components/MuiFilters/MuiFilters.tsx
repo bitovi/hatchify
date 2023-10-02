@@ -6,7 +6,7 @@ import { MuiFilterRows } from "./components/MuiFilterRows"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
-import { capitalize } from "lodash"
+import useMuiFilter from "./hooks/useMuiFilters"
 
 export const MuiFilters: React.FC<XCollectionProps> = ({
   allSchemas,
@@ -17,14 +17,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   page,
   setPage,
 }) => {
-  //get related schemas that are included in the table
-  const relatedSchemas = Object.entries(
-    allSchemas[schemaName].relationships || {},
-  )
-    .map(([key]) => key)
-    .filter((item) => include?.includes(item))
-
-  const fields = getSupportedFields(allSchemas, schemaName, relatedSchemas)
+  const { fields } = useMuiFilter(allSchemas, schemaName, include ?? [])
 
   const defaultFilter = { field: fields[0], operator: "icontains", value: "" }
 
@@ -130,47 +123,6 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
       </Button>
     </>
   )
-}
-
-function getSupportedFields(
-  allSchemas: XCollectionProps["allSchemas"],
-  schemaName: XCollectionProps["schemaName"],
-  relatedSchemas: string[],
-) {
-  const fieldSet: string[] = []
-  const relatedFields = () => {
-    for (let i = 0; i < relatedSchemas.length; i++) {
-      fieldSet.push(
-        ...Object.entries(allSchemas[capitalize(relatedSchemas[i])].attributes)
-          .filter(([, attr]) =>
-            typeof attr === "object"
-              ? attr.type === "string" ||
-                attr.type === "date" ||
-                attr.type === "enum"
-              : attr === "string" || attr === "date" || attr === "enum",
-          )
-          .map(([key]) => {
-            return `${relatedSchemas[i]}.${key}`
-          }),
-      )
-    }
-  }
-
-  fieldSet.push(
-    ...Object.entries(allSchemas[schemaName].attributes)
-      .filter(([, attr]) =>
-        typeof attr === "object"
-          ? attr.type === "string" ||
-            attr.type === "date" ||
-            attr.type === "enum"
-          : attr === "string" || attr === "date" || attr === "enum",
-      )
-      .map(([key]) => key),
-  )
-
-  relatedFields()
-
-  return fieldSet
 }
 
 export default MuiFilters

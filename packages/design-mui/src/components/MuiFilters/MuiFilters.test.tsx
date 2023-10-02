@@ -1,10 +1,9 @@
-import type { Schema } from "@hatchifyjs/rest-client"
+import type { Schemas } from "@hatchifyjs/rest-client"
 import "@testing-library/jest-dom"
 import { describe, it, expect, vi } from "vitest"
 import { render, screen, act } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import MuiFilters from "./MuiFilters"
-import type { Schemas } from "@hatchifyjs/rest-client"
 
 const schemas: Schemas = {
   Todo: {
@@ -66,7 +65,7 @@ describe("components/MuiFilters", () => {
         }}
         page={{ number: 1, size: 10 }}
         fields={{}}
-        include={["User"]}
+        include={["user"]}
         setSort={vi.fn()}
         setPage={vi.fn()}
         selected={{ all: false, ids: [] }}
@@ -155,7 +154,7 @@ describe("components/MuiFilters", () => {
         }}
         page={{ number: 2, size: 10 }}
         fields={{}}
-        include={["User"]}
+        include={["user"]}
         setSort={vi.fn()}
         setPage={(val) => setPage(val)}
         selected={{ all: false, ids: [] }}
@@ -204,7 +203,7 @@ describe("components/MuiFilters", () => {
         }}
         page={{ number: 2, size: 10 }}
         fields={{}}
-        include={["User"]}
+        include={["user"]}
         setSort={vi.fn()}
         setPage={(val) => setPage(val)}
         selected={{ all: false, ids: [] }}
@@ -393,7 +392,7 @@ describe("components/MuiFilters", () => {
           sortBy: undefined,
         }}
         page={{ number: 2, size: 10 }}
-        include={["User"]}
+        include={["user"]}
         setSort={vi.fn()}
         setPage={(val) => setPage(val)}
         selected={{ all: false, ids: [] }}
@@ -430,60 +429,4 @@ describe("components/MuiFilters", () => {
 
     vi.useRealTimers()
   })
-
-  // it("It has related fields if include is passed in with a value", async () => {
-  //   const setPage = vi.fn()
-
-  //   const setFilters = vi.fn()
-
-  //   vi.useFakeTimers({ shouldAdvanceTime: true })
-
-  //   render(
-  //     <MuiFilters
-  //       allSchemas={schemas}
-  //       schemaName="Test"
-  //       data={[]}
-  //       meta={meta}
-  //       sort={{
-  //         direction: undefined,
-  //         sortBy: undefined,
-  //       }}
-  //       page={{ number: 2, size: 10 }}
-  //       include={["User"]}
-  //       setSort={vi.fn()}
-  //       setPage={(val) => setPage(val)}
-  //       selected={{ all: false, ids: [] }}
-  //       setSelected={vi.fn()}
-  //       filter={undefined}
-  //       setFilter={(val) => setFilters(val)}
-  //     />,
-  //   )
-
-  //   const filter = await screen.findByTestId("FilterListIcon")
-
-  //   await userEvent.click(filter)
-  //   let closeIcons = screen.getAllByTestId("CloseIcon")
-
-  //   //There is only one filter row at first
-  //   expect(closeIcons.length).toEqual(1)
-
-  //   const addFilterButton = screen.getByText("Add Filter")
-  //   await userEvent.click(addFilterButton)
-
-  //   //second row has been added
-  //   closeIcons = screen.getAllByTestId("CloseIcon")
-  //   expect(closeIcons.length).toEqual(2)
-
-  //   await userEvent.click(closeIcons[0])
-  //   closeIcons = screen.getAllByTestId("CloseIcon")
-  //   expect(closeIcons.length).toEqual(1)
-
-  //   act(() => {
-  //     vi.advanceTimersByTime(500)
-  //   })
-
-  //   expect(setFilters).toHaveBeenCalled()
-
-  //   vi.useRealTimers()
-  // })
 })
