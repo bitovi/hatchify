@@ -18,3 +18,36 @@ export const Todo: PartialSchema = {
 - `min` [{Number=0}] - The minimum number of characters allowed.  Defaults to 0. Example: `string({max: 1})`
 - `references` - [See References]()
 - `required` [{Boolean=false}] - If the attribute must be provided.
+
+## Form Controls
+
+`string()` will produce a standard text input like: `<input type=text>`. If `required` is `false`, empty strings will 
+be treated as `null` values.
+
+
+
+<details>
+<summary>
+
+## Advanced Details
+
+</summary>
+
+### Control Type
+
+```js
+{
+  type: "String",
+  allowNull: true, 
+ max: 255
+}
+```
+
+
+### Sequelize Type
+
+
+  
+</details>
+
+
