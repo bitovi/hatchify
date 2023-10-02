@@ -21,8 +21,11 @@ export const Todo: PartialSchema = {
 
 ## Form Controls
 
-`string()` will produce a standard text input like: `<input type=text>`. If `required` is `false`, empty strings will 
-be treated as `null` values.
+`string()` with `max` of 255 and less will produce a standard text input like: `<input type=text>`. 
+
+`string()` with `max` of 256 and more will show a : `<textarea>`. 
+
+If `required` is `false`, empty strings will be treated as `null` values.
 
 
 
@@ -46,7 +49,13 @@ be treated as `null` values.
 
 ### Sequelize Type
 
-
+```js
+{
+ type: "STRING",
+ typeArgs: [255],
+ allowNull: true
+}
+```
   
 </details>
 
