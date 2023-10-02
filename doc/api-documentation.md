@@ -14,7 +14,7 @@ export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
     <a href="./naming.md#schemaattributesattribute_name">name</a>: <a href="./attribute-types/string.md">string</a>({ required: true }),
     dueDate: <a href="./attribute-types/datetime">datetime</a>(),
     importance: <a href="./attribute-types/integer.md">integer</a>(),
-    complete: <a href="./attribute-types/boolean.md">boolean({ default: false })</a>,
+    complete: <a href="./attribute-types/boolean.md">boolean</a>({ default: false }),
   },
   relationships: {
     user: belongsTo(),
