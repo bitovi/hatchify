@@ -15,7 +15,7 @@ export const Todo: PartialSchema = {
 
 - `default` [{String}] - The default value of the attribute.  Example: `string({default: "USA"})`
 - `max` [{Number=225}] - The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})`
-- `min` [{Number=0}] - The minimum number of characters allowed.  Defaults to 0. Example: `string({max: 1})`
+- `min` [{Number=0}] - The minimum number of characters allowed.  Defaults to 0. Example: `string({min: 1})`
 - `references` - [See References]()
 - `required` [{Boolean=false}] - If the attribute must be provided.
 
