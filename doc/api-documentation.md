@@ -13,7 +13,7 @@ export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
   attributes: {
     <a href="./naming.md#schemaattributesattribute_name">name</a>: <a href="./attribute-types/string.md">string</a>({ required: true }),
     dueDate: <a href="./attribute-types/datetime">datetime</a>(),
-    importance: integer(),
+    importance: <a href="./attribute-types/integer.md">integer</a>(),
     complete: boolean({ default: false }),
   },
   relationships: {
