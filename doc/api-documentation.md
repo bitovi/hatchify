@@ -19,7 +19,7 @@ export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
     complete: <a href="./attribute-types/boolean.md">boolean</a>({ default: false }),
   },
   relationships: {
-    user: belongsTo(),
+    user: <a href="./relationship-types/belongs-to.md">belongsTo</a>(),
   },
 }
 </pre>
