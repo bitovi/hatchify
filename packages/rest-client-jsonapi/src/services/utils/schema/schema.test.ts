@@ -18,16 +18,16 @@ describe("rest-client-jsonapi/services/utils/schema", () => {
       // with namespace
       expect(
         getEndpoint(undefined, "Admin", undefined, "Admin_Person"),
-      ).toEqual("admin_persons")
+      ).toEqual("admin/persons")
       expect(getEndpoint(undefined, "Admin", "People", "Admin_Person")).toEqual(
-        "admin_people",
+        "admin/people",
       )
       expect(
         getEndpoint(undefined, "Admin", "EmployedPeople", "Admin_Person"),
-      ).toEqual("admin_employed-people")
+      ).toEqual("admin/employed-people")
       expect(
         getEndpoint(undefined, "Admin", undefined, "Admin_EmployedPerson"),
-      ).toEqual("admin_employed-persons")
+      ).toEqual("admin/employed-persons")
 
       // with pluralName
       expect(getEndpoint(undefined, undefined, "People", "Person")).toEqual(

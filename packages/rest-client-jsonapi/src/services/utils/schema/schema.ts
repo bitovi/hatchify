@@ -9,7 +9,7 @@ export const getEndpoint = (
   }
 
   if (pluralName) {
-    const namespacePrefix = namespace ? `${namespace}_` : ""
+    const namespacePrefix = namespace ? `${namespace}/` : ""
     return (
       namespacePrefix + pluralName.split(/(?=[A-Z])/).join("-")
     ).toLowerCase()
@@ -17,7 +17,7 @@ export const getEndpoint = (
 
   if (namespace) {
     const [namespacePrefix, rest] = schemaName.split(/_(.*)/)
-    return `${namespacePrefix}_${rest
+    return `${namespacePrefix}/${rest
       .split(/(?=[A-Z])/)
       .join("-")}s`.toLowerCase()
   }

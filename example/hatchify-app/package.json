@@ -19,12 +19,15 @@
     "@hatchifyjs/koa": "file:../../packages/koa",
     "@hatchifyjs/react": "file:../../packages/react",
     "@koa/cors": "^4.0.0",
+    "dotenv": "^16.3.1",
     "koa": "^2.14.2",
+    "pg": "^8.11.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/koa__cors": "^4.0.0",
+    "@types/pg": "^8.10.3",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
