@@ -6,7 +6,7 @@ import { MuiFilterRows } from "./components/MuiFilterRows"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
-import useMuiFilter from "./hooks/useMuiFilters"
+import useMuiFilters from "./hooks/useMuiFilters"
 
 export const MuiFilters: React.FC<XCollectionProps> = ({
   allSchemas,
@@ -17,9 +17,13 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   page,
   setPage,
 }) => {
-  const { fields } = useMuiFilter(allSchemas, schemaName, include ?? [])
+  const { fields } = useMuiFilters(allSchemas, schemaName, include ?? [])
 
-  const defaultFilter = { field: fields[0], operator: "icontains", value: "" }
+  const defaultFilter = {
+    field: fields[0],
+    operator: "icontains",
+    value: "",
+  }
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)
