@@ -204,11 +204,11 @@ describe.each(dbDialects)("schema", (dialect) => {
                     age: 21,
                     yearsWorked: 1,
                     hireDate: "2023-01-01T00:00:00.000Z",
-                    bio: "bla bla",
+                    bio: "john was ...",
                     status: "active",
                     isDeleted: true,
-                    birthday: "1970-01-01",
-                    uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                    birthday: "1970-01-02",
+                    uuid: "dc287b2a-8c26-4687-9826-4bdcb7e260a9",
                   },
                   relationships: {
                     todos: {
@@ -236,7 +236,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                     age: 22,
                     yearsWorked: 3,
                     hireDate: "2023-01-01T00:00:00.000Z",
-                    bio: "bla bla",
+                    bio: "jane was ...",
                     status: "active",
                     isDeleted: false,
                     birthday: "1970-01-01",
@@ -269,11 +269,11 @@ describe.each(dbDialects)("schema", (dialect) => {
                 age: 21,
                 yearsWorked: 1,
                 hireDate: "2023-01-01T00:00:00.000Z",
-                bio: "bla bla",
+                bio: "john was ...",
                 status: "active",
                 isDeleted: true,
-                birthday: "1970-01-01",
-                uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                birthday: "1970-01-02",
+                uuid: "dc287b2a-8c26-4687-9826-4bdcb7e260a9",
               },
             },
           })
@@ -291,7 +291,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 age: 22,
                 yearsWorked: 3,
                 hireDate: "2023-01-01T00:00:00.000Z",
-                bio: "bla bla",
+                bio: "jane was ...",
                 status: "active",
                 isDeleted: false,
                 birthday: "1970-01-01",
@@ -468,154 +468,933 @@ describe.each(dbDialects)("schema", (dialect) => {
             jsonapi: {
               version: "1.0",
             },
-            data: [
-              {
-                id: postUser1.data.id,
-                type: "User",
-                attributes: {
-                  name: "John Doe",
-                  age: 21,
-                  yearsWorked: 1,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: true,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
-              },
-              {
-                id: postUser2.data.id,
-                type: "User",
-                attributes: {
-                  name: "Jane Doe",
-                  age: 22,
-                  yearsWorked: 3,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: false,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
-              },
-            ],
+            data: [postUser1.data, postUser2.data],
             meta: {
               unpaginatedCount: 2,
             },
           })
         })
 
-        it("supports filtering users by age", async () => {
-          const { status: getStatus, body: getUsers } = await fetch(
-            "/api/users?filter[age][$eq]=22",
-          )
+        describe("supports filtering users", () => {
+          describe("by integer", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age]=22",
+              )
 
-          expect(getStatus).toBe(200)
-          expect(getUsers).toEqual({
-            jsonapi: {
-              version: "1.0",
-            },
-            data: [
-              {
-                id: postUser2.data.id,
-                type: "User",
-                attributes: {
-                  name: "Jane Doe",
-                  age: 22,
-                  yearsWorked: 3,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: false,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
                 },
-              },
-            ],
-            meta: {
-              unpaginatedCount: 1,
-            },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$eq]=22",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$gt]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$gte]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data, postUser2.data],
+                meta: {
+                  unpaginatedCount: 2,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$in]=20&filter[age][$in]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$lt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$lt]=22",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$lte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$lte]=22",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data, postUser2.data],
+                meta: {
+                  unpaginatedCount: 2,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$ne]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$nin]=20&filter[age][$nin]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+          })
+
+          describe("by text", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio]=${encodeURIComponent("jane was ...")}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$eq]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$gt]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$gte]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data, postUser2.data],
+                meta: {
+                  unpaginatedCount: 2,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$in]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$lt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$lt]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [],
+                meta: {
+                  unpaginatedCount: 0,
+                },
+              })
+            })
+
+            it("$lte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$lte]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$ne]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$nin]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$like", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$like]=${encodeURIComponent("jane%")}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ilike", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$ilike]=${encodeURIComponent("Jane%")}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+          })
+
+          describe("by boolean", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted][$eq]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted][$in]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted][$ne]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted][$nin]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+          })
+
+          describe("by dateonly", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$eq]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$gt]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$gte]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data, postUser2.data],
+                meta: {
+                  unpaginatedCount: 2,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$in]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$lt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$lt]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [],
+                meta: {
+                  unpaginatedCount: 0,
+                },
+              })
+            })
+
+            it("$lte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$lte]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$ne]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$nin]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+          })
+
+          describe("by uuid", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$eq]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$in]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$ne]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$nin]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
           })
         })
 
-        it("supports fields", async () => {
-          const { status: getStatus, body: getUsers } = await fetch(
-            "/api/users?fields[user]=yearsWorked",
-          )
+        describe("supports fields", () => {
+          it("integer", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=age",
+            )
 
-          expect(getStatus).toBe(200)
-          expect(getUsers).toEqual({
-            jsonapi: {
-              version: "1.0",
-            },
-            data: [
-              {
-                id: postUser1.data.id,
-                type: "User",
-                attributes: {
-                  yearsWorked: 1,
-                },
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
               },
-              {
-                id: postUser2.data.id,
-                type: "User",
-                attributes: {
-                  yearsWorked: 3,
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    age: 21,
+                  },
                 },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    age: 22,
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
               },
-            ],
-            meta: {
-              unpaginatedCount: 2,
-            },
+            })
+          })
+
+          it("text", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=bio",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    bio: "john was ...",
+                  },
+                },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    bio: "jane was ...",
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("boolean", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=isDeleted",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    isDeleted: true,
+                  },
+                },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    isDeleted: false,
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("dateonly", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=birthday",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    birthday: "1970-01-02",
+                  },
+                },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    birthday: "1970-01-01",
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("uuid", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=uuid",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    uuid: "dc287b2a-8c26-4687-9826-4bdcb7e260a9",
+                  },
+                },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
           })
         })
 
-        it("supports sorting", async () => {
-          const { status: getStatus, body: getUsers } = await fetch(
-            "/api/users?sort=-yearsWorked",
-          )
+        describe("supports sorting", () => {
+          it("integer", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?sort=-age",
+            )
 
-          expect(getStatus).toBe(200)
-          expect(getUsers).toEqual({
-            jsonapi: {
-              version: "1.0",
-            },
-            data: [
-              {
-                id: postUser2.data.id,
-                type: "User",
-                attributes: {
-                  name: "Jane Doe",
-                  age: 22,
-                  yearsWorked: 3,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: false,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
               },
-              {
-                id: postUser1.data.id,
-                type: "User",
-                attributes: {
-                  name: "John Doe",
-                  age: 21,
-                  yearsWorked: 1,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: true,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
+              data: [postUser2.data, postUser1.data],
+              meta: {
+                unpaginatedCount: 2,
               },
-            ],
-            meta: {
-              unpaginatedCount: 2,
-            },
+            })
+          })
+
+          it("text", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?sort=birthday",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [postUser2.data, postUser1.data],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("boolean", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?sort=isDeleted",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [postUser2.data, postUser1.data],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("dateonly", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?sort=birthday",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [postUser2.data, postUser1.data],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
           })
         })
 
@@ -629,23 +1408,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             jsonapi: {
               version: "1.0",
             },
-            data: [
-              {
-                id: postUser1.data.id,
-                type: "User",
-                attributes: {
-                  name: "John Doe",
-                  age: 21,
-                  yearsWorked: 1,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: true,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
-              },
-            ],
+            data: [postUser1.data],
             meta: {
               unpaginatedCount: 2,
             },
@@ -669,11 +1432,11 @@ describe.each(dbDialects)("schema", (dialect) => {
                   age: 21,
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
+                  bio: "john was ...",
                   status: "active",
                   isDeleted: true,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                  birthday: "1970-01-02",
+                  uuid: "dc287b2a-8c26-4687-9826-4bdcb7e260a9",
                 },
                 relationships: {
                   todos: { data: [{ type: "Todo", id: todoId }] },
@@ -687,7 +1450,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                   age: 22,
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
+                  bio: "jane was ...",
                   status: "active",
                   isDeleted: false,
                   birthday: "1970-01-01",
@@ -883,11 +1646,11 @@ describe.each(dbDialects)("schema", (dialect) => {
                     age: 21,
                     yearsWorked: 1,
                     hireDate: "2023-01-01T00:00:00.000Z",
-                    bio: "bla bla",
+                    bio: "john was ...",
                     status: "active",
                     isDeleted: true,
-                    birthday: "1970-01-01",
-                    uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                    birthday: "1970-01-02",
+                    uuid: "dc287b2a-8c26-4687-9826-4bdcb7e260a9",
                   },
                   relationships: {
                     todos: {
@@ -915,7 +1678,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                     age: 22,
                     yearsWorked: 3,
                     hireDate: "2023-01-01T00:00:00.000Z",
-                    bio: "bla bla",
+                    bio: "jane was ...",
                     status: "active",
                     isDeleted: false,
                     birthday: "1970-01-01",
@@ -948,11 +1711,11 @@ describe.each(dbDialects)("schema", (dialect) => {
                 age: 21,
                 yearsWorked: 1,
                 hireDate: "2023-01-01T00:00:00.000Z",
-                bio: "bla bla",
+                bio: "john was ...",
                 status: "active",
                 isDeleted: true,
-                birthday: "1970-01-01",
-                uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                birthday: "1970-01-02",
+                uuid: "dc287b2a-8c26-4687-9826-4bdcb7e260a9",
               },
             },
           })
@@ -970,7 +1733,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 age: 22,
                 yearsWorked: 3,
                 hireDate: "2023-01-01T00:00:00.000Z",
-                bio: "bla bla",
+                bio: "jane was ...",
                 status: "active",
                 isDeleted: false,
                 birthday: "1970-01-01",
@@ -1090,154 +1853,933 @@ describe.each(dbDialects)("schema", (dialect) => {
             jsonapi: {
               version: "1.0",
             },
-            data: [
-              {
-                id: postUser1.data.id,
-                type: "User",
-                attributes: {
-                  name: "John Doe",
-                  age: 21,
-                  yearsWorked: 1,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: true,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
-              },
-              {
-                id: postUser2.data.id,
-                type: "User",
-                attributes: {
-                  name: "Jane Doe",
-                  age: 22,
-                  yearsWorked: 3,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: false,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
-              },
-            ],
+            data: [postUser1.data, postUser2.data],
             meta: {
               unpaginatedCount: 2,
             },
           })
         })
 
-        it("supports filtering users by age", async () => {
-          const { status: getStatus, body: getUsers } = await fetch(
-            "/api/users?filter[age][$eq]=22",
-          )
+        describe("supports filtering users", () => {
+          describe("by integer", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age]=22",
+              )
 
-          expect(getStatus).toBe(200)
-          expect(getUsers).toEqual({
-            jsonapi: {
-              version: "1.0",
-            },
-            data: [
-              {
-                id: postUser2.data.id,
-                type: "User",
-                attributes: {
-                  name: "Jane Doe",
-                  age: 22,
-                  yearsWorked: 3,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: false,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
                 },
-              },
-            ],
-            meta: {
-              unpaginatedCount: 1,
-            },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$eq]=22",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$gt]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$gte]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data, postUser2.data],
+                meta: {
+                  unpaginatedCount: 2,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$in]=20&filter[age][$in]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$lt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$lt]=22",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$lte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$lte]=22",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data, postUser2.data],
+                meta: {
+                  unpaginatedCount: 2,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$ne]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[age][$nin]=20&filter[age][$nin]=21",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+          })
+
+          describe("by text", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio]=${encodeURIComponent("jane was ...")}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$eq]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$gt]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$gte]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data, postUser2.data],
+                meta: {
+                  unpaginatedCount: 2,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$in]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$lt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$lt]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [],
+                meta: {
+                  unpaginatedCount: 0,
+                },
+              })
+            })
+
+            it("$lte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$lte]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$ne]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$nin]=${encodeURIComponent(
+                  "jane was ...",
+                )}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$like", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$like]=${encodeURIComponent("jane%")}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ilike", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                `/api/users?filter[bio][$ilike]=${encodeURIComponent("Jane%")}`,
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+          })
+
+          describe("by boolean", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted][$eq]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted][$in]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted][$ne]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[isDeleted][$nin]=false",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+          })
+
+          describe("by dateonly", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$eq]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$gt]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$gte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$gte]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data, postUser2.data],
+                meta: {
+                  unpaginatedCount: 2,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$in]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$lt", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$lt]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [],
+                meta: {
+                  unpaginatedCount: 0,
+                },
+              })
+            })
+
+            it("$lte", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$lte]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$ne]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[birthday][$nin]=1970-01-01",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+          })
+
+          describe("by uuid", () => {
+            it("no operator", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$eq", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$eq]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$in", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$in]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ne", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$ne]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$nin", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$nin]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
           })
         })
 
-        it("supports fields", async () => {
-          const { status: getStatus, body: getUsers } = await fetch(
-            "/api/users?fields[user]=yearsWorked",
-          )
+        describe("supports fields", () => {
+          it("integer", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=age",
+            )
 
-          expect(getStatus).toBe(200)
-          expect(getUsers).toEqual({
-            jsonapi: {
-              version: "1.0",
-            },
-            data: [
-              {
-                id: postUser1.data.id,
-                type: "User",
-                attributes: {
-                  yearsWorked: 1,
-                },
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
               },
-              {
-                id: postUser2.data.id,
-                type: "User",
-                attributes: {
-                  yearsWorked: 3,
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    age: 21,
+                  },
                 },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    age: 22,
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
               },
-            ],
-            meta: {
-              unpaginatedCount: 2,
-            },
+            })
+          })
+
+          it("text", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=bio",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    bio: "john was ...",
+                  },
+                },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    bio: "jane was ...",
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("boolean", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=isDeleted",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    isDeleted: true,
+                  },
+                },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    isDeleted: false,
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("dateonly", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=birthday",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    birthday: "1970-01-02",
+                  },
+                },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    birthday: "1970-01-01",
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("uuid", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?fields[user]=uuid",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [
+                {
+                  id: postUser1.data.id,
+                  type: "User",
+                  attributes: {
+                    uuid: "dc287b2a-8c26-4687-9826-4bdcb7e260a9",
+                  },
+                },
+                {
+                  id: postUser2.data.id,
+                  type: "User",
+                  attributes: {
+                    uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                  },
+                },
+              ],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
           })
         })
 
-        it("supports sorting", async () => {
-          const { status: getStatus, body: getUsers } = await fetch(
-            "/api/users?sort=-yearsWorked",
-          )
+        describe("supports sorting", () => {
+          it("integer", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?sort=-age",
+            )
 
-          expect(getStatus).toBe(200)
-          expect(getUsers).toEqual({
-            jsonapi: {
-              version: "1.0",
-            },
-            data: [
-              {
-                id: postUser2.data.id,
-                type: "User",
-                attributes: {
-                  name: "Jane Doe",
-                  age: 22,
-                  yearsWorked: 3,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: false,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
               },
-              {
-                id: postUser1.data.id,
-                type: "User",
-                attributes: {
-                  name: "John Doe",
-                  age: 21,
-                  yearsWorked: 1,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: true,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
+              data: [postUser2.data, postUser1.data],
+              meta: {
+                unpaginatedCount: 2,
               },
-            ],
-            meta: {
-              unpaginatedCount: 2,
-            },
+            })
+          })
+
+          it("text", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?sort=birthday",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [postUser2.data, postUser1.data],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("boolean", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?sort=isDeleted",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [postUser2.data, postUser1.data],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
+          })
+
+          it("dateonly", async () => {
+            const { status: getStatus, body: getUsers } = await fetch(
+              "/api/users?sort=birthday",
+            )
+
+            expect(getStatus).toBe(200)
+            expect(getUsers).toEqual({
+              jsonapi: {
+                version: "1.0",
+              },
+              data: [postUser2.data, postUser1.data],
+              meta: {
+                unpaginatedCount: 2,
+              },
+            })
           })
         })
 
@@ -1251,23 +2793,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             jsonapi: {
               version: "1.0",
             },
-            data: [
-              {
-                id: postUser1.data.id,
-                type: "User",
-                attributes: {
-                  name: "John Doe",
-                  age: 21,
-                  yearsWorked: 1,
-                  hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
-                  status: "active",
-                  isDeleted: true,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-                },
-              },
-            ],
+            data: [postUser1.data],
             meta: {
               unpaginatedCount: 2,
             },
@@ -1291,11 +2817,11 @@ describe.each(dbDialects)("schema", (dialect) => {
                   age: 21,
                   yearsWorked: 1,
                   hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
+                  bio: "john was ...",
                   status: "active",
                   isDeleted: true,
-                  birthday: "1970-01-01",
-                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                  birthday: "1970-01-02",
+                  uuid: "dc287b2a-8c26-4687-9826-4bdcb7e260a9",
                 },
                 relationships: {
                   todos: { data: [{ type: "Todo", id: todoId }] },
@@ -1309,7 +2835,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                   age: 22,
                   yearsWorked: 3,
                   hireDate: "2023-01-01T00:00:00.000Z",
-                  bio: "bla bla",
+                  bio: "jane was ...",
                   status: "active",
                   isDeleted: false,
                   birthday: "1970-01-01",
