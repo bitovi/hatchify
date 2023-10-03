@@ -1,4 +1,4 @@
-# integer({min, max, references, default, required})
+# integer({min, max, references, default, required, autoIncrement})
 
 Defines an attribute as being an integer.
 
@@ -13,6 +13,7 @@ export const Todo: PartialSchema = {
 
 ## Parameters
 
+- `autoIncrement` [{Boolean=false}] - If `true`, increments the field. Example: `integer({autoIncrement: true})`
 - `default` [{Integer}] - The default value of the attribute.  Example: `integer({default: 10})`
 - `max` [{Integer=Infinity}] - The maximum number allowed. Defaults to Infinity. Example: `integer({max: 1000})`
 - `min` [{Integer=-Infinity}] - The minimum number of characters allowed.  Defaults to -Infinity. Example: `integer({min: 1})`
@@ -51,7 +52,8 @@ export const Todo: PartialSchema = {
 {
  type: "INTEGER",
  typeArgs: [],
- allowNull: Boolean
+ allowNull: Boolean,
+autoIncrement: Boolean
 }
 ```
   
