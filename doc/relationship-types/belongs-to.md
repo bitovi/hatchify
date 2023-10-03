@@ -1,0 +1,2 @@
+# belongsTo( [schemaName, options] )
+
