@@ -10,8 +10,10 @@ import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string }
 export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
   <a href="./naming.md#schemaname">name</a>: "SalesPerson",
   <a href="./naming.md#schemapluralname">pluralName</a>: "SalesPeople",
+  id: <a href="./attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   attributes: {
     <a href="./naming.md#schemaattributesattribute_name">name</a>: <a href="./attribute-types/string.md">string</a>({ required: true }),
+    description: <a href="./attribute-types/text">text</a>(),
     dueDate: <a href="./attribute-types/datetime">datetime</a>(),
     importance: <a href="./attribute-types/integer.md">integer</a>(),
     complete: <a href="./attribute-types/boolean.md">boolean</a>({ default: false }),
