@@ -19,7 +19,9 @@ export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
     complete: <a href="./attribute-types/boolean.md">boolean</a>({ default: false }),
   },
   relationships: {
-    user: <a href="./relationship-types/belongs-to.md">belongsTo</a>(),
+    salesGroup: <a href="./relationship-types/belongs-to.md">belongsTo</a>(),
+    accounts: <a href="./relationship-types/has-many.md">hasMany</a>(),
+    todos: hasMany().<a href="./relationship-types/has-many-through.md">through</a>()
   },
 }
 </pre>
