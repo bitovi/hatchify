@@ -20,8 +20,8 @@ export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
   },
   relationships: {
     salesGroup: <a href="./relationship-types/belongs-to.md">belongsTo</a>(),
-    accounts: <a href="./relationship-types/has-many.md">hasMany</a>(),
-    todos: hasMany().<a href="./relationship-types/has-many-through.md">through</a>()
+    accounts:   <a href="./relationship-types/has-many.md">hasMany</a>(),
+    todos:      hasMany().<a href="./relationship-types/has-many-through.md">through</a>()
   },
 }
 </pre>
