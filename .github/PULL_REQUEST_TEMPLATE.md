@@ -20,7 +20,6 @@
 - [ ] Do all new TODO comments have Jira links with enough information?
 - [ ] Were all changes published and deployed to [the grid](https://github.com/bitovi/hatchify-grid-demo)?
 - [ ] Has the browser error-console been reviewed to not contain new errors introduced by these code changes?
-- [ ] Progressively loaded pages
 - [ ] The site looks “good” above 1000px width.
 - [ ] The site looks “good” when the window height is small. No double scrollbars.
-- [ ] Have WAVE and Axe been run against the changes to ensure 508 compliance?
+- [ ] Were the changes tested to ensure 508 compliance?
