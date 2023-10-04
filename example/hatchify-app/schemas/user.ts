@@ -1,6 +1,6 @@
 // hatchify-app/schemas/user.ts
 
-export const User = {
+export const Admin_User = {
   name: "User",
   namespace: "Admin",
   attributes: {

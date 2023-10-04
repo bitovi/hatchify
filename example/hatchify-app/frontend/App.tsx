@@ -6,10 +6,10 @@ import {
   createJsonapiClient,
 } from "@hatchifyjs/react"
 import { Admin_Todo } from "../schemas/todo"
-import { User } from "../schemas/user"
+import { Admin_User } from "../schemas/user"
 
 export const hatchedReact = hatchifyReact(
-  createJsonapiClient("http://localhost:3000/api", { Admin_Todo, User }),
+  createJsonapiClient("http://localhost:3000/api", { Admin_Todo, Admin_User }),
 )
 
 const TodoList = hatchedReact.components.Admin_Todo.Collection
