@@ -1,5 +1,5 @@
-import { integer } from "@hatchifyjs/hatchify-core"
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+import { integer } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import JSONAPISerializer from "json-api-serializer"
 
 import { convertHatchifyModels } from "./convertHatchifyModels"

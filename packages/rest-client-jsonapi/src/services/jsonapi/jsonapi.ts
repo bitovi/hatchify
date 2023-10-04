@@ -40,7 +40,7 @@ export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
           value.endpoint,
           value.namespace,
           value.pluralName,
-          key,
+          value.name,
         ),
       }
       return acc

@@ -7,7 +7,7 @@ import type {
   RestClientUpdateData,
 } from "./data"
 import type { RequestMetaData } from "./meta"
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
+import type { Schema as LegacySchema } from "@hatchifyjs/core"
 
 type EitherSchema = Schema | LegacySchema
 

@@ -1,4 +1,4 @@
-import type { Schema as OldSchema } from "@hatchifyjs/hatchify-core"
+import type { Schema as OldSchema } from "@hatchifyjs/core"
 import type { Schema, AttributeObject } from "../../types"
 
 /**

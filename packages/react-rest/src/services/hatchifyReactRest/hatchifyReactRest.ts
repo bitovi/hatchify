@@ -23,7 +23,7 @@ import type {
 } from "@hatchifyjs/rest-client"
 import { useCreateOne, useDeleteOne, useAll, useOne, useUpdateOne } from ".."
 
-import type { Schema as LegacySchema } from "@hatchifyjs/hatchify-core"
+import type { Schema as LegacySchema } from "@hatchifyjs/core"
 
 export interface SchemaRecord {
   [schemaName: string]: LegacySchema | Schema

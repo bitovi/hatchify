@@ -5,7 +5,7 @@ import {
   hasMany,
   integer,
   string,
-} from "@hatchifyjs/hatchify-core"
+} from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils"

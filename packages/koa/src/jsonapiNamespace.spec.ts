@@ -1,6 +1,6 @@
 import type { Server } from "http"
 
-import { string } from "@hatchifyjs/hatchify-core"
+import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 import dotenv from "dotenv"
 import { Serializer } from "jsonapi-serializer"

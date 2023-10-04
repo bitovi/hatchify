@@ -1,4 +1,4 @@
-import { string } from "@hatchifyjs/hatchify-core"
+import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 import Koa from "koa"
 
@@ -16,16 +16,7 @@ describe("Attribute Tests", () => {
 
   it("should create a record and fetch specific attributes", async () => {
     const app = new Koa()
-    const hatchify = new Hatchify(
-      { Model },
-      {
-        prefix: "/api",
-        database: {
-          dialect: "sqlite",
-          storage: ":memory:",
-        },
-      },
-    )
+    const hatchify = new Hatchify({ Model }, { prefix: "/api" })
     app.use(hatchify.middleware.allModels.all)
 
     const server = createServer(app)

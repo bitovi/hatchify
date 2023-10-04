@@ -8,25 +8,15 @@ export const getEndpoint = (
     return endpoint
   }
 
+  const namespacePrefix = namespace ? `${namespace}/` : ""
+
   if (pluralName) {
-    console.log("pluralName", pluralName)
-    const namespacePrefix = namespace ? `${namespace}/` : ""
-    return (
-      namespacePrefix + pluralName.split(/(?=[A-Z])/).join("-")
-    ).toLowerCase()
-  }
-
-  if (namespace) {
-    console.log("namespace", schemaName, namespace)
-    const [namespacePrefix, rest] = schemaName.split(/_(.*)/)
-    return `${namespacePrefix}/${rest
+    return `${namespacePrefix}${pluralName
       .split(/(?=[A-Z])/)
-      .join("-")}s`.toLowerCase()
+      .join("-")}`.toLowerCase()
   }
 
-  console.log("schemaName", schemaName)
-  return `${schemaName
+  return `${namespacePrefix}${schemaName
     .split(/(?=[A-Z])/)
-    .join("-")
-    .toLowerCase()}s`
+    .join("-")}s`.toLowerCase()
 }

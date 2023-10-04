@@ -1,11 +1,15 @@
-import { assembler, integer, uuid, uuidv4 } from "@hatchifyjs/hatchify-core"
+import { assembler, integer, uuid, uuidv4 } from "@hatchifyjs/core"
 import { Sequelize } from "sequelize"
 import type { ModelStatic } from "sequelize"
 
 import { toSequelize } from "./toSequelize"
 
 describe("toSequelize", () => {
-  const sequelize = new Sequelize("sqlite::memory:")
+  const sequelize = new Sequelize({
+    dialect: "sqlite",
+    storage: ":memory:",
+    logging: false,
+  })
   let schemas: {
     [schemaName: string]: ModelStatic<any>
   }
