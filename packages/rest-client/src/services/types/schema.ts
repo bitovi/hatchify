@@ -1,4 +1,4 @@
-import type { FinalSchema, PartialSchema } from "@hatchifyjs/hatchify-core"
+import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 
 export type EnumObject = { type: "enum"; allowNull?: boolean; values: string[] }
 export type AttributeObject = { type: string; allowNull?: boolean } | EnumObject
@@ -117,12 +117,12 @@ export type GetTypedAttribute<
 
 const att = {
   title: {
-    name: "something",
+    name: "integer()",
     control: {
       type: "Number" as const,
-      // allowNull: true as const,
+      allowNull: true as const,
       // allowNull: false as const,
-      allowNull: true,
+      // allowNull: true,
     },
     orm: {
       sequelize: {
@@ -138,4 +138,4 @@ const att = {
   },
 }
 
-const aaaa: GetTypedAttribute<typeof att, "title", false> = 555
+let aaaa: GetTypedAttribute<typeof att, "title", false> = 555

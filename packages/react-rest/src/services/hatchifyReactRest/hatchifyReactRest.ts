@@ -196,28 +196,17 @@ export const hatchifyReactRest = <
 const partialTodo = {
   name: "Todo",
   attributes: {
-    title: string(),
-    age: integer(),
-    importance: integer(),
-    // title: string({ required: true }),
-    // age: integer({ required: false }),
-    // importance: integer({ required: true }),
+    // title: string(),
+    // age: integer(),
+    // importance: integer(),
+    title: string({ required: true }),
+    age: integer({ required: false }),
+    importance: integer({ required: true }),
     created: datetime(),
   },
 } satisfies PartialSchema
 
-const partialUser = {
-  name: "User",
-  attributes: {
-    name: string(),
-    age: integer({ required: true }),
-  },
-} satisfies PartialSchema
-
-const app = hatchifyReactRest(
-  { Todo: partialTodo, User: partialUser },
-  undefined as any,
-)
+const app = hatchifyReactRest({ Todo: partialTodo }, undefined as any)
 
 // app.Todo.createOne({
 //   title: "asdf",
@@ -226,8 +215,8 @@ const app = hatchifyReactRest(
 
 app.Todo.createOne({
   title: "false",
-  age: 5,
-  importance: 5,
+  age: null,
+  importance: null,
   created: new Date(),
 })
 
