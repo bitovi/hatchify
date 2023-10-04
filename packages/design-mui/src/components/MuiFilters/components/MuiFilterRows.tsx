@@ -1,4 +1,4 @@
-import type { PartialAttributeRecord } from "@hatchifyjs/hatchify-core"
+import type { PartialAttributeRecord } from "@hatchifyjs/core"
 import type { FilterArray } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"

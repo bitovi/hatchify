@@ -20,7 +20,7 @@ import type {
   RenderValue,
   DefaultValueComponentsTypes,
 } from "../../components"
-import type { FinalSchema } from "@hatchifyjs/hatchify-core"
+import type { FinalSchema } from "@hatchifyjs/core"
 
 export interface HatchifyDisplay {
   sortable: boolean

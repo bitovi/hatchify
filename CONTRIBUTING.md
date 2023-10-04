@@ -120,7 +120,7 @@ export const Todo = {
   name: "Todo",
   attributes: {
     name: "STRING",
-    due_date: {
+    dueDate: {
       type: "DATE",
       validate: {
         isDate: true,
@@ -273,7 +273,7 @@ or individually:
 
 - `npx nx test @hatchifyjs/design-mui`
 - `npx nx test @hatchifyjs/express`
-- `npx nx test @hatchifyjs/hatchify-core`
+- `npx nx test @hatchifyjs/core`
 - `npx nx test @hatchifyjs/koa`
 - `npx nx test @hatchifyjs/node`
 - `npx nx test @hatchifyjs/react`
@@ -426,10 +426,10 @@ npx nx eslint @hatchifyjs/koa
 │   │   │   ├── schema.spec.ts
 │   │   ├── tsconfig.json
 │   │   └── tsconfig.tsbuildinfo
-│   ├── hatchify-core                           # @hatchifyjs/hatchify-core; Hatchify's schemas
+│   ├── core                           # @hatchifyjs/core; Hatchify's schemas
 │   │   ├── package.json
 │   │   ├── src
-│   │   │   ├── hatchify-core.ts
+│   │   │   ├── core.ts
 │   │   │   ├── types                           # The "new schema"
 │   │   │   └── vite-env.d.ts
 │   │   ├── tsconfig.json
@@ -473,7 +473,7 @@ npx nx eslint @hatchifyjs/koa
 │   │   ├── package.json
 │   │   ├── src
 │   │   │   ├── react.test.ts
-│   │   │   └── react.tsx                       # Re-exports from `hatchify-core`, `react-ui`, `design-mui`, and `rest-client-jsonapi`
+│   │   │   └── react.tsx                       # Re-exports from `core`, `react-ui`, `design-mui`, and `rest-client-jsonapi`
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
 │   ├── react-jsonapi                           # @hatchifyjs/react-jsonapi; Entry point for apps wanting Hatchify's data fetching

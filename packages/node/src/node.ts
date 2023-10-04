@@ -1,4 +1,4 @@
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
 import JSONAPISerializer from "json-api-serializer"
 import { snakeCase } from "lodash"

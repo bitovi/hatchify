@@ -1,10 +1,5 @@
 // hatchify-app/schemas/todo.ts
-import {
-  PartialSchema,
-  datetime,
-  integer,
-  string,
-} from "@hatchifyjs/hatchify-core"
+import { PartialSchema, datetime, integer, string } from "@hatchifyjs/core"
 
 export const Todo = {
   name: "Todo",

@@ -7,7 +7,7 @@ import {
 } from "@hatchifyjs/rest-client"
 import type { Source, Subscription } from "@hatchifyjs/rest-client"
 import { useOne } from "./useOne"
-import { assembler, string } from "@hatchifyjs/hatchify-core"
+import { assembler, string } from "@hatchifyjs/core"
 
 const fakeData = [
   {

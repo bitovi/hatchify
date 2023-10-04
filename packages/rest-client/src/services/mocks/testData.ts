@@ -1,5 +1,5 @@
-import { assembler, string } from "@hatchifyjs/hatchify-core"
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+import { assembler, string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type { Source } from "../types"
 
 export const ArticleSchema: PartialSchema = {

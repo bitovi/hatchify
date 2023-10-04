@@ -1,9 +1,5 @@
-import {
-  assembler,
-  pascalCaseToCamelCase,
-  singularize,
-} from "@hatchifyjs/hatchify-core"
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+import { assembler, pascalCaseToCamelCase, singularize } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type { ICreateHatchifyModel } from "@hatchifyjs/sequelize-create-with-associations"
 import type JSONAPISerializer from "json-api-serializer"
 import type { Sequelize } from "sequelize"
@@ -12,6 +8,7 @@ import { toSequelize } from "./toSequelize"
 import { registerSchema } from "../../serialize"
 import { HatchifySymbolModel } from "../../types"
 import type { HatchifyModel, SequelizeModelsCollection } from "../../types"
+import { getFullModelName } from "../../utils/getFullModelName"
 import { pluralize } from "../../utils/pluralize"
 import { definedPlurals } from "../definedPlurals"
 
@@ -27,6 +24,8 @@ export function convertHatchifyModels(
   const hatchifyModels = Object.values(finalSchemas).map((schema) => {
     const model: HatchifyModel = {
       name: schema.name,
+      namespace: schema.namespace,
+      pluralName: schema.pluralName,
       attributes: Object.entries(schema.attributes).reduce(
         (acc, [attributeName, attribute]) => ({
           ...acc,
@@ -43,7 +42,11 @@ export function convertHatchifyModels(
                 ...acc.belongsTo,
                 {
                   target: relationship.targetSchema,
-                  options: { as, foreignKey: relationship.sourceAttribute },
+                  options: {
+                    as,
+                    foreignKey: relationship.sourceAttribute,
+                    targetKey: relationship.targetAttribute,
+                  },
                 },
               ],
             }
@@ -55,7 +58,11 @@ export function convertHatchifyModels(
                 ...acc.hasOne,
                 {
                   target: relationship.targetSchema,
-                  options: { as, foreignKey: relationship.targetAttribute },
+                  options: {
+                    as,
+                    foreignKey: relationship.targetAttribute,
+                    sourceKey: relationship.sourceAttribute,
+                  },
                 },
               ],
             }
@@ -67,7 +74,11 @@ export function convertHatchifyModels(
                 ...acc.hasMany,
                 {
                   target: relationship.targetSchema,
-                  options: { as, foreignKey: relationship.targetAttribute },
+                  options: {
+                    as,
+                    foreignKey: relationship.targetAttribute,
+                    sourceKey: relationship.sourceAttribute,
+                  },
                 },
               ],
             }
@@ -108,7 +119,7 @@ export function convertHatchifyModels(
       ),
     }
 
-    sequelize.models[schema.name][HatchifySymbolModel] = model
+    sequelize.models[getFullModelName(model)][HatchifySymbolModel] = model
 
     return model
   })
@@ -116,23 +127,23 @@ export function convertHatchifyModels(
   // Create the serializer schema for the model
   const associationsLookup = hatchifyModels.reduce((modelAcc, model) => {
     const associations = Object.entries(
-      finalSchemas[model.name].relationships ?? {},
+      finalSchemas[getFullModelName(model)].relationships ?? {},
     ).reduce((relationshipAcc, [relationshipName, relationship]) => {
       const { type, targetSchema } = relationship
 
       if (type === "hasManyThrough") {
         sequelize.models[relationship.through].belongsTo(
-          sequelize.models[model.name],
+          sequelize.models[getFullModelName(model)],
           {
             as: pascalCaseToCamelCase(model.name),
             foreignKey: relationship.throughSourceAttribute,
             targetKey: relationship.sourceKey,
           },
         )
-        sequelize.models[model.name].belongsToMany(
+        sequelize.models[getFullModelName(model)].belongsToMany(
           sequelize.models[targetSchema],
           {
-            as: pluralize(pascalCaseToCamelCase(targetSchema)),
+            as: relationshipName,
             through: {
               model: sequelize.models[relationship.through],
               unique: false,
@@ -141,7 +152,7 @@ export function convertHatchifyModels(
             otherKey: relationship.throughTargetAttribute,
           },
         )
-        sequelize.models[model.name].hasMany(
+        sequelize.models[getFullModelName(model)].hasMany(
           sequelize.models[relationship.through],
           {
             as: pluralize(pascalCaseToCamelCase(relationship.through)),
@@ -149,16 +160,24 @@ export function convertHatchifyModels(
             sourceKey: relationship.sourceKey,
           },
         )
+      } else if (type === "belongsTo") {
+        sequelize.models[getFullModelName(model)][type](
+          sequelize.models[targetSchema],
+          {
+            as: relationshipName,
+            foreignKey: relationship.sourceAttribute,
+            targetKey: relationship.targetAttribute,
+          },
+        )
       } else {
-        sequelize.models[model.name][type](sequelize.models[targetSchema], {
-          as: relationshipName,
-          ...("sourceAttribute" in relationship
-            ? { foreignKey: relationship.sourceAttribute }
-            : {}),
-          ...("targetAttribute" in relationship
-            ? { foreignKey: relationship.targetAttribute }
-            : {}),
-        })
+        sequelize.models[getFullModelName(model)][type](
+          sequelize.models[targetSchema],
+          {
+            as: relationshipName,
+            foreignKey: relationship.targetAttribute,
+            sourceKey: relationship.sourceAttribute,
+          },
+        )
       }
 
       return {
@@ -182,7 +201,7 @@ export function convertHatchifyModels(
 
     registerSchema(serializer, model, associations, "id")
 
-    return { ...modelAcc, [model.name]: associations }
+    return { ...modelAcc, [getFullModelName(model)]: associations }
   }, {})
 
   return {

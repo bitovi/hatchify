@@ -2,7 +2,7 @@ import "@testing-library/jest-dom"
 import { createElement } from "react"
 import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
-import { assembler, integer } from "@hatchifyjs/hatchify-core"
+import { assembler, integer } from "@hatchifyjs/core"
 import { MuiList } from "./MuiList"
 
 describe("components/MuiList", () => {

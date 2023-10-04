@@ -1,4 +1,4 @@
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import { getStore } from "../../store"
 import type {
   GetSchemaFromName,

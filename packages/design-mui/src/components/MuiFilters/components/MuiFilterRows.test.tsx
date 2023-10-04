@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import MuiFilterRows from "./MuiFilterRows"
-import { integer } from "@hatchifyjs/hatchify-core"
+import { integer } from "@hatchifyjs/core"
 
 // todo: v2 schema only supports numbers, filter does not support numbers
 describe.skip("components/MuiFilters/components/MuiFilterRows", () => {

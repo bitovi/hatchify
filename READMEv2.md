@@ -72,7 +72,7 @@ following steps:
    libraries:
 
    ```bash
-   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/hatchify-core @hatchifyjs/koa @hatchifyjs/react
+   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/core @hatchifyjs/koa @hatchifyjs/react
    ```
 
 5. Install the following dev packages to run our backend server:
@@ -190,7 +190,7 @@ under the hood to talk to your database.
 
 ```ts
 // hatchify-app/schemas.ts
-import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/hatchify-core"
+import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
 
 export const Todo = {
   name: "Todo",
@@ -248,7 +248,7 @@ check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/a
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import { Todo, User } from "../schemas"
+import { Todo, User } from "../schemas/schemas"
 
 const app = new Koa()
 const hatchedKoa = hatchifyKoa(
@@ -310,9 +310,10 @@ curl 'http://localhost:3000/api/todos' \
 --data '{
   "data": {
     "type": "Todo",
+    "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000001",
     "attributes": {
       "name": "Walk the dog",
-      "due_date": "2024-12-12",
+      "dueDate": "2024-12-12",
       "importance": 6
     }
   }
@@ -328,13 +329,14 @@ curl --request POST 'http://localhost:3000/api/users' \
 --data '{
   "data": {
     "type": "User",
+    "id": "bbbbbbbb-bbbb-bbbb-bbbb-000000000001",
     "attributes": {
       "name": "John Doe"
     },
     "relationships": {
       "todos": {
         "data": [
-          { "type": "Todo", "id": "1" }
+          { "type": "Todo", "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000001" }
         ]
       }
     }
@@ -358,31 +360,21 @@ You can check out the [querystring library](https://github.com/bitovi/querystrin
 Just like fetching a list of resources, we’re able to fetch an
 individual resource with or without its related records. For example:
 
-- [http://localhost:3000/api/users/1](http://localhost:3000/api/users/1)
-- [http://localhost:3000/api/users/1?include=todos](http://localhost:3000/api/users/1?include=todos)
+- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002](http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001)
+- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002?include=todos](http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001?include=todos)
 
 ### Updating a resource
 
 ```bash
-curl --request PATCH 'http://localhost:3000/api/users/1' \
+curl --request PATCH 'http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
   "data": {
     "type": "User",
-    "id": "1",
+    "id": "bbbbbbbb-bbbb-bbbb-bbbb-000000000001",
     "attributes": {
       "name": "New name",
       "type": "User"
-    },
-    "relationships": {
-      "todos": {
-        "data": [
-          {
-            "id": "100",
-            "type": "Todo"
-          }
-        ]
-      }
     }
   }
 }'
@@ -391,7 +383,7 @@ curl --request PATCH 'http://localhost:3000/api/users/1' \
 ### Deleting a resource
 
 ```bash
-curl --request DELETE 'http://localhost:3000/api/users/1'
+curl --request DELETE 'http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001'
 ```
 
 ## Seeding data
@@ -405,9 +397,9 @@ curl 'http://localhost:3000/api/todos' \
   "data": {
     "type": "Todo",
     "attributes": {
-      "id": "101",
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002",
       "name": "Walk the dog",
-      "due_date": "2024-12-12",
+      "dueDate": "2024-12-12",
       "importance": 6
     }
   }
@@ -419,9 +411,9 @@ curl 'http://localhost:3000/api/todos' \
   "data": {
     "type": "Todo",
     "attributes": {
-      "id": "102",
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003",
       "name": "Laundry",
-      "due_date": "2024-12-02",
+      "dueDate": "2024-12-02",
       "importance": 1
     }
   }
@@ -433,9 +425,9 @@ curl 'http://localhost:3000/api/todos' \
   "data": {
     "type": "Todo",
     "attributes": {
-      "id": "103",
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004",
       "name": "Making Calls",
-      "due_date": "2024-12-31",
+      "dueDate": "2024-12-31",
       "importance": 7
     }
   }
@@ -454,11 +446,11 @@ curl 'http://localhost:3000/api/users' \
         "data": [
           {
             "type": "Todo",
-            "id": "101"
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002"
           },
           {
             "type": "Todo",
-            "id": "103"
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004"
           }
         ]
       }
@@ -479,7 +471,7 @@ curl 'http://localhost:3000/api/users' \
         "data": [
           {
             "type": "Todo",
-            "id": "102"
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003"
           }
         ]
       }
@@ -547,7 +539,7 @@ following:**
 ```tsx
 // hatchify-app/frontend/App.tsx
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo, User } from "../schemas"
+import { Todo, User } from "../schemas/schemas"
 
 export const hatchedReact = hatchifyReact(
   { Todo, User },

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import { assembler, integer } from "@hatchifyjs/hatchify-core"
+import { assembler, integer } from "@hatchifyjs/core"
 import {
   createStore,
   flattenResourcesIntoRecords,

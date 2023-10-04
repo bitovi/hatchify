@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from "vitest"
 import { render, screen, act } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import MuiFilters from "./MuiFilters"
-import { assembler, integer } from "@hatchifyjs/hatchify-core"
+import { assembler, integer } from "@hatchifyjs/core"
 
 const partialSchemas = {
   Test: {

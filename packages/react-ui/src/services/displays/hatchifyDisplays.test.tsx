@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom"
 import { describe, it, expect } from "vitest"
 import { render, screen } from "@testing-library/react"
-import { string } from "@hatchifyjs/hatchify-core"
+import { string } from "@hatchifyjs/core"
 import {
   getEmptyList,
   //   getDisplays,

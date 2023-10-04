@@ -1,4 +1,5 @@
-import type { HatchifyModel } from "@hatchifyjs/node"
+import { string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/node"
 
 import { startServerWith } from "./testing/utils"
 
@@ -8,7 +9,7 @@ interface Table {
 }
 interface TestCase {
   description: string
-  models: HatchifyModel[]
+  models: Record<string, PartialSchema>
   database: Table[]
 }
 
@@ -16,28 +17,28 @@ describe("Naming rules", () => {
   const databaseNamingTestCases: TestCase[] = [
     {
       description: "Ensure database name and columns are in snake case",
-      models: [
-        {
+      models: {
+        SalesPerson: {
           name: "SalesPerson",
           attributes: {
-            name: "STRING",
-            description: "STRING",
+            name: string(),
+            description: string(),
           },
         },
-        {
+        Account: {
           name: "Account",
           attributes: {
-            name: "STRING",
+            name: string(),
           },
         },
-        {
+        StateCommercialRepresentative: {
           name: "StateCommercialRepresentative",
           attributes: {
-            name: "STRING",
-            hasActiveContracts: "STRING",
+            name: string(),
+            hasActiveContracts: string(),
           },
         },
-      ],
+      },
       database: [
         {
           tableName: "sales_person",

@@ -28,7 +28,7 @@ describe("convertHatchifyModels", () => {
     name: "Todo",
     attributes: {
       name: "STRING",
-      due_date: "DATE",
+      dueDate: "DATE",
       importance: "INTEGER",
       status: {
         type: "ENUM",

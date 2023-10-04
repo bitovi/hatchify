@@ -1,4 +1,4 @@
-import { assembler, integer } from "@hatchifyjs/hatchify-core"
+import { assembler, integer } from "@hatchifyjs/core"
 import { describe, it, expect } from "vitest"
 import { createStore } from "../../store"
 import { findAll } from "./findAll"

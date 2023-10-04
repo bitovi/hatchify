@@ -1,7 +1,4 @@
-import type {
-  FinalSchema,
-  Schema as OldSchema,
-} from "@hatchifyjs/hatchify-core"
+import type { FinalSchema, Schema as OldSchema } from "@hatchifyjs/core"
 import type {
   Schema,
   AttributeObject,

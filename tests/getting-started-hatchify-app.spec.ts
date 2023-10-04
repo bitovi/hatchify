@@ -36,7 +36,7 @@ test("works", async ({ page, request }) => {
         type: "Todo",
         attributes: {
           name: "Walk the dog",
-          due_date: "2023-07-05T20:30:52.767Z",
+          dueDate: "2023-07-05T20:30:52.767Z",
           importance: 6,
         },
       },

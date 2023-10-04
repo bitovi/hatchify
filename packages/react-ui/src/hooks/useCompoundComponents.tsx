@@ -1,4 +1,4 @@
-import type { FinalSchema } from "@hatchifyjs/hatchify-core"
+import type { FinalSchema } from "@hatchifyjs/core"
 import type { HatchifyDisplay } from "../services"
 import type { DefaultValueComponentsTypes } from "../components"
 import { useHatchifyPresentation } from "../components"

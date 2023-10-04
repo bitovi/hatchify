@@ -1,4 +1,4 @@
-import type { PartialSchema } from "@hatchifyjs/hatchify-core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type { GetSchemaFromName, GetSchemaNames, RecordType } from "."
 
 export type Unsubscribe = () => void

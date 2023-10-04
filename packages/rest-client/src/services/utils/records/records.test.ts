@@ -15,7 +15,7 @@ import {
   datetime,
   integer,
   string,
-} from "@hatchifyjs/hatchify-core"
+} from "@hatchifyjs/core"
 
 describe("rest-client/utils/records", () => {
   describe("keyResourcesById", () => {

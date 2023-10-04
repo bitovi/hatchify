@@ -1,8 +1,16 @@
+import {
+  belongsTo,
+  datetime,
+  enumerate,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import { Op } from "sequelize"
 
 import { RelationshipPathError, UnexpectedValueError } from "../error"
 import { Hatchify } from "../node"
-import type { HatchifyModel } from "../types"
 
 import { buildParserForModel, buildParserForModelStandalone } from "."
 
@@ -10,55 +18,56 @@ const RelationshipPathDetail =
   "URL must have 'include' as one or more of 'lipitorUser', 'xanaxUser'."
 
 describe("indexNamespace", () => {
-  const LipitorUser: HatchifyModel = {
+  const Lipitor_User: PartialSchema = {
     name: "User",
     namespace: "Lipitor",
     attributes: {
-      name: "STRING",
+      name: string(),
     },
-    hasMany: [{ target: "Pfizer_Todo", options: { as: "lipitorTodos" } }],
+    relationships: {
+      lipitorTodos: hasMany("Pfizer_Todo"),
+    },
   }
-  const XanaxUser: HatchifyModel = {
+  const Xanax_User: PartialSchema = {
     name: "User",
     namespace: "Xanax",
     attributes: {
-      name: "STRING",
+      name: string(),
     },
-    hasMany: [{ target: "Pfizer_Todo", options: { as: "xanaxTodos" } }],
+    relationships: {
+      xanaxTodos: hasMany("Pfizer_Todo"),
+    },
   }
 
-  const Todo: HatchifyModel = {
+  const Pfizer_Todo: PartialSchema = {
     name: "Todo",
     namespace: "Pfizer",
     attributes: {
-      name: "STRING",
-      due_date: "DATE",
-      importance: "INTEGER",
-      status: {
-        type: "ENUM",
-        values: ["Do Today", "Do Soon", "Done"],
-      },
+      name: string(),
+      dueDate: datetime(),
+      importance: integer(),
+      status: enumerate({ values: ["Do Today", "Do Soon", "Done"] }),
     },
-    belongsTo: [
-      { target: "Lipitor_User", options: { as: "lipitorUser" } },
-      { target: "Xanax_User", options: { as: "xanaxUser" } },
-    ],
+    relationships: {
+      lipitorUser: belongsTo("Lipitor_User"),
+      xanaxUser: belongsTo("Xanax_User"),
+    },
   }
 
-  const hatchedNode = new Hatchify([Todo, LipitorUser, XanaxUser])
+  const hatchedNode = new Hatchify({ Pfizer_Todo, Lipitor_User, Xanax_User })
 
   describe("buildParserForModelStandalone", () => {
     const { findAll, findOne, findAndCountAll, create, update, destroy } =
-      buildParserForModelStandalone(hatchedNode, Todo)
+      buildParserForModelStandalone(hatchedNode, Pfizer_Todo)
 
     describe("findAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAll(
-          "include=lipitorUser&filter[name]=laundry&fields[pfizerTodos]=id,name,due_date&fields[lipitorUser]=name&page[number]=3&page[size]=5",
+          "include=lipitorUser&filter[name]=laundry&fields[pfizerTodos]=id,name,dueDate&fields[lipitorUser]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           include: [{ association: "lipitorUser", include: [] }],
           limit: 5,
           offset: 10,
@@ -67,10 +76,10 @@ describe("indexNamespace", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findAll("fields[pfizerTodo]=name,due_date")
+        const results = await findAll("fields[pfizerTodo]=name,dueDate")
 
         expect(results).toEqual({
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           where: {},
         })
       })
@@ -89,14 +98,14 @@ describe("indexNamespace", () => {
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance', 'status'.",
+              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status'.",
             parameter: "fields[pfizer-todo]",
           }),
         ])
       })
 
       it("handles invalid query string", async () => {
-        await expect(findAll("fields=name,due_date")).rejects.toEqualErrors([
+        await expect(findAll("fields=name,dueDate")).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail: "Incorrect format was provided for fields.",
             parameter: "fields",
@@ -117,11 +126,11 @@ describe("indexNamespace", () => {
     describe("findAndCountAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAndCountAll(
-          "include=xanaxUser&filter[name]=laundry&fields[pfizer-todo]=id,name,due_date&fields[xanaxUser]=name&page[number]=3&page[size]=5",
+          "include=xanaxUser&filter[name]=laundry&fields[pfizer-todo]=id,name,dueDate&fields[xanaxUser]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           include: [{ association: "xanaxUser", include: [] }],
           limit: 5,
           offset: 10,
@@ -130,10 +139,10 @@ describe("indexNamespace", () => {
       })
 
       it("adds attribute if not specified", async () => {
-        const results = await findAndCountAll("fields[todo]=name,due_date")
+        const results = await findAndCountAll("fields[todo]=name,dueDate")
 
         expect(results).toEqual({
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           where: {},
         })
       })
@@ -152,7 +161,7 @@ describe("indexNamespace", () => {
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance', 'status'.",
+              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status'.",
             parameter: "fields[pfizer-todo]",
           }),
         ])
@@ -160,7 +169,7 @@ describe("indexNamespace", () => {
 
       it("handles invalid query string", async () => {
         await expect(
-          findAndCountAll("fields=name,due_date"),
+          findAndCountAll("fields=name,dueDate"),
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail: "Incorrect format was provided for fields.",
@@ -184,12 +193,12 @@ describe("indexNamespace", () => {
     describe("findOne", () => {
       it("works with ID attribute provided", async () => {
         const results = await findOne(
-          "include=xanaxUser&filter[name]=laundry&fields[xanaxTodo]=id,name,due_date&fields[xanaxUser]=name&page[number]=3&page[size]=5",
+          "include=xanaxUser&filter[name]=laundry&fields[xanaxTodo]=id,name,dueDate&fields[xanaxUser]=name&page[number]=3&page[size]=5",
           1,
         )
 
         expect(results).toEqual({
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           include: [{ association: "xanaxUser", include: [] }],
           limit: 5,
           offset: 10,
@@ -198,10 +207,10 @@ describe("indexNamespace", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findOne("fields[todo]=name,due_date", 1)
+        const results = await findOne("fields[todo]=name,dueDate", 1)
 
         expect(results).toEqual({
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           where: { id: 1 },
         })
       })
@@ -220,14 +229,14 @@ describe("indexNamespace", () => {
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'due_date', 'importance', 'status'.",
+              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status'.",
             parameter: "fields[pfizer-todo]",
           }),
         ])
       })
 
       it("handles invalid query string", async () => {
-        await expect(findOne("fields=name,due_date", 1)).rejects.toEqualErrors([
+        await expect(findOne("fields=name,dueDate", 1)).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail: "Incorrect format was provided for fields.",
             parameter: "fields",
@@ -254,7 +263,7 @@ describe("indexNamespace", () => {
             type: "Pfizer_Todo",
             attributes: {
               name: "Laundry",
-              due_date: "2024-12-02",
+              dueDate: "2024-12-02",
               importance: 1,
               status: "Do Today",
             },
@@ -273,7 +282,7 @@ describe("indexNamespace", () => {
             type: "Pfizer_Todo",
             attributes: {
               name: "Laundry",
-              due_date: "2024-12-02",
+              dueDate: "2024-12-02",
               importance: 1,
             },
           },
@@ -292,7 +301,7 @@ describe("indexNamespace", () => {
             type: "Pfizer_Todo",
             attributes: {
               name: "Laundry",
-              due_date: "2024-12-02",
+              dueDate: "2024-12-02",
               importance: 1,
             },
           },
@@ -309,11 +318,11 @@ describe("indexNamespace", () => {
     describe("destroy", () => {
       it("works with ID attribute provided", async () => {
         const results = await destroy(
-          "include=user&filter[name]=laundry&fields[todo]=id,name,due_date&fields[user]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
-          attributes: ["id", "name", "due_date"],
+          attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
@@ -322,10 +331,10 @@ describe("indexNamespace", () => {
       })
 
       it("does not add ID attribute if not specified", async () => {
-        const results = await destroy("fields[todo]=name,due_date")
+        const results = await destroy("fields[todo]=name,dueDate")
 
         expect(results).toEqual({
-          attributes: ["name", "due_date"],
+          attributes: ["name", "dueDate"],
           where: {},
         })
       })
@@ -358,7 +367,7 @@ describe("indexNamespace", () => {
       })
 
       it("handles invalid query string", async () => {
-        await expect(destroy("fields=name,due_date")).rejects.toEqualErrors([
+        await expect(destroy("fields=name,dueDate")).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail: "Incorrect format was provided for fields.",
             parameter: "fields",
@@ -369,20 +378,17 @@ describe("indexNamespace", () => {
   })
 
   describe("no relationships case", () => {
-    const Todo: HatchifyModel = {
+    const Todo: PartialSchema = {
       name: "Todo",
       attributes: {
-        name: "STRING",
-        due_date: "DATE",
-        importance: "INTEGER",
-        status: {
-          type: "ENUM",
-          values: ["Do Today", "Do Soon", "Done"],
-        },
+        name: string(),
+        dueDate: datetime(),
+        importance: integer(),
+        status: enumerate({ values: ["Do Today", "Do Soon", "Done"] }),
       },
     }
 
-    const hatchedNode = new Hatchify([Todo])
+    const hatchedNode = new Hatchify({ Todo })
     const { findAll } = buildParserForModelStandalone(hatchedNode, Todo)
 
     it("handles invalid include", async () => {
@@ -407,11 +413,11 @@ describe("indexNamespace", () => {
       expect(parser.destroy).toEqual(expect.any(Function))
 
       const results = await parser.findAll(
-        "include=xanaxUser&filter[name]=laundry&fields[xanaxTodos]=id,name,due_date&fields[xanaxUser]=name&page[number]=3&page[size]=5",
+        "include=xanaxUser&filter[name]=laundry&fields[xanaxTodos]=id,name,dueDate&fields[xanaxUser]=name&page[number]=3&page[size]=5",
       )
 
       expect(results).toEqual({
-        attributes: ["id", "name", "due_date"],
+        attributes: ["id", "name", "dueDate"],
         include: [{ association: "xanaxUser", include: [] }],
         limit: 5,
         offset: 10,

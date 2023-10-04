@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest"
 import { createStore } from "../../store"
 import type { Source } from "../../types"
 import { deleteOne } from "./deleteOne"
-import { assembler, string } from "@hatchifyjs/hatchify-core"
+import { assembler, string } from "@hatchifyjs/core"
 
 const fakeDataSource: Source = {
   version: 0,

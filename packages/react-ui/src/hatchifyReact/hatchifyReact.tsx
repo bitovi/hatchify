@@ -4,7 +4,7 @@ import {
   // datetime,
   // string,
   // PartialSchema,
-} from "@hatchifyjs/hatchify-core"
+} from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   Fields,

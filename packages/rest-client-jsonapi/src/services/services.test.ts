@@ -5,7 +5,7 @@ import { hatchifyKoa } from "@hatchifyjs/koa"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import jsonapi from "../rest-client-jsonapi"
 import { testBackendEndpointConfig } from "../setupTests"
-import { string } from "@hatchifyjs/hatchify-core"
+import { string } from "@hatchifyjs/core"
 
 const Article = {
   name: "Article",

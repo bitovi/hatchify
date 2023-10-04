@@ -4,7 +4,7 @@ import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "@hatchifyjs/rest-client"
 import type { Source } from "@hatchifyjs/rest-client"
 import { useDeleteOne } from "./useDeleteOne"
-import { assembler, string } from "@hatchifyjs/hatchify-core"
+import { assembler, string } from "@hatchifyjs/core"
 
 const fakeDataSource: Source = {
   version: 0,

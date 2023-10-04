@@ -1,4 +1,4 @@
-import { integer, string } from "@hatchifyjs/hatchify-core"
+import { integer, string } from "@hatchifyjs/core"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import createClient from "@hatchifyjs/rest-client-jsonapi"
 

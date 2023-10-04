@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest"
 import type { Source } from "@hatchifyjs/rest-client"
-import { integer, string } from "@hatchifyjs/hatchify-core"
+import { integer, string } from "@hatchifyjs/core"
 import { hatchifyReactRest } from "./hatchifyReactRest"
 
 const fakeDataSource: Source = {

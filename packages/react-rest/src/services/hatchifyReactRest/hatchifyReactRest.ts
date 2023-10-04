@@ -1,7 +1,10 @@
 import {
   assembler,
-  // string, integer, datetime
-} from "@hatchifyjs/hatchify-core"
+  string,
+  integer,
+  datetime,
+  PartialSchema,
+} from "@hatchifyjs/core"
 import type {
   CreateType,
   GetSchemaFromName,
@@ -94,7 +97,10 @@ export type HatchifyReactRest<TSchemas extends PartialSchemas> = {
   }
 }
 
-export const hatchifyReactRest = <const TSchemas extends PartialSchemas>(
+export const hatchifyReactRest = <
+  const TSchemas extends Record<string, PartialSchema>,
+  // const TSchemas extends PartialSchemas, // <--- why the f doesn't this work
+>(
   partialSchemas: TSchemas,
   restClient: RestClient,
 ): HatchifyReactRest<TSchemas> => {
@@ -187,28 +193,57 @@ export const hatchifyReactRest = <const TSchemas extends PartialSchemas>(
 }
 
 // // todo: leaving for testing, remove before merge to main
-// const partialTodo = {
-//   name: "Todo",
-//   attributes: {
-//     title: string(),
-//     age: integer(),
-//     importance: integer(),
-//     created: datetime(),
-//   },
-// }
+const partialTodo = {
+  name: "Todo",
+  attributes: {
+    title: string(),
+    age: integer(),
+    importance: integer(),
+    // title: string({ required: true }),
+    // age: integer({ required: false }),
+    // importance: integer({ required: true }),
+    created: datetime(),
+  },
+} satisfies PartialSchema
 
-// const partialUser = {
-//   name: "User",
-//   attributes: {
-//     name: string(),
-//     age: integer({ required: true }),
-//   },
-// }
+const partialUser = {
+  name: "User",
+  attributes: {
+    name: string(),
+    age: integer({ required: true }),
+  },
+} satisfies PartialSchema
 
-// const app = hatchifyReactRest(
-//   { Todo: partialTodo, User: partialUser },
-//   undefined as any,
-// )
+const app = hatchifyReactRest(
+  { Todo: partialTodo, User: partialUser },
+  undefined as any,
+)
+
+// app.Todo.createOne({
+//   title: "asdf",
+//   age: 5,
+// })
+
+app.Todo.createOne({
+  title: "false",
+  age: 5,
+  importance: 5,
+  created: new Date(),
+})
+
+app.Todo.updateOne({
+  id: "1234",
+  // title: "string",
+  importance: 5,
+})
+
+// const [create] = app.Todo.useCreateOne()
+// create({
+//   title: "string",
+//   age: 5,
+//   importance: 5,
+//   created: new Date(),
+// })
 
 // async function test() {
 //   const [a] = await app.Todo.findAll({})

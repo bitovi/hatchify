@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { reactJsonapi } from "./react-jsonapi"
-import { integer } from "@hatchifyjs/hatchify-core"
+import { integer } from "@hatchifyjs/core"
 
 const TestSchema = {
   Article: {

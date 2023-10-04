@@ -24,7 +24,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/hatchify-core": "^0.1.4"
+    "@hatchifyjs/core": "^0.1.7"
   },
   "devDependencies": {
     "@vitest/coverage-c8": "^0.32.2",

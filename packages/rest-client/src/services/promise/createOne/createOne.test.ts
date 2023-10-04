@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest"
 import { createStore } from "../../store"
 import { createOne } from "./createOne"
 import { fakeDataSource } from "../../mocks/testData"
-import { assembler, string } from "@hatchifyjs/hatchify-core"
+import { assembler, string } from "@hatchifyjs/core"
 
 describe("rest-client/services/promise/createOne", () => {
   const data = {
