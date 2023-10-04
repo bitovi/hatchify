@@ -122,20 +122,76 @@ const att = {
       type: "Number" as const,
       allowNull: true as const,
       // allowNull: false as const,
-      // allowNull: true,
+      // allowNull: true as const,
     },
-    orm: {
-      sequelize: {
-        type: "DECIMAL",
-        typeArgs: [],
-        allowNull: false,
-        autoIncrement: false,
-        primaryKey: false,
-        defaultValue: undefined,
-      },
+  },
+  name: {
+    name: "something",
+    control: {
+      type: "Number" as const,
+      // allowNull: true as const,
+      // allowNull: false as const,
+      allowNull: createBoolean({ required: false }),
     },
-    finalize: (() => {}) as any,
   },
 }
 
-let aaaa: GetTypedAttribute<typeof att, "title", false> = 555
+function createBoolean<TAllowed extends boolean>(config: {
+  required: TAllowed
+}): TAllowed {
+  return {} as TAllowed
+}
+
+// const aaaa: GetTypedAttribute<typeof att, "title", false> = 555
+
+type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+export type CreateAttributeUnion<
+  A extends Record<string, { control: { type: string; allowNull?: boolean } }>,
+> = {
+  [Name in keyof A]: { key: Name } & A[Name]
+}[keyof A]
+
+type MiddleGround = CreateAttributeUnion<typeof att>
+
+type AllowNull = Extract<MiddleGround, { control: { allowNull: true } }>
+
+type NoNulls = Extract<MiddleGround, { control: { allowNull: false } }>
+
+// type AllowNullAsObject = Prettify<{
+//   [Key in AllowNull["key"]]?: Extract<AllowNull, { key: Key }> extends {
+//     control: { type: infer Type }
+//   }
+//     ? Type extends "Number"
+//       ? number
+//       : never
+//     : never
+// }>
+
+// type AllowNullAsObject1 = Prettify<
+//   Partial<{
+//     [Key in AllowNull["key"]]: Extract<AllowNull, { key: Key }> extends {
+//       control: { type: infer Type }
+//     }
+//       ? Type extends "Number"
+//         ? number
+//         : never
+//       : never
+//   }>
+// >
+
+type UnionToObject<Union extends { key: string }> = {
+  [Key in Union["key"]]: Extract<Union, { key: Key }> extends {
+    control: { type: infer Type }
+  }
+    ? Type extends "Number"
+      ? number
+      : never
+    : never
+}
+
+type Stitch = Prettify<
+  Partial<UnionToObject<AllowNull>> & UnionToObject<NoNulls>
+>

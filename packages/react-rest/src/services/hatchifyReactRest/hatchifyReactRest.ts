@@ -1,10 +1,5 @@
-import {
-  assembler,
-  string,
-  integer,
-  datetime,
-  PartialSchema,
-} from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
+import { assembler, string, integer, datetime } from "@hatchifyjs/core"
 import type {
   CreateType,
   GetSchemaFromName,
