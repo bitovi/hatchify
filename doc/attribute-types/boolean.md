@@ -83,16 +83,5 @@ The text `true` or `false` will be presented in the grid. If the value is `null`
 
 
 
-### Sequelize Type
-
-```js
-{
- type: "BOOLEAN",
- typeArgs: [],
- allowNull: Boolean
-}
-```
-  
-</details>
 
 
