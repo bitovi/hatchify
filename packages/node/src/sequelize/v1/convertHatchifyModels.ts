@@ -18,6 +18,7 @@ import type {
   SequelizeModelsCollection,
   Virtuals,
 } from "../../types"
+import { getFullModelName } from "../../utils/getFullModelName"
 import { pluralize } from "../../utils/pluralize"
 import { definedPlurals } from "../definedPlurals"
 
@@ -29,11 +30,8 @@ export function convertHatchifyModels(
   const virtuals: Virtuals = {}
   const primaryKeys: Record<string, string> = {}
   models.forEach((model) => {
-    // add namespace to model.name
-    const modelName = model.name
-    if (model.namespace) {
-      model.name = model.namespace + "_" + model.name
-    }
+    const fullModelName = getFullModelName(model)
+
     for (const attributeKey in model.attributes) {
       const attribute = model.attributes[attributeKey]
       const parsedAttribute = parseAttribute(attribute)
@@ -50,10 +48,10 @@ export function convertHatchifyModels(
       }
 
       if (type instanceof DataTypes.VIRTUAL) {
-        if (virtuals[model.name]) {
-          virtuals[model.name][attributeKey] = updatedInclude || []
+        if (virtuals[fullModelName]) {
+          virtuals[fullModelName][attributeKey] = updatedInclude || []
         } else {
-          virtuals[model.name] = {
+          virtuals[fullModelName] = {
             [attributeKey]: updatedInclude || [],
           }
         }
@@ -65,7 +63,7 @@ export function convertHatchifyModels(
     }
 
     const temp = sequelize.define<Model<HatchifyModel["attributes"]>>(
-      model.name,
+      fullModelName,
       model.attributes,
       {
         validate: model.validation || {},
@@ -74,12 +72,12 @@ export function convertHatchifyModels(
         createdAt: false,
         updatedAt: false,
         freezeTableName: true,
-        tableName: snakeCase(modelName),
+        tableName: snakeCase(model.name),
       },
     )
 
     // GET THE PRIMARY KEY
-    primaryKeys[model.name] = temp.primaryKeyAttribute
+    primaryKeys[fullModelName] = temp.primaryKeyAttribute
 
     temp[HatchifySymbolModel] = model
   })
@@ -87,6 +85,7 @@ export function convertHatchifyModels(
   const associationsLookup: Record<string, Record<string, IAssociation>> = {}
 
   models.forEach((model) => {
+    const fullModelName = getFullModelName(model)
     const relationshipTypes = [
       "belongsTo",
       "belongsToMany",
@@ -105,7 +104,7 @@ export function convertHatchifyModels(
               new HatchifyError({
                 title:
                   "Unknown Model association for " +
-                  model.name +
+                  fullModelName +
                   " in " +
                   relationshipType,
                 status: statusCodes.CONFLICT,
@@ -124,13 +123,13 @@ export function convertHatchifyModels(
             )
 
           // Pull the models off sequelize.models
-          const current = sequelize.models[model.name]
+          const current = sequelize.models[fullModelName]
           const associated = sequelize.models[target]
 
           const throughName =
-            model.name < target
-              ? `${model.name}${target}`
-              : `${target}${model.name}`
+            fullModelName < target
+              ? `${fullModelName}${target}`
+              : `${target}${fullModelName}`
 
           // Create the relationship
           current[relationshipType](associated, {
@@ -154,8 +153,8 @@ export function convertHatchifyModels(
                   : options?.through?.model ?? throughName
                 : undefined,
           }
-          associationsLookup[model.name] = {
-            ...associationsLookup[model.name],
+          associationsLookup[fullModelName] = {
+            ...associationsLookup[fullModelName],
             [associationName]: modelAssociation,
           }
           associations[associationName] = modelAssociation
@@ -163,7 +162,7 @@ export function convertHatchifyModels(
       }
     })
     // Create the serializer schema for the model
-    registerSchema(serializer, model, associations, primaryKeys[model.name])
+    registerSchema(serializer, model, associations, primaryKeys[fullModelName])
   })
 
   return {
