@@ -1,6 +1,8 @@
 import type {
   Fields,
+  FilterTypes,
   Filters,
+  FiltersObject,
   Include,
   RequiredSchemaMap,
   Schemas,
@@ -58,13 +60,49 @@ export function sortToQueryParam(sort: string[] | string): string {
   return Array.isArray(sort) ? `sort=${sort.join(",")}` : `sort=${sort}`
 }
 
-/**
- * Transforms the filter object into filter query parameters.
- * { name: "John", age: 30 } => "filter[name]=John&filter[age]=30"
- * { name: ["John", "Jane"], operator: "$eq" } => "filter[name][$eq]=John&filter[name][$eq]=Jane"
- * [{name: "John", operator: "$eq"}, {age: 30, operator: "$gte"}] => "filter[name][$eq]=John&filter[age][$gte]=30"
- */
+/** Helper function for `filterToQueryParam` */
+export function encodeValue(
+  operator: string,
+  value: string | string[] | number | number[] | boolean | boolean[],
+): string | null {
+  if (operator === "empty" || operator === "nempty") {
+    return null
+  }
 
+  if (["istarts", "iends", "icontains"].includes(operator)) {
+    return encodeURIComponent(
+      operator === "istarts"
+        ? `${value}%`
+        : operator === "iends"
+        ? `%${value}`
+        : `%${value}%`,
+    )
+  }
+
+  if (
+    // We need the UTC iso in the request, but we need the local iso in the frontend.
+    /([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]))/i.test(
+      value.toString(),
+    )
+  ) {
+    return encodeURIComponent(new Date(value.toString()).toISOString())
+  }
+
+  return encodeURIComponent(Array.isArray(value) ? value.join(",") : value)
+}
+
+/** Helper function for `filterToQueryParam` */
+export function getOperator(operator: string): string {
+  if (operator === "empty" || operator === "nempty") {
+    return operator === "empty" ? "$eq" : "$ne"
+  }
+
+  if (["istarts", "iends", "icontains"].includes(operator)) {
+    return "$ilike"
+  }
+
+  return operator
+}
 /**
  * Transforms the filter from an array into a JSON:API compliant query parameter.
  * [{ field: "name", value: "John", operator: "$eq" }] => "filter[name][$eq]=John"
@@ -78,66 +116,58 @@ export function filterToQueryParam(filter: Filters): string {
     return filter
   }
 
-  const q: string[] = []
+  let filtersObject: FiltersObject = {}
 
-  if (typeof filter === "object" && !Array.isArray(filter)) {
-    for (const [key, value] of Object.entries(filter)) {
-      if (value == null) {
-        q.push(`filter[${key}]=${null}`)
-      } else if (Array.isArray(value)) {
-        q.push(
-          value
-            .map((v) => `filter[${key}][]=${encodeURIComponent(v.toString())}`)
-            .join("&"),
-        )
-      } else {
-        q.push(`filter[${key}]=${encodeURIComponent(value.toString())}`)
+  // convert array of `FilterArray` (from ui component) into `FiltersObject`
+  if (Array.isArray(filter)) {
+    filtersObject = filter.reduce((acc, curr) => {
+      const { field, value, operator } = curr as {
+        field: string
+        value: any
+        operator: FilterTypes
       }
-    }
 
-    return q.join("&")
+      if (!acc[field]) {
+        acc[field] = { [operator]: value }
+      } else if (!acc[field][operator]) {
+        acc[field][operator] = value
+      } else {
+        const currentValue = acc[field][operator]
+        const filterValue = Array.isArray(value) ? value : [value]
+        if (Array.isArray(currentValue)) {
+          acc[field][operator] = [...currentValue, ...filterValue]
+        } else {
+          acc[field][operator] = [currentValue, ...filterValue]
+        }
+      }
+
+      return acc
+    }, {} as FiltersObject)
+  } else {
+    filtersObject = filter
   }
 
-  //We need the UTC iso in the request, but we need the local iso in the frontend.
-  const DATE_REGEX = new RegExp(
-    /([12][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]))/i,
-  )
-  const likeOperators = ["istarts", "iends", "icontains"]
+  const query: string[] = []
 
-  for (let i = 0; i < filter.length; i++) {
-    const { operator, field, value } = filter[i]
-    if (likeOperators.includes(operator)) {
-      const wildcardOperator =
-        operator === "istarts"
-          ? `${value}%`
-          : operator === "iends"
-          ? `%${value}`
-          : `%${value}%`
-      q.push(
-        `filter[${field}][$ilike]=${encodeURIComponent(`${wildcardOperator}`)}`,
-      )
-    } else if (operator === "empty" || operator === "nempty") {
-      q.push(
-        `filter[${field}][${operator === "empty" ? "$eq" : "$ne"}]=${null}`,
-      )
-    } else if (Array.isArray(value)) {
-      q.push(
-        value
-          .map((v) => `filter[${field}][${operator}]=${encodeURIComponent(v)}`)
-          .join("&"),
-      )
-    } else {
-      q.push(
-        `filter[${field}][${operator}]=${encodeURIComponent(
-          DATE_REGEX.test(value.toString())
-            ? new Date(value.toString()).toISOString()
-            : value,
-        )}`,
-      )
-    }
-  }
+  Object.entries(filtersObject).forEach(([field, filters]) => {
+    Object.entries(filters).forEach(([op, val]) => {
+      const operator = getOperator(op)
 
-  return q.join("&")
+      if (
+        Array.isArray(val) &&
+        // only these operators support array values
+        ["$in", "$nin", "$like", "$ilike"].includes(operator)
+      ) {
+        val.forEach((v) => {
+          query.push(`filter[${field}][${operator}][]=${encodeValue(op, v)}`)
+        })
+      } else {
+        query.push(`filter[${field}][${operator}]=${encodeValue(op, val)}`)
+      }
+    })
+  })
+
+  return query.join("&")
 }
 
 /**

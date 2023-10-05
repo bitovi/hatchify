@@ -217,7 +217,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           page: { number: 3, size: 30 },
         }),
       ).toEqual(
-        "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year&sort=-created,title,user.name&filter[name][$in]=John&filter[name][$in]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
+        "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year&sort=-created,title,user.name&filter[name][$in][]=John&filter[name][$in][]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
       )
     })
   })
@@ -246,12 +246,19 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
   describe("filterToQueryParam", () => {
     it("works", () => {
+      // handles undefined
       expect(filterToQueryParam(undefined)).toEqual("")
 
+      // handles string
       expect(
         filterToQueryParam("filter[name]=ABC&filter[completed]=true"),
       ).toEqual("filter[name]=ABC&filter[completed]=true")
 
+      expect(filterToQueryParam("invalidFilter[name]=!#@$?")).toEqual(
+        "invalidFilter[name]=!#@$?",
+      )
+
+      // handles arrays (from ui component)
       expect(
         filterToQueryParam([{ field: "name", value: "ABC", operator: "$eq" }]),
       ).toEqual("filter[name][$eq]=ABC")
@@ -260,7 +267,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         filterToQueryParam([
           { field: "name", value: ["ABC", "DEF"], operator: "$in" },
         ]),
-      ).toEqual("filter[name][$in]=ABC&filter[name][$in]=DEF")
+      ).toEqual("filter[name][$in][]=ABC&filter[name][$in][]=DEF")
 
       expect(
         filterToQueryParam([
@@ -275,7 +282,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           { field: "completed", value: true, operator: "$eq" },
         ]),
       ).toEqual(
-        "filter[name][$in]=ABC&filter[name][$in]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
+        "filter[name][$in][]=ABC&filter[name][$in][]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
       )
 
       expect(
@@ -318,27 +325,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           { field: "employer", value: "(test$!)", operator: "$eq" },
         ]),
       ).toEqual(
-        "filter[name][$in]=A'bc!*%22&filter[name][$in]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",
-      )
-
-      expect(
-        filterToQueryParam({
-          name: ["A'bc!*\"", "$()"],
-          completed: true,
-          employer: "Some Employer",
-        }),
-      ).toEqual(
-        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[completed]=true&filter[employer]=Some%20Employer",
-      )
-
-      expect(
-        filterToQueryParam({
-          name: ["A'bc!*\"", "$()"],
-          completed: true,
-          employer: "Some Employer",
-        }),
-      ).toEqual(
-        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[completed]=true&filter[employer]=Some%20Employer",
+        "filter[name][$in][]=A'bc!*%22&filter[name][$in][]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",
       )
 
       expect(
@@ -370,6 +357,45 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           },
         ]),
       ).toEqual("filter[name][$ilike]=%25Some")
+
+      // handles objects
+      expect(
+        filterToQueryParam({
+          name: {
+            $eq: "ABC",
+          },
+        }),
+      ).toEqual("filter[name][$eq]=ABC")
+
+      expect(
+        filterToQueryParam({
+          name: {
+            $eq: ["ABC", "DEF"],
+          },
+        }),
+      ).toEqual("filter[name][$eq]=ABC%2CDEF")
+
+      expect(
+        filterToQueryParam({
+          name: {
+            $in: ["ABC", "DEF"],
+          },
+        }),
+      ).toEqual("filter[name][$in][]=ABC&filter[name][$in][]=DEF")
+
+      expect(
+        filterToQueryParam({
+          name: {
+            empty: "",
+          },
+          count: {
+            nempty: "",
+            $ilike: [3, 4, 5],
+          },
+        }),
+      ).toEqual(
+        "filter[name][$eq]=null&filter[count][$ne]=null&filter[count][$ilike][]=3&filter[count][$ilike][]=4&filter[count][$ilike][]=5",
+      )
     })
   })
 

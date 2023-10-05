@@ -10,11 +10,33 @@ export type FilterArray = Array<{
   value: string | string[] | number | number[] | boolean | boolean[]
 }>
 
-export type FilterObject = {
-  [key: string]: string | string[] | number | number[] | boolean | boolean[]
+export type FilterTypes =
+  | "$eq"
+  | "$ne"
+  | "$gt"
+  | "$gte"
+  | "$lt"
+  | "$lte"
+  | "$in"
+  | "$nin"
+  | "$like"
+  | "$ilike"
+  | "empty"
+  | "nempty"
+
+export type FiltersObject = {
+  [field: string]: {
+    [filter in FilterTypes]?:
+      | string
+      | string[]
+      | number
+      | number[]
+      | boolean
+      | boolean[]
+  }
 }
 
-export type Filters = FilterArray | FilterObject | string | undefined
+export type Filters = FilterArray | FiltersObject | string | undefined
 
 export interface PaginationObject {
   number: number
