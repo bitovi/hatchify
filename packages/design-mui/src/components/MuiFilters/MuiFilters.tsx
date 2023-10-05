@@ -110,7 +110,12 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
         variant="text"
         onClick={() => setOpen(true)}
         startIcon={
-          <Badge badgeContent={queryFilter?.length} color="primary">
+          <Badge
+            badgeContent={
+              Array.isArray(queryFilter) ? queryFilter?.length : undefined
+            }
+            color="primary"
+          >
             <FilterListIcon />
           </Badge>
         }
