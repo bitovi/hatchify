@@ -13,5 +13,5 @@ export const Admin_Todo = {
       values: ["Pending", "Failed", "Completed"],
     },
   },
-  belongsTo: [{ target: "Admin_User", options: { as: "user" } }],
+  belongsTo: [{ target: "User", options: { as: "user" } }],
 }
