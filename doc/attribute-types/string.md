@@ -19,7 +19,7 @@ export const Todo: PartialSchema = {
 - `references` - [See References]()
 - `required` [{Boolean=false}] - If the attribute must be provided.
 
-<!--
+
 
 ## Form Controls
 
@@ -29,7 +29,7 @@ export const Todo: PartialSchema = {
 
 If `required` is `false`, empty strings will be treated as `null` values.
 
--->
+
 
 
 
