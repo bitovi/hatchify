@@ -19,6 +19,8 @@ export const Todo: PartialSchema = {
 - `references` - [See References]()
 - `required` [{Boolean=false}] - If the attribute must be provided.
 
+
+
 ## Form Controls
 
 `string()` with `max` of 255 and less will produce a standard text input like: `<input type=text>`. 
@@ -29,34 +31,7 @@ If `required` is `false`, empty strings will be treated as `null` values.
 
 
 
-<details>
-<summary>
-
-## Advanced Details
-
-</summary>
-
-### Control Type
-
-```js
-{
-  type: "String",
-  allowNull: true, 
- max: 255
-}
-```
 
 
-### Sequelize Type
-
-```js
-{
- type: "STRING",
- typeArgs: [255],
- allowNull: true
-}
-```
-  
-</details>
 
 
