@@ -182,6 +182,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
     try {
       // Check if this request URL takes the format of one that we expect
       if (!hatchify.isValidHatchifyRoute(method, path)) {
+        console.log("🟥 failedValid", path)
         return await next()
       }
 

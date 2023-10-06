@@ -290,6 +290,8 @@ export class Hatchify {
    * @internal
    */
   isValidHatchifyRoute(method: string, path: string): boolean {
+    console.log("⭐ allowed", this._allowedMethods)
+    console.log("⭐ get", this.getHatchifyModelNameForRoute(path))
     return (
       !!this._allowedMethods.includes(method) &&
       !!this.getHatchifyModelNameForRoute(path)
