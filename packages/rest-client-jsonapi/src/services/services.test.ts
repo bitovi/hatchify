@@ -5,26 +5,32 @@ import { hatchifyKoa } from "@hatchifyjs/koa"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import jsonapi from "../rest-client-jsonapi"
 import { testBackendEndpointConfig } from "../setupTests"
+import { string, v2ToV1 } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 
-const Article = {
+const Article: PartialSchema = {
   name: "Article",
   displayAttribute: "name",
   attributes: {
-    author: { type: "STRING", allowNull: false },
-    tag: { type: "STRING", allowNull: false },
+    author: string({ required: true }),
+    tag: string({ required: true }),
   },
 }
 
 describe("Testing CRUD operations against Hatchify backend", async () => {
   it("successfully runs CRUD operations", async () => {
     const app = new Koa()
-    const hatchedKoa = hatchifyKoa([Article], {
-      prefix: `/${testBackendEndpointConfig.api}`,
-      database: {
-        dialect: "sqlite",
-        storage: ":memory:",
+    const hatchedKoa = hatchifyKoa(
+      { Article },
+      {
+        prefix: `/${testBackendEndpointConfig.api}`,
+        database: {
+          dialect: "sqlite",
+          storage: ":memory:",
+          logging: false,
+        },
       },
-    })
+    )
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
@@ -36,7 +42,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         Article: { endpoint: `${testBackendEndpointConfig.schema}` },
       },
     )
-    const hatchedReactRest = hatchifyReactRest({ Article }, jsonApi)
+    const hatchedReactRest = hatchifyReactRest(v2ToV1({ Article }), jsonApi)
 
     await hatchedReactRest.Article.createOne({
       attributes: {

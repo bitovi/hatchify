@@ -11,8 +11,8 @@ User = {
   name:  "User",
   namespace:  "AstraZeneca",
   attributes: {
-    name:  "STRING",
-    lastname:  "STRING",
+    name:  string(),
+    lastname:  string(),
   }
 }
 ```
@@ -28,7 +28,7 @@ const Schemas = {
     name: "User",
     namespace: "AstraZeneca",
     attributes: {
-      name: STRING,
+      name: string(),
       // attributes here
     }
   }
@@ -36,7 +36,7 @@ const Schemas = {
     name: "Todo",
     namespace: "AstraZeneca",
     attributes: {
-      title: "STRING",
+      title: string(),
       // attributes here
     }
   },
@@ -54,10 +54,12 @@ const Schemas = {
     name: "Todo",
     namespace: "Pfizer",
     attributes: {
-      title: "STRING",
+      title: string(),
       // attributes here
     },
-    belongsTo: [{ target: "User"}],
+    relationships: {
+      user: belongsTo("User")
+    },
   }
 }
 
