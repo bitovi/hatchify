@@ -33,7 +33,7 @@ export async function createOne(
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}`,
     jsonApiResource,
   )
-
+  console.log("🟧", json)
   return Promise.resolve(
     convertToHatchifyResources(
       [json.data, ...(json.included || [])],
