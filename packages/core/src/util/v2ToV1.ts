@@ -3,10 +3,12 @@ import type {
   FinalAttributeRecord,
   FinalRelationship,
   PartialSchema,
+  Schema,
 } from "../types"
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function v2ToV1(schemas: Record<string, PartialSchema>) {
+export function v2ToV1(
+  schemas: Record<string, PartialSchema>,
+): Record<string, Schema> {
   return Object.entries(assembler(schemas)).reduce(
     (schemaAcc, [schemaName, { id, relationships, ...schema }]) => ({
       ...schemaAcc,
