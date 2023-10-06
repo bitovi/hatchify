@@ -39,7 +39,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
-    app.listen(3001)
+    const server = app.listen(3001)
 
     const jsonApi = jsonapi(
       `http://localhost:3001/${testBackendEndpointConfig.api}`,
@@ -84,21 +84,29 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     await hatchedReactRest.Article.deleteOne(id)
     await expect(() => hatchedReactRest.Article.findOne(id)).rejects.toThrow()
     expect.assertions(4) // Useful for confirming that assertions were actually called against asynchronous functions
+
+    server.close()
   })
 
+  // Note: This test does not spin up a Postgres server on its own. You must have one running locally in order for this test to pass.
   it("successfully runs CRUD operations on schemas with namespaces", async () => {
     const app = new Koa()
     const hatchedKoa = hatchifyKoa([Feature_Article], {
       prefix: `/${testBackendEndpointConfig.api}`,
       database: {
-        dialect: "sqlite",
-        storage: ":memory:",
+        dialect: "postgres",
+        host: process.env.PG_DB_HOST,
+        port: Number(process.env.PG_DB_PORT),
+        username: process.env.PG_DB_USERNAME,
+        password: process.env.PG_DB_PASSWORD,
+        database: process.env.PG_DB_NAME,
+        logging: false,
       },
     })
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
-    app.listen(3001)
+    const server = app.listen(3001)
 
     const jsonApi = jsonapi(
       `http://localhost:3001/${testBackendEndpointConfig.api}`,
@@ -146,5 +154,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       hatchedReactRest.Feature_Article.findOne(id),
     ).rejects.toThrow()
     expect.assertions(4) // Useful for confirming that assertions were actually called against asynchronous functions
+
+    server.close()
   })
 })
