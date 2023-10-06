@@ -29,34 +29,5 @@ If `required` is `false`, empty strings will be treated as `null` values.
 
 
 
-<details>
-<summary>
-
-## Advanced Details
-
-</summary>
-
-### Control Type
-
-```js
-{
-  type: "String",
-  allowNull: true, 
- max: 255
-}
-```
-
-
-### Sequelize Type
-
-```js
-{
- type: "STRING",
- typeArgs: [255],
- allowNull: true
-}
-```
-  
-</details>
 
 
