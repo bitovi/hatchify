@@ -1,16 +1,20 @@
 import type { FinalSchema } from "@hatchifyjs/core"
 import { omit, snakeCase } from "lodash"
 import { DataTypes } from "sequelize"
+import type { Dialect } from "sequelize"
 import type { Model, ModelStatic, Sequelize } from "sequelize"
 
 import type { HatchifyModel } from "../../types"
 import { getFullModelName } from "../../utils/getFullModelName"
+import { getSequelizeSchemaName } from "../getSequelizeSchemaName"
 
 export function toSequelize(
   schemas: { [schemaName: string]: FinalSchema },
   sequelize: Sequelize,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): { [schemaName: string]: ModelStatic<any> } {
+  const dialect = sequelize.getDialect() as Dialect
+
   return Object.entries(schemas).reduce(
     (acc, [schemaName, finalizedSchema]) => ({
       ...acc,
@@ -54,7 +58,7 @@ export function toSequelize(
           createdAt: false,
           updatedAt: false,
           freezeTableName: true,
-          schema: snakeCase(finalizedSchema.namespace) || "",
+          schema: getSequelizeSchemaName(dialect, finalizedSchema.namespace),
           tableName: snakeCase(finalizedSchema.name),
         },
       ),
