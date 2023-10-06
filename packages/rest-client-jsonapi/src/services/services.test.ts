@@ -44,7 +44,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     const jsonApi = jsonapi(
       `http://localhost:3001/${testBackendEndpointConfig.api}`,
       {
-        Article: { endpoint: `${testBackendEndpointConfig.schema}` },
+        Article: { endpoint: `${testBackendEndpointConfig.schemaSegment}` },
       },
     )
     const hatchedReactRest = hatchifyReactRest({ Article }, jsonApi)
@@ -111,7 +111,9 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     const jsonApi = jsonapi(
       `http://localhost:3001/${testBackendEndpointConfig.api}`,
       {
-        Feature_Article: { endpoint: `${testBackendEndpointConfig.schema}` },
+        Feature_Article: {
+          endpoint: `${testBackendEndpointConfig.namespacedSchemaSegment}`,
+        },
       },
     )
     const hatchedReactRest = hatchifyReactRest({ Feature_Article }, jsonApi)
