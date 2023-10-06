@@ -20,7 +20,7 @@ export async function fetchJsonApi<T>(
       "Content-Type": "application/vnd.api+json",
     },
   })
-
+  console.log("💠", response)
   if (!response.ok) {
     const json = await response.json()
     return Promise.reject(json?.errors || "Unknown error")
