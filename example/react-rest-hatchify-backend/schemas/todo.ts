@@ -1,7 +1,12 @@
-export const Todo = {
+import { belongsTo, string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
+
+export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
-    name: { type: "STRING", allowNull: true },
+    name: string({ required: false }),
   },
-  belongsTo: [{ target: "User", options: { as: "user" } }],
+  relationships: {
+    user: belongsTo(),
+  },
 }

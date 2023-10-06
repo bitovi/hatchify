@@ -112,32 +112,7 @@ Run `npm ci` within the cloned repository folder.
 
 #### 3.1. With SQLite (required)
 
-No further configuration is required to test Hatchify against a SQLite database. However, if your feature relies on column type constraints from the database, SQLite does not check these by default. Instead, use validations on your models' columns:
-
-```ts
-// hatchify-app/schemas/Todo.ts
-export const Todo = {
-  name: "Todo",
-  attributes: {
-    name: "STRING",
-    dueDate: {
-      type: "DATE",
-      validate: {
-        isDate: true,
-      },
-    },
-    importance: {
-      type: "INTEGER",
-      validate: {
-        isInt: true,
-      },
-    },
-  },
-  belongsTo: [{ target: "User", options: { as: "user" } }], // 👀
-}
-```
-
-A list of all validations that can be used in an attribute's type configuration can be found [here](https://sequelize.org/docs/v6/core-concepts/validations-and-constraints/).
+No further configuration is required to test Hatchify against a SQLite database
 
 #### 3.2 With Postgres (required)
 

@@ -1,5 +1,6 @@
 // hatchify-app/src/App.tsx
 import { useState } from "react"
+import { v2ToV1 } from "@hatchifyjs/core"
 import {
   hatchifyReact,
   MuiProvider,
@@ -7,7 +8,6 @@ import {
 } from "@hatchifyjs/react"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
-import { v2ToV1 } from "./v2ToV1"
 
 export const hatchedReact = hatchifyReact(
   v2ToV1({ Todo, User }),

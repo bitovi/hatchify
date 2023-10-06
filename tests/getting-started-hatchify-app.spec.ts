@@ -27,7 +27,7 @@ test("works", async ({ page, request }) => {
   await expect(page.getByText("Name")).toBeVisible()
   await expect(page.getByText("DueDate")).toBeVisible()
   await expect(page.getByText("Importance")).toBeVisible()
-  await expect(page.getByText("user")).toBeVisible()
+  await expect(page.getByText("user", { exact: true })).toBeVisible()
 
   // * post a todo
   const newTodo = await request.post(`${backend}/api/todos`, {
