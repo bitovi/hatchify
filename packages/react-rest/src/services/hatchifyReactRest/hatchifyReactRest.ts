@@ -24,6 +24,73 @@ import {
 } from "@hatchifyjs/rest-client"
 import { useAll, useCreateOne, useOne, useUpdateOne, useDeleteOne } from ".."
 
+export type CreateAttributeUnion<
+  A extends Record<string, { control: { type: string; allowNull?: boolean } }>,
+> = {
+  [Name in keyof A]: { key: Name } & A[Name]
+}[keyof A]
+
+export type UnionToObject<
+  Union extends { key: string | number | symbol }, // should this only be string?????
+> = {
+  [Key in Union["key"]]: Extract<Union, { key: Key }> extends {
+    control: { type: infer Type }
+  }
+    ? Type extends "Number"
+      ? number
+      : never
+    : never
+}
+
+export type ExtractFromAttributeUnion<
+  T extends Record<string, { control: { type: string; allowNull?: boolean } }>,
+  P extends { control: { allowNull: boolean } },
+> = Extract<CreateAttributeUnion<T>, P>
+
+export type AllowNulls<
+  T extends Record<string, { control: { type: string; allowNull?: boolean } }>,
+> = Partial<
+  UnionToObject<ExtractFromAttributeUnion<T, { control: { allowNull: true } }>>
+>
+
+export type NoNulls<
+  T extends Record<string, { control: { type: string; allowNull?: boolean } }>,
+> = UnionToObject<
+  ExtractFromAttributeUnion<T, { control: { allowNull: false } }>
+>
+
+export type NewRecordType<
+  T extends Record<string, { control: { type: string; allowNull?: boolean } }>,
+> = AllowNulls<T> & NoNulls<T>
+
+function createBoolean<TAllowed extends boolean>(config: {
+  required: TAllowed
+}): TAllowed {
+  return {} as TAllowed
+}
+const att = {
+  title: {
+    name: "integer()",
+    control: {
+      type: "Number" as const,
+      // allowNull: false as const,
+      allowNull: true as const,
+      // allowNull: createBoolean({ required: true }),
+    },
+  },
+  name: {
+    name: "something",
+    control: {
+      type: "Number" as const,
+      // allowNull: false as const,
+      allowNull: true as const,
+      // allowNull: createBoolean({ required: true }),
+    },
+  },
+}
+const a: NewRecordType<typeof att> = {} as any
+// a.
+
 export type HatchifyReactRest<TSchemas extends PartialSchemas> = {
   [SchemaName in keyof TSchemas]: {
     // promises

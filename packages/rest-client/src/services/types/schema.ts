@@ -195,3 +195,5 @@ type UnionToObject<Union extends { key: string }> = {
 type Stitch = Prettify<
   Partial<UnionToObject<AllowNull>> & UnionToObject<NoNulls>
 >
+
+type NewRecordType = Partial<UnionToObject<AllowNull>> & UnionToObject<NoNulls>
