@@ -69,10 +69,8 @@ function transformAttribute({
 
   return {
     ...sequelize,
-    ...(typeArgs?.length ? { typeArgs } : {}),
-    ...(sequelize.type === "ENUM" && "typeArgs" in sequelize
-      ? { values: typeArgs }
-      : {}),
+    ...(typeArgs?.length && sequelize.type !== "ENUM" && { typeArgs }),
+    ...(sequelize.type === "ENUM" && { values: typeArgs }),
   }
 }
 

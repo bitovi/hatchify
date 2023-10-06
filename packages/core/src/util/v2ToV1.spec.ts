@@ -64,7 +64,7 @@ describe("v2ToV1", () => {
             allowNull: true,
             primaryKey: false,
             defaultValue: null,
-            typeArgs: ["Do Today", "Do Soon", "Done"],
+            values: ["Do Today", "Do Soon", "Done"],
           },
           userId: {
             type: "UUID",
@@ -166,7 +166,7 @@ describe("v2ToV1", () => {
             allowNull: true,
             primaryKey: false,
             defaultValue: null,
-            typeArgs: ["Do Today", "Do Soon", "Done"],
+            values: ["Do Today", "Do Soon", "Done"],
           },
           importance: {
             type: "INTEGER",
