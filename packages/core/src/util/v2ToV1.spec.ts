@@ -1,6 +1,6 @@
 import { uuidv4 } from "./uuidv4"
 import { v2ToV1 } from "./v2ToV1"
-import { datetime, integer, string } from "../dataTypes"
+import { datetime, enumerate, integer, string } from "../dataTypes"
 import { belongsTo, hasMany } from "../relationships"
 
 describe("v2ToV1", () => {
@@ -13,6 +13,7 @@ describe("v2ToV1", () => {
             name: string(),
             dueDate: datetime(),
             importance: integer(),
+            status: enumerate({ values: ["Do Today", "Do Soon", "Done"] }),
           },
           relationships: {
             user: belongsTo(),
@@ -57,6 +58,13 @@ describe("v2ToV1", () => {
             autoIncrement: false,
             primaryKey: false,
             defaultValue: null,
+          },
+          status: {
+            type: "ENUM",
+            allowNull: true,
+            primaryKey: false,
+            defaultValue: null,
+            typeArgs: ["Do Today", "Do Soon", "Done"],
           },
           userId: {
             type: "UUID",
@@ -114,6 +122,7 @@ describe("v2ToV1", () => {
             name: string(),
             dueDate: datetime(),
             importance: integer(),
+            status: enumerate({ values: ["Do Today", "Do Soon", "Done"] }),
           },
           relationships: {
             users: hasMany().through(),
@@ -151,6 +160,13 @@ describe("v2ToV1", () => {
             allowNull: true,
             primaryKey: false,
             defaultValue: null,
+          },
+          status: {
+            type: "ENUM",
+            allowNull: true,
+            primaryKey: false,
+            defaultValue: null,
+            typeArgs: ["Do Today", "Do Soon", "Done"],
           },
           importance: {
             type: "INTEGER",
