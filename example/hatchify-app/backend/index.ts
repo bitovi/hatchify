@@ -2,14 +2,14 @@
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import { Admin_Todo } from "../schemas/todo"
+import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
 
 import dotenv from "dotenv" // 👀
 dotenv.config() // 👀
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa([Admin_Todo, User], {
+const hatchedKoa = hatchifyKoa([Todo, User], {
   prefix: "/api",
   database: {
     dialect: "postgres", // 👀

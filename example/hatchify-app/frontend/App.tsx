@@ -5,16 +5,16 @@ import {
   MuiProvider,
   createJsonapiClient,
 } from "@hatchifyjs/react"
-import { Admin_Todo } from "../schemas/todo"
+import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
 
 export const hatchedReact = hatchifyReact(
-  createJsonapiClient("http://localhost:3000/api", { Admin_Todo, User }),
+  createJsonapiClient("http://localhost:3000/api", { Todo, User }),
 )
 
-const TodoList = hatchedReact.components.Admin_Todo.Collection
-const TodoColumn = hatchedReact.components.Admin_Todo.Column
-const TodoEmptyList = hatchedReact.components.Admin_Todo.Empty
+const TodoList = hatchedReact.components.Todo.Collection
+const TodoColumn = hatchedReact.components.Todo.Column
+const TodoEmptyList = hatchedReact.components.Todo.Empty
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({

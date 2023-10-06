@@ -6,5 +6,5 @@ export const User = {
   attributes: {
     name: "STRING",
   },
-  hasMany: [{ target: "Admin_Todo", options: { as: "todos" } }],
+  hasMany: [{ target: "Todo", options: { as: "todos" } }],
 }

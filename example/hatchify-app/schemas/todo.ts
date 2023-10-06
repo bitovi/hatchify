@@ -1,8 +1,8 @@
 // hatchify-app/schemas/todo.ts
 
-export const Admin_Todo = {
+export const Todo = {
   name: "Todo",
-  namespace: "Admin",
+  // namespace: "Admin",
   attributes: {
     name: { type: "STRING", allowNull: true },
     dueDate: { type: "DATE", allowNull: true },
