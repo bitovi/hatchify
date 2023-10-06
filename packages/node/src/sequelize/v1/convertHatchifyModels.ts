@@ -7,6 +7,7 @@ import type {
 import type JSONAPISerializer from "json-api-serializer"
 import { snakeCase } from "lodash"
 import { DataTypes } from "sequelize"
+import type { Dialect } from "sequelize"
 import type { Model, Sequelize } from "sequelize"
 
 import { parseAttribute } from "./parseAttribute"
@@ -21,12 +22,14 @@ import type {
 import { getFullModelName } from "../../utils/getFullModelName"
 import { pluralize } from "../../utils/pluralize"
 import { definedPlurals } from "../definedPlurals"
+import { getSequelizeSchemaName } from "../getSequelizeSchemaName"
 
 export function convertHatchifyModels(
   sequelize: Sequelize,
   serializer: JSONAPISerializer,
   models: HatchifyModel[],
 ): ICreateHatchifyModel {
+  const dialect = sequelize.getDialect() as Dialect
   const virtuals: Virtuals = {}
   const primaryKeys: Record<string, string> = {}
   models.forEach((model) => {
@@ -67,7 +70,7 @@ export function convertHatchifyModels(
       model.attributes,
       {
         validate: model.validation || {},
-        schema: snakeCase(model.namespace) || "",
+        schema: getSequelizeSchemaName(dialect, model.namespace),
         underscored: true,
         createdAt: false,
         updatedAt: false,

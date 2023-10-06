@@ -168,7 +168,7 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
 
       const relationshipErrors: HatchifyError[] = []
 
-      const associations = hatchify.associationsLookup[model.name]
+      const associations = hatchify.associationsLookup[getFullModelName(model)]
 
       let modelAssociation
       if (associations) {
