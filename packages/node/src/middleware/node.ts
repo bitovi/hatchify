@@ -186,7 +186,9 @@ export function handleAllMiddleware(hatchify: Hatchify) {
       }
 
       const params = hatchify.getHatchifyURLParamsForRoute(path)
+      console.log("🟥 params", path)
       if (!params.model) {
+        console.log("🟥 params.model", path)
         return await next()
       }
 
@@ -209,6 +211,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         }
 
         case "POST": {
+          console.log("🟥 POST", path)
           return {
             body: await hatchify.everything[params.model].create(
               body,
