@@ -7,9 +7,10 @@ import {
 } from "@hatchifyjs/react"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
+import { v2ToV1 } from "./v2ToV1"
 
 export const hatchedReact = hatchifyReact(
-  { Todo, User },
+  v2ToV1({ Todo, User }),
   createJsonapiClient("http://localhost:3000/api", {
     Todo: { endpoint: "todos" },
     User: { endpoint: "users" },
