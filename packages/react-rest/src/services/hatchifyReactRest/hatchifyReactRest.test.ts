@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest"
-import type { Source } from "@hatchifyjs/rest-client"
+import type { Source, Schema } from "@hatchifyjs/rest-client"
 import { hatchifyReactRest } from "./hatchifyReactRest"
-import type { Schema } from "@hatchifyjs/rest-client"
 import type { Schema as LegacySchema } from "@hatchifyjs/core"
 
 const fakeDataSource: Source = {
@@ -100,6 +99,34 @@ describe("react-rest/services/hatchifyReactRest", () => {
         useUpdateOne: expect.any(Function),
       },
       Person: {
+        createOne: expect.any(Function),
+        deleteOne: expect.any(Function),
+        findAll: expect.any(Function),
+        findOne: expect.any(Function),
+        updateOne: expect.any(Function),
+        useCreateOne: expect.any(Function),
+        useDeleteOne: expect.any(Function),
+        useAll: expect.any(Function),
+        useOne: expect.any(Function),
+        useUpdateOne: expect.any(Function),
+      },
+    })
+  })
+
+  it("should accept schemas with namespaces", () => {
+    const Feature_Article: LegacySchema = {
+      name: "Article",
+      namespace: "Feature",
+      attributes: {
+        title: "string",
+        body: "string",
+      },
+    }
+
+    const api = hatchifyReactRest({ Feature_Article }, fakeDataSource)
+
+    expect(api).toEqual({
+      Feature_Article: {
         createOne: expect.any(Function),
         deleteOne: expect.any(Function),
         findAll: expect.any(Function),
