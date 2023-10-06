@@ -253,6 +253,7 @@ const hatchedKoa = hatchifyKoa(
     database: {
       dialect: "sqlite",
       storage: ":memory:",
+      logging: false,
     },
   },
 )
