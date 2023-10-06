@@ -174,6 +174,10 @@ export function handleAllMiddleware(hatchify: Hatchify) {
     next: NextFunction,
   ): Promise<MiddlewareResponse | ReturnType<Awaited<NextFunction>>> {
     const { body, method, path, querystring } = request
+    console.log("🔶", body)
+    console.log("🔶🔶", method)
+    console.log("🔶🔶🔶", path)
+    console.log("🔶🔶🔶🔶", querystring)
 
     try {
       // Check if this request URL takes the format of one that we expect
