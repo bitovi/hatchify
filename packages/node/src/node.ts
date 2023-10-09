@@ -323,14 +323,19 @@ export class Hatchify {
       },
     )
 
+    console.log("🚧🚧", isPathWithModelId)
+
     const isPathWithModelIdResult = isPathWithModelId(path)
+    console.log("🚧🚧🚧", isPathWithModelIdResult)
     if (isPathWithModelIdResult) {
       const endpointName = this.getHatchifyModelNameForEndpointName(
         isPathWithModelIdResult.params.model,
       )
+      console.log("🚧🚧🚧🚧", endpointName)
 
       if (endpointName) {
         isPathWithModelIdResult.params.model = endpointName
+        console.log("🚧🚧🚧🚧🚧", isPathWithModelIdResult.params.model)
 
         return isPathWithModelIdResult.params
       }
@@ -346,6 +351,8 @@ export class Hatchify {
       sensitive: false,
       end: false,
     })
+
+    console.log("🚧🚧🚧🚧🚧🚧", isPathWithNameSpaceModelId)
 
     const isPathWithNameSpaceModelIdResult = isPathWithNameSpaceModelId(path)
     if (isPathWithNameSpaceModelIdResult) {
