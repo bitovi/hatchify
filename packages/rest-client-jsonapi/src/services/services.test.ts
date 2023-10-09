@@ -44,7 +44,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
-    const server = app.listen(3010)
+    const server = app.listen(3010) // TODO determine why unique port numbers are needed across tests in this file (otherwise, tests are liable to fail): https://bitovi.atlassian.net/browse/HATCH-415
 
     const jsonApi = jsonapi(
       `http://localhost:3010/${testBackendEndpointConfig.api}`,
@@ -114,7 +114,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
-    const server = app.listen(3011)
+    const server = app.listen(3011) // TODO determine why unique port numbers are needed across tests in this file (otherwise, tests are liable to fail): https://bitovi.atlassian.net/browse/HATCH-415
 
     const jsonApi = jsonapi(
       `http://localhost:3011/${testBackendEndpointConfig.api}`,
