@@ -1,8 +1,5 @@
 export function getCrypto() {
-  return typeof process === "object" &&
-    {}.toString.call(process) === "[object process]"
-    ? require("crypto")
-    : window.crypto
+  return window !== undefined ? window.crypto : require("crypto")
 }
 
 export function uuidv4(): string {
