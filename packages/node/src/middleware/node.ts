@@ -174,22 +174,15 @@ export function handleAllMiddleware(hatchify: Hatchify) {
     next: NextFunction,
   ): Promise<MiddlewareResponse | ReturnType<Awaited<NextFunction>>> {
     const { body, method, path, querystring } = request
-    // console.log("🔶", body)
-    // console.log("🔶🔶", method)
-    // console.log("🔶🔶🔶", path)
-    // console.log("🔶🔶🔶🔶", querystring)
 
     try {
       // Check if this request URL takes the format of one that we expect
       if (!hatchify.isValidHatchifyRoute(method, path)) {
-        console.log("🟥 failedValid", path)
         return await next()
       }
 
       const params = hatchify.getHatchifyURLParamsForRoute(path)
-      // console.log("🟥 params", path)
       if (!params.model) {
-        // console.log("🟥 params.model", path)
         return await next()
       }
 
@@ -212,7 +205,6 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         }
 
         case "POST": {
-          // console.log("🟥 POST", path)
           return {
             body: await hatchify.everything[params.model].create(
               body,

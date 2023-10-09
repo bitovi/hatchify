@@ -28,12 +28,6 @@ export async function createOne(
     data,
   )
 
-  // console.log(
-  //   "🟡",
-  //   `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}`,
-  // )
-  // console.log("🟡🟡", jsonApiResource)
-
   const json = await fetchJsonApi<JsonApiResource>(
     "POST",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}`,

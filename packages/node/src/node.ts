@@ -290,8 +290,6 @@ export class Hatchify {
    * @internal
    */
   isValidHatchifyRoute(method: string, path: string): boolean {
-    console.log("⭐ allowed", this._allowedMethods)
-    console.log("⭐ get", this.getHatchifyModelNameForRoute(path))
     return (
       !!this._allowedMethods.includes(method) &&
       !!this.getHatchifyModelNameForRoute(path)
@@ -312,7 +310,6 @@ export class Hatchify {
     model?: string
     id?: Identifier
   } {
-    console.log("🚧", path)
     const isPathWithModelId = match<{ model: string; id: Identifier }>(
       this._prefix + "/:model/:id",
       {
@@ -323,19 +320,14 @@ export class Hatchify {
       },
     )
 
-    // console.log("🚧🚧", isPathWithModelId)
-
     const isPathWithModelIdResult = isPathWithModelId(path)
-    console.log("🚧🚧🚧", isPathWithModelIdResult)
     if (isPathWithModelIdResult) {
       const endpointName = this.getHatchifyModelNameForEndpointName(
         isPathWithModelIdResult.params.model,
       )
-      console.log("🚧🚧🚧🚧", endpointName)
 
       if (endpointName) {
         isPathWithModelIdResult.params.model = endpointName
-        console.log("🚧🚧🚧🚧🚧", isPathWithModelIdResult.params.model)
 
         return isPathWithModelIdResult.params
       }
@@ -352,20 +344,14 @@ export class Hatchify {
       end: false,
     })
 
-    // console.log("🚧🚧🚧🚧🚧🚧", isPathWithNameSpaceModelId)
-
     const isPathWithNameSpaceModelIdResult = isPathWithNameSpaceModelId(path)
-    console.log("🛂", isPathWithNameSpaceModelIdResult)
     if (isPathWithNameSpaceModelIdResult) {
       let modelName = isPathWithNameSpaceModelIdResult.params.model
-      console.log("🛂🛂", modelName)
       if (!modelName.includes("_")) {
         modelName =
           isPathWithNameSpaceModelIdResult.params.namespace + "_" + modelName
       }
-      console.log("🛂🛂🛂", modelName)
       const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
-      console.log("🛂🛂🛂🛂", endpointName)
 
       if (endpointName) {
         isPathWithNameSpaceModelIdResult.params.model = endpointName
@@ -461,9 +447,7 @@ export class Hatchify {
    * @internal
    */
   getHatchifyModelNameForRoute(path: string): false | string {
-    console.log("🔳", path)
     const result = this.getHatchifyURLParamsForRoute(path)
-    console.log("🔳🔳", result)
 
     if (result.model) {
       const pathModelName = result.model

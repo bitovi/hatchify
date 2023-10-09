@@ -123,22 +123,18 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         },
       },
     )
-    console.log("🔴")
     const hatchedReactRest = hatchifyReactRest(
       v2ToV1({ Feature_Article }),
       jsonApi,
     )
 
-    // console.log("🔴🟢")
     await hatchedReactRest.Feature_Article.createOne({
       attributes: {
         author: "John Doe",
         tag: "Hatchify",
       },
     })
-    // console.log("🔴🟢🔴")
     const [featureArticles] = await hatchedReactRest.Feature_Article.findAll({})
-    // console.log("🔴🟢🔴🟢")
     const [featureArticle] = featureArticles
     const { id } = featureArticle
     expect(featureArticles.length === 1)
