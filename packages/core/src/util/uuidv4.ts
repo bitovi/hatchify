@@ -1,5 +1,5 @@
 export function getCrypto() {
-  return window !== undefined ? window.crypto : require("crypto")
+  return typeof window === "undefined" ? require("crypto") : window.crypto
 }
 
 export function uuidv4(): string {
