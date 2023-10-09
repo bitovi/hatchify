@@ -43,10 +43,10 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
-    const server = app.listen(3001)
+    const server = app.listen(3010)
 
     const jsonApi = jsonapi(
-      `http://localhost:3001/${testBackendEndpointConfig.api}`,
+      `http://localhost:3010/${testBackendEndpointConfig.api}`,
       {
         Article: { endpoint: `${testBackendEndpointConfig.schemaSegment}` },
       },
@@ -113,10 +113,10 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
-    const server = app.listen(3001)
+    const server = app.listen(3011)
 
     const jsonApi = jsonapi(
-      `http://localhost:3001/${testBackendEndpointConfig.api}`,
+      `http://localhost:3011/${testBackendEndpointConfig.api}`,
       {
         Feature_Article: {
           endpoint: `${testBackendEndpointConfig.namespacedSchemaSegment}`,
