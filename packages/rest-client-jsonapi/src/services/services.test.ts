@@ -31,7 +31,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
   it("successfully runs CRUD operations", async () => {
     const app = new Koa()
     const hatchedKoa = hatchifyKoa(
-      { Article, Feature_Article },
+      { Article },
       {
         prefix: `/${testBackendEndpointConfig.api}`,
         database: {
@@ -51,10 +51,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         Article: { endpoint: `${testBackendEndpointConfig.schemaSegment}` },
       },
     )
-    const hatchedReactRest = hatchifyReactRest(
-      v2ToV1({ Article, Feature_Article }),
-      jsonApi,
-    )
+    const hatchedReactRest = hatchifyReactRest(v2ToV1({ Article }), jsonApi)
 
     await hatchedReactRest.Article.createOne({
       attributes: {
