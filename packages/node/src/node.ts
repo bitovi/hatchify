@@ -312,6 +312,7 @@ export class Hatchify {
     model?: string
     id?: Identifier
   } {
+    console.log("🚧", path)
     const isPathWithModelId = match<{ model: string; id: Identifier }>(
       this._prefix + "/:model/:id",
       {
@@ -449,7 +450,9 @@ export class Hatchify {
    * @internal
    */
   getHatchifyModelNameForRoute(path: string): false | string {
+    console.log("🔳", path)
     const result = this.getHatchifyURLParamsForRoute(path)
+    console.log("🔳🔳", result)
 
     if (result.model) {
       const pathModelName = result.model
