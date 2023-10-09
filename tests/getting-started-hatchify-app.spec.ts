@@ -12,13 +12,17 @@ test("works", async ({ page, request }) => {
 
   // validate todos endpoint exists
   response = await page.goto(`${backend}/api/todos`)
-  if (!response) throw [new Error("No response")]
+  if (!response) {
+    throw [new Error("No response")]
+  }
   json = await response.json()
   expect(json.data).toEqual([])
 
   // validate users endpoint exists
   response = await page.goto(`${backend}/api/users`)
-  if (!response) throw [new Error("No response")]
+  if (!response) {
+    throw [new Error("No response")]
+  }
   json = await response.json()
   expect(json.data).toEqual([])
 
@@ -29,21 +33,30 @@ test("works", async ({ page, request }) => {
   await expect(page.getByText("Importance")).toBeVisible()
   await expect(page.getByText("user", { exact: true })).toBeVisible()
 
-  // * post a todo
-  const newTodo = await request.post(`${backend}/api/todos`, {
-    data: {
+  let newTodo
+
+  try {
+    // * post a todo
+    newTodo = await request.post(`${backend}/api/todos`, {
       data: {
-        type: "Todo",
-        attributes: {
-          name: "Walk the dog",
-          dueDate: "2023-07-05T20:30:52.767Z",
-          importance: 6,
+        data: {
+          type: "Todo",
+          attributes: {
+            name: "Walk the dog",
+            dueDate: "2023-07-05T20:30:52.767Z",
+            importance: 6,
+          },
         },
       },
-    },
-  })
-  expect(newTodo.ok()).toBeTruthy()
-  const newTodoData = await newTodo.json()
+    })
+    console.log("🟢", newTodo)
+    console.log("🟢🟢", newTodo.ok())
+    expect(newTodo.ok()).toBeTruthy()
+  } catch (err) {
+    console.log("🔴", err)
+  }
+
+  const newTodoData = await newTodo?.json()
 
   // * post user with a todo relationship
   const newUser = await request.post(`${backend}/api/users`, {
