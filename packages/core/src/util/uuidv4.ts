@@ -1,5 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function getCrypto() {
-  return typeof window === "undefined" ? require("crypto") : window.crypto
+  return typeof window === "undefined"
+    ? // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require("node:crypto").webcrypto
+    : window.crypto
 }
 
 export function uuidv4(): string {
