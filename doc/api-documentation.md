@@ -36,6 +36,7 @@ const hatchedKoa = hatchifyKoa(
     database: {
       dialect: "sqlite",
       storage: ":memory:",
+      logging: false,
     },
   }
 )
@@ -50,13 +51,13 @@ const hatchedKoa = hatchifyKoa(
     - `.create`
     - `.update`
     - `.destroy`
- - `.[MODEL_NAME]
-    - `.all`
-    - `.crud`
-    - `.findAndCountAll`
-    - `.findOne`
-    - `.create`
-    - `.update`
-    - `.destroy`
+- `.[MODEL_NAME]
+  - `.all`
+  - `.crud`
+  - `.findAndCountAll`
+  - `.findOne`
+  - `.create`
+  - `.update`
+  - `.destroy`
 
 ## Frontend

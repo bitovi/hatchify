@@ -37,6 +37,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         database: {
           dialect: "sqlite",
           storage: ":memory:",
+          logging: false,
         },
       },
     )

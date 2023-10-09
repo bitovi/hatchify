@@ -1,5 +1,6 @@
 // hatchify-app/src/App.tsx
 import { useState } from "react"
+import { v2ToV1 } from "@hatchifyjs/core"
 import {
   hatchifyReact,
   MuiProvider,
@@ -9,7 +10,7 @@ import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
 
 export const hatchedReact = hatchifyReact(
-  { Todo, User },
+  v2ToV1({ Todo, User }),
   createJsonapiClient("http://localhost:3000/api", {
     Todo: { endpoint: "todos" },
     User: { endpoint: "users" },
