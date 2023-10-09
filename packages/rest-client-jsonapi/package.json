@@ -27,8 +27,8 @@
     "@hatchifyjs/rest-client": "^0.0.1-20"
   },
   "devDependencies": {
-    "@hatchifyjs/core": "^0.1.10",
-    "@hatchifyjs/koa": "^0.1.18",
+    "@hatchifyjs/core": "^0.1.11",
+    "@hatchifyjs/koa": "^1.0.0",
     "@hatchifyjs/react-rest": "^0.0.1-26",
     "@koa/cors": "^4.0.0",
     "@types/koa__cors": "^4.0.0",
