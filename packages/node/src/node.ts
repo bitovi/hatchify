@@ -129,9 +129,9 @@ export class Hatchify {
     this.associationsLookup = associationsLookup
     this._sequelizeModels = sequelizeModels
 
-    this._pluralToSingularModelNames = Object.entries(
+    this._pluralToSingularModelNames = Object.keys(
       this._sequelizeModels,
-    ).reduce((acc, [singular, value]) => {
+    ).reduce((acc, singular) => {
       if (definedPlurals[singular]) {
         return {
           ...acc,
