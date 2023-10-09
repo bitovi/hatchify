@@ -15,10 +15,9 @@ import type { ParseFunctions } from "./parse"
 import { buildSchemaForModel } from "./schema"
 import {
   buildHatchifyModelObject,
-  convertHatchifyModels as convertHatchifyV1Models,
+  convertHatchifyModels,
   createSequelizeInstance,
 } from "./sequelize"
-import { convertHatchifyModels as convertHatchifyV2Models } from "./sequelize/v2/convertHatchifyModels"
 import { buildSerializerForModel } from "./serialize"
 import type { SerializeFunctions } from "./serialize"
 import type {
@@ -94,7 +93,7 @@ export class Hatchify {
    * @return {Hatchify}
    */
   constructor(
-    models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
+    models: Record<string, PartialSchema>,
     options: HatchifyOptions = {},
   ) {
     // Prepare the ORM instance and keep references to the different Models
@@ -121,9 +120,7 @@ export class Hatchify {
       models: sequelizeModels,
       virtuals,
       plurals: definedPlurals,
-    } = Array.isArray(models)
-      ? convertHatchifyV1Models(this._sequelize, this._serializer, models)
-      : convertHatchifyV2Models(this._sequelize, this._serializer, models)
+    } = convertHatchifyModels(this._sequelize, this._serializer, models)
 
     this.virtuals = virtuals
     this.associationsLookup = associationsLookup
