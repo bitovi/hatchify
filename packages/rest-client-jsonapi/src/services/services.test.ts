@@ -1,41 +1,45 @@
 import cors from "@koa/cors"
 import Koa from "koa"
 import { describe, expect, it } from "vitest"
+import { string, v2ToV1 } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import type { Schema } from "@hatchifyjs/react-rest"
 import jsonapi from "../rest-client-jsonapi"
 import { testBackendEndpointConfig } from "../setupTests"
 
-const Article: Schema = {
+const Article: PartialSchema = {
   name: "Article",
   displayAttribute: "name",
   attributes: {
-    author: { type: "STRING", allowNull: false },
-    tag: { type: "STRING", allowNull: false },
+    author: string({ required: true }),
+    tag: string({ required: true }),
   },
 }
 
-const Feature_Article: Schema = {
+const Feature_Article: PartialSchema = {
   name: "Article",
   namespace: "Feature",
   displayAttribute: "name",
   attributes: {
-    author: { type: "STRING", allowNull: false },
-    tag: { type: "STRING", allowNull: false },
+    author: string({ required: true }),
+    tag: string({ required: true }),
   },
 }
 
 describe("Testing CRUD operations against Hatchify backend", async () => {
   it("successfully runs CRUD operations", async () => {
     const app = new Koa()
-    const hatchedKoa = hatchifyKoa([Article], {
-      prefix: `/${testBackendEndpointConfig.api}`,
-      database: {
-        dialect: "sqlite",
-        storage: ":memory:",
+    const hatchedKoa = hatchifyKoa(
+      { Article, Feature_Article },
+      {
+        prefix: `/${testBackendEndpointConfig.api}`,
+        database: {
+          dialect: "sqlite",
+          storage: ":memory:",
+        },
       },
-    })
+    )
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
@@ -47,7 +51,10 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         Article: { endpoint: `${testBackendEndpointConfig.schemaSegment}` },
       },
     )
-    const hatchedReactRest = hatchifyReactRest({ Article }, jsonApi)
+    const hatchedReactRest = hatchifyReactRest(
+      v2ToV1({ Article, Feature_Article }),
+      jsonApi,
+    )
 
     await hatchedReactRest.Article.createOne({
       attributes: {
@@ -91,18 +98,21 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
   // Note: This test does not spin up a Postgres server on its own. You must have one running locally in order for this test to pass.
   it("successfully runs CRUD operations on schemas with namespaces", async () => {
     const app = new Koa()
-    const hatchedKoa = hatchifyKoa([Feature_Article], {
-      prefix: `/${testBackendEndpointConfig.api}`,
-      database: {
-        dialect: "postgres",
-        host: process.env.PG_DB_HOST,
-        port: Number(process.env.PG_DB_PORT),
-        username: process.env.PG_DB_USERNAME,
-        password: process.env.PG_DB_PASSWORD,
-        database: process.env.PG_DB_NAME,
-        logging: false,
+    const hatchedKoa = hatchifyKoa(
+      { Feature_Article },
+      {
+        prefix: `/${testBackendEndpointConfig.api}`,
+        database: {
+          dialect: "postgres",
+          host: process.env.PG_DB_HOST,
+          port: Number(process.env.PG_DB_PORT),
+          username: process.env.PG_DB_USERNAME,
+          password: process.env.PG_DB_PASSWORD,
+          database: process.env.PG_DB_NAME,
+          logging: false,
+        },
       },
-    })
+    )
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.createDatabase()
@@ -116,8 +126,11 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         },
       },
     )
-    // console.log("🔴")
-    const hatchedReactRest = hatchifyReactRest({ Feature_Article }, jsonApi)
+    console.log("🔴")
+    const hatchedReactRest = hatchifyReactRest(
+      v2ToV1({ Feature_Article }),
+      jsonApi,
+    )
 
     // console.log("🔴🟢")
     await hatchedReactRest.Feature_Article.createOne({
