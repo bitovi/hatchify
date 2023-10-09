@@ -323,7 +323,7 @@ export class Hatchify {
       },
     )
 
-    console.log("🚧🚧", isPathWithModelId)
+    // console.log("🚧🚧", isPathWithModelId)
 
     const isPathWithModelIdResult = isPathWithModelId(path)
     console.log("🚧🚧🚧", isPathWithModelIdResult)
@@ -352,16 +352,20 @@ export class Hatchify {
       end: false,
     })
 
-    console.log("🚧🚧🚧🚧🚧🚧", isPathWithNameSpaceModelId)
+    // console.log("🚧🚧🚧🚧🚧🚧", isPathWithNameSpaceModelId)
 
     const isPathWithNameSpaceModelIdResult = isPathWithNameSpaceModelId(path)
+    console.log("🛂", isPathWithNameSpaceModelIdResult)
     if (isPathWithNameSpaceModelIdResult) {
       let modelName = isPathWithNameSpaceModelIdResult.params.model
+      console.log("🛂🛂", modelName)
       if (!modelName.includes("_")) {
         modelName =
           isPathWithNameSpaceModelIdResult.params.namespace + "_" + modelName
       }
+      console.log("🛂🛂🛂", modelName)
       const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
+      console.log("🛂🛂🛂🛂", endpointName)
 
       if (endpointName) {
         isPathWithNameSpaceModelIdResult.params.model = endpointName
