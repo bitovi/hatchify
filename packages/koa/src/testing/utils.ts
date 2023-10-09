@@ -1,6 +1,6 @@
 import http from "node:http"
 
-import type { HatchifyModel, PartialSchema } from "@hatchifyjs/node"
+import type { PartialSchema } from "@hatchifyjs/node"
 import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 import { Deserializer } from "jsonapi-serializer"
@@ -15,7 +15,7 @@ type Method = "get" | "post" | "patch" | "delete"
 export const dbDialects: Dialect[] = ["postgres", "sqlite"]
 
 export async function startServerWith(
-  models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
+  models: Record<string, PartialSchema>,
   dialect: Dialect = "sqlite",
 ): Promise<{
   fetch: (
