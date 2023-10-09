@@ -11,7 +11,7 @@ describe("uuidv4", () => {
 describe("getCrypto", () => {
   /* eslint-disable */
   it("returns node crypto if available", () => {
-    expect(getCrypto()).toBe(require("crypto"))
+    expect(getCrypto()).toBe(require("node:crypto").webcrypto)
   })
 
   it("returns window.crypto if available", () => {
