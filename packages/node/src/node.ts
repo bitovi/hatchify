@@ -98,7 +98,7 @@ export class Hatchify {
     this._pluralToSingularModelNames = Object.keys(
       this._sequelizeModels,
     ).reduce((acc, fullModelName) => {
-      const key = schemas[fullModelName].pluralName ?? pluralize(fullModelName)
+      const key = schemas[fullModelName]?.pluralName ?? pluralize(fullModelName)
       return { ...acc, [key.toLowerCase()]: fullModelName }
     }, {})
 
