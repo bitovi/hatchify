@@ -24,8 +24,6 @@ describe("convertHatchifyModels", () => {
       models: {
         User: expect.any(Function),
       },
-      virtuals: {},
-      plurals: {},
     })
   })
 })

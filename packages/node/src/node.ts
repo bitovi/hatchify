@@ -29,7 +29,6 @@ import type {
   SequelizeModelsCollection,
   Virtuals,
 } from "./types"
-import { getFullModelName } from "./utils/getFullModelName"
 import { pluralize } from "./utils/pluralize"
 
 /**
@@ -52,7 +51,7 @@ export class Hatchify {
   private _pluralToSingularModelNames: { [plural: string]: string }
   private _prefix: string
 
-  virtuals: Virtuals
+  virtuals: Virtuals = {}
 
   // this is a lookup that shows all associations for each model.
   associationsLookup: Record<string, Record<string, IAssociation> | undefined>
