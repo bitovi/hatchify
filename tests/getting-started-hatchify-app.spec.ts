@@ -33,29 +33,20 @@ test("works", async ({ page, request }) => {
   await expect(page.getByText("Importance")).toBeVisible()
   await expect(page.getByText("user", { exact: true })).toBeVisible()
 
-  let newTodo
-
-  try {
-    // * post a todo
-    newTodo = await request.post(`${backend}/api/todos`, {
+  // * post a todo
+  const newTodo = await request.post(`${backend}/api/todos`, {
+    data: {
       data: {
-        data: {
-          type: "Todo",
-          attributes: {
-            name: "Walk the dog",
-            dueDate: "2023-07-05T20:30:52.767Z",
-            importance: 6,
-          },
+        type: "Todo",
+        attributes: {
+          name: "Walk the dog",
+          dueDate: "2023-07-05T20:30:52.767Z",
+          importance: 6,
         },
       },
-    })
-    console.log("🟢", newTodo)
-    console.log("🟢🟢", newTodo.ok())
-    expect(newTodo.ok()).toBeTruthy()
-  } catch (err) {
-    console.log("🔴", err)
-  }
-
+    },
+  })
+  expect(newTodo.ok()).toBeTruthy()
   const newTodoData = await newTodo?.json()
 
   // * post user with a todo relationship
