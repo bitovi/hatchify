@@ -4,7 +4,6 @@ import type { ICreateHatchifyModel } from "@hatchifyjs/sequelize-create-with-ass
 import type JSONAPISerializer from "json-api-serializer"
 import type { Sequelize } from "sequelize"
 
-import { definedPlurals } from "./definedPlurals"
 import { toSequelize } from "./toSequelize"
 import { registerSchema } from "../serialize"
 import { HatchifySymbolModel } from "../types"
@@ -208,8 +207,6 @@ export function convertHatchifyModels(
 
   return {
     associationsLookup,
-    models: sequelize.models as SequelizeModelsCollection,
-    virtuals: {},
-    plurals: definedPlurals(hatchifyModels),
+    sequelizeModels: sequelize.models as SequelizeModelsCollection,
   }
 }
