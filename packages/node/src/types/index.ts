@@ -162,8 +162,8 @@ export interface HatchifyModel {
    *
    * ```ts
    * attributes: {
-   *  firstName: DataTypes.STRING,
-   *  lastName: DataTypes.STRING,
+   *  firstName: string(),
+   *  lastName: string(),
    * }
    * ```
    */

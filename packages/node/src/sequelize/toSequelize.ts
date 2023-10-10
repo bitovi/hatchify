@@ -1,12 +1,11 @@
 import type { FinalSchema } from "@hatchifyjs/core"
 import { omit, snakeCase } from "lodash"
 import { DataTypes } from "sequelize"
-import type { Dialect } from "sequelize"
-import type { Model, ModelStatic, Sequelize } from "sequelize"
+import type { Dialect, Model, ModelStatic, Sequelize } from "sequelize"
 
-import type { HatchifyModel } from "../../types"
-import { getFullModelName } from "../../utils/getFullModelName"
-import { getSequelizeSchemaName } from "../getSequelizeSchemaName"
+import { getSequelizeSchemaName } from "./getSequelizeSchemaName"
+import type { HatchifyModel } from "../types"
+import { getFullModelName } from "../utils/getFullModelName"
 
 export function toSequelize(
   schemas: { [schemaName: string]: FinalSchema },

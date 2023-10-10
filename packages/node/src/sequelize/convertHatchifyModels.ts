@@ -4,13 +4,13 @@ import type { ICreateHatchifyModel } from "@hatchifyjs/sequelize-create-with-ass
 import type JSONAPISerializer from "json-api-serializer"
 import type { Sequelize } from "sequelize"
 
+import { definedPlurals } from "./definedPlurals"
 import { toSequelize } from "./toSequelize"
-import { registerSchema } from "../../serialize"
-import { HatchifySymbolModel } from "../../types"
-import type { HatchifyModel, SequelizeModelsCollection } from "../../types"
-import { getFullModelName } from "../../utils/getFullModelName"
-import { pluralize } from "../../utils/pluralize"
-import { definedPlurals } from "../definedPlurals"
+import { registerSchema } from "../serialize"
+import { HatchifySymbolModel } from "../types"
+import type { HatchifyModel, SequelizeModelsCollection } from "../types"
+import { getFullModelName } from "../utils/getFullModelName"
+import { pluralize } from "../utils/pluralize"
 
 export function convertHatchifyModels(
   sequelize: Sequelize,

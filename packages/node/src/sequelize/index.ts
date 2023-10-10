@@ -1,5 +1,4 @@
 export * from "./buildHatchifyModelObject"
+export * from "./convertHatchifyModels"
 export * from "./createSequelizeInstance"
-export * from "./v1/convertHatchifyModels"
-export * from "./v1/parseAttribute"
 export * from "./definedPlurals"
