@@ -86,9 +86,11 @@ export class Hatchify {
     }
     this._serializer = new JSONAPISerializer()
 
-    // Fetch the hatchify models and associations look up
-    const { associationsLookup, models: sequelizeModels } =
-      convertHatchifyModels(this._sequelize, this._serializer, schemas)
+    const { associationsLookup, sequelizeModels } = convertHatchifyModels(
+      this._sequelize,
+      this._serializer,
+      schemas,
+    )
 
     this.associationsLookup = associationsLookup
     this._sequelizeModels = sequelizeModels

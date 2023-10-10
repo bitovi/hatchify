@@ -207,6 +207,6 @@ export function convertHatchifyModels(
 
   return {
     associationsLookup,
-    models: sequelize.models as SequelizeModelsCollection,
+    sequelizeModels: sequelize.models as SequelizeModelsCollection,
   }
 }
