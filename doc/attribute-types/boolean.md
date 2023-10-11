@@ -7,15 +7,14 @@ export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
     complete: boolean({ required: true }),
-  }
+  },
 }
 ```
 
 ## Parameters
 
-- `default` [{Boolean}] - The default value of the attribute.  Example: `boolean({default: true})`
+- `default` [{Boolean}] - The default value of the attribute. Example: `boolean({default: true})`
 - `required` [{Boolean=false}] - If the attribute must be provided.
-
 
 ## Database and Sequelize Behavior
 
@@ -37,7 +36,6 @@ Any other value will return a service error.
 
 Checkout the [compatibility table](../filtering-data/filtering-data.md#compatibility) for what operators can be used with booleans.
 
-
 ### Data Response
 
 Boolean data will be returned as `true`, `false`, or `null` as follows:
@@ -53,19 +51,18 @@ Boolean data will be returned as `true`, `false`, or `null` as follows:
 }
 ```
 
-
 ### Mutating Data
 
 When creating or updating a boolean attribute, `true`, `false`, or `null` must be provided. Any other value will return a service error.
 
 ## React Rest Behavior
 
-Similar to the middleware, you MUST provide react rest models a `true`, `false`, or `null` value.  Likewise, they will always return these values:
+Similar to the middleware, you MUST provide react rest models a `true`, `false`, or `null` value. Likewise, they will always return these values:
 
 ```ts
-Todo.createOne({attributes: {complete: true}});
+Todo.createOne({ attributes: { complete: true } })
 
-const [todo, todoMeta] = hatchedReactRest.Todo.useOne({id})
+const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.complete //-> true, false or null
 ```
 
@@ -75,13 +72,11 @@ The text `true` or `false` will be presented in the grid. If the value is `null`
 
 ![Grid Example](https://github.com/bitovi/hatchify/assets/78602/ddbf26a1-180b-4fc7-a483-fde52dc4fce9)
 
-
 ## Form Behavior
 
 `boolean()` will produce a [`<input type=checkbox>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) control. `null` will be treated as unchecked.
 
+## Filtering
 
-
-
-
-
+If `required` is `false`, filtering `null` values can is handled like the following:
+`filter[complete][$eq]=\x00` where `\x00` represents the encoded `null` value
