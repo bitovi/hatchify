@@ -89,7 +89,7 @@ following steps:
    ```bash
    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
    "dev:frontend": "vite",
-   "dev:backend": "nodemon --esm backend/index.ts",
+   "dev:backend": "nodemon --esm backend/index.ts --watch backend",
    "build:frontend": "tsc && vite build --outDir dist/frontend",
    "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
    "start:frontend": "vite preview --outDir dist/frontend",
