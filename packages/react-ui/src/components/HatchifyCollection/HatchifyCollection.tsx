@@ -3,15 +3,15 @@ import type {
   PaginationObject,
   FinalSchemas,
   GetSchemaNames,
-  PartialSchemas,
 } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
 import { useHatchifyPresentation } from ".."
 import useCollectionState from "../../hooks/useCollectionState"
 
 export interface HatchifyCollectionProps<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > {
   finalSchemas: FinalSchemas
@@ -27,7 +27,7 @@ export interface HatchifyCollectionProps<
 }
 
 function HatchifyCollection<
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >({
   finalSchemas,

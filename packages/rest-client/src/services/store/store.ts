@@ -63,7 +63,8 @@ export function insert(
   const records = flattenResourcesIntoRecords(allSchemas, data, schemaName)
 
   for (const subscriber of store[schemaName].subscribers) {
-    subscriber(records)
+    // @ts-expect-error
+    subscriber(records) // fix with v2 types
   }
 }
 
@@ -104,6 +105,7 @@ export function remove(
   const records = getRecords(allSchemas, schema)
 
   for (const subscriber of store[schema].subscribers) {
-    subscriber(records)
+    // @ts-expect-error
+    subscriber(records) // fix with v2 types
   }
 }

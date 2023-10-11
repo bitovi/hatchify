@@ -1,7 +1,7 @@
 import type { PartialDateonlyORM, PartialDateonlyProps } from "./types"
 
 export function getPartialOrm(
-  props?: PartialDateonlyProps,
+  props?: PartialDateonlyProps<boolean>,
 ): PartialDateonlyORM {
   return {
     sequelize: {

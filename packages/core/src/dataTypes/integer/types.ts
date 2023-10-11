@@ -1,3 +1,6 @@
 import type { PartialNumberProps } from "../number"
 
-export type PartialIntegerProps = Omit<PartialNumberProps, "step">
+export type PartialIntegerProps<TRequired extends boolean> = Omit<
+  PartialNumberProps<TRequired>,
+  "step"
+>

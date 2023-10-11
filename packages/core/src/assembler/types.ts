@@ -44,18 +44,21 @@ export type PartialAttributeRecord = Record<
   string,
   | PartialAttribute<
       PartialBooleanORM,
+      // @ts-expect-error
       PartialBooleanControlType,
       boolean,
       FinalBooleanORM
     >
   | PartialAttribute<
       PartialDateonlyORM,
+      // @ts-expect-error
       PartialDateonlyControlType,
       string,
       FinalDateonlyORM
     >
   | PartialAttribute<
       PartialDatetimeORM,
+      // @ts-expect-error
       PartialDatetimeControlType,
       Date,
       FinalDatetimeORM
@@ -68,24 +71,28 @@ export type PartialAttributeRecord = Record<
     >
   | PartialAttribute<
       PartialNumberORM,
+      // @ts-expect-error
       PartialNumberControlType,
       number,
       FinalNumberORM
     >
   | PartialAttribute<
       PartialStringORM,
+      // @ts-expect-error
       PartialStringControlType,
       string,
       FinalStringORM
     >
   | PartialAttribute<
       PartialTextORM,
+      // @ts-expect-error
       PartialTextControlType,
       string,
       FinalTextORM
     >
   | PartialAttribute<
       PartialUuidORM,
+      // @ts-expect-error
       PartialStringControlType,
       string,
       FinalUuidORM
@@ -101,6 +108,7 @@ export interface PartialSchema<
   displayName?: string
   id?: PartialAttribute<
     PartialUuidORM,
+    // @ts-expect-error
     PartialStringControlType,
     string,
     FinalUuidORM
@@ -113,18 +121,21 @@ export type FinalAttributeRecord = Record<
   string,
   | FinalAttribute<
       PartialBooleanORM,
+      // @ts-expect-error
       PartialBooleanControlType,
       boolean,
       FinalBooleanORM
     >
   | FinalAttribute<
       PartialDateonlyORM,
+      // @ts-expect-error
       PartialDateonlyControlType,
       string,
       FinalDateonlyORM
     >
   | FinalAttribute<
       PartialDatetimeORM,
+      // @ts-expect-error
       PartialDatetimeControlType,
       Date,
       FinalDatetimeORM
@@ -132,19 +143,23 @@ export type FinalAttributeRecord = Record<
   | FinalAttribute<PartialEnumORM, PartialEnumControlType, string, FinalEnumORM>
   | FinalAttribute<
       PartialNumberORM,
+      // @ts-expect-error
       PartialNumberControlType,
       number,
       FinalNumberORM
     >
   | FinalAttribute<
       PartialStringORM,
+      // @ts-expect-error
       PartialStringControlType,
       string,
       FinalStringORM
     >
+  // @ts-expect-error
   | FinalAttribute<PartialTextORM, PartialTextControlType, string, FinalTextORM>
   | FinalAttribute<
       PartialUuidORM,
+      // @ts-expect-error
       PartialStringControlType,
       string,
       FinalUuidORM
@@ -158,6 +173,7 @@ export interface FinalSchema {
   displayName?: string
   id: FinalAttribute<
     PartialUuidORM,
+    // @ts-expect-error
     PartialStringControlType,
     string,
     FinalUuidORM
@@ -176,6 +192,7 @@ export type PartialSchemaWithPrimaryAttribute = Omit<
 > & {
   id: PartialAttribute<
     PartialUuidORM,
+    // @ts-expect-error
     PartialStringControlType,
     string,
     FinalUuidORM

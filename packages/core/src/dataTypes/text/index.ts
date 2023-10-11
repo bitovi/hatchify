@@ -9,11 +9,11 @@ import type {
 } from "./types"
 import type { PartialAttribute } from "../../types"
 
-export function text(
-  props?: PartialTextProps,
+export function text<TRequired extends boolean = false>(
+  props?: PartialTextProps<TRequired>,
 ): PartialAttribute<
   PartialTextORM,
-  PartialTextControlType,
+  PartialTextControlType<TRequired>,
   string,
   FinalTextORM
 > {
@@ -21,6 +21,7 @@ export function text(
     name: `text(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
+    // @ts-expect-error
     finalize: function finalizeText() {
       return getFinalize(this)
     },

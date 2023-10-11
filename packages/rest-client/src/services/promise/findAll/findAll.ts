@@ -1,3 +1,4 @@
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   Source,
   QueryList,
@@ -6,7 +7,6 @@ import type {
   GetSchemaFromName,
   RecordType,
   FinalSchemas,
-  PartialSchemas,
   Filters,
 } from "../../types"
 import {
@@ -20,7 +20,7 @@ import {
  * notifies subscribers, and returns them as records.
  */
 export const findAll = async <
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,

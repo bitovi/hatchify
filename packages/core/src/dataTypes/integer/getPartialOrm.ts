@@ -2,7 +2,9 @@ import type { PartialIntegerProps } from "./types"
 import { getPartialOrm as getNumberPartialOrm } from "../number"
 import type { PartialNumberORM } from "../number"
 
-export function getPartialOrm(props?: PartialIntegerProps): PartialNumberORM {
+export function getPartialOrm(
+  props?: PartialIntegerProps<boolean>,
+): PartialNumberORM {
   const numberOrm = getNumberPartialOrm(props)
 
   return {

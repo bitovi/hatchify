@@ -3,8 +3,9 @@ import {
   // integer,
   // datetime,
   // string,
-  // PartialSchema,
+  // boolean,
 } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   Fields,
@@ -13,7 +14,6 @@ import type {
   RestClient,
   PaginationObject,
   GetSchemaNames,
-  PartialSchemas,
 } from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
@@ -31,7 +31,7 @@ import useCollectionState from "../hooks/useCollectionState"
 import type { SortObject } from "../presentation"
 
 type HatchifyCollectionProps<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = Omit<
   InternalHatchifyCollectionProps<TSchemas, TSchemaName>,
@@ -39,7 +39,7 @@ type HatchifyCollectionProps<
 >
 
 type HatchifyColumnProps<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > =
   | Omit<AdditionalColumnProps, "allSchemas" | "schemaName">
@@ -49,7 +49,7 @@ type HatchifyColumnProps<
       "allSchemas" | "schemaName"
     >
 
-type Components<TSchemas extends PartialSchemas> = {
+type Components<TSchemas extends Record<string, PartialSchema>> = {
   [SchemaName in keyof TSchemas]: {
     // core
     Collection: (
@@ -63,7 +63,7 @@ type Components<TSchemas extends PartialSchemas> = {
   }
 }
 
-export type HatchifyApp<TSchemas extends PartialSchemas> = {
+export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
   components: Components<TSchemas>
   model: HatchifyReactRest<TSchemas>
   state: {
@@ -95,10 +95,9 @@ export type HatchifyApp<TSchemas extends PartialSchemas> = {
   }
 }
 
-export function hatchifyReact<const TSchemas extends PartialSchemas>(
-  partialSchemas: TSchemas,
-  restClient: RestClient,
-): HatchifyApp<TSchemas> {
+export function hatchifyReact<
+  const TSchemas extends Record<string, PartialSchema>,
+>(partialSchemas: TSchemas, restClient: RestClient): HatchifyApp<TSchemas> {
   const finalSchemas = assembler(partialSchemas)
   const reactRest = hatchifyReactRest(partialSchemas, restClient)
 
@@ -173,34 +172,58 @@ export function hatchifyReact<const TSchemas extends PartialSchemas>(
 }
 
 // // todo: leaving for testing, remove before merge to main
-// const Todo = {
+// const partialTodo = {
 //   name: "Todo",
 //   attributes: {
-//     name: string(),
-//     importance: integer(),
-//     date: datetime(),
-//   }
+//     title: string(),
+//     reqTitle: string({ required: true }),
+//     age: integer({ required: true }),
+//     optAge: integer({ required: false }),
+//     important: boolean({ required: true }),
+//     optImportant: boolean(),
+//     created: datetime({ required: true }),
+//     optCreated: datetime(),
+//   },
 // } satisfies PartialSchema
+// const partialUser = {
+//   name: "User",
+//   attributes: {
+//     name: string({ required: true }),
+//     age: integer({ required: true }),
+//     employed: boolean(),
+//   },
+// }
 
-// const app = hatchifyReact({ Todo }, undefined as any)
-
-// const [records] = app.model.Todo.useAll()
-// // records[0].
+// const app = hatchifyReact({ Todo: partialTodo, User: partialUser }, {} as any)
 
 // app.model.Todo.createOne({
 //   attributes: {
-//     importance: 123,
-//     name: "123",
-//     date: new Date()
+//     reqTitle: "",
+//     age: 1,
+//     important: true,
+//     created: new Date(),
+//     shouldError: false,
 //   },
 // })
 
-// app.model.Todo.findAll({}).then((todos) => {
-//   todos[0][0].
+// app.model.User.findAll({}).then(([records]) => {
+//   records[0].id
+//   records[0].name
+//   records[0].employed
+//   records[0].shouldError
 // })
 
-// const List = app.components.Todo.Collection
-// const Column = app.components.Todo.Column
+// const state = app.state.Todo.useCollectionState()
+// state.data[0].id
+// state.data[0].age
+// state.data[0].optAge
+// state.data[0].shouldError
+
+// const TodoList = app.components.Todo.Collection
+// const TodoColumn = app.components.Todo.Column
+
 // function Test() {
-//   return <Column type="replace" field="name" />
+//   return <TodoList>
+//     <TodoColumn field="optImportant" />
+//   </TodoList>
 // }

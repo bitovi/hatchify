@@ -14,11 +14,11 @@ export * from "./getPartialControl"
 export * from "./getPartialOrm"
 export * from "./types"
 
-export function dateonly(
-  props?: PartialDateonlyProps,
+export function dateonly<TRequired extends boolean = false>(
+  props?: PartialDateonlyProps<TRequired>,
 ): PartialAttribute<
   PartialDateonlyORM,
-  PartialDateonlyControlType,
+  PartialDateonlyControlType<TRequired>,
   string,
   FinalDateonlyORM
 > {
@@ -26,6 +26,7 @@ export function dateonly(
     name: `dateonly(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
+    // @ts-expect-error
     finalize: function finalizeDateonly() {
       return getFinalize(this)
     },

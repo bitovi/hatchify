@@ -4,13 +4,15 @@ import type {
   PartialSequelizeDataType,
 } from "../../types"
 
-export interface PartialStringProps extends PartialDataTypeProps<string> {
+export interface PartialStringProps<TRequired extends boolean>
+  extends PartialDataTypeProps<string, TRequired> {
   min?: number
   max?: number
   regex?: RegExp
 }
 
-export interface PartialStringControlType extends PartialControlType<string> {
+export interface PartialStringControlType<TRequired extends boolean>
+  extends PartialControlType<string, TRequired> {
   type: "String"
   min?: number
   max?: number

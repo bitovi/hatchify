@@ -1,9 +1,9 @@
 import type {
   GetSchemaFromName,
   GetSchemaNames,
-  PartialSchemas,
   Schemas,
 } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FlatRecord,
   ValueComponent,
@@ -34,7 +34,7 @@ export type AdditionalColumnProps = {
 
 // todo: renderValue and ValueComponent should be optional, but only one can be provided
 export type ReplaceColumnProps<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
   allSchemas: Schemas
@@ -46,7 +46,7 @@ export type ReplaceColumnProps<
 
 // todo: renderValue and ValueComponent should be optional, but only one can be provided
 export type OverwriteColumnProps<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
   allSchemas: Schemas
@@ -58,7 +58,7 @@ export type OverwriteColumnProps<
 } & { renderValue?: RenderValue; ValueComponent?: ValueComponent }
 
 export function HatchifyColumn<
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   props:

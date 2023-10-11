@@ -17,7 +17,7 @@ describe("rest-client/services/promise/createOne", () => {
     body: "baz-body",
   }
 
-  const schemas = assembler({
+  const partialSchemas = {
     Article: {
       name: "Article",
       attributes: {
@@ -25,12 +25,19 @@ describe("rest-client/services/promise/createOne", () => {
         body: string(),
       },
     },
-  })
+  }
+
+  const schemas = assembler(partialSchemas)
 
   it("should return the new record", async () => {
     createStore(["Article"])
 
-    const result = await createOne(fakeDataSource, schemas, "Article", data)
+    const result = await createOne<typeof partialSchemas, "Article">(
+      fakeDataSource,
+      schemas,
+      "Article",
+      data,
+    )
 
     expect(result).toEqual(expected)
   })
@@ -39,7 +46,12 @@ describe("rest-client/services/promise/createOne", () => {
     const store = createStore(["Article"])
     const subscriber = vi.fn()
     store.Article.subscribers.push(subscriber)
-    await createOne(fakeDataSource, schemas, "Article", data)
+    await createOne<typeof partialSchemas, "Article">(
+      fakeDataSource,
+      schemas,
+      "Article",
+      data,
+    )
     expect(subscriber).toHaveBeenCalledTimes(1)
   })
 
@@ -58,13 +70,23 @@ describe("rest-client/services/promise/createOne", () => {
       createOne: () => Promise.reject(errors),
     }
     await expect(
-      createOne(errorDataSource, schemas, "Article", data),
+      createOne<typeof partialSchemas, "Article">(
+        errorDataSource,
+        schemas,
+        "Article",
+        data,
+      ),
     ).rejects.toEqual(errors)
   })
 
   it("should throw error if schema name is not a string", async () => {
     await expect(
-      createOne(fakeDataSource, schemas, 1 as any, data),
+      createOne<typeof partialSchemas, "Article">(
+        fakeDataSource,
+        schemas,
+        1 as any,
+        data,
+      ),
     ).rejects.toThrowError()
   })
 })

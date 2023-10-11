@@ -14,11 +14,11 @@ export * from "./getPartialControl"
 export * from "./getPartialOrm"
 export * from "./types"
 
-export function string(
-  props?: PartialStringProps,
+export function string<TRequired extends boolean = false>(
+  props?: PartialStringProps<TRequired>,
 ): PartialAttribute<
   PartialStringORM,
-  PartialStringControlType,
+  PartialStringControlType<TRequired>,
   string,
   FinalStringORM
 > {
@@ -28,6 +28,7 @@ export function string(
     })`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
+    // @ts-expect-error
     finalize: function finalizeString() {
       return getFinalize(this)
     },

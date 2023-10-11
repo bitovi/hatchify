@@ -5,7 +5,7 @@ import type { ValueInRequest } from "../../types"
 
 export function coerce(
   value: ValueInRequest,
-  control: PartialDateonlyControlType,
+  control: Partial<PartialDateonlyControlType<boolean>>,
 ): string | null {
   if (value === undefined) {
     throw new HatchifyCoerceError("as a non-undefined value")

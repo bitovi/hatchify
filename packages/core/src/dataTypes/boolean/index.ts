@@ -14,11 +14,11 @@ export * from "./getPartialControl"
 export * from "./getPartialOrm"
 export * from "./types"
 
-export function boolean(
-  props?: PartialBooleanProps,
+export function boolean<TRequired extends boolean = false>(
+  props?: PartialBooleanProps<TRequired>,
 ): PartialAttribute<
   PartialBooleanORM,
-  PartialBooleanControlType,
+  PartialBooleanControlType<TRequired>,
   boolean,
   FinalBooleanORM
 > {
@@ -26,6 +26,7 @@ export function boolean(
     name: `boolean(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
+    // @ts-expect-error
     finalize: function finalizeBoolean() {
       return getFinalize(this)
     },

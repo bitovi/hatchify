@@ -9,10 +9,10 @@ import type {
   MetaError,
   QueryList,
   RecordType,
-  PartialSchemas,
   RequestMetaData,
   Source,
 } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
 
 /**
  * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
@@ -33,7 +33,7 @@ function useMemoByStringify(filterOrQuery: Filters | QueryList) {
  * subscribes to the store for updates to the list, returns the list.
  */
 export const useAll = <
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,

@@ -1,12 +1,14 @@
 import type { PartialNumberControlType, PartialNumberProps } from "./types"
 
-export function getPartialControl(
-  props?: PartialNumberProps,
-): PartialNumberControlType {
+export function getPartialControl<TRequired extends boolean>(
+  props?: PartialNumberProps<TRequired>,
+): PartialNumberControlType<TRequired> {
   return {
     type: "Number",
-    allowNull: true,
-    // allowNull: props?.required == null ? props?.required : !props.required,
+    allowNull: props?.required == null ? props?.required : !props.required,
+    allowNullInfer: (props?.required == null
+      ? props?.required
+      : !props.required) as TRequired extends true ? false : true,
     min: props?.min,
     max: props?.max,
     primary: props?.primary,

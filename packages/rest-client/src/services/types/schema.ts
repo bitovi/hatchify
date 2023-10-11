@@ -21,179 +21,98 @@ export interface Schema {
 
 export type Schemas = Record<string, Schema>
 
-export type PartialSchemas = Record<string, PartialSchema>
-
 export type FinalSchemas = Record<string, FinalSchema>
 
-// * this gets the name from schema object, this does not work when trying to type
-// * hatchify return, ie. `app.[schemaName].func()` unless you use `as const`!
-// type GetSchemaNames<TSchemas extends globalThis.Record<string, PartialSchema>> =
-// TSchemas[keyof TSchemas]["name"]
 export type GetSchemaNames<
   TSchemas extends globalThis.Record<string, PartialSchema>,
 > = keyof TSchemas
 
-// * see `GetSchemaNames` comment
-// type GetSchemaFromName<
-//   TSchemas extends globalThis.Record<string, PartialSchema>,
-//   TSchemaName extends GetSchemaNames<TSchemas>,
-// > = Extract<TSchemas[keyof TSchemas], { name: TSchemaName }>
 export type GetSchemaFromName<
   TSchemas extends globalThis.Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = TSchemas[TSchemaName]
 
-export type NumberAsString = "number" | "Number" | "NUMBER"
-export type StringAsString = "string" | "String" | "STRING"
-export type DateAsString = "datetime" | "Datetime" | "DATETIME"
-
-export type IsNullable<TValue> = TValue extends true ? true : false
-export type IsNumber<TValue> = TValue extends NumberAsString ? true : false
-export type IsString<TValue> = TValue extends StringAsString ? true : false
-export type IsDate<TValue> = TValue extends DateAsString ? true : false
-export type IsMutateDate<TValue, TMutate> = TValue extends DateAsString
-  ? TMutate extends true
-    ? true
-    : false
-  : false
-
-export type RecordType<TPartialSchema extends PartialSchema> = {
-  id: string
-} & {
-  [AttributeName in keyof TPartialSchema["attributes"]]: GetTypedAttribute<
-    TPartialSchema["attributes"],
-    AttributeName,
-    false
-  >
-}
-
 export type CreateType<TPartialSchema extends PartialSchema> = {
   __schema: TPartialSchema["name"]
 } & {
-  [AttributeName in keyof TPartialSchema["attributes"]]: GetTypedAttribute<
-    TPartialSchema["attributes"],
-    AttributeName,
-    true
-  >
+  attributes: Omit<RecordType<TPartialSchema, true>, "id">
 }
-
-// export type MandateProps<T extends {}, K extends keyof T> = Omit<T, K> & {
-//   [MK in K]-?: NonNullable<T[MK]>
-// }
 
 export type UpdateType<TPartialSchema extends PartialSchema> = {
   id: string
 } & Partial<CreateType<TPartialSchema>>
 
-export type GetAttributes<TSchema extends PartialSchema> = {
-  [AttributeName in keyof TSchema["attributes"]]: TSchema["attributes"][AttributeName]
-}
+export type RecordType<
+  TPartialSchema extends PartialSchema,
+  Mutate extends boolean = false,
+> = {
+  id: string
+} & TypedAttributes<TPartialSchema["attributes"], Mutate>
 
-export type GetTypedAttribute<
-  TAttributes extends PartialSchema["attributes"],
-  TAttributeName extends keyof TAttributes,
-  Mutate extends boolean,
-> = IsNumber<TAttributes[TAttributeName]["control"]["type"]> extends true
-  ? IsNullable<TAttributes[TAttributeName]["control"]["allowNull"]> extends true
-    ? number | null | undefined
-    : number
-  : IsString<TAttributes[TAttributeName]["control"]["type"]> extends true
-  ? IsNullable<TAttributes[TAttributeName]["control"]["allowNull"]> extends true
-    ? string | null | undefined
-    : string
-  : IsDate<TAttributes[TAttributeName]["control"]["type"]> extends true
-  ? Mutate extends true
-    ? IsNullable<
-        TAttributes[TAttributeName]["control"]["allowNull"]
-      > extends true
-      ? Date | string | null | undefined
-      : Date | string
-    : IsNullable<
-        TAttributes[TAttributeName]["control"]["allowNull"]
-      > extends true
-    ? Date | null | undefined
-    : Date
-  : unknown
-
-const att = {
-  title: {
-    name: "integer()",
-    control: {
-      type: "Number" as const,
-      allowNull: true as const,
-      // allowNull: false as const,
-      // allowNull: true as const,
-    },
-  },
-  name: {
-    name: "something",
-    control: {
-      type: "Number" as const,
-      // allowNull: true as const,
-      // allowNull: false as const,
-      allowNull: createBoolean({ required: false }),
-    },
-  },
-}
-
-function createBoolean<TAllowed extends boolean>(config: {
-  required: TAllowed
-}): TAllowed {
-  return {} as TAllowed
-}
-
-// const aaaa: GetTypedAttribute<typeof att, "title", false> = 555
-
-type Prettify<T> = {
-  [K in keyof T]: T[K]
-} & {}
-
-export type CreateAttributeUnion<
+// Convert object of attributes into a union of attribute objects
+type CreateAttributeUnion<
   A extends Record<string, { control: { type: string; allowNull?: boolean } }>,
 > = {
   [Name in keyof A]: { key: Name } & A[Name]
 }[keyof A]
 
-type MiddleGround = CreateAttributeUnion<typeof att>
-
-type AllowNull = Extract<MiddleGround, { control: { allowNull: true } }>
-
-type NoNulls = Extract<MiddleGround, { control: { allowNull: false } }>
-
-// type AllowNullAsObject = Prettify<{
-//   [Key in AllowNull["key"]]?: Extract<AllowNull, { key: Key }> extends {
-//     control: { type: infer Type }
-//   }
-//     ? Type extends "Number"
-//       ? number
-//       : never
-//     : never
-// }>
-
-// type AllowNullAsObject1 = Prettify<
-//   Partial<{
-//     [Key in AllowNull["key"]]: Extract<AllowNull, { key: Key }> extends {
-//       control: { type: infer Type }
-//     }
-//       ? Type extends "Number"
-//         ? number
-//         : never
-//       : never
-//   }>
-// >
-
-type UnionToObject<Union extends { key: string }> = {
+// Convert union of attribute objects into an object of attributes with correct types
+type UnionToObject<
+  Union extends { key: string | number | symbol },
+  Mutate extends boolean,
+> = {
   [Key in Union["key"]]: Extract<Union, { key: Key }> extends {
     control: { type: infer Type }
   }
-    ? Type extends "Number"
+    ? Type extends "Number" | "number" | "NUMBER"
       ? number
+      : Type extends "Boolean" | "boolean" | "BOOLEAN"
+      ? boolean
+      : Type extends "String" | "string" | "STRING"
+      ? string
+      : Type extends "Datetime" | "datetime" | "DATETIME"
+      ? Mutate extends true
+        ? Date | string
+        : Date
       : never
     : never
 }
 
-type Stitch = Prettify<
-  Partial<UnionToObject<AllowNull>> & UnionToObject<NoNulls>
->
+// Extract subset of attributes from a union
+type ExtractFromAttributeUnion<
+  T extends Record<
+    string,
+    { control: { type: string; allowNullInfer?: boolean } }
+  >,
+  P extends { control: { allowNullInfer: boolean } },
+> = Extract<CreateAttributeUnion<T>, P>
 
-type NewRecordType = Partial<UnionToObject<AllowNull>> & UnionToObject<NoNulls>
+// Extract subset of attributes from a union which are allowed to be null
+type AllowNulls<
+  T extends Record<
+    string,
+    { control: { type: string; allowNullInfer?: boolean } }
+  >,
+  P extends { control: { allowNullInfer: boolean } },
+  Mutate extends boolean,
+> = Partial<UnionToObject<ExtractFromAttributeUnion<T, P>, Mutate>>
+
+// Extract subset of attributes from a union which are not allowed to be null
+type NoNulls<
+  T extends Record<
+    string,
+    { control: { type: string; allowNullInfer?: boolean } }
+  >,
+  P extends { control: { allowNullInfer: boolean } },
+  Mutate extends boolean,
+> = UnionToObject<ExtractFromAttributeUnion<T, P>, Mutate>
+
+// Merge the two subsets of attributes (allowNull and required) into a single object
+type TypedAttributes<
+  T extends Record<
+    string,
+    { control: { type: string; allowNullInfer?: boolean } }
+  >,
+  Mutate extends boolean,
+> = AllowNulls<T, { control: { allowNullInfer: true } }, Mutate> &
+  NoNulls<T, { control: { allowNullInfer: false } }, Mutate>

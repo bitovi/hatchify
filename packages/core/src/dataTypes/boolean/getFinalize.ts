@@ -16,13 +16,13 @@ import type {
 export function getFinalize(
   props: PartialAttribute<
     PartialBooleanORM,
-    PartialBooleanControlType,
+    Omit<PartialBooleanControlType<boolean>, "allowNullInfer">,
     boolean,
     FinalBooleanORM
   >,
 ): FinalAttribute<
   PartialBooleanORM,
-  PartialBooleanControlType,
+  Omit<PartialBooleanControlType<boolean>, "allowNullInfer">,
   boolean,
   FinalBooleanORM
 > {

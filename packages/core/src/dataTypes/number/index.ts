@@ -14,11 +14,11 @@ export * from "./getPartialControl"
 export * from "./getPartialOrm"
 export * from "./types"
 
-export function number(
-  props?: PartialNumberProps,
+export function number<TRequired extends boolean = false>(
+  props?: PartialNumberProps<TRequired>,
 ): PartialAttribute<
   PartialNumberORM,
-  PartialNumberControlType,
+  PartialNumberControlType<TRequired>,
   number,
   FinalNumberORM
 > {
@@ -26,6 +26,7 @@ export function number(
     name: `number(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
+    // @ts-expect-error
     finalize: function finalizeNumber() {
       return getFinalize(this)
     },

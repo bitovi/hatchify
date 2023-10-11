@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from "react"
 import { deleteOne, getMeta } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FinalSchemas,
   GetSchemaNames,
-  PartialSchemas,
   Meta,
   MetaError,
   Source,
@@ -13,7 +13,7 @@ import type {
  * Returns a function that delete a record using the rest-client updateOne,
  */
 export const useDeleteOne = <
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,

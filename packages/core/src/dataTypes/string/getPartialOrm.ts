@@ -1,6 +1,8 @@
 import type { PartialStringORM, PartialStringProps } from "./types"
 
-export function getPartialOrm(props?: PartialStringProps): PartialStringORM {
+export function getPartialOrm(
+  props?: PartialStringProps<boolean>,
+): PartialStringORM {
   return {
     sequelize: {
       type: "STRING",

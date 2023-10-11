@@ -2,7 +2,7 @@ import { assembler, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { Source } from "../types"
 
-export const ArticleSchema: PartialSchema = {
+export const ArticleSchema = {
   name: "Article",
   attributes: {
     title: string(),
@@ -19,9 +19,9 @@ export const ArticleSchema: PartialSchema = {
   //     schema: "Tag",
   //   },
   // },
-}
+} satisfies PartialSchema
 
-export const PersonSchema: PartialSchema = {
+export const PersonSchema = {
   name: "Person",
   attributes: {
     name: string(),
@@ -33,7 +33,7 @@ export const PersonSchema: PartialSchema = {
   //     schema: "Article",
   //   },
   // },
-}
+} satisfies PartialSchema
 
 export const TagSchema: PartialSchema = {
   name: "Tag",
@@ -47,13 +47,15 @@ export const TagSchema: PartialSchema = {
   //     schema: "Article",
   //   },
   // },
-}
+} satisfies PartialSchema
 
-export const schemas = assembler({
+export const partialSchemas = {
   Article: ArticleSchema,
   Person: PersonSchema,
   Tag: TagSchema,
-})
+}
+
+export const schemas = assembler(partialSchemas)
 
 export const schemaMap = {
   Article: { type: "article", endpoint: "articles" },

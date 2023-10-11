@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useState } from "react"
 import { createOne, getMeta } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   CreateType,
   FinalSchemas,
   GetSchemaFromName,
   GetSchemaNames,
-  PartialSchemas,
   RecordType,
   Meta,
   MetaError,
@@ -13,12 +13,12 @@ import type {
 } from "@hatchifyjs/rest-client"
 
 type CreateData<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = Omit<CreateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
 
 type CreatedRecord<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined
 
@@ -27,7 +27,7 @@ type CreatedRecord<
  * @todo metadata, and the last created record.
  */
 export const useCreateOne = <
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,

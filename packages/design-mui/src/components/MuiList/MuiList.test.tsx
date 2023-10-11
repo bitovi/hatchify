@@ -46,7 +46,7 @@ describe("components/MuiList", () => {
 
   it("works", async () => {
     render(
-      <MuiList
+      <MuiList<typeof partialSchemas, "User">
         data={data}
         meta={meta}
         sort={{
@@ -80,7 +80,7 @@ describe("components/MuiList", () => {
     const setSort = vi.fn()
 
     render(
-      <MuiList
+      <MuiList<typeof partialSchemas, "User">
         data={data}
         meta={meta}
         sort={{
@@ -113,7 +113,7 @@ describe("components/MuiList", () => {
 
     const renderWithSelected = (selected: { all: boolean; ids: string[] }) =>
       render(
-        <MuiList
+        <MuiList<typeof partialSchemas, "User">
           data={data}
           meta={meta}
           sort={{
@@ -196,7 +196,7 @@ describe("components/MuiList", () => {
     const Empty = () => <div>so empty inside</div>
 
     render(
-      <MuiList
+      <MuiList<typeof partialSchemas, "User">
         data={[]}
         meta={meta}
         sort={{

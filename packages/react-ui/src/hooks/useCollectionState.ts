@@ -7,10 +7,10 @@ import type {
   GetSchemaNames,
   Include,
   Meta,
-  PartialSchemas,
   RecordType,
   PaginationObject,
 } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   HatchifyCollectionPage,
@@ -24,7 +24,7 @@ import useSelected from "./useSelected"
 import useFilter from "./useFilter"
 
 export interface CollectionState<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > {
   data: Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>
@@ -45,7 +45,7 @@ export interface CollectionState<
 }
 
 export default function useCollectionState<
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   finalSchemas: FinalSchemas,

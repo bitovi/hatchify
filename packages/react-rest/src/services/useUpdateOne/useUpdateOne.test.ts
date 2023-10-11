@@ -22,19 +22,25 @@ const fakeDataSource: Source = {
   deleteOne: () => Promise.resolve(),
 }
 
-const schemas = assembler({
+const partialSchemas = {
   Article: {
     name: "Article",
     attributes: { title: string(), body: string() },
   },
-})
+}
+
+const schemas = assembler(partialSchemas)
 
 describe("react-rest/services/useUpdateOne", () => {
   it("should update a record", async () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useUpdateOne(fakeDataSource, schemas, "Article"),
+      useUpdateOne<typeof partialSchemas, "Article">(
+        fakeDataSource,
+        schemas,
+        "Article",
+      ),
     )
 
     await waitFor(() => {
@@ -90,7 +96,11 @@ describe("react-rest/services/useUpdateOne", () => {
     fakeDataSource.updateOne = () => Promise.resolve(null)
 
     const { result } = renderHook(() =>
-      useUpdateOne(fakeDataSource, schemas, "Article"),
+      useUpdateOne<typeof partialSchemas, "Article">(
+        fakeDataSource,
+        schemas,
+        "Article",
+      ),
     )
 
     await waitFor(() => {
@@ -139,7 +149,11 @@ describe("react-rest/services/useUpdateOne", () => {
     createStore(["Article"])
 
     const { result } = renderHook(() =>
-      useUpdateOne(fakeDataSource, schemas, "Article"),
+      useUpdateOne<typeof partialSchemas, "Article">(
+        fakeDataSource,
+        schemas,
+        "Article",
+      ),
     )
 
     await waitFor(() => {

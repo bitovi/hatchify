@@ -1,8 +1,8 @@
 import type { PartialNumberControlType } from "./types"
 
 export function finalizeControl(
-  props: PartialNumberControlType,
-): Required<PartialNumberControlType> {
+  props: Omit<PartialNumberControlType<boolean>, "allowNullInfer">,
+): Required<Omit<PartialNumberControlType<boolean>, "allowNullInfer">> {
   return {
     ...props,
     allowNull: props.allowNull !== false && !props.primary,

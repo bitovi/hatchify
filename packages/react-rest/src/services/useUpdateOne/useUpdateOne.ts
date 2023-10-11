@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react"
 import { updateOne, getMeta } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
-  PartialSchemas,
   GetSchemaNames,
   FinalSchemas,
   GetSchemaFromName,
@@ -13,12 +13,12 @@ import type {
 } from "@hatchifyjs/rest-client"
 
 type UpdateData<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = Omit<UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
 
 type UpdatedRecord<
-  TSchemas extends PartialSchemas,
+  TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined | null
 
@@ -27,7 +27,7 @@ type UpdatedRecord<
  * @todo metadata, and the last created record.
  */
 export const useUpdateOne = <
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,

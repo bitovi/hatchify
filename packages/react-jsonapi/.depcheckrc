@@ -1,1 +1,1 @@
-ignores: ["@types/react", "@vitest/coverage-c8"]
+ignores: ["@types/react", "@vitest/coverage-c8", "@hatchifyjs/rest-client"]

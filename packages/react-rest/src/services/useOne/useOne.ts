@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { getMeta, findOne, subscribeToAll } from "@hatchifyjs/rest-client"
-
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   Meta,
   MetaError,
   QueryOne,
-  PartialSchemas,
   GetSchemaNames,
   FinalSchemas,
   RecordType,
@@ -26,7 +25,7 @@ const useMemoizedQuery = (query: QueryOne) => {
  * subscribes to the store for updates to the record, returns the record.
  */
 export const useOne = <
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,

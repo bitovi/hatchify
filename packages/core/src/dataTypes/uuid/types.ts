@@ -4,9 +4,10 @@ import type {
   PartialSequelizeDataType,
 } from "../../types"
 
-export type PartialUuidProps = PartialDataTypeProps<string>
+export type PartialUuidProps = PartialDataTypeProps<string, boolean>
 
-export interface PartialUuidControlType extends PartialControlType<string> {
+export interface PartialUuidControlType
+  extends PartialControlType<string, boolean> {
   type: "String"
 }
 

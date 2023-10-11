@@ -1,5 +1,6 @@
 // import type { Schema } from "@hatchifyjs/rest-client"
 import type {
+  GetSchemaNames,
   Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
 } from "@hatchifyjs/rest-client"
 import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
@@ -11,6 +12,7 @@ import type {
 import type { FormState } from "../components/HatchifyForm"
 import type { CollectionState } from "../hooks/useCollectionState"
 import type { Filters } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
 
 export type Primitive = string | boolean | number
 
@@ -53,7 +55,10 @@ export interface HatchifyCollectionFilters {
   setFilter: (filters: Filters) => void
 }
 
-export interface XCollectionProps extends CollectionState<any, any> {
+export interface XCollectionProps<
+  TSchemas extends Record<string, PartialSchema> = any,
+  TSchemaName extends GetSchemaNames<TSchemas> = any,
+> extends CollectionState<TSchemas, TSchemaName> {
   children?: React.ReactNode
 }
 

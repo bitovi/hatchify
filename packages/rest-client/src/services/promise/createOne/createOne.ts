@@ -1,6 +1,6 @@
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   Source,
-  PartialSchemas,
   GetSchemaNames,
   FinalSchemas,
   CreateType,
@@ -20,7 +20,7 @@ import {
  * and returns it as a record.
  */
 export const createOne = async <
-  const TSchemas extends PartialSchemas,
+  const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   dataSource: Source,

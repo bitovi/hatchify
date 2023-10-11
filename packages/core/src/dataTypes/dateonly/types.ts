@@ -4,12 +4,14 @@ import type {
   PartialSequelizeDataType,
 } from "../../types"
 
-export interface PartialDateonlyProps extends PartialDataTypeProps<string> {
+export interface PartialDateonlyProps<TRequired extends boolean>
+  extends PartialDataTypeProps<string, TRequired> {
   min?: string | typeof Infinity
   max?: string | typeof Infinity
 }
 
-export interface PartialDateonlyControlType extends PartialControlType<string> {
+export interface PartialDateonlyControlType<TRequired extends boolean>
+  extends PartialControlType<string, TRequired> {
   type: "Dateonly"
   min?: string | typeof Infinity
   max?: string | typeof Infinity
