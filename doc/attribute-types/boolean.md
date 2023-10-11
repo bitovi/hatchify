@@ -76,7 +76,7 @@ The text `true` or `false` will be presented in the grid. If the value is `null`
 
 `boolean()` will produce a [`<input type=checkbox>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) control. `null` will be treated as unchecked.
 
-## Filtering
+## Query string behavior
 
-If `required` is `false`, filtering `null` values can is handled like the following:
+If `required` is `false`, filtering `null` values is handled like the following:
 `filter[complete][$eq]=\x00` where `\x00` represents the encoded `null` value
