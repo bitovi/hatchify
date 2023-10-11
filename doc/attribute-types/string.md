@@ -30,4 +30,4 @@ If `required` is `false`, empty strings will be treated as `null` values.
 ## Query string behavior
 
 If `required` is `false`, filtering `null` values is handled like the following:
-`filter[name][$eq]=\x00` where `\x00` represents the encoded `null` value.
+`filter[complete][$eq]=%00` where `%00` represents the encoded `null` value, or `filter[complete][$eq]=null`.

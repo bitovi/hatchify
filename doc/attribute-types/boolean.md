@@ -79,4 +79,4 @@ The text `true` or `false` will be presented in the grid. If the value is `null`
 ## Query string behavior
 
 If `required` is `false`, filtering `null` values is handled like the following:
-`filter[complete][$eq]=\x00` where `\x00` represents the encoded `null` value.
+`filter[complete][$eq]=%00` where `%00` represents the encoded `null` value, or `filter[complete][$eq]=null`.
