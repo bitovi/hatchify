@@ -78,7 +78,15 @@ The text `true` or `false` will be presented in the grid. If the value is `null`
 
 ## Query string behavior 🛑
 
+### Parameters
+
 If `required` is `false`, filtering `null` values is handled like the following:
 
 - `filter[complete][$eq]=%00` will filter records where `complete` is absent.
 - `filter[complete][$eq]=null` will filter records where `complete` equals the string `null`.
+
+### Middleware Behavior 🛑
+
+#### Querying Behavior 🛑
+
+Query string is escaped using `querystring.escape` to make sure that the SQL query is built correctly.
