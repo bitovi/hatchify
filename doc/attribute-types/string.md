@@ -27,9 +27,9 @@ export const Todo: PartialSchema = {
 
 If `required` is `false`, empty strings will be treated as `null` values.
 
-## Query string behavior
+## Query string behavior 🛑
 
 If `required` is `false`, filtering `null` values is handled like the following:
 
-- `filter[name][$eq]=%00` will filter records where name is absent.
-- `filter[name][$eq]=null` will filter records where name equals the string `null`.
+- `filter[name][$eq]=%00` will filter records where `name` is absent.
+- `filter[name][$eq]=null` will filter records where `name` equals the string `null`.
