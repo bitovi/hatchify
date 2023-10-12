@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest"
 import type { Schema as OldSchema } from "@hatchifyjs/core"
 import type { Schema } from "../../types"
-import { transformDataType, transformSchema } from "./schema"
+import {
+  schemaNameWithNamespace,
+  transformDataType,
+  transformSchema,
+} from "./schema"
 
 describe("rest-client/services/utils/schema", () => {
   describe("transformDataType", () => {
@@ -19,6 +23,27 @@ describe("rest-client/services/utils/schema", () => {
       expect(transformDataType("DOUBLE")).toEqual("number")
       expect(transformDataType("DECIMAL")).toEqual("number")
       expect(transformDataType("JSON")).toEqual("object")
+    })
+  })
+
+  describe("schemaNameWithNamespace", () => {
+    it("works", () => {
+      const User: OldSchema | Schema = {
+        name: "User",
+        attributes: {
+          name: "John Doe",
+        },
+      }
+      expect(schemaNameWithNamespace(User)).toEqual("User")
+
+      const Admin_User: OldSchema | Schema = {
+        name: "User",
+        namespace: "Admin",
+        attributes: {
+          name: "John Doe",
+        },
+      }
+      expect(schemaNameWithNamespace(Admin_User)).toEqual("Admin_User")
     })
   })
 
