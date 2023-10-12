@@ -17,7 +17,7 @@ export interface PartialBooleanControlType<TRequired extends boolean>
 export interface PartialBooleanORM {
   sequelize: Omit<
     PartialSequelizeDataType<undefined, boolean>,
-    "primaryKey" | "typeArgs" | "allowNullInfer"
+    "primaryKey" | "typeArgs"
   >
 }
 
@@ -25,7 +25,7 @@ export interface FinalBooleanORM {
   sequelize: Required<
     Omit<
       PartialSequelizeDataType<undefined, boolean>,
-      "primaryKey" | "typeArgs" | "allowNullInfer"
+      "primaryKey" | "typeArgs"
     >
   >
 }

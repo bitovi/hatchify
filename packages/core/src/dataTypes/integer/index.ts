@@ -31,14 +31,23 @@ export function integer<TRequired extends boolean = false>(
 //   [K in keyof T]: T[K]
 // } & {}
 
-// type B1 = Prettify<PartialNumberControlType<true>>["allowNullInfer"]
+// type B1 = Prettify<PartialNumberControlType<false>>["allowNullInfer"]
 // //   ^?
-// type B2 = Prettify<PartialNumberControlType<true>>["allowNull"]
+// type BB1 = Prettify<PartialNumberControlType<true>>["allowNullInfer"]
 // //   ^?
-// const aaaa = integer({ required: false })
-// type A1 = Prettify<typeof aaaa>["control"]["allowNullInfer"]
+// type B2 = Prettify<PartialNumberControlType<false>>["allowNull"]
 // //   ^?
-// type A2 = Prettify<typeof aaaa>["control"]["allowNull"]
+// type BB2 = Prettify<PartialNumberControlType<true>>["allowNull"]
+// //   ^?
+// const aaaa1 = integer({ required: true })
+// type A1 = Prettify<typeof aaaa1>["control"]["allowNullInfer"]
+// //   ^?
+// type AA1 = Prettify<typeof aaaa1>["control"]["allowNull"]
+// //   ^?
+// const aaaa2 = integer()
+// type A2 = Prettify<typeof aaaa2>["control"]["allowNullInfer"]
+// //   ^?
+// type AA2 = Prettify<typeof aaaa2>["control"]["allowNull"]
 // //   ^?
 
 // // declare function int<TRequired extends boolean, TPrimary extends boolean>(config: {

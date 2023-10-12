@@ -171,7 +171,7 @@ export function hatchifyReact<
   }
 }
 
-// // todo: leaving for testing, remove before merge to main
+// todo: leaving for testing, remove before merge to main
 // const partialTodo = {
 //   name: "Todo",
 //   attributes: {
@@ -224,6 +224,6 @@ export function hatchifyReact<
 
 // function Test() {
 //   return <TodoList>
-//     <TodoColumn field="optImportant" />
+//     <TodoColumn field="age" />
 //   </TodoList>
 // }

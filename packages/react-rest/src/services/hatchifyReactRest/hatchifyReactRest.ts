@@ -192,7 +192,7 @@ export const hatchifyReactRest = <
   return functions
 }
 
-// // todo: leaving for testing, remove before merge to main
+// todo: leaving for testing, remove before merge to main
 // const partialTodo = {
 //   name: "Todo",
 //   attributes: {

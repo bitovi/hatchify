@@ -109,6 +109,7 @@ describe("dateonly", () => {
         control: {
           type: "Dateonly",
           allowNull: false,
+          allowNullInfer: false,
           min: undefined,
           max: undefined,
           primary: undefined,

@@ -18,6 +18,7 @@ describe("ensureDefaultPrimaryAttribute", () => {
         control: {
           type: "String",
           allowNull: false,
+          allowNullInfer: false,
           default: expect.any(Function),
           min: 36,
           max: 36,
@@ -51,6 +52,7 @@ describe("ensureDefaultPrimaryAttribute", () => {
         control: {
           type: "String",
           allowNull: false,
+          allowNullInfer: false,
           default: expect.any(Function),
           min: 36,
           max: 36,

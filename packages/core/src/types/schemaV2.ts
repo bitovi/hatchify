@@ -31,8 +31,7 @@ export interface PartialDataTypeProps<
   TRequired extends boolean,
 > {
   primary?: boolean
-  // required?: boolean
-  required?: TRequired
+  required?: TRequired // @todo arthur - this is required to map to allowNullInfer
   default?: PrimitiveType | (() => PrimitiveType) | null
 }
 
