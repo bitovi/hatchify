@@ -107,7 +107,7 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
           attributes: {
             name: { type: "STRING" },
           },
-          pluralName: "Articles",
+          pluralName: "Collection",
         },
       })
       expect(dataSource).toEqual({
@@ -119,8 +119,8 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
               },
             },
             name: "Article",
-            pluralName: "Articles",
-            endpoint: "articles",
+            pluralName: "Collection",
+            endpoint: "collection",
             type: "Article",
           },
         },

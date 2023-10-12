@@ -5,9 +5,6 @@ import { hatchifyKoa } from "@hatchifyjs/koa"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
 
-import dotenv from "dotenv" // 👀
-dotenv.config() // 👀
-
 const app = new Koa()
 const hatchedKoa = hatchifyKoa([Todo, User], {
   prefix: "/api",

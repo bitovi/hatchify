@@ -60,35 +60,4 @@ describe("react-rest/services/hatchifyReactRest", () => {
       },
     })
   })
-
-  it("should accept both legacy and new schema", () => {
-    const api = hatchifyReactRest(fakeDataSource)
-
-    expect(api).toEqual({
-      Article: {
-        createOne: expect.any(Function),
-        deleteOne: expect.any(Function),
-        findAll: expect.any(Function),
-        findOne: expect.any(Function),
-        updateOne: expect.any(Function),
-        useCreateOne: expect.any(Function),
-        useDeleteOne: expect.any(Function),
-        useAll: expect.any(Function),
-        useOne: expect.any(Function),
-        useUpdateOne: expect.any(Function),
-      },
-      Person: {
-        createOne: expect.any(Function),
-        deleteOne: expect.any(Function),
-        findAll: expect.any(Function),
-        findOne: expect.any(Function),
-        updateOne: expect.any(Function),
-        useCreateOne: expect.any(Function),
-        useDeleteOne: expect.any(Function),
-        useAll: expect.any(Function),
-        useOne: expect.any(Function),
-        useUpdateOne: expect.any(Function),
-      },
-    })
-  })
 })

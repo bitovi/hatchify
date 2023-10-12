@@ -32,8 +32,7 @@ export const hatchedReact = hatchifyReact(
 const TodoList = hatchedReact.components.Todo.Collection
 
 const App: React.FC = () => {
-  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
-    // 👀
+  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({ // 👀
     all: false,
     ids: [],
   })

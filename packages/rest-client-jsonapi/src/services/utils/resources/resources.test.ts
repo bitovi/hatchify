@@ -221,7 +221,7 @@ describe("convertToJsonApiRelationships", () => {
     expect(
       convertToJsonApiRelationships(
         sourceConfig,
-        schemaMap.Article as any,
+        schemaMap.Article as Schema,
         relationships,
       ),
     ).toEqual(expected)
@@ -263,7 +263,7 @@ describe("convertToJsonApiRelationships", () => {
     expect(
       convertToJsonApiRelationships(
         sourceConfig,
-        schemaMap.Article as any,
+        schemaMap.Article as Schema,
         relationships,
       ),
     ).toEqual(expected)
