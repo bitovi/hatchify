@@ -21,27 +21,28 @@ export function integer<TRequired extends boolean = false>(
     name: `integer(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    // @ts-expect-error
     finalize: function finalizeInteger() {
       return getFinalize(this)
     },
   }
 }
 
-// type B = Prettify<PartialNumberControlType<true>>["allowNullInfer"]
+// type Prettify<T> = {
+//   [K in keyof T]: T[K]
+// } & {}
+
+// type B1 = Prettify<PartialNumberControlType<true>>["allowNullInfer"]
 // //   ^?
+// type B2 = Prettify<PartialNumberControlType<true>>["allowNull"]
+// //   ^?
+// const aaaa = integer({ required: false })
+// type A1 = Prettify<typeof aaaa>["control"]["allowNullInfer"]
+// //   ^?
+// type A2 = Prettify<typeof aaaa>["control"]["allowNull"]
+// //   ^?
+
 // // declare function int<TRequired extends boolean, TPrimary extends boolean>(config: {
 // //   primary?: TPrimary
 // //   required?: TPrimary extends true ? true : TRequired
 // // })
 // // const aaa = int({ primary: true, required: false })
-// type Prettify<T> = {
-//   [K in keyof T]: T[K]
-// } & {}
-
-// const aaaa = integer({ required: true })
-// type A = Prettify<typeof aaaa>["control"]["allowNullInfer"]
-// //   ^?
-
-// //    ^?
-// // aaaa.control.allowNull.

@@ -21,7 +21,6 @@ export function enumerate(
     name: `enumerate(${JSON.stringify(props)})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    // @ts-expect-error
     finalize: function finalizeText() {
       return getFinalize(this)
     },

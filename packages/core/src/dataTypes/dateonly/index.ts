@@ -26,7 +26,6 @@ export function dateonly<TRequired extends boolean = false>(
     name: `dateonly(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    // @ts-expect-error
     finalize: function finalizeDateonly() {
       return getFinalize(this)
     },

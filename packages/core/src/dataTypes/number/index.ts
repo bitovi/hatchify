@@ -26,7 +26,6 @@ export function number<TRequired extends boolean = false>(
     name: `number(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    // @ts-expect-error
     finalize: function finalizeNumber() {
       return getFinalize(this)
     },

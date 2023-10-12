@@ -21,7 +21,6 @@ export function text<TRequired extends boolean = false>(
     name: `text(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    // @ts-expect-error
     finalize: function finalizeText() {
       return getFinalize(this)
     },

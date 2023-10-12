@@ -27,7 +27,6 @@ export function datetime<TRequired extends boolean = false>(
     name: `datetime(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    // @ts-expect-error
     finalize: function finalizeDatetime() {
       return getFinalize(this)
     },

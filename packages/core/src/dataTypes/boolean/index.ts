@@ -26,7 +26,6 @@ export function boolean<TRequired extends boolean = false>(
     name: `boolean(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    // @ts-expect-error
     finalize: function finalizeBoolean() {
       return getFinalize(this)
     },

@@ -17,7 +17,6 @@ export function uuid(
     name: `uuid(${props ? JSON.stringify(props) : ""})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    // @ts-expect-error
     finalize: function finalizeString() {
       return getFinalize(this)
     },

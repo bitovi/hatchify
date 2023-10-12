@@ -63,7 +63,7 @@ export interface PartialAttribute<
   control: PartialControlTypeTemplate
   finalize: () => FinalAttribute<
     PartialORMTypeTemplate,
-    PartialControlTypeTemplate,
+    Omit<PartialControlTypeTemplate, "allowNullInfer">,
     PrimitiveType,
     FinalORMTypeTemplate
   >

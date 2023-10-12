@@ -28,7 +28,6 @@ export function string<TRequired extends boolean = false>(
     })`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    // @ts-expect-error
     finalize: function finalizeString() {
       return getFinalize(this)
     },
