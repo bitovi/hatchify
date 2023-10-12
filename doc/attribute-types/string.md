@@ -11,6 +11,35 @@ export const Todo: PartialSchema = {
 }
 ```
 
+## Querying Data
+
+If `required` is `false`, filtering `null` values is handled like the following:
+
+```
+GET /todos?name=foo  // all todos with name foo
+GET /todos?name=%00  // all todos with null as the name value 🛑
+GET /todos?name=null  // all todos with "null" as the name value
+```
+
+### Data Response
+
+String data will be returned as a string value or `null` as follows:
+
+```js
+{
+  data: {
+    ...
+    attributes: {
+      name: "foo" // or null
+    }
+  }
+}
+```
+
+### Mutating Data
+
+When creating or updating a string attribute, string value or `null` must be provided. Any other value will return a service error.
+
 ## Parameters
 
 - `default` [{String}] - The default value of the attribute. Example: `string({default: "USA"})`
@@ -26,18 +55,3 @@ export const Todo: PartialSchema = {
 `string()` with `max` of 256 and more will show a : `<textarea>`.
 
 If `required` is `false`, empty strings will be treated as `null` values.
-
-## Query string behavior 🛑
-
-### Parameters
-
-If `required` is `false`, filtering `null` values is handled like the following:
-
-- `filter[name][$eq]=%00` will filter records where `name` is absent.
-- `filter[name][$eq]=null` will filter records where `name` equals the string `null`.
-
-### Middleware Behavior 🛑
-
-#### Querying Behavior 🛑
-
-Query string is escaped using `querystring.escape` to make sure that the SQL query is built correctly.

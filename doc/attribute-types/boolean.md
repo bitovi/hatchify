@@ -24,11 +24,11 @@ The `boolean` type will create a sequelize [DataTypes.BOOLEAN](https://sequelize
 
 ### Querying Data
 
-For booleans, use `true`, `false`, and `null` in your queries as follows:
+For booleans, use `true`, `false`, and `%00` in your queries as follows:
 
 ```js
 GET /todos?complete=true  // all complete todos
-GET /todos?complete=null  // all todos with null as the complete value
+GET /todos?complete=%00  // all todos with null as the complete value 🛑
 GET /todos?complete=false // all false todos
 ```
 
@@ -75,18 +75,3 @@ The text `true` or `false` will be presented in the grid. If the value is `null`
 ## Form Behavior
 
 `boolean()` will produce a [`<input type=checkbox>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) control. `null` will be treated as unchecked.
-
-## Query string behavior 🛑
-
-### Parameters
-
-If `required` is `false`, filtering `null` values is handled like the following:
-
-- `filter[complete][$eq]=%00` will filter records where `complete` is absent.
-- `filter[complete][$eq]=null` will filter records where `complete` equals `null`.
-
-### Middleware Behavior 🛑
-
-#### Querying Behavior 🛑
-
-Query string is escaped using `querystring.escape` to make sure that the SQL query is built correctly.
