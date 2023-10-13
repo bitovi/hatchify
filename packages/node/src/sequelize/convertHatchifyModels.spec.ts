@@ -3,7 +3,7 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import JSONAPISerializer from "json-api-serializer"
 
 import { convertHatchifyModels } from "./convertHatchifyModels"
-import { createSequelizeInstance } from "../createSequelizeInstance"
+import { createSequelizeInstance } from "./createSequelizeInstance"
 
 describe("convertHatchifyModels", () => {
   const sequelize = createSequelizeInstance()
@@ -21,11 +21,9 @@ describe("convertHatchifyModels", () => {
 
     expect(models).toEqual({
       associationsLookup: { User: {} },
-      models: {
+      sequelizeModels: {
         User: expect.any(Function),
       },
-      virtuals: {},
-      plurals: {},
     })
   })
 })

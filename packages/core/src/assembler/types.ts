@@ -98,7 +98,7 @@ export interface PartialSchema<
   name: string
   namespace?: string
   pluralName?: string
-  displayName?: string
+  displayAttribute?: string
   id?: PartialAttribute<
     PartialUuidORM,
     PartialStringControlType,
@@ -155,7 +155,7 @@ export interface FinalSchema {
   name: string
   namespace?: string
   pluralName?: string
-  displayName?: string
+  displayAttribute?: string
   id: FinalAttribute<
     PartialUuidORM,
     PartialStringControlType,

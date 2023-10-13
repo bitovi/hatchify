@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/koa",
-  "version": "0.1.16",
+  "version": "1.0.0",
   "description": "Fullstack CRUD Application Solution",
   "main": "./dist/exports.js",
   "types": "./dist/exports.d.ts",
@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
-    "@hatchifyjs/core": "^0.1.7",
-    "@hatchifyjs/node": "^0.2.15",
+    "@hatchifyjs/core": "^0.1.11",
+    "@hatchifyjs/node": "^1.0.0",
     "dotenv": "^16.3.1",
     "jsonapi-serializer": "^3.6.7",
     "typedoc": "^0.23.21"

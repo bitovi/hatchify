@@ -5,12 +5,11 @@ import type JSONAPISerializer from "json-api-serializer"
 import type { Sequelize } from "sequelize"
 
 import { toSequelize } from "./toSequelize"
-import { registerSchema } from "../../serialize"
-import { HatchifySymbolModel } from "../../types"
-import type { HatchifyModel, SequelizeModelsCollection } from "../../types"
-import { getFullModelName } from "../../utils/getFullModelName"
-import { pluralize } from "../../utils/pluralize"
-import { definedPlurals } from "../definedPlurals"
+import { registerSchema } from "../serialize"
+import { HatchifySymbolModel } from "../types"
+import type { HatchifyModel, SequelizeModelsCollection } from "../types"
+import { getFullModelName } from "../utils/getFullModelName"
+import { pluralize } from "../utils/pluralize"
 
 export function convertHatchifyModels(
   sequelize: Sequelize,
@@ -208,8 +207,6 @@ export function convertHatchifyModels(
 
   return {
     associationsLookup,
-    models: sequelize.models as SequelizeModelsCollection,
-    virtuals: {},
-    plurals: definedPlurals(hatchifyModels),
+    sequelizeModels: sequelize.models as SequelizeModelsCollection,
   }
 }

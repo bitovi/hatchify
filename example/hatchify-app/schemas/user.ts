@@ -1,10 +1,12 @@
-// hatchify-app/schemas/user.ts
+import { PartialSchema, hasMany, string } from "@hatchifyjs/core"
 
-export const User = {
+export const User: PartialSchema = {
   name: "User",
   // namespace: "Admin",
   attributes: {
-    name: "STRING",
+    name: string(),
   },
-  hasMany: [{ target: "Todo", options: { as: "todos" } }],
+  relationships: {
+    todos: hasMany(),
+  },
 }

@@ -1,17 +1,22 @@
-// hatchify-app/schemas/todo.ts
+import {
+  PartialSchema,
+  belongsTo,
+  datetime,
+  enumerate,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 
-export const Todo = {
+export const Todo: PartialSchema = {
   name: "Todo",
   // namespace: "Admin",
   attributes: {
-    name: { type: "STRING", allowNull: true },
-    dueDate: { type: "DATE", allowNull: true },
-    importance: { type: "INTEGER", allowNull: true },
-    status: {
-      type: "ENUM",
-      allowNull: true,
-      values: ["Pending", "Failed", "Completed"],
-    },
+    name: string(),
+    dueDate: datetime(),
+    importance: integer(),
+    status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
   },
-  belongsTo: [{ target: "User", options: { as: "user" } }],
+  relationships: {
+    user: belongsTo(),
+  },
 }

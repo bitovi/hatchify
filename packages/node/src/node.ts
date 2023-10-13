@@ -15,10 +15,9 @@ import type { ParseFunctions } from "./parse"
 import { buildSchemaForModel } from "./schema"
 import {
   buildHatchifyModelObject,
-  convertHatchifyModels as convertHatchifyV1Models,
+  convertHatchifyModels,
   createSequelizeInstance,
 } from "./sequelize"
-import { convertHatchifyModels as convertHatchifyV2Models } from "./sequelize/v2/convertHatchifyModels"
 import { buildSerializerForModel } from "./serialize"
 import type { SerializeFunctions } from "./serialize"
 import type {
@@ -31,34 +30,6 @@ import type {
   Virtuals,
 } from "./types"
 import { pluralize } from "./utils/pluralize"
-
-/**
- * Parse can be imported from the `@bitovi/hatchify` package
- *
- * This function provides direct access to the querystring parsing and validation of Hatchify without
- * needing to create a Hatchify instance. You can use a Hatchify Model directly along with your querystring
- * and the Parse function will return the underlying ORM query options.
- *
- * @param {HatchifyModel} model The Hatchify Model to use for validation, attributes, relationships, etc
- * @returns {ModelFunctionsCollection<ParseFunctions>}
- */
-// export function Parse(model: HatchifyModel) {
-//   return buildParserForModelStandalone(model);
-// }
-
-/**
- * Serialize can be imported from the `@bitovi/hatchify` package
- *
- * This function provides direct access to the result serializer Hatchify without
- * needing to create a Hatchify instance. You can use a Hatchify Model directly along with your data
- * and the Serialize function will return a valid JSON:API serialized version.
- *
- * @param {HatchifyModel} model The Hatchify Model to use for validation, attributes, relationships, etc
- * @returns {ModelFunctionsCollection<SerializeFunctions>}
- */
-// export function Serialize(model: HatchifyModel) {
-//   return buildSerializerForModelStandalone(model);
-// }
 
 /**
  * Hatchify can be imported from the `@hatchifyjs/koa` package
@@ -80,7 +51,7 @@ export class Hatchify {
   private _pluralToSingularModelNames: { [plural: string]: string }
   private _prefix: string
 
-  virtuals: Virtuals
+  virtuals: Virtuals = {}
 
   // this is a lookup that shows all associations for each model.
   associationsLookup: Record<string, Record<string, IAssociation> | undefined>
@@ -88,13 +59,13 @@ export class Hatchify {
   /**
    * Creates a new Hatchify instance
    *
-   * @param {HatchifyModel[]} models An array of Hatchify Models
+   * @param {Record<string, PartialSchema>} schemas A record of Hatchify schemas
    * @param {HatchifyOptions} options Configuration options for Hatchify
    *
    * @return {Hatchify}
    */
   constructor(
-    models: HatchifyModel[] | { [schemaName: string]: PartialSchema },
+    schemas: Record<string, PartialSchema>,
     options: HatchifyOptions = {},
   ) {
     // Prepare the ORM instance and keep references to the different Models
@@ -115,33 +86,20 @@ export class Hatchify {
     }
     this._serializer = new JSONAPISerializer()
 
-    // Fetch the hatchify models and associations look up
-    const {
-      associationsLookup,
-      models: sequelizeModels,
-      virtuals,
-      plurals: definedPlurals,
-    } = Array.isArray(models)
-      ? convertHatchifyV1Models(this._sequelize, this._serializer, models)
-      : convertHatchifyV2Models(this._sequelize, this._serializer, models)
+    const { associationsLookup, sequelizeModels } = convertHatchifyModels(
+      this._sequelize,
+      this._serializer,
+      schemas,
+    )
 
-    this.virtuals = virtuals
     this.associationsLookup = associationsLookup
     this._sequelizeModels = sequelizeModels
 
-    this._pluralToSingularModelNames = Object.entries(
+    this._pluralToSingularModelNames = Object.keys(
       this._sequelizeModels,
-    ).reduce((acc, [singular, value]) => {
-      if (definedPlurals[singular]) {
-        return {
-          ...acc,
-          [definedPlurals[singular].toLowerCase()]: singular,
-        }
-      }
-      return {
-        ...acc,
-        [pluralize(singular.toLowerCase())]: singular,
-      }
+    ).reduce((acc, fullModelName) => {
+      const key = schemas[fullModelName]?.pluralName ?? pluralize(fullModelName)
+      return { ...acc, [key.toLowerCase()]: fullModelName }
     }, {})
 
     // Store the route prefix if the user set one

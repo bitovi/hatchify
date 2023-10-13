@@ -1,7 +1,12 @@
-export const User = {
+import { hasMany, string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
+
+export const User: PartialSchema = {
   name: "User",
   attributes: {
-    name: "STRING",
+    name: string(),
   },
-  hasMany: [{ target: "Todo", options: { as: "todos" } }],
+  relationships: {
+    todos: hasMany(),
+  },
 }
