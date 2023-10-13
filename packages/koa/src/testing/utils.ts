@@ -149,7 +149,7 @@ async function parse(result: request.Response): Promise<ParseResult> {
 }
 
 interface ForeignKey {
-  schemaName: string
+  schemaName?: string
   tableName: string
   columnName: string
 }
@@ -200,7 +200,6 @@ export async function getDatabaseColumns(
                 {
                   tableName: constraint.table,
                   columnName: constraint.to,
-                  schemaName: "",
                 },
               ]
             : acc,
