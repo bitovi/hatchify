@@ -253,6 +253,122 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       expect(userWTodo.data.relationships.todos.data).toEqual([])
     })
 
+    it("sorts by fields included from relationships", async () => {
+      // add user
+      const userIds: string[] = []
+      const todoIds: string[] = []
+      const userNames = ["John Doe", "Richard Roe", "Captain Slow"]
+      for (const name of userNames) {
+        userIds.push(
+          (
+            await fetch("/api/users", {
+              method: "post",
+              body: {
+                data: {
+                  type: "User",
+                  attributes: {
+                    name,
+                  },
+                },
+              },
+            })
+          ).body.data.id,
+        )
+      }
+
+      for (const userId of userIds) {
+        todoIds.push(
+          (
+            await fetch("/api/todos", {
+              method: "post",
+              body: {
+                data: {
+                  type: "Todo",
+                  attributes: {
+                    name: "Walk the dog" + userId,
+                    dueDate: "2024-12-12T00:00:00.000Z",
+                    importance: 6,
+                  },
+                  relationships: {
+                    user: {
+                      data: { type: "User", id: userId },
+                    },
+                  },
+                },
+              },
+            })
+          ).body.data.id,
+        )
+      }
+
+      interface UserIncluded {
+        id: string
+        attributes: typeof User.attributes
+      }
+      interface TodoResult {
+        data: {
+          id: string
+        }
+        relationships: {
+          [key: string]: {
+            data: {
+              id: string
+            }
+          }
+        }
+      }
+      interface TodoBody {
+        data: TodoResult[]
+        included: UserIncluded[]
+      }
+
+      // add todo w/ user relation
+      const { body: todos }: { body: TodoBody } = await fetch(
+        `/api/todos?${todoIds
+          .map((todoId) => `filter[id][$in][]=${todoId}`)
+          .join("&")}&include=user&sort=user.name`,
+      )
+
+      const usersById = todos.included.reduce(
+        (
+          acc: { [key: string]: UserIncluded },
+          user: UserIncluded,
+        ): { [key: string]: UserIncluded } => ({
+          ...acc,
+          [user.id]: user,
+        }),
+        {},
+      )
+
+      const usersInOrder = todos.data.map((todo) => {
+        return usersById[todo.relationships.user.data.id].attributes.name
+      })
+      expect(usersInOrder).toEqual(userNames.sort())
+
+      // descending case
+      const { body: todosDesc }: { body: TodoBody } = await fetch(
+        `/api/todos?${todoIds
+          .map((todoId) => `filter[id][$in][]=${todoId}`)
+          .join("&")}&include=user&sort=-user.name`,
+      )
+
+      const usersByIdDesc = todosDesc.included.reduce(
+        (
+          acc: { [key: string]: UserIncluded },
+          user: UserIncluded,
+        ): { [key: string]: UserIncluded } => ({
+          ...acc,
+          [user.id]: user,
+        }),
+        {},
+      )
+
+      const usersInOrderDesc = todosDesc.data.map((todo) => {
+        return usersByIdDesc[todo.relationships.user.data.id].attributes.name
+      })
+      expect(usersInOrderDesc).toEqual(userNames.sort().reverse())
+    })
+
     describe("should add associations both ways (HATCH-172)", () => {
       it("todo and then user", async () => {
         const { body: todo } = await fetch("/api/todos", {

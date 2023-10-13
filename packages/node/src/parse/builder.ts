@@ -96,15 +96,71 @@ export function buildFindOptions(
 
   if (Array.isArray(ops.data.order)) {
     for (const orderItem of ops.data.order as string[][]) {
-      const attribute = orderItem[0]
+      // any associations to read before the attribute will occur first in the array
+      const associations = orderItem.slice(0, -2)
+      // the final two items in the array are the attribute name and the direction
+      const [attribute /*, direction*/] = orderItem.slice(-2)
+      // as we descend across the associations with a for..of, keep track of which
+      //   associations we've already validated so e.g. a path of
+      //   ["salesperson", "compnay", "name", "asc"]
+      //  will fail after "salesperson" because "compnay" is a typo, and the error
+      //  message will report "...one or more attributes of salesperson.company"
+      const successfulAssociations: string[] = []
 
-      if (attribute !== "id" && !model.attributes[attribute]) {
+      let currentSchema: typeof model = model
+      let associationErrorTriggered = false
+
+      // Iterate over every element of the sort that is deemed to be an association name
+      for (const associationName of associations) {
+        let targetAssociation: string | null = null
+        if (
+          currentSchema.relationships &&
+          Object.keys(currentSchema.relationships).length
+        ) {
+          targetAssociation =
+            currentSchema.relationships[associationName]?.targetSchema
+          // Model has relationships but none with the name requested.  Throw an error.
+          if (!targetAssociation) {
+            ops.errors.push(
+              new UnexpectedValueError({
+                detail: `URL must have 'sort' as comma separated values containing one or more attributes of ${Object.keys(
+                  currentSchema.relationships,
+                )
+                  .map((association) => `'${association}'`)
+                  .join(", ")}.`,
+                parameter: "sort",
+              }),
+            )
+            associationErrorTriggered = true
+            break
+          }
+        } else {
+          // No relationships on model.  Generate error expecting attributes of last model.
+          ops.errors.push(
+            new UnexpectedValueError({
+              detail: `URL must have 'sort' as comma separated values containing one or more attributes of ${currentSchema.name}.`,
+              parameter: "sort",
+            }),
+          )
+          associationErrorTriggered = true
+          break
+        }
+        // descend to next object for association
+        successfulAssociations.push(associationName)
+        currentSchema = hatchify.schema[targetAssociation]
+      }
+
+      if (
+        !associationErrorTriggered &&
+        attribute !== "id" &&
+        !currentSchema.attributes[attribute]
+      ) {
         ops.errors.push(
           new UnexpectedValueError({
             detail: `URL must have 'sort' as comma separated values containing one or more of ${Object.keys(
-              model.attributes,
+              currentSchema.attributes,
             )
-              .map((attribute) => `'${attribute}'`)
+              .map((attribute) => `'${[...associations, attribute].join(".")}'`)
               .join(", ")}.`,
             parameter: "sort",
           }),

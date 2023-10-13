@@ -33,15 +33,23 @@ describe("builder", () => {
       user: belongsTo(),
     },
   }
+  const DisconnectedSchemaSchema: PartialSchema = {
+    name: "DisconnectedSchema",
+    attributes: {
+      name: string(),
+      importance: integer(),
+    },
+  }
   const hatchify = new Hatchify(
     {
       User: UserSchema,
       Todo: TodoSchema,
+      DisconnectedSchema: DisconnectedSchemaSchema,
     },
     { prefix: "/api" },
   )
 
-  const { User, Todo } = hatchify.schema
+  const { User, Todo, DisconnectedSchema } = hatchify.schema
 
   describe("buildFindOptions", () => {
     it("works with ID attribute provided", () => {
@@ -231,6 +239,30 @@ describe("builder", () => {
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: `URL must have 'sort' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.`,
+          parameter: `sort`,
+        }),
+      ])
+    })
+
+    it("handles unknown sort assocations", async () => {
+      await expect(async () =>
+        buildFindOptions(hatchify, Todo, "sort=invalid.alsoinvalid"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'sort' as comma separated values containing one or more attributes of 'user'.`,
+          parameter: `sort`,
+        }),
+      ])
+
+      await expect(async () =>
+        buildFindOptions(
+          hatchify,
+          DisconnectedSchema,
+          "sort=invalid.alsoinvalid",
+        ),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'sort' as comma separated values containing one or more attributes of DisconnectedSchema.`,
           parameter: `sort`,
         }),
       ])
