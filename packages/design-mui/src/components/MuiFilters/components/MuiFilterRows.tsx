@@ -10,7 +10,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import ColumnSelect from "./inputs/ColumnSelect"
 import OperatorSelect from "./inputs/OperatorSelect"
 import ValueInput from "./inputs/ValueInput"
-import { capitalize } from "lodash"
+import capitalize from "lodash/capitalize"
 
 type ChangeParams =
   | {

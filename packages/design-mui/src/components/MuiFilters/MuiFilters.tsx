@@ -6,7 +6,7 @@ import { MuiFilterRows } from "./components/MuiFilterRows"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
-import useMuiFilters from "./hooks/useMuiFilters"
+import useFilterableFields from "./hooks/useFilterableFields"
 
 export const MuiFilters: React.FC<XCollectionProps> = ({
   allSchemas,
@@ -17,7 +17,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   page,
   setPage,
 }) => {
-  const { fields } = useMuiFilters(allSchemas, schemaName, include ?? [])
+  const fields = useFilterableFields(allSchemas, schemaName, include ?? [])
 
   const defaultFilter = {
     field: fields[0],
