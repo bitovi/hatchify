@@ -11,6 +11,20 @@ export const Todo: PartialSchema = {
 }
 ```
 
+## Parameters
+
+- `default` [{String}] - The default value of the attribute. Example: `string({default: "USA"})`
+- `max` [{Number=225}] - The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})`
+- `min` [{Number=0}] - The minimum number of characters allowed. Defaults to 0. Example: `string({min: 1})`
+- `references` - [See References]()
+- `required` [{Boolean=false}] - If the attribute must be provided.
+
+## Database and Sequelize Behavior
+
+The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
+
+## Middleware Behavior
+
 ## Querying Data
 
 If `required` is `false`, filtering `null` values is handled like the following:
@@ -41,14 +55,6 @@ String data will be returned as a string value or `null` as follows:
 ### Mutating Data
 
 When creating or updating a string attribute, string value or `null` must be provided. Any other value will return a service error.
-
-## Parameters
-
-- `default` [{String}] - The default value of the attribute. Example: `string({default: "USA"})`
-- `max` [{Number=225}] - The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})`
-- `min` [{Number=0}] - The minimum number of characters allowed. Defaults to 0. Example: `string({min: 1})`
-- `references` - [See References]()
-- `required` [{Boolean=false}] - If the attribute must be provided.
 
 ## Form Controls
 
