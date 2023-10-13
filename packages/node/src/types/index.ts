@@ -1,4 +1,5 @@
 import type { FinalSchema } from "@hatchifyjs/core"
+import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import type { JSONAPIDocument } from "json-api-serializer"
 import type {
   BelongsToManyOptions,
@@ -15,7 +16,6 @@ import type {
 } from "sequelize"
 
 import type { Hatchify } from "../node"
-import { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 
 export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"

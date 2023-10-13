@@ -202,7 +202,7 @@ export class Hatchify {
    * give you further access to a number of named functions
    *
    * For more information about the underlying per-model functions:
-   * @see {@link HatchifyModel}
+   * @see {@link FinalSchema}
    *
    * @returns {ModelFunctionsCollection<FinalSchema>}
    * @category General Use
