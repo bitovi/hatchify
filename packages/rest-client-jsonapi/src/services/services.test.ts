@@ -19,7 +19,7 @@ const Article = {
 
 const Feature_Article = {
   name: "Article",
-  type: "Article",
+  type: "Feature_Article",
   namespace: "Feature",
   displayAttribute: "name",
   attributes: {
