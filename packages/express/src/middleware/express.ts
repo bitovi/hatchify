@@ -1,4 +1,8 @@
-import type { Hatchify, MiddlewareRequest } from "@hatchifyjs/node"
+import type {
+  Hatchify,
+  HatchifyError,
+  MiddlewareRequest,
+} from "@hatchifyjs/node"
 import {
   errorResponseHandler,
   getMiddlewareFunctions,
@@ -94,7 +98,9 @@ export async function errorMiddleware(
   try {
     await next()
   } catch (ex) {
-    const { errors, status } = errorResponseHandler(ex)
+    const { errors, status } = errorResponseHandler(
+      ex as Error | HatchifyError[],
+    )
 
     res.status(status).json({ jsonapi: { version: "1.0" }, errors })
   }

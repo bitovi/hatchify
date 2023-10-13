@@ -139,7 +139,7 @@ describe("Attribute Tests", () => {
     expect(find1.deserialized).toHaveProperty("length")
     expect(find1.deserialized.length).toBe(3)
 
-    find1.deserialized.forEach((entry) => {
+    find1.deserialized.forEach((entry: any) => {
       expect(entry).toHaveProperty("first_name")
       expect(entry).not.toHaveProperty("last_name")
     })
@@ -151,7 +151,7 @@ describe("Attribute Tests", () => {
     expect(find2.deserialized).toHaveProperty("length")
     expect(find2.deserialized.length).toBe(3)
 
-    find2.deserialized.forEach((entry) => {
+    find2.deserialized.forEach((entry: any) => {
       expect(entry).toHaveProperty("last_name")
       expect(entry).not.toHaveProperty("first_name")
     })

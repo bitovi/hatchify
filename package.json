@@ -37,7 +37,7 @@
     "@bitovi/eslint-config": "^1.6.0",
     "@playwright/test": "^1.35.1",
     "depcheck": "^1.4.3",
-    "eslint": "^8.42.0",
+    "eslint": "^8.51.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "nx": "15.9.2",

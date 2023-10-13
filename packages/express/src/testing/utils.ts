@@ -2,6 +2,7 @@ import type { PartialSchema } from "@hatchifyjs/node"
 import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 import Express from "express"
+import type { Express as ExpressIf } from "express-serve-static-core"
 import { Deserializer } from "jsonapi-serializer"
 import type { Dialect } from "sequelize"
 import request from "supertest"
@@ -9,6 +10,13 @@ import request from "supertest"
 import { Hatchify, errorHandlerMiddleware } from "../express"
 
 type Method = "get" | "post" | "patch" | "delete"
+
+export type ParseResult = {
+  text?: string
+  status?: number
+  serialized: any
+  deserialized: any
+}
 
 export const dbDialects: Dialect[] = ["postgres", "sqlite"]
 
@@ -21,7 +29,7 @@ export async function startServerWith(
     options?: { method?: Method; headers?: object; body?: object },
   ) => Promise<any>
   teardown: () => Promise<void>
-  hatchify?
+  hatchify: Hatchify
 }> {
   dotenv.config({
     path: ".env",
@@ -84,7 +92,7 @@ export async function startServerWith(
   }
 }
 
-async function parse(result) {
+async function parse(result: request.Response): Promise<ParseResult> {
   let serialized
   let deserialized
   let text
@@ -130,7 +138,7 @@ async function parse(result) {
 }
 
 interface ForeignKey {
-  schemaName: string
+  schemaName?: string
   tableName: string
   columnName: string
 }
@@ -148,19 +156,32 @@ export async function getDatabaseColumns(
   tableName: string,
   schemaName = "public",
 ): Promise<DatabaseColumn[]> {
-  const dialect: Dialect = hatchify.orm.getDialect()
+  const dialect: Dialect = hatchify.orm.getDialect() as Dialect
   let columns: DatabaseColumn[] = []
 
   if (dialect === "sqlite") {
-    const [[result], constraints] = await Promise.all([
-      hatchify._sequelize.query(
+    type resultRow = {
+      name: string
+      notnull: number
+      pk: number
+      type: string
+      dflt_value: string
+    }
+    type constraintRow = {
+      from: string
+      table: string
+      to: string
+    }
+
+    const [[result], constraints] = (await Promise.all([
+      hatchify.orm.query(
         `SELECT name, "notnull", pk, type, dflt_value FROM pragma_table_info('${tableName}')`,
       ),
-      hatchify._sequelize.query(`PRAGMA foreign_key_list(${tableName})`),
-    ])
+      hatchify.orm.query(`PRAGMA foreign_key_list(${tableName})`),
+    ])) as unknown as [[resultRow[]], constraintRow[]]
 
-    columns = result.map((column) => {
-      const foreignKeys = constraints.reduce(
+    columns = result.map((column: resultRow) => {
+      const foreignKeys: ForeignKey[] = constraints.reduce<ForeignKey[]>(
         (acc, constraint) =>
           constraint.from === column.name
             ? [
@@ -171,7 +192,7 @@ export async function getDatabaseColumns(
                 },
               ]
             : acc,
-        [],
+        [] as ForeignKey[],
       )
 
       return {
@@ -184,15 +205,28 @@ export async function getDatabaseColumns(
       }
     })
   } else if (dialect === "postgres") {
-    const [[result], [constraints]] = await Promise.all([
-      hatchify._sequelize.query(
+    type resultRow = {
+      column_name: string
+      is_nullable: string
+      data_type: string
+      column_default: string
+    }
+    type constraintRow = {
+      type: string
+      column: string
+      foreignSchema: string
+      foreignTable: string
+      foreignColumn: string
+    }
+    const [[result], [constraints]] = (await Promise.all([
+      hatchify.orm.query(
         `
         SELECT column_name, is_nullable, data_type, column_default
         FROM information_schema.columns
         WHERE table_schema = :schemaName AND table_name = :tableName`,
         { replacements: { schemaName, tableName } },
       ),
-      hatchify._sequelize.query(
+      hatchify.orm.query(
         `
         SELECT
           tc.constraint_type AS type,
@@ -209,10 +243,10 @@ export async function getDatabaseColumns(
         WHERE tc.table_schema = :schemaName AND tc.table_name = :tableName`,
         { replacements: { schemaName, tableName } },
       ),
-    ])
+    ])) as unknown as [[resultRow[]], [constraintRow[]]]
 
     columns = result.map((column) => {
-      const foreignKeys = constraints.reduce(
+      const foreignKeys = constraints.reduce<ForeignKey[]>(
         (acc, constraint) =>
           constraint.column === column.column_name &&
           constraint.type === "FOREIGN KEY"
@@ -225,7 +259,7 @@ export async function getDatabaseColumns(
                 },
               ]
             : acc,
-        [],
+        [] as ForeignKey[],
       )
 
       return {
@@ -257,7 +291,10 @@ export async function getDatabaseColumns(
 /**
  * @deprecated Please use `startServerWith` and `fetch` instead
  */
-export async function GET(server, path) {
+export async function GET(
+  server: ExpressIf,
+  path: string,
+): Promise<ParseResult> {
   const result = await request(server).get(path).set("authorization", "test")
   return parse(result)
 }
@@ -265,7 +302,10 @@ export async function GET(server, path) {
 /**
  * @deprecated Please use `startServerWith` and `fetch` instead
  */
-export async function DELETE(server, path) {
+export async function DELETE(
+  server: ExpressIf,
+  path: string,
+): Promise<ParseResult> {
   const result = await request(server).delete(path).set("authorization", "test")
 
   return await parse(result)
@@ -274,7 +314,12 @@ export async function DELETE(server, path) {
 /**
  * @deprecated Please use `startServerWith` and `fetch` instead
  */
-export async function POST(server, path, payload, type = "application/json") {
+export async function POST(
+  server: ExpressIf,
+  path: string,
+  payload: any,
+  type = "application/json",
+): Promise<ParseResult> {
   const result = await request(server)
     .post(path)
     .set("authorization", "test")
@@ -287,7 +332,12 @@ export async function POST(server, path, payload, type = "application/json") {
 /**
  * @deprecated Please use `startServerWith` and `fetch` instead
  */
-export async function PATCH(server, path, payload, type = "application/json") {
+export async function PATCH(
+  server: ExpressIf,
+  path: string,
+  payload: any,
+  type = "application/json",
+): Promise<ParseResult> {
   const result = await request(server)
     .patch(path)
     .set("authorization", "test")
@@ -300,7 +350,12 @@ export async function PATCH(server, path, payload, type = "application/json") {
 /**
  * @deprecated Please use `startServerWith` and `fetch` instead
  */
-export async function PUT(server, path, payload, type = "application/json") {
+export async function PUT(
+  server: ExpressIf,
+  path: string,
+  payload: any,
+  type = "application/json",
+): Promise<ParseResult> {
   const result = await request(server)
     .put(path)
     .set("authorization", "test")
