@@ -15,7 +15,7 @@ describe("JSON:API Tests", () => {
     },
   }
 
-  function serialize(data) {
+  function serialize(data: any) {
     const serializer = new Serializer("Model", {
       keyForAttribute: "camelCase",
       attributes: Object.keys(data),

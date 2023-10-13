@@ -14,7 +14,7 @@ describe("Internal Tests", () => {
     },
   }
 
-  let hatchify
+  let hatchify: Hatchify
   afterEach(async () => {
     await hatchify.orm.close()
   })

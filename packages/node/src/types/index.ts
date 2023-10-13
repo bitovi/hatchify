@@ -1,3 +1,4 @@
+import type { FinalSchema } from "@hatchifyjs/core"
 import type { JSONAPIDocument } from "json-api-serializer"
 import type {
   BelongsToManyOptions,
@@ -7,13 +8,14 @@ import type {
   HasOneOptions,
   Model,
   ModelAttributeColumnOptions,
+  ModelCtor,
   ModelStatic,
-  ModelValidateOptions,
   Options,
+  Sequelize,
 } from "sequelize"
-import type { ModelHooks } from "sequelize/types/hooks"
 
 import type { Hatchify } from "../node"
+import { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 
 export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"
@@ -55,15 +57,29 @@ export const HatchifySymbolModel = Symbol("hatchify")
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type SequelizeModelInstance = ModelStatic<any> & {
-  [HatchifySymbolModel]: HatchifyModel
+  [HatchifySymbolModel]: FinalSchema
 }
 
 export type SequelizeModelsCollection = {
   [key: string]: SequelizeModelInstance
 }
 
-export type HatchifyModelCollection = {
-  [key: string]: HatchifyModel
+export interface ICreateHatchifyModel {
+  associationsLookup: Record<string, Record<string, IAssociation> | undefined>
+  models: SequelizeModelsCollection
+}
+
+/**
+ * specialized type for creating hatchify models and attaching them to
+ * Sequelize models. In most cases you will want to use
+ * SequelizeModelsCollection for Sequelize models.
+ */
+export interface SequelizeWithHatchify extends Sequelize {
+  readonly models: {
+    [key: string]: ModelCtor<Model> & {
+      [HatchifySymbolModel]: FinalSchema
+    }
+  }
 }
 
 export type JSONObject = Record<string, unknown>
@@ -76,10 +92,7 @@ export interface ModelFunctionsCollection<T> {
   allModels: T
 }
 
-export type FunctionsHandler<T> = (
-  hatchify: Hatchify,
-  name: string | symbol,
-) => T
+export type FunctionsHandler<T> = (hatchify: Hatchify, name: string) => T
 
 export type HatchifyAttributes = ModelAttributes<Model>
 
@@ -139,77 +152,6 @@ type ModelAttributes<M extends Model = Model, TAttributes = unknown> = {
   [name in keyof TAttributes]:
     | DataType
     | ModelAttributeColumnOptionsWithInclude<M>
-}
-
-/**
- * Models can be defined in Hatchify by creating a `[name].ts` file containing
- * the following required (and optional) fields shown here.
- *
- * After a model is defined and passed to a Hatchify instance it will be
- * available within hatchify.orm.* by its model name
- *
- * The model name field will also dictate the usage for the dynamicly exported
- * functions provided by your Hatchify instance
- *
- */
-export interface HatchifyModel {
-  /**
-   * Model Attributes define the fields that are associated with this model and
-   * also reflect, generally, on the associated columns in your underlying database
-   *
-   * As an example, if you were creating a `User` model you might want to represent
-   * a `firstName` and `lastName` field.
-   *
-   * ```ts
-   * attributes: {
-   *  firstName: string(),
-   *  lastName: string(),
-   * }
-   * ```
-   */
-  attributes: ModelAttributes
-
-  /**
-   * The Model `name` dictates the underlying database table name as well
-   * as how your model can be accessed later through your Hatchify instance
-   */
-  name: string
-
-  /**
-   * The Model `pluralName` defines the plural representation of the Model `name`
-   */
-  pluralName?: string
-
-  /**
-   * The Model `namespace` dictates the underlying database schema name as well
-   * as how your model can be accessed later through your Hatchify instance
-   */
-  namespace?: string
-
-  /**
-   * Validation in Hatchify is directly tied to features within the Sequelize ORM
-   * See the Sequelize [documentation for more information](https://sequelize.org/docs/v6/core-concepts/validations-and-constraints/#model-wide-validations)
-   */
-  validation?: ModelValidateOptions
-
-  /**
-   * Relationship Documentation belongsTo
-   */
-  belongsTo?: BelongsToResult[]
-  /**
-   * Relationship Documentation belongsToMany
-   */
-  belongsToMany?: BelongsToManyResult[]
-  /**
-   * Relationship Documentation hasOne
-   */
-  hasOne?: HasOneResult[]
-  /**
-   * Relationship Documentation hasMany
-   */
-  hasMany?: HasManyResult[]
-
-  hooks?: Partial<ModelHooks>
 }
 
 export interface Virtuals {

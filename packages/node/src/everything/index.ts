@@ -14,7 +14,7 @@ export interface EverythingFunctions {
     querystring: string,
     id?: Identifier,
   ) => Promise<JSONAPIDocument>
-  destroy: (querystring: string, id?: Identifier) => Promise<JSONAPIDocument>
+  destroy: (querystring: string, id: Identifier) => Promise<JSONAPIDocument>
 }
 
 export function buildEverythingForModel(

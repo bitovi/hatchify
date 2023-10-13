@@ -1,3 +1,4 @@
+import type { FinalSchema } from "@hatchifyjs/core"
 import type { FindOptions } from "sequelize"
 
 import {
@@ -7,14 +8,13 @@ import {
 } from "../error"
 import type { HatchifyError } from "../error/types"
 import type { Hatchify } from "../node"
-import type { HatchifyModel } from "../types"
 import { getFullModelName } from "../utils/getFullModelName"
 
 function isObject(value: any): boolean {
   return value && typeof value === "object" && !Array.isArray(value)
 }
 
-export function validateFindOptions<T extends HatchifyModel = HatchifyModel>(
+export function validateFindOptions<T extends FinalSchema = FinalSchema>(
   options: FindOptions,
   model: T,
   hatchify: Hatchify,
@@ -65,7 +65,7 @@ export function validateFindOptions<T extends HatchifyModel = HatchifyModel>(
   }
 }
 
-export function validateStructure<T extends HatchifyModel = HatchifyModel>(
+export function validateStructure<T extends FinalSchema = FinalSchema>(
   body: any,
   model: T,
   hatchify: Hatchify,
@@ -142,78 +142,80 @@ export function validateStructure<T extends HatchifyModel = HatchifyModel>(
     ]
   }
 
-  const relationshipsErrors = Object.entries(body.data.relationships).reduce(
-    (acc, [relationshipName, relationshipValue]: [string, any]) => {
-      if (!relationshipValue) {
-        return [
-          ...acc,
-          new ValueRequiredError({
-            title,
-            detail: `Payload must include a value for '${relationshipName}'.`,
-            pointer: `/data/attributes/${relationshipName}`,
-          }),
-        ]
-      }
+  const relationshipsErrors = Object.entries(body.data.relationships).reduce<
+    Error[]
+  >((acc, [relationshipName, relationshipValue]: [string, any]) => {
+    if (!relationshipValue) {
+      return [
+        ...acc,
+        new ValueRequiredError({
+          title,
+          detail: `Payload must include a value for '${relationshipName}'.`,
+          pointer: `/data/attributes/${relationshipName}`,
+        }),
+      ]
+    }
 
-      if (relationshipValue.data === undefined) {
-        return [
-          ...acc,
-          new ValueRequiredError({
-            title,
-            detail: "Payload must include a value for 'data'.",
-            pointer: `/data/attributes/${relationshipName}/data`,
-          }),
-        ]
-      }
+    if (relationshipValue.data === undefined) {
+      return [
+        ...acc,
+        new ValueRequiredError({
+          title,
+          detail: "Payload must include a value for 'data'.",
+          pointer: `/data/attributes/${relationshipName}/data`,
+        }),
+      ]
+    }
 
-      const relationshipErrors: HatchifyError[] = []
+    const relationshipErrors: HatchifyError[] = []
 
-      const associations = hatchify.associationsLookup[getFullModelName(model)]
+    const associations = hatchify.associationsLookup[getFullModelName(model)]
 
-      let modelAssociation
-      if (associations) {
-        modelAssociation = associations[relationshipName]
-      }
+    let modelAssociation
+    if (associations) {
+      modelAssociation = associations[relationshipName]
+    }
 
-      if (!modelAssociation) {
+    if (!modelAssociation) {
+      relationshipErrors.push(
+        new RelationshipPathError({
+          detail: `Payload must include an identifiable relationship path.`,
+          pointer: `/data/relationships/${relationshipName}`,
+        }),
+      )
+    } else {
+      const modelName = modelAssociation.model
+      const targetRelationship = Object.values(model.relationships || {}).find(
+        ({ targetSchema }) => targetSchema === modelName,
+      )
+      const expectObject =
+        targetRelationship &&
+        ["hasOne", "belongsTo"].includes(targetRelationship.type)
+      const expectArray =
+        targetRelationship &&
+        ["hasMany", "belongsToMany"].includes(targetRelationship.type)
+
+      if (expectArray && !Array.isArray(relationshipValue.data)) {
         relationshipErrors.push(
-          new RelationshipPathError({
-            detail: `Payload must include an identifiable relationship path.`,
-            pointer: `/data/relationships/${relationshipName}`,
+          new UnexpectedValueError({
+            detail: "Payload must have 'data' as an array.",
+            pointer: `/data/relationships/${relationshipName}/data`,
           }),
         )
-      } else {
-        const modelName = modelAssociation.model
-        const expectObject =
-          model.hasOne?.some(({ target }) => target === modelName) ||
-          model.belongsTo?.some(({ target }) => target === modelName)
-        const expectArray =
-          model.hasMany?.some(({ target }) => target === modelName) ||
-          model.belongsToMany?.some(({ target }) => target === modelName)
-
-        if (expectArray && !Array.isArray(relationshipValue.data)) {
-          relationshipErrors.push(
-            new UnexpectedValueError({
-              detail: "Payload must have 'data' as an array.",
-              pointer: `/data/relationships/${relationshipName}/data`,
-            }),
-          )
-        }
-
-        if (expectObject && !isObject(relationshipValue.data)) {
-          relationshipErrors.push(
-            new UnexpectedValueError({
-              detail: "Payload must have 'data' as an object.",
-              pointer: `/data/relationships/${relationshipName}/data`,
-            }),
-          )
-        }
       }
 
-      return [...acc, ...relationshipErrors]
-    },
-    [],
-  )
+      if (expectObject && !isObject(relationshipValue.data)) {
+        relationshipErrors.push(
+          new UnexpectedValueError({
+            detail: "Payload must have 'data' as an object.",
+            pointer: `/data/relationships/${relationshipName}/data`,
+          }),
+        )
+      }
+    }
+
+    return [...acc, ...relationshipErrors]
+  }, [])
 
   if (relationshipsErrors.length) {
     throw relationshipsErrors

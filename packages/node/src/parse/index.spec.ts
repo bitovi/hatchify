@@ -45,7 +45,7 @@ describe("index", () => {
 
   describe("buildParserForModelStandalone", () => {
     const { findAll, findOne, findAndCountAll, create, update, destroy } =
-      buildParserForModelStandalone(hatchedNode, Todo)
+      buildParserForModelStandalone(hatchedNode, hatchedNode.schema.Todo)
 
     describe("findAll", () => {
       it("works with ID attribute provided", async () => {
@@ -83,7 +83,7 @@ describe("index", () => {
         await expect(findAll("fields[todo]=invalid")).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status'.",
+              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
             parameter: "fields[todo]",
           }),
         ])
@@ -146,7 +146,7 @@ describe("index", () => {
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status'.",
+              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
             parameter: "fields[todo]",
           }),
         ])
@@ -212,7 +212,7 @@ describe("index", () => {
         await expect(findOne("fields[todo]=invalid", 1)).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status'.",
+              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
             parameter: "fields[todo]",
           }),
         ])
@@ -372,7 +372,10 @@ describe("index", () => {
     }
 
     const hatchedNode = new Hatchify({ Todo })
-    const { findAll } = buildParserForModelStandalone(hatchedNode, Todo)
+    const { findAll } = buildParserForModelStandalone(
+      hatchedNode,
+      hatchedNode.schema.Todo,
+    )
 
     it("handles invalid include", async () => {
       await expect(findAll("include=user")).rejects.toEqualErrors([

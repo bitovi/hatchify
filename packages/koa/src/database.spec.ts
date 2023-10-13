@@ -69,10 +69,12 @@ describe("Naming rules", () => {
 
     for (const table of database) {
       const { columns: expectedColumns, tableName } = table
-      const [dbResult] = await hatchify._sequelize.query(
+      const [dbResult] = await hatchify.orm.query(
         `SELECT name FROM pragma_table_info("${tableName}")`,
       )
-      const columns = dbResult.map((row) => row.name)
+      const columns = (dbResult as Array<{ name: string }>).map(
+        (row) => row.name,
+      )
 
       expect(columns).toEqual(expect.arrayContaining(expectedColumns))
     }

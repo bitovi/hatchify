@@ -31,7 +31,7 @@
     "@bitovi/querystring-parser": "^0.7.7",
     "@bitovi/sequelize-querystring-parser": "^0.2.7",
     "@hatchifyjs/core": "^0.1.11",
-    "@hatchifyjs/sequelize-create-with-associations": "^0.6.4",
+    "@hatchifyjs/sequelize-create-with-associations": "^0.6.5",
     "co-body": "^6.1.0",
     "json-api-serializer": "^2.6.6",
     "lodash": "^4.17.21",
