@@ -56,6 +56,10 @@ String data will be returned as a string value or `null` as follows:
 
 When creating or updating a string attribute, string value or `null` must be provided. Any other value will return a service error.
 
+# Grid Behavior
+
+![String NULL filter](doc/attachments/stringNullFilter.png)
+
 ## Form Controls
 
 `string()` with `max` of 255 and less will produce a standard text input like: `<input type=text>`.
