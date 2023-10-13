@@ -997,7 +997,9 @@ describe("Naming rules", () => {
         const [dbResult] = await hatchify.orm.query(
           `SELECT name FROM pragma_table_info("${tableName}")`,
         )
-        const columns = (dbResult as Array<{name: string}>).map((row) => row.name)
+        const columns = (dbResult as Array<{ name: string }>).map(
+          (row) => row.name,
+        )
 
         expect(columns).toEqual(expect.arrayContaining(expectedColumns))
       }
