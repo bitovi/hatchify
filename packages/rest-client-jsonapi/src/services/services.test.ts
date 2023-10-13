@@ -2,14 +2,14 @@ import cors from "@koa/cors"
 import Koa from "koa"
 import { describe, expect, it } from "vitest"
 import { string, v2ToV1 } from "@hatchifyjs/core"
-import type { PartialSchema } from "@hatchifyjs/core"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import jsonapi from "../rest-client-jsonapi"
 import { testBackendEndpointConfig } from "../setupTests"
 
-const Article: PartialSchema = {
+const Article = {
   name: "Article",
+  type: "Article",
   displayAttribute: "name",
   attributes: {
     author: string({ required: true }),
@@ -17,8 +17,9 @@ const Article: PartialSchema = {
   },
 }
 
-const Feature_Article: PartialSchema = {
+const Feature_Article = {
   name: "Article",
+  type: "Feature_Article",
   namespace: "Feature",
   displayAttribute: "name",
   attributes: {
@@ -48,11 +49,15 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     const jsonApi = jsonapi(
       `http://localhost:3010/${testBackendEndpointConfig.api}`,
-      {
-        Article: { endpoint: `${testBackendEndpointConfig.schemaSegment}` },
-      },
+      v2ToV1({
+        Article: {
+          ...Article,
+          // @ts-expect-error will be fixed when v2ToV1 is no longer needed
+          endpoint: `${testBackendEndpointConfig.schemaSegment}`,
+        },
+      }),
     )
-    const hatchedReactRest = hatchifyReactRest(v2ToV1({ Article }), jsonApi)
+    const hatchedReactRest = hatchifyReactRest(jsonApi)
 
     await hatchedReactRest.Article.createOne({
       attributes: {
@@ -118,16 +123,16 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     const jsonApi = jsonapi(
       `http://localhost:3011/${testBackendEndpointConfig.api}`,
-      {
+      v2ToV1({
         Feature_Article: {
+          ...Feature_Article,
+          // @ts-expect-error will be fixed when v2ToV1 is no longer needed
           endpoint: `${testBackendEndpointConfig.namespacedSchemaSegment}`,
         },
-      },
+      }),
     )
-    const hatchedReactRest = hatchifyReactRest(
-      v2ToV1({ Feature_Article }),
-      jsonApi,
-    )
+
+    const hatchedReactRest = hatchifyReactRest(jsonApi)
 
     await hatchedReactRest.Feature_Article.createOne({
       attributes: {

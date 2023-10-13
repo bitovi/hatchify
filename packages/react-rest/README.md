@@ -171,11 +171,9 @@ const Todo: Schema = {
   },
 }
 
-const jsonapi = createClient("/api", {
-  Todo: { endpoint: "todos" },
-})
+const jsonapi = createClient("/api", { Todo })
 
-const hatchedReactRest = hatchifyReactRest({ Todo }, jsonapi)
+const hatchedReactRest = hatchifyReactRest(jsonapi)
 
 function App() {
   const [todos, todosMeta] = hatchedReactRest.Todo.useAll()
@@ -272,9 +270,7 @@ import createClient from "@hatchifyjs/rest-client-jsonapi"
 
 // ...
 
-const jsonapi = createClient("/api", {
-  Todo: { endpoint: "todos" },
-})
+const jsonapi = createClient("/api", { Todo })
 ```
 
 <a id="hatchifyreactrest"></a>
@@ -287,7 +283,7 @@ import hatchifyReactRest from "@hatchifyjs/react-rest"
 
 // ...
 
-const hatchedReactRest = hatchifyReactRest({ Todo }, jsonapi)
+const hatchedReactRest = hatchifyReactRest(jsonapi)
 ```
 
 <a id="fetching-a-list"></a>
@@ -472,13 +468,12 @@ Next, we need to pass the new User schema into `createClient` and `hatchifyReact
 ```ts
 // App.tsx
 const jsonapi = createClient("/api", {
-  Todo: { endpoint: "todos" },
+  Todo,
   // 👀
-  User: { endpoint: "users" },
+  User,
 })
 
-// 👀
-const hatchedReactRest = hatchifyReactRest({ Todo, User }, jsonapi)
+const hatchedReactRest = hatchifyReactRest(jsonapi)
 ```
 
 Finally, we update our `useAll` hook to include user data and update our list to print a user name for each todo.
@@ -547,12 +542,9 @@ const User: Schema = {
   },
 }
 
-const jsonapi = createClient("/api", {
-  Todo: { endpoint: "todos" },
-  User: { endpoint: "users" },
-})
+const jsonapi = createClient("/api", { Todo, User })
 
-const hatchedReactRest = hatchifyReactRest({ Todo, User }, jsonapi)
+const hatchedReactRest = hatchifyReactRest(jsonapi)
 
 function App() {
   const [todos, todosMeta] = hatchedReactRest.Todo.useAll({ include: ["user"] })
@@ -724,12 +716,9 @@ const User: Schema = {
   },
 }
 
-const jsonapi = createClient("/api", {
-  Todo: { endpoint: "todos" },
-  User: { endpoint: "users" },
-})
+const jsonapi = createClient("/api", { Todo, User })
 
-const hatchedReactRest = hatchifyReactRest({ Todo, User }, jsonapi)
+const hatchedReactRest = hatchifyReactRest(jsonapi)
 
 function App() {
   const [todos, todosMeta] = hatchedReactRest.Todo.useAll({ include: ["user"] })

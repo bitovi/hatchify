@@ -40,7 +40,7 @@ export interface CollectionState {
 export default function useCollectionState(
   allSchemas: Schemas,
   schemaName: string,
-  restClient: ReactRest<Schemas>,
+  restClient: ReactRest,
   {
     defaultSelected,
     onSelectedChange,

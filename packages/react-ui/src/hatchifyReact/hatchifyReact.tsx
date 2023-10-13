@@ -1,5 +1,4 @@
-import type { Schema as LegacySchema } from "@hatchifyjs/core"
-import type { ReactRest, SchemaRecord } from "@hatchifyjs/react-rest"
+import type { ReactRest } from "@hatchifyjs/react-rest"
 import type {
   Fields,
   Filters,
@@ -49,7 +48,7 @@ type Components = {
 
 export type HatchifyApp = {
   components: Components
-  model: ReactRest<SchemaRecord>
+  model: ReactRest
   state: {
     [schemaName: string]: {
       useCollectionState: ({
@@ -73,13 +72,12 @@ export type HatchifyApp = {
   }
 }
 
-export function hatchifyReact(
-  legacySchemas: Record<string, LegacySchema>,
-  dataSource: Source,
-): HatchifyApp {
-  const reactRest = hatchifyReactRest(legacySchemas, dataSource)
+export function hatchifyReact(dataSource: Source): HatchifyApp {
+  const { completeSchemaMap: schemas } = dataSource
 
-  const schemas = Object.values(legacySchemas).reduce((acc, schema) => {
+  const reactRest = hatchifyReactRest(dataSource)
+
+  const formattedSchemas = Object.values(schemas).reduce((acc, schema) => {
     acc[schemaNameWithNamespace(schema)] = transformSchema(schema)
     return acc
   }, {} as Schemas)
@@ -90,7 +88,7 @@ export function hatchifyReact(
     acc[schemaName] = {
       Collection: (props) => (
         <HatchifyCollection
-          allSchemas={schemas}
+          allSchemas={formattedSchemas}
           schemaName={schemaName}
           restClient={reactRest}
           {...props}
@@ -99,7 +97,7 @@ export function hatchifyReact(
       Column: (props) => (
         // todo fix ts!!!
         <HatchifyColumn
-          allSchemas={schemas}
+          allSchemas={formattedSchemas}
           schemaName={schemaName}
           {...props}
         />
@@ -123,7 +121,7 @@ export function hatchifyReact(
         defaultSort,
         baseFilter,
       } = {}) =>
-        useCollectionState(schemas, schema.name, reactRest, {
+        useCollectionState(formattedSchemas, schema.name, reactRest, {
           defaultSelected,
           onSelectedChange,
           fields,

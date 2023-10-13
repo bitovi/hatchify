@@ -4,6 +4,7 @@ import type {
   RequiredSchemaMap,
 } from "@hatchifyjs/rest-client"
 import { createOne, deleteOne, findAll, findOne, updateOne } from ".."
+import { getEndpoint } from "../utils/schema"
 
 export type Relationship = {
   id: string | number
@@ -32,7 +33,15 @@ export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
     (acc, [key, value]) => {
       acc[key] = {
         ...value,
+        name: value.name,
+        attributes: { ...value.attributes },
         type: value.type || key,
+        endpoint: getEndpoint(
+          value.endpoint,
+          value.namespace,
+          value.pluralName,
+          value.name,
+        ),
       }
       return acc
     },
@@ -42,6 +51,7 @@ export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
   const config = { baseUrl, schemaMap: completeSchemaMap }
 
   return {
+    completeSchemaMap: completeSchemaMap,
     version: 0,
     findAll: (allSchemas, schemaName, query, baseFilter) =>
       findAll(config, allSchemas, schemaName, query, baseFilter),

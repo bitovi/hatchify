@@ -89,7 +89,7 @@ following steps:
    ```bash
    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
    "dev:frontend": "vite",
-   "dev:backend": "nodemon --esm backend/index.ts --watch backend",
+   "dev:backend": "nodemon --esm backend/index.ts",
    "build:frontend": "tsc && vite build --outDir dist/frontend",
    "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
    "start:frontend": "vite preview --outDir dist/frontend",
@@ -243,7 +243,7 @@ check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/a
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import { Todo, User } from "../schemas"
+import { Todo, User } from "../schemas/schemas"
 
 const app = new Koa()
 const hatchedKoa = hatchifyKoa(
@@ -253,7 +253,6 @@ const hatchedKoa = hatchifyKoa(
     database: {
       dialect: "sqlite",
       storage: ":memory:",
-      logging: false,
     },
   },
 )
@@ -534,18 +533,14 @@ following:**
 
 ```tsx
 // hatchify-app/frontend/App.tsx
-import { v2ToV1 } from "@hatchifyjs/core"
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo, User } from "../schemas"
+import { Todo, User } from "../schemas/schemas"
 
 export const hatchedReact = hatchifyReact(
-  createJsonapiClient(
-    "http://localhost:3000/api",
-    v2ToV1({
-      Todo,
-      User,
-    }),
-  ),
+  createJsonapiClient("http://localhost:3000/api", {
+    Todo,
+    User,
+  }),
 )
 
 const TodoList = hatchedReact.components.Todo.Collection
