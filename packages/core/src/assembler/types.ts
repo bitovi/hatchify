@@ -44,18 +44,21 @@ export type PartialAttributeRecord = Record<
   string,
   | PartialAttribute<
       PartialBooleanORM,
+      // @ts-expect-error @todo HATCH-417
       PartialBooleanControlType,
       boolean,
       FinalBooleanORM
     >
   | PartialAttribute<
       PartialDateonlyORM,
+      // @ts-expect-error @todo HATCH-417
       PartialDateonlyControlType,
       string,
       FinalDateonlyORM
     >
   | PartialAttribute<
       PartialDatetimeORM,
+      // @ts-expect-error @todo HATCH-417
       PartialDatetimeControlType,
       Date,
       FinalDatetimeORM
@@ -68,24 +71,28 @@ export type PartialAttributeRecord = Record<
     >
   | PartialAttribute<
       PartialNumberORM,
+      // @ts-expect-error @todo HATCH-417
       PartialNumberControlType,
       number,
       FinalNumberORM
     >
   | PartialAttribute<
       PartialStringORM,
+      // @ts-expect-error @todo HATCH-417
       PartialStringControlType,
       string,
       FinalStringORM
     >
   | PartialAttribute<
       PartialTextORM,
+      // @ts-expect-error @todo HATCH-417
       PartialTextControlType,
       string,
       FinalTextORM
     >
   | PartialAttribute<
       PartialUuidORM,
+      // @ts-expect-error @todo HATCH-417
       PartialStringControlType,
       string,
       FinalUuidORM
@@ -101,6 +108,7 @@ export interface PartialSchema<
   displayAttribute?: string
   id?: PartialAttribute<
     PartialUuidORM,
+    // @ts-expect-error @todo HATCH-417
     PartialStringControlType,
     string,
     FinalUuidORM
@@ -113,18 +121,21 @@ export type FinalAttributeRecord = Record<
   string,
   | FinalAttribute<
       PartialBooleanORM,
+      // @ts-expect-error @todo HATCH-417
       PartialBooleanControlType,
       boolean,
       FinalBooleanORM
     >
   | FinalAttribute<
       PartialDateonlyORM,
+      // @ts-expect-error @todo HATCH-417
       PartialDateonlyControlType,
       string,
       FinalDateonlyORM
     >
   | FinalAttribute<
       PartialDatetimeORM,
+      // @ts-expect-error @todo HATCH-417
       PartialDatetimeControlType,
       Date,
       FinalDatetimeORM
@@ -132,19 +143,28 @@ export type FinalAttributeRecord = Record<
   | FinalAttribute<PartialEnumORM, PartialEnumControlType, string, FinalEnumORM>
   | FinalAttribute<
       PartialNumberORM,
+      // @ts-expect-error @todo HATCH-417
       PartialNumberControlType,
       number,
       FinalNumberORM
     >
   | FinalAttribute<
       PartialStringORM,
+      // @ts-expect-error @todo HATCH-417
       PartialStringControlType,
       string,
       FinalStringORM
     >
-  | FinalAttribute<PartialTextORM, PartialTextControlType, string, FinalTextORM>
+  | FinalAttribute<
+      PartialTextORM,
+      // @ts-expect-error @todo HATCH-417
+      PartialTextControlType,
+      string,
+      FinalTextORM
+    >
   | FinalAttribute<
       PartialUuidORM,
+      // @ts-expect-error @todo HATCH-417
       PartialStringControlType,
       string,
       FinalUuidORM
@@ -158,6 +178,7 @@ export interface FinalSchema {
   displayAttribute?: string
   id: FinalAttribute<
     PartialUuidORM,
+    // @ts-expect-error @todo HATCH-417
     PartialStringControlType,
     string,
     FinalUuidORM
@@ -176,6 +197,7 @@ export type PartialSchemaWithPrimaryAttribute = Omit<
 > & {
   id: PartialAttribute<
     PartialUuidORM,
+    // @ts-expect-error @todo HATCH-417
     PartialStringControlType,
     string,
     FinalUuidORM

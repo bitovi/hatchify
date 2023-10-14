@@ -15,11 +15,11 @@ export * from "./getPartialOrm"
 export * from "./isISO8601DatetimeString"
 export * from "./types"
 
-export function datetime(
-  props?: PartialDatetimeProps,
+export function datetime<TRequired extends boolean = false>(
+  props?: PartialDatetimeProps<TRequired>,
 ): PartialAttribute<
   PartialDatetimeORM,
-  PartialDatetimeControlType,
+  PartialDatetimeControlType<TRequired>,
   Date,
   FinalDatetimeORM
 > {

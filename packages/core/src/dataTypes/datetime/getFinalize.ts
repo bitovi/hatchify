@@ -18,13 +18,13 @@ import type {
 export function getFinalize(
   props: PartialAttribute<
     PartialDatetimeORM,
-    PartialDatetimeControlType,
+    Omit<PartialDatetimeControlType<boolean>, "allowNullInfer">,
     Date,
     FinalDatetimeORM
   >,
 ): FinalAttribute<
   PartialDatetimeORM,
-  PartialDatetimeControlType,
+  Omit<PartialDatetimeControlType<boolean>, "allowNullInfer">,
   Date,
   FinalDatetimeORM
 > {

@@ -21,6 +21,7 @@ describe("integer", () => {
         control: {
           type: "Number",
           allowNull: undefined,
+          allowNullInfer: undefined,
           min: undefined,
           max: undefined,
           primary: undefined,
@@ -221,6 +222,7 @@ describe("integer", () => {
         control: {
           type: "Number",
           allowNull: false,
+          allowNullInfer: false,
           min: undefined,
           max: undefined,
           primary: undefined,

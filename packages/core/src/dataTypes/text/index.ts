@@ -9,11 +9,11 @@ import type {
 } from "./types"
 import type { PartialAttribute } from "../../types"
 
-export function text(
-  props?: PartialTextProps,
+export function text<TRequired extends boolean = false>(
+  props?: PartialTextProps<TRequired>,
 ): PartialAttribute<
   PartialTextORM,
-  PartialTextControlType,
+  PartialTextControlType<TRequired>,
   string,
   FinalTextORM
 > {

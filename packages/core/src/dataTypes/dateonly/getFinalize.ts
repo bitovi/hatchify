@@ -17,13 +17,13 @@ import type {
 export function getFinalize(
   props: PartialAttribute<
     PartialDateonlyORM,
-    PartialDateonlyControlType,
+    Omit<PartialDateonlyControlType<boolean>, "allowNullInfer">,
     string,
     FinalDateonlyORM
   >,
 ): FinalAttribute<
   PartialDateonlyORM,
-  PartialDateonlyControlType,
+  Omit<PartialDateonlyControlType<boolean>, "allowNullInfer">,
   string,
   FinalDateonlyORM
 > {

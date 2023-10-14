@@ -9,7 +9,7 @@ export function uuid(
   props?: PartialUuidProps,
 ): PartialAttribute<
   PartialUuidORM,
-  PartialStringControlType,
+  PartialStringControlType<true>,
   string,
   FinalUuidORM
 > {

@@ -14,11 +14,11 @@ export * from "./getPartialControl"
 export * from "./getPartialOrm"
 export * from "./types"
 
-export function boolean(
-  props?: PartialBooleanProps,
+export function boolean<TRequired extends boolean = false>(
+  props?: PartialBooleanProps<TRequired>,
 ): PartialAttribute<
   PartialBooleanORM,
-  PartialBooleanControlType,
+  PartialBooleanControlType<TRequired>,
   boolean,
   FinalBooleanORM
 > {

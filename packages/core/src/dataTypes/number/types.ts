@@ -4,14 +4,16 @@ import type {
   PartialSequelizeDataType,
 } from "../../types"
 
-export interface PartialNumberProps extends PartialDataTypeProps<number> {
+export interface PartialNumberProps<TRequired extends boolean>
+  extends PartialDataTypeProps<number, TRequired> {
   autoIncrement?: boolean
   min?: number
   max?: number
   step?: number
 }
 
-export interface PartialNumberControlType extends PartialControlType<number> {
+export interface PartialNumberControlType<TRequired extends boolean>
+  extends PartialControlType<number, TRequired> {
   type: "Number"
   min?: number
   max?: number
