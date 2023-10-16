@@ -1,8 +1,7 @@
 import type { Schemas } from "@hatchifyjs/rest-client"
 import "@testing-library/jest-dom"
 import { describe, it, expect } from "vitest"
-import { renderHook, waitFor } from "@testing-library/react"
-import useFilterableFields from "./useFilterableFields"
+import { getFilterableFields } from "./utils"
 
 const schemas: Schemas = {
   Todo: {
@@ -48,15 +47,13 @@ const schemas: Schemas = {
   },
 }
 
-describe("components/useFilterableFields", () => {
-  it("It has related fields if include is passed in with a value", async () => {
-    const { result } = renderHook(() =>
-      useFilterableFields(schemas, "Todo", ["user"]),
-    )
+describe("components/MuiFilters/utils", () => {
+  describe("getFilterableFields", () => {
+    it("it has related fields if include is passed in with a value", () => {
+      const result = getFilterableFields(schemas, "Todo", ["user"])
 
-    //boolean types are not supported yet, so important attribute is not returned
-    await waitFor(() => {
-      expect(result.current).toEqual([
+      // boolean types are not supported yet, so important attribute is not returned
+      expect(result).toEqual([
         "name",
         "date",
         "note",
@@ -68,26 +65,18 @@ describe("components/useFilterableFields", () => {
         "user.user_type",
       ])
     })
-  })
 
-  it("It does not have related fields if include is empty", async () => {
-    const { result } = renderHook(() =>
-      useFilterableFields(schemas, "Todo", []),
-    )
+    it("it does not have related fields if include is empty", () => {
+      const result = getFilterableFields(schemas, "Todo", [])
 
-    //boolean types are not supported yet, so important attribute is not returned
-    await waitFor(() => {
-      expect(result.current).toEqual(["name", "date", "note", "status"])
+      // boolean types are not supported yet, so important attribute is not returned
+      expect(result).toEqual(["name", "date", "note", "status"])
     })
-  })
 
-  it("It adds fields that are a string instead of an object", async () => {
-    const { result } = renderHook(() =>
-      useFilterableFields(schemas, "User", []),
-    )
+    it("it adds fields that are a string instead of an object", () => {
+      const result = getFilterableFields(schemas, "User", [])
 
-    await waitFor(() => {
-      expect(result.current).toEqual([
+      expect(result).toEqual([
         "name",
         "email",
         "planned_date",
@@ -95,15 +84,11 @@ describe("components/useFilterableFields", () => {
         "user_type",
       ])
     })
-  })
 
-  it("It works on schemas that do not have relationships", async () => {
-    const { result } = renderHook(() =>
-      useFilterableFields(schemas, "Planner", []),
-    )
+    it("It works on schemas that do not have relationships", () => {
+      const result = getFilterableFields(schemas, "Planner", [])
 
-    await waitFor(() => {
-      expect(result.current).toEqual(["title"])
+      expect(result).toEqual(["title"])
     })
   })
 })
