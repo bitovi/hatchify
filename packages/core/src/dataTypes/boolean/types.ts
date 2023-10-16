@@ -4,10 +4,13 @@ import type {
   PartialSequelizeDataType,
 } from "../../types"
 
-export type PartialBooleanProps = Omit<PartialDataTypeProps<boolean>, "primary">
+export type PartialBooleanProps<TRequired extends boolean> = Omit<
+  PartialDataTypeProps<boolean, TRequired>,
+  "primary"
+>
 
-export interface PartialBooleanControlType
-  extends Omit<PartialControlType<boolean>, "primary"> {
+export interface PartialBooleanControlType<TRequired extends boolean>
+  extends Omit<PartialControlType<boolean, TRequired>, "primary"> {
   type: "Boolean"
 }
 

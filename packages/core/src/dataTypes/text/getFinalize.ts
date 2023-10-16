@@ -16,13 +16,13 @@ import { coerce } from "../string/coerce"
 export function getFinalize(
   props: PartialAttribute<
     PartialTextORM,
-    PartialTextControlType,
+    Omit<PartialTextControlType<boolean>, "allowNullInfer">,
     string,
     FinalTextORM
   >,
 ): FinalAttribute<
   PartialTextORM,
-  PartialTextControlType,
+  Omit<PartialTextControlType<boolean>, "allowNullInfer">,
   string,
   FinalTextORM
 > {

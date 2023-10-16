@@ -17,13 +17,13 @@ import type {
 export function getFinalize(
   props: PartialAttribute<
     PartialNumberORM,
-    PartialNumberControlType,
+    Omit<PartialNumberControlType<boolean>, "allowNullInfer">,
     number,
     FinalNumberORM
   >,
 ): FinalAttribute<
   PartialNumberORM,
-  PartialNumberControlType,
+  Omit<PartialNumberControlType<boolean>, "allowNullInfer">,
   number,
   FinalNumberORM
 > {

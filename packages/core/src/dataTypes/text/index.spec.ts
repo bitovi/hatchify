@@ -99,6 +99,7 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: false,
+          allowNullInfer: false,
           min: 0,
           max: Infinity,
           primary: undefined,

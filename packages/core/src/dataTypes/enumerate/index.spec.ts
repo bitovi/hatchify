@@ -109,6 +109,7 @@ describe("enumerate", () => {
         control: {
           type: "String",
           allowNull: false,
+          allowNullInfer: false,
           primary: undefined,
           values,
         },

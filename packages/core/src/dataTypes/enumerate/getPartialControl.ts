@@ -14,6 +14,9 @@ export function getPartialControl(
   return {
     type: "String",
     allowNull: props?.required == null ? props?.required : !props.required,
+    allowNullInfer: (props?.required == null
+      ? props?.required
+      : !props.required) as boolean,
     primary: props?.primary,
     default: props?.default,
     values: props.values,

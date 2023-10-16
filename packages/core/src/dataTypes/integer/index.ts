@@ -9,11 +9,11 @@ import type {
   PartialNumberProps,
 } from "../number"
 
-export function integer(
-  props?: PartialNumberProps,
+export function integer<TRequired extends boolean = false>(
+  props?: PartialNumberProps<TRequired>,
 ): PartialAttribute<
   PartialNumberORM,
-  PartialNumberControlType,
+  PartialNumberControlType<TRequired>,
   number,
   FinalNumberORM
 > {

@@ -94,6 +94,7 @@ describe("boolean", () => {
         control: {
           type: "Boolean",
           allowNull: false,
+          allowNullInfer: false,
         },
         finalize: expect.any(Function),
       })

@@ -1,6 +1,8 @@
 import type { PartialBooleanORM, PartialBooleanProps } from "./types"
 
-export function getPartialOrm(props?: PartialBooleanProps): PartialBooleanORM {
+export function getPartialOrm(
+  props?: PartialBooleanProps<boolean>,
+): PartialBooleanORM {
   return {
     sequelize: {
       type: "BOOLEAN",

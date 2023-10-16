@@ -13,13 +13,13 @@ import { finalizeControl } from "../string/finalizeControl"
 export function getFinalize(
   props: PartialAttribute<
     PartialUuidORM,
-    PartialStringControlType,
+    Omit<PartialStringControlType<boolean>, "allowNullInfer">,
     string,
     FinalUuidORM
   >,
 ): FinalAttribute<
   PartialUuidORM,
-  PartialStringControlType,
+  Omit<PartialStringControlType<boolean>, "allowNullInfer">,
   string,
   FinalUuidORM
 > {

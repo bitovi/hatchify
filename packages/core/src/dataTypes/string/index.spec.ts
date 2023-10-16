@@ -137,6 +137,7 @@ describe("string", () => {
         control: {
           type: "String",
           allowNull: false,
+          allowNullInfer: false,
           min: undefined,
           max: undefined,
           primary: undefined,

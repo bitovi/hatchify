@@ -9,6 +9,7 @@ describe("getDefaultPrimaryAttribute", () => {
       name: 'uuid({"primary":true,"required":true})',
       control: {
         allowNull: false,
+        allowNullInfer: false,
         max: 36,
         min: 36,
         default: expect.any(Function),
