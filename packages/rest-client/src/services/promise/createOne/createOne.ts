@@ -46,6 +46,6 @@ export const createOne = async <
 
   notifySubscribers()
 
-  // @ts-expect-error return from `flattenResourcesIntoRecords` needs to be `RecordType`
+  // @ts-expect-error todo HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
   return flattenResourcesIntoRecords(allSchemas, resources, schemaName)[0]
 }

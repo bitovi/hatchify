@@ -1,4 +1,4 @@
-import { assembler, integer } from "@hatchifyjs/core"
+import { assembler, integer, string } from "@hatchifyjs/core"
 import { describe, it, expect } from "vitest"
 import { createStore } from "../../store"
 import { findAll } from "./findAll"
@@ -8,18 +8,21 @@ const finalSchemas = assembler({
   Article: {
     name: "Article",
     attributes: {
+      name: string(),
       views: integer(),
     },
   },
   Person: {
     name: "Person",
     attributes: {
+      name: string(),
       age: integer(),
     },
   },
   Tag: {
     name: "Tag",
     attributes: {
+      title: string(),
       views: integer(),
     },
   },
@@ -35,32 +38,31 @@ describe("rest-client/services/promise/findAll", () => {
         __schema: "Article",
         title: "foo",
         body: "foo-body",
-        // todo: relationships not ready for v2 yet
-        // author: {
-        //   id: "person-1",
-        //   __schema: "Person",
-        //   __label: "foo",
-        //   name: "foo",
-        // },
-        // tags: [
-        // { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-        // { id: "tag-2", __schema: "Tag", __label: "tag-2", title: "tag-2" },
-        // ],
+        author: {
+          id: "person-1",
+          __schema: "Person",
+          __label: "foo",
+          name: "foo",
+        },
+        tags: [
+          { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
+          { id: "tag-2", __schema: "Tag", __label: "tag-2", title: "tag-2" },
+        ],
       },
       {
         id: "article-2",
         __schema: "Article",
         title: "foo",
         body: "foo-body",
-        // author: {
-        // id: "person-1",
-        // __schema: "Person",
-        // __label: "foo",
-        // name: "foo",
-        // },
-        // tags: [
-        // { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-        // ],
+        author: {
+          id: "person-1",
+          __schema: "Person",
+          __label: "foo",
+          name: "foo",
+        },
+        tags: [
+          { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
+        ],
       },
     ]
 

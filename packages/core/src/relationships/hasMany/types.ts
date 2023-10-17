@@ -3,9 +3,11 @@ import type {
   ThroughOrAttributes,
 } from "../hasManyThrough/types"
 
-export interface PartialHasManyRelationship {
+export interface PartialHasManyRelationship<
+  TTargetSchema extends string | undefined,
+> {
   type: "hasMany"
-  targetSchema: string | null
+  targetSchema: TTargetSchema
   targetAttribute: string | null
   sourceAttribute: string | null
   through: (

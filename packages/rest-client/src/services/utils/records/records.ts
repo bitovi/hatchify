@@ -2,11 +2,9 @@ import type {
   Record,
   Resource,
   RecordRelationship,
-  Schemas,
   ResourceRelationship,
   FinalSchemas,
 } from "../../types"
-import { isSchemasV2 } from "../schema"
 
 type Relationship = globalThis.Record<
   string,
@@ -31,7 +29,7 @@ export function keyResourcesById(data: Resource[]): {
  * does not have a schema for.
  */
 export function isMissingSchema(
-  allSchemas: Schemas | FinalSchemas,
+  allSchemas: FinalSchemas,
   resource: ResourceRelationship | ResourceRelationship[],
 ): boolean {
   if (Array.isArray(resource)) {
@@ -48,7 +46,7 @@ export function isMissingSchema(
  * record's schema.
  */
 export function resourceToRecordRelationship(
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas,
   resourcesById: globalThis.Record<string, Resource>,
   resource: ResourceRelationship,
 ): RecordRelationship {
@@ -61,13 +59,27 @@ export function resourceToRecordRelationship(
   }
 
   const attributes = resourcesById[resource.id].attributes
-  const displayAttribute = allSchemas[resource.__schema].displayAttribute
+  // use first attribute as displayAttribute until displayAttribute is implemented
+  const displayAttribute = Object.keys(
+    allSchemas[resource.__schema].attributes,
+  )[0]
+
+  // ...setClientPropertyValuesFromResponse(
+  //   allSchemas,
+  //   resource.__schema,
+  //   resource.attributes || {},
+  // ),
 
   return {
     id: resource.id,
     __schema: resource.__schema,
     __label: attributes?.[displayAttribute],
-    ...attributes,
+    // ...attributes,
+    ...setClientPropertyValuesFromResponse(
+      allSchemas,
+      resource.__schema,
+      attributes || {},
+    ),
   }
 }
 
@@ -109,18 +121,11 @@ export function flattenResourcesIntoRecords(
               return acc
             }
 
-            // v2 schemas do not support relationships yet
-            if (!isSchemasV2(allSchemas)) {
-              acc[key] = Array.isArray(value)
-                ? value.map((item) =>
-                    resourceToRecordRelationship(
-                      allSchemas,
-                      resourcesById,
-                      item,
-                    ),
-                  )
-                : resourceToRecordRelationship(allSchemas, resourcesById, value)
-            }
+            acc[key] = Array.isArray(value)
+              ? value.map((item) =>
+                  resourceToRecordRelationship(allSchemas, resourcesById, item),
+                )
+              : resourceToRecordRelationship(allSchemas, resourcesById, value)
 
             return acc
           },
@@ -183,7 +188,7 @@ export const serializeClientPropertyValuesForRequest = (
       attribute.serializeClientPropertyValue
     ) {
       const coerced = attribute.setClientPropertyValue(value)
-      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo: arthur, fix with stricter typing
+      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-417
     } else {
       acc[key] = value
     }

@@ -1,5 +1,5 @@
-import { PartialSchema, belongsTo } from "@hatchifyjs/core"
-import { assembler, string, integer, datetime, boolean } from "@hatchifyjs/core"
+import { PartialSchema } from "@hatchifyjs/core"
+import { assembler } from "@hatchifyjs/core"
 import type {
   CreateType,
   GetSchemaFromName,
@@ -205,139 +205,141 @@ export const hatchifyReactRest = <
   return functions
 }
 
-// todo: leaving for testing, remove before merge to main
-const partialTodo = {
-  name: "Todo",
-  attributes: {
-    title: string(),
-    reqTitle: string({ required: true }),
-    age: integer({ required: true }),
-    optAge: integer({ required: false }),
-    important: boolean({ required: true }),
-    optImportant: boolean(),
-    created: datetime({ required: true }),
-    optCreated: datetime(),
-  },
-  relationships: {
-    user: belongsTo(),
-  },
-} satisfies PartialSchema
+// // todo: leaving for testing, remove before merge to main
+// const partialTodo = {
+//   name: "Todo",
+//   attributes: {
+//     title: string(),
+//     reqTitle: string({ required: true }),
+//     age: integer({ required: true }),
+//     optAge: integer({ required: false }),
+//     important: boolean({ required: true }),
+//     optImportant: boolean(),
+//     created: datetime({ required: true }),
+//     optCreated: datetime(),
+//   },
+//   relationships: {
+//     user: belongsTo("User"),
+//     users: hasMany("User")
+//   },
+// } satisfies PartialSchema
 
-partialTodo.relationships.user.targetSchema
-//                              ^?
+// partialTodo.relationships.user.targetSchema
+// //                              ^?
 
-const partialUser = {
-  name: "User",
-  attributes: {
-    name: string({ required: true }),
-    age: integer({ required: true }),
-    employed: boolean(),
-  },
-}
-
-type Prettify<T> = {
-  [K in keyof T]: T[K]
-} & {}
-
-// type AA = GetSchemaFromName<
-//   { Todo: typeof partialTodo; User: typeof partialUser },
-//   typeof partialTodo.relationships.user.targetSchema
-// >
-
-// type BB = Prettify<AA>["attributes"]["age"]
-// //   ^?
-
-// type CC = {
-//   [Relationship in keyof typeof partialTodo.relationships]: typeof partialTodo.relationships[Relationship]["targetSchema"]
+// const partialUser = {
+//   name: "User",
+//   attributes: {
+//     name: string({ required: true }),
+//     age: integer({ required: true }),
+//     employed: boolean(),
+//   },
 // }
 
-// type DD = Prettify<CC>
-// //   ^?
+// type Prettify<T> = {
+//   [K in keyof T]: T[K]
+// } & {}
 
-const app = hatchifyReactRest(
-  { Todo: partialTodo, User: partialUser },
-  undefined as any,
-)
+// // type AA = GetSchemaFromName<
+// //   { Todo: typeof partialTodo; User: typeof partialUser },
+// //   typeof partialTodo.relationships.user.targetSchema
+// // >
 
-app.Todo.findOne("id").then((record) => {
-  record?.id
-  record?.title
-  record?.optAge
-  record?.user.
-})
-app.User.findOne("id").then((record) => {
-  record?.id
-  record?.name
-  record?.age
-  record?.shouldError
-})
+// // type BB = Prettify<AA>["attributes"]["age"]
+// // //   ^?
 
-const [one] = app.Todo.useOne("id")
-one?.id
-one?.optAge
-one?.shouldError
+// // type CC = {
+// //   [Relationship in keyof typeof partialTodo.relationships]: typeof partialTodo.relationships[Relationship]["targetSchema"]
+// // }
 
-app.Todo.findAll({}).then(([records]) => {
-  records[0].id
-  records[0].optAge
-  records[0].shouldError
-})
+// // type DD = Prettify<CC>
+// // //   ^?
 
-const [all] = app.Todo.useAll({})
-all[0].id
-all[0].optAge
-all[0].shouldError
+// const app = hatchifyReactRest(
+//   { Todo: partialTodo, User: partialUser },
+//   undefined as any,
+// )
 
-app.Todo.createOne({
-  attributes: {
-    reqTitle: "",
-    age: 13,
-    important: true,
-    created: new Date(),
-    shouldError: "",
-  },
-})
-app.User.createOne({
-  attributes: {
-    name: "",
-    age: 13,
-    employed: true,
-    shouldError: "",
-  },
-})
+// app.Todo.findOne("id").then((record) => {
+//   record?.id
+//   record?.title
+//   record?.optAge
+//   // record?.user.
+//   record?.users[0].
+// })
+// app.User.findOne("id").then((record) => {
+//   record?.id
+//   record?.name
+//   record?.age
+//   record?.shouldError
+// })
 
-const [create] = app.Todo.useCreateOne()
-create({
-  attributes: {
-    reqTitle: "",
-    age: 13,
-    important: true,
-    created: new Date(),
-    shouldError: "",
-  },
-})
+// const [one] = app.Todo.useOne("id")
+// one?.id
+// one?.optAge
+// one?.shouldError
 
-app.Todo.updateOne({
-  id: "1234",
-  attributes: {
-    reqTitle: "",
-    age: 13,
-    important: true,
-    created: new Date(),
-    // shouldError: '',
-  },
-})
+// app.Todo.findAll({}).then(([records]) => {
+//   records[0].id
+//   records[0].optAge
+//   records[0].shouldError
+// })
 
-const [update] = app.Todo.useUpdateOne()
-update({
-  id: "1234",
-  attributes: {
-    reqTitle: "",
-    age: 13,
-    important: true,
-    created: new Date(),
-    // shouldError: '',
-  },
-})
+// const [all] = app.Todo.useAll({})
+// all[0].id
+// all[0].optAge
+// all[0].shouldError
 
-app.Todo.deleteOne("1234")
+// app.Todo.createOne({
+//   attributes: {
+//     reqTitle: "",
+//     age: 13,
+//     important: true,
+//     created: new Date(),
+//     shouldError: "",
+//   },
+// })
+// app.User.createOne({
+//   attributes: {
+//     name: "",
+//     age: 13,
+//     employed: true,
+//     shouldError: "",
+//   },
+// })
+
+// const [create] = app.Todo.useCreateOne()
+// create({
+//   attributes: {
+//     reqTitle: "",
+//     age: 13,
+//     important: true,
+//     created: new Date(),
+//     shouldError: "",
+//   },
+// })
+
+// app.Todo.updateOne({
+//   id: "1234",
+//   attributes: {
+//     reqTitle: "",
+//     age: 13,
+//     important: true,
+//     created: new Date(),
+//     // shouldError: '',
+//   },
+// })
+
+// const [update] = app.Todo.useUpdateOne()
+// update({
+//   id: "1234",
+//   attributes: {
+//     reqTitle: "",
+//     age: 13,
+//     important: true,
+//     created: new Date(),
+//     // shouldError: '',
+//   },
+// })
+
+// app.Todo.deleteOne("1234")
