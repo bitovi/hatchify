@@ -9,6 +9,7 @@ import {
 
 export const Todo: PartialSchema = {
   name: "Todo",
+  // namespace: "Admin",
   attributes: {
     name: string(),
     dueDate: datetime(),

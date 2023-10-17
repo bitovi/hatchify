@@ -24,19 +24,9 @@ const TestSchema: SchemaRecord = {
   },
 }
 
-const ArticleMap = {
-  article: {
-    type: "Article",
-    endpoint: "article",
-  },
-}
 describe("react-jsonapi", () =>
   it("works", () => {
-    const reactRest = reactJsonapi(
-      TestSchema,
-      "http://localhost:3000/api",
-      ArticleMap,
-    )
+    const reactRest = reactJsonapi(TestSchema, "http://localhost:3000/api")
 
     expect(reactRest).toEqual({
       Article: {

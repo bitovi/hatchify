@@ -14,11 +14,11 @@ export * from "./getPartialControl"
 export * from "./getPartialOrm"
 export * from "./types"
 
-export function dateonly(
-  props?: PartialDateonlyProps,
+export function dateonly<TRequired extends boolean = false>(
+  props?: PartialDateonlyProps<TRequired>,
 ): PartialAttribute<
   PartialDateonlyORM,
-  PartialDateonlyControlType,
+  PartialDateonlyControlType<TRequired>,
   string,
   FinalDateonlyORM
 > {

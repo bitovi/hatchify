@@ -1,6 +1,8 @@
 import type { PartialTextORM, PartialTextProps } from "./types"
 
-export function getPartialOrm(props?: PartialTextProps): PartialTextORM {
+export function getPartialOrm(
+  props?: PartialTextProps<boolean>,
+): PartialTextORM {
   return {
     sequelize: {
       type: "TEXT",

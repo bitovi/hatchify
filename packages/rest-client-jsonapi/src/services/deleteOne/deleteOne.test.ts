@@ -6,16 +6,20 @@ import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { deleteOne } from "./deleteOne"
 
-const ArticleSchema = { name: "Article" } as Schema
-const schemas = { Article: ArticleSchema }
-const schemaMap = { Article: { type: "article", endpoint: "articles" } }
+const schemaMap = {
+  Article: {
+    ...({ name: "Article" } as Schema),
+    type: "article",
+    endpoint: "articles",
+  },
+}
 const sourceConfig = { baseUrl, schemaMap }
 
 describe("rest-client-jsonapi/services/deleteOne", () => {
   it("works", async () => {
     const data = "article-id-1"
     const expected = undefined
-    const result = await deleteOne(sourceConfig, schemas, "Article", data)
+    const result = await deleteOne(sourceConfig, schemaMap, "Article", data)
     expect(result).toEqual(expected)
   })
 
@@ -36,7 +40,7 @@ describe("rest-client-jsonapi/services/deleteOne", () => {
     )
 
     await expect(() =>
-      deleteOne(sourceConfig, schemas, "Article", "article-id-1"),
+      deleteOne(sourceConfig, schemaMap, "Article", "article-id-1"),
     ).rejects.toEqual(errors)
   })
 
@@ -44,7 +48,7 @@ describe("rest-client-jsonapi/services/deleteOne", () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
     const data = "article-id-2"
     const spy = vi.spyOn(dataSource, "deleteOne")
-    await dataSource.deleteOne(schemas, "Article", data)
-    expect(spy).toHaveBeenCalledWith(schemas, "Article", data)
+    await dataSource.deleteOne(schemaMap, "Article", data)
+    expect(spy).toHaveBeenCalledWith(schemaMap, "Article", data)
   })
 })

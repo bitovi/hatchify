@@ -218,6 +218,7 @@ describe("number", () => {
         control: {
           type: "Number",
           allowNull: false,
+          allowNullInfer: false,
           min: undefined,
           max: undefined,
           primary: undefined,

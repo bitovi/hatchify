@@ -26,14 +26,18 @@ export class HatchifyInvalidSchemaError extends Error {
   }
 }
 
-export interface PartialDataTypeProps<PrimitiveType> {
+export interface PartialDataTypeProps<
+  PrimitiveType,
+  TRequired extends boolean,
+> {
   primary?: boolean
-  required?: boolean
+  required?: TRequired // @todo HATCH-417
   default?: PrimitiveType | (() => PrimitiveType) | null
 }
 
-export type PartialControlType<PrimitiveType> = {
+export type PartialControlType<PrimitiveType, TRequired extends boolean> = {
   type: "Boolean" | "Number" | "String" | "Datetime" | "Dateonly"
+  allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
   primary?: boolean
   default?: PrimitiveType | (() => PrimitiveType) | null
@@ -58,7 +62,7 @@ export interface PartialAttribute<
   control: PartialControlTypeTemplate
   finalize: () => FinalAttribute<
     PartialORMTypeTemplate,
-    PartialControlTypeTemplate,
+    Omit<PartialControlTypeTemplate, "allowNullInfer">,
     PrimitiveType,
     FinalORMTypeTemplate
   >

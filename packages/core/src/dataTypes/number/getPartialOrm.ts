@@ -1,6 +1,8 @@
 import type { PartialNumberORM, PartialNumberProps } from "./types"
 
-export function getPartialOrm(props?: PartialNumberProps): PartialNumberORM {
+export function getPartialOrm(
+  props?: PartialNumberProps<boolean>,
+): PartialNumberORM {
   return {
     sequelize: {
       type: "DECIMAL",

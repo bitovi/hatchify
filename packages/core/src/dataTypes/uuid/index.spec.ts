@@ -118,6 +118,7 @@ describe("uuid", () => {
         control: {
           type: "String",
           allowNull: false,
+          allowNullInfer: false,
           min: 36,
           max: 36,
           primary: undefined,

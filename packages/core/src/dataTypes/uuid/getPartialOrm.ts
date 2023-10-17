@@ -1,6 +1,8 @@
 import type { PartialUuidORM, PartialUuidProps } from "./types"
 
-export function getPartialOrm(props?: PartialUuidProps): PartialUuidORM {
+export function getPartialOrm(
+  props?: PartialUuidProps<boolean>,
+): PartialUuidORM {
   return {
     sequelize: {
       type: "UUID",

@@ -15,6 +15,7 @@ export interface Schema {
       schema: string
     }
   }
+  pluralName?: string
 }
 
 export type Schemas = Record<string, Schema>

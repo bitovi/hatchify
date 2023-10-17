@@ -6,12 +6,18 @@ import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { findOne } from "./findOne"
 
-const ArticleSchema = { name: "Article" } as Schema
-const schemas = { Article: ArticleSchema }
 const schemaMap = {
-  Article: { type: "article", endpoint: "articles" },
-  Person: { type: "person", endpoint: "people" },
-  Tag: { type: "tag", endpoint: "tags" },
+  Article: {
+    ...({ name: "Article" } as Schema),
+    type: "article",
+    endpoint: "articles",
+  },
+  Person: {
+    ...({ name: "Person" } as Schema),
+    type: "person",
+    endpoint: "people",
+  },
+  Tag: { ...({ name: "Tag" } as Schema), type: "tag", endpoint: "tags" },
 }
 const sourceConfig = { baseUrl, schemaMap }
 
@@ -36,7 +42,7 @@ describe("rest-client-jsonapi/services/findOne", () => {
         },
       },
     ]
-    const result = await findOne(sourceConfig, schemas, "Article", query)
+    const result = await findOne(sourceConfig, schemaMap, "Article", query)
     expect(result).toEqual(expected)
   })
 
@@ -57,14 +63,14 @@ describe("rest-client-jsonapi/services/findOne", () => {
     )
 
     await expect(
-      findOne(sourceConfig, schemas, "Article", query),
+      findOne(sourceConfig, schemaMap, "Article", query),
     ).rejects.toEqual(errors)
   })
 
   it("can be called from a Source", async () => {
     const dataSource = jsonapi(baseUrl, schemaMap)
     const spy = vi.spyOn(dataSource, "findOne")
-    await dataSource.findOne(schemas, "Article", query)
-    expect(spy).toHaveBeenCalledWith(schemas, "Article", query)
+    await dataSource.findOne(schemaMap, "Article", query)
+    expect(spy).toHaveBeenCalledWith(schemaMap, "Article", query)
   })
 })

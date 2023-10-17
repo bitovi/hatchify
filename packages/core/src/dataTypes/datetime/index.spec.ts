@@ -186,6 +186,7 @@ describe("datetime", () => {
         control: {
           type: "Datetime",
           allowNull: false,
+          allowNullInfer: false,
           min: undefined,
           max: undefined,
           primary: undefined,
