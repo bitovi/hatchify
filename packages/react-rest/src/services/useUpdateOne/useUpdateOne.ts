@@ -15,12 +15,18 @@ import type {
 type UpdateData<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
-> = Omit<UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
+> = Omit<
+  UpdateType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>,
+  "__schema"
+>
 
 type UpdatedRecord<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
-> = RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined | null
+> =
+  | RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>
+  | undefined
+  | null
 
 /**
  * Returns a function that updates a new record using the rest-client updateOne,

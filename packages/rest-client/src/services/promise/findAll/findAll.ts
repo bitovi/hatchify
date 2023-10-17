@@ -29,7 +29,10 @@ export const findAll = async <
   query: QueryList,
   baseFilter?: Filters,
 ): Promise<
-  [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, RequestMetaData]
+  [
+    Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,
+    RequestMetaData,
+  ]
 > => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)

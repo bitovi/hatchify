@@ -26,7 +26,7 @@ export const findOne = async <
   schemaName: TSchemaName,
   query: QueryOne | string,
 ): Promise<
-  RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined
+  RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>> | undefined
 > => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)

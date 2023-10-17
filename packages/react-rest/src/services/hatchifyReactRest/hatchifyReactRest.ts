@@ -1,8 +1,5 @@
-import type { PartialSchema } from "@hatchifyjs/core"
-import {
-  assembler,
-  //  string, integer, datetime, boolean
-} from "@hatchifyjs/core"
+import { PartialSchema, belongsTo } from "@hatchifyjs/core"
+import { assembler, string, integer, datetime, boolean } from "@hatchifyjs/core"
 import type {
   CreateType,
   GetSchemaFromName,
@@ -34,58 +31,74 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
         query: QueryList,
       ) => Promise<
         [
-          Array<RecordType<GetSchemaFromName<TSchemas, SchemaName>>>,
+          Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>>,
           RequestMetaData,
         ]
       >
       findOne: (
         query: QueryOne | string,
       ) => Promise<
-        RecordType<GetSchemaFromName<TSchemas, SchemaName>> | undefined
+        | RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
+        | undefined
       >
       createOne: (
         data: Omit<
-          CreateType<GetSchemaFromName<TSchemas, SchemaName>>,
+          CreateType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>,
           "__schema"
         >,
-      ) => Promise<RecordType<GetSchemaFromName<TSchemas, SchemaName>>>
+      ) => Promise<
+        RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
+      >
       updateOne: (
         data: Omit<
-          UpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
+          UpdateType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>,
           "__schema"
         >,
-      ) => Promise<RecordType<GetSchemaFromName<TSchemas, SchemaName>> | null>
+      ) => Promise<RecordType<
+        TSchemas,
+        GetSchemaFromName<TSchemas, SchemaName>
+      > | null>
       deleteOne: (id: string) => Promise<void>
       // hooks
       useAll: (
         query?: QueryList,
         baseFilter?: Filters,
-      ) => [Array<RecordType<GetSchemaFromName<TSchemas, SchemaName>>>, Meta]
+      ) => [
+        Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>>,
+        Meta,
+      ]
       useOne: (
         query: QueryOne | string,
       ) => [
-        RecordType<GetSchemaFromName<TSchemas, SchemaName>> | undefined,
+        (
+          | RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
+          | undefined
+        ),
         Meta,
       ]
       useCreateOne: () => [
         (
           data: Omit<
-            CreateType<GetSchemaFromName<TSchemas, SchemaName>>,
+            CreateType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>,
             "__schema"
           >,
         ) => void,
         Meta,
-        RecordType<GetSchemaFromName<TSchemas, SchemaName>>?,
+        RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>?,
       ]
       useUpdateOne: () => [
         (
           data: Omit<
-            UpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
+            UpdateType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>,
             "__schema"
           >,
         ) => void,
         Meta,
-        RecordType<GetSchemaFromName<TSchemas, SchemaName>> | null | undefined,
+        (
+          | RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
+          | null
+          | undefined
+        ),
       ]
       useDeleteOne: () => [(id: string) => void, Meta]
       // subscribes
@@ -193,112 +206,138 @@ export const hatchifyReactRest = <
 }
 
 // todo: leaving for testing, remove before merge to main
-// const partialTodo = {
-//   name: "Todo",
-//   attributes: {
-//     title: string(),
-//     reqTitle: string({ required: true }),
-//     age: integer({ required: true }),
-//     optAge: integer({ required: false }),
-//     important: boolean({ required: true }),
-//     optImportant: boolean(),
-//     created: datetime({ required: true }),
-//     optCreated: datetime(),
-//   },
-// } satisfies PartialSchema
-// const partialUser = {
-//   name: "User",
-//   attributes: {
-//     name: string({ required: true }),
-//     age: integer({ required: true }),
-//     employed: boolean(),
-//   },
+const partialTodo = {
+  name: "Todo",
+  attributes: {
+    title: string(),
+    reqTitle: string({ required: true }),
+    age: integer({ required: true }),
+    optAge: integer({ required: false }),
+    important: boolean({ required: true }),
+    optImportant: boolean(),
+    created: datetime({ required: true }),
+    optCreated: datetime(),
+  },
+  relationships: {
+    user: belongsTo(),
+  },
+} satisfies PartialSchema
+
+partialTodo.relationships.user.targetSchema
+//                              ^?
+
+const partialUser = {
+  name: "User",
+  attributes: {
+    name: string({ required: true }),
+    age: integer({ required: true }),
+    employed: boolean(),
+  },
+}
+
+type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+// type AA = GetSchemaFromName<
+//   { Todo: typeof partialTodo; User: typeof partialUser },
+//   typeof partialTodo.relationships.user.targetSchema
+// >
+
+// type BB = Prettify<AA>["attributes"]["age"]
+// //   ^?
+
+// type CC = {
+//   [Relationship in keyof typeof partialTodo.relationships]: typeof partialTodo.relationships[Relationship]["targetSchema"]
 // }
 
-// const app = hatchifyReactRest(
-//   { Todo: partialTodo, User: partialUser },
-//   undefined as any,
-// )
+// type DD = Prettify<CC>
+// //   ^?
 
-// app.Todo.findOne("id").then((record) => {
-//   record?.id
-//   record?.title
-//   record?.optAge
-//   record?.shouldError
-// })
-// app.User.findOne("id").then((record) => {
-//   record?.id
-//   record?.name
-//   record?.age
-//   record?.shouldError
-// })
+const app = hatchifyReactRest(
+  { Todo: partialTodo, User: partialUser },
+  undefined as any,
+)
 
-// const [one] = app.Todo.useOne("id")
-// one?.id
-// one?.optAge
-// one?.shouldError
+app.Todo.findOne("id").then((record) => {
+  record?.id
+  record?.title
+  record?.optAge
+  record?.user.
+})
+app.User.findOne("id").then((record) => {
+  record?.id
+  record?.name
+  record?.age
+  record?.shouldError
+})
 
-// app.Todo.findAll({}).then(([records]) => {
-//   records[0].id
-//   records[0].optAge
-//   records[0].shouldError
-// })
+const [one] = app.Todo.useOne("id")
+one?.id
+one?.optAge
+one?.shouldError
 
-// const [all] = app.Todo.useAll({})
-// all[0].id
-// all[0].optAge
-// all[0].shouldError
+app.Todo.findAll({}).then(([records]) => {
+  records[0].id
+  records[0].optAge
+  records[0].shouldError
+})
 
-// app.Todo.createOne({
-//   attributes: {
-//     reqTitle: "",
-//     age: 13,
-//     important: true,
-//     created: new Date(),
-//     shouldError: "",
-//   },
-// })
-// app.User.createOne({
-//   attributes: {
-//     name: "",
-//     age: 13,
-//     employed: true,
-//     shouldError: "",
-//   },
-// })
+const [all] = app.Todo.useAll({})
+all[0].id
+all[0].optAge
+all[0].shouldError
 
-// const [create] = app.Todo.useCreateOne()
-// create({
-//   attributes: {
-//     reqTitle: "",
-//     age: 13,
-//     important: true,
-//     created: new Date(),
-//     shouldError: "",
-//   },
-// })
+app.Todo.createOne({
+  attributes: {
+    reqTitle: "",
+    age: 13,
+    important: true,
+    created: new Date(),
+    shouldError: "",
+  },
+})
+app.User.createOne({
+  attributes: {
+    name: "",
+    age: 13,
+    employed: true,
+    shouldError: "",
+  },
+})
 
-// app.Todo.updateOne({
-//   id: "1234",
-//   attributes: {
-//     reqTitle: "",
-//     age: 13,
-//     important: true,
-//     created: new Date(),
-//     // shouldError: '',
-//   },
-// })
+const [create] = app.Todo.useCreateOne()
+create({
+  attributes: {
+    reqTitle: "",
+    age: 13,
+    important: true,
+    created: new Date(),
+    shouldError: "",
+  },
+})
 
-// const [update] = app.Todo.useUpdateOne()
-// update({
-//   id: "1234",
-//   attributes: {
-//     reqTitle: "",
-//     age: 13,
-//     important: true,
-//     created: new Date(),
-//     // shouldError: '',
-//   },
-// })
+app.Todo.updateOne({
+  id: "1234",
+  attributes: {
+    reqTitle: "",
+    age: 13,
+    important: true,
+    created: new Date(),
+    // shouldError: '',
+  },
+})
 
-// app.Todo.deleteOne("1234")
+const [update] = app.Todo.useUpdateOne()
+update({
+  id: "1234",
+  attributes: {
+    reqTitle: "",
+    age: 13,
+    important: true,
+    created: new Date(),
+    // shouldError: '',
+  },
+})
+
+app.Todo.deleteOne("1234")

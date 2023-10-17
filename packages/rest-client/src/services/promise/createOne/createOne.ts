@@ -26,8 +26,11 @@ export const createOne = async <
   dataSource: Source,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  data: Omit<CreateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">,
-): Promise<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>> => {
+  data: Omit<
+    CreateType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>,
+    "__schema"
+  >,
+): Promise<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }

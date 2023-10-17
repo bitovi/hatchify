@@ -41,11 +41,14 @@ export const useAll = <
   schemaName: TSchemaName,
   query: QueryList,
   baseFilter?: Filters,
-): [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, Meta] => {
+): [
+  Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,
+  Meta,
+] => {
   const memoizedQuery = useMemoByStringify(query)
   const memoizedBaseFilter = useMemoByStringify(baseFilter)
   const [data, setData] = useState<
-    Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>
+    Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>
   >([])
   const [requestMeta, setRequestMeta] = useState<RequestMetaData>()
   const [error, setError] = useState<MetaError | undefined>(undefined)

@@ -26,8 +26,14 @@ export const updateOne = async <
   dataSource: Source,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  data: Omit<UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">,
-): Promise<RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | null> => {
+  data: Omit<
+    UpdateType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>,
+    "__schema"
+  >,
+): Promise<RecordType<
+  TSchemas,
+  GetSchemaFromName<TSchemas, TSchemaName>
+> | null> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
