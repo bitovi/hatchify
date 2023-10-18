@@ -1,9 +1,6 @@
 import type { PartialSchema } from "@hatchifyjs/node"
-import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 import Express from "express"
-import type { Express as ExpressIf } from "express"
-import { Deserializer } from "jsonapi-serializer"
 import type { Dialect } from "sequelize"
 import request from "supertest"
 
@@ -11,19 +8,13 @@ import { Hatchify, errorHandlerMiddleware } from "../express"
 
 type Method = "get" | "post" | "patch" | "delete"
 
-export type ParseResult = {
-  text?: string
-  status?: number
-  serialized: any
-  deserialized: any
-}
-
 export const dbDialects: Dialect[] = ["postgres", "sqlite"]
 
 export async function startServerWith(
   models: Record<string, PartialSchema>,
   dialect: Dialect = "sqlite",
 ): Promise<{
+  app: any
   fetch: (
     path: string,
     options?: { method?: Method; headers?: object; body?: object },
@@ -85,56 +76,7 @@ export async function startServerWith(
     return hatchify.orm.close()
   }
 
-  return {
-    fetch,
-    teardown,
-    hatchify,
-  }
-}
-
-async function parse(result: request.Response): Promise<ParseResult> {
-  let serialized
-  let deserialized
-  let text
-  let status
-
-  if (!result) {
-    throw [
-      new HatchifyError({
-        title: "Invalid Result",
-        code: codes.ERR_INVALID_RESULT,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-      }),
-    ]
-  }
-
-  if (result.statusCode) {
-    status = result.statusCode
-  }
-
-  if (result.text) {
-    text = result.text
-
-    try {
-      serialized = JSON.parse(result.text)
-    } catch (err) {
-      // do nothing, its just not JSON probably
-    }
-
-    try {
-      const deserializer = new Deserializer({ keyForAttribute: "snake_case" })
-      deserialized = await deserializer.deserialize(serialized)
-    } catch (err) {
-      // do nothing, its just not JSON:API probably
-    }
-  }
-
-  return {
-    text,
-    status,
-    serialized,
-    deserialized,
-  }
+  return { app, fetch, teardown, hatchify }
 }
 
 interface ForeignKey {
@@ -286,81 +228,4 @@ export async function getDatabaseColumns(
     }
     return 0
   })
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function GET(
-  server: ExpressIf,
-  path: string,
-): Promise<ParseResult> {
-  const result = await request(server).get(path).set("authorization", "test")
-  return parse(result)
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function DELETE(
-  server: ExpressIf,
-  path: string,
-): Promise<ParseResult> {
-  const result = await request(server).delete(path).set("authorization", "test")
-
-  return await parse(result)
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function POST(
-  server: ExpressIf,
-  path: string,
-  payload: any,
-  type = "application/json",
-): Promise<ParseResult> {
-  const result = await request(server)
-    .post(path)
-    .set("authorization", "test")
-    .set("content-type", type)
-    .send(payload)
-
-  return await parse(result)
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function PATCH(
-  server: ExpressIf,
-  path: string,
-  payload: any,
-  type = "application/json",
-): Promise<ParseResult> {
-  const result = await request(server)
-    .patch(path)
-    .set("authorization", "test")
-    .set("content-type", type)
-    .send(payload)
-
-  return await parse(result)
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function PUT(
-  server: ExpressIf,
-  path: string,
-  payload: any,
-  type = "application/json",
-): Promise<ParseResult> {
-  const result = await request(server)
-    .put(path)
-    .set("authorization", "test")
-    .set("content-type", type)
-    .send(payload)
-
-  return await parse(result)
 }
