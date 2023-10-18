@@ -101,11 +101,11 @@ async function createImpl(hatchify: Hatchify, name: string, instance: any) {
   return hatchify.serializer.serialize(name, instance)
 }
 
-async function destroyImpl(hatchify: Hatchify, name: string, rowCount: any) {
+async function destroyImpl(hatchify: Hatchify, name: string, rowCount: number) {
   return hatchify.serializer.serialize(name, null, { count: rowCount })
 }
 
-async function updateImpl(hatchify: Hatchify, name: string, rowCount: any) {
+async function updateImpl(hatchify: Hatchify, name: string, rowCount: number) {
   return hatchify.serializer.serialize(name, null, { count: rowCount })
 }
 

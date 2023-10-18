@@ -1,10 +1,7 @@
 import http from "node:http"
-import type { Server } from "node:http"
 
 import type { PartialSchema } from "@hatchifyjs/node"
-import { HatchifyError, codes, statusCodes } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
-import { Deserializer } from "jsonapi-serializer"
 import Koa from "koa"
 import type { Dialect } from "sequelize"
 import request from "supertest"
@@ -13,19 +10,13 @@ import { Hatchify, errorHandlerMiddleware } from "../koa"
 
 type Method = "get" | "post" | "patch" | "delete"
 
-export type ParseResult = {
-  text?: string
-  status?: number
-  serialized: any
-  deserialized: any
-}
-
 export const dbDialects: Dialect[] = ["postgres", "sqlite"]
 
 export async function startServerWith(
   models: Record<string, PartialSchema>,
   dialect: Dialect = "sqlite",
 ): Promise<{
+  app: Koa<Koa.DefaultState, Koa.DefaultContext>
   fetch: (
     path: string,
     options?: { method?: Method; headers?: object; body?: object },
@@ -58,7 +49,7 @@ export async function startServerWith(
   app.use(errorHandlerMiddleware)
   app.use(hatchify.middleware.allModels.all)
 
-  const server = createServer(app)
+  const server = http.createServer(app.callback())
   await hatchify.createDatabase()
 
   async function fetch(
@@ -79,6 +70,8 @@ export async function startServerWith(
   }
 
   async function teardown() {
+    server.close()
+
     if (dialect !== "sqlite") {
       // SQLite will throw if we try to drop
       await hatchify.orm.drop({ cascade: true })
@@ -88,63 +81,10 @@ export async function startServerWith(
   }
 
   return {
+    app,
     fetch,
     teardown,
     hatchify,
-  }
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export function createServer(
-  app: Koa,
-): http.Server<typeof http.IncomingMessage, typeof http.ServerResponse> {
-  return http.createServer(app.callback())
-}
-
-async function parse(result: request.Response): Promise<ParseResult> {
-  let serialized
-  let deserialized
-  let text
-  let status
-
-  if (!result) {
-    throw [
-      new HatchifyError({
-        title: "Invalid Result",
-        code: codes.ERR_INVALID_RESULT,
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-      }),
-    ]
-  }
-
-  if (result.statusCode) {
-    status = result.statusCode
-  }
-
-  if (result.text) {
-    text = result.text
-
-    try {
-      serialized = JSON.parse(result.text)
-    } catch (err) {
-      // do nothing, its just not JSON probably
-    }
-
-    try {
-      const deserializer = new Deserializer({ keyForAttribute: "snake_case" })
-      deserialized = await deserializer.deserialize(serialized)
-    } catch (err) {
-      // do nothing, its just not JSON:API probably
-    }
-  }
-
-  return {
-    text,
-    status,
-    serialized,
-    deserialized,
   }
 }
 
@@ -297,78 +237,4 @@ export async function getDatabaseColumns(
     }
     return 0
   })
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function GET(server: Server, path: string): Promise<ParseResult> {
-  const result = await request(server).get(path).set("authorization", "test")
-  return parse(result)
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function DELETE(
-  server: Server,
-  path: string,
-): Promise<ParseResult> {
-  const result = await request(server).delete(path).set("authorization", "test")
-
-  return await parse(result)
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function POST(
-  server: Server,
-  path: string,
-  payload: any,
-  type = "application/json",
-): Promise<ParseResult> {
-  const result = await request(server)
-    .post(path)
-    .set("authorization", "test")
-    .set("content-type", type)
-    .send(payload)
-
-  return await parse(result)
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function PATCH(
-  server: Server,
-  path: string,
-  payload: any,
-  type = "application/json",
-): Promise<ParseResult> {
-  const result = await request(server)
-    .patch(path)
-    .set("authorization", "test")
-    .set("content-type", type)
-    .send(payload)
-
-  return await parse(result)
-}
-
-/**
- * @deprecated Please use `startServerWith` and `fetch` instead
- */
-export async function PUT(
-  server: Server,
-  path: string,
-  payload: any,
-  type = "application/json",
-): Promise<ParseResult> {
-  const result = await request(server)
-    .put(path)
-    .set("authorization", "test")
-    .set("content-type", type)
-    .send(payload)
-
-  return await parse(result)
 }
