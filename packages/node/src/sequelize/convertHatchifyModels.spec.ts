@@ -21,7 +21,7 @@ describe("convertHatchifyModels", () => {
 
     expect(models).toEqual({
       associationsLookup: { User: {} },
-      sequelizeModels: {
+      models: {
         User: expect.any(Function),
       },
     })

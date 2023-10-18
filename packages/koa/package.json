@@ -40,6 +40,7 @@
     "@bitovi/eslint-config": "^1.6.0",
     "@koa/router": "^12.0.0",
     "@types/jest": "^29.2.1",
+    "@types/jsonapi-serializer": "^3.6.6",
     "@types/koa__router": "^12.0.0",
     "@types/node": "^18.11.9",
     "@types/supertest": "^2.0.12",

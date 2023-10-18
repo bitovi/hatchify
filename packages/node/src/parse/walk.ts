@@ -9,7 +9,10 @@ export const walk: <T>(
       ...Object.getOwnPropertyNames(maybeObj),
       ...Object.getOwnPropertySymbols(maybeObj),
     ]
-    const entries = keys.map((k) => [k, maybeObj[k]])
+    const entries = keys.map((k) => [
+      k,
+      (maybeObj as { [key: typeof k]: any })[k],
+    ])
     return entries.reduce((acc, [key, value]) => {
       const [newVal, newKey = key] =
         (fn(key, value) as unknown as [unknown, string | symbol]) ?? []

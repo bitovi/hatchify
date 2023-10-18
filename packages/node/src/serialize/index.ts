@@ -1,10 +1,10 @@
-import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
+import type { FinalSchema } from "@hatchifyjs/core"
+import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import type JSONAPISerializer from "json-api-serializer"
 import type { JSONAPIDocument } from "json-api-serializer"
 import type { Model } from "sequelize"
 
 import type { Hatchify } from "../node"
-import type { HatchifyModel } from "../types"
 import { getFullModelName } from "../utils/getFullModelName"
 
 /**
@@ -25,14 +25,14 @@ export interface SerializeFunctions<
    *
    * @returns {JSONAPIDocument}
    */
-  findAll: (data: T[], attributes) => Promise<JSONAPIDocument>
-  findOne: (data: T, attributes) => Promise<JSONAPIDocument>
+  findAll: (data: T[], attributes: any) => Promise<JSONAPIDocument>
+  findOne: (data: T, attributes: any) => Promise<JSONAPIDocument>
   findAndCountAll: (
     data: {
       rows: T[]
       count: number
     },
-    attributes,
+    attributes: any,
   ) => Promise<JSONAPIDocument>
   create: (data: T) => Promise<JSONAPIDocument>
   update: (rowCount: number) => Promise<JSONAPIDocument>
@@ -42,8 +42,8 @@ export interface SerializeFunctions<
 async function findAllImpl(
   hatchify: Hatchify,
   name: string,
-  array,
-  attributes,
+  array: any[],
+  attributes: any,
 ) {
   if (hatchify.virtuals[name]) {
     return serializeWithoutUnsolicitedVirtuals(
@@ -61,8 +61,8 @@ async function findAllImpl(
 async function findOneImpl(
   hatchify: Hatchify,
   name: string,
-  instance,
-  attributes,
+  instance: any,
+  attributes: any,
 ) {
   if (hatchify.virtuals[name]) {
     return serializeWithoutUnsolicitedVirtuals(
@@ -79,8 +79,8 @@ async function findOneImpl(
 async function findAndCountAllImpl(
   hatchify: Hatchify,
   name: string,
-  result,
-  attributes,
+  result: any,
+  attributes: any,
 ) {
   if (hatchify.virtuals[name]) {
     return serializeWithoutUnsolicitedVirtuals(
@@ -97,15 +97,15 @@ async function findAndCountAllImpl(
   })
 }
 
-async function createImpl(hatchify: Hatchify, name: string, instance) {
+async function createImpl(hatchify: Hatchify, name: string, instance: any) {
   return hatchify.serializer.serialize(name, instance)
 }
 
-async function destroyImpl(hatchify: Hatchify, name: string, rowCount) {
+async function destroyImpl(hatchify: Hatchify, name: string, rowCount: any) {
   return hatchify.serializer.serialize(name, null, { count: rowCount })
 }
 
-async function updateImpl(hatchify: Hatchify, name: string, rowCount) {
+async function updateImpl(hatchify: Hatchify, name: string, rowCount: any) {
   return hatchify.serializer.serialize(name, null, { count: rowCount })
 }
 
@@ -128,7 +128,7 @@ export function buildSerializerForModel(
 
 export function registerSchema(
   serializer: JSONAPISerializer,
-  model: HatchifyModel,
+  model: FinalSchema,
   associations: Record<string, IAssociation>,
   primaryKey: string,
 ): void {
@@ -140,7 +140,7 @@ export function registerSchema(
         ...acc,
         [associationName]: {
           type: model,
-          deserialize: (data) =>
+          deserialize: (data: { id: any } | null | undefined) =>
             data
               ? {
                   // Numeric IDs are passed as strings in JSON:API
@@ -151,7 +151,10 @@ export function registerSchema(
       }),
       {},
     ),
-    topLevelMeta: (_data, { unpaginatedCount }) =>
+    topLevelMeta: (
+      _data: any,
+      { unpaginatedCount }: { unpaginatedCount: any },
+    ) =>
       unpaginatedCount != null
         ? {
             unpaginatedCount,
@@ -161,11 +164,11 @@ export function registerSchema(
 }
 
 const serializeWithoutUnsolicitedVirtuals = (
-  hatchify,
-  array,
-  name,
-  attributes,
-  virtualsForModel,
+  hatchify: Hatchify,
+  array: any[],
+  name: string,
+  attributes: any[],
+  virtualsForModel: any[],
 ) => {
   return hatchify.serializer.serialize(
     name,

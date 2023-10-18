@@ -5,7 +5,8 @@
     "rootDir": "src",
     "outDir": "dist",
     "sourceMap": true,
-    "strict": false,
-    "strictNullChecks": true
+    "strict": true,
+    "strictNullChecks": true,
+    "resolvePackageJsonImports": true
   }
 }

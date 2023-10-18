@@ -2,14 +2,16 @@ import { extendSequelize } from "@hatchifyjs/sequelize-create-with-associations"
 import { Sequelize } from "sequelize"
 import type { Options } from "sequelize"
 
+import type { SequelizeWithHatchify } from "../types"
+
 export function createSequelizeInstance(
   options: Options = {
     dialect: "sqlite",
     storage: ":memory:",
     logging: false,
   },
-): Sequelize {
+): SequelizeWithHatchify {
   extendSequelize(Sequelize)
 
-  return new Sequelize(options)
+  return new Sequelize(options) as SequelizeWithHatchify
 }

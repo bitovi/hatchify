@@ -1,5 +1,5 @@
-import type { PartialSchema } from "@hatchifyjs/core"
-import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations"
+import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
+import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import JSONAPISerializer from "json-api-serializer"
 import { snakeCase } from "lodash"
 import { match } from "path-to-regexp"
@@ -22,11 +22,10 @@ import { buildSerializerForModel } from "./serialize"
 import type { SerializeFunctions } from "./serialize"
 import type {
   FunctionsHandler,
-  HatchifyModel,
-  HatchifyModelCollection,
   HatchifyOptions,
   ModelFunctionsCollection,
   SequelizeModelsCollection,
+  SequelizeWithHatchify,
   Virtuals,
 } from "./types"
 import { pluralize } from "./utils/pluralize"
@@ -45,7 +44,7 @@ import { pluralize } from "./utils/pluralize"
  */
 export class Hatchify {
   private _sequelizeModels: SequelizeModelsCollection
-  private _sequelize: Sequelize
+  private _sequelize: SequelizeWithHatchify
   private _serializer = new JSONAPISerializer()
   private _allowedMethods = ["GET", "POST", "PATCH", "DELETE"]
   private _pluralToSingularModelNames: { [plural: string]: string }
@@ -76,7 +75,7 @@ export class Hatchify {
       this._sequelize.connectionManager.getConnection = async function (
         ...args: Parameters<typeof gc>
       ) {
-        const db: Database = await gc.apply(this, args)
+        const db: Database = (await gc.apply(this, args)) as Database
 
         await new Promise((resolve) =>
           db.run("PRAGMA case_sensitive_like=ON", resolve),
@@ -86,14 +85,14 @@ export class Hatchify {
     }
     this._serializer = new JSONAPISerializer()
 
-    const { associationsLookup, sequelizeModels } = convertHatchifyModels(
+    const { associationsLookup, models } = convertHatchifyModels(
       this._sequelize,
       this._serializer,
       schemas,
     )
 
     this.associationsLookup = associationsLookup
-    this._sequelizeModels = sequelizeModels
+    this._sequelizeModels = models
 
     this._pluralToSingularModelNames = Object.keys(
       this._sequelizeModels,
@@ -145,7 +144,7 @@ export class Hatchify {
    * Returns an object mapping model names to Hatchify models
    * @hidden
    */
-  get models(): HatchifyModelCollection {
+  get models(): SequelizeModelsCollection {
     return buildHatchifyModelObject(this._sequelizeModels)
   }
 
@@ -203,13 +202,13 @@ export class Hatchify {
    * give you further access to a number of named functions
    *
    * For more information about the underlying per-model functions:
-   * @see {@link HatchifyModel}
+   * @see {@link FinalSchema}
    *
-   * @returns {ModelFunctionsCollection<HatchifyModel>}
+   * @returns {ModelFunctionsCollection<FinalSchema>}
    * @category General Use
    */
-  get schema() {
-    return buildExportWrapper<HatchifyModel>(this, buildSchemaForModel)
+  get schema(): ModelFunctionsCollection<FinalSchema> {
+    return buildExportWrapper<FinalSchema>(this, buildSchemaForModel)
   }
 
   /**
@@ -437,7 +436,7 @@ export class Hatchify {
         {},
       )) as unknown as string[]
 
-      const uniqueNamespaces = Object.values(this.models).reduce(
+      const uniqueNamespaces = Object.values(this.schema).reduce(
         (acc, model) =>
           model?.namespace && !existingNamespaces.includes(model.namespace)
             ? acc.add(model.namespace)
@@ -471,7 +470,7 @@ export function buildExportWrapper<T>(
     "*": handlerFunction(hatchify, "*"),
     allModels: handlerFunction(hatchify, "*"),
   }
-  Object.keys(hatchify.models).forEach((modelName) => {
+  Object.keys(hatchify.models).forEach((modelName: string) => {
     wrapper[modelName] = handlerFunction(hatchify, modelName)
   })
 
