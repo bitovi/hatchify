@@ -47,8 +47,6 @@ export function getFinalize(
         if (!isISO8601DateString(userValue)) {
           throw new HatchifyCoerceError("as an ISO 8601 date string")
         }
-
-        return coerce(userValue, control)
       }
 
       return coerce(userValue, control)
@@ -72,8 +70,6 @@ export function getFinalize(
         if (!isISO8601DateString(userValue)) {
           throw new HatchifyCoerceError("as an ISO 8601 date string")
         }
-
-        return coerce(userValue, control)
       }
 
       return coerce(userValue, control)
@@ -99,8 +95,6 @@ export function getFinalize(
         if (!isISO8601DateString(jsonValue)) {
           throw new HatchifyCoerceError("as an ISO 8601 date string")
         }
-
-        return coerce(jsonValue, control)
       }
 
       return coerce(jsonValue, control)

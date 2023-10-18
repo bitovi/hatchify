@@ -17,7 +17,7 @@ export const Todo: PartialSchema = {
     dueDate: datetime(),
     importance: integer(),
     status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
-    completion_date: dateonly(),
+    completionDate: dateonly(),
   },
   relationships: {
     user: belongsTo(),
