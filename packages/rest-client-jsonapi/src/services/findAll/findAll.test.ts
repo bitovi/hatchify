@@ -1,21 +1,30 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import type { Schema } from "@hatchifyjs/rest-client"
 import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { findAll } from "./findAll"
 import { convertToHatchifyResources } from "../utils"
 import type { JsonApiResource } from "../jsonapi"
+import { assembler } from "@hatchifyjs/core"
 
-const ArticleSchema = { name: "Article" } as Schema
-const schemas = { Article: ArticleSchema }
-const schemaMap = {
-  Article: { type: "article", endpoint: "articles" },
-  Person: { type: "person", endpoint: "people" },
-  Tag: { type: "tag", endpoint: "tags" },
+const partialSchemaMap = {
+  Article: {
+    name: "Article",
+    attributes: {},
+    type: "article",
+    endpoint: "articles",
+  },
+  Person: {
+    name: "Person",
+    attributes: {},
+    type: "person",
+    endpoint: "people",
+  },
+  Tag: { name: "Tag", attributes: {}, type: "tag", endpoint: "tags" },
 }
-const sourceConfig = { baseUrl, schemaMap }
+const sourceConfig = { baseUrl, schemaMap: partialSchemaMap }
+const finalSchemaMap = assembler(partialSchemaMap)
 
 describe("rest-client-jsonapi/services/findAll", () => {
   const query = {
@@ -29,10 +38,10 @@ describe("rest-client-jsonapi/services/findAll", () => {
   it("works", async () => {
     const expected = convertToHatchifyResources(
       [...testData.data, ...testData.included] as JsonApiResource[],
-      schemaMap,
+      partialSchemaMap,
     )
 
-    const result = await findAll(sourceConfig, schemas, "Article", query)
+    const result = await findAll(sourceConfig, finalSchemaMap, "Article", query)
 
     expect(result[0]).toEqual(expected)
     expect(result[1]).toEqual(testData.meta)
@@ -55,14 +64,14 @@ describe("rest-client-jsonapi/services/findAll", () => {
     )
 
     await expect(
-      findAll(sourceConfig, schemas, "Article", query),
+      findAll(sourceConfig, finalSchemaMap, "Article", query),
     ).rejects.toEqual(errors)
   })
 
-  it("can be called from a Source", async () => {
-    const dataSource = jsonapi(baseUrl, schemaMap)
+  it("can be called from a rest client", async () => {
+    const dataSource = jsonapi(baseUrl, partialSchemaMap)
     const spy = vi.spyOn(dataSource, "findAll")
-    await dataSource.findAll(schemas, "Article", query)
-    expect(spy).toHaveBeenCalledWith(schemas, "Article", query)
+    await dataSource.findAll(finalSchemaMap, "Article", query)
+    expect(spy).toHaveBeenCalledWith(finalSchemaMap, "Article", query)
   })
 })

@@ -5,7 +5,7 @@ import {
   createStore,
   flattenResourcesIntoRecords,
 } from "@hatchifyjs/rest-client"
-import type { Source, Subscription } from "@hatchifyjs/rest-client"
+import type { RestClient, Subscription } from "@hatchifyjs/rest-client"
 import { useOne } from "./useOne"
 import { assembler, string } from "@hatchifyjs/core"
 
@@ -22,8 +22,9 @@ const fakeData = [
   },
 ]
 
-const fakeDataSource: Source = {
+const fakeDataSource: RestClient<any> = {
   version: 0,
+  completeSchemaMap: {},
   findAll: () => Promise.resolve([[], {}]),
   findOne: () => Promise.resolve([fakeData[0]]),
   createOne: () => Promise.resolve([]),

@@ -1,11 +1,12 @@
 import { describe, it, expect } from "vitest"
 import { createStore } from "../../store"
-import type { Source } from "../../types"
+import type { RestClient } from "../../types"
 import { deleteOne } from "./deleteOne"
 import { assembler, string } from "@hatchifyjs/core"
 
-const fakeDataSource: Source = {
+const fakeDataSource: RestClient<any> = {
   version: 0,
+  completeSchemaMap: {},
   findAll: () => Promise.resolve([[], {}]),
   findOne: () => Promise.resolve([]),
   createOne: () => Promise.resolve([]),

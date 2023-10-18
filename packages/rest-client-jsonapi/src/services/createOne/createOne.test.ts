@@ -1,19 +1,28 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import type { Schema } from "@hatchifyjs/rest-client"
 import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { createOne } from "./createOne"
+import { assembler } from "@hatchifyjs/core"
 
-const ArticleSchema = { name: "Article" } as Schema
-const schemas = { Article: ArticleSchema }
-const schemaMap = {
-  Article: { type: "article", endpoint: "articles" },
-  Person: { type: "person", endpoint: "people" },
-  Tag: { type: "tag", endpoint: "tags" },
+const partialSchemaMap = {
+  Article: {
+    name: "Article",
+    attributes: {},
+    type: "article",
+    endpoint: "articles",
+  },
+  Person: {
+    name: "Person",
+    attributes: {},
+    type: "person",
+    endpoint: "people",
+  },
+  Tag: { name: "Tag", attributes: {}, type: "tag", endpoint: "tags" },
 }
-const sourceConfig = { baseUrl, schemaMap }
+const sourceConfig = { baseUrl, schemaMap: partialSchemaMap }
+const finalSchemaMap = assembler(partialSchemaMap)
 
 describe("rest-client-jsonapi/services/createOne", () => {
   it("works", async () => {
@@ -24,7 +33,12 @@ describe("rest-client-jsonapi/services/createOne", () => {
         ...data,
       },
     ]
-    const result = await createOne(sourceConfig, schemas, "Article", data)
+    const result = await createOne(
+      sourceConfig,
+      finalSchemaMap,
+      "Article",
+      data,
+    )
     expect(result).toEqual(expected)
   })
 
@@ -52,15 +66,15 @@ describe("rest-client-jsonapi/services/createOne", () => {
     )
 
     await expect(() =>
-      createOne(sourceConfig, schemas, "Article", data),
+      createOne(sourceConfig, finalSchemaMap, "Article", data),
     ).rejects.toEqual(errors)
   })
 
-  it("can be called from a Source", async () => {
-    const dataSource = jsonapi(baseUrl, schemaMap)
+  it("can be called from a rest client", async () => {
+    const dataSource = jsonapi(baseUrl, partialSchemaMap)
     const data = { __schema: "Article", attributes: { title: "Hello, World!" } }
     const spy = vi.spyOn(dataSource, "createOne")
-    await dataSource.createOne(schemas, "Article", data)
-    expect(spy).toHaveBeenCalledWith(schemas, "Article", data)
+    await dataSource.createOne(finalSchemaMap, "Article", data)
+    expect(spy).toHaveBeenCalledWith(finalSchemaMap, "Article", data)
   })
 })

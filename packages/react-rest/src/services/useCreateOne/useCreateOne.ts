@@ -9,7 +9,7 @@ import type {
   RecordType,
   Meta,
   MetaError,
-  Source,
+  RestClient,
 } from "@hatchifyjs/rest-client"
 
 type CreateData<
@@ -30,7 +30,7 @@ export const useCreateOne = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: Source,
+  dataSource: RestClient<TSchemas>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
 ): [

@@ -9,7 +9,7 @@ import type {
   FinalSchemas,
   RecordType,
   GetSchemaFromName,
-  Source,
+  RestClient,
 } from "@hatchifyjs/rest-client"
 
 const useMemoizedQuery = (query: QueryOne) => {
@@ -28,7 +28,7 @@ export const useOne = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: Source,
+  dataSource: RestClient<TSchemas>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryOne | string,

@@ -29,6 +29,7 @@ const fakeMeta = {
 
 const fakeDataSource: Source = {
   version: 0,
+  completeSchemaMap: {},
   findAll: () => Promise.resolve([fakeData, fakeMeta]),
   findOne: () => Promise.resolve([]),
   createOne: () => Promise.resolve([]),

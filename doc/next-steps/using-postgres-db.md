@@ -25,7 +25,7 @@ then create a `hatchyify-app` database.
 
 2. To create and run PostgreSQL database, run the following command:
 
-   ``` bash
+   ```bash
    docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
    ```
 
@@ -38,12 +38,11 @@ then create a `hatchyify-app` database.
 
 To check that it worked, run the command:
 
-``` bash
+```bash
 docker ps -a
 ```
 
 You should see your container details, and the status should be "Up". You can stop your container with the command: `docker stop ${containerId}` and start it again with the command: `docker start ${containerId}`.
-
 
 ## Create a Database
 
@@ -56,14 +55,14 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 2. Configure a PostgreSQL connection. The following is what needs to be specified to connect to the PostgreSQL in docker:
 
-  ![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
+![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
 
-  __Click__ the "Test Connection" button to test the connection. If successful, click __Finish__ and go onto the next step.
+**Click** the "Test Connection" button to test the connection. If successful, click **Finish** and go onto the next step.
 
-  If the connection is not successful, make sure you aren't running a
-  conflicting PostgreSQL instance (`lsof -i tcp:5432`).  
+If the connection is not successful, make sure you aren't running a
+conflicting PostgreSQL instance (`lsof -i tcp:5432`).
 
-  For more information on creating a connection, [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/) shows how to create a connection in DBeaver.
+For more information on creating a connection, [this tutorial](https://dbeaver.com/2022/03/03/how-to-create-database-connection-in-dbeaver/) shows how to create a connection in DBeaver.
 
 3. Select "Create New Database" on the PostgreSQL connection's _Databases_ folder.
 
@@ -85,12 +84,13 @@ the benefits of storing config in the environment [here](https://12factor.net/co
 
 1.  Remove SQLite:
 
-    ``` bash
+    ```bash
     npm uninstall sqlite3
     ```
+
 2.  Install PostgreSQL' package and [dotenv](https://www.npmjs.com/package/dotenv):
 
-    ``` bash
+    ```bash
     npm install pg dotenv
     ```
 
@@ -99,71 +99,72 @@ the benefits of storing config in the environment [here](https://12factor.net/co
 
 3.  Install PostgreSQL' types package:
 
-    ``` bash
+    ```bash
     npm install -D @types/pg
     ```
 
-4. Run the following command in the root directory of your project to create a new .env file to store your credentials:
+4.  Run the following command in the root directory of your project to create a new .env file to store your credentials:
 
-   ``` bash
-   echo > .env
-   ```
+    ```bash
+    echo > .env
+    ```
 
-5. Fill your .env file with the following content:
+5.  Fill your .env file with the following content:
 
-   ```bash
-   PG_DB_HOST=localhost
-   PG_DB_PORT=5432
-   PG_DB_USERNAME=example_user
-   PG_DB_PASSWORD=example_password
-   PG_DB_NAME=hatchify_app
-   ```
+    ```bash
+    PG_DB_HOST=localhost
+    PG_DB_PORT=5432
+    PG_DB_USERNAME=example_user
+    PG_DB_PASSWORD=example_password
+    PG_DB_NAME=hatchify_app
+    ```
 
-6. Edit your Hatchify app's server (`backend/index.ts`) to use your newly created database:
+6.  Edit your Hatchify app's server (`backend/index.ts`) to use your newly created database:
 
-   ```js
-   // hatchify-app/backend/index.ts
-   import Koa from "koa"
-   import cors from "@koa/cors"
-   import { hatchifyKoa } from "@hatchifyjs/koa"
-   import { Todo } from "../schemas/Todo"
-   import { User } from "../schemas/User" 
+    ```js
+    // hatchify-app/backend/index.ts
+    import Koa from "koa"
+    import cors from "@koa/cors"
+    import { hatchifyKoa } from "@hatchifyjs/koa"
+    import { Todo } from "../schemas/Todo"
+    import { User } from "../schemas/User"
 
-   import dotenv from "dotenv"; // 👀
-   dotenv.config();             // 👀
-   
-   const app = new Koa()
-   
-   const hatchedKoa = hatchifyKoa([Todo, User], {
-     prefix: "/api",
-     database: {
-       dialect: "postgres",               // 👀
-       host: process.env.PG_DB_HOST,         // 👀
-       port: Number(process.env.PG_DB_PORT), // 👀
-       username: process.env.PG_DB_USERNAME, // 👀
-       password: process.env.PG_DB_PASSWORD, // 👀
-       database: process.env.PG_DB_NAME,     // 👀
-     },
-   })
-  
-   app.use(cors())
-   app.use(hatchedKoa.middleware.allModels.all);
-   (async () => {
-     await hatchedKoa.createDatabase()
-    
-     app.listen(3000, () => {
-       console.log("Started on port 3000")
-     })
-   })()
-   ```  
+    import dotenv from "dotenv" // 👀
+    dotenv.config() // 👀
 
-7. Restart your server:
+    const app = new Koa()
+
+    const hatchedKoa = hatchifyKoa(
+      { Todo, User },
+      {
+        prefix: "/api",
+        database: {
+          dialect: "postgres", // 👀
+          host: process.env.PG_DB_HOST, // 👀
+          port: Number(process.env.PG_DB_PORT), // 👀
+          username: process.env.PG_DB_USERNAME, // 👀
+          password: process.env.PG_DB_PASSWORD, // 👀
+          database: process.env.PG_DB_NAME, // 👀
+        },
+      },
+    )
+
+    app.use(cors())
+    app.use(hatchedKoa.middleware.allModels.all)
+    ;(async () => {
+      await hatchedKoa.createDatabase()
+
+      app.listen(3000, () => {
+        console.log("Started on port 3000")
+      })
+    })()
+    ```
+
+7.  Restart your server:
 
     ```bash
     npm run dev:backend
     ```
-
-
 
 > **Note:** the new PostgreSQL db we just created is empty, so you'll need to seed it just like we did in the [getting started guide](../../README.md#seeding-data)
 

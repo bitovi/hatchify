@@ -3,7 +3,7 @@ import type { PartialTextControlType } from "./types"
 export function finalizeControl(
   props: Omit<PartialTextControlType<boolean>, "allowNullInfer">,
 ): Required<Omit<PartialTextControlType<boolean>, "allowNullInfer">> {
-  // @ts-ignore
+  // @ts-expect-error @todo HATCH-417
   delete props.allowNullInfer
   return {
     ...props,

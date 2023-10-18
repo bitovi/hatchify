@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest"
-import type { Schemas } from "@hatchifyjs/rest-client"
 import {
   fieldsToQueryParam,
   filterToQueryParam,
@@ -9,51 +8,53 @@ import {
   pageToQueryParam,
   sortToQueryParam,
 } from "./query"
+import { assembler, integer, string } from "@hatchifyjs/core"
 
 describe("rest-client-jsonapi/services/utils/query", () => {
-  const schemas: Schemas = {
+  const partialSchemas = {
     Book: {
       name: "Book",
-      displayAttribute: "title",
+      // displayAttribute: "title",
       attributes: {
-        title: "string",
-        year: "number",
-        date: "string",
+        title: string(),
+        year: integer(),
+        date: string(),
       },
-      relationships: {
-        author: {
-          type: "one",
-          schema: "Person",
-        },
-        illustrators: {
-          type: "many",
-          schema: "Person",
-        },
-      },
+      // relationships: {
+      //   author: {
+      //     type: "one",
+      //     schema: "Person",
+      //   },
+      //   illustrators: {
+      //     type: "many",
+      //     schema: "Person",
+      //   },
+      // },
     },
     Person: {
       name: "Person",
-      displayAttribute: "name",
+      // displayAttribute: "name",
       attributes: {
-        name: "string",
-        rating: "number",
+        name: string(),
+        rating: integer(),
       },
-      relationships: {
-        authored: {
-          type: "many",
-          schema: "Book",
-        },
-        illustrated: {
-          type: "many",
-          schema: "Book",
-        },
-      },
+      // relationships: {
+      //   authored: {
+      //     type: "many",
+      //     schema: "Book",
+      //   },
+      //   illustrated: {
+      //     type: "many",
+      //     schema: "Book",
+      //   },
+      // },
     },
   }
   const schemaMap = {
-    Book: { type: "book_type", endpoint: "books" },
-    Person: { type: "person_type", endpoint: "people" },
+    Book: { type: "book_type", ...partialSchemas["Book"] },
+    Person: { type: "person_type", ...partialSchemas["Person"] },
   }
+  const finalSchemas = assembler(partialSchemas)
 
   describe("fieldsToQueryParam", () => {
     it("works", () => {
@@ -75,10 +76,12 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         }),
       ).toThrowError('"authored" is not a valid schema') */
 
-      expect(fieldsToQueryParam(schemaMap, schemas, "Book", {})).toEqual("")
+      expect(fieldsToQueryParam(schemaMap, finalSchemas, "Book", {})).toEqual(
+        "",
+      )
 
       expect(
-        fieldsToQueryParam(schemaMap, schemas, "Book", {
+        fieldsToQueryParam(schemaMap, finalSchemas, "Book", {
           Book: ["title", "body"],
           Person: ["name", "email"],
         }),
@@ -89,7 +92,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
   describe("getQueryParams", () => {
     it("works for when include and fields have values", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", {
+        getQueryParams(schemaMap, finalSchemas, "Book", {
           fields: {
             Book: ["title", "body"],
             Person: ["name", "email"],
@@ -101,7 +104,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       )
 
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {
             Person: ["firstName", "age"],
             Book: ["title", "year"],
@@ -114,7 +117,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
       // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
       /* expect(() =>
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {
             Person: ["firstName", "age"],
             authored: ["title", "year"],
@@ -126,14 +129,14 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works for when fields has values and include is empty", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", {
+        getQueryParams(schemaMap, finalSchemas, "Book", {
           fields: { Book: ["title", "body"] },
           include: [],
         }),
       ).toEqual("?fields[book_type]=title,body")
 
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: { Person: ["firstName", "age"] },
           include: [],
         }),
@@ -142,10 +145,13 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works when both fields and include are empty", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+        getQueryParams(schemaMap, finalSchemas, "Book", {
+          fields: {},
+          include: [],
+        }),
       ).toEqual("")
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {},
           include: [],
         }),
@@ -154,10 +160,13 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works when sort is a string", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+        getQueryParams(schemaMap, finalSchemas, "Book", {
+          fields: {},
+          include: [],
+        }),
       ).toEqual("")
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {},
           include: [],
           sort: "-created",
@@ -167,10 +176,13 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works when sort is an array of strings", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+        getQueryParams(schemaMap, finalSchemas, "Book", {
+          fields: {},
+          include: [],
+        }),
       ).toEqual("")
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {},
           include: [],
           sort: ["-created", "title", "user.name"],
@@ -180,12 +192,15 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works when include, fields, sort, filter, and page have values", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+        getQueryParams(schemaMap, finalSchemas, "Book", {
+          fields: {},
+          include: [],
+        }),
       ).toEqual("")
 
       // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
       /* expect(() =>
-        getQueryParams(schemaMap, schemas, "Book", {
+        getQueryParams(schemaMap, finalSchemas, "Book", {
           fields: {
             Person: ["firstName", "age"],
             authored: ["title", "year"],
@@ -202,7 +217,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toThrowError('"authored" is not a valid schema') */
 
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {
             Person: ["firstName", "age"],
             Book: ["title", "year"],
@@ -217,7 +232,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           page: { number: 3, size: 30 },
         }),
       ).toEqual(
-        "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year&sort=-created,title,user.name&filter[name][$in]=John&filter[name][$in]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
+        "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year&sort=-created,title,user.name&filter[name][$in][]=John&filter[name][$in][]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
       )
     })
   })
@@ -246,12 +261,19 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
   describe("filterToQueryParam", () => {
     it("works", () => {
+      // handles undefined
       expect(filterToQueryParam(undefined)).toEqual("")
 
+      // handles string
       expect(
         filterToQueryParam("filter[name]=ABC&filter[completed]=true"),
       ).toEqual("filter[name]=ABC&filter[completed]=true")
 
+      expect(filterToQueryParam("invalidFilter[name]=!#@$?")).toEqual(
+        "invalidFilter[name]=!#@$?",
+      )
+
+      // handles arrays (from ui component)
       expect(
         filterToQueryParam([{ field: "name", value: "ABC", operator: "$eq" }]),
       ).toEqual("filter[name][$eq]=ABC")
@@ -260,7 +282,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         filterToQueryParam([
           { field: "name", value: ["ABC", "DEF"], operator: "$in" },
         ]),
-      ).toEqual("filter[name][$in]=ABC&filter[name][$in]=DEF")
+      ).toEqual("filter[name][$in][]=ABC&filter[name][$in][]=DEF")
 
       expect(
         filterToQueryParam([
@@ -275,7 +297,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           { field: "completed", value: true, operator: "$eq" },
         ]),
       ).toEqual(
-        "filter[name][$in]=ABC&filter[name][$in]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
+        "filter[name][$in][]=ABC&filter[name][$in][]=DEF&filter[count][$eq]=3&filter[completed][$eq]=true",
       )
 
       expect(
@@ -318,27 +340,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           { field: "employer", value: "(test$!)", operator: "$eq" },
         ]),
       ).toEqual(
-        "filter[name][$in]=A'bc!*%22&filter[name][$in]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",
-      )
-
-      expect(
-        filterToQueryParam({
-          name: ["A'bc!*\"", "$()"],
-          completed: true,
-          employer: "Some Employer",
-        }),
-      ).toEqual(
-        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[completed]=true&filter[employer]=Some%20Employer",
-      )
-
-      expect(
-        filterToQueryParam({
-          name: ["A'bc!*\"", "$()"],
-          completed: true,
-          employer: "Some Employer",
-        }),
-      ).toEqual(
-        "filter[name][]=A'bc!*%22&filter[name][]=%24()&filter[completed]=true&filter[employer]=Some%20Employer",
+        "filter[name][$in][]=A'bc!*%22&filter[name][$in][]=%24()&filter[count][$eq]=3&filter[completed][$eq]=true&filter[employer][$eq]=(test%24!)",
       )
 
       expect(
@@ -370,6 +372,45 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           },
         ]),
       ).toEqual("filter[name][$ilike]=%25Some")
+
+      // handles objects
+      expect(
+        filterToQueryParam({
+          name: {
+            $eq: "ABC",
+          },
+        }),
+      ).toEqual("filter[name][$eq]=ABC")
+
+      expect(
+        filterToQueryParam({
+          name: {
+            $eq: ["ABC", "DEF"],
+          },
+        }),
+      ).toEqual("filter[name][$eq]=ABC%2CDEF")
+
+      expect(
+        filterToQueryParam({
+          name: {
+            $in: ["ABC", "DEF"],
+          },
+        }),
+      ).toEqual("filter[name][$in][]=ABC&filter[name][$in][]=DEF")
+
+      expect(
+        filterToQueryParam({
+          name: {
+            empty: "",
+          },
+          count: {
+            nempty: "",
+            $ilike: [3, 4, 5],
+          },
+        }),
+      ).toEqual(
+        "filter[name][$eq]=null&filter[count][$ne]=null&filter[count][$ilike][]=3&filter[count][$ilike][]=4&filter[count][$ilike][]=5",
+      )
     })
   })
 

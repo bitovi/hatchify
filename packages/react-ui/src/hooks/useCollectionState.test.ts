@@ -17,6 +17,7 @@ const finalSchemas = assembler(partialSchemas)
 
 const fakeRestClient = hatchifyReactRest(partialSchemas, {
   version: 0,
+  completeSchemaMap,
   findAll: () =>
     Promise.resolve([
       [

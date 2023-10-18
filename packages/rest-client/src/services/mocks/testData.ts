@@ -1,6 +1,6 @@
 import { assembler, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { Source } from "../types"
+import type { RestClient } from "../types"
 
 export const ArticleSchema = {
   name: "Article",
@@ -112,8 +112,9 @@ export const testMeta = {
   unpaginatedCount: 2,
 }
 
-export const fakeDataSource: Source = {
+export const fakeDataSource: RestClient<any> = {
   version: 0,
+  completeSchemaMap: {},
   findAll: () => Promise.resolve([testData, testMeta]),
   findOne: () =>
     Promise.resolve([testData[0], testData[2], testData[3], testData[4]]),

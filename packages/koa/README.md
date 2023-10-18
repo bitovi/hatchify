@@ -27,24 +27,28 @@ Create an `index.ts` file containing the following 'Hello World' example code
 
 ```typescript
 import Koa from "koa"
+import { string } from "@hatchifyjs/core"
 import { hatchifyKoa, DataTypes } from "@hatchifyjs/koa"
 
 const User = {
   name: "User",
   attributes: {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    firstName: string(),
+    lastName: string(),
   },
 }
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa([User], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: ":memory:",
+const hatchedKoa = hatchifyKoa(
+  { User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+    },
   },
-})
+)
 
 app.use(hatchedKoa.middleware.allModels.all)
 
@@ -102,7 +106,7 @@ npm init
 Install Hatchify along with the Koa web framework into your newly defined project
 
 ```bash
-npm install sequelize sqlite3 koa @hatchifyjs/koa
+npm install sequelize sqlite3 koa @hatchifyjs/core @hatchifyjs/koa
 npm install @types/koa nodemon ts-node --save-dev
 ```
 
@@ -110,24 +114,28 @@ Create an `index.ts` file containing the following 'Hello World' example code
 
 ```typescript
 import Koa from "koa"
+import { string } from "@hatchifyjs/core"
 import { hatchifyKoa, DataTypes } from "@hatchifyjs/koa"
 
 const User = {
   name: "User",
   attributes: {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    firstName: string(),
+    lastName: string(),
   },
 }
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa([User], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: ":memory:",
+const hatchedKoa = hatchifyKoa(
+  { User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+    },
   },
-})
+)
 
 app.use(hatchedKoa.middleware.allModels.all)
 
@@ -148,33 +156,38 @@ At this point you have created a Koa application with Hatchify connected as Midd
 The most important step in working with Hatchify is creating Models that define the data within your application. Lets take a look at this example `models.ts` file containing two different exported Models:
 
 ```typescript
+import { belongsTo, datetime, hasMany, string } from "@hatchifyjs/core"
 import { DataTypes } from "@hatchifyjs/koa"
 
 export const User = {
   name: "User",
   attributes: {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    firstName: string(),
+    lastName: string(),
   },
 }
 
 export const Player = {
   name: "Player",
   attributes: {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
+    firstName: string(),
+    lastName: string(),
+    startDate: datetime(),
+    endDate: datetime(),
   },
-  belongsTo: [{ target: "Team", options: { as: "team" } }],
+  relationships: {
+    team: belongsTo(),
+  },
 }
 
 export const Team = {
   name: "Team",
   attributes: {
-    name: DataTypes.STRING,
+    name: string(),
   },
-  hasMany: [{ target: "Player", options: { as: "players" } }],
+  relationships: {
+    players: hasMany(),
+  },
 }
 ```
 
@@ -190,13 +203,16 @@ import { hatchifyKoa } from "@hatchifyjs/koa"
 import { Player, Team } from "./models"
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa([Player, Team], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: ":memory:",
+const hatchedKoa = hatchifyKoa(
+  { Player, Team },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+    },
   },
-})
+)
 
 app.use(hatchedKoa.middleware.allModels.all)
 
@@ -234,34 +250,39 @@ One of the first things that we might want to explore is how we can add (or remo
 Taking the same models as before, now we want to add a new field for the Players. Maybe now we also want to include their position on the team. If we use these models to describe a Football team we could create an ENUM field of positions:
 
 ```typescript
+import { belongsTo, datetime, enumerate, hasMany, string } from "@hatchifyjs/core"
 import { DataTypes } from "@hatchifyjs/koa"
 
 export const User = {
   name: "User",
   attributes: {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    firstName: string(),
+    lastName: string(),
   },
 }
 
 export const Player = {
   name: "Player",
   attributes: {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
-    position: DataTypes.ENUM("quarterback", "offensive_lineman", "running_back", "fullback", "wide_receiver"),
+    firstName: string(),
+    lastName: string(),
+    startDate: datetime(),
+    endDate: datetime(),
+    position: enumerate({ values: ["quarterback", "offensive_lineman", "running_back", "fullback", "wide_receiver"] }),
   },
-  belongsTo: [{ target: "Team", options: { as: "team" } }],
+  relationships: {
+    team: belongsTo(),
+  },
 }
 
 export const Team = {
   name: "Team",
   attributes: {
-    name: DataTypes.STRING,
+    name: string(),
   },
-  hasMany: [{ target: "Player", options: { as: "players" } }],
+  relationships: {
+    players: hasMany(),
+  },
 }
 ```
 
@@ -298,13 +319,16 @@ import { Player, Team, User } from "./models"
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchedKoa = hatchifyKoa([Player, Team, User], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: ":memory:",
+const hatchedKoa = hatchifyKoa(
+  { Player, Team, User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+    },
   },
-})
+)
 
 router.get("/api/users", async (ctx) => {
   if (ctx.headers.authorization !== "custom-value") {
@@ -338,28 +362,34 @@ The main Hatchify constructor can, optionally, take a database parameter that ca
 This example shows how to use a sqlite local file storage
 
 ```typescript
-const hatchedKoa = hatchifyKoa([Player, Team, User], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: ":memory:",
+const hatchedKoa = hatchifyKoa(
+  { Player, Team, User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+    },
   },
-})
+)
 ```
 
 This example shows how to use a postgresql database
 
 ```typescript
-const hatchedKoa = hatchifyKoa([Player, Team, User], {
-  prefix: "/api",
-  database: {
-    dialect: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "example_user",
-    password: "example_password",
+const hatchedKoa = hatchifyKoa(
+  { Player, Team, User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "postgres",
+      host: "localhost",
+      port: 5432,
+      username: "example_user",
+      password: "example_password",
+    },
   },
-})
+)
 ```
 
 The following options are allowed within the db options object:
@@ -418,13 +448,16 @@ import { Player, Team, User } from "./models"
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchedKoa = hatchifyKoa([Player, Team, User], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: ":memory:",
+const hatchedKoa = hatchifyKoa(
+  { Player, Team, User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+    },
   },
-})
+)
 
 router.get("/generate-report", async (ctx) => {
   const requestedStartDate = ctx.params.startDate
@@ -472,13 +505,16 @@ import { Player, Team, User } from "./models"
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchedKoa = hatchifyKoa([Player, Team, User], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: ":memory:",
+const hatchedKoa = hatchifyKoa(
+  { Player, Team, User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+    },
   },
-})
+)
 
 router.get(
   "/api/players",
@@ -518,10 +554,10 @@ An important validation here would be to verify that we don't create (or update)
 export const Employee = {
   name: "Employee",
   attributes: {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
+    firstName: string(),
+    lastName: string(),
+    startDate: datetime(),
+    endDate: datetime(),
   },
   validation: {
     startDateBeforeEndDate() {
@@ -559,13 +595,16 @@ import { Assignment, Employee } from "./models"
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchedKoa = hatchifyKoa([Assignment, Employee], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: ":memory:",
+const hatchedKoa = hatchifyKoa(
+  { Assignment, Employee },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+    },
   },
-})
+)
 
 router.post("/Assignment", async (ctx, next) => {
   // Run a parse first to do a general check that all the required
@@ -630,65 +669,63 @@ app.use(hatchedKoa.middleware.allModels.all)
 Hatchify can help you define and build complex relationships between different models within your application. In our previous examples we have used Players and Teams to briefly describe a relationship. Lets take a look at that example again:
 
 ```typescript
+import { belongsTo, datetime, hasMany, string } from "@hatchifyjs/core"
 import { DataTypes } from "@hatchifyjs/koa"
 
 export const Player = {
   name: "Player",
   attributes: {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
+    firstName: string(),
+    lastName: string(),
+    startDate: datetime(),
+    endDate: datetime(),
   },
-  belongsTo: [{ target: "Team", options: { as: "team" } }],
+  relationships: {
+    team: belongsTo(),
+  },
 }
 
 export const Team = {
   name: "Team",
   attributes: {
-    name: DataTypes.STRING,
+    name: string(),
   },
-  hasMany: [{ target: "Player", options: { as: "players" } }],
+  relationships: {
+    players: hasMany(),
+  },
 }
 ```
 
-We can see that the `Player` has a `belongsTo` property that names `Team` as the target. Similarially, the `Team` contains a `hasMany` property that names `Player` as the target. Given this description we can reason that a Team can have many players and each Player can belong to a single Team.
+We can see that the `Player` has a `belongsTo` property that names `Team` as the target. Similarly, the `Team` contains a `hasMany` property that names `Player` as the target. Given this description we can reason that a Team can have many players and each Player can belong to a single Team.
 
 For another example lets look at `Movies` and `Actors`. Unlike `Players` and `Teams` an Actor CAN be in more than one Movie and a Movie can contain many Actors. How could we describe this sort of relationship?
 
 ```typescript
+import { belongsTo, string } from "@hatchifyjs/core"
 import { DataTypes } from "@hatchifyjs/koa"
 
 export const Actor = {
   name: "Actor",
   attributes: {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-    },
-    name: DataTypes.STRING,
+    name: string(),
   },
-  belongsToMany: [{ target: "Movie", options: { through: "ActorMovies" } }],
+  relationships: {
+    movies: belongsTo().through(),
+  },
 }
 
 export const Movie = {
   name: "Movie",
   attributes: {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-    },
-    name: DataTypes.STRING,
+    name: string(),
   },
-  belongsToMany: [{ target: "Actor", options: { through: "ActorMovies" } }],
+  relationships: {
+    actors: belongsTo().through(),
+  },
 }
 ```
 
-In this scenario, both models have a many-to-many relationship using the `belongsToMany` association. However, to define this complex relationship, we require an additional table. This table is created using the `through` option, where we specify a through Model named `ActorMovies`, resulting in a table named `actor_movies`.
+In this scenario, both models have a many-to-many relationship using the `hasMany().through()` association. However, to define this complex relationship, we require an additional table. This table is created using the `through` option, where we specify a through Model named `ActorMovies`, resulting in a table named `actor_movies`.
 
 For more information on these relationships and the options available check the [documentation for Sequelize](https://sequelize.org/docs/v6/core-concepts/assocs/).
 

@@ -2,12 +2,13 @@
 import { describe, it, expect } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { createStore } from "@hatchifyjs/rest-client"
-import type { Source } from "@hatchifyjs/rest-client"
+import type { RestClient } from "@hatchifyjs/rest-client"
 import { useCreateOne } from "./useCreateOne"
 import { assembler, string } from "@hatchifyjs/core"
 
-const fakeDataSource: Source = {
+const fakeDataSource: RestClient = {
   version: 0,
+  completeSchemaMap: {},
   findAll: () => Promise.resolve([[], {}]),
   findOne: () => Promise.resolve([]),
   createOne: () =>

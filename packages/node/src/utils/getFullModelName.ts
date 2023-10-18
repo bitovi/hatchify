@@ -1,5 +1,9 @@
-import type { HatchifyModel } from "../types"
-
-export function getFullModelName(model: HatchifyModel): string {
-  return !model.namespace ? model.name : `${model.namespace}_${model.name}`
+export function getFullModelName({
+  name,
+  namespace,
+}: {
+  name: string
+  namespace?: string
+}): string {
+  return !namespace ? name : `${namespace}_${name}`
 }

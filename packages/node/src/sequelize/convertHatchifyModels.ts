@@ -5,12 +5,11 @@ import type JSONAPISerializer from "json-api-serializer"
 import type { Sequelize } from "sequelize"
 
 import { toSequelize } from "./toSequelize"
-import { registerSchema } from "../../serialize"
-import { HatchifySymbolModel } from "../../types"
-import type { HatchifyModel, SequelizeModelsCollection } from "../../types"
-import { getFullModelName } from "../../utils/getFullModelName"
-import { pluralize } from "../../utils/pluralize"
-import { definedPlurals } from "../definedPlurals"
+import { registerSchema } from "../serialize"
+import { HatchifySymbolModel } from "../types"
+import type { HatchifyModel, SequelizeModelsCollection } from "../types"
+import { getFullModelName } from "../utils/getFullModelName"
+import { pluralize } from "../utils/pluralize"
 
 export function convertHatchifyModels(
   sequelize: Sequelize,
@@ -126,21 +125,23 @@ export function convertHatchifyModels(
 
   // Create the serializer schema for the model
   const associationsLookup = hatchifyModels.reduce((modelAcc, model) => {
+    const fullModelName = getFullModelName(model)
+
     const associations = Object.entries(
-      finalSchemas[getFullModelName(model)].relationships ?? {},
+      finalSchemas[fullModelName].relationships ?? {},
     ).reduce((relationshipAcc, [relationshipName, relationship]) => {
       const { type, targetSchema } = relationship
 
       if (type === "hasManyThrough") {
         sequelize.models[relationship.through].belongsTo(
-          sequelize.models[getFullModelName(model)],
+          sequelize.models[fullModelName],
           {
-            as: pascalCaseToCamelCase(model.name),
+            as: pascalCaseToCamelCase(fullModelName),
             foreignKey: relationship.throughSourceAttribute,
             targetKey: relationship.sourceKey,
           },
         )
-        sequelize.models[getFullModelName(model)].belongsToMany(
+        sequelize.models[fullModelName].belongsToMany(
           sequelize.models[targetSchema],
           {
             as: relationshipName,
@@ -206,8 +207,6 @@ export function convertHatchifyModels(
 
   return {
     associationsLookup,
-    models: sequelize.models as SequelizeModelsCollection,
-    virtuals: {},
-    plurals: definedPlurals(hatchifyModels),
+    sequelizeModels: sequelize.models as SequelizeModelsCollection,
   }
 }
