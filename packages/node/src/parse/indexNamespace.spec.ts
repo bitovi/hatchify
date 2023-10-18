@@ -18,7 +18,7 @@ const RelationshipPathDetail =
   "URL must have 'include' as one or more of 'lipitorUser', 'xanaxUser'."
 
 describe("indexNamespace", () => {
-  const Lipitor_User: PartialSchema = {
+  const Lipitor_User_Schema: PartialSchema = {
     name: "User",
     namespace: "Lipitor",
     attributes: {
@@ -28,7 +28,7 @@ describe("indexNamespace", () => {
       lipitorTodos: hasMany("Pfizer_Todo"),
     },
   }
-  const Xanax_User: PartialSchema = {
+  const Xanax_User_Schema: PartialSchema = {
     name: "User",
     namespace: "Xanax",
     attributes: {
@@ -39,7 +39,7 @@ describe("indexNamespace", () => {
     },
   }
 
-  const Pfizer_Todo: PartialSchema = {
+  const Pfizer_Todo_Schema: PartialSchema = {
     name: "Todo",
     namespace: "Pfizer",
     attributes: {
@@ -54,7 +54,13 @@ describe("indexNamespace", () => {
     },
   }
 
-  const hatchedNode = new Hatchify({ Pfizer_Todo, Lipitor_User, Xanax_User })
+  const hatchedNode = new Hatchify({
+    Pfizer_Todo: Pfizer_Todo_Schema,
+    Lipitor_User: Lipitor_User_Schema,
+    Xanax_User: Xanax_User_Schema,
+  })
+
+  const { Pfizer_Todo } = hatchedNode.schema
 
   describe("buildParserForModelStandalone", () => {
     const { findAll, findOne, findAndCountAll, create, update, destroy } =
@@ -98,7 +104,7 @@ describe("indexNamespace", () => {
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status'.",
+              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'lipitorUserId', 'xanaxUserId', 'lipitor_UserId', 'xanax_UserId'.",
             parameter: "fields[pfizer-todo]",
           }),
         ])
@@ -161,7 +167,7 @@ describe("indexNamespace", () => {
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status'.",
+              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'lipitorUserId', 'xanaxUserId', 'lipitor_UserId', 'xanax_UserId'.",
             parameter: "fields[pfizer-todo]",
           }),
         ])
@@ -229,7 +235,7 @@ describe("indexNamespace", () => {
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status'.",
+              "URL must have 'fields[pfizer-todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'lipitorUserId', 'xanaxUserId', 'lipitor_UserId', 'xanax_UserId'.",
             parameter: "fields[pfizer-todo]",
           }),
         ])
@@ -389,7 +395,10 @@ describe("indexNamespace", () => {
     }
 
     const hatchedNode = new Hatchify({ Todo })
-    const { findAll } = buildParserForModelStandalone(hatchedNode, Todo)
+    const { findAll } = buildParserForModelStandalone(
+      hatchedNode,
+      hatchedNode.schema.Todo,
+    )
 
     it("handles invalid include", async () => {
       await expect(findAll("include=user")).rejects.toEqualErrors([

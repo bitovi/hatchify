@@ -1,10 +1,10 @@
+import type { FinalSchema } from "@hatchifyjs/core"
 import type { FindOptions } from "sequelize"
 
-import type { QueryStringParser } from "./builder"
+import type { QueryStringParser, QueryStringParsingError } from "./builder"
 import { getColumnName } from "./getColumnName"
 import { walk } from "./walk"
 import { UnexpectedValueError } from "../error"
-import type { HatchifyModel } from "../types"
 import { getFullModelName } from "../utils/getFullModelName"
 
 interface Include {
@@ -12,10 +12,10 @@ interface Include {
 }
 
 export function handleWhere(
-  ops: QueryStringParser<FindOptions>,
-  model: HatchifyModel,
-): QueryStringParser<FindOptions> {
-  const errors: Error[] = []
+  ops: QueryStringParser<FindOptions, QueryStringParsingError>,
+  model: FinalSchema,
+): QueryStringParser<FindOptions, UnexpectedValueError> {
+  const errors: UnexpectedValueError[] = []
 
   const where = walk(ops.data.where, (key, value) => {
     if (typeof key !== "string") {
@@ -65,6 +65,6 @@ export function handleWhere(
       ...ops.data,
       where,
     },
-    errors: [...ops.errors, ...errors],
+    errors: [...(ops.errors as unknown as UnexpectedValueError[]), ...errors],
   }
 }
