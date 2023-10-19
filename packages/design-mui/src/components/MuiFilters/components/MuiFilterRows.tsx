@@ -182,6 +182,7 @@ export const MuiFilterRows: React.FC<{
           filter.field,
           schemaName,
         )
+
         return (
           <Fragment key={index}>
             <Grid item xs={1}>
@@ -229,7 +230,6 @@ export const MuiFilterRows: React.FC<{
                 onChange={(value: any) =>
                   onChange({ field: "value", value, index })
                 }
-                // @ts-expect-error todo: HATCH-417
                 options={baseAttributes[filter.field].control?.values || []}
               />
             </Grid>
