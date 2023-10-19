@@ -149,6 +149,7 @@ export function updateMiddleware(hatchify: Hatchify, modelName: string) {
 
 export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
   return async function destroyImpl({
+    errorCallback,
     path,
     querystring,
   }: MiddlewareRequest): Promise<MiddlewareResponse> {
@@ -158,6 +159,10 @@ export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
     }
 
     const params = hatchify.getHatchifyURLParamsForRoute(path)
+
+    if (!params.id) {
+      throw errorCallback(400, "BAD_REQUEST")
+    }
 
     return {
       body: await hatchify.everything[modelName].destroy(
@@ -257,7 +262,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         }
       }
     } catch (error) {
-      const { errors, status } = errorResponseHandler(error)
+      const { errors, status } = errorResponseHandler(error as Error)
 
       return {
         status,
@@ -267,7 +272,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
   }
 }
 
-function resolveWildcard(hatchify: Hatchify, path): string {
+function resolveWildcard(hatchify: Hatchify, path: string): string {
   const params = hatchify.getHatchifyURLParamsForRoute(path)
   if (!params.model) {
     throw [

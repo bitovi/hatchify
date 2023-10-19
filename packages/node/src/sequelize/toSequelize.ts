@@ -1,10 +1,15 @@
 import type { FinalSchema } from "@hatchifyjs/core"
 import { omit, snakeCase } from "lodash"
 import { DataTypes } from "sequelize"
-import type { Dialect, Model, ModelStatic, Sequelize } from "sequelize"
+import type {
+  AbstractDataTypeConstructor,
+  Dialect,
+  Model,
+  ModelStatic,
+  Sequelize,
+} from "sequelize"
 
 import { getSequelizeSchemaName } from "./getSequelizeSchemaName"
-import type { HatchifyModel } from "../types"
 import { getFullModelName } from "../utils/getFullModelName"
 
 export function toSequelize(
@@ -17,7 +22,7 @@ export function toSequelize(
   return Object.entries(schemas).reduce(
     (acc, [schemaName, finalizedSchema]) => ({
       ...acc,
-      [schemaName]: sequelize.define<Model<HatchifyModel["attributes"]>>(
+      [schemaName]: sequelize.define<Model<FinalSchema["attributes"]>>(
         getFullModelName(finalizedSchema),
         Object.entries({
           id: finalizedSchema.id,
@@ -38,10 +43,13 @@ export function toSequelize(
               ...omit(sequelize, ["defaultValue", "type", "typeArgs"]),
               type:
                 "typeArgs" in sequelize
-                  ? DataTypes[sequelize.type](
-                      ...((sequelize.typeArgs as number[] | string[]) ?? []),
-                    )
-                  : DataTypes[sequelize.type],
+                  ? (DataTypes as Record<string, AbstractDataTypeConstructor>)[
+                      sequelize.type
+                      // @ts-expect-error
+                    ](...((sequelize.typeArgs as number[] | string[]) ?? []))
+                  : (DataTypes as Record<string, AbstractDataTypeConstructor>)[
+                      sequelize.type
+                    ],
               ...(sequelize.defaultValue === null
                 ? {}
                 : { defaultValue: sequelize.defaultValue }),

@@ -1,18 +1,20 @@
 import { assembler, pascalCaseToCamelCase, singularize } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { ICreateHatchifyModel } from "@hatchifyjs/sequelize-create-with-associations"
 import type JSONAPISerializer from "json-api-serializer"
-import type { Sequelize } from "sequelize"
 
 import { toSequelize } from "./toSequelize"
 import { registerSchema } from "../serialize"
 import { HatchifySymbolModel } from "../types"
-import type { HatchifyModel, SequelizeModelsCollection } from "../types"
+import type {
+  ICreateHatchifyModel,
+  SequelizeModelsCollection,
+  SequelizeWithHatchify,
+} from "../types"
 import { getFullModelName } from "../utils/getFullModelName"
 import { pluralize } from "../utils/pluralize"
 
 export function convertHatchifyModels(
-  sequelize: Sequelize,
+  sequelize: SequelizeWithHatchify,
   serializer: JSONAPISerializer,
   partialSchemas: { [schemaName: string]: PartialSchema },
 ): ICreateHatchifyModel {
@@ -20,107 +22,9 @@ export function convertHatchifyModels(
 
   toSequelize(finalSchemas, sequelize)
 
-  const hatchifyModels = Object.values(finalSchemas).map((schema) => {
-    const model: HatchifyModel = {
-      name: schema.name,
-      namespace: schema.namespace,
-      pluralName: schema.pluralName,
-      attributes: Object.entries(schema.attributes).reduce(
-        (acc, [attributeName, attribute]) => ({
-          ...acc,
-          [attributeName]: attribute.orm.sequelize,
-        }),
-        {},
-      ),
-      ...Object.entries(schema.relationships ?? {}).reduce(
-        (acc, [as, relationship]) => {
-          if (relationship.type === "belongsTo") {
-            return {
-              ...acc,
-              belongsTo: [
-                ...acc.belongsTo,
-                {
-                  target: relationship.targetSchema,
-                  options: {
-                    as,
-                    foreignKey: relationship.sourceAttribute,
-                    targetKey: relationship.targetAttribute,
-                  },
-                },
-              ],
-            }
-          }
-          if (relationship.type === "hasOne") {
-            return {
-              ...acc,
-              hasOne: [
-                ...acc.hasOne,
-                {
-                  target: relationship.targetSchema,
-                  options: {
-                    as,
-                    foreignKey: relationship.targetAttribute,
-                    sourceKey: relationship.sourceAttribute,
-                  },
-                },
-              ],
-            }
-          }
-          if (relationship.type === "hasMany") {
-            return {
-              ...acc,
-              hasMany: [
-                ...acc.hasMany,
-                {
-                  target: relationship.targetSchema,
-                  options: {
-                    as,
-                    foreignKey: relationship.targetAttribute,
-                    sourceKey: relationship.sourceAttribute,
-                  },
-                },
-              ],
-            }
-          }
-          if (relationship.type === "hasManyThrough") {
-            return {
-              ...acc,
-              belongsToMany: [
-                ...acc.belongsToMany,
-                {
-                  target: relationship.targetSchema,
-                  options: {
-                    as: pluralize(
-                      pascalCaseToCamelCase(relationship.targetSchema),
-                    ),
-                    through: relationship.through,
-                    foreignKey: relationship.throughSourceAttribute,
-                    otherKey: relationship.throughTargetAttribute,
-                  },
-                },
-              ],
-              hasMany: [
-                ...acc.hasMany,
-                {
-                  target: relationship.through,
-                  options: {
-                    as: pluralize(pascalCaseToCamelCase(relationship.through)),
-                    foreignKey: relationship.throughSourceAttribute,
-                    sourceKey: relationship.sourceKey,
-                  },
-                },
-              ],
-            }
-          }
-          return acc
-        },
-        { belongsTo: [], hasMany: [], hasOne: [], belongsToMany: [] },
-      ),
-    }
-
-    sequelize.models[getFullModelName(model)][HatchifySymbolModel] = model
-
-    return model
+  const hatchifyModels = Object.values(finalSchemas)
+  hatchifyModels.forEach((schema) => {
+    sequelize.models[getFullModelName(schema)][HatchifySymbolModel] = schema
   })
 
   // Create the serializer schema for the model
@@ -207,6 +111,6 @@ export function convertHatchifyModels(
 
   return {
     associationsLookup,
-    sequelizeModels: sequelize.models as SequelizeModelsCollection,
+    models: sequelize.models as SequelizeModelsCollection,
   }
 }

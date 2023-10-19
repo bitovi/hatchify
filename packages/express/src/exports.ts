@@ -8,7 +8,6 @@ export {
 } from "@hatchifyjs/node"
 
 export type {
-  HatchifyModel,
   HatchifyOptions,
   BelongsToManyResult,
   BelongsToResult,

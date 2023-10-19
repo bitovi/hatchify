@@ -12,7 +12,7 @@ import { UnexpectedValueError } from "../error"
 import { Hatchify } from "../node"
 
 describe("builder", () => {
-  const User: PartialSchema = {
+  const UserSchema: PartialSchema = {
     name: "User",
     attributes: {
       name: string(),
@@ -22,7 +22,7 @@ describe("builder", () => {
       todos: hasMany(),
     },
   }
-  const Todo: PartialSchema = {
+  const TodoSchema: PartialSchema = {
     name: "Todo",
     attributes: {
       name: string(),
@@ -33,7 +33,23 @@ describe("builder", () => {
       user: belongsTo(),
     },
   }
-  const hatchify = new Hatchify({ User, Todo }, { prefix: "/api" })
+  const DisconnectedSchemaSchema: PartialSchema = {
+    name: "DisconnectedSchema",
+    attributes: {
+      name: string(),
+      importance: integer(),
+    },
+  }
+  const hatchify = new Hatchify(
+    {
+      User: UserSchema,
+      Todo: TodoSchema,
+      DisconnectedSchema: DisconnectedSchemaSchema,
+    },
+    { prefix: "/api" },
+  )
+
+  const { User, Todo, DisconnectedSchema } = hatchify.schema
 
   describe("buildFindOptions", () => {
     it("works with ID attribute provided", () => {
@@ -189,7 +205,7 @@ describe("builder", () => {
         buildFindOptions(hatchify, Todo, "fields[todo]=invalid"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
-          detail: `URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance'.`,
+          detail: `URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.`,
           parameter: `fields[todo]`,
         }),
       ])
@@ -200,7 +216,7 @@ describe("builder", () => {
         buildFindOptions(hatchify, Todo, "filter[namee][]=test"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
-          detail: `URL must have 'filter[x]' where 'x' is one of 'name', 'dueDate', 'importance'.`,
+          detail: `URL must have 'filter[x]' where 'x' is one of 'name', 'dueDate', 'importance', 'userId'.`,
           parameter: "filter[namee]",
         }),
       ])
@@ -222,7 +238,31 @@ describe("builder", () => {
         buildFindOptions(hatchify, Todo, "sort=invalid"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
-          detail: `URL must have 'sort' as comma separated values containing one or more of 'name', 'dueDate', 'importance'.`,
+          detail: `URL must have 'sort' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.`,
+          parameter: `sort`,
+        }),
+      ])
+    })
+
+    it("handles unknown sort assocations", async () => {
+      await expect(async () =>
+        buildFindOptions(hatchify, Todo, "sort=invalid.alsoinvalid"),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'sort' as comma separated values containing one or more attributes of 'user'.`,
+          parameter: `sort`,
+        }),
+      ])
+
+      await expect(async () =>
+        buildFindOptions(
+          hatchify,
+          DisconnectedSchema,
+          "sort=invalid.alsoinvalid",
+        ),
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: `URL must have 'sort' as comma separated values containing one or more attributes of DisconnectedSchema.`,
           parameter: `sort`,
         }),
       ])

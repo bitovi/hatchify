@@ -1,4 +1,7 @@
-import type { MiddlewareRequest } from "@hatchifyjs/node"
+import type {
+  Hatchify as HatchifyNode,
+  MiddlewareRequest,
+} from "@hatchifyjs/node"
 import {
   errorResponseHandler,
   getMiddlewareFunctions,
@@ -6,8 +9,6 @@ import {
 } from "@hatchifyjs/node"
 import type Koa from "koa"
 import type { Middleware as KoaMiddleware } from "koa"
-
-import type { Hatchify } from "../koa"
 
 /**
  * Provides a set of exported functions, per Model, that
@@ -52,11 +53,13 @@ export interface MiddlewareFunctionsKoa {
 }
 
 export function buildMiddlewareForModel(
-  hatchify: Hatchify,
-  modelName: string,
+  hatchify: HatchifyNode,
+  modelName: string | symbol,
 ): MiddlewareFunctionsKoa {
-  return Object.entries(getMiddlewareFunctions(hatchify, modelName)).reduce(
-    (acc, [name, genericFunction]) => ({
+  return Object.entries(
+    getMiddlewareFunctions(hatchify, modelName as string),
+  ).reduce(
+    (acc, [name, genericFunction]): MiddlewareFunctionsKoa => ({
       ...acc,
       [name]: async (context: Koa.Context, next: Koa.Next) => {
         const request: MiddlewareRequest = {
@@ -87,7 +90,7 @@ export async function errorMiddleware(
   try {
     await next()
   } catch (ex) {
-    const { errors, status } = errorResponseHandler(ex)
+    const { errors, status } = errorResponseHandler(ex as Error)
 
     ctx.status = status
     ctx.body = { jsonapi: { version: "1.0" }, errors }

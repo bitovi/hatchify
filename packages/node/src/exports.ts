@@ -5,7 +5,6 @@ export type {
   BelongsToResult,
   HasManyResult,
   HasOneResult,
-  HatchifyModel,
   HatchifyOptions,
   MiddlewareRequest,
   MiddlewareResponse,

@@ -1,12 +1,10 @@
 import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 import KoaRouter from "@koa/router"
-import Koa from "koa"
 
-import { Hatchify } from "./koa"
-import { GET, createServer } from "./testing/utils"
+import { startServerWith } from "./testing/utils"
 
-describe("Internal Tests", () => {
+describe("Custom Tests", () => {
   const Model: PartialSchema = {
     name: "Model",
     attributes: {
@@ -29,35 +27,42 @@ describe("Internal Tests", () => {
     },
   }
 
-  it("should handle custom user routes", async () => {
-    const app = new Koa()
-    const router = new KoaRouter()
-    const hatchify = new Hatchify(
+  let app: Awaited<ReturnType<typeof startServerWith>>["app"]
+  let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+  let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
+  let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+  beforeEach(async () => {
+    ;({ app, fetch, hatchify, teardown } = await startServerWith(
       { Model, Model2, Model3 },
-      {
-        prefix: "/api",
-      },
-    )
-    const server = createServer(app)
-    await hatchify.createDatabase()
+      "sqlite",
+    ))
+  })
+
+  afterEach(async () => {
+    await teardown()
+  })
+
+  it("should handle custom user routes", async () => {
+    const router = new KoaRouter()
 
     router.get("/user-custom-route", async (ctx) => {
       ctx.body = { test: true }
     })
 
     router.get("/alternative-model-2", async (ctx) => {
-      const response = await hatchify.everything.Model.findAll(ctx.querystring)
+      const response = await (hatchify as any).everything.Model.findAll(
+        ctx.querystring,
+      )
       ctx.body = { test: true, data: response }
     })
 
     router.get("/alternative-model-3", async (ctx) => {
-      const response = await hatchify.everything.allModels.create
+      const response = await (hatchify as any).everything.allModels.create
       ctx.body = { test: true, data: response }
     })
 
     app.use(router.routes())
-    app.use(router.allowedMethods())
-    app.use(hatchify.middleware.allModels.all)
 
     // Add a fallthrough default handler that just returns not found
     app.use((ctx) => {
@@ -65,36 +70,29 @@ describe("Internal Tests", () => {
       ctx.status = 404
     })
 
-    const req1 = await GET(server, "/user-custom-route")
+    const req1 = await fetch("/user-custom-route")
     expect(req1).toBeTruthy()
     expect(req1.status).toBe(200)
-    expect(req1.serialized).toHaveProperty("test")
 
-    const req3 = await GET(server, "/alternative-model-2")
+    expect(req1.body).toHaveProperty("test")
+
+    const req3 = await fetch("/alternative-model-2")
     expect(req3).toBeTruthy()
     expect(req3.status).toBe(200)
-    expect(req3.serialized).toHaveProperty("test")
-    expect(req3.serialized).toHaveProperty("data")
+    expect(req3.body).toHaveProperty("test")
+    expect(req3.body).toHaveProperty("data")
 
-    const req4 = await GET(server, "/unknown-route-404")
+    const req4 = await fetch("/unknown-route-404")
     expect(req4).toBeTruthy()
     expect(req4.status).toBe(404)
-
-    await hatchify.orm.close()
   })
 
   it("should handle allModel custom routes", async () => {
-    const app = new Koa()
     const router = new KoaRouter()
-    const hatchify = new Hatchify({ Model, Model2, Model3 }, {})
-    const server = createServer(app)
-    await hatchify.createDatabase()
 
-    router.get("/model3s", hatchify.middleware.allModels.findAll)
+    router.get("/api/model3s", hatchify.middleware.allModels.findAll)
 
     app.use(router.routes())
-    app.use(router.allowedMethods())
-    app.use(hatchify.middleware.allModels.all)
 
     // Add a fallthrough default handler that just returns not found
     app.use((ctx) => {
@@ -102,20 +100,14 @@ describe("Internal Tests", () => {
       ctx.status = 404
     })
 
-    const req6 = await GET(server, "/model3s")
+    const req6 = await fetch("/api/model3s")
     expect(req6).toBeTruthy()
     expect(req6.status).toBe(200)
-    expect(req6.deserialized).toHaveProperty("length")
-
-    await hatchify.orm.close()
+    expect(req6.body.data).toHaveProperty("length")
   })
 
   it("should handle custom user auth example", async () => {
-    const app = new Koa()
     const router = new KoaRouter()
-    const hatchify = new Hatchify({ Model }, { prefix: "/api" })
-    const server = createServer(app)
-    await hatchify.createDatabase()
 
     router.get(
       "/alternative-model",
@@ -130,8 +122,6 @@ describe("Internal Tests", () => {
     )
 
     app.use(router.routes())
-    app.use(router.allowedMethods())
-    app.use(hatchify.middleware.allModels.all)
 
     // Add a fallthrough default handler that just returns not found
     app.use((ctx) => {
@@ -139,20 +129,16 @@ describe("Internal Tests", () => {
       ctx.status = 404
     })
 
-    const req2 = await GET(server, "/alternative-model")
+    const req2 = await fetch("/alternative-model", {
+      headers: { authorization: "test" },
+    })
     expect(req2).toBeTruthy()
     expect(req2.status).toBe(200)
-    expect(req2.deserialized).toHaveProperty("length")
-
-    await hatchify.orm.close()
+    expect(req2.body.data).toHaveProperty("length")
   })
 
   it("should handle custom user auth missing header", async () => {
-    const app = new Koa()
     const router = new KoaRouter()
-    const hatchify = new Hatchify({ Model }, { prefix: "/api" })
-    const server = createServer(app)
-    await hatchify.createDatabase()
 
     router.get(
       "/alternative-model",
@@ -167,8 +153,6 @@ describe("Internal Tests", () => {
     )
 
     app.use(router.routes())
-    app.use(router.allowedMethods())
-    app.use(hatchify.middleware.allModels.all)
 
     // Add a fallthrough default handler that just returns not found
     app.use((ctx) => {
@@ -176,10 +160,8 @@ describe("Internal Tests", () => {
       ctx.status = 404
     })
 
-    const req2 = await GET(server, "/alternative-model")
+    const req2 = await fetch("/alternative-model")
     expect(req2).toBeTruthy()
     expect(req2.status).toBe(401)
-
-    await hatchify.orm.close()
   })
 })

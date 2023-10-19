@@ -1,9 +1,11 @@
+import type { FinalSchema } from "@hatchifyjs/core"
+
 import type { Hatchify } from "../node"
-import type { HatchifyModel } from "../types"
+import { HatchifySymbolModel } from "../types"
 
 export function buildSchemaForModel(
   hatchify: Hatchify,
   modelName: string,
-): HatchifyModel {
-  return hatchify.models[modelName]
+): FinalSchema {
+  return hatchify.models[modelName]?.[HatchifySymbolModel]
 }

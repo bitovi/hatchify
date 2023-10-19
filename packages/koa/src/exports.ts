@@ -11,7 +11,6 @@ export {
 
 export type {
   HatchifyError,
-  HatchifyModel,
   HatchifyOptions,
   BelongsToManyResult,
   BelongsToResult,
