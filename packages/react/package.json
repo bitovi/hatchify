@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@hatchifyjs/design-mui": "^0.0.1-40",
-    "@hatchifyjs/core": "^0.2.0",
+    "@hatchifyjs/core": "^0.2.1",
     "@hatchifyjs/react-ui": "^0.0.1-31",
     "@hatchifyjs/rest-client-jsonapi": "^0.0.1-30"
   },
