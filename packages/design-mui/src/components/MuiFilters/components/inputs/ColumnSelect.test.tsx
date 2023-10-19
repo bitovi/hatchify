@@ -16,7 +16,7 @@ describe("components/MuiFilters/inputs/ColumnSelect", () => {
       />,
     )
 
-    const dropdown = screen.getByRole("button")
+    const dropdown = screen.getByRole("combobox")
     expect(dropdown.className.includes("MuiSelect-select")).toEqual(true)
     expect(dropdown.className.includes("MuiAutocomplete-input")).toEqual(false)
 
