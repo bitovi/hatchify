@@ -18,7 +18,7 @@ import type { JsonApiResource } from "../jsonapi"
  * and returns it.
  */
 export async function createOne(
-  config: SourceConfig<any>, // todo: HATCH-417
+  config: SourceConfig, // todo: HATCH-417
   allSchemas: FinalSchemas | Schemas,
   schemaName: string,
   data: RestClientCreateData,

@@ -7,7 +7,7 @@ import {
   flattenResourcesIntoRecords,
   subscribeToAll,
 } from "@hatchifyjs/rest-client"
-import type { Source, Subscription } from "@hatchifyjs/rest-client"
+import type { RestClient, Subscription } from "@hatchifyjs/rest-client"
 import { useAll } from "./useAll"
 
 const fakeData = [
@@ -27,7 +27,7 @@ const fakeMeta = {
   unpaginatedCount: 2,
 }
 
-const fakeDataSource: Source = {
+const fakeDataSource: RestClient<any> = {
   version: 0,
   completeSchemaMap: {},
   findAll: () => Promise.resolve([fakeData, fakeMeta]),

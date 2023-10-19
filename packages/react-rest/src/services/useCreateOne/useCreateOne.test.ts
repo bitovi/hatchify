@@ -6,7 +6,7 @@ import type { RestClient } from "@hatchifyjs/rest-client"
 import { useCreateOne } from "./useCreateOne"
 import { assembler, string } from "@hatchifyjs/core"
 
-const fakeDataSource: RestClient = {
+const fakeDataSource: RestClient<any> = {
   version: 0,
   completeSchemaMap: {},
   findAll: () => Promise.resolve([[], {}]),

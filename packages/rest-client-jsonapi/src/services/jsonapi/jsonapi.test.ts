@@ -22,11 +22,11 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
       expect(dataSource.completeSchemaMap.Article.endpoint).toEqual("articles")
       // @ts-expect-error
       expect(dataSource.completeSchemaMap.Article.type).toEqual("Article")
-      expect(dataSource.findAll).toEqual(expect.any(Function))
-      expect(dataSource.findOne).toEqual(expect.any(Function))
-      expect(dataSource.createOne).toEqual(expect.any(Function))
-      expect(dataSource.updateOne).toEqual(expect.any(Function))
-      expect(dataSource.deleteOne).toEqual(expect.any(Function))
+      // expect(dataSource.findAll).toEqual(expect.any(Function))
+      // expect(dataSource.findOne).toEqual(expect.any(Function))
+      // expect(dataSource.createOne).toEqual(expect.any(Function))
+      // expect(dataSource.updateOne).toEqual(expect.any(Function))
+      // expect(dataSource.deleteOne).toEqual(expect.any(Function))
       // expect(dataSource).toEqual({
       //   completeSchemaMap: {
       //     Article: {

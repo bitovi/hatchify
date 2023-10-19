@@ -19,8 +19,8 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   setPage,
 }) => {
   const fields = useMemo(
-    () => getFilterableFields(allSchemas, schemaName, include ?? []),
-    [allSchemas, include, schemaName],
+    () => getFilterableFields(finalSchemas, schemaName, include ?? []),
+    [finalSchemas, include, schemaName],
   )
 
   const defaultFilter = {
@@ -92,7 +92,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
           <Grid item xs={12}>
             <MuiFilterRows
               attributes={partialSchemas[schemaName].attributes}
-              allSchemas={allSchemas}
+              finalSchemas={finalSchemas}
               schemaName={schemaName}
               fields={fields}
               filters={filters}

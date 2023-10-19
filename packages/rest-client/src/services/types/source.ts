@@ -1,5 +1,5 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { FinalSchemas, Schemas } from "./schema"
+import type { FinalSchemas } from "./schema"
 import type { Filters, QueryList, QueryOne } from "./query"
 
 import type {
@@ -23,12 +23,14 @@ export type SchemaMap<TSchemas extends Record<string, PartialSchema>> = Record<
   TSchemas
 >
 
-export type RequiredSchemaMap<TSchemas extends Record<string, PartialSchema>> =
-  Record<string, WithRequiredProperty<SourceSchema, "type">>
+export type RequiredSchemaMap = Record<
+  string,
+  WithRequiredProperty<SourceSchema, "type">
+>
 
-export interface SourceConfig<TSchemas extends Record<string, PartialSchema>> {
+export interface SourceConfig {
   baseUrl: string
-  schemaMap: RequiredSchemaMap<TSchemas>
+  schemaMap: RequiredSchemaMap
 }
 
 // always return a Resource[] even if it's a single resource because

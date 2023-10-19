@@ -1,92 +1,107 @@
-import type { Schemas } from "@hatchifyjs/rest-client"
 import "@testing-library/jest-dom"
 import { describe, it, expect } from "vitest"
 import { getFilterableFields } from "./utils"
+import { assembler, boolean, datetime, string } from "@hatchifyjs/core"
 
-const schemas: Schemas = {
+const partialSchemas = {
   Todo: {
     name: "Todo",
     displayAttribute: "name",
     attributes: {
-      name: { type: "string", allowNull: true },
-      date: "date",
-      note: "string",
-      important: { type: "boolean", allowNull: true },
-      status: { type: "enum", values: ["Pending", "Failed", "Complete"] },
+      name: string(),
+      date: datetime(),
+      note: string(),
+      important: boolean({ required: false }),
+      // todo: v2 enums
+      // status: { type: "enum", values: ["Pending", "Failed", "Complete"] },
     },
-    relationships: {
-      user: {
-        schema: "User",
-        type: "one",
-      },
-    },
+    // todo: v2 relationships
+    // relationships: {
+    //   user: {
+    //     schema: "User",
+    //     type: "one",
+    //   },
+    // },
   },
   User: {
     name: "User",
     displayAttribute: "name",
     attributes: {
-      name: { type: "string" },
-      email: "string",
-      planned_date: { type: "date" },
-      another_date: "date",
-      user_type: { type: "enum", values: ["Admin", "User"] },
+      name: string(),
+      email: string(),
+      planned_date: datetime(),
+      another_date: datetime(),
+      // todo: v2 enums
+      // user_type: { type: "enum", values: ["Admin", "User"] },
     },
-    relationships: {
-      todo: {
-        schema: "Todo",
-        type: "many",
-      },
-    },
+    // todo: v2 relationships
+    // relationships: {
+    //   todo: {
+    //     schema: "Todo",
+    //     type: "many",
+    //   },
+    // },
   },
   Planner: {
     name: "Planner",
     displayAttribute: "title",
     attributes: {
-      title: "string",
+      title: string(),
     },
   },
 }
 
+const finalSchemas = assembler(partialSchemas)
+
 describe("components/MuiFilters/utils", () => {
   describe("getFilterableFields", () => {
     it("it has related fields if include is passed in with a value", () => {
-      const result = getFilterableFields(schemas, "Todo", ["user"])
+      const result = getFilterableFields(finalSchemas, "Todo", ["user"])
 
       // boolean types are not supported yet, so important attribute is not returned
       expect(result).toEqual([
         "name",
         "date",
         "note",
-        "status",
-        "user.name",
-        "user.email",
-        "user.planned_date",
-        "user.another_date",
-        "user.user_type",
+        // todo: v2 enums
+        // "status",
+        // todo: v2 relationships
+        // "user.name",
+        // "user.email",
+        // "user.planned_date",
+        // "user.another_date",
+        // "user.user_type",
       ])
     })
 
     it("it does not have related fields if include is empty", () => {
-      const result = getFilterableFields(schemas, "Todo", [])
+      const result = getFilterableFields(finalSchemas, "Todo", [])
 
       // boolean types are not supported yet, so important attribute is not returned
-      expect(result).toEqual(["name", "date", "note", "status"])
+      expect(result).toEqual([
+        "name",
+        "date",
+        "note",
+        // todo: v2 enums
+        // "status"
+      ])
     })
 
     it("it adds fields that are a string instead of an object", () => {
-      const result = getFilterableFields(schemas, "User", [])
+      const result = getFilterableFields(finalSchemas, "User", [])
 
       expect(result).toEqual([
         "name",
         "email",
         "planned_date",
         "another_date",
-        "user_type",
+        // todo: v2 enums
+        // "user_type",
       ])
     })
 
     it("It works on schemas that do not have relationships", () => {
-      const result = getFilterableFields(schemas, "Planner", [])
+      const result = getFilterableFields(finalSchemas, "Planner", [])
 
       expect(result).toEqual(["title"])
     })

@@ -1,9 +1,6 @@
 import {
   assembler,
-  // integer,
-  // datetime,
-  // string,
-  // boolean,
+  // integer, datetime, string, boolean
 } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
@@ -97,9 +94,10 @@ export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
 
 export function hatchifyReact<
   const TSchemas extends Record<string, PartialSchema>,
->(partialSchemas: TSchemas, restClient: RestClient): HatchifyApp<TSchemas> {
+>(restClient: RestClient<TSchemas>): HatchifyApp<TSchemas> {
+  const { completeSchemaMap: partialSchemas } = restClient
   const finalSchemas = assembler(partialSchemas)
-  const reactRest = hatchifyReactRest(partialSchemas, restClient)
+  const reactRest = hatchifyReactRest(restClient)
 
   const components = Object.entries(partialSchemas).reduce(
     (acc, [schemaName, schema]) => {
@@ -194,7 +192,11 @@ export function hatchifyReact<
 //   },
 // }
 
-// const app = hatchifyReact({ Todo: partialTodo, User: partialUser }, {} as any)
+// const schemas = { Todo: partialTodo, User: partialUser }
+
+// const app = hatchifyReact({
+//   completeSchemaMap: schemas,
+// } as RestClient<typeof schemas>)
 
 // app.model.Todo.createOne({
 //   attributes: {

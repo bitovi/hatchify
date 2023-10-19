@@ -1,5 +1,8 @@
-import type { PartialAttributeRecord } from "@hatchifyjs/core"
-import type { FilterArray } from "@hatchifyjs/rest-client"
+import type {
+  PartialAttributeRecord,
+  FinalAttributeRecord,
+} from "@hatchifyjs/core"
+import type { FilterArray, FinalSchemas } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
@@ -62,12 +65,13 @@ export const MuiFilterRows: React.FC<{
   attributes: PartialAttributeRecord
   fields: string[]
   filters: FilterArray
-  allSchemas: Schemas
+  finalSchemas: FinalSchemas
   schemaName: string
   setFilters: (filters: FilterArray) => void
   removeFilter: (index: number) => void
 }> = ({
-  allSchemas,
+  attributes,
+  finalSchemas,
   fields,
   filters,
   schemaName,
@@ -81,9 +85,9 @@ export const MuiFilterRows: React.FC<{
     if (field === "field") {
       //Get correct attributes for comparison
       const { baseAttributes: newAttributes, baseField: newField } =
-        getFieldAndAttributes(allSchemas, value, schemaName)
+        getFieldAndAttributes(finalSchemas, value, schemaName)
       const { baseAttributes: currentAttributes, baseField: currentField } =
-        getFieldAndAttributes(allSchemas, newFilters[index].field, schemaName)
+        getFieldAndAttributes(finalSchemas, newFilters[index].field, schemaName)
 
       // change the operator if existing operator does not exist on new column
       newFilters[index].operator = getAvailableOperator(
@@ -122,7 +126,7 @@ export const MuiFilterRows: React.FC<{
 
   return (
     <Grid container spacing={1} alignItems="center" justifyContent="center">
-      {filters.map((filter, index) => (
+      {/* {filters.map((filter, index) => (
         <Fragment key={index}>
           <Grid item xs={1}>
             <IconButton aria-label="close" onClick={() => removeFilter(index)}>
@@ -171,10 +175,10 @@ export const MuiFilterRows: React.FC<{
             />
           </Grid>
         </Fragment>
-      ))}
-      {/* {filters.map((filter, index) => {
+      ))} */}
+      {filters.map((filter, index) => {
         const { baseAttributes, baseField } = getFieldAndAttributes(
-          allSchemas,
+          finalSchemas,
           filter.field,
           schemaName,
         )
@@ -225,12 +229,13 @@ export const MuiFilterRows: React.FC<{
                 onChange={(value: any) =>
                   onChange({ field: "value", value, index })
                 }
-                options={(baseAttributes[filter.field] as EnumObject)?.values}
+                // @ts-expect-error todo: HATCH-417
+                options={baseAttributes[filter.field].control?.values || []}
               />
             </Grid>
           </Fragment>
         )
-      })} */}
+      })}
     </Grid>
   )
 }
@@ -242,7 +247,7 @@ export function getAvailableOperator(
   field: string,
   // todo: operator should be it's own type used in FilterArray & Option
   operator: string,
-  attributes: PartialAttributeRecord,
+  attributes: FinalAttributeRecord,
 ): Option["operator"] {
   const availableOptions = getPossibleOptions(field, attributes)
 
@@ -256,7 +261,7 @@ export function getAvailableOperator(
 // Filter out operators that are not available for the field type
 export function getPossibleOptions(
   field: string,
-  attributes: PartialAttributeRecord,
+  attributes: FinalAttributeRecord,
 ): Option[] {
   const attribute = attributes[field]
   const fieldType = attribute.control.type
@@ -275,7 +280,7 @@ export function getPossibleOptions(
 }
 
 export const getFieldType = (
-  attributes: PartialAttributeRecord, // todo: stricter typing
+  attributes: FinalAttributeRecord, // todo: stricter typing
   field: string,
 ): string => {
   const attribute = attributes[field]
@@ -283,15 +288,16 @@ export const getFieldType = (
 }
 
 export const getFieldAndAttributes = (
-  allSchemas: Schemas,
+  finalSchemas: FinalSchemas,
   field: string,
   schemaName: string,
-): { baseAttributes: Record<string, Attribute>; baseField: string } => {
+): { baseAttributes: FinalAttributeRecord; baseField: string } => {
   const baseField = field.includes(".") ? field.split(".")[1] : field
 
   const baseAttributes =
-    allSchemas[
+    finalSchemas[
       field.includes(".") ? capitalize(field.split(".")[0]) : schemaName
     ].attributes
+
   return { baseAttributes, baseField }
 }

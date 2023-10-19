@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest"
 import type { RestClient } from "@hatchifyjs/rest-client"
 import { hatchifyReact } from "./hatchifyReact"
+import { integer, string } from "@hatchifyjs/core"
 
 describe("react-ui/hatchifyReact", () => {
   it("should return objects for each schema", () => {
@@ -10,16 +11,16 @@ describe("react-ui/hatchifyReact", () => {
           name: "Article",
           type: "Article",
           attributes: {
-            title: "string",
-            body: "string",
+            title: string(),
+            body: string(),
           },
         },
         Person: {
           name: "Person",
           type: "Person",
           attributes: {
-            name: "string",
-            age: "integer",
+            name: string(),
+            age: integer(),
           },
         },
       },
@@ -87,8 +88,8 @@ describe("react-ui/hatchifyReact", () => {
           type: "Article",
           namespace: "Feature",
           attributes: {
-            title: "string",
-            body: "string",
+            title: string(),
+            body: string(),
           },
         },
       },

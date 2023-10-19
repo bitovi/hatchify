@@ -11,16 +11,16 @@ describe("react-rest/services/hatchifyReactRest", () => {
           name: "Article",
           type: "Article",
           attributes: {
-            title: "string",
-            body: "string",
+            title: string(),
+            body: string(),
           },
         },
         Person: {
           name: "Person",
           type: "Person",
           attributes: {
-            name: "string",
-            age: "integer",
+            name: string(),
+            age: integer(),
           },
         },
       },
@@ -70,8 +70,8 @@ describe("react-rest/services/hatchifyReactRest", () => {
           type: "Feature_Article",
           namespace: "Feature",
           attributes: {
-            title: "string",
-            body: "string",
+            title: string(),
+            body: string(),
           },
         },
       },

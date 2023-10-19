@@ -1,5 +1,8 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import { assembler, string, integer, datetime, boolean } from "@hatchifyjs/core"
+import {
+  assembler,
+  // string, integer, datetime, boolean
+} from "@hatchifyjs/core"
 import type {
   CreateType,
   GetSchemaFromName,
@@ -100,10 +103,8 @@ export const hatchifyReactRest = <
 >(
   // partialSchemas: TSchemas,
   restClient: RestClient<TSchemas>,
-  // restClient: RestClient,
 ): HatchifyReactRest<TSchemas> => {
-  const { completeSchemaMap } = restClient
-  const partialSchemas = completeSchemaMap
+  const { completeSchemaMap: partialSchemas } = restClient
   const finalSchemas = assembler(partialSchemas)
   const storeKeys = Object.values(finalSchemas).map((schema) => schema.name)
   createStore(storeKeys)
@@ -193,43 +194,51 @@ export const hatchifyReactRest = <
 }
 
 // todo: leaving for testing, remove before merge to main
-const partialTodo = {
-  name: "Todo",
-  attributes: {
-    title: string(),
-    reqTitle: string({ required: true }),
-    age: integer({ required: true }),
-    optAge: integer({ required: false }),
-    important: boolean({ required: true }),
-    optImportant: boolean(),
-    created: datetime({ required: true }),
-    optCreated: datetime(),
-  },
-} satisfies PartialSchema
-const partialUser = {
-  name: "User",
-  attributes: {
-    name: string({ required: true }),
-    age: integer({ required: true }),
-    employed: boolean(),
-  },
-}
+// const partialTodo = {
+//   name: "Todo",
+//   attributes: {
+//     title: string(),
+//     reqTitle: string({ required: true }),
+//     age: integer({ required: true }),
+//     optAge: integer({ required: false }),
+//     important: boolean({ required: true }),
+//     optImportant: boolean(),
+//     created: datetime({ required: true }),
+//     optCreated: datetime(),
+//   },
+// } satisfies PartialSchema
+// const partialUser = {
+//   name: "User",
+//   attributes: {
+//     name: string({ required: true }),
+//     age: integer({ required: true }),
+//     employed: boolean(),
+//   },
+// } satisfies PartialSchema
 
-const schemas = {
-  Todo: partialTodo,
-  User: partialUser,
-}
+// const schemas = {
+//   Todo: partialTodo,
+//   User: partialUser,
+// }
 
-const app = hatchifyReactRest({
-  completeSchemaMap: schemas,
-} as RestClient<typeof schemas>)
+// const app = hatchifyReactRest({
+//   completeSchemaMap: schemas,
+// } as RestClient<typeof schemas>)
 
-app.Todo.findOne("id").then((record) => {
-  record?.record?.shouldError
-})
+// type Prettify<T> = {
+//   [K in keyof T]: T[K]
+// } & {}
+
+// app.Todo.findAll({}).then(([records]) => {
+//   records[0].
+// })
+//    ^?
+
+// app.Todo.findOne("id").then((record) => {
+//   record?.
+// })
 // app.User.findOne("id").then((record) => {
-//   record?.id
-//   record?.name
+//   record?.record?.name
 //   record?.age
 //   record?.shouldError
 // })

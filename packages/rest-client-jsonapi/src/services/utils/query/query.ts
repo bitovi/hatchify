@@ -16,7 +16,7 @@ import type {
  * where "book_type" and "person_type" are the JSON:API types for the "Book" and "Person" schemas.
  */
 export function fieldsToQueryParam(
-  schemaMap: RequiredSchemaMap<any>, // todo: HATCH-417
+  schemaMap: RequiredSchemaMap, // todo: HATCH-417
   allSchemas: Schemas | FinalSchemas,
   schemaName: string,
   fields: Fields,
@@ -203,7 +203,7 @@ export function pageToQueryParam(page: unknown): string {
  * Transforms the fields and include arrays from rest-client into a JSON:API compliant query parameter.
  */
 export function getQueryParams(
-  schemaMap: RequiredSchemaMap<any>, // todo: HATCH-417
+  schemaMap: RequiredSchemaMap, // todo: HATCH-417
   allSchemas: FinalSchemas,
   schemaName: string,
   query: {

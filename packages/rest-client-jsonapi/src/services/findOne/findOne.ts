@@ -16,7 +16,7 @@ import type { JsonApiResource } from "../jsonapi"
  * and returns it.
  */
 export async function findOne(
-  config: SourceConfig<any>,
+  config: SourceConfig,
   allSchemas: FinalSchemas,
   schemaName: string,
   query: QueryOne,

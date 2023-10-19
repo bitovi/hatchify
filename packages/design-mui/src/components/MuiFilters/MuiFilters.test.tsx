@@ -1,4 +1,3 @@
-import type { Schemas } from "@hatchifyjs/rest-client"
 import "@testing-library/jest-dom"
 import { describe, it, expect, vi } from "vitest"
 import { render, screen, act } from "@testing-library/react"
@@ -124,7 +123,8 @@ describe.skip("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -173,7 +173,8 @@ describe.skip("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -216,7 +217,8 @@ describe.skip("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -261,7 +263,8 @@ describe.skip("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -313,7 +316,8 @@ describe.skip("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -363,7 +367,8 @@ describe.skip("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}

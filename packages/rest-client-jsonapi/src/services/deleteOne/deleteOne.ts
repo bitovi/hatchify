@@ -5,7 +5,7 @@ import { fetchJsonApi } from "../utils"
  * Deletes a resource.
  */
 export async function deleteOne(
-  config: SourceConfig<any>,
+  config: SourceConfig,
   allSchemas: FinalSchemas,
   schemaName: string,
   id: string,

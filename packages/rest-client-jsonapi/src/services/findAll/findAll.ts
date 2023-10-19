@@ -18,7 +18,7 @@ import {
  * returns them.
  */
 export async function findAll(
-  config: SourceConfig<any>,
+  config: SourceConfig,
   allSchemas: FinalSchemas,
   schemaName: string,
   query: QueryList,

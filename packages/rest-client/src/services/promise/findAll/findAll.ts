@@ -1,6 +1,6 @@
 import type { PartialSchema } from "@hatchifyjs/core"
 import type {
-  SourRestClientce,
+  RestClient,
   QueryList,
   RequestMetaData,
   GetSchemaNames,

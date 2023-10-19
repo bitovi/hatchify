@@ -48,7 +48,7 @@ export function jsonapi<const TSchemas extends Record<string, SourceSchema>>(
       }
       return acc
     },
-    {} as RequiredSchemaMap<TSchemas>,
+    {} as RequiredSchemaMap,
   )
 
   const config = { baseUrl, schemaMap: completeSchemaMap }

@@ -22,7 +22,7 @@ type Relationship = Record<
 >
 
 export const getTypeToSchema = (
-  schemaMap: RequiredSchemaMap<any>, // todo: HATCH-417
+  schemaMap: RequiredSchemaMap, // todo: HATCH-417
 ): Record<string, string> => {
   return Object.entries(schemaMap).reduce((acc, [key, value]) => {
     acc[value.type] = key
@@ -79,7 +79,7 @@ export function jsonApiResourceToHatchifyResource(
  */
 export function convertToHatchifyResources(
   data: JsonApiResource | JsonApiResource[],
-  schemaMap: RequiredSchemaMap<any>, // todo: HATCH-417
+  schemaMap: RequiredSchemaMap, // todo: HATCH-417
 ): Resource[] {
   const typeToSchema = getTypeToSchema(schemaMap)
 
@@ -94,7 +94,7 @@ export function convertToHatchifyResources(
  * Converts a single Hatchify relationship to a JSON:API relationship
  */
 function hatchifyRelationshipToJsonApiRelationship(
-  config: SourceConfig<any>, // todo: HATCH-417
+  config: SourceConfig, // todo: HATCH-417
   schema: Schema,
   typeName: string,
   resourceRelationships:
@@ -138,7 +138,7 @@ function hatchifyRelationshipToJsonApiRelationship(
  * Converts Hatchify relationship object to JSON:API relationship object
  */
 export function convertToJsonApiRelationships(
-  config: SourceConfig<any>, // todo: HATCH-417
+  config: SourceConfig, // todo: HATCH-417
   schema: Schema,
   resourceRelationships: SchemalessResourceRelationshipObject,
 ): Record<string, JsonApiResourceRelationship> {
@@ -162,7 +162,7 @@ export function convertToJsonApiRelationships(
  * Converts a Hatchify resource into a JSON:API resource.
  */
 export function hatchifyResourceToJsonApiResource(
-  config: SourceConfig<any>, // todo: HATCH-417
+  config: SourceConfig, // todo: HATCH-417
   schema: Schema,
   schemaName: string,
   hatchifyResource: RestClientCreateData | RestClientUpdateData,
