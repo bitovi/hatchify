@@ -19,6 +19,14 @@ export const Todo: PartialSchema = {
 - `references` - [See References]()
 - `required` [{Boolean=false}] - If the attribute must be provided.
 
+|      key      | type                | optional  | default value   | description                                                            |
+| ------------- | ------------------- | --------- | --------------- | -----------------------------------------------------------------------|
+| `default`     | String         |Yes  |           | The default value of the attribute. Example: `string({default: "USA"})`
+| `max`         | Number      | Yes  | `255`           | The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})`|
+| `min`         | Number        | Yes  | `0`             |  The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})`|
+| `references`  |   |              | | See References
+| `required`    | Boolean   | Yes     | `false`         | If the attribute must be provided.                                      |
+
 ## Database and Sequelize Behavior
 
 The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
