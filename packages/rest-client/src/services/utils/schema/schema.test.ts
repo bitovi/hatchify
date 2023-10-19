@@ -85,6 +85,7 @@ describe("rest-client/services/utils/schema", () => {
             type: "number",
           },
         },
+        // todo: v2 relationships
         relationships: {
           comments: { type: "many", schema: "Comment" },
           author: { type: "one", schema: "Person" },
@@ -142,6 +143,7 @@ describe("rest-client/services/utils/schema", () => {
             values: ["Published", "Reviewed", "In Progress"],
           },
         },
+        // todo: v2 relationships
         relationships: {
           comments: { type: "many", schema: "Comment" },
           author: { type: "one", schema: "Person" },

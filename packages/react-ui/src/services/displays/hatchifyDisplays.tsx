@@ -93,6 +93,7 @@ export function getDisplaysFromChildren(
     .filter((child) => child.type.name === HatchifyColumn.displayName)
     .map((child) => {
       const { props } = child
+      // todo: v2 relationships
       const relationship = schema?.relationships?.[props.attribute]
 
       return getHatchifyDisplay({
@@ -128,7 +129,7 @@ export function getDisplaysFromSchema(
     },
   )
 
-  // todo: relationships not implemented in v2 yet
+  // todo: v2 relationships
   // const manyRelationshipDisplays = Object.entries(schema?.relationships || {})
   //   .filter(([key, relationship]) => {
   //     return relationship.type === "many"
@@ -145,7 +146,7 @@ export function getDisplaysFromSchema(
   //     })
   //   })
 
-  // todo: relationships not implemented in v2 yet
+  // todo: v2 relationships
   // const oneRelationshipDisplays = Object.entries(schema?.relationships || {})
   //   .filter(([key, relationship]) => {
   //     return relationship.type === "one"

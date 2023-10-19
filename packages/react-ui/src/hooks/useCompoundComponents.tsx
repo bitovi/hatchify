@@ -54,7 +54,7 @@ export function getColumns(
   if (overwrite.length > 0) {
     for (let i = 0; i < overwrite.length; i++) {
       const { props } = overwrite[i]
-      // todo: relationships not implemented in v2 yet
+      // todo: v2 relationships
       // const relationship = schema?.relationships?.[props.field]
       const relationship = false
 
@@ -84,7 +84,7 @@ export function getColumns(
 
       if (replaceWith) {
         const { props } = replaceWith
-        // todo: relationships not implemented in v2 yet
+        // todo: v2 relationships
         // const relationship = schema?.relationships?.[props.field]
         const relationship = false
 

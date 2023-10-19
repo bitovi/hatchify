@@ -42,6 +42,7 @@ export function jsonApiResourceToHatchifyResource(
 ): Resource {
   let relationships = undefined
 
+  // todo: v2 relationships
   if (resource.relationships) {
     relationships = Object.entries(resource.relationships).reduce(
       (acc: Relationship, [key, value]) => {
@@ -105,6 +106,7 @@ function hatchifyRelationshipToJsonApiRelationship(
     .concat(resourceRelationships)
     .map((resourceRelationship) => {
       const { id } = resourceRelationship
+      // todo: v2 relationships
       const type = Object.keys(schema?.relationships || {}).reduce(
         (type, relationshipKey) => {
           if (type) {

@@ -12,6 +12,7 @@ export function getAttributesFromSchema(
     const segments = path.split(".")
 
     for (const segment of segments) {
+      // todo: v2 relationships
       schemaName = schemas?.[schemaName]?.relationships?.[segment].schema || ""
     }
   }
@@ -80,6 +81,7 @@ export function getToOneRelationshipsAsFields(
 ): Fields {
   return Object.assign(
     {},
+    // todo: v2 relationships
     ...Object.entries(schemas[schemaName]?.relationships || [])
       .filter(([key, relationship]) => {
         return relationship.type === "one"
@@ -101,6 +103,7 @@ export function getToOneRelationshipsAsInclude(
   schemas: Record<string, Schema>,
   schemaName: string,
 ): Include {
+  // todo: v2 relationships
   return Object.entries(schemas[schemaName]?.relationships || [])
     .filter(([key, relationship]) => {
       return relationship.type === "one"

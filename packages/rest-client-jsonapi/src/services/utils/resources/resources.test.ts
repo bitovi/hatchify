@@ -36,6 +36,7 @@ describe("rest-client-jsonapi/services/utils/resources", () => {
         id: "1",
         type: "article",
         attributes: { title: "foo", body: "foo-body" },
+        // todo: v2 relationships
         relationships: {
           author: { data: { id: "1", type: "person" } },
           tags: {

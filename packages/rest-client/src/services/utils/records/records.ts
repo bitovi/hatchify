@@ -114,6 +114,7 @@ export function flattenResourcesIntoRecords(
     .map((resource) => {
       let relationships = undefined
 
+      // todo: v2 relationships
       if (resource.relationships) {
         relationships = Object.entries(resource.relationships).reduce(
           (acc: Relationship, [key, value]) => {

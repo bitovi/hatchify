@@ -1,6 +1,6 @@
-export type Include = string[] // todo: typed to schema relationships
+export type Include = string[] // todo: v2 relationships
 
-export type Fields = { [key: string]: string[] } // todo: typed to schema attributes & relationships.attributes
+export type Fields = { [key: string]: string[] } // todo: v2 relationships
 
 export type Selector = { include?: Include; fields?: Fields }
 

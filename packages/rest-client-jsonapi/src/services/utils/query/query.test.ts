@@ -20,6 +20,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         year: integer(),
         date: string(),
       },
+      // todo: v2 relationships
       // relationships: {
       //   author: {
       //     type: "one",
@@ -38,6 +39,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         name: string(),
         rating: integer(),
       },
+      // todo: v2 relationships
       // relationships: {
       //   authored: {
       //     type: "many",

@@ -42,7 +42,7 @@ function HatchifyCollection<
   baseFilter,
 }: HatchifyCollectionProps<TSchemas, TSchemaName>): JSX.Element {
   const { Collection } = useHatchifyPresentation()
-  // todo: relationships not implemented in v2 yet
+  // todo: v2 relationships
   // const defaultInclude = getDefaultInclude(allSchemas, schemaName)
 
   const collectionState = useCollectionState(

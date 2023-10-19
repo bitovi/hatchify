@@ -38,6 +38,7 @@ export interface Resource {
   relationships?: ResourceRelationshipObject
 }
 
+// todo: v2 relationships
 export interface RestClientCreateData
   extends Omit<Resource, "attributes" | "id" | "relationships"> {
   attributes: {
@@ -48,6 +49,7 @@ export interface RestClientCreateData
 
 export type CreateData = Omit<RestClientCreateData, "__schema">
 
+// todo: v2 relationships
 export interface RestClientUpdateData extends Omit<Resource, "relationships"> {
   relationships?: SchemalessResourceRelationshipObject
 }
