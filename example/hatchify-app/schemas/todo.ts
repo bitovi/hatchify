@@ -1,6 +1,6 @@
 import {
   PartialSchema,
-  belongsTo,
+  // belongsTo,
   datetime,
   // enumerate,
   integer,
@@ -16,7 +16,7 @@ export const Todo = {
     importance: integer(),
     // status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
   },
-  relationships: {
-    user: belongsTo("User"),
-  },
+  // relationships: {
+  //   user: belongsTo("User"),
+  // },
 } satisfies PartialSchema

@@ -1,6 +1,5 @@
 // hatchify-app/src/App.tsx
 import { useState } from "react"
-import { v2ToV1 } from "@hatchifyjs/core"
 import {
   hatchifyReact,
   MuiProvider,
