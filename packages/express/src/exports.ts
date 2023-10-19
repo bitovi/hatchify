@@ -1,8 +1,13 @@
 export * from "./express"
 
-export { DataTypes, Op } from "@hatchifyjs/node"
+export {
+  DataTypes,
+  NotFoundError,
+  Op,
+  UnexpectedValueError,
+} from "@hatchifyjs/node"
+
 export type {
-  HatchifyModel,
   HatchifyOptions,
   BelongsToManyResult,
   BelongsToResult,

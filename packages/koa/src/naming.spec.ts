@@ -112,6 +112,14 @@ describe("Naming rules", () => {
             name: string(),
           },
         },
+        Tenancy_DocumentLibrary: {
+          name: "DocumentLibrary",
+          namespace: "Tenancy",
+          pluralName: "Tenancy_DocumentLibrary",
+          attributes: {
+            name: string(),
+          },
+        },
       },
       requests: [
         {
@@ -148,6 +156,32 @@ describe("Naming rules", () => {
           expected: {
             body: {},
             status: 404,
+          },
+        },
+        {
+          url: "/api/tenancy/document-library",
+          options: {
+            method: "post",
+            body: {
+              data: {
+                type: "Tenancy_DocumentLibrary",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                attributes: { name: "Mary" },
+              },
+            },
+          },
+          expected: {
+            body: {
+              jsonapi: {
+                version: "1.0",
+              },
+              data: {
+                type: "Tenancy_DocumentLibrary",
+                id: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                attributes: { name: "Mary" },
+              },
+            },
+            status: 200,
           },
         },
       ],
@@ -954,16 +988,18 @@ describe("Naming rules", () => {
         const { body: expectedBody, status: expectedStatus } = expected
         const { body, status } = await fetch(url, options)
 
-        expect(body).toStrictEqual(expectedBody)
         expect(status).toStrictEqual(expectedStatus)
+        expect(body).toStrictEqual(expectedBody)
       }
 
       for (const table of database) {
         const { columns: expectedColumns, tableName } = table
-        const [dbResult] = await hatchify._sequelize.query(
+        const [dbResult] = await hatchify.orm.query(
           `SELECT name FROM pragma_table_info("${tableName}")`,
         )
-        const columns = dbResult.map((row) => row.name)
+        const columns = (dbResult as Array<{ name: string }>).map(
+          (row) => row.name,
+        )
 
         expect(columns).toEqual(expect.arrayContaining(expectedColumns))
       }

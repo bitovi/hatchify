@@ -6,7 +6,7 @@ import type {
   GetSchemaNames,
   Meta,
   MetaError,
-  Source,
+  RestClient,
 } from "@hatchifyjs/rest-client"
 
 /**
@@ -16,7 +16,7 @@ export const useDeleteOne = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: Source,
+  dataSource: RestClient<TSchemas>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
 ): [(id: string) => void, Meta] => {

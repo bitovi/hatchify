@@ -31,13 +31,13 @@ export interface PartialDataTypeProps<
   TRequired extends boolean,
 > {
   primary?: boolean
-  required?: TRequired // @todo arthur - this is required to map to allowNullInfer
+  required?: TRequired // @todo HATCH-417
   default?: PrimitiveType | (() => PrimitiveType) | null
 }
 
 export type PartialControlType<PrimitiveType, TRequired extends boolean> = {
   type: "Boolean" | "Number" | "String" | "Datetime" | "Dateonly"
-  allowNullInfer: TRequired extends true ? false : true // @todo arthur
+  allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
   primary?: boolean
   default?: PrimitiveType | (() => PrimitiveType) | null

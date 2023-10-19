@@ -1,8 +1,4 @@
-import type {
-  FinalSchemas,
-  Schemas,
-  SourceConfig,
-} from "@hatchifyjs/rest-client"
+import type { FinalSchemas, SourceConfig } from "@hatchifyjs/rest-client"
 import { fetchJsonApi } from "../utils"
 
 /**
@@ -10,7 +6,7 @@ import { fetchJsonApi } from "../utils"
  */
 export async function deleteOne(
   config: SourceConfig,
-  allSchemas: Schemas | FinalSchemas,
+  allSchemas: FinalSchemas,
   schemaName: string,
   id: string,
 ): Promise<void> {

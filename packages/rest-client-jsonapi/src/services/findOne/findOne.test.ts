@@ -1,19 +1,28 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import type { Schema } from "@hatchifyjs/rest-client"
 import { baseUrl } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { findOne } from "./findOne"
+import { assembler } from "@hatchifyjs/core"
 
-const ArticleSchema = { name: "Article" } as Schema
-const schemas = { Article: ArticleSchema }
-const schemaMap = {
-  Article: { type: "article", endpoint: "articles" },
-  Person: { type: "person", endpoint: "people" },
-  Tag: { type: "tag", endpoint: "tags" },
+const partialSchemaMap = {
+  Article: {
+    name: "Article",
+    attributes: {},
+    type: "article",
+    endpoint: "articles",
+  },
+  Person: {
+    name: "Person",
+    attributes: {},
+    type: "person",
+    endpoint: "people",
+  },
+  Tag: { name: "Tag", attributes: {}, type: "tag", endpoint: "tags" },
 }
-const sourceConfig = { baseUrl, schemaMap }
+const sourceConfig = { baseUrl, schemaMap: partialSchemaMap }
+const finalSchemaMap = assembler(partialSchemaMap)
 
 describe("rest-client-jsonapi/services/findOne", () => {
   const query = { id: "article-id-1", fields: {}, include: [] }
@@ -36,7 +45,7 @@ describe("rest-client-jsonapi/services/findOne", () => {
         },
       },
     ]
-    const result = await findOne(sourceConfig, schemas, "Article", query)
+    const result = await findOne(sourceConfig, finalSchemaMap, "Article", query)
     expect(result).toEqual(expected)
   })
 
@@ -57,14 +66,14 @@ describe("rest-client-jsonapi/services/findOne", () => {
     )
 
     await expect(
-      findOne(sourceConfig, schemas, "Article", query),
+      findOne(sourceConfig, finalSchemaMap, "Article", query),
     ).rejects.toEqual(errors)
   })
 
-  it("can be called from a Source", async () => {
-    const dataSource = jsonapi(baseUrl, schemaMap)
+  it("can be called from a rest client", async () => {
+    const dataSource = jsonapi(baseUrl, partialSchemaMap)
     const spy = vi.spyOn(dataSource, "findOne")
-    await dataSource.findOne(schemas, "Article", query)
-    expect(spy).toHaveBeenCalledWith(schemas, "Article", query)
+    await dataSource.findOne(finalSchemaMap, "Article", query)
+    expect(spy).toHaveBeenCalledWith(finalSchemaMap, "Article", query)
   })
 })

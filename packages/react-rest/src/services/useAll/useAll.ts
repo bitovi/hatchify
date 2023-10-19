@@ -10,7 +10,7 @@ import type {
   QueryList,
   RecordType,
   RequestMetaData,
-  Source,
+  RestClient,
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 
@@ -36,7 +36,7 @@ export const useAll = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: Source,
+  dataSource: RestClient<TSchemas>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryList,

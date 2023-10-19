@@ -1,3 +1,4 @@
+import type { FinalSchema } from "@hatchifyjs/core"
 import type {
   CreateOptions,
   DestroyOptions,
@@ -9,7 +10,7 @@ import type {
 import { buildDestroyOptions, buildFindOptions } from "./builder"
 import { validateFindOptions, validateStructure } from "./validator"
 import type { Hatchify } from "../node"
-import type { HatchifyModel, JSONObject } from "../types"
+import type { JSONObject } from "../types"
 import { getFullModelName } from "../utils/getFullModelName"
 
 /**
@@ -39,7 +40,7 @@ export interface ParseFunctions {
 
 async function findAllImpl(
   hatchify: Hatchify,
-  model: HatchifyModel,
+  model: FinalSchema,
   querystring: string,
 ) {
   const { data, errors } = buildFindOptions(hatchify, model, querystring)
@@ -52,9 +53,9 @@ async function findAllImpl(
 
 async function findOneImpl(
   hatchify: Hatchify,
-  model: HatchifyModel,
+  model: FinalSchema,
   querystring: string,
-  id,
+  id: Identifier,
 ) {
   const { data, errors } = buildFindOptions(hatchify, model, querystring, id)
   if (errors.length) {
@@ -66,7 +67,7 @@ async function findOneImpl(
 
 async function findAndCountAllImpl(
   hatchify: Hatchify,
-  model: HatchifyModel,
+  model: FinalSchema,
   querystring: string,
 ) {
   const { data, errors } = buildFindOptions(hatchify, model, querystring)
@@ -77,7 +78,7 @@ async function findAndCountAllImpl(
   return data
 }
 
-async function createImpl<T extends HatchifyModel = HatchifyModel>(
+async function createImpl<T extends FinalSchema = FinalSchema>(
   hatchify: Hatchify,
   model: T,
   body: any,
@@ -96,9 +97,9 @@ async function createImpl<T extends HatchifyModel = HatchifyModel>(
 
 async function updateImpl(
   hatchify: Hatchify,
-  model: HatchifyModel,
+  model: FinalSchema,
   body: any,
-  id,
+  id?: Identifier,
 ) {
   validateStructure(body, model, hatchify)
   const parsedBody = await hatchify.serializer.deserialize(
@@ -122,7 +123,7 @@ async function destroyImpl(querystring: string, id?: Identifier) {
 
 export function buildParserForModelStandalone(
   hatchify: Hatchify,
-  model: HatchifyModel,
+  model: FinalSchema,
 ): ParseFunctions {
   return {
     findAll: async (querystring) => findAllImpl(hatchify, model, querystring),
@@ -140,5 +141,5 @@ export function buildParserForModel(
   hatchify: Hatchify,
   modelName: string,
 ): ParseFunctions {
-  return buildParserForModelStandalone(hatchify, hatchify.models[modelName])
+  return buildParserForModelStandalone(hatchify, hatchify.schema[modelName])
 }

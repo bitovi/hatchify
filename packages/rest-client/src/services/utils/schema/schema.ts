@@ -73,6 +73,7 @@ export function transformSchema(schema: OldSchema): Schema {
     name: schemaNameWithNamespace(schema),
     displayAttribute: Object.keys(schema.attributes)[0],
     attributes: {},
+    pluralName: schema.pluralName,
   }
 
   for (const [key, value] of Object.entries(schema.attributes)) {

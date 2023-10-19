@@ -11,10 +11,11 @@ const Todo = {
 }
 
 const jsonapi = createClient("/api", {
-  Todo: { endpoint: "todos" },
+  Todo,
+  //  User
 })
 
-const hatchedReactRest = hatchifyReactRest({ Todo }, jsonapi)
+const hatchedReactRest = hatchifyReactRest(jsonapi)
 
 function App() {
   const [todos, listState] = hatchedReactRest.Todo.useAll()

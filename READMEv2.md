@@ -542,10 +542,9 @@ import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/rea
 import { Todo, User } from "../schemas/schemas"
 
 export const hatchedReact = hatchifyReact(
-  { Todo, User },
   createJsonapiClient("http://localhost:3000/api", {
-    Todo: { endpoint: "todos" },
-    User: { endpoint: "users" },
+    Todo,
+    User,
   }),
 )
 

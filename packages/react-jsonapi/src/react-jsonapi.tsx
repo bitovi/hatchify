@@ -12,9 +12,8 @@ export type SchemaMap = Record<string, SourceSchema>
 export function reactJsonapi<TSchemas extends Record<string, PartialSchema>>(
   partialSchemas: TSchemas,
   baseUrl: string,
-  schemaMap: SchemaMap,
 ): HatchifyReactRest<TSchemas> {
-  const jsonapiClient = createClient(baseUrl, schemaMap)
+  const jsonapiClient = createClient(baseUrl, partialSchemas)
 
-  return hatchifyReactRest(partialSchemas, jsonapiClient)
+  return hatchifyReactRest(jsonapiClient)
 }

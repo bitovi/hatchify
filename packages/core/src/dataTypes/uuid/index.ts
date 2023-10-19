@@ -5,11 +5,11 @@ import type { FinalUuidORM, PartialUuidORM, PartialUuidProps } from "./types"
 import type { PartialAttribute } from "../../types"
 import type { PartialStringControlType } from "../string"
 
-export function uuid(
-  props?: PartialUuidProps,
+export function uuid<TRequired extends boolean = false>(
+  props?: PartialUuidProps<TRequired>,
 ): PartialAttribute<
   PartialUuidORM,
-  PartialStringControlType<true>,
+  PartialStringControlType<TRequired>,
   string,
   FinalUuidORM
 > {

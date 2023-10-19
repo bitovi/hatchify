@@ -1,10 +1,8 @@
 import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
-import Express from "express"
 import { Serializer } from "jsonapi-serializer"
 
-import { Hatchify } from "./express"
-import { GET, POST } from "./testing/utils"
+import { startServerWith } from "./testing/utils"
 
 describe("JSON:API Tests", () => {
   const Model: PartialSchema = {
@@ -15,7 +13,7 @@ describe("JSON:API Tests", () => {
     },
   }
 
-  function serialize(data) {
+  function serialize(data: any) {
     const serializer = new Serializer("Model", {
       keyForAttribute: "camelCase",
       attributes: Object.keys(data),
@@ -25,56 +23,53 @@ describe("JSON:API Tests", () => {
     return serial
   }
 
+  let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+  let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+  beforeAll(async () => {
+    ;({ fetch, teardown } = await startServerWith({ Model }, "sqlite"))
+  })
+
+  afterAll(async () => {
+    await teardown()
+  })
+
   it("should handle JSON:API create body", async () => {
-    const app = Express()
-    const hatchify = new Hatchify({ Model }, { prefix: "/api" })
-    app.use(hatchify.middleware.allModels.all)
-
-    const server = app
-    await hatchify.createDatabase()
-
-    await POST(
-      server,
-      "/api/models",
-      serialize({
+    await fetch("/api/models", {
+      method: "post",
+      body: serialize({
         firstName: "firstName",
         lastName: "lastName",
       }),
-      "application/vnd.api+json",
-    )
+    })
 
-    const create = await POST(
-      server,
-      "/api/models",
-      serialize({
+    const create = await fetch("/api/models", {
+      method: "post",
+      body: serialize({
         firstName: "firstName2",
         lastName: "lastName2",
       }),
-      "application/vnd.api+json",
-    )
+    })
 
-    await POST(
-      server,
-      "/api/models",
-      serialize({
+    await fetch("/api/models", {
+      method: "post",
+      body: serialize({
         firstName: "firstName3",
         lastName: "lastName3",
       }),
-      "application/vnd.api+json",
-    )
+    })
 
     expect(create).toBeTruthy()
     expect(create.status).toBe(200)
-    expect(create.deserialized).toHaveProperty("id")
-    expect(create.deserialized.id).toBeTruthy()
+    expect(create.body.data).toHaveProperty("id")
+    expect(create.body.data.id).toBeTruthy()
 
-    const find = await GET(server, "/api/models/" + create.deserialized.id)
+    const find = await fetch(`/api/models/${create.body.data.id}`)
 
     expect(find).toBeTruthy()
     expect(find.status).toBe(200)
-    expect(find.deserialized).toBeTruthy()
-    expect(find.deserialized.id).toBe(create.deserialized.id)
-
-    await hatchify.orm.close()
+    expect(find.body).toBeTruthy()
+    expect(find.body.data).toBeTruthy()
+    expect(find.body.data.id).toBe(create.body.data.id)
   })
 })

@@ -43,7 +43,7 @@ describe.skip("components/MuiFilters", () => {
         }}
         page={{ number: 1, size: 10 }}
         fields={{}}
-        include={[]}
+        include={["user"]}
         setSort={vi.fn()}
         setPage={vi.fn()}
         selected={{ all: false, ids: [] }}
@@ -108,9 +108,310 @@ describe.skip("components/MuiFilters", () => {
     })
 
     expect(setFilters).toHaveBeenCalledWith([
-      { field: "id", operator: "icontains", value: "was" },
+      { field: "name", operator: "icontains", value: "was" },
     ])
     expect(setPage).toHaveBeenCalledWith({ number: 1, size: 10 })
+    vi.useRealTimers()
+  })
+
+  it("Sets filter if value is empty and the operator is an empty type", async () => {
+    const setPage = vi.fn()
+
+    const setFilters = vi.fn()
+
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+
+    render(
+      <MuiFilters
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
+        schemaName="Todo"
+        data={[]}
+        meta={meta}
+        sort={{
+          direction: undefined,
+          sortBy: undefined,
+        }}
+        page={{ number: 2, size: 10 }}
+        fields={{}}
+        include={["user"]}
+        setSort={vi.fn()}
+        setPage={(val) => setPage(val)}
+        selected={{ all: false, ids: [] }}
+        setSelected={vi.fn()}
+        filter={undefined}
+        setFilter={(val) => setFilters(val)}
+      />,
+    )
+
+    const filter = await screen.findByTestId("FilterListIcon")
+
+    await userEvent.click(filter)
+
+    const dropdowns = screen.getAllByRole("button")
+    await userEvent.click(dropdowns[2])
+    const emptySelection = screen.getByText("is empty")
+    await userEvent.click(emptySelection)
+
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+
+    expect(setFilters).toHaveBeenCalledWith([
+      { field: "name", operator: "empty", value: "" },
+    ])
+    expect(setPage).toHaveBeenCalledWith({ number: 1, size: 10 })
+    vi.useRealTimers()
+  })
+
+  it("Removes filter if value is empty and the operator is not an empty type", async () => {
+    const setPage = vi.fn()
+
+    const setFilters = vi.fn()
+
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+
+    render(
+      <MuiFilters
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
+        schemaName="Todo"
+        data={[]}
+        meta={meta}
+        sort={{
+          direction: undefined,
+          sortBy: undefined,
+        }}
+        page={{ number: 2, size: 10 }}
+        fields={{}}
+        include={["user"]}
+        setSort={vi.fn()}
+        setPage={(val) => setPage(val)}
+        selected={{ all: false, ids: [] }}
+        setSelected={vi.fn()}
+        filter={undefined}
+        setFilter={(val) => setFilters(val)}
+      />,
+    )
+
+    const filter = await screen.findByTestId("FilterListIcon")
+
+    await userEvent.click(filter)
+
+    const dropdowns = screen.getAllByRole("button")
+    await userEvent.click(dropdowns[2])
+    const emptySelection = screen.getByText("equals")
+    await userEvent.click(emptySelection)
+
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+
+    expect(setFilters).toHaveBeenCalledWith(undefined)
+    expect(setPage).toHaveBeenCalledTimes(0)
+    vi.useRealTimers()
+  })
+
+  it("adds a new filter row when Add Filter is clicked", async () => {
+    const setPage = vi.fn()
+
+    render(
+      <MuiFilters
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
+        schemaName="Todo"
+        data={[]}
+        meta={meta}
+        sort={{
+          direction: undefined,
+          sortBy: undefined,
+        }}
+        page={{ number: 2, size: 10 }}
+        fields={{}}
+        include={[]}
+        setSort={vi.fn()}
+        setPage={(val) => setPage(val)}
+        selected={{ all: false, ids: [] }}
+        setSelected={vi.fn()}
+        filter={undefined}
+        setFilter={(val) => vi.fn()}
+      />,
+    )
+
+    const filter = await screen.findByTestId("FilterListIcon")
+
+    await userEvent.click(filter)
+    let closeIcons = screen.getAllByTestId("CloseIcon")
+
+    //There is only one filter row at first
+    expect(closeIcons.length).toEqual(1)
+
+    const addFilterButton = screen.getByText("Add Filter")
+    await userEvent.click(addFilterButton)
+
+    //second row has been added
+    closeIcons = screen.getAllByTestId("CloseIcon")
+    expect(closeIcons.length).toEqual(2)
+  })
+
+  it("Clears rows and closes filter when Remove All is selected", async () => {
+    const setPage = vi.fn()
+
+    const setFilters = vi.fn()
+
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+
+    render(
+      <MuiFilters
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
+        schemaName="Todo"
+        data={[]}
+        meta={meta}
+        sort={{
+          direction: undefined,
+          sortBy: undefined,
+        }}
+        page={{ number: 2, size: 10 }}
+        fields={{}}
+        include={[]}
+        setSort={vi.fn()}
+        setPage={(val) => setPage(val)}
+        selected={{ all: false, ids: [] }}
+        setSelected={vi.fn()}
+        filter={undefined}
+        setFilter={(val) => setFilters(val)}
+      />,
+    )
+
+    const filter = await screen.findByTestId("FilterListIcon")
+
+    await userEvent.click(filter)
+    const closeIcons = screen.getAllByTestId("CloseIcon")
+
+    //There is only one filter row at first
+    expect(closeIcons.length).toEqual(1)
+
+    const removeAllButton = screen.getByText("Remove All")
+    await userEvent.click(removeAllButton)
+
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+
+    //filter is closed
+    const noRemoveAllButton = screen.queryByText("Remove All")
+    expect(noRemoveAllButton).toBeNull()
+    expect(setFilters).toHaveBeenCalled()
+
+    vi.useRealTimers()
+  })
+
+  it("Closes filter component if only row is closed", async () => {
+    const setPage = vi.fn()
+
+    const setFilters = vi.fn()
+
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+
+    render(
+      <MuiFilters
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
+        schemaName="Todo"
+        data={[]}
+        meta={meta}
+        sort={{
+          direction: undefined,
+          sortBy: undefined,
+        }}
+        page={{ number: 2, size: 10 }}
+        fields={{}}
+        include={[]}
+        setSort={vi.fn()}
+        setPage={(val) => setPage(val)}
+        selected={{ all: false, ids: [] }}
+        setSelected={vi.fn()}
+        filter={undefined}
+        setFilter={(val) => setFilters(val)}
+      />,
+    )
+
+    const filter = await screen.findByTestId("FilterListIcon")
+
+    await userEvent.click(filter)
+    const closeIcons = screen.getAllByTestId("CloseIcon")
+
+    //There is only one filter row at first
+    expect(closeIcons.length).toEqual(1)
+    await userEvent.click(closeIcons[0])
+
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+
+    //filter is closed
+    const noRemoveAllButton = screen.queryByText("Remove All")
+    expect(noRemoveAllButton).toBeNull()
+    expect(setFilters).toHaveBeenCalled()
+
+    vi.useRealTimers()
+  })
+
+  it("Only removes one row if a close button is clicked", async () => {
+    const setPage = vi.fn()
+
+    const setFilters = vi.fn()
+
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+
+    render(
+      <MuiFilters
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
+        schemaName="Todo"
+        data={[]}
+        meta={meta}
+        sort={{
+          direction: undefined,
+          sortBy: undefined,
+        }}
+        page={{ number: 2, size: 10 }}
+        include={["user"]}
+        setSort={vi.fn()}
+        setPage={(val) => setPage(val)}
+        selected={{ all: false, ids: [] }}
+        setSelected={vi.fn()}
+        filter={undefined}
+        setFilter={(val) => setFilters(val)}
+      />,
+    )
+
+    const filter = await screen.findByTestId("FilterListIcon")
+
+    await userEvent.click(filter)
+    let closeIcons = screen.getAllByTestId("CloseIcon")
+
+    //There is only one filter row at first
+    expect(closeIcons.length).toEqual(1)
+
+    const addFilterButton = screen.getByText("Add Filter")
+    await userEvent.click(addFilterButton)
+
+    //second row has been added
+    closeIcons = screen.getAllByTestId("CloseIcon")
+    expect(closeIcons.length).toEqual(2)
+
+    await userEvent.click(closeIcons[0])
+    closeIcons = screen.getAllByTestId("CloseIcon")
+    expect(closeIcons.length).toEqual(1)
+
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+
+    expect(setFilters).toHaveBeenCalled()
+
     vi.useRealTimers()
   })
 })

@@ -3,7 +3,6 @@ import type {
   QueryList,
   RequestMetaData,
   Resource,
-  Schemas,
   SourceConfig,
   FinalSchemas,
 } from "@hatchifyjs/rest-client"
@@ -20,7 +19,7 @@ import {
  */
 export async function findAll(
   config: SourceConfig,
-  allSchemas: FinalSchemas | Schemas,
+  allSchemas: FinalSchemas,
   schemaName: string,
   query: QueryList,
   baseFilter?: Filters,

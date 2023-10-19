@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/koa",
-  "version": "0.1.15",
+  "version": "1.0.2",
   "description": "Fullstack CRUD Application Solution",
   "main": "./dist/exports.js",
   "types": "./dist/exports.d.ts",
@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
-    "@hatchifyjs/core": "^0.1.7",
-    "@hatchifyjs/node": "^0.2.14",
+    "@hatchifyjs/core": "^0.2.0",
+    "@hatchifyjs/node": "^1.0.2",
     "dotenv": "^16.3.1",
     "jsonapi-serializer": "^3.6.7",
     "typedoc": "^0.23.21"
@@ -40,6 +40,7 @@
     "@bitovi/eslint-config": "^1.6.0",
     "@koa/router": "^12.0.0",
     "@types/jest": "^29.2.1",
+    "@types/jsonapi-serializer": "^3.6.6",
     "@types/koa__router": "^12.0.0",
     "@types/node": "^18.11.9",
     "@types/supertest": "^2.0.12",

@@ -72,7 +72,7 @@ following steps:
    libraries:
 
    ```bash
-   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/koa @hatchifyjs/react
+   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/core @hatchifyjs/koa @hatchifyjs/react
    ```
 
 5. Install the following dev packages to run our backend server:
@@ -89,7 +89,7 @@ following steps:
    ```bash
    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
    "dev:frontend": "vite",
-   "dev:backend": "nodemon --esm backend/index.ts",
+   "dev:backend": "nodemon --esm backend/index.ts --watch backend",
    "build:frontend": "tsc && vite build --outDir dist/frontend",
    "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
    "start:frontend": "vite preview --outDir dist/frontend",
@@ -184,33 +184,35 @@ before, specifically Sequelize, this should look pretty familiar to you.
 HatchifyJS uses Sequelize, a Node.js- and TypeScript-compatible ORM,
 under the hood to talk to your database.
 
-**✏️ Create a** `schemas/User.ts`**:**
+**✏️ Create a** `schemas.ts`**:**
 
 > **Note:** Take note of lines commented with the 👀 emoji.
 
 ```ts
-// hatchify-app/schemas/User.ts
-export const User = {
-  name: "User",
-  attributes: {
-    name: "STRING",
-  },
-  hasMany: [{ target: "Todo", options: { as: "todos" } }], // 👀
-}
-```
+// hatchify-app/schemas.ts
+import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
 
-**✏️ Create a** `schemas/Todo.ts`**:**
-
-```ts
-// hatchify-app/schemas/Todo.ts
-export const Todo = {
+export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
-    name: "STRING",
-    dueDate: "DATE",
-    importance: "INTEGER",
+    name: string({ required: true }),
+    dueDate: datetime(),
+    importance: integer(),
+    complete: boolean({ default: false }),
   },
-  belongsTo: [{ target: "User", options: { as: "user" } }], // 👀
+  relationships: {
+    user: belongsTo(),
+  },
+}
+
+export const User: PartialSchema = {
+  name: "User",
+  attributes: {
+    name: string({ required: true }),
+  },
+  relationships: {
+    todos: hasMany(),
+  },
 }
 ```
 
@@ -241,17 +243,20 @@ check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/a
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import { Todo } from "../schemas/Todo"
-import { User } from "../schemas/User"
+import { Todo, User } from "../schemas"
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa([Todo, User], {
-  prefix: "/api",
-  database: {
-    dialect: "sqlite",
-    storage: ":memory:",
+const hatchedKoa = hatchifyKoa(
+  { Todo, User },
+  {
+    prefix: "/api",
+    database: {
+      dialect: "sqlite",
+      storage: ":memory:",
+      logging: false,
+    },
   },
-})
+)
 
 app.use(cors())
 app.use(hatchedKoa.middleware.allModels.all)
@@ -301,6 +306,7 @@ curl 'http://localhost:3000/api/todos' \
 --data '{
   "data": {
     "type": "Todo",
+    "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000001",
     "attributes": {
       "name": "Walk the dog",
       "dueDate": "2024-12-12",
@@ -319,13 +325,14 @@ curl --request POST 'http://localhost:3000/api/users' \
 --data '{
   "data": {
     "type": "User",
+    "id": "bbbbbbbb-bbbb-bbbb-bbbb-000000000001",
     "attributes": {
       "name": "John Doe"
     },
     "relationships": {
       "todos": {
         "data": [
-          { "type": "Todo", "id": "1" }
+          { "type": "Todo", "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000001" }
         ]
       }
     }
@@ -349,31 +356,21 @@ You can check out the [querystring library](https://github.com/bitovi/querystrin
 Just like fetching a list of resources, we’re able to fetch an
 individual resource with or without its related records. For example:
 
-- [http://localhost:3000/api/users/1](http://localhost:3000/api/users/1)
-- [http://localhost:3000/api/users/1?include=todos](http://localhost:3000/api/users/1?include=todos)
+- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002](http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001)
+- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002?include=todos](http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001?include=todos)
 
 ### Updating a resource
 
 ```bash
-curl --request PATCH 'http://localhost:3000/api/users/1' \
+curl --request PATCH 'http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
   "data": {
     "type": "User",
-    "id": "1",
+    "id": "bbbbbbbb-bbbb-bbbb-bbbb-000000000001",
     "attributes": {
       "name": "New name",
       "type": "User"
-    },
-    "relationships": {
-      "todos": {
-        "data": [
-          {
-            "id": "100",
-            "type": "Todo"
-          }
-        ]
-      }
     }
   }
 }'
@@ -382,7 +379,7 @@ curl --request PATCH 'http://localhost:3000/api/users/1' \
 ### Deleting a resource
 
 ```bash
-curl --request DELETE 'http://localhost:3000/api/users/1'
+curl --request DELETE 'http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001'
 ```
 
 ## Seeding data
@@ -396,7 +393,7 @@ curl 'http://localhost:3000/api/todos' \
   "data": {
     "type": "Todo",
     "attributes": {
-      "id": "101",
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002",
       "name": "Walk the dog",
       "dueDate": "2024-12-12",
       "importance": 6
@@ -410,7 +407,7 @@ curl 'http://localhost:3000/api/todos' \
   "data": {
     "type": "Todo",
     "attributes": {
-      "id": "102",
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003",
       "name": "Laundry",
       "dueDate": "2024-12-02",
       "importance": 1
@@ -424,7 +421,7 @@ curl 'http://localhost:3000/api/todos' \
   "data": {
     "type": "Todo",
     "attributes": {
-      "id": "103",
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004",
       "name": "Making Calls",
       "dueDate": "2024-12-31",
       "importance": 7
@@ -445,11 +442,11 @@ curl 'http://localhost:3000/api/users' \
         "data": [
           {
             "type": "Todo",
-            "id": "101"
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002"
           },
           {
             "type": "Todo",
-            "id": "103"
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004"
           }
         ]
       }
@@ -470,7 +467,7 @@ curl 'http://localhost:3000/api/users' \
         "data": [
           {
             "type": "Todo",
-            "id": "102"
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003"
           }
         ]
       }
@@ -537,16 +534,18 @@ following:**
 
 ```tsx
 // hatchify-app/frontend/App.tsx
+import { v2ToV1 } from "@hatchifyjs/core"
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo } from "../schemas/Todo"
-import { User } from "../schemas/User"
+import { Todo, User } from "../schemas"
 
 export const hatchedReact = hatchifyReact(
-  { Todo, User },
-  createJsonapiClient("http://localhost:3000/api", {
-    Todo: { endpoint: "todos" },
-    User: { endpoint: "users" },
-  }),
+  createJsonapiClient(
+    "http://localhost:3000/api",
+    v2ToV1({
+      Todo,
+      User,
+    }),
+  ),
 )
 
 const TodoList = hatchedReact.components.Todo.Collection

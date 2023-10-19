@@ -1,5 +1,13 @@
-import { PartialSchema } from "@hatchifyjs/core"
-import { assembler } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
+import {
+  assembler,
+  // string,
+  // integer,
+  // datetime,
+  // boolean,
+  // belongsTo,
+  // hasMany,
+} from "@hatchifyjs/core"
 import type {
   CreateType,
   GetSchemaFromName,
@@ -114,9 +122,10 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
 export const hatchifyReactRest = <
   const TSchemas extends Record<string, PartialSchema>,
 >(
-  partialSchemas: TSchemas,
-  restClient: RestClient,
+  // partialSchemas: TSchemas,
+  restClient: RestClient<TSchemas>,
 ): HatchifyReactRest<TSchemas> => {
+  const { completeSchemaMap: partialSchemas } = restClient
   const finalSchemas = assembler(partialSchemas)
   const storeKeys = Object.values(finalSchemas).map((schema) => schema.name)
   createStore(storeKeys)
@@ -205,7 +214,7 @@ export const hatchifyReactRest = <
   return functions
 }
 
-// // todo: leaving for testing, remove before merge to main
+// todo: leaving for testing, remove before merge to main
 // const partialTodo = {
 //   name: "Todo",
 //   attributes: {
@@ -234,41 +243,29 @@ export const hatchifyReactRest = <
 //     age: integer({ required: true }),
 //     employed: boolean(),
 //   },
+// } satisfies PartialSchema
+
+// const schemas = {
+//   Todo: partialTodo,
+//   User: partialUser,
 // }
+
+// const app = hatchifyReactRest({
+//   completeSchemaMap: schemas,
+// } as RestClient<typeof schemas>)
 
 // type Prettify<T> = {
 //   [K in keyof T]: T[K]
 // } & {}
 
-// // type AA = GetSchemaFromName<
-// //   { Todo: typeof partialTodo; User: typeof partialUser },
-// //   typeof partialTodo.relationships.user.targetSchema
-// // >
-
-// // type BB = Prettify<AA>["attributes"]["age"]
-// // //   ^?
-
-// // type CC = {
-// //   [Relationship in keyof typeof partialTodo.relationships]: typeof partialTodo.relationships[Relationship]["targetSchema"]
-// // }
-
-// // type DD = Prettify<CC>
-// // //   ^?
-
-// const app = hatchifyReactRest(
-//   { Todo: partialTodo, User: partialUser },
-//   undefined as any,
-// )
+// app.Todo.findAll({}).then(([records]) => {
+//   records[0].user.
+// })
 
 // app.Todo.findOne("id").then((record) => {
-//   record?.id
-//   record?.title
-//   record?.optAge
-//   // record?.user.
-//   record?.users[0].
+//   record?.
 // })
 // app.User.findOne("id").then((record) => {
-//   record?.id
 //   record?.name
 //   record?.age
 //   record?.shouldError
@@ -338,6 +335,15 @@ export const hatchifyReactRest = <
 //     age: 13,
 //     important: true,
 //     created: new Date(),
+//     user: {
+//       id: "1234",
+//       attributes: {
+//         name: "",
+//         age: 13,
+//         employed: true,
+//         shouldError: "",
+//       },
+//     }
 //     // shouldError: '',
 //   },
 // })

@@ -3,7 +3,8 @@ import { server } from "./mocks/server"
 
 export const testBackendEndpointConfig = {
   api: "api",
-  schema: "articles",
+  schemaSegment: "articles",
+  namespacedSchemaSegment: "feature/articles",
 }
 
 beforeAll(() =>
@@ -11,7 +12,10 @@ beforeAll(() =>
     onUnhandledRequest: (req, print) => {
       if (
         req.url.pathname.startsWith(
-          `/${testBackendEndpointConfig.api}/${testBackendEndpointConfig.schema}`,
+          `/${testBackendEndpointConfig.api}/${testBackendEndpointConfig.schemaSegment}`,
+        ) ||
+        req.url.pathname.startsWith(
+          `/${testBackendEndpointConfig.api}/${testBackendEndpointConfig.namespacedSchemaSegment}`,
         )
       ) {
         return

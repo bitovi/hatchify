@@ -1,20 +1,28 @@
 import type { FinalSchema } from "@hatchifyjs/core"
 import { omit, snakeCase } from "lodash"
 import { DataTypes } from "sequelize"
-import type { Model, ModelStatic, Sequelize } from "sequelize"
+import type {
+  AbstractDataTypeConstructor,
+  Dialect,
+  Model,
+  ModelStatic,
+  Sequelize,
+} from "sequelize"
 
-import type { HatchifyModel } from "../../types"
-import { getFullModelName } from "../../utils/getFullModelName"
+import { getSequelizeSchemaName } from "./getSequelizeSchemaName"
+import { getFullModelName } from "../utils/getFullModelName"
 
 export function toSequelize(
   schemas: { [schemaName: string]: FinalSchema },
   sequelize: Sequelize,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): { [schemaName: string]: ModelStatic<any> } {
+  const dialect = sequelize.getDialect() as Dialect
+
   return Object.entries(schemas).reduce(
     (acc, [schemaName, finalizedSchema]) => ({
       ...acc,
-      [schemaName]: sequelize.define<Model<HatchifyModel["attributes"]>>(
+      [schemaName]: sequelize.define<Model<FinalSchema["attributes"]>>(
         getFullModelName(finalizedSchema),
         Object.entries({
           id: finalizedSchema.id,
@@ -35,10 +43,13 @@ export function toSequelize(
               ...omit(sequelize, ["defaultValue", "type", "typeArgs"]),
               type:
                 "typeArgs" in sequelize
-                  ? DataTypes[sequelize.type](
-                      ...((sequelize.typeArgs as number[] | string[]) ?? []),
-                    )
-                  : DataTypes[sequelize.type],
+                  ? (DataTypes as Record<string, AbstractDataTypeConstructor>)[
+                      sequelize.type
+                      // @ts-expect-error
+                    ](...((sequelize.typeArgs as number[] | string[]) ?? []))
+                  : (DataTypes as Record<string, AbstractDataTypeConstructor>)[
+                      sequelize.type
+                    ],
               ...(sequelize.defaultValue === null
                 ? {}
                 : { defaultValue: sequelize.defaultValue }),
@@ -54,7 +65,7 @@ export function toSequelize(
           createdAt: false,
           updatedAt: false,
           freezeTableName: true,
-          schema: snakeCase(finalizedSchema.namespace) || "",
+          schema: getSequelizeSchemaName(dialect, finalizedSchema.namespace),
           tableName: snakeCase(finalizedSchema.name),
         },
       ),

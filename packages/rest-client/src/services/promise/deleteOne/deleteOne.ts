@@ -1,5 +1,5 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { FinalSchemas, GetSchemaNames, Source } from "../../types"
+import type { FinalSchemas, GetSchemaNames, RestClient } from "../../types"
 import { notifySubscribers } from "../../store"
 import { SchemaNameNotStringError, schemaNameIsString } from "../../utils"
 
@@ -10,7 +10,7 @@ export const deleteOne = async <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: Source,
+  dataSource: RestClient<TSchemas>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   id: string,

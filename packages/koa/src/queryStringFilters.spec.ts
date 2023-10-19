@@ -11,7 +11,14 @@ import * as dotenv from "dotenv"
 
 import { dbDialects, startServerWith } from "./testing/utils"
 
-const [john, jane] = [
+type User = {
+  name: string
+  age: number
+  startDate: string
+  onSite: boolean
+  manager: boolean
+}
+const [john, jane]: User[] = [
   {
     name: "John",
     age: 25,
@@ -388,7 +395,7 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
 
   afterAll(async () => {
     const { body } = await fetch(`/api/users/?`)
-    const userIds = body.data.map(({ id }) => id)
+    const userIds = body.data.map(({ id }: { id: string }) => id)
     await fetch(`/api/users/${userIds[0]}`, {
       method: "delete",
     })
@@ -399,12 +406,20 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
     await teardown()
   })
 
-  const validator = async ({ expectedResult, queryParam }) => {
+  const validator = async ({
+    expectedResult,
+    queryParam,
+  }: {
+    expectedResult: User[]
+    queryParam: string
+  }) => {
     const { body } = await fetch(`/api/users/?${queryParam}`)
     if (body.errors) {
       throw body.errors
     }
-    const users = body.data.map(({ attributes }) => attributes)
+    const users = body.data.map(
+      ({ attributes }: { attributes: User }) => attributes,
+    )
     expect(users).toEqual(
       expectedResult.map((er) => ({
         ...er,

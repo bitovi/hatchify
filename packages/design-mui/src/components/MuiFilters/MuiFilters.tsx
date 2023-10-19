@@ -1,23 +1,33 @@
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import type { FilterArray } from "@hatchifyjs/rest-client"
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { Badge, Button, Grid, Popover, debounce } from "@mui/material"
 import { MuiFilterRows } from "./components/MuiFilterRows"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
+import { getFilterableFields } from "./utils"
 
 export const MuiFilters: React.FC<XCollectionProps> = ({
   finalSchemas,
   partialSchemas,
+  include,
   schemaName,
   filter: queryFilter,
   setFilter: setQueryFilter,
   page,
   setPage,
 }) => {
-  const fields = getSupportedFields(finalSchemas, schemaName)
-  const defaultFilter = { field: fields[0], operator: "icontains", value: "" }
+  const fields = useMemo(
+    () => getFilterableFields(finalSchemas, schemaName, include ?? []),
+    [finalSchemas, include, schemaName],
+  )
+
+  const defaultFilter = {
+    field: fields[0],
+    operator: "icontains",
+    value: "",
+  }
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)
@@ -82,6 +92,8 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
           <Grid item xs={12}>
             <MuiFilterRows
               attributes={partialSchemas[schemaName].attributes}
+              finalSchemas={finalSchemas}
+              schemaName={schemaName}
               fields={fields}
               filters={filters}
               setFilters={setFilters}
@@ -111,7 +123,12 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
         variant="text"
         onClick={() => setOpen(true)}
         startIcon={
-          <Badge badgeContent={queryFilter?.length} color="primary">
+          <Badge
+            badgeContent={
+              Array.isArray(queryFilter) ? queryFilter?.length : undefined
+            }
+            color="primary"
+          >
             <FilterListIcon />
           </Badge>
         }
@@ -120,17 +137,6 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
       </Button>
     </>
   )
-}
-
-function getSupportedFields(
-  allSchemas: XCollectionProps["finalSchemas"],
-  schemaName: XCollectionProps["schemaName"],
-) {
-  return Object.entries(allSchemas[schemaName].attributes)
-    .filter(
-      ([, attr]) => ["String", "Datetime"].includes(attr.control.type), // todo: v2 types
-    )
-    .map(([key]) => key)
 }
 
 export default MuiFilters

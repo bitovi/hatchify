@@ -1,4 +1,8 @@
-import { FinalSchema, PartialSchema } from "@hatchifyjs/core"
+import {
+  FinalSchema,
+  PartialSchema,
+  //  belongsTo, boolean, hasMany, integer, string
+} from "@hatchifyjs/core"
 
 export type EnumObject = { type: "enum"; allowNull?: boolean; values: string[] }
 export type AttributeObject = { type: string; allowNull?: boolean } | EnumObject
@@ -17,6 +21,7 @@ export interface Schema {
       schema: string
     }
   }
+  pluralName?: string
 }
 
 export type Schemas = Record<string, Schema>
