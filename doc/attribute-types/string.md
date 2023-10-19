@@ -15,9 +15,9 @@ export const Todo: PartialSchema = {
 
 |      key      | description                                                                                 | type             | optional  | default |
 | ------------- | ------------------------------------------------------------------------------------------- | :-------------:  | :-------: | :-----: |
-| `default`     | The default value of the attribute. Example: `string({default: "USA"})`                     | `String`         | Yes       |         | 
-| `max`         | The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})`   | `Number`         | Yes       | `255`   |        
-| `min`         |  The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})`  | `Number`         | Yes       | `0`     |        
+| `default`     | The default value of the attribute. <br/> Example: `string({default: "USA"})`                     | `String`         | Yes       |         | 
+| `max`         | The maximum number of characters allowed. <br/> Defaults to 255. Example: `string({max: 1023})`   | `Number`         | Yes       | `255`   |        
+| `min`         |  The maximum number of characters allowed. <br/> Defaults to 255. Example: `string({max: 1023})`  | `Number`         | Yes       | `0`     |        
 | `references`  | [See References]()                                                                          |                  |           |         | 
 | `required`    | If the attribute must be provided.                                                          | `Boolean`        | Yes       | `false` |        
 
