@@ -19,7 +19,9 @@ export const Todo: PartialSchema = {
 - `references` - [See References]()
 - `required` [{Boolean=false}] - If the attribute must be provided.
 
-|      key      | type                | optional  | default value   | description                                                            |
+-----
+
+|      key      | type                | optional  | default   | description                                                            |
 | ------------- | ------------------- | --------- | --------------- | -----------------------------------------------------------------------|
 | `default`     | String         |Yes  |           | The default value of the attribute. Example: `string({default: "USA"})`
 | `max`         | Number      | Yes  | `255`           | The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})`|
@@ -27,7 +29,7 @@ export const Todo: PartialSchema = {
 | `references`  |   |              | | See References
 | `required`    | Boolean   | Yes     | `false`         | If the attribute must be provided.                                      |
 
-
+-----
 
 |      key      | value               | description                                                            |
 | ------------- | ------------------- | -----------------------------------------------------------------------|
@@ -35,7 +37,16 @@ export const Todo: PartialSchema = {
 | `max`         | type: `Number` <br/> optional: `Yes`  <br/> default: `255`           | The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})`
 
    
+-----
 
+
+|      key      | description                                                              | type                | optional  | default |
+| ------------- | -----------------------------------------------------------------------| --------------- | ------------------- | --------- | 
+| `default`     | The default value of the attribute. Example: `string({default: "USA"})` | String         |Yes  |           
+| `max`         | The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})` | Number      | Yes  | `255`           
+| `min`         |  The maximum number of characters allowed. Defaults to 255. Example: `string({max: 1023})` | Number        | Yes  | `0`             
+| `references`  | See References|   |              | 
+| `required`    | If the attribute must be provided.   | Boolean   | Yes     | `false`         
 
 
 ## Database and Sequelize Behavior
