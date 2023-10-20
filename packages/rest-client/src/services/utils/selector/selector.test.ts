@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest"
-import type { Schema } from "../../types"
+import {
+  PartialSchema,
+  assembler,
+  belongsTo,
+  boolean,
+  datetime,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 import {
   getAttributesFromSchema,
   getFieldsFromInclude,
@@ -10,77 +19,61 @@ import {
   getInclude,
 } from "./selector"
 
-const Todo: Schema = {
-  name: "Todo",
-  displayAttribute: "name",
-  attributes: {
-    name: "string",
-    important: "boolean",
-    dueDate: "date",
-  },
-  relationships: {
-    user: {
-      type: "one",
-      schema: "User",
+const partialTodoUserSchemas = {
+  Todo: {
+    name: "Todo",
+    displayAttribute: "name",
+    attributes: {
+      name: string(),
+      important: boolean(),
+      dueDate: datetime(),
+    },
+    relationships: {
+      user: belongsTo(),
     },
   },
-}
-
-const User: Schema = {
-  name: "User",
-  displayAttribute: "name",
-  attributes: {
-    name: "string",
-    email: "string",
-  },
-  relationships: {
-    todos: {
-      type: "many",
-      schema: "Todo",
+  User: {
+    name: "User",
+    displayAttribute: "name",
+    attributes: {
+      name: string(),
+      email: string(),
+    },
+    relationships: {
+      todos: hasMany(),
     },
   },
-}
+} satisfies Record<string, PartialSchema>
 
-const todoUserSchemas = { Todo, User }
-
-const bookAuthorSchemas: Record<string, Schema> = {
+const partialBookAuthorSchemas = {
   Book: {
     name: "Book",
     displayAttribute: "title",
     attributes: {
-      title: "string",
-      year: "number",
+      title: string(),
+      year: integer(),
     },
     relationships: {
-      author: {
-        type: "one",
-        schema: "Person",
-      },
-      illustrators: {
-        type: "many",
-        schema: "Person",
-      },
+      author: belongsTo("Person"),
+      illustrators: hasMany("Person"),
     },
   },
   Person: {
     name: "Person",
     displayAttribute: "name",
     attributes: {
-      name: "string",
-      rating: "number",
+      name: string(),
+      rating: integer(),
     },
     relationships: {
-      authored: {
-        type: "many",
-        schema: "Book",
-      },
-      illustrated: {
-        type: "many",
-        schema: "Book",
-      },
+      authored: hasMany("Book"),
+      illustrated: hasMany("Book"),
     },
   },
-}
+} satisfies Record<string, PartialSchema>
+
+const todoUserSchemas = assembler(partialTodoUserSchemas)
+const bookAuthorSchemas = assembler(partialBookAuthorSchemas)
 
 describe("rest-client/services/utils/selector", () => {
   describe("getAttributesFromSchema", () => {

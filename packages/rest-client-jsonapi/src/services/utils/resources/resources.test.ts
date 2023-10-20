@@ -1,27 +1,42 @@
 import { describe, expect, it } from "vitest"
-import type { JsonApiResource } from "../../jsonapi"
+import type {
+  JsonApiResource,
+  JsonApiResourceRelationship,
+} from "../../jsonapi"
 import {
   convertToHatchifyResources,
+  convertToJsonApiRelationships,
   getTypeToSchema,
   jsonApiResourceToHatchifyResource,
 } from "./resources"
+import { assembler, belongsTo, hasMany, string } from "@hatchifyjs/core"
+import { SchemalessResourceRelationshipObject } from "@hatchifyjs/rest-client"
 
 describe("rest-client-jsonapi/services/utils/resources", () => {
   const typeToSchema = { article: "Article", person: "Person", tag: "Tag" }
   const schemaMap = {
     Article: {
       name: "Article",
-      attributes: {},
+      attributes: {
+        title: string(),
+      },
       type: "article",
       endpoint: "articles",
     },
     Person: {
       name: "Person",
-      attributes: {},
+      attributes: {
+        name: string(),
+      },
       type: "person",
       endpoint: "people",
     },
-    Tag: { name: "Tag", attributes: {}, type: "tag", endpoint: "tags" },
+    Tag: {
+      name: "Tag",
+      attributes: { label: string() },
+      type: "tag",
+      endpoint: "tags",
+    },
   }
 
   describe("getTypeToSchema", () => {
@@ -36,7 +51,6 @@ describe("rest-client-jsonapi/services/utils/resources", () => {
         id: "1",
         type: "article",
         attributes: { title: "foo", body: "foo-body" },
-        // todo: v2 relationships
         relationships: {
           author: { data: { id: "1", type: "person" } },
           tags: {
@@ -171,97 +185,119 @@ describe("rest-client-jsonapi/services/utils/resources", () => {
   })
 })
 
-// todo: v2 relationships
-// describe("convertToJsonApiRelationships", () => {
-//   it("Correctly converts relationship objects with one or many relationships", () => {
-//     const schemaMap = {
-//       Article: {
-//         name: "Article",
-//         displayAttribute: "name",
-//         type: "Article",
-//         attributes: {
-//           title: string(),
-//           body: string(),
-//         },
-//         // relationships: {
-//         //   person: {
-//         //     type: "one",
-//         //     schema: "Person",
-//         //   },
-//         //   tag: {
-//         //     type: "many",
-//         //     schema: "Tag",
-//         //   },
-//         // },
-//       },
-//       Person: { name: "Person", type: "Person", attributes: {} },
-//       Tag: { name: "Tag", type: "Tag", attributes: {} },
-//     }
-//     const sourceConfig = { baseUrl: "http://localhost:3000/api", schemaMap }
+describe("convertToJsonApiRelationships", () => {
+  it("Correctly converts relationship objects with one or many relationships", () => {
+    const schemaMap = {
+      Article: {
+        name: "Article",
+        displayAttribute: "name",
+        type: "Article",
+        attributes: {
+          title: string(),
+          body: string(),
+        },
+        relationships: {
+          person: belongsTo(),
+          tag: hasMany(),
+        },
+      },
+      Person: {
+        name: "Person",
+        type: "Person",
+        attributes: {
+          name: string(),
+        },
+        relationships: {
+          article: hasMany(),
+        },
+      },
+      Tag: {
+        name: "Tag",
+        type: "Tag",
+        attributes: {
+          label: string(),
+        },
+        relationships: { article: hasMany() },
+      },
+    }
+    const sourceConfig = { baseUrl: "http://localhost:3000/api", schemaMap }
 
-//     const relationships: SchemalessResourceRelationshipObject = {
-//       person: { id: "1" },
-//       tag: [{ id: "1" }, { id: "2" }],
-//     }
+    const relationships: SchemalessResourceRelationshipObject = {
+      person: { id: "1" },
+      tag: [{ id: "1" }, { id: "2" }],
+    }
 
-//     const expected: Record<string, JsonApiResourceRelationship> = {
-//       person: { data: { id: "1", type: "Person" } },
-//       tag: {
-//         data: [
-//           { id: "1", type: "Tag" },
-//           { id: "2", type: "Tag" },
-//         ],
-//       },
-//     }
+    const expected: Record<string, JsonApiResourceRelationship> = {
+      person: { data: { id: "1", type: "Person" } },
+      tag: {
+        data: [
+          { id: "1", type: "Tag" },
+          { id: "2", type: "Tag" },
+        ],
+      },
+    }
 
-//     expect(
-//       convertToJsonApiRelationships(
-//         sourceConfig,
-//         schemaMap.Article as Schema,
-//         relationships,
-//       ),
-//     ).toEqual(expected)
-//   })
+    expect(
+      convertToJsonApiRelationships(
+        sourceConfig,
+        assembler(schemaMap).Article,
+        relationships,
+      ),
+    ).toEqual(expected)
+  })
 
-//   it("Correctly converts relationship objects for schemas with custom-defined `type` values", () => {
-//     const schemaMap = {
-//       Article: {
-//         name: "Article",
-//         displayAttribute: "name",
-//         type: "Article",
-//         attributes: {
-//           title: "string",
-//           body: "string",
-//         },
-//         relationships: {
-//           person: {
-//             type: "one",
-//             schema: "Person",
-//           },
-//         },
-//       },
-//       Person: { name: "Person", type: "person_custom", attributes: {} },
-//       Tag: { name: "Tag", type: "Tag", attributes: {} },
-//     }
-//     const sourceConfig = {
-//       baseUrl: "http://localhost:3000/api",
-//       schemaMap,
-//     }
+  it("Correctly converts relationship objects for schemas with custom-defined `type` values", () => {
+    const schemaMap = {
+      Article: {
+        name: "Article",
+        displayAttribute: "name",
+        type: "Article",
+        attributes: {
+          title: string(),
+          body: string(),
+        },
+        relationships: {
+          person: belongsTo(),
+        },
+      },
+      Person: {
+        name: "Person",
+        type: "person_custom",
+        attributes: {
+          name: string(),
+        },
+        relationships: {
+          article: hasMany(),
+        },
+      },
+      Tag: {
+        name: "Tag",
+        type: "Tag",
+        attributes: {
+          label: string(),
+        },
+        relationships: { article: hasMany() },
+      },
+    }
+    const sourceConfig = {
+      baseUrl: "http://localhost:3000/api",
+      schemaMap,
+    }
 
-//     const relationships: SchemalessResourceRelationshipObject = {
-//       person: { id: "1" },
-//     }
+    const relationships: SchemalessResourceRelationshipObject = {
+      person: { id: "1" },
+    }
 
-//     const expected: Record<string, JsonApiResourceRelationship> = {
-//       person: { data: { id: "1", type: "person_custom" } },
-//     }
+    const expected: Record<string, JsonApiResourceRelationship> = {
+      person: { data: { id: "1", type: "person_custom" } },
+    }
 
-//     expect(
-//       convertToJsonApiRelationships(
-//         sourceConfig,
-//         schemaMap.Article as Schema,
-//         relationships,
-//       ),
-//     ).toEqual(expected)
-//   })
-// })
+    expect(
+      convertToJsonApiRelationships(
+        sourceConfig,
+        assembler(schemaMap).Article,
+        relationships,
+      ),
+    ).toEqual(expected)
+  })
+})

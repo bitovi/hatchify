@@ -24,10 +24,10 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@hatchifyjs/core": "^0.2.0",
     "@hatchifyjs/rest-client": "^0.1.0"
   },
   "devDependencies": {
-    "@hatchifyjs/core": "^0.2.0",
     "@hatchifyjs/koa": "^1.0.0",
     "@hatchifyjs/react-rest": "^0.1.0",
     "@koa/cors": "^4.0.0",

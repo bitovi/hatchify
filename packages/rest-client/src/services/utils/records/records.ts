@@ -64,17 +64,10 @@ export function resourceToRecordRelationship(
     allSchemas[resource.__schema].attributes,
   )[0]
 
-  // ...setClientPropertyValuesFromResponse(
-  //   allSchemas,
-  //   resource.__schema,
-  //   resource.attributes || {},
-  // ),
-
   return {
     id: resource.id,
     __schema: resource.__schema,
     __label: attributes?.[displayAttribute],
-    // ...attributes,
     ...setClientPropertyValuesFromResponse(
       allSchemas,
       resource.__schema,
@@ -114,7 +107,6 @@ export function flattenResourcesIntoRecords(
     .map((resource) => {
       let relationships = undefined
 
-      // todo: v2 relationships
       if (resource.relationships) {
         relationships = Object.entries(resource.relationships).reduce(
           (acc: Relationship, [key, value]) => {

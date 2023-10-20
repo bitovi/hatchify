@@ -43,7 +43,9 @@ export type CreateType<
 > = {
   __schema: TPartialSchema["name"]
 } & {
-  attributes: Omit<RecordType<TSchemas, TPartialSchema, true>, "id">
+  attributes: TypedAttributes<TPartialSchema["attributes"], true>
+} & {
+  relationships?: MutateRelationships<TPartialSchema>
 }
 
 export type UpdateType<
@@ -127,8 +129,14 @@ type TypedAttributes<
     { control: { type: string; allowNullInfer?: boolean } }
   >,
   TMutate extends boolean,
-> = AllowNulls<T, { control: { allowNullInfer: true } }, TMutate> &
-  NoNulls<T, { control: { allowNullInfer: false } }, TMutate>
+  TForceOptional extends boolean = false,
+> = TForceOptional extends true
+  ? Partial<
+      AllowNulls<T, { control: { allowNullInfer: true } }, TMutate> &
+        NoNulls<T, { control: { allowNullInfer: false } }, TMutate>
+    >
+  : AllowNulls<T, { control: { allowNullInfer: true } }, TMutate> &
+      NoNulls<T, { control: { allowNullInfer: false } }, TMutate>
 
 // For each relationship on a schema, determine the type of the relationship: one or many
 type TypedRelationships<
@@ -165,6 +173,21 @@ type TypedRelationship<
   GetSchemaFromName<TSchemas, TTargetSchema>["attributes"],
   TMutate
 > & { [field: string]: any }
+
+// For each relationship on a schema, determine the type of the relationship: one or many
+type MutateRelationships<TPartialSchema extends PartialSchema> = {
+  // @ts-expect-error HATCH-417
+  [Relationship in keyof TPartialSchema["relationships"]]?: TPartialSchema["relationships"][Relationship]["type"] extends
+    | "hasOne"
+    | "belongsTo"
+    ? MutateRelationship
+    : Array<MutateRelationship>
+}
+
+// For mutating, a relationship only needs an id
+type MutateRelationship = {
+  id: string
+}
 
 // const partialTodo = {
 //   name: "Todo",

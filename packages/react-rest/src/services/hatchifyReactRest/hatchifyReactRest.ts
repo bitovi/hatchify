@@ -1,12 +1,12 @@
 import type { PartialSchema } from "@hatchifyjs/core"
 import {
   assembler,
-  // string,
-  // integer,
-  // datetime,
-  // boolean,
-  // belongsTo,
-  // hasMany,
+  string,
+  integer,
+  datetime,
+  boolean,
+  belongsTo,
+  hasMany,
 } from "@hatchifyjs/core"
 import type {
   CreateType,
@@ -215,44 +215,44 @@ export const hatchifyReactRest = <
 }
 
 // todo: leaving for testing, remove before merge to main
-// const partialTodo = {
-//   name: "Todo",
-//   attributes: {
-//     title: string(),
-//     reqTitle: string({ required: true }),
-//     age: integer({ required: true }),
-//     optAge: integer({ required: false }),
-//     important: boolean({ required: true }),
-//     optImportant: boolean(),
-//     created: datetime({ required: true }),
-//     optCreated: datetime(),
-//   },
-//   relationships: {
-//     user: belongsTo("User"),
-//     users: hasMany("User")
-//   },
-// } satisfies PartialSchema
+const partialTodo = {
+  name: "Todo",
+  attributes: {
+    title: string(),
+    reqTitle: string({ required: true }),
+    age: integer({ required: true }),
+    optAge: integer({ required: false }),
+    important: boolean({ required: true }),
+    optImportant: boolean(),
+    created: datetime({ required: true }),
+    optCreated: datetime(),
+  },
+  relationships: {
+    user: belongsTo("User"),
+    users: hasMany("User"),
+  },
+} satisfies PartialSchema
 
-// partialTodo.relationships.user.targetSchema
-// //                              ^?
+partialTodo.relationships.user.targetSchema
+//                              ^?
 
-// const partialUser = {
-//   name: "User",
-//   attributes: {
-//     name: string({ required: true }),
-//     age: integer({ required: true }),
-//     employed: boolean(),
-//   },
-// } satisfies PartialSchema
+const partialUser = {
+  name: "User",
+  attributes: {
+    name: string({ required: true }),
+    age: integer({ required: true }),
+    employed: boolean(),
+  },
+} satisfies PartialSchema
 
-// const schemas = {
-//   Todo: partialTodo,
-//   User: partialUser,
-// }
+const schemas = {
+  Todo: partialTodo,
+  User: partialUser,
+}
 
-// const app = hatchifyReactRest({
-//   completeSchemaMap: schemas,
-// } as RestClient<typeof schemas>)
+const app = hatchifyReactRest({
+  completeSchemaMap: schemas,
+} as RestClient<typeof schemas>)
 
 // type Prettify<T> = {
 //   [K in keyof T]: T[K]
@@ -263,7 +263,7 @@ export const hatchifyReactRest = <
 // })
 
 // app.Todo.findOne("id").then((record) => {
-//   record?.
+//   record?.user.
 // })
 // app.User.findOne("id").then((record) => {
 //   record?.name
@@ -287,15 +287,20 @@ export const hatchifyReactRest = <
 // all[0].optAge
 // all[0].shouldError
 
-// app.Todo.createOne({
-//   attributes: {
-//     reqTitle: "",
-//     age: 13,
-//     important: true,
-//     created: new Date(),
-//     shouldError: "",
-//   },
-// })
+app.Todo.createOne({
+  attributes: {
+    reqTitle: "",
+    age: 13,
+    important: true,
+    created: new Date(),
+  },
+  relationships: {
+    user: {
+      id: "1234",
+    },
+    users: [{ id: "1234" }],
+  },
+})
 // app.User.createOne({
 //   attributes: {
 //     name: "",

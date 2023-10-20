@@ -1,10 +1,10 @@
+import type { FinalSchema } from "@hatchifyjs/core"
 import type {
   RequiredSchemaMap,
   Resource,
   ResourceRelationship,
   RestClientCreateData,
   RestClientUpdateData,
-  Schema,
   SourceConfig,
   SchemalessResourceRelationship,
   SchemalessResourceRelationshipObject,
@@ -42,7 +42,6 @@ export function jsonApiResourceToHatchifyResource(
 ): Resource {
   let relationships = undefined
 
-  // todo: v2 relationships
   if (resource.relationships) {
     relationships = Object.entries(resource.relationships).reduce(
       (acc: Relationship, [key, value]) => {
@@ -96,7 +95,7 @@ export function convertToHatchifyResources(
  */
 function hatchifyRelationshipToJsonApiRelationship(
   config: SourceConfig, // todo: HATCH-417
-  schema: Schema,
+  schema: FinalSchema,
   typeName: string,
   resourceRelationships:
     | SchemalessResourceRelationship
@@ -106,7 +105,7 @@ function hatchifyRelationshipToJsonApiRelationship(
     .concat(resourceRelationships)
     .map((resourceRelationship) => {
       const { id } = resourceRelationship
-      // todo: v2 relationships
+
       const type = Object.keys(schema?.relationships || {}).reduce(
         (type, relationshipKey) => {
           if (type) {
@@ -117,7 +116,8 @@ function hatchifyRelationshipToJsonApiRelationship(
 
           if (relationship && relationshipKey === typeName) {
             type =
-              config.schemaMap[relationship.schema]?.type ?? relationship.schema
+              config.schemaMap[relationship.targetSchema]?.type ??
+              relationship.targetSchema
           }
 
           return type
@@ -141,7 +141,7 @@ function hatchifyRelationshipToJsonApiRelationship(
  */
 export function convertToJsonApiRelationships(
   config: SourceConfig, // todo: HATCH-417
-  schema: Schema,
+  schema: FinalSchema,
   resourceRelationships: SchemalessResourceRelationshipObject,
 ): Record<string, JsonApiResourceRelationship> {
   return Object.keys(resourceRelationships).reduce(
@@ -165,7 +165,7 @@ export function convertToJsonApiRelationships(
  */
 export function hatchifyResourceToJsonApiResource(
   config: SourceConfig, // todo: HATCH-417
-  schema: Schema,
+  schema: FinalSchema,
   schemaName: string,
   hatchifyResource: RestClientCreateData | RestClientUpdateData,
 ): JsonApiResource | CreateJsonApiResource {

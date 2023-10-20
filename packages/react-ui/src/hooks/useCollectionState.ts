@@ -27,7 +27,7 @@ export interface CollectionState<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > {
-  data: Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>
+  data: Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>
   meta: Meta
   fields?: Fields
   include?: Include

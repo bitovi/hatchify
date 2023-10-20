@@ -2,8 +2,6 @@ import type {
   FinalSchemas,
   Resource,
   RestClientCreateData,
-  Schema,
-  Schemas,
   SourceConfig,
 } from "@hatchifyjs/rest-client"
 import {
@@ -19,13 +17,13 @@ import type { JsonApiResource } from "../jsonapi"
  */
 export async function createOne(
   config: SourceConfig, // todo: HATCH-417
-  allSchemas: FinalSchemas | Schemas,
+  allSchemas: FinalSchemas,
   schemaName: string,
   data: RestClientCreateData,
 ): Promise<Resource[]> {
   const jsonApiResource = hatchifyResourceToJsonApiResource(
     config,
-    allSchemas[schemaName] as Schema, // todo: v2 relationships
+    allSchemas[schemaName],
     schemaName,
     data,
   )
