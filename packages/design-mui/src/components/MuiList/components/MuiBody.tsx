@@ -38,6 +38,7 @@ export const MuiBody: React.FC<
         </TableRow>
       ) : (
         data.map((item) => {
+          console.log("data row", data)
           return (
             <TableRow key={item.id}>
               {selectable && (
