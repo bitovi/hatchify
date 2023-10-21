@@ -4,7 +4,8 @@ describe("belongsTo", () => {
   it("belongsTo()", () => {
     expect(belongsTo()).toEqual({
       type: "belongsTo",
-      targetSchema: null,
+      // targetSchema: null,
+      targetSchema: undefined,
       sourceAttribute: null,
       targetAttribute: null,
     })

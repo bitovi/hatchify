@@ -1,8 +1,5 @@
-import {
-  FinalSchema,
-  PartialSchema,
-  //  belongsTo, boolean, hasMany, integer, string
-} from "@hatchifyjs/core"
+import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
+// import { belongsTo, boolean, hasMany, integer, string } from "@hatchifyjs/core"
 
 export type EnumObject = { type: "enum"; allowNull?: boolean; values: string[] }
 export type AttributeObject = { type: string; allowNull?: boolean } | EnumObject
@@ -38,7 +35,7 @@ export type GetSchemaFromName<
 > = TSchemas[TSchemaName]
 
 export type CreateType<
-  TSchemas extends Record<string, PartialSchema>,
+  // TSchemas extends Record<string, PartialSchema>,
   TPartialSchema extends PartialSchema,
 > = {
   __schema: TPartialSchema["name"]
@@ -48,12 +45,9 @@ export type CreateType<
   relationships?: MutateRelationships<TPartialSchema>
 }
 
-export type UpdateType<
-  TSchemas extends Record<string, PartialSchema>,
-  TPartialSchema extends PartialSchema,
-> = {
+export type UpdateType<TPartialSchema extends PartialSchema> = {
   id: string
-} & Partial<CreateType<TSchemas, TPartialSchema>>
+} & Partial<CreateType<TPartialSchema>>
 
 export type RecordType<
   TSchemas extends Record<string, PartialSchema>,
@@ -181,7 +175,7 @@ type MutateRelationships<TPartialSchema extends PartialSchema> = {
     | "hasOne"
     | "belongsTo"
     ? MutateRelationship
-    : Array<MutateRelationship>
+    : MutateRelationship[]
 }
 
 // For mutating, a relationship only needs an id

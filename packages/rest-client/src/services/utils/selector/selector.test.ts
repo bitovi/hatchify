@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
+import type { PartialSchema } from "@hatchifyjs/core"
 import {
-  PartialSchema,
   assembler,
   belongsTo,
   boolean,

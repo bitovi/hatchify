@@ -1,5 +1,5 @@
 export interface PartialBelongsToRelationship<
-  TTargetSchema extends string | undefined,
+  TTargetSchema extends string | undefined | null,
 > {
   type: "belongsTo"
   targetSchema: TTargetSchema

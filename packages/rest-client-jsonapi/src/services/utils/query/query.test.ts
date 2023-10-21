@@ -8,8 +8,8 @@ import {
   pageToQueryParam,
   sortToQueryParam,
 } from "./query"
+import type { PartialSchema } from "@hatchifyjs/core"
 import {
-  PartialSchema,
   assembler,
   belongsTo,
   hasMany,

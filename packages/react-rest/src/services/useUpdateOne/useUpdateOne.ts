@@ -15,10 +15,7 @@ import type {
 type UpdateData<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
-> = Omit<
-  UpdateType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>,
-  "__schema"
->
+> = Omit<UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
 
 type UpdatedRecord<
   TSchemas extends Record<string, PartialSchema>,

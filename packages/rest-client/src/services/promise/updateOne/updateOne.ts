@@ -26,10 +26,7 @@ export const updateOne = async <
   dataSource: RestClient<TSchemas>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  data: Omit<
-    UpdateType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>,
-    "__schema"
-  >,
+  data: Omit<UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">,
 ): Promise<RecordType<
   TSchemas,
   GetSchemaFromName<TSchemas, TSchemaName>

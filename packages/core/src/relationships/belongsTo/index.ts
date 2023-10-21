@@ -1,6 +1,6 @@
 import type { PartialBelongsToRelationship } from "./types"
 
-export function belongsTo<TTargetSchema extends string | undefined>(
+export function belongsTo<TTargetSchema extends string | undefined | null>(
   targetSchema?: TTargetSchema,
   props?: {
     sourceAttribute: string

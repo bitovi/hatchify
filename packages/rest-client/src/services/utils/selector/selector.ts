@@ -1,4 +1,4 @@
-import { FinalSchema } from "@hatchifyjs/core"
+import type { FinalSchema } from "@hatchifyjs/core"
 import type { Include, Fields, QueryList, QueryOne } from "../../types"
 
 /**

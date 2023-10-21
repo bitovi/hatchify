@@ -1,5 +1,5 @@
 export interface PartialHasOneRelationship<
-  TTargetSchema extends string | undefined,
+  TTargetSchema extends string | undefined | null,
 > {
   type: "hasOne"
   targetSchema: TTargetSchema

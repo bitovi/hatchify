@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest"
+import { assembler, belongsTo, hasMany, string } from "@hatchifyjs/core"
+import type { SchemalessResourceRelationshipObject } from "@hatchifyjs/rest-client"
 import type {
   JsonApiResource,
   JsonApiResourceRelationship,
@@ -9,8 +11,6 @@ import {
   getTypeToSchema,
   jsonApiResourceToHatchifyResource,
 } from "./resources"
-import { assembler, belongsTo, hasMany, string } from "@hatchifyjs/core"
-import { SchemalessResourceRelationshipObject } from "@hatchifyjs/rest-client"
 
 describe("rest-client-jsonapi/services/utils/resources", () => {
   const typeToSchema = { article: "Article", person: "Person", tag: "Tag" }

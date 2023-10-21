@@ -6,12 +6,12 @@ import {
   createJsonapiClient,
 } from "@hatchifyjs/react"
 import { Todo } from "../schemas/todo"
-// import { User } from "../schemas/user"
+import { User } from "../schemas/user"
 
 export const hatchedReact = hatchifyReact(
   createJsonapiClient("http://localhost:3000/api", {
     Todo,
-    //  User
+    User,
   }),
 )
 

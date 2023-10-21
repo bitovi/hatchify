@@ -15,10 +15,7 @@ import type {
 type CreateData<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
-> = Omit<
-  CreateType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>,
-  "__schema"
->
+> = Omit<CreateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
 
 type CreatedRecord<
   TSchemas extends Record<string, PartialSchema>,

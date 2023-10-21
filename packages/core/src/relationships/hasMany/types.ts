@@ -4,7 +4,7 @@ import type {
 } from "../hasManyThrough/types"
 
 export interface PartialHasManyRelationship<
-  TTargetSchema extends string | undefined,
+  TTargetSchema extends string | undefined | null,
 > {
   type: "hasMany"
   targetSchema: TTargetSchema

@@ -1,7 +1,4 @@
-import type {
-  PartialAttributeRecord,
-  FinalAttributeRecord,
-} from "@hatchifyjs/core"
+import type { FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FilterArray, FinalSchemas } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
@@ -62,7 +59,6 @@ const operatorOptions: OperatorOption = {
 
 export const MuiFilterRows: React.FC<{
   // todo: stricter typing
-  attributes: PartialAttributeRecord
   fields: string[]
   filters: FilterArray
   finalSchemas: FinalSchemas
@@ -70,7 +66,6 @@ export const MuiFilterRows: React.FC<{
   setFilters: (filters: FilterArray) => void
   removeFilter: (index: number) => void
 }> = ({
-  attributes,
   finalSchemas,
   fields,
   filters,
@@ -83,7 +78,7 @@ export const MuiFilterRows: React.FC<{
 
     // modifying column select
     if (field === "field") {
-      //Get correct attributes for comparison
+      // Get correct attributes for comparison
       const { baseAttributes: newAttributes, baseField: newField } =
         getFieldAndAttributes(finalSchemas, value, schemaName)
       const { baseAttributes: currentAttributes, baseField: currentField } =
@@ -230,7 +225,13 @@ export const MuiFilterRows: React.FC<{
                 onChange={(value: any) =>
                   onChange({ field: "value", value, index })
                 }
-                options={baseAttributes[filter.field].control?.values || []}
+                options={
+                  // "values" in baseAttributes[filter.field].control
+                  // ? baseAttributes[filter.field].control?.values
+                  "values" in baseAttributes[baseField].control
+                    ? baseAttributes[baseField].control?.values
+                    : []
+                }
               />
             </Grid>
           </Fragment>

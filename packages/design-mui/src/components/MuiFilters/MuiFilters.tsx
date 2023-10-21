@@ -91,7 +91,6 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
         <Grid container spacing={1} width="39.5rem" padding="0.75rem">
           <Grid item xs={12}>
             <MuiFilterRows
-              attributes={partialSchemas[schemaName].attributes}
               finalSchemas={finalSchemas}
               schemaName={schemaName}
               fields={fields}
