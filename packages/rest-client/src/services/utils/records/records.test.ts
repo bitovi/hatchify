@@ -199,7 +199,7 @@ describe("rest-client/utils/records", () => {
 
   describe("serializeClientPropertyValuesForRequest", () => {
     it("works", () => {
-      const finalSchemas = assembler({
+      const partialSchemas = {
         Article: {
           name: "Article",
           attributes: {
@@ -208,10 +208,14 @@ describe("rest-client/utils/records", () => {
             views: integer({ max: 1000 }),
           },
         },
-      })
+      }
+      const finalSchemas = assembler(partialSchemas)
 
       expect(
-        serializeClientPropertyValuesForRequest(finalSchemas, "Article", {
+        serializeClientPropertyValuesForRequest<
+          typeof partialSchemas,
+          keyof typeof partialSchemas
+        >(finalSchemas, "Article", {
           title: "foo",
           created: new Date("2021-01-01T00:00:00.000Z"),
           views: 1,
@@ -223,7 +227,10 @@ describe("rest-client/utils/records", () => {
       })
 
       expect(() =>
-        serializeClientPropertyValuesForRequest(finalSchemas, "Article", {
+        serializeClientPropertyValuesForRequest<
+          typeof partialSchemas,
+          keyof typeof partialSchemas
+        >(finalSchemas, "Article", {
           title: "bar",
           created: new Date("2021-01-01T01:00:00.000Z"),
           views: 500,
@@ -231,7 +238,10 @@ describe("rest-client/utils/records", () => {
       ).toThrow(new HatchifyCoerceError("as multiples of day"))
 
       expect(() =>
-        serializeClientPropertyValuesForRequest(finalSchemas, "Article", {
+        serializeClientPropertyValuesForRequest<
+          typeof partialSchemas,
+          keyof typeof partialSchemas
+        >(finalSchemas, "Article", {
           title: "bar",
           created: new Date("2021-01-01T00:00:00.000Z"),
           views: 1001,

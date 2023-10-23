@@ -36,7 +36,7 @@ export const useAll = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryList,
@@ -56,7 +56,7 @@ export const useAll = <
 
   const fetchAll = useCallback(() => {
     setLoading(true)
-    findAll<TSchemas, GetSchemaNames<TSchemas>>(
+    findAll<TSchemas, TSchemaName>(
       dataSource,
       allSchemas,
       schemaName,

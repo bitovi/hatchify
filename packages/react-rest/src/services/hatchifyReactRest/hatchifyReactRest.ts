@@ -121,9 +121,10 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
 
 export const hatchifyReactRest = <
   const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   // partialSchemas: TSchemas,
-  restClient: RestClient<TSchemas>,
+  restClient: RestClient<TSchemas, TSchemaName>,
 ): HatchifyReactRest<TSchemas> => {
   const { completeSchemaMap: partialSchemas } = restClient
   const finalSchemas = assembler(partialSchemas)
@@ -133,76 +134,78 @@ export const hatchifyReactRest = <
   const functions = Object.entries(partialSchemas).reduce(
     (acc, [schemaName, schema]) => {
       const key = schemaName as keyof typeof acc
+      const typedSchemaName = schemaName as TSchemaName
+
       acc[key] = {
         // promises
         findAll: (query) =>
-          findAll<TSchemas, GetSchemaNames<TSchemas>>(
+          findAll<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
             query || {},
           ),
         findOne: (query) =>
-          findOne<TSchemas, GetSchemaNames<TSchemas>>(
+          findOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
             query,
           ),
         createOne: (data) =>
-          createOne<TSchemas, GetSchemaNames<TSchemas>>(
+          createOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
             data,
           ),
         updateOne: (data) =>
-          updateOne<TSchemas, GetSchemaNames<TSchemas>>(
+          updateOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
             data,
           ),
         deleteOne: (id) =>
-          deleteOne<TSchemas, GetSchemaNames<TSchemas>>(
+          deleteOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
             id,
           ),
         // hooks
         useAll: (query, baseFilter) =>
-          useAll<TSchemas, GetSchemaNames<TSchemas>>(
+          useAll<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
             query ?? {},
             baseFilter,
           ),
         useOne: (query) =>
-          useOne<TSchemas, GetSchemaNames<TSchemas>>(
+          useOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
             query,
           ),
         useCreateOne: () =>
-          useCreateOne<TSchemas, GetSchemaNames<TSchemas>>(
+          useCreateOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
           ),
         useUpdateOne: () =>
-          useUpdateOne<TSchemas, GetSchemaNames<TSchemas>>(
+          useUpdateOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
           ),
         useDeleteOne: () =>
-          useDeleteOne<TSchemas, GetSchemaNames<TSchemas>>(
+          useDeleteOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
-            schemaName,
+            typedSchemaName,
           ),
       }
 
@@ -252,22 +255,22 @@ export const hatchifyReactRest = <
 
 // const app = hatchifyReactRest({
 //   completeSchemaMap: schemas,
-// } as RestClient<typeof schemas>)
+// } as RestClient<typeof schemas, any>)
 
 // type Prettify<T> = {
 //   [K in keyof T]: T[K]
 // } & {}
 
 // app.Todo.createOne({
-//   attributes: { reqTitle: "", age: 0, important: false, created: "" },
+//   attributes: { title: "hio", reqTitle: "", age: 0, important: false, created: "" },
 // })
 
 // app.Todo.findAll({}).then(([records]) => {
-//   records[0].user.
+//   records[0].user
 // })
 
 // app.Todo.findOne("id").then((record) => {
-//   record?.user.
+//   record?.user
 // })
 // app.User.findOne("id").then((record) => {
 //   record?.name
@@ -344,17 +347,20 @@ export const hatchifyReactRest = <
 //     age: 13,
 //     important: true,
 //     created: new Date(),
-//     user: {
-//       id: "1234",
-//       attributes: {
-//         name: "",
-//         age: 13,
-//         employed: true,
-//         shouldError: "",
-//       },
-//     }
+//     // user: {
+//     //   id: "1234"
+//     // }
 //     // shouldError: '',
 //   },
+//   relationships: {
+//     user: {
+//       id: "123",
+//     },
+//     users: [{
+//       id: "1234",
+//       id: "3434"
+//     }]
+//   }
 // })
 
 // app.Todo.deleteOne("1234")

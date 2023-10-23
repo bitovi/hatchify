@@ -16,8 +16,8 @@ const styles = {
 // export const MuiList: React.FC<XCollectionProps> = (props) => {
 export function MuiList<
   const TSchemas extends Record<string, PartialSchema> = any,
-  const TSchemaName extends GetSchemaNames<TSchemas> = any,
->(props: XCollectionProps<TSchemas, TSchemaName>): JSX.Element {
+  const TSchemaNames extends GetSchemaNames<TSchemas> = any,
+>(props: XCollectionProps<TSchemas, TSchemaNames>): JSX.Element {
   const { columns, Empty } = useCompoundComponents(
     props.finalSchemas[props.schemaName],
     props.children,

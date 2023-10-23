@@ -20,7 +20,11 @@ const TodoColumn = hatchedReact.components.Todo.Column
 const TodoEmptyList = hatchedReact.components.Todo.Empty
 // hatchedReact.model.Todo.findAll({}).then(([todos]) => {
 //   console.log(todos)
-//   todos[0].
+//   todos[0].user.
+// })
+// hatchedReact.model.User.findAll({}).then(([users]) => {
+//   console.log(users)
+//   users[0].todos[0].
 // })
 
 const App: React.FC = () => {

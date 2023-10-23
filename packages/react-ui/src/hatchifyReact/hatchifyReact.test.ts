@@ -5,7 +5,7 @@ import { integer, string } from "@hatchifyjs/core"
 
 describe("react-ui/hatchifyReact", () => {
   it("should return objects for each schema", () => {
-    const fakeDataSource: RestClient<any> = {
+    const fakeDataSource: RestClient<any, any> = {
       completeSchemaMap: {
         Article: {
           name: "Article",
@@ -81,7 +81,7 @@ describe("react-ui/hatchifyReact", () => {
   })
 
   it("should accept schemas with namespaces", () => {
-    const fakeDataSource: RestClient<any> = {
+    const fakeDataSource: RestClient<any, any> = {
       completeSchemaMap: {
         Feature_Article: {
           name: "Article",

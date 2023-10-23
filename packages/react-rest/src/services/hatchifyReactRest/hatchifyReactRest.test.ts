@@ -23,7 +23,7 @@ describe("react-rest/services/hatchifyReactRest", () => {
         },
       },
     }
-    const fakeDataSource: RestClient<typeof schemas> = {
+    const fakeDataSource: RestClient<typeof schemas, keyof typeof schemas> = {
       completeSchemaMap: schemas,
       version: 0,
       findAll: () => Promise.resolve([[], {}]),
@@ -64,7 +64,7 @@ describe("react-rest/services/hatchifyReactRest", () => {
   })
 
   it("should accept schemas with namespaces", () => {
-    const fakeDataSource: RestClient<any> = {
+    const fakeDataSource: RestClient<any, any> = {
       completeSchemaMap: {
         Feature_Article: {
           name: "Article",

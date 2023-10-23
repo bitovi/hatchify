@@ -22,7 +22,7 @@ const fakeData = [
   },
 ]
 
-const fakeDataSource: RestClient<any> = {
+const fakeDataSource: RestClient<any, any> = {
   version: 0,
   completeSchemaMap: {},
   findAll: () => Promise.resolve([[], {}]),

@@ -4,7 +4,7 @@ import type { RestClient } from "../../types"
 import { deleteOne } from "./deleteOne"
 import { assembler, string } from "@hatchifyjs/core"
 
-const fakeDataSource: RestClient<any> = {
+const fakeDataSource: RestClient<any, any> = {
   version: 0,
   completeSchemaMap: {},
   findAll: () => Promise.resolve([[], {}]),

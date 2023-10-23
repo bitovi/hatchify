@@ -1,6 +1,6 @@
-export type Include = string[] // todo: v2 relationships
+export type Include = string[] // todo: HATCH-417
 
-export type Fields = { [key: string]: string[] } // todo: v2 relationships
+export type Fields = { [key: string]: string[] } // todo: HATCH-417
 
 export type Selector = { include?: Include; fields?: Fields }
 

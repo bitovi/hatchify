@@ -17,6 +17,6 @@ export const Todo = {
     // status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
   },
   relationships: {
-    user: belongsTo(),
+    user: belongsTo("User"),
   },
 } satisfies PartialSchema

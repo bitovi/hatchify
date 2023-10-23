@@ -2,6 +2,7 @@ import type {
   RestClient,
   RequiredSchemaMap,
   SourceSchema,
+  GetSchemaNames,
 } from "@hatchifyjs/rest-client"
 import { createOne, deleteOne, findAll, findOne, updateOne } from ".."
 import { getEndpoint } from "../utils/schema"
@@ -27,10 +28,10 @@ export type CreateJsonApiResource = Omit<JsonApiResource, "id">
 /**
  * Creates a new JSON:API rest client.
  */
-export function jsonapi<const TSchemas extends Record<string, SourceSchema>>(
-  baseUrl: string,
-  schemaMap: TSchemas,
-): RestClient<TSchemas> {
+export function jsonapi<
+  const TSchemas extends Record<string, SourceSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(baseUrl: string, schemaMap: TSchemas): RestClient<TSchemas, TSchemaName> {
   // Default `type` to `schemaMap` key if not set in `schemaMap`
   const completeSchemaMap = Object.entries(schemaMap).reduce(
     (acc, [key, value]) => {
@@ -57,14 +58,20 @@ export function jsonapi<const TSchemas extends Record<string, SourceSchema>>(
     completeSchemaMap: completeSchemaMap as TSchemas,
     version: 0,
     findAll: (allSchemas, schemaName, query, baseFilter) =>
-      findAll(config, allSchemas, schemaName, query, baseFilter),
+      findAll<TSchemas, TSchemaName>(
+        config,
+        allSchemas,
+        schemaName,
+        query,
+        baseFilter,
+      ),
     findOne: (allSchemas, schemaName, query) =>
-      findOne(config, allSchemas, schemaName, query),
+      findOne<TSchemas, TSchemaName>(config, allSchemas, schemaName, query),
     createOne: (allSchemas, schemaName, data) =>
-      createOne(config, allSchemas, schemaName, data),
+      createOne<TSchemas, TSchemaName>(config, allSchemas, schemaName, data),
     updateOne: (allSchemas, schemaName, data) =>
-      updateOne(config, allSchemas, schemaName, data),
+      updateOne<TSchemas, TSchemaName>(config, allSchemas, schemaName, data),
     deleteOne: (allSchemas, schemaName, id) =>
-      deleteOne(config, allSchemas, schemaName, id),
+      deleteOne<TSchemas, TSchemaName>(config, allSchemas, schemaName, id),
   }
 }

@@ -121,56 +121,6 @@ export const MuiFilterRows: React.FC<{
 
   return (
     <Grid container spacing={1} alignItems="center" justifyContent="center">
-      {/* {filters.map((filter, index) => (
-        <Fragment key={index}>
-          <Grid item xs={1}>
-            <IconButton aria-label="close" onClick={() => removeFilter(index)}>
-              <CloseIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={3}>
-            <ColumnSelect
-              labelId={`${index}-column-label`}
-              value={filter.field}
-              fields={fields}
-              onChange={(value) =>
-                onChange({
-                  field: "field",
-                  value,
-                  index: index,
-                })
-              }
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <OperatorSelect
-              labelId={`${index}-operator-label`}
-              value={filter.operator}
-              options={getPossibleOptions(filter.field, attributes)}
-              onChange={(value) =>
-                onChange({
-                  field: "operator",
-                  value,
-                  index: index,
-                })
-              }
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <ValueInput
-              labelId={`${index}-value-label`}
-              fieldType={getFieldType(attributes, filter.field)}
-              value={filter.value}
-              operator={filter.operator}
-              onChange={(value: any) =>
-                onChange({ field: "value", value, index })
-              }
-              // todo: v2 schema only supports numbers, fix with enums (use finalSchema.attributes)
-              options={undefined}
-            />
-          </Grid>
-        </Fragment>
-      ))} */}
       {filters.map((filter, index) => {
         const { baseAttributes, baseField } = getFieldAndAttributes(
           finalSchemas,

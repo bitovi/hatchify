@@ -1,9 +1,13 @@
+import type { PartialSchema, SerializedValue } from "@hatchifyjs/core"
 import type {
   Record,
   Resource,
   RecordRelationship,
   ResourceRelationship,
   FinalSchemas,
+  CreateType,
+  GetSchemaFromName,
+  GetSchemaNames,
 } from "../../types"
 
 type Relationship = globalThis.Record<
@@ -167,11 +171,17 @@ export const setClientPropertyValuesFromResponse = (
 /**
  * Coerces the value from the internal client data into something that can be sent with JSON.
  */
-export const serializeClientPropertyValuesForRequest = (
+export const serializeClientPropertyValuesForRequest = <
+  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   allSchemas: FinalSchemas,
   schemaName: string,
-  attributes: globalThis.Record<string, any>,
-): globalThis.Record<string, unknown> => {
+  attributes: Omit<
+    CreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
+    "__schema"
+  >["attributes"],
+): globalThis.Record<string, SerializedValue> => {
   return Object.entries(attributes).reduce((acc, [key, value]) => {
     const attribute = allSchemas[schemaName].attributes[key]
 
@@ -180,13 +190,13 @@ export const serializeClientPropertyValuesForRequest = (
       attribute.setClientPropertyValue &&
       attribute.serializeClientPropertyValue
     ) {
-      const coerced = attribute.setClientPropertyValue(value)
-      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-417
+      const coerced = attribute.setClientPropertyValue(value as any)
+      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-4
     } else {
-      acc[key] = value
+      acc[key] = value as SerializedValue
     }
     return acc
-  }, {} as globalThis.Record<string, unknown>)
+  }, {} as globalThis.Record<string, SerializedValue>)
 }
 
 /**

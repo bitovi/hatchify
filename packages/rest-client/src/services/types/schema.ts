@@ -169,7 +169,7 @@ type TypedRelationship<
 > & { [field: string]: any }
 
 // For each relationship on a schema, determine the type of the relationship: one or many
-type MutateRelationships<TPartialSchema extends PartialSchema> = {
+export type MutateRelationships<TPartialSchema extends PartialSchema> = {
   // @ts-expect-error HATCH-417
   [Relationship in keyof TPartialSchema["relationships"]]?: TPartialSchema["relationships"][Relationship]["type"] extends
     | "hasOne"
@@ -179,7 +179,7 @@ type MutateRelationships<TPartialSchema extends PartialSchema> = {
 }
 
 // For mutating, a relationship only needs an id
-type MutateRelationship = {
+export type MutateRelationship = {
   id: string
 }
 

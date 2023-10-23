@@ -1,12 +1,12 @@
 import { PartialSchema, hasMany, string } from "@hatchifyjs/core"
 
-export const User: PartialSchema = {
+export const User = {
   name: "User",
   // namespace: "Admin",
   attributes: {
     name: string(),
   },
   relationships: {
-    todos: hasMany(),
+    todos: hasMany("Todo"),
   },
-}
+} satisfies PartialSchema

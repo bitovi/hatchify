@@ -97,7 +97,7 @@ export const testMeta = {
   unpaginatedCount: 2,
 }
 
-export const fakeDataSource: RestClient<any> = {
+export const fakeDataSource: RestClient<any, any> = {
   version: 0,
   completeSchemaMap: {},
   findAll: () => Promise.resolve([testData, testMeta]),

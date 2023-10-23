@@ -30,7 +30,7 @@ export const useCreateOne = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
 ): [
@@ -46,12 +46,7 @@ export const useCreateOne = <
   const create = useCallback(
     (data: CreateData<TSchemas, TSchemaName>) => {
       setLoading(true)
-      createOne<TSchemas, GetSchemaNames<TSchemas>>(
-        dataSource,
-        allSchemas,
-        schemaName,
-        data,
-      )
+      createOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, data)
         .then((data) => {
           setError(undefined)
           setData(data)

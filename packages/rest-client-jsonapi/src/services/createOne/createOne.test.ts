@@ -4,12 +4,14 @@ import { baseUrl, testData } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { createOne } from "./createOne"
-import { assembler } from "@hatchifyjs/core"
+import { assembler, string } from "@hatchifyjs/core"
 
 const partialSchemaMap = {
   Article: {
     name: "Article",
-    attributes: {},
+    attributes: {
+      title: string(),
+    },
     type: "article",
     endpoint: "articles",
   },
@@ -33,7 +35,7 @@ describe("rest-client-jsonapi/services/createOne", () => {
         ...data,
       },
     ]
-    const result = await createOne(
+    const result = await createOne<typeof partialSchemaMap, "Article">(
       sourceConfig,
       finalSchemaMap,
       "Article",
@@ -66,7 +68,12 @@ describe("rest-client-jsonapi/services/createOne", () => {
     )
 
     await expect(() =>
-      createOne(sourceConfig, finalSchemaMap, "Article", data),
+      createOne<typeof partialSchemaMap, "Article">(
+        sourceConfig,
+        finalSchemaMap,
+        "Article",
+        data,
+      ),
     ).rejects.toEqual(errors)
   })
 
