@@ -418,7 +418,7 @@ describe("index", () => {
   })
 
   describe("restoreIds", () => {
-    it("renames id to the targetKey value", async () => {
+    it("renames id to the targetKey value", () => {
       const result = restoreIds(
         {
           name: "SalesPerson",
