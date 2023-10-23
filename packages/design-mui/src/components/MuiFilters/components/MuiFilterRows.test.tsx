@@ -79,8 +79,8 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
         removeFilter={vi.fn()}
       />,
     )
-    const dropdowns = screen.getAllByRole("button")
-    await userEvent.click(dropdowns[1])
+    const dropdowns = screen.getAllByRole("combobox")
+    await userEvent.click(dropdowns[0])
     const dateSelection = screen.getByText("date")
     await userEvent.click(dateSelection)
     expect(setFilters).toHaveBeenCalledWith([
@@ -103,8 +103,8 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
         removeFilter={vi.fn()}
       />,
     )
-    const dropdowns = screen.getAllByRole("button")
-    await userEvent.click(dropdowns[2])
+    const dropdowns = screen.getAllByRole("combobox")
+    await userEvent.click(dropdowns[1])
     const eqSelection = screen.getByText("equals")
     await userEvent.click(eqSelection)
     expect(setFilters).toHaveBeenCalledWith([
@@ -127,8 +127,8 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
         removeFilter={vi.fn()}
       />,
     )
-    const dropdowns = screen.getAllByRole("button")
-    await userEvent.click(dropdowns[2])
+    const dropdowns = screen.getAllByRole("combobox")
+    await userEvent.click(dropdowns[1])
     const eqSelection = screen.getByText("is not")
     await userEvent.click(eqSelection)
     expect(setFilters).toHaveBeenCalledWith([
@@ -152,8 +152,8 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
         removeFilter={vi.fn()}
       />,
     )
-    const dropdowns = screen.getAllByRole("button")
-    await userEvent.click(dropdowns[2])
+    const dropdowns = screen.getAllByRole("combobox")
+    await userEvent.click(dropdowns[1])
     const eqSelection = screen.getByText("is not any of")
     await userEvent.click(eqSelection)
     expect(setFilters).toHaveBeenCalledWith([
@@ -177,8 +177,8 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
         removeFilter={vi.fn()}
       />,
     )
-    const dropdowns = screen.getAllByRole("button")
-    await userEvent.click(dropdowns[2])
+    const dropdowns = screen.getAllByRole("combobox")
+    await userEvent.click(dropdowns[1])
     const eqSelection = screen.getByText("is any of")
     await userEvent.click(eqSelection)
     expect(setFilters).toHaveBeenCalledWith([
@@ -259,8 +259,8 @@ describe("components/MuiFilters/components/MuiFilterRows", () => {
           removeFilter={vi.fn()}
         />,
       )
-      const dropdowns = screen.getAllByRole("button")
-      await userEvent.click(dropdowns[2])
+      const dropdowns = screen.getAllByRole("combobox")
+      await userEvent.click(dropdowns[1])
       const emptySelection = screen.queryByText("starts with")
 
       expect(emptySelection).toBeTruthy()
