@@ -24,7 +24,6 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/core": "^0.2.1",
     "@hatchifyjs/rest-client": "^0.0.1-22"
   },
   "devDependencies": {
@@ -37,6 +36,7 @@
     "vitest": "^0.30.1"
   },
   "peerDependencies": {
+    "@hatchifyjs/core": "^0.2.x",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
