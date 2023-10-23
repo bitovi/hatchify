@@ -20,7 +20,12 @@ describe("components/MuiFilters/inputs/OperatorSelect", () => {
       />,
     )
 
-    const dropdown = screen.getByRole("button")
+    // const drop = screen.getByDisplayValue("Equals")
+    // console.log(
+    //   "DROP 🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥",
+    //   drop,
+    // )
+    const dropdown = screen.getByRole("combobox")
     expect(dropdown.className.includes("MuiSelect-select")).toEqual(true)
     expect(dropdown.className.includes("MuiAutocomplete-input")).toEqual(false)
 

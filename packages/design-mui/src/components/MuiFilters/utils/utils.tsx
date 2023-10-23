@@ -12,7 +12,7 @@ export function getFilterableFields(
     // todo: filtering should not rely on UUID type because it may still be an attribute
     .filter(([, attr]) => attr.orm.sequelize.type !== "UUID")
     .filter(([, attr]) =>
-      ["string", "date", "datetime", "enum"].includes(
+      ["string", "date", "dateonly", "datetime", "enum"].includes(
         attr.control.type.toLowerCase(),
       ),
     )

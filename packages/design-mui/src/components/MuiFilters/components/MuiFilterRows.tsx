@@ -25,7 +25,7 @@ interface Option {
 }
 
 type OperatorOption = {
-  [key in "enum" | "Datetime" | "String"]: Option[]
+  [key in "enum" | "Dateonly" | "Datetime" | "String"]: Option[]
 }
 
 const operatorOptions: OperatorOption = {
@@ -37,6 +37,15 @@ const operatorOptions: OperatorOption = {
     { operator: "empty", text: "is empty" },
     { operator: "nempty", text: "is not empty" },
     { operator: "$in", text: "is any of" },
+  ],
+  Dateonly: [
+    { operator: "$eq", text: "is" },
+    { operator: "$gt", text: "is after" },
+    { operator: "$gte", text: "is on or after" },
+    { operator: "$lt", text: "is before" },
+    { operator: "$lte", text: "is on or before" },
+    { operator: "empty", text: "is empty" },
+    { operator: "nempty", text: "is not empty" },
   ],
   Datetime: [
     { operator: "$eq", text: "is" },

@@ -35,8 +35,8 @@ export interface DefaultValueComponentsTypes {
   NumberList: React.FC<{ values: number[] }>
   Boolean: React.FC<{ value: boolean }>
   BooleanList: React.FC<{ values: boolean[] }>
-  Date: React.FC<{ value: string }>
-  DateList: React.FC<{ values: string[] }>
+  Date: React.FC<{ dateOnly: boolean; value: string }>
+  DateList: React.FC<{ dateOnly: boolean; values: string[] }>
   Relationship: React.FC<{ value: RelationshipType }>
   RelationshipList: React.FC<{ values: RelationshipType[] }>
 }

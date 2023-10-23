@@ -160,8 +160,8 @@ describe("components/MuiFilters", () => {
 
     await userEvent.click(filter)
 
-    const dropdowns = screen.getAllByRole("button")
-    await userEvent.click(dropdowns[2])
+    const dropdowns = screen.getAllByRole("combobox")
+    await userEvent.click(dropdowns[1])
     const emptySelection = screen.getByText("is empty")
     await userEvent.click(emptySelection)
 
@@ -210,8 +210,8 @@ describe("components/MuiFilters", () => {
 
     await userEvent.click(filter)
 
-    const dropdowns = screen.getAllByRole("button")
-    await userEvent.click(dropdowns[2])
+    const dropdowns = screen.getAllByRole("combobox")
+    await userEvent.click(dropdowns[1])
     const emptySelection = screen.getByText("equals")
     await userEvent.click(emptySelection)
 

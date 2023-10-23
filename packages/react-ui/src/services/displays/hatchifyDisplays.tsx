@@ -42,8 +42,8 @@ export function getDefaultDisplayRender(
   const defaultRender = ({ record }: { record: Record }) => {
     const value = record[attribute]
 
-    if (["date", "datetime"].includes(attType)) {
-      return <Date value={value} />
+    if (["date", "dateonly", "datetime"].includes(attType)) {
+      return <Date value={value} dateOnly={attType === "dateonly"} />
     }
 
     if (
