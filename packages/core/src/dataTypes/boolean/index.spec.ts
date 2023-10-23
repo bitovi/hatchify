@@ -64,6 +64,7 @@ describe("boolean", () => {
           sequelize: {
             type: "BOOLEAN",
             allowNull: true,
+            unique: false,
             defaultValue: null,
           },
         },
@@ -151,6 +152,7 @@ describe("boolean", () => {
           sequelize: {
             type: "BOOLEAN",
             allowNull: false,
+            unique: false,
             defaultValue: null,
           },
         },

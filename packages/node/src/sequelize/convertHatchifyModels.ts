@@ -53,6 +53,8 @@ export function convertHatchifyModels(
               model: sequelize.models[relationship.through],
               unique: false,
             },
+            sourceKey: relationship.sourceKey,
+            targetKey: relationship.targetKey,
             foreignKey: relationship.throughSourceAttribute,
             otherKey: relationship.throughTargetAttribute,
           },

@@ -33,6 +33,7 @@ export interface PartialDataTypeProps<
   primary?: boolean
   required?: TRequired // @todo HATCH-417
   default?: PrimitiveType | (() => PrimitiveType) | null
+  unique?: boolean
 }
 
 export type PartialControlType<PrimitiveType, TRequired extends boolean> = {
@@ -49,6 +50,7 @@ export interface PartialSequelizeDataType<ArgsType, PrimitiveType> {
   allowNull?: boolean
   primaryKey?: boolean
   defaultValue?: PrimitiveType | (() => PrimitiveType) | null
+  unique?: boolean
 }
 
 export interface PartialAttribute<

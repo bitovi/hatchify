@@ -8,6 +8,7 @@ export function finalizeOrm({ sequelize }: PartialNumberORM): FinalNumberORM {
       autoIncrement: !!sequelize.autoIncrement,
       primaryKey: !!sequelize.primaryKey,
       defaultValue: sequelize.defaultValue ?? null,
+      unique: !!sequelize.unique || !!sequelize.primaryKey,
     },
   }
 }

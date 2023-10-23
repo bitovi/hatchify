@@ -121,6 +121,45 @@ describe("finalizeOrm", () => {
     ).toEqual(func)
   })
 
+  it("handles unique", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "STRING",
+          typeArgs: [],
+          unique: undefined,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "STRING",
+          typeArgs: [],
+          unique: null as unknown as boolean,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "STRING",
+          typeArgs: [],
+          unique: true,
+        },
+      }).sequelize.unique,
+    ).toBe(true)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "STRING",
+          typeArgs: [],
+          unique: false,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+  })
+
   it("handles typeArgs", () => {
     expect(
       finalizeOrm({
