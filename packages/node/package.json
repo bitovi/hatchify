@@ -29,8 +29,7 @@
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
     "@bitovi/sequelize-querystring-parser": "^0.2.8",
-    "@hatchifyjs/core": "^0.2.0",
-    "@hatchifyjs/sequelize-create-with-associations": "^0.6.5",
+    "@hatchifyjs/sequelize-create-with-associations": "^0.6.6",
     "co-body": "^6.1.0",
     "json-api-serializer": "^2.6.6",
     "lodash": "^4.17.21",
@@ -51,6 +50,7 @@
     "ts-jest": "^29.0.3"
   },
   "peerDependencies": {
+    "@hatchifyjs/core": "^0.2.0",
     "sequelize": "6.x"
   },
   "eslintConfig": {

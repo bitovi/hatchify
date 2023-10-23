@@ -55,6 +55,20 @@ describe("getPartialOrm", () => {
     ).toEqual(func)
   })
 
+  it("handles unique", () => {
+    expect(
+      getPartialOrm({ values, unique: undefined }).sequelize.unique,
+    ).toBeUndefined()
+    expect(
+      getPartialOrm({ values, unique: null as unknown as boolean }).sequelize
+        .unique,
+    ).toBeNull()
+    expect(getPartialOrm({ values, unique: true }).sequelize.unique).toBe(true)
+    expect(getPartialOrm({ values, unique: false }).sequelize.unique).toBe(
+      false,
+    )
+  })
+
   it("handles invalid values", () => {
     expect(() => getPartialOrm({} as unknown as PartialEnumProps)).toThrow(
       new HatchifyInvalidSchemaError(

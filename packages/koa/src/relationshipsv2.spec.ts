@@ -1559,14 +1559,14 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       name: "Account",
       attributes: {
         name: string(),
-        accountSaleTypeId: uuid(),
+        accountSaleTypeId: uuid({ unique: true }),
       },
     }
     const SalesPerson: PartialSchema = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
-        sellerTypeId: uuid(),
+        sellerTypeId: uuid({ unique: true }),
       },
       relationships: {
         accounts: hasMany().through({
@@ -1663,7 +1663,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       )
     })
 
-    it.skip("accounts will be used in the include query parameter, mutation payloads and response payloads", async () => {
+    it("accounts will be used in the include query parameter, mutation payloads and response payloads", async () => {
       const { body: account } = await fetch("/api/accounts", {
         method: "post",
         body: {
@@ -1745,8 +1745,8 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
             type: "AccountSalesPerson",
             id: expect.any(String),
             attributes: {
-              salesPersonId: salesPerson.data.id,
-              accountId: account.data.id,
+              accountId: account.data.attributes.accountSaleTypeId,
+              salesPersonId: salesPerson.data.attributes.sellerTypeId,
             },
           },
         ],

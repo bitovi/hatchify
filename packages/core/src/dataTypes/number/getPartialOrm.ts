@@ -11,6 +11,7 @@ export function getPartialOrm(
       autoIncrement: props?.autoIncrement,
       primaryKey: props?.primary,
       defaultValue: props?.default,
+      unique: props?.unique,
     },
   }
 }

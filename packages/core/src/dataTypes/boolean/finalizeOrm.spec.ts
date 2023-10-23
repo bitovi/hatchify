@@ -73,4 +73,39 @@ describe("finalizeOrm", () => {
       }).sequelize.defaultValue,
     ).toEqual(func)
   })
+
+  it("handles unique", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          unique: undefined,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          unique: null as unknown as boolean,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          unique: true,
+        },
+      }).sequelize.unique,
+    ).toBe(true)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          unique: false,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+  })
 })

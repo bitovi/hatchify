@@ -120,4 +120,43 @@ describe("finalizeOrm", () => {
       }).sequelize.defaultValue,
     ).toEqual(func)
   })
+
+  it("handles unique", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          unique: undefined,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          unique: null as unknown as boolean,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          unique: true,
+        },
+      }).sequelize.unique,
+    ).toBe(true)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "DECIMAL",
+          typeArgs: [],
+          unique: false,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+  })
 })

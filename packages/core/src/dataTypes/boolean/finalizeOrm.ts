@@ -6,6 +6,7 @@ export function finalizeOrm({ sequelize }: PartialBooleanORM): FinalBooleanORM {
       ...sequelize,
       allowNull: sequelize.allowNull !== false,
       defaultValue: sequelize.defaultValue ?? null,
+      unique: !!sequelize.unique,
     },
   }
 }

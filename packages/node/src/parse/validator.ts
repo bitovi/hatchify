@@ -16,7 +16,7 @@ function isObject(value: any): boolean {
 
 export function validateFindOptions<T extends FinalSchema = FinalSchema>(
   options: FindOptions,
-  model: T,
+  schema: T,
   hatchify: Hatchify,
 ): void {
   if (options.include) {
@@ -25,7 +25,7 @@ export function validateFindOptions<T extends FinalSchema = FinalSchema>(
       : [options.include]
 
     const associations =
-      hatchify.associationsLookup[getFullModelName(model)] || {}
+      hatchify.associationsLookup[getFullModelName(schema)] || {}
     const includeErrors: Error[] = []
 
     if (include.length && !Object.keys(associations).length) {
@@ -67,7 +67,7 @@ export function validateFindOptions<T extends FinalSchema = FinalSchema>(
 
 export function validateStructure<T extends FinalSchema = FinalSchema>(
   body: any,
-  model: T,
+  schema: T,
   hatchify: Hatchify,
 ): void {
   const title = "Payload is missing a required value."
@@ -101,10 +101,10 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
     ]
   }
 
-  if (body.data.type !== getFullModelName(model)) {
+  if (body.data.type !== getFullModelName(schema)) {
     throw [
       new UnexpectedValueError({
-        detail: `Payload must have 'type' as '${getFullModelName(model)}'.`,
+        detail: `Payload must have 'type' as '${getFullModelName(schema)}'.`,
         pointer: "/data/type",
       }),
     ]
@@ -169,7 +169,7 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
 
     const relationshipErrors: HatchifyError[] = []
 
-    const associations = hatchify.associationsLookup[getFullModelName(model)]
+    const associations = hatchify.associationsLookup[getFullModelName(schema)]
 
     let modelAssociation
     if (associations) {
@@ -185,7 +185,7 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
       )
     } else {
       const modelName = modelAssociation.model
-      const targetRelationship = Object.values(model.relationships || {}).find(
+      const targetRelationship = Object.values(schema.relationships || {}).find(
         ({ targetSchema }) => targetSchema === modelName,
       )
       const expectObject =

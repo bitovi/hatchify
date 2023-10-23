@@ -5,6 +5,7 @@ import {
   hasMany,
   integer,
   string,
+  uuid,
 } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import { Op } from "sequelize"
@@ -12,7 +13,11 @@ import { Op } from "sequelize"
 import { RelationshipPathError, UnexpectedValueError } from "../error"
 import { Hatchify } from "../node"
 
-import { buildParserForModel, buildParserForModelStandalone } from "."
+import {
+  buildParserForModel,
+  buildParserForModelStandalone,
+  restoreIds,
+} from "."
 
 const RelationshipPathDetail =
   "URL must have 'include' as one or more of 'user'."
@@ -408,6 +413,44 @@ describe("index", () => {
         limit: 5,
         offset: 10,
         where: { "$Todo.name$": { [Op.eq]: "laundry" } },
+      })
+    })
+  })
+
+  describe("restoreIds", () => {
+    it("renames id to the targetKey value", async () => {
+      const result = restoreIds(
+        {
+          name: "SalesPerson",
+          id: uuid().finalize(),
+          attributes: {},
+          relationships: {
+            accounts: {
+              type: "hasManyThrough",
+              targetSchema: "Account",
+              through: "AccountSalesPerson",
+              throughSourceAttribute: "salesPersonId",
+              throughTargetAttribute: "accountId",
+              sourceKey: "sellerTypeId",
+              targetKey: "accountSaleTypeId",
+            },
+          },
+        },
+        {
+          accounts: [
+            {
+              id: "23cba2c2-c6e5-411b-a914-7f3d3786a096",
+            },
+          ],
+        },
+      )
+
+      expect(result).toEqual({
+        accounts: [
+          {
+            accountSaleTypeId: "23cba2c2-c6e5-411b-a914-7f3d3786a096",
+          },
+        ],
       })
     })
   })

@@ -108,4 +108,39 @@ describe("finalizeOrm", () => {
       }).sequelize.defaultValue,
     ).toEqual(func)
   })
+
+  it("handles unique", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "UUID",
+          unique: undefined,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "UUID",
+          unique: null as unknown as boolean,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "UUID",
+          unique: true,
+        },
+      }).sequelize.unique,
+    ).toBe(true)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "UUID",
+          unique: false,
+        },
+      }).sequelize.unique,
+    ).toBe(false)
+  })
 })
