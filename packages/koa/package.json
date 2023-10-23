@@ -30,7 +30,6 @@
   },
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
-    "@hatchifyjs/core": "^0.2.0",
     "@hatchifyjs/node": "^1.0.2",
     "dotenv": "^16.3.1",
     "jsonapi-serializer": "^3.6.7",
@@ -51,6 +50,7 @@
     "ts-jest": "^29.0.3"
   },
   "peerDependencies": {
+    "@hatchifyjs/core": "^0.2.x",
     "@types/koa": "2.x",
     "koa": "2.x",
     "sequelize": "6.x"
