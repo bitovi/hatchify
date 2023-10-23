@@ -453,5 +453,29 @@ describe("index", () => {
         ],
       })
     })
+
+    it("returns object when there are no custom keys", () => {
+      const result = restoreIds(
+        {
+          name: "Account",
+          id: uuid().finalize(),
+          attributes: {},
+          relationships: {
+            aliasedSalesPersons: {
+              type: "hasManyThrough",
+              targetSchema: "SalesPerson",
+              through: "AccountSalesPerson",
+              throughSourceAttribute: "accountId",
+              throughTargetAttribute: "salesPersonId",
+              sourceKey: "id",
+              targetKey: "id",
+            },
+          },
+        },
+        {},
+      )
+
+      expect(result).toEqual({})
+    })
   })
 })

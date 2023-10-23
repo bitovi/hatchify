@@ -88,7 +88,11 @@ export function restoreIds<T extends FinalSchema = FinalSchema>(
 ): any {
   return Object.entries(schema.relationships ?? {}).reduce(
     (acc, [relationshipName, relationship]) => {
-      if ("targetKey" in relationship && relationship.targetKey) {
+      if (
+        "targetKey" in relationship &&
+        relationship.targetKey &&
+        relationship.targetKey !== "id"
+      ) {
         if (Array.isArray(acc[relationshipName])) {
           return {
             ...acc,
