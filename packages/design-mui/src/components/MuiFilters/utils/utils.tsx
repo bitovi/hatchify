@@ -11,7 +11,7 @@ export function getFilterableFields(
   const fields = Object.entries(allSchemas[schemaName].attributes)
     .filter(([, attr]) => {
       const type = attr.control.type.toLowerCase()
-      return ["string", "date", "datetime", "enum"].includes(type)
+      return ["string", "date", "dateonly", "datetime", "enum"].includes(type)
     })
     .map(([key]) => key)
 

@@ -35,9 +35,15 @@ const ValueInput: React.FC<{
           options={options}
         />
       )}
-      {fieldType === "Datetime" && (
-        <DateInput labelId={labelId} value={value} onChange={onChange} />
-      )}
+      {fieldType === "Datetime" ||
+        (fieldType === "Dateonly" && (
+          <DateInput
+            labelId={labelId}
+            value={value}
+            onChange={onChange}
+            fieldType={fieldType}
+          />
+        ))}
     </>
   )
 }

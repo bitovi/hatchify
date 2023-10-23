@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/rest-client-jsonapi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./dist/rest-client-jsonapi.js",
   "module": "./dist/rest-client-jsonapi.mjs",
   "types": "./dist/rest-client-jsonapi.d.ts",
@@ -24,12 +24,12 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/rest-client": "^0.1.0"
+    "@hatchifyjs/rest-client": "^0.1.1"
   },
   "devDependencies": {
     "@hatchifyjs/core": "^0.2.1",
     "@hatchifyjs/koa": "^1.0.2",
-    "@hatchifyjs/react-rest": "^0.1.0",
+    "@hatchifyjs/react-rest": "^0.1.1",
     "@koa/cors": "^4.0.0",
     "@types/koa__cors": "^4.0.0",
     "@vitest/coverage-c8": "^0.32.2",
