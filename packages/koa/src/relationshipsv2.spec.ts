@@ -1634,7 +1634,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
               {
                 ...(dialect === "postgres" ? { schemaName: "public" } : {}),
                 tableName: "account",
-                columnName: "id",
+                columnName: "account_sale_type_id",
               },
             ],
           },
@@ -1655,7 +1655,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
               {
                 ...(dialect === "postgres" ? { schemaName: "public" } : {}),
                 tableName: "sales_person",
-                columnName: "id",
+                columnName: "seller_type_id",
               },
             ],
           },
