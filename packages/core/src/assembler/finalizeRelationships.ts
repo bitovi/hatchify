@@ -25,7 +25,7 @@ export function finalizeRelationships(
           if (relationship.type === "hasMany") {
             return finalizeHasMany(
               schemaName,
-              relationship as PartialHasManyRelationship,
+              relationship as PartialHasManyRelationship<string>, // @todo HATCH-417
               relationshipName,
               relationshipAcc,
             ) as Record<string, FinalSchema>

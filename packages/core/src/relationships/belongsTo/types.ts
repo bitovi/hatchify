@@ -1,6 +1,9 @@
-export interface PartialBelongsToRelationship {
+// @todo HATCH-417
+export interface PartialBelongsToRelationship<
+  TTargetSchema extends string | undefined | null,
+> {
   type: "belongsTo"
-  targetSchema: string | null
+  targetSchema: TTargetSchema
   sourceAttribute: string | null
   targetAttribute: string | null
 }

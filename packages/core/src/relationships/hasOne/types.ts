@@ -1,6 +1,9 @@
-export interface PartialHasOneRelationship {
+// @todo HATCH-417
+export interface PartialHasOneRelationship<
+  TTargetSchema extends string | undefined | null,
+> {
   type: "hasOne"
-  targetSchema: string | null
+  targetSchema: TTargetSchema
   targetAttribute: string | null
   sourceAttribute: string | null
 }
