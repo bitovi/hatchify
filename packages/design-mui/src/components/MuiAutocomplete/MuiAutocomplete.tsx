@@ -15,6 +15,7 @@ export const MuiAutocomplete: React.FC<{
 }) => {
   return (
     <Autocomplete
+      data-testid="autocomplete-input"
       multiple
       freeSolo={freeSolo}
       disableClearable={disableClearable}

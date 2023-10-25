@@ -2,23 +2,16 @@
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import { Todo } from "../schemas/todo"
-import { User } from "../schemas/user"
+import schemas from "../schemas/schemas"
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa(
-  {
-    Todo,
-    User,
+const hatchedKoa = hatchifyKoa(schemas, {
+  prefix: "/api",
+  database: {
+    dialect: "sqlite",
+    storage: ":memory:",
   },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-    },
-  },
-)
+})
 
 app.use(cors())
 app.use(hatchedKoa.middleware.allModels.all)

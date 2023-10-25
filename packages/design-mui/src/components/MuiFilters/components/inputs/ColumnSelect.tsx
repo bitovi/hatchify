@@ -10,6 +10,7 @@ const ColumnSelect: React.FC<{
     <>
       <InputLabel id={labelId}>Column</InputLabel>
       <Select
+        data-testid="column-select"
         fullWidth
         variant="standard"
         labelId={labelId}

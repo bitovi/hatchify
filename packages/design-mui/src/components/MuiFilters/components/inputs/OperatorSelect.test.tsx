@@ -25,11 +25,12 @@ describe("components/MuiFilters/inputs/OperatorSelect", () => {
     //   "DROP 🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥🟢🔥",
     //   drop,
     // )
-    const dropdown = screen.getByRole("combobox")
-    expect(dropdown.className.includes("MuiSelect-select")).toEqual(true)
-    expect(dropdown.className.includes("MuiAutocomplete-input")).toEqual(false)
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    expect(dropdown?.className.includes("MuiSelect-select")).toEqual(true)
+    expect(dropdown?.className.includes("MuiAutocomplete-input")).toEqual(false)
 
-    await userEvent.click(dropdown)
+    await userEvent.click(dropdown as any)
     const option = screen.getByText("Not Equals")
 
     await userEvent.click(option)

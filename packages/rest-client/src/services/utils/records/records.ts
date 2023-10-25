@@ -190,8 +190,8 @@ export const serializeClientPropertyValuesForRequest = <
       attribute.setClientPropertyValue &&
       attribute.serializeClientPropertyValue
     ) {
-      const coerced = attribute.setClientPropertyValue(value as any)
-      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-4
+      const coerced = attribute.setClientPropertyValue(value as any) // todo HATCH-417 remove any
+      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-417 remove any
     } else {
       acc[key] = value as SerializedValue
     }

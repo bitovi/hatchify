@@ -16,11 +16,13 @@ describe("components/MuiFilters/inputs/ColumnSelect", () => {
       />,
     )
 
-    const dropdown = screen.getByRole("combobox")
-    expect(dropdown.className.includes("MuiSelect-select")).toEqual(true)
-    expect(dropdown.className.includes("MuiAutocomplete-input")).toEqual(false)
+    const dropdownContainer = screen.getByTestId("column-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
 
-    await userEvent.click(dropdown)
+    expect(dropdown?.className.includes("MuiSelect-select")).toEqual(true)
+    expect(dropdown?.className.includes("MuiAutocomplete-input")).toEqual(false)
+
+    await userEvent.click(dropdown as any)
     const option = screen.getByText("status")
 
     await userEvent.click(option)

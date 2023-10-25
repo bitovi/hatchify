@@ -92,8 +92,9 @@ describe("components/MuiFilterRows", () => {
       />,
     )
 
-    const dropdowns = screen.getAllByRole("button")
-    await userEvent.click(dropdowns[1])
+    const dropdownContainer = screen.getByTestId("column-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as any)
 
     const dateSelection = screen.getByText("date")
     await userEvent.click(dateSelection)
@@ -121,8 +122,9 @@ describe("components/MuiFilterRows", () => {
       />,
     )
 
-    const dropdowns = screen.getAllByRole("button")
-    await userEvent.click(dropdowns[2])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as any)
 
     const eqSelection = screen.getByText("equals")
     await userEvent.click(eqSelection)

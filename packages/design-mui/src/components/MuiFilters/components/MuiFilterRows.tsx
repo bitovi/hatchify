@@ -177,6 +177,7 @@ export const MuiFilterRows: React.FC<{
             </Grid>
             <Grid item xs={4}>
               <ValueInput
+                data-testid="value-input"
                 labelId={`${index}-value-label`}
                 fieldType={getFieldType(baseAttributes, baseField)}
                 value={filter.value}

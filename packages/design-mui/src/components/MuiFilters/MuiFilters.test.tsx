@@ -126,7 +126,7 @@ describe("components/MuiFilters", () => {
     vi.useRealTimers()
   })
 
-  it.only("Sets filter if value is empty and the operator is an empty type", async () => {
+  it("Sets filter if value is empty and the operator is an empty type", async () => {
     const setPage = vi.fn()
 
     const setFilters = vi.fn()
@@ -160,8 +160,9 @@ describe("components/MuiFilters", () => {
 
     await userEvent.click(filter)
 
-    const dropdowns = screen.getAllByRole("combobox")
-    await userEvent.click(dropdowns[1])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as any)
     const emptySelection = screen.getByText("is empty")
     await userEvent.click(emptySelection)
 
@@ -210,8 +211,9 @@ describe("components/MuiFilters", () => {
 
     await userEvent.click(filter)
 
-    const dropdowns = screen.getAllByRole("combobox")
-    await userEvent.click(dropdowns[1])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as any)
     const emptySelection = screen.getByText("equals")
     await userEvent.click(emptySelection)
 

@@ -17,11 +17,12 @@ describe("components/MuiFilters/inputs/EnumInput", () => {
       />,
     )
 
-    const dropdown = screen.getByRole("combobox")
-    expect(dropdown.className.includes("MuiSelect-select")).toEqual(true)
-    expect(dropdown.className.includes("MuiAutocomplete-input")).toEqual(false)
+    const dropdownContainer = screen.getByTestId("enum-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    expect(dropdown?.className.includes("MuiSelect-select")).toEqual(true)
+    expect(dropdown?.className.includes("MuiAutocomplete-input")).toEqual(false)
 
-    await userEvent.click(dropdown)
+    await userEvent.click(dropdown as any)
     const firstOption = screen.getByText("Pending")
 
     await userEvent.click(firstOption)
@@ -39,7 +40,8 @@ describe("components/MuiFilters/inputs/EnumInput", () => {
       />,
     )
 
-    const dropdown = screen.getByRole("combobox")
-    expect(dropdown.className.includes("MuiAutocomplete-input")).toEqual(true)
+    const dropdownContainer = screen.getByTestId("autocomplete-input")
+    const dropdown = dropdownContainer.querySelector("input") // eslint-disable-line testing-library/no-node-access
+    expect(dropdown?.className.includes("MuiAutocomplete-input")).toEqual(true)
   })
 })

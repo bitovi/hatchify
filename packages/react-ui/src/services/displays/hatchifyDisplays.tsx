@@ -129,23 +129,24 @@ export function getDisplaysFromSchema(
       })
     })
 
-  const manyRelationshipDisplays = Object.entries(schema?.relationships || {})
-    .filter(([key, relationship]) => {
-      return (
-        relationship.type === "hasMany" ||
-        relationship.type === "hasManyThrough"
-      )
-    })
-    .map(([key, relationship]) => {
-      return getHatchifyDisplay({
-        isRelationship: true,
-        attribute: key,
-        label: key,
-        attributeSchema: null, // the schema in this case is a "relationship"
-        valueComponents,
-        defaultValueComponents,
-      })
-    })
+  // table does not need to show many relationships by default at the moment
+  // const manyRelationshipDisplays = Object.entries(schema?.relationships || {})
+  //   .filter(([key, relationship]) => {
+  //     return (
+  //       relationship.type === "hasMany" ||
+  //       relationship.type === "hasManyThrough"
+  //     )
+  //   })
+  //   .map(([key, relationship]) => {
+  //     return getHatchifyDisplay({
+  //       isRelationship: true,
+  //       attribute: key,
+  //       label: key,
+  //       attributeSchema: null, // the schema in this case is a "relationship"
+  //       valueComponents,
+  //       defaultValueComponents,
+  //     })
+  //   })
 
   const oneRelationshipDisplays = Object.entries(schema?.relationships || {})
     .filter(([key, relationship]) => {
@@ -165,7 +166,7 @@ export function getDisplaysFromSchema(
 
   return [
     ...attributesDisplays,
-    ...manyRelationshipDisplays,
+    // ...manyRelationshipDisplays,
     ...oneRelationshipDisplays,
   ]
 }
