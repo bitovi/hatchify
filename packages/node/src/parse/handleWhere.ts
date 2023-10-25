@@ -13,7 +13,7 @@ interface Include {
 
 export function handleWhere(
   ops: QueryStringParser<FindOptions, QueryStringParsingError>,
-  model: FinalSchema,
+  schema: FinalSchema,
 ): QueryStringParser<FindOptions, UnexpectedValueError> {
   const errors: UnexpectedValueError[] = []
 
@@ -23,11 +23,11 @@ export function handleWhere(
     }
 
     if (!key.includes(".")) {
-      if (key !== "id" && !model.attributes[key]) {
+      if (key !== "id" && !schema.attributes[key]) {
         errors.push(
           new UnexpectedValueError({
             detail: `URL must have 'filter[x]' where 'x' is one of ${Object.keys(
-              model.attributes,
+              schema.attributes,
             )
               .map((attribute) => `'${attribute}'`)
               .join(", ")}.`,
@@ -36,7 +36,7 @@ export function handleWhere(
         )
       }
 
-      return [null, `$${getColumnName(`${getFullModelName(model)}.${key}`)}$`]
+      return [null, `$${getColumnName(`${getFullModelName(schema)}.${key}`)}$`]
     }
 
     const [relationshipName] = key.split(".")
