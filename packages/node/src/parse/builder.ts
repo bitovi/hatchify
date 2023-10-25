@@ -37,7 +37,7 @@ export interface QueryStringParsingError extends Error {
 
 export function buildFindOptions(
   hatchify: Hatchify,
-  model: FinalSchema,
+  schema: FinalSchema,
   querystring: string,
   id?: Identifier,
 ): QueryStringParser<FindOptions> {
@@ -60,7 +60,7 @@ export function buildFindOptions(
     return qspOps as unknown as QueryStringParser<FindOptions>
   }
 
-  let ops: QueryStringParser<FindOptions> = handleWhere(qspOps, model)
+  let ops: QueryStringParser<FindOptions> = handleWhere(qspOps, schema)
 
   if (dialect === "sqlite") {
     ops = handleSqliteDateNestedColumns(ops, dialect)
@@ -72,18 +72,18 @@ export function buildFindOptions(
       ops.data.attributes.unshift("id")
     }
 
-    const modelName = [model.namespace, model.name]
+    const modelName = [schema.namespace, schema.name]
       .filter((x) => x)
       .map((x) => noCase(x as string, { delimiter: "-" }))
       .join("-")
 
     ops.data.attributes.forEach((attribute: string | ProjectionAlias) => {
       const stringAttribute: string = attribute as unknown as string // no other types come out of the parser
-      if (stringAttribute !== "id" && !model.attributes[stringAttribute]) {
+      if (stringAttribute !== "id" && !schema.attributes[stringAttribute]) {
         ops.errors.push(
           new UnexpectedValueError({
             detail: `URL must have 'fields[${modelName}]' as comma separated values containing one or more of ${Object.keys(
-              model.attributes,
+              schema.attributes,
             )
               .map((attribute) => `'${attribute}'`)
               .join(", ")}.`,
@@ -107,7 +107,7 @@ export function buildFindOptions(
       //  message will report "...one or more attributes of salesperson.company"
       const successfulAssociations: string[] = []
 
-      let currentSchema: typeof model = model
+      let currentSchema: typeof schema = schema
       let associationErrorTriggered = false
 
       // Iterate over every element of the sort that is deemed to be an association name
