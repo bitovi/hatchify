@@ -37,6 +37,18 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       await teardown()
     })
 
+    it("does not crash on nested includes", async () => {
+      const { body } = await fetch(
+        "/api/todos?include=user,user.todos&page[size]=1&page[number]=1",
+      )
+
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        data: [],
+        meta: { unpaginatedCount: 0 },
+      })
+    })
+
     it("should always return type and id (HATCH-167)", async () => {
       const { body: todo } = await fetch("/api/todos", {
         method: "post",
