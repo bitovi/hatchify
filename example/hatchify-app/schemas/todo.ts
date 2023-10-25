@@ -6,6 +6,7 @@ import {
   enumerate,
   integer,
   string,
+  text,
 } from "@hatchifyjs/core"
 
 
@@ -18,6 +19,7 @@ export const Todo: PartialSchema = {
     importance: integer(),
     status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
     completionDate: dateonly(),
+    notes: text()
   },
   relationships: {
     user: belongsTo(),

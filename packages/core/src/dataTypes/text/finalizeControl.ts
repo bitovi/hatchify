@@ -9,7 +9,7 @@ export function finalizeControl(
     ...props,
     allowNull: props.allowNull !== false && !props.primary,
     min: props.min ?? 0,
-    max: props.max ?? 255,
+    max: props.max ?? Infinity,
     primary: !!props.primary,
     default: props.default ?? null,
     regex: props.regex ?? /(.*?)/,
