@@ -1,12 +1,14 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { FinalSchemas } from "./schema"
+import type {
+  CreateType,
+  FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
+  UpdateType,
+} from "./schema"
 import type { Filters, QueryList, QueryOne } from "./query"
 
-import type {
-  RestClientCreateData,
-  Resource,
-  RestClientUpdateData,
-} from "./data"
+import type { Resource } from "./data"
 import type { RequestMetaData } from "./meta"
 
 export type SourceSchema = PartialSchema & {
@@ -35,34 +37,37 @@ export interface SourceConfig {
 
 // always return a Resource[] even if it's a single resource because
 // their may be a need to return related resources
-export interface RestClient<TSchemas extends Record<string, PartialSchema>> {
+export interface RestClient<
+  TSchemas extends Record<string, PartialSchema>,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> {
   version: 0
   // completeSchemaMap: RequiredSchemaMap
   completeSchemaMap: TSchemas
   findAll: (
     allSchemas: FinalSchemas,
-    schemaName: string,
+    schemaName: TSchemaName,
     query: QueryList,
     baseFilter?: Filters,
   ) => Promise<[Resources: Resource[], Meta: RequestMetaData]>
   findOne: (
     allSchemas: FinalSchemas,
-    schemaName: string,
+    schemaName: TSchemaName,
     query: QueryOne,
   ) => Promise<Resource[]>
   createOne: (
     allSchemas: FinalSchemas,
-    schemaName: string,
-    data: RestClientCreateData,
+    schemaName: TSchemaName,
+    data: CreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
   ) => Promise<Resource[]>
   updateOne: (
     allSchemas: FinalSchemas,
-    schemaName: string,
-    data: RestClientUpdateData,
+    schemaName: TSchemaName,
+    data: UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
   ) => Promise<Resource[] | null>
   deleteOne: (
     allSchemas: FinalSchemas,
-    schemaName: string,
+    schemaName: TSchemaName,
     id: string,
   ) => Promise<void>
 }

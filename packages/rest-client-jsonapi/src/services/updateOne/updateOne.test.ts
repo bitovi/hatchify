@@ -57,7 +57,7 @@ describe("rest-client-jsonapi/services/updateOne", () => {
         },
       },
     ]
-    const result = await updateOne(
+    const result = await updateOne<typeof partialSchemaMap, "Article">(
       sourceConfig,
       finalSchemaMap,
       "Article",
@@ -79,7 +79,7 @@ describe("rest-client-jsonapi/services/updateOne", () => {
       attributes: { title: "A new world!" },
     }
 
-    const result = await updateOne(
+    const result = await updateOne<typeof partialSchemaMap, "Article">(
       sourceConfig,
       finalSchemaMap,
       "Article",

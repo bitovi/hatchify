@@ -3,12 +3,24 @@ import { describe, it, expect, vi } from "vitest"
 import { render, screen, act } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import MuiFilters from "./MuiFilters"
-import { assembler, integer } from "@hatchifyjs/core"
+import {
+  assembler,
+  belongsTo,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 
 const partialSchemas = {
-  Test: {
-    name: "Test",
-    attributes: { id: integer(), name: integer() },
+  Todo: {
+    name: "Todo",
+    attributes: { id: integer(), name: string() },
+    relationships: { user: belongsTo() },
+  },
+  User: {
+    name: "User",
+    attributes: { name: string() },
+    relationships: { todo: hasMany() },
   },
 }
 const finalSchemas = assembler(partialSchemas)
@@ -28,13 +40,13 @@ const meta = {
 } as any
 
 // todo: v2 schema only supports numbers, filter does not support numbers
-describe.skip("components/MuiFilters", () => {
+describe("components/MuiFilters", () => {
   it("works", async () => {
     render(
       <MuiFilters
         finalSchemas={finalSchemas}
         partialSchemas={partialSchemas}
-        schemaName="Test"
+        schemaName="Todo"
         data={[]}
         meta={meta}
         sort={{
@@ -77,7 +89,7 @@ describe.skip("components/MuiFilters", () => {
       <MuiFilters
         finalSchemas={finalSchemas}
         partialSchemas={partialSchemas}
-        schemaName="Test"
+        schemaName="Todo"
         data={[]}
         meta={meta}
         sort={{
@@ -148,8 +160,9 @@ describe.skip("components/MuiFilters", () => {
 
     await userEvent.click(filter)
 
-    const dropdowns = screen.getAllByRole("combobox")
-    await userEvent.click(dropdowns[1])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as any)
     const emptySelection = screen.getByText("is empty")
     await userEvent.click(emptySelection)
 
@@ -198,8 +211,9 @@ describe.skip("components/MuiFilters", () => {
 
     await userEvent.click(filter)
 
-    const dropdowns = screen.getAllByRole("combobox")
-    await userEvent.click(dropdowns[1])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as any)
     const emptySelection = screen.getByText("equals")
     await userEvent.click(emptySelection)
 

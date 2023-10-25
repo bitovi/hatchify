@@ -49,9 +49,3 @@ export function integer<TRequired extends boolean = false>(
 // //   ^?
 // type AA2 = Prettify<typeof aaaa2>["control"]["allowNull"]
 // //   ^?
-
-// // declare function int<TRequired extends boolean, TPrimary extends boolean>(config: {
-// //   primary?: TPrimary
-// //   required?: TPrimary extends true ? true : TRequired
-// // })
-// // const aaa = int({ primary: true, required: false })

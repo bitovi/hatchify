@@ -6,7 +6,7 @@ import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase"
 
 export function finalize(
   sourceSchema: string,
-  relationship: PartialBelongsToRelationship,
+  relationship: PartialBelongsToRelationship<string | undefined | null>,
   relationshipName: string,
   schemas: Record<string, SemiFinalSchema>,
 ): Record<string, SemiFinalSchema> {

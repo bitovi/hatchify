@@ -1,12 +1,14 @@
+import type { PartialSchema, SerializedValue } from "@hatchifyjs/core"
 import type {
   Record,
   Resource,
   RecordRelationship,
-  Schemas,
   ResourceRelationship,
   FinalSchemas,
+  CreateType,
+  GetSchemaFromName,
+  GetSchemaNames,
 } from "../../types"
-import { isSchemasV2 } from "../schema"
 
 type Relationship = globalThis.Record<
   string,
@@ -31,7 +33,7 @@ export function keyResourcesById(data: Resource[]): {
  * does not have a schema for.
  */
 export function isMissingSchema(
-  allSchemas: Schemas | FinalSchemas,
+  allSchemas: FinalSchemas,
   resource: ResourceRelationship | ResourceRelationship[],
 ): boolean {
   if (Array.isArray(resource)) {
@@ -48,7 +50,7 @@ export function isMissingSchema(
  * record's schema.
  */
 export function resourceToRecordRelationship(
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas,
   resourcesById: globalThis.Record<string, Resource>,
   resource: ResourceRelationship,
 ): RecordRelationship {
@@ -61,13 +63,20 @@ export function resourceToRecordRelationship(
   }
 
   const attributes = resourcesById[resource.id].attributes
-  const displayAttribute = allSchemas[resource.__schema].displayAttribute
+  // use first attribute as displayAttribute until displayAttribute is implemented
+  const displayAttribute = Object.keys(
+    allSchemas[resource.__schema].attributes,
+  )[0]
 
   return {
     id: resource.id,
     __schema: resource.__schema,
     __label: attributes?.[displayAttribute],
-    ...attributes,
+    ...setClientPropertyValuesFromResponse(
+      allSchemas,
+      resource.__schema,
+      attributes || {},
+    ),
   }
 }
 
@@ -109,18 +118,11 @@ export function flattenResourcesIntoRecords(
               return acc
             }
 
-            // v2 schemas do not support relationships yet
-            if (!isSchemasV2(allSchemas)) {
-              acc[key] = Array.isArray(value)
-                ? value.map((item) =>
-                    resourceToRecordRelationship(
-                      allSchemas,
-                      resourcesById,
-                      item,
-                    ),
-                  )
-                : resourceToRecordRelationship(allSchemas, resourcesById, value)
-            }
+            acc[key] = Array.isArray(value)
+              ? value.map((item) =>
+                  resourceToRecordRelationship(allSchemas, resourcesById, item),
+                )
+              : resourceToRecordRelationship(allSchemas, resourcesById, value)
 
             return acc
           },
@@ -169,11 +171,17 @@ export const setClientPropertyValuesFromResponse = (
 /**
  * Coerces the value from the internal client data into something that can be sent with JSON.
  */
-export const serializeClientPropertyValuesForRequest = (
+export const serializeClientPropertyValuesForRequest = <
+  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   allSchemas: FinalSchemas,
   schemaName: string,
-  attributes: globalThis.Record<string, any>,
-): globalThis.Record<string, unknown> => {
+  attributes: Omit<
+    CreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
+    "__schema"
+  >["attributes"],
+): globalThis.Record<string, SerializedValue> => {
   return Object.entries(attributes).reduce((acc, [key, value]) => {
     const attribute = allSchemas[schemaName].attributes[key]
 
@@ -182,13 +190,13 @@ export const serializeClientPropertyValuesForRequest = (
       attribute.setClientPropertyValue &&
       attribute.serializeClientPropertyValue
     ) {
-      const coerced = attribute.setClientPropertyValue(value)
-      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo: arthur, fix with stricter typing
+      const coerced = attribute.setClientPropertyValue(value as any) // todo HATCH-417 remove any
+      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-417 remove any
     } else {
-      acc[key] = value
+      acc[key] = value as SerializedValue
     }
     return acc
-  }, {} as globalThis.Record<string, unknown>)
+  }, {} as globalThis.Record<string, SerializedValue>)
 }
 
 /**

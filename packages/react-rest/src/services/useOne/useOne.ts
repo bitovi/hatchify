@@ -28,17 +28,20 @@ export const useOne = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryOne | string,
-): [RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined, Meta] => {
+): [
+  RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>> | undefined,
+  Meta,
+] => {
   const memoizedQuery = useMemoizedQuery(
     typeof query === "string" ? { id: query } : { ...query },
   )
 
   const [data, setData] = useState<
-    RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined
+    RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>> | undefined
   >(undefined)
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
@@ -46,7 +49,7 @@ export const useOne = <
   const fetchOne = useCallback(() => {
     setLoading(true)
 
-    findOne<TSchemas, GetSchemaNames<TSchemas>>(
+    findOne<TSchemas, TSchemaName>(
       dataSource,
       allSchemas,
       schemaName,

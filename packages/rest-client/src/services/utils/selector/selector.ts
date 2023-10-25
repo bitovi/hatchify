@@ -1,10 +1,11 @@
-import type { Include, Fields, QueryList, QueryOne, Schema } from "../../types"
+import type { FinalSchema } from "@hatchifyjs/core"
+import type { Include, Fields, QueryList, QueryOne } from "../../types"
 
 /**
  * Get attributes from a schema or a relationship.
  */
 export function getAttributesFromSchema(
-  schemas: Record<string, Schema>,
+  schemas: Record<string, FinalSchema>,
   schemaName: string,
   path?: string,
 ): Fields {
@@ -12,15 +13,19 @@ export function getAttributesFromSchema(
     const segments = path.split(".")
 
     for (const segment of segments) {
-      schemaName = schemas?.[schemaName]?.relationships?.[segment].schema || ""
+      schemaName =
+        schemas?.[schemaName]?.relationships?.[segment].targetSchema || ""
     }
   }
 
   const fields: Fields = {}
 
-  fields[path ? path : schemaName] = Object.keys(
+  fields[path ? path : schemaName] = Object.entries(
     schemas[schemaName].attributes,
-  ).map((attribute) => attribute)
+  )
+    // todo: filtering should not rely on UUID type because it may still be an attribute
+    .filter(([attribute, details]) => details.orm.sequelize.type !== "UUID")
+    .map(([attribute]) => attribute)
   return fields
 }
 
@@ -55,7 +60,7 @@ export function getIncludeFromFields(
  * https://jsonapi.org/format/#fetching-sparse-fieldsets
  */
 export function getFieldsFromInclude(
-  schemas: Record<string, Schema>,
+  schemas: Record<string, FinalSchema>,
   schemaName: string,
   include: Include,
 ): Fields {
@@ -75,19 +80,21 @@ export function getFieldsFromInclude(
  * Get the to-one relationships as fields: [`${relationshipKey}.${displayAttribute}`, ...]
  */
 export function getToOneRelationshipsAsFields(
-  schemas: Record<string, Schema>,
+  schemas: Record<string, FinalSchema>,
   schemaName: string,
 ): Fields {
   return Object.assign(
     {},
     ...Object.entries(schemas[schemaName]?.relationships || [])
       .filter(([key, relationship]) => {
-        return relationship.type === "one"
+        return (
+          relationship.type === "belongsTo" || relationship.type === "hasOne"
+        )
       })
       .map(([key, relationship]) => {
         return {
           [`${key}`]: [
-            `${schemas[relationship.schema].displayAttribute || "id"}`,
+            `${schemas[relationship.targetSchema].displayAttribute || "id"}`,
           ],
         }
       }),
@@ -98,12 +105,12 @@ export function getToOneRelationshipsAsFields(
  * Get the to-one relationships as include: [`${relationshipKey}`, ...]
  */
 export function getToOneRelationshipsAsInclude(
-  schemas: Record<string, Schema>,
+  schemas: Record<string, FinalSchema>,
   schemaName: string,
 ): Include {
   return Object.entries(schemas[schemaName]?.relationships || [])
     .filter(([key, relationship]) => {
-      return relationship.type === "one"
+      return relationship.type === "belongsTo" || relationship.type === "hasOne"
     })
     .map(([key, relationship]) => {
       return key
@@ -115,7 +122,7 @@ export function getToOneRelationshipsAsInclude(
  * returns the default fields (all attributes and to-one relationships).
  */
 export function getFields(
-  schemas: Record<string, Schema>,
+  schemas: Record<string, FinalSchema>,
   schemaName: string,
   selector: QueryList | QueryOne,
 ): Fields {
@@ -136,7 +143,7 @@ export function getFields(
  * returns the default include (all to-one relationships).
  */
 export function getInclude(
-  schemas: Record<string, Schema>,
+  schemas: Record<string, FinalSchema>,
   schemaName: string,
   selector: QueryList | QueryOne,
 ): Include {

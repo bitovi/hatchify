@@ -1,10 +1,15 @@
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
   Resource,
-  RestClientUpdateData,
-  Schema,
-  Schemas,
   SourceConfig,
+  UpdateType,
+} from "@hatchifyjs/rest-client"
+import {
+  SchemaNameNotStringError,
+  schemaNameIsString,
 } from "@hatchifyjs/rest-client"
 import {
   convertToHatchifyResources,
@@ -17,18 +22,27 @@ import type { JsonApiResource } from "../jsonapi"
  * Updates a resource, adds the __schema to the request response,
  * and returns it.
  */
-export async function updateOne(
+export async function updateOne<
+  const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   config: SourceConfig, // todo: HATCH-417
-  allSchemas: FinalSchemas | Schemas,
-  schemaName: string,
-  data: RestClientUpdateData,
+  allSchemas: FinalSchemas,
+  schemaName: TSchemaName,
+  data: UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): Promise<Resource[] | null> {
+  if (!schemaNameIsString(schemaName)) {
+    throw new SchemaNameNotStringError(schemaName)
+  }
+
+  console.log("rest-client-jsonapi.updateOne.data", data)
   const jsonApiResource = hatchifyResourceToJsonApiResource(
     config,
-    allSchemas[schemaName] as Schema, // todo: v2 relationships
+    allSchemas[schemaName],
     schemaName,
     data,
   )
+  console.log("rest-client-jsonapi.updateOne.jsonApiResource", data)
 
   const json = await fetchJsonApi<JsonApiResource>(
     "PATCH",

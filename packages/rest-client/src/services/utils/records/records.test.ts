@@ -1,4 +1,11 @@
 import { describe, it, expect } from "vitest"
+import {
+  HatchifyCoerceError,
+  assembler,
+  datetime,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 import type { Resource } from "../../types"
 import { testData, schemas } from "../../mocks/testData"
 import {
@@ -9,13 +16,6 @@ import {
   setClientPropertyValuesFromResponse,
   serializeClientPropertyValuesForRequest,
 } from "./records"
-import {
-  HatchifyCoerceError,
-  assembler,
-  datetime,
-  integer,
-  string,
-} from "@hatchifyjs/core"
 
 describe("rest-client/utils/records", () => {
   describe("keyResourcesById", () => {
@@ -56,15 +56,14 @@ describe("rest-client/utils/records", () => {
 
   describe("resourceToRecordRelationship", () => {
     it("works", () => {
-      const schemas = {
+      const finalSchemas = assembler({
         Person: {
           name: "Person",
-          displayAttribute: "name",
           attributes: {
-            name: "string",
+            name: string(),
           },
         },
-      }
+      })
 
       const resource = {
         id: "person-1",
@@ -83,7 +82,7 @@ describe("rest-client/utils/records", () => {
 
       expect(
         resourceToRecordRelationship(
-          schemas,
+          finalSchemas,
           { "person-1": resource },
           resource,
         ),
@@ -93,44 +92,43 @@ describe("rest-client/utils/records", () => {
 
   describe("flattenResourcesIntoRecords", () => {
     it("works for many resources", () => {
-      // todo: v2 relationships
       const expected = [
         {
           id: "article-1",
           __schema: "Article",
           title: "foo",
           body: "foo-body",
-          // author: {
-          //   id: "person-1",
-          //   __schema: "Person",
-          //   __label: "foo",
-          //   name: "foo",
-          // },
-          // tags: [
-          //   { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-          //   { id: "tag-2", __schema: "Tag", __label: "tag-2", title: "tag-2" },
-          // ],
+          author: {
+            id: "person-1",
+            __schema: "Person",
+            __label: "foo",
+            name: "foo",
+          },
+          tags: [
+            { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
+            { id: "tag-2", __schema: "Tag", __label: "tag-2", title: "tag-2" },
+          ],
         },
         {
           id: "article-2",
           __schema: "Article",
           title: "foo",
           body: "foo-body",
-          // author: {
-          //   id: "person-1",
-          //   __schema: "Person",
-          //   __label: "foo",
-          //   name: "foo",
-          // },
-          // tags: [
-          //   { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-          // ],
+          author: {
+            id: "person-1",
+            __schema: "Person",
+            __label: "foo",
+            name: "foo",
+          },
+          tags: [
+            { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
+          ],
         },
       ]
 
-      expect(
-        flattenResourcesIntoRecords(schemas as any, testData, "Article"),
-      ).toEqual(expected)
+      expect(flattenResourcesIntoRecords(schemas, testData, "Article")).toEqual(
+        expected,
+      )
     })
 
     it("works for a single resource", () => {
@@ -139,24 +137,19 @@ describe("rest-client/utils/records", () => {
         __schema: "Article",
         title: "foo",
         body: "foo-body",
-        // author: {
-        //   id: "person-1",
-        //   __schema: "Person",
-        //   __label: "foo",
-        //   name: "foo",
-        // },
-        // tags: [
-        //   { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-        // ],
+        author: {
+          id: "person-1",
+          __schema: "Person",
+          __label: "foo",
+          name: "foo",
+        },
+        tags: [
+          { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
+        ],
       }
 
       expect(
-        flattenResourcesIntoRecords(
-          schemas as any,
-          testData,
-          "Article",
-          "article-2",
-        ),
+        flattenResourcesIntoRecords(schemas, testData, "Article", "article-2"),
       ).toEqual(expected)
     })
   })
@@ -206,7 +199,7 @@ describe("rest-client/utils/records", () => {
 
   describe("serializeClientPropertyValuesForRequest", () => {
     it("works", () => {
-      const finalSchemas = assembler({
+      const partialSchemas = {
         Article: {
           name: "Article",
           attributes: {
@@ -215,10 +208,14 @@ describe("rest-client/utils/records", () => {
             views: integer({ max: 1000 }),
           },
         },
-      })
+      }
+      const finalSchemas = assembler(partialSchemas)
 
       expect(
-        serializeClientPropertyValuesForRequest(finalSchemas, "Article", {
+        serializeClientPropertyValuesForRequest<
+          typeof partialSchemas,
+          keyof typeof partialSchemas
+        >(finalSchemas, "Article", {
           title: "foo",
           created: new Date("2021-01-01T00:00:00.000Z"),
           views: 1,
@@ -230,7 +227,10 @@ describe("rest-client/utils/records", () => {
       })
 
       expect(() =>
-        serializeClientPropertyValuesForRequest(finalSchemas, "Article", {
+        serializeClientPropertyValuesForRequest<
+          typeof partialSchemas,
+          keyof typeof partialSchemas
+        >(finalSchemas, "Article", {
           title: "bar",
           created: new Date("2021-01-01T01:00:00.000Z"),
           views: 500,
@@ -238,7 +238,10 @@ describe("rest-client/utils/records", () => {
       ).toThrow(new HatchifyCoerceError("as multiples of day"))
 
       expect(() =>
-        serializeClientPropertyValuesForRequest(finalSchemas, "Article", {
+        serializeClientPropertyValuesForRequest<
+          typeof partialSchemas,
+          keyof typeof partialSchemas
+        >(finalSchemas, "Article", {
           title: "bar",
           created: new Date("2021-01-01T00:00:00.000Z"),
           views: 1001,

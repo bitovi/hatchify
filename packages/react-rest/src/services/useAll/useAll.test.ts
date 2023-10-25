@@ -27,7 +27,7 @@ const fakeMeta = {
   unpaginatedCount: 2,
 }
 
-const fakeDataSource: RestClient<any> = {
+const fakeDataSource: RestClient<any, any> = {
   version: 0,
   completeSchemaMap: {},
   findAll: () => Promise.resolve([fakeData, fakeMeta]),

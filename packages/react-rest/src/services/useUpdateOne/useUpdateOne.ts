@@ -20,7 +20,10 @@ type UpdateData<
 type UpdatedRecord<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
-> = RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined | null
+> =
+  | RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>
+  | undefined
+  | null
 
 /**
  * Returns a function that updates a new record using the rest-client updateOne,
@@ -30,7 +33,7 @@ export const useUpdateOne = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
 ): [
@@ -46,12 +49,7 @@ export const useUpdateOne = <
   const update = useCallback(
     (data: UpdateData<TSchemas, TSchemaName>) => {
       setLoading(true)
-      updateOne<TSchemas, GetSchemaNames<TSchemas>>(
-        dataSource,
-        allSchemas,
-        schemaName,
-        data,
-      )
+      updateOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, data)
         .then((data) => {
           setError(undefined)
           setData(data)

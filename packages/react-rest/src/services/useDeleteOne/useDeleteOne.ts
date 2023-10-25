@@ -16,7 +16,7 @@ export const useDeleteOne = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
 ): [(id: string) => void, Meta] => {
@@ -26,12 +26,7 @@ export const useDeleteOne = <
   const remove = useCallback(
     (id: string) => {
       setLoading(true)
-      deleteOne<TSchemas, GetSchemaNames<TSchemas>>(
-        dataSource,
-        allSchemas,
-        schemaName,
-        id,
-      )
+      deleteOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, id)
         .then(() => setError(undefined))
         .catch((error) => {
           setError(error)

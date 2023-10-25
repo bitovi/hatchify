@@ -36,16 +36,19 @@ export const useAll = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryList,
   baseFilter?: Filters,
-): [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, Meta] => {
+): [
+  Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,
+  Meta,
+] => {
   const memoizedQuery = useMemoByStringify(query)
   const memoizedBaseFilter = useMemoByStringify(baseFilter)
   const [data, setData] = useState<
-    Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>
+    Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>
   >([])
   const [requestMeta, setRequestMeta] = useState<RequestMetaData>()
   const [error, setError] = useState<MetaError | undefined>(undefined)
@@ -53,7 +56,7 @@ export const useAll = <
 
   const fetchAll = useCallback(() => {
     setLoading(true)
-    findAll<TSchemas, GetSchemaNames<TSchemas>>(
+    findAll<TSchemas, TSchemaName>(
       dataSource,
       allSchemas,
       schemaName,

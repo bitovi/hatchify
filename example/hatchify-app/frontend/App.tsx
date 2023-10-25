@@ -5,14 +5,10 @@ import {
   MuiProvider,
   createJsonapiClient,
 } from "@hatchifyjs/react"
-import { Todo } from "../schemas/todo"
-// import { User } from "../schemas/user"
+import schemas from "../schemas/schemas"
 
 export const hatchedReact = hatchifyReact(
-  createJsonapiClient("http://localhost:3000/api", {
-    Todo,
-    //  User
-  }),
+  createJsonapiClient("http://localhost:3000/api", schemas),
 )
 
 const TodoList = hatchedReact.components.Todo.Collection
@@ -20,7 +16,11 @@ const TodoColumn = hatchedReact.components.Todo.Column
 const TodoEmptyList = hatchedReact.components.Todo.Empty
 // hatchedReact.model.Todo.findAll({}).then(([todos]) => {
 //   console.log(todos)
-//   todos[0].
+//   todos[0].user.
+// })
+// hatchedReact.model.User.findAll({}).then(([users]) => {
+//   console.log(users)
+//   users[0].todos[0].
 // })
 
 const App: React.FC = () => {

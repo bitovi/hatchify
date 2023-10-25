@@ -8,7 +8,7 @@ import type { FinalRelationship, PartialRelationship } from "../types"
 
 export function finalize(
   sourceSchema: string,
-  relationship: PartialHasOneRelationship,
+  relationship: PartialHasOneRelationship<string | null | undefined>,
   relationshipName: string,
   schemas: Record<string, SemiFinalSchema>,
 ): Record<string, SemiFinalSchema> {

@@ -20,6 +20,7 @@ const EnumInput: React.FC<{
 
   return (
     <Select
+      data-testid="enum-select"
       fullWidth
       variant="standard"
       labelId={`value-field-label`}

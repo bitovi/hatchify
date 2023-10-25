@@ -19,7 +19,8 @@ describe("components/MuiFilters/inputs/StringInput", () => {
       />,
     )
 
-    const dropdown = screen.getByRole("combobox")
-    expect(dropdown.className.includes("MuiAutocomplete-input")).toEqual(true)
+    const dropdownContainer = screen.getByTestId("autocomplete-input")
+    const dropdown = dropdownContainer.querySelector("input") // eslint-disable-line testing-library/no-node-access
+    expect(dropdown?.className.includes("MuiAutocomplete-input")).toEqual(true)
   })
 })

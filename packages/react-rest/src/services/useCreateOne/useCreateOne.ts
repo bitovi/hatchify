@@ -20,7 +20,7 @@ type CreateData<
 type CreatedRecord<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
-> = RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined
+> = RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>> | undefined
 
 /**
  * Returns a function that creates a new record using the rest-client createOne,
@@ -30,7 +30,7 @@ export const useCreateOne = <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
 ): [
@@ -46,12 +46,7 @@ export const useCreateOne = <
   const create = useCallback(
     (data: CreateData<TSchemas, TSchemaName>) => {
       setLoading(true)
-      createOne<TSchemas, GetSchemaNames<TSchemas>>(
-        dataSource,
-        allSchemas,
-        schemaName,
-        data,
-      )
+      createOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, data)
         .then((data) => {
           setError(undefined)
           setData(data)

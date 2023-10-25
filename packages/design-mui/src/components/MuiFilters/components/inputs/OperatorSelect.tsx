@@ -10,6 +10,7 @@ const OperatorSelect: React.FC<{
     <>
       <InputLabel id={labelId}>Operator</InputLabel>
       <Select
+        data-testid="operator-select"
         fullWidth
         variant="standard"
         labelId={labelId}

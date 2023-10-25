@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { reactJsonapi } from "./react-jsonapi"
-import { integer } from "@hatchifyjs/core"
+import { hasMany, integer } from "@hatchifyjs/core"
 
 const TestSchema = {
   Article: {
@@ -12,13 +12,9 @@ const TestSchema = {
     attributes: {
       age: integer(),
     },
-    // todo: v2 relationships
-    // relationships: {
-    //   Article: {
-    //     type: "many",
-    //     schema: "yes",
-    //   },
-    // },
+    relationships: {
+      article: hasMany("Article"),
+    },
   },
 }
 

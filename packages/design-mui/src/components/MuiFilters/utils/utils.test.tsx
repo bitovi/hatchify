@@ -1,7 +1,14 @@
 import "@testing-library/jest-dom"
 import { describe, it, expect } from "vitest"
 import { getFilterableFields } from "./utils"
-import { assembler, boolean, datetime, string } from "@hatchifyjs/core"
+import {
+  assembler,
+  belongsTo,
+  boolean,
+  datetime,
+  hasMany,
+  string,
+} from "@hatchifyjs/core"
 
 const partialSchemas = {
   Todo: {
@@ -15,13 +22,9 @@ const partialSchemas = {
       // todo: v2 enums
       // status: { type: "enum", values: ["Pending", "Failed", "Complete"] },
     },
-    // todo: v2 relationships
-    // relationships: {
-    //   user: {
-    //     schema: "User",
-    //     type: "one",
-    //   },
-    // },
+    relationships: {
+      user: belongsTo(),
+    },
   },
   User: {
     name: "User",
@@ -34,13 +37,9 @@ const partialSchemas = {
       // todo: v2 enums
       // user_type: { type: "enum", values: ["Admin", "User"] },
     },
-    // todo: v2 relationships
-    // relationships: {
-    //   todo: {
-    //     schema: "Todo",
-    //     type: "many",
-    //   },
-    // },
+    relationships: {
+      todo: hasMany(),
+    },
   },
   Planner: {
     name: "Planner",
@@ -65,11 +64,11 @@ describe("components/MuiFilters/utils", () => {
         "note",
         // todo: v2 enums
         // "status",
-        // todo: v2 relationships
-        // "user.name",
-        // "user.email",
-        // "user.planned_date",
-        // "user.another_date",
+        "user.name",
+        "user.email",
+        "user.planned_date",
+        "user.another_date",
+        // todo: v2 enums
         // "user.user_type",
       ])
     })

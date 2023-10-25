@@ -23,23 +23,31 @@ export const updateOne = async <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   data: Omit<UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">,
-): Promise<RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | null> => {
+): Promise<RecordType<
+  TSchemas,
+  GetSchemaFromName<TSchemas, TSchemaName>
+> | null> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
 
+  console.log("rest-client.updateOne.data", data)
   const resources = await dataSource.updateOne(allSchemas, schemaName, {
     __schema: schemaName,
     id: data.id,
-    attributes: serializeClientPropertyValuesForRequest(
-      allSchemas,
-      schemaName,
-      data,
-    ),
+    attributes: data?.attributes
+      ? (serializeClientPropertyValuesForRequest(
+          allSchemas,
+          schemaName,
+          data.attributes,
+        ) as UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>["attributes"])
+      : undefined,
+    // does not need to be serialized! only ids, does not contain attribute values
+    relationships: data?.relationships || undefined,
   })
 
   notifySubscribers()

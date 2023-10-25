@@ -54,9 +54,7 @@ export function getColumns(
   if (overwrite.length > 0) {
     for (let i = 0; i < overwrite.length; i++) {
       const { props } = overwrite[i]
-      // todo: relationships not implemented in v2 yet
-      // const relationship = schema?.relationships?.[props.field]
-      const relationship = false
+      const relationship = schema?.relationships?.[props.field]
 
       hatchifyColumns.push(
         getHatchifyDisplay({
@@ -64,10 +62,9 @@ export function getColumns(
           isRelationship: relationship !== undefined,
           label: props.label || null,
           attribute: props.field,
-          attributeSchema: schema.attributes?.[props.field].control,
-          // attributeSchema: relationship
-          //   ? null
-          //   : schema.attributes?.[props.field],
+          attributeSchema: relationship
+            ? null
+            : schema.attributes?.[props.field].control,
           renderValue: props.renderValue,
           ValueComponent: props.ValueComponent,
           defaultValueComponents: valueComponents,
@@ -84,9 +81,7 @@ export function getColumns(
 
       if (replaceWith) {
         const { props } = replaceWith
-        // todo: relationships not implemented in v2 yet
-        // const relationship = schema?.relationships?.[props.field]
-        const relationship = false
+        const relationship = schema?.relationships?.[props.field]
 
         hatchifyColumns.push(
           getHatchifyDisplay({
@@ -94,10 +89,9 @@ export function getColumns(
             isRelationship: relationship !== undefined,
             label: props.label || null,
             attribute: props.field,
-            attributeSchema: schema.attributes?.[props.field].control,
-            // attributeSchema: relationship
-            //   ? null
-            //   : schema.attributes?.[props.field],
+            attributeSchema: relationship
+              ? null
+              : schema.attributes?.[props.field].control,
             renderValue: props.renderValue,
             ValueComponent: props.ValueComponent,
             defaultValueComponents: valueComponents,

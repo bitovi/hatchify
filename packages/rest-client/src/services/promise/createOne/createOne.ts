@@ -23,11 +23,11 @@ export const createOne = async <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   data: Omit<CreateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">,
-): Promise<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>> => {
+): Promise<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
@@ -37,12 +37,14 @@ export const createOne = async <
     attributes: serializeClientPropertyValuesForRequest(
       allSchemas,
       schemaName,
-      data,
-    ),
+      data.attributes,
+    ) as CreateType<GetSchemaFromName<TSchemas, TSchemaName>>["attributes"],
+    // does not need to be serialized! only ids, does not contain attribute values
+    relationships: data.relationships,
   })
 
   notifySubscribers()
 
-  // @ts-expect-error return from `flattenResourcesIntoRecords` needs to be `RecordType`
+  // @ts-expect-error todo HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
   return flattenResourcesIntoRecords(allSchemas, resources, schemaName)[0]
 }

@@ -94,7 +94,8 @@ export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
 
 export function hatchifyReact<
   const TSchemas extends Record<string, PartialSchema>,
->(restClient: RestClient<TSchemas>): HatchifyApp<TSchemas> {
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(restClient: RestClient<TSchemas, TSchemaName>): HatchifyApp<TSchemas> {
   const { completeSchemaMap: partialSchemas } = restClient
   const finalSchemas = assembler(partialSchemas)
   const reactRest = hatchifyReactRest(restClient)

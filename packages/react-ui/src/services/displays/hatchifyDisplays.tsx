@@ -116,8 +116,10 @@ export function getDisplaysFromSchema(
   defaultValueComponents: DefaultValueComponentsTypes,
   valueComponents: { [attribute: string]: ValueComponent } | null,
 ): HatchifyDisplay[] {
-  const attributesDisplays = Object.entries(schema.attributes).map(
-    ([key, value]) => {
+  const attributesDisplays = Object.entries(schema.attributes)
+    // todo: filtering should not rely on UUID type because it may still be an attribute
+    .filter(([, value]) => value.orm.sequelize.type !== "UUID")
+    .map(([key, value]) => {
       return getHatchifyDisplay({
         sortable: true,
         attribute: key,
@@ -125,16 +127,17 @@ export function getDisplaysFromSchema(
         valueComponents,
         defaultValueComponents,
       })
-    },
-  )
+    })
 
-  // todo: relationships not implemented in v2 yet
+  // table does not need to show many relationships by default at the moment
   // const manyRelationshipDisplays = Object.entries(schema?.relationships || {})
   //   .filter(([key, relationship]) => {
-  //     return relationship.type === "many"
+  //     return (
+  //       relationship.type === "hasMany" ||
+  //       relationship.type === "hasManyThrough"
+  //     )
   //   })
   //   .map(([key, relationship]) => {
-  //     // related schema = schema[relationship.schema]
   //     return getHatchifyDisplay({
   //       isRelationship: true,
   //       attribute: key,
@@ -145,27 +148,26 @@ export function getDisplaysFromSchema(
   //     })
   //   })
 
-  // todo: relationships not implemented in v2 yet
-  // const oneRelationshipDisplays = Object.entries(schema?.relationships || {})
-  //   .filter(([key, relationship]) => {
-  //     return relationship.type === "one"
-  //   })
-  //   .map(([key, relationship]) => {
-  //     // related schema = schema[relationship.schema]
-  //     return getHatchifyDisplay({
-  //       isRelationship: true,
-  //       attribute: key,
-  //       label: key,
-  //       attributeSchema: null, // the schema in this case is a "relationship"
-  //       valueComponents,
-  //       defaultValueComponents,
-  //     })
-  //   })
+  const oneRelationshipDisplays = Object.entries(schema?.relationships || {})
+    .filter(([key, relationship]) => {
+      return relationship.type === "belongsTo" || relationship.type === "hasOne"
+    })
+    .map(([key, relationship]) => {
+      // related schema = schema[relationship.schema]
+      return getHatchifyDisplay({
+        isRelationship: true,
+        attribute: key,
+        label: key,
+        attributeSchema: null, // the schema in this case is a "relationship"
+        valueComponents,
+        defaultValueComponents,
+      })
+    })
 
   return [
     ...attributesDisplays,
     // ...manyRelationshipDisplays,
-    // ...oneRelationshipDisplays,
+    ...oneRelationshipDisplays,
   ]
 }
 

@@ -21,12 +21,12 @@ export const findOne = async <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryOne | string,
 ): Promise<
-  RecordType<GetSchemaFromName<TSchemas, TSchemaName>> | undefined
+  RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>> | undefined
 > => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
@@ -40,7 +40,7 @@ export const findOne = async <
     updatedQuery,
   )
 
-  // @ts-expect-error return from `flattenResourcesIntoRecords` needs to be `RecordType`
+  // @ts-expect-error todo HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
   return flattenResourcesIntoRecords(
     allSchemas,
     resources,

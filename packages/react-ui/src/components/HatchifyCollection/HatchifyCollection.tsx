@@ -42,8 +42,7 @@ function HatchifyCollection<
   baseFilter,
 }: HatchifyCollectionProps<TSchemas, TSchemaName>): JSX.Element {
   const { Collection } = useHatchifyPresentation()
-  // todo: relationships not implemented in v2 yet
-  // const defaultInclude = getDefaultInclude(allSchemas, schemaName)
+  const defaultInclude = getDefaultInclude(finalSchemas, schemaName as string)
 
   const collectionState = useCollectionState(
     finalSchemas,
@@ -53,7 +52,7 @@ function HatchifyCollection<
     {
       defaultSelected,
       onSelectedChange,
-      // include: defaultInclude,
+      include: defaultInclude,
       defaultPage,
       defaultSort,
       baseFilter,
@@ -65,8 +64,8 @@ function HatchifyCollection<
 
 export default HatchifyCollection
 
-// function getDefaultInclude(allSchemas: Schemas, schemaName: string) {
-//   return Object.entries(allSchemas[schemaName]?.relationships || [])
-//     .filter(([_, value]) => value.type === "one")
-//     .map(([key, _]) => key)
-// }
+function getDefaultInclude(allSchemas: FinalSchemas, schemaName: string) {
+  return Object.entries(allSchemas[schemaName]?.relationships || [])
+    .filter(([_, value]) => ["belongsTo", "hasOne"].includes(value.type))
+    .map(([key, _]) => key)
+}

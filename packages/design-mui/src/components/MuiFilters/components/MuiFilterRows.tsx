@@ -1,7 +1,4 @@
-import type {
-  PartialAttributeRecord,
-  FinalAttributeRecord,
-} from "@hatchifyjs/core"
+import type { FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FilterArray, FinalSchemas } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
@@ -71,7 +68,6 @@ const operatorOptions: OperatorOption = {
 
 export const MuiFilterRows: React.FC<{
   // todo: stricter typing
-  attributes: PartialAttributeRecord
   fields: string[]
   filters: FilterArray
   finalSchemas: FinalSchemas
@@ -79,7 +75,6 @@ export const MuiFilterRows: React.FC<{
   setFilters: (filters: FilterArray) => void
   removeFilter: (index: number) => void
 }> = ({
-  attributes,
   finalSchemas,
   fields,
   filters,
@@ -92,7 +87,7 @@ export const MuiFilterRows: React.FC<{
 
     // modifying column select
     if (field === "field") {
-      //Get correct attributes for comparison
+      // Get correct attributes for comparison
       const { baseAttributes: newAttributes, baseField: newField } =
         getFieldAndAttributes(finalSchemas, value, schemaName)
       const { baseAttributes: currentAttributes, baseField: currentField } =
@@ -135,56 +130,6 @@ export const MuiFilterRows: React.FC<{
 
   return (
     <Grid container spacing={1} alignItems="center" justifyContent="center">
-      {/* {filters.map((filter, index) => (
-        <Fragment key={index}>
-          <Grid item xs={1}>
-            <IconButton aria-label="close" onClick={() => removeFilter(index)}>
-              <CloseIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={3}>
-            <ColumnSelect
-              labelId={`${index}-column-label`}
-              value={filter.field}
-              fields={fields}
-              onChange={(value) =>
-                onChange({
-                  field: "field",
-                  value,
-                  index: index,
-                })
-              }
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <OperatorSelect
-              labelId={`${index}-operator-label`}
-              value={filter.operator}
-              options={getPossibleOptions(filter.field, attributes)}
-              onChange={(value) =>
-                onChange({
-                  field: "operator",
-                  value,
-                  index: index,
-                })
-              }
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <ValueInput
-              labelId={`${index}-value-label`}
-              fieldType={getFieldType(attributes, filter.field)}
-              value={filter.value}
-              operator={filter.operator}
-              onChange={(value: any) =>
-                onChange({ field: "value", value, index })
-              }
-              // todo: v2 schema only supports numbers, fix with enums (use finalSchema.attributes)
-              options={undefined}
-            />
-          </Grid>
-        </Fragment>
-      ))} */}
       {filters.map((filter, index) => {
         const { baseAttributes, baseField } = getFieldAndAttributes(
           finalSchemas,
@@ -232,6 +177,7 @@ export const MuiFilterRows: React.FC<{
             </Grid>
             <Grid item xs={4}>
               <ValueInput
+                data-testid="value-input"
                 labelId={`${index}-value-label`}
                 fieldType={getFieldType(baseAttributes, baseField)}
                 value={filter.value}
@@ -239,7 +185,13 @@ export const MuiFilterRows: React.FC<{
                 onChange={(value: any) =>
                   onChange({ field: "value", value, index })
                 }
-                options={baseAttributes[filter.field].control?.values || []}
+                options={
+                  // "values" in baseAttributes[filter.field].control
+                  // ? baseAttributes[filter.field].control?.values
+                  "values" in baseAttributes[baseField].control
+                    ? baseAttributes[baseField].control?.values
+                    : []
+                }
               />
             </Grid>
           </Fragment>

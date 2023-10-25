@@ -23,13 +23,16 @@ export const findAll = async <
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  dataSource: RestClient<TSchemas>,
+  dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryList,
   baseFilter?: Filters,
 ): Promise<
-  [Array<RecordType<GetSchemaFromName<TSchemas, TSchemaName>>>, RequestMetaData]
+  [
+    Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,
+    RequestMetaData,
+  ]
 > => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
@@ -43,7 +46,7 @@ export const findAll = async <
   )
 
   return [
-    // @ts-expect-error return from `flattenResourcesIntoRecords` needs to be `RecordType`
+    // @ts-expect-error todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
     flattenResourcesIntoRecords(allSchemas, resources, schemaName),
     requestMetaData,
   ]

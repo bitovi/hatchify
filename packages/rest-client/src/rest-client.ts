@@ -1,7 +1,6 @@
 export type {
   Attribute,
   AttributeObject,
-  CreateData,
   CreateType,
   EnumObject,
   Fields,
@@ -13,10 +12,10 @@ export type {
   GetSchemaNames,
   FiltersObject,
   Include,
-  RestClientCreateData,
-  RestClientUpdateData,
   Meta,
   MetaError,
+  MutateRelationship,
+  MutateRelationships,
   PaginationObject,
   QueryList,
   QueryOne,
@@ -36,7 +35,6 @@ export type {
   SourceSchema,
   Subscription,
   Unsubscribe,
-  UpdateData,
   UpdateType,
 } from "./services"
 
@@ -50,14 +48,10 @@ export {
   getMeta,
   getRecords,
   getStore,
-  isSchemaV2,
-  isSchemasV2,
   keyResourcesById,
   schemaNameIsString,
   SchemaNameNotStringError,
-  schemaNameWithNamespace,
   subscribeToAll,
   subscribeToOne,
-  transformSchema,
   updateOne,
 } from "./services"

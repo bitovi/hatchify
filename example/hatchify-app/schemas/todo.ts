@@ -1,5 +1,6 @@
 import {
   PartialSchema,
+  belongsTo,
   // belongsTo,
   dateonly,
   datetime,
@@ -12,13 +13,13 @@ export const Todo = {
   name: "Todo",
   // namespace: "Admin",
   attributes: {
-    name: string(),
+    title: string(),
     dueDate: datetime(),
     importance: integer(),
     completedDate: dateonly(),
     // status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
   },
-  // relationships: {
-  //   user: belongsTo("User"),
-  // },
+  relationships: {
+    user: belongsTo("User"),
+  },
 } satisfies PartialSchema

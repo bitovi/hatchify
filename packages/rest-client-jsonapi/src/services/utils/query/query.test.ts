@@ -8,47 +8,40 @@ import {
   pageToQueryParam,
   sortToQueryParam,
 } from "./query"
-import { assembler, integer, string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
+import {
+  assembler,
+  belongsTo,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 
 describe("rest-client-jsonapi/services/utils/query", () => {
   const partialSchemas = {
     Book: {
       name: "Book",
-      // displayAttribute: "title",
       attributes: {
         title: string(),
         year: integer(),
         date: string(),
       },
-      // relationships: {
-      //   author: {
-      //     type: "one",
-      //     schema: "Person",
-      //   },
-      //   illustrators: {
-      //     type: "many",
-      //     schema: "Person",
-      //   },
-      // },
-    },
+      relationships: {
+        author: belongsTo("Person"),
+        illustrators: hasMany("Person"),
+      },
+    } satisfies PartialSchema,
     Person: {
       name: "Person",
-      // displayAttribute: "name",
       attributes: {
         name: string(),
         rating: integer(),
       },
-      // relationships: {
-      //   authored: {
-      //     type: "many",
-      //     schema: "Book",
-      //   },
-      //   illustrated: {
-      //     type: "many",
-      //     schema: "Book",
-      //   },
-      // },
-    },
+      relationships: {
+        authored: hasMany("Book"),
+        illustrated: hasMany("Book"),
+      },
+    } satisfies PartialSchema,
   }
   const schemaMap = {
     Book: { type: "book_type", ...partialSchemas["Book"] },
