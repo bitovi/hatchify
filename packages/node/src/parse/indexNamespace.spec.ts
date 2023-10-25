@@ -77,6 +77,7 @@ describe("indexNamespace", () => {
           include: [{ association: "lipitorUser", include: [] }],
           limit: 5,
           offset: 10,
+          subQuery: false,
           where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
@@ -140,6 +141,7 @@ describe("indexNamespace", () => {
           include: [{ association: "xanaxUser", include: [] }],
           limit: 5,
           offset: 10,
+          subQuery: false,
           where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
@@ -208,6 +210,7 @@ describe("indexNamespace", () => {
           include: [{ association: "xanaxUser", include: [] }],
           limit: 5,
           offset: 10,
+          subQuery: false,
           where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
@@ -332,6 +335,7 @@ describe("indexNamespace", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
+          subQuery: false,
           where: { name: { [Op.eq]: "laundry" } },
         })
       })
@@ -352,6 +356,7 @@ describe("indexNamespace", () => {
           where: { id: 1 },
           limit: 10,
           offset: 0,
+          subQuery: false,
         })
       })
 
@@ -430,6 +435,7 @@ describe("indexNamespace", () => {
         include: [{ association: "xanaxUser", include: [] }],
         limit: 5,
         offset: 10,
+        subQuery: false,
         where: { "$Pfizer_Todo.name$": { [Op.eq]: "laundry" } },
       })
     })

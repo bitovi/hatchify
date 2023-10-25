@@ -63,6 +63,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
+          subQuery: false,
           where: { "$Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
@@ -124,6 +125,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
+          subQuery: false,
           where: { "$Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
@@ -192,6 +194,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
+          subQuery: false,
           where: { "$Todo.name$": { [Op.eq]: "laundry" } },
         })
       })
@@ -314,6 +317,7 @@ describe("index", () => {
           include: [{ association: "user", include: [] }],
           limit: 5,
           offset: 10,
+          subQuery: false,
           where: { name: { [Op.eq]: "laundry" } },
         })
       })
@@ -334,6 +338,7 @@ describe("index", () => {
           where: { id: 1 },
           limit: 10,
           offset: 0,
+          subQuery: false,
         })
       })
 
@@ -412,6 +417,7 @@ describe("index", () => {
         include: [{ association: "user", include: [] }],
         limit: 5,
         offset: 10,
+        subQuery: false,
         where: { "$Todo.name$": { [Op.eq]: "laundry" } },
       })
     })
