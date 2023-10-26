@@ -1,12 +1,12 @@
 import { UUID_REGEX } from "./constants"
-import type { PartialUuidProps } from "./types"
-import type { PartialStringControlType } from "../string"
+import type { PartialUuidControlType, PartialUuidProps } from "./types"
 
 export function getPartialControl<TRequired extends boolean>(
   props?: PartialUuidProps<TRequired>,
-): PartialStringControlType<TRequired> {
+): PartialUuidControlType<TRequired> {
   return {
     type: "String",
+    references: props?.references ?? null,
     allowNull: props?.required == null ? props?.required : !props.required,
     allowNullInfer: (props?.required == null
       ? props?.required

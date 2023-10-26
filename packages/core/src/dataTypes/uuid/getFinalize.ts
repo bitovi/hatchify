@@ -1,25 +1,28 @@
 import { finalizeOrm } from "./finalizeOrm"
-import type { FinalUuidORM, PartialUuidORM } from "./types"
+import type {
+  FinalUuidORM,
+  PartialUuidORM,
+  PartialUuidControlType,
+} from "./types"
 import { HatchifyCoerceError } from "../../types"
 import type {
   FinalAttribute,
   PartialAttribute,
   ValueInRequest,
 } from "../../types"
-import type { PartialStringControlType } from "../string"
 import { coerce } from "../string/coerce"
-import { finalizeControl } from "../string/finalizeControl"
+import { finalizeControl } from "./finalizeControl"
 
 export function getFinalize(
   props: PartialAttribute<
     PartialUuidORM,
-    Omit<PartialStringControlType<boolean>, "allowNullInfer">,
+    Omit<PartialUuidControlType<boolean>, "allowNullInfer">,
     string,
     FinalUuidORM
   >,
 ): FinalAttribute<
   PartialUuidORM,
-  Omit<PartialStringControlType<boolean>, "allowNullInfer">,
+  Omit<PartialUuidControlType<boolean>, "allowNullInfer">,
   string,
   FinalUuidORM
 > {

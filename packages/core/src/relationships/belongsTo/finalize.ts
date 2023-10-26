@@ -29,9 +29,14 @@ export function finalize(
       ...schemas[sourceSchema],
       attributes: {
         ...schemas[sourceSchema].attributes,
-        [sourceAttribute]:
-          schemas[sourceSchema].attributes[sourceAttribute] ??
-          uuid().finalize(),
+        [sourceAttribute]: {
+          ...(schemas[sourceSchema].attributes[sourceAttribute] ??
+            uuid({ references: targetSchema }).finalize()),
+          control: {
+            ...schemas[sourceSchema].attributes[sourceAttribute]?.control,
+            references: targetSchema,
+          },
+        },
       },
       relationships: {
         ...schemas[sourceSchema].relationships,

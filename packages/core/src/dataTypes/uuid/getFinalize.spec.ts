@@ -7,6 +7,7 @@ describe("getFinalize", () => {
     expect(uuid()).toEqual({
       name: "uuid()",
       control: {
+        references: null,
         allowNull: undefined,
         max: 36,
         min: 36,

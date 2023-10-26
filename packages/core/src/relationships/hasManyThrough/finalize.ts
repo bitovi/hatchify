@@ -58,8 +58,14 @@ export function finalize(
       name: through,
       id: getDefaultPrimaryAttribute().finalize(),
       attributes: {
-        [throughSourceAttribute]: uuid({ required: true }).finalize(),
-        [throughTargetAttribute]: uuid({ required: true }).finalize(),
+        [throughSourceAttribute]: uuid({
+          required: true,
+          references: targetSchema,
+        }).finalize(),
+        [throughTargetAttribute]: uuid({
+          required: true,
+          references: targetSchema,
+        }).finalize(),
       },
     },
   }

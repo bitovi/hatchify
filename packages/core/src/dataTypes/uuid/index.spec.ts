@@ -19,6 +19,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          references: null,
           allowNull: undefined,
           min: 36,
           max: 36,
@@ -89,6 +90,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          references: null,
           allowNull: true,
           min: 36,
           max: 36,
@@ -118,6 +120,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          references: null,
           allowNull: false,
           allowNullInfer: false,
           min: 36,
@@ -199,6 +202,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          references: null,
           allowNull: false,
           min: 36,
           max: 36,
@@ -228,6 +232,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          references: null,
           allowNull: undefined,
           min: 36,
           max: 36,
@@ -308,6 +313,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          references: null,
           allowNull: false,
           min: 36,
           max: 36,

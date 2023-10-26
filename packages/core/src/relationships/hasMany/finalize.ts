@@ -41,7 +41,8 @@ export function finalize(
   const attributes: FinalAttributeRecord = {
     ...schemas[targetSchema].attributes,
     [targetAttribute]:
-      schemas[targetSchema].attributes[targetAttribute] ?? uuid().finalize(),
+      schemas[targetSchema].attributes[targetAttribute] ??
+      uuid({ references: targetSchema }).finalize(),
   }
 
   return {

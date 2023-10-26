@@ -18,6 +18,7 @@ describe("finalizeSchema", () => {
       id: {
         name: 'uuid({"required":true})',
         control: {
+          references: null,
           allowNull: false,
           max: 36,
           min: 36,
