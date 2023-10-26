@@ -26,6 +26,9 @@ export function finalize(
   const targetAttribute =
     relationship.targetAttribute ?? `${pascalCaseToCamelCase(sourceSchema)}Id`
   const sourceAttribute = relationship.sourceAttribute ?? "id"
+  const targetAttributeValue =
+    schemas[targetSchema].attributes[targetAttribute] ??
+    uuid({ references: sourceSchema }).finalize()
 
   const relationships: Record<string, PartialRelationship | FinalRelationship> =
     {
@@ -40,9 +43,7 @@ export function finalize(
 
   const attributes: FinalAttributeRecord = {
     ...schemas[targetSchema].attributes,
-    [targetAttribute]:
-      schemas[targetSchema].attributes[targetAttribute] ??
-      uuid({ references: targetSchema }).finalize(),
+    [targetAttribute]: targetAttributeValue,
   }
 
   return {

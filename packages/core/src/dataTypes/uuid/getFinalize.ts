@@ -1,8 +1,9 @@
+import { finalizeControl } from "./finalizeControl"
 import { finalizeOrm } from "./finalizeOrm"
 import type {
   FinalUuidORM,
-  PartialUuidORM,
   PartialUuidControlType,
+  PartialUuidORM,
 } from "./types"
 import { HatchifyCoerceError } from "../../types"
 import type {
@@ -11,7 +12,6 @@ import type {
   ValueInRequest,
 } from "../../types"
 import { coerce } from "../string/coerce"
-import { finalizeControl } from "./finalizeControl"
 
 export function getFinalize(
   props: PartialAttribute<

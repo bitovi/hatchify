@@ -35,6 +35,7 @@ describe("finalize", () => {
       schemas,
     )
 
+    expect(Todo.attributes.userId.control.references).toEqual("User")
     expect(Todo.relationships?.user).toEqual({
       type: "belongsTo",
       targetSchema: "User",
@@ -80,6 +81,7 @@ describe("finalize", () => {
     )
 
     expect(User.attributes.managerId).toBeDefined()
+    expect(User.attributes.managerId.control.references).toEqual("User")
 
     expect(User.relationships?.manager).toEqual({
       type: "belongsTo",

@@ -2,7 +2,7 @@ import type {
   PartialDataTypeProps,
   PartialSequelizeDataType,
 } from "../../types"
-import { PartialStringControlType } from "../string"
+import type { PartialStringControlType } from "../string"
 
 export type PartialUuidProps<TRequired extends boolean> = PartialDataTypeProps<
   string,

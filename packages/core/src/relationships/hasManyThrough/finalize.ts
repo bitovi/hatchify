@@ -60,7 +60,7 @@ export function finalize(
       attributes: {
         [throughSourceAttribute]: uuid({
           required: true,
-          references: targetSchema,
+          references: sourceSchema,
         }).finalize(),
         [throughTargetAttribute]: uuid({
           required: true,

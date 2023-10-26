@@ -186,8 +186,8 @@ describe("finalizeRelationships", () => {
           name: "TodoUser",
           id: getDefaultPrimaryAttribute().finalize(),
           attributes: {
-            userId: uuid({ required: true }).finalize(),
-            todoId: uuid({ required: true }).finalize(),
+            userId: uuid({ required: true, references: "User" }).finalize(),
+            todoId: uuid({ required: true, references: "Todo" }).finalize(),
           },
         },
       }),
@@ -248,7 +248,6 @@ describe("finalizeRelationships", () => {
           ...schemas.User,
           attributes: {
             ...schemas.User.attributes,
-            todoId: uuid({ references: "Todo" }).finalize(),
           },
           relationships: {
             ...schemas.User.relationships,

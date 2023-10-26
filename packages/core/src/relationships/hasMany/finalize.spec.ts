@@ -23,7 +23,7 @@ describe("finalize", () => {
   }
 
   it("populates targetSchema and targetAttribute", () => {
-    const { User } = finalize(
+    const { User, Todo } = finalize(
       "User",
       {
         type: "hasMany",
@@ -36,6 +36,7 @@ describe("finalize", () => {
       schemas,
     )
 
+    expect(Todo.attributes.userId.control.references).toEqual("User")
     expect(User.relationships?.todos).toEqual({
       type: "hasMany",
       targetSchema: "Todo",
@@ -83,6 +84,7 @@ describe("finalize", () => {
     )
 
     expect(User.attributes.managerId).toBeDefined()
+    expect(User.attributes.managerId.control.references).toEqual("User")
 
     expect(User.relationships?.employees).toEqual({
       type: "hasMany",
