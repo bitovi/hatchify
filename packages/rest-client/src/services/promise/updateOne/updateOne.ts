@@ -35,7 +35,6 @@ export const updateOne = async <
     throw new SchemaNameNotStringError(schemaName)
   }
 
-  console.log("rest-client.updateOne.data", data)
   const resources = await dataSource.updateOne(allSchemas, schemaName, {
     __schema: schemaName,
     id: data.id,

@@ -299,8 +299,9 @@ describe("components/MuiFilterRows", () => {
         />,
       )
 
-      const dropdowns = screen.getAllByRole("button")
-      await userEvent.click(dropdowns[2])
+      const dropdownContainer = screen.getByTestId("operator-select")
+      const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+      await userEvent.click(dropdown as any)
 
       const emptySelection = screen.queryByText("starts with")
       expect(emptySelection).toBeTruthy()

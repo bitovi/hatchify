@@ -1,3 +1,4 @@
+// @todo HATCH-417
 export interface PartialHasOneRelationship<
   TTargetSchema extends string | undefined | null,
 > {

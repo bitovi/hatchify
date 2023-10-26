@@ -15,12 +15,13 @@ import type {
   PartialHasOneRelationship,
 } from "./hasOne/types"
 
+// @todo HATCH-417
 export type PartialRelationship =
-  // @ts-expect-error @todo HATCH-417
+  // @ts-expect-error
   | PartialBelongsToRelationship
-  // @ts-expect-error @todo HATCH-417
+  // @ts-expect-error
   | PartialHasManyRelationship
-  // @ts-expect-error @todo HATCH-417
+  // @ts-expect-error
   | PartialHasOneRelationship
   | PartialHasManyThroughRelationship
 

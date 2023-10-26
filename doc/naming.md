@@ -8,6 +8,7 @@ This guide explains the relationship between names in the schema and the resulti
 - [Schema Naming](#schema-naming)
   * [Schema.name](#schemaname)
   * [Schema.pluralName](#schemapluralname)
+  * [Schema.namespace](#schemanamespace-postgres-only)
   * [Schema.attributes.ATTRIBUTE_NAME](#schemaattributesattribute_name)
   * [relationships.belongsTo](#relationshipsbelongsto)
   * [relationships.belongsTo.foreignKey](#relationshipsbelongstoforeignkey)
@@ -98,6 +99,41 @@ const SalesPerson = {
 **API Implications**
 
 - Create a `/sales-people` API.
+
+### Schema.namespace `postgres-only`
+Set namespace when using Postgres to set use [Postgres Schema](https://www.postgresql.org/docs/current/ddl-schemas.html) which are like a namespace for tables. The namespace must be written as Singular PascalCase as follows:
+
+```
+const AcmeCorp_SalesPerson = {
+  name: "SalesPerson",
+  namespace: "AcmeCorp", //👀
+  attributes: { ... }
+}
+```
+
+**Database Implications**
+
+- Creates a table sales_person in the Postgres schema acme_corp
+
+**API Impliciations**
+
+- This will create an acme-corp/sales-persons API
+- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: GET /acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
+- Data will be returned like:
+  ```
+  {
+    data: {
+      type: "AcmeCorp_SalesPerson",  // same as in "included"
+      id: "....",
+      attributes: { .... }
+    }
+  }
+  ```
+
+**Returned Models Implications**
+
+hatchifyKoa({AcmeCorp_SalesPerson}) returns models.AcmeCorp_SalesPerson
+
 
 ### Schema.attributes.ATTRIBUTE_NAME
 

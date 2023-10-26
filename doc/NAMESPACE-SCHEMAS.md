@@ -1,140 +1,157 @@
-# Using Namespace Schemas with Postgres
+# Schema Namespacing with Postgres
 
-This guide explains how to use Hatchify `namespace` property to create Postgres schemas.
+Postgres supports “schemas” which act like namespaces for tables.  You can configure the [namespace](naming.md#schemanamespace-postgres-only) setting of a Hatchify schema to set a Postgres schema. If this is confusing, the following might clarify:
 
-## Define models with namespaces
+In Hatchify:
 
-To add a schema to a namespace, a key called `namespace` shoud be added to a schema definition, with a string value following PascalCase convention for example `AstraZeneca`.
+- A `schema` is a type definition like `const User = {name: "user", attributes: { ... }}`
+- A `namespace` is a grouping of schemas (and tables).
 
-```javaScript
-User = {
-  name:  "User",
-  namespace:  "AstraZeneca",
+In Postgres:
+
+- A `schema` is a grouping of tables.
+
+Sometimes, you want to have multiple tables named the same thing in different domains. Hatchify namespaces can solve this.
+
+The following extends from the [Using Postgres](next-steps/using-postgres-db.md) guide to have `Todo`’s reference a `User`, who created the todo, and a `Engineering_User` who is someone who can actually get stuff done. 
+
+- Update schemas/schemas.ts as follows:
+
+```
+export const Todo: PartialSchema = {
+  name: "Todo",
   attributes: {
-    name:  string(),
-    lastname:  string(),
-  }
+    name: string({ required: true }),
+    dueDate: datetime(),
+    importance: integer({min: 6}),
+    complete: boolean({ default: false }),
+  },
+  relationships: {
+    user: belongsTo(),
+    assignee: belongsTo("Engineering_User")
+  },
+}
+
+export const User: PartialSchema = {
+  name: "User",
+  attributes: {
+    name: string({ required: true }),
+  },
+  relationships: {
+    todos: hasMany(),
+  },
+}
+
+export const Engineering_User: PartialSchema = {
+  name: "User",
+  namespace: "Engineering",
+  attributes: {
+    name: string({ required: true }),
+  },
+  relationships: {
+    todos: hasMany("Todo",{targetAttribute: "assigneeId"}),
+  },
 }
 ```
 
-For example, to create 2 namespaces **AstraZeneca** and **Pfizer** with each having a **User** and a **Todo** Models, all we have to do is add `namespace` property to each model schema.
+- Import and pass all schemas to hatchifyKoa
 
-By default if the `namespace` is not given, it will default to `public` namespace.
+```
+import { Todo, User, Engineering_User } from "../schemas/schemas"
 
-```javaScript
-const Schemas = {
-  // AstraZeneca namespace schemas
-  "AstraZeneca_User": {
-    name: "User",
-    namespace: "AstraZeneca",
-    attributes: {
-      name: string(),
-      // attributes here
-    }
-  }
-  "AstraZeneca_Todo": {
-    name: "Todo",
-    namespace: "AstraZeneca",
-    attributes: {
-      title: string(),
-      // attributes here
-    }
+const app = new Koa()
+const hatchedKoa = hatchifyKoa(
+  { Todo, User, Engineering_User },
+  {
+    prefix: "/api",
+    database: { ... },
   },
-
-// Pfizer schemas, could be put in their own file
-  "Pfizer_User": {
-    name: "User",
-    namespace: "Pfizer",
-    attributes: {
-      name: STRING,
-      // attributes here
-    }
-  },
-  "Bar_Todo": {
-    name: "Todo",
-    namespace: "Pfizer",
-    attributes: {
-      title: string(),
-      // attributes here
-    },
-    relationships: {
-      user: belongsTo("User")
-    },
-  }
-}
-
-//...
-
-const hatchedKoa = hatchifyKoa(Object.values(Schemas), {
-    prefix: `/api/`,
-  })
+)
 ```
 
-**Database Implications**
-
-- Creates `AstraZeneca_user`, `AstraZeneca_todo`, `pfizer_user`, and `pfizer_todo` tables with their related columns coming from `attributes` keys like `name` and `title`.
-
-**API implications**
-
-To call the created API end-point remember the Service URL path names are `kebab-case`. (Ex: `/astra-zeneca`)
-
-_Note: Query parameters are `camelCase`._
+- Make some requests to seed data:
 
 ```
-GET /api/[namespace-name]/[schema]
-```
-
-In our example, to get all Users of _**AstraZeneca**_ we do:
-
-```
-GET /api/astra-zeneca/users
-```
-
-To include fields we can do:
-
-```
-GET /api/astra-zeneca/todos?fields[AstraZeneca_Todo]=title
-```
-
-_Note: When refering to fields that belongs to the same namespace we could omit that namespace like:_
-
-```
-GET /api/astra-zeneca/todos?fields[Todo]=title
-```
-
-**Returned values**
-
-An example call like the following:
-
-```
-GET api/astra-zeneca/todos HTTP/1.1
-Accept: application/vnd.api+json
-```
-
-Should return:
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/vnd.api+json
-
-{
-  "links": {
-    "self": "http://example.com/api/astra-zeneca/todos"
-  },
-  "data": [{
-    "type": "todos",
-    "namespace": "AstraZeneca",
-    "id": "1",
+curl 'http://localhost:3000/api/engineering/users' \
+--header 'Content-Type: application/vnd.api+json' \
+--data '{
+  "data": {
+    "type": "Engineering_User",
+    "id": "eeeeeeee-eeee-eeee-eeee-000000000001",
     "attributes": {
-      "title": "Call supply"
+      "name": "Engine Nerd"
     }
-  }, {
-    "type": "todos",
-    "namespace": "AstraZeneca",
-    "id": "2",
+  }
+}'
+
+curl 'http://localhost:3000/api/users' \
+--header 'Content-Type: application/vnd.api+json' \
+--data '{
+  "data": {
+    "type": "User",
+    "id": "bbbbbbbb-bbbb-bbbb-bbbb-000000000010",
     "attributes": {
-      "title": "Check Emails"
+      "name": "Normal User"
     }
-  }]
-}
+  }
+}'
+
+
+curl 'http://localhost:3000/api/todos' \
+--header 'Content-Type: application/vnd.api+json' \
+--data '{
+  "data": {
+    "type": "Todo",
+    "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000010",
+    "attributes": {
+      "name": "Walk the dog",
+      "dueDate": "2024-12-12",
+      "importance": 6
+    },
+    "relationships" : {
+      "user": {
+        "data": {
+          { "type": "User", "id": "bbbbbbbb-bbbb-bbbb-bbbb-000000000010" }
+        }
+      },
+      "assignee": {
+        "data": {
+          { "type": "Engineering_User", "id": "eeeeeeee-eeee-eeee-eeee-000000000001" }
+        }
+      }
+    }
+  }
+}'
 ```
+ 
+- Update the frontend/App.tsx to view the people assigned to the employee:
+
+```
+// hatchify-app/frontend/App.tsx
+import { v2ToV1 } from "@hatchifyjs/core"
+import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
+import { Todo, User, Engineering_User } from "../schemas"
+
+export const hatchedReact = hatchifyReact(
+  v2ToV1({ Todo, User, Engineering_User }),
+  createJsonapiClient("http://localhost:3000/api", {
+    Todo: { endpoint: "todos" },
+    User: { endpoint: "users" },
+    Engineering_User: {endpoint: "engineering-user"}
+  }),
+)
+
+const TodoList = hatchedReact.components.Todo.Collection
+
+const App: React.FC = () => {
+  return (
+    <MuiProvider>
+      <TodoList />
+    </MuiProvider>
+  )
+}
+
+export default App
+```
+
+- Check to make sure your data got loaded correctly.  It should be visible in the grid.

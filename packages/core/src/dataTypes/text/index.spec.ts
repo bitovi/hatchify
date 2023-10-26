@@ -30,10 +30,41 @@ describe("text", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.("name")).toBe("name")
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() => setClientPropertyValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.("name")).toBe("name")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.("name")).toBe("name")
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.("name")).toBe("name")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.("name")).toBe("name")
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
@@ -64,6 +95,7 @@ describe("text", () => {
             type: "TEXT",
             allowNull: true,
             primaryKey: false,
+            unique: false,
             defaultValue: null,
           },
         },
@@ -76,6 +108,11 @@ describe("text", () => {
           default: null,
           regex: /(.*?)/,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -111,10 +148,47 @@ describe("text", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.("name")).toBe("name")
+      expect(() => setClientPropertyValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientPropertyValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.("name")).toBe("name")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.("name")).toBe("name")
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.("name")).toBe("name")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.("name")).toBe("name")
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
@@ -155,6 +229,7 @@ describe("text", () => {
             type: "TEXT",
             allowNull: false,
             primaryKey: false,
+            unique: false,
             defaultValue: null,
           },
         },
@@ -167,6 +242,11 @@ describe("text", () => {
           default: null,
           regex: /(.*?)/,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -201,12 +281,47 @@ describe("text", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
 
-      // todo: HATCH-347
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.("name")).toBe("name")
+      expect(() => setClientPropertyValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientPropertyValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.("name")).toBe("name")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.("name")).toBe("name")
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.("name")).toBe("name")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.("name")).toBe("name")
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
@@ -247,6 +362,7 @@ describe("text", () => {
             type: "TEXT",
             allowNull: false,
             primaryKey: true,
+            unique: true,
             defaultValue: null,
           },
         },
@@ -259,6 +375,11 @@ describe("text", () => {
           default: null,
           regex: /(.*?)/,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),

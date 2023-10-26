@@ -4,6 +4,7 @@ import { HatchifyInvalidSchemaError } from "../../types"
 import type { SemiFinalSchema } from "../../types"
 import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase"
 
+// @todo HATCH-417
 export function finalize(
   sourceSchema: string,
   relationship: PartialBelongsToRelationship<string | undefined | null>,

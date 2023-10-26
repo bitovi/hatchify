@@ -1,5 +1,6 @@
 import type { PartialBelongsToRelationship } from "./types"
 
+// @todo HATCH-417
 export function belongsTo<TTargetSchema extends string | undefined | null>(
   targetSchema?: TTargetSchema,
   props?: {
@@ -9,7 +10,7 @@ export function belongsTo<TTargetSchema extends string | undefined | null>(
 ): PartialBelongsToRelationship<TTargetSchema> {
   return {
     type: "belongsTo",
-    targetSchema: targetSchema as TTargetSchema,
+    targetSchema: (targetSchema ?? null) as TTargetSchema,
     sourceAttribute: props?.sourceAttribute ?? null,
     targetAttribute: props?.targetAttribute ?? null,
   }

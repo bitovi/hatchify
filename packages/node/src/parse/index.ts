@@ -40,75 +40,116 @@ export interface ParseFunctions {
 
 async function findAllImpl(
   hatchify: Hatchify,
-  model: FinalSchema,
+  schema: FinalSchema,
   querystring: string,
 ) {
-  const { data, errors } = buildFindOptions(hatchify, model, querystring)
+  const { data, errors } = buildFindOptions(hatchify, schema, querystring)
   if (errors.length) {
     throw errors
   }
-  validateFindOptions(data, model, hatchify)
+  validateFindOptions(data, schema, hatchify)
   return data
 }
 
 async function findOneImpl(
   hatchify: Hatchify,
-  model: FinalSchema,
+  schema: FinalSchema,
   querystring: string,
   id: Identifier,
 ) {
-  const { data, errors } = buildFindOptions(hatchify, model, querystring, id)
+  const { data, errors } = buildFindOptions(hatchify, schema, querystring, id)
   if (errors.length) {
     throw errors
   }
-  validateFindOptions(data, model, hatchify)
+  validateFindOptions(data, schema, hatchify)
   return data
 }
 
 async function findAndCountAllImpl(
   hatchify: Hatchify,
-  model: FinalSchema,
+  schema: FinalSchema,
   querystring: string,
 ) {
-  const { data, errors } = buildFindOptions(hatchify, model, querystring)
+  const { data, errors } = buildFindOptions(hatchify, schema, querystring)
   if (errors.length) {
     throw errors
   }
-  validateFindOptions(data, model, hatchify)
+  validateFindOptions(data, schema, hatchify)
   return data
+}
+
+function restoreId(targetKey: string, { id, ...rest }: any) {
+  return { ...rest, [targetKey]: id }
+}
+
+export function restoreIds<T extends FinalSchema = FinalSchema>(
+  schema: T,
+  parsedBody: any,
+): any {
+  return Object.entries(schema.relationships ?? {}).reduce(
+    (acc, [relationshipName, relationship]) => {
+      if (
+        "targetKey" in relationship &&
+        relationship.targetKey &&
+        relationship.targetKey !== "id"
+      ) {
+        if (Array.isArray(acc[relationshipName])) {
+          return {
+            ...acc,
+            [relationshipName]: acc[relationshipName].map((value: any) =>
+              restoreId(relationship.targetKey as string, value),
+            ),
+          }
+        }
+
+        if (acc[relationshipName].id) {
+          return {
+            ...acc,
+            [relationshipName]: restoreId(
+              relationship.targetKey,
+              acc[relationshipName],
+            ),
+          }
+        }
+      }
+
+      return acc
+    },
+    parsedBody,
+  )
 }
 
 async function createImpl<T extends FinalSchema = FinalSchema>(
   hatchify: Hatchify,
-  model: T,
+  schema: T,
   body: any,
 ) {
-  validateStructure(body, model, hatchify)
+  validateStructure(body, schema, hatchify)
   const parsedBody = await hatchify.serializer.deserialize(
-    getFullModelName(model),
+    getFullModelName(schema),
     body,
   )
 
   return {
-    body: parsedBody,
+    body: restoreIds(schema, parsedBody),
     ops: {},
   }
 }
 
 async function updateImpl(
   hatchify: Hatchify,
-  model: FinalSchema,
+  schema: FinalSchema,
   body: any,
   id?: Identifier,
 ) {
-  validateStructure(body, model, hatchify)
+  validateStructure(body, schema, hatchify)
   const parsedBody = await hatchify.serializer.deserialize(
-    getFullModelName(model),
+    getFullModelName(schema),
     body,
   )
 
   return {
-    body: parsedBody,
+    body: restoreIds(schema, parsedBody),
     ops: { where: id ? { id } : {} },
   }
 }
@@ -123,23 +164,23 @@ async function destroyImpl(querystring: string, id?: Identifier) {
 
 export function buildParserForModelStandalone(
   hatchify: Hatchify,
-  model: FinalSchema,
+  schema: FinalSchema,
 ): ParseFunctions {
   return {
-    findAll: async (querystring) => findAllImpl(hatchify, model, querystring),
+    findAll: async (querystring) => findAllImpl(hatchify, schema, querystring),
     findOne: async (querystring, id) =>
-      findOneImpl(hatchify, model, querystring, id),
+      findOneImpl(hatchify, schema, querystring, id),
     findAndCountAll: async (querystring) =>
-      findAndCountAllImpl(hatchify, model, querystring),
-    create: async (body) => createImpl(hatchify, model, body),
+      findAndCountAllImpl(hatchify, schema, querystring),
+    create: async (body) => createImpl(hatchify, schema, body),
     destroy: async (querystring, id) => destroyImpl(querystring, id),
-    update: async (body, id) => updateImpl(hatchify, model, body, id),
+    update: async (body, id) => updateImpl(hatchify, schema, body, id),
   }
 }
 
 export function buildParserForModel(
   hatchify: Hatchify,
-  modelName: string,
+  schemaName: string,
 ): ParseFunctions {
-  return buildParserForModelStandalone(hatchify, hatchify.schema[modelName])
+  return buildParserForModelStandalone(hatchify, hatchify.schema[schemaName])
 }
