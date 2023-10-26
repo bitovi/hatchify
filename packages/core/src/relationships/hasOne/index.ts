@@ -1,15 +1,16 @@
 import type { PartialHasOneRelationship } from "./types"
 
-export function hasOne(
-  targetSchema?: string,
+// @todo HATCH-417
+export function hasOne<TTargetSchema extends string | undefined>(
+  targetSchema?: TTargetSchema,
   props?: {
     targetAttribute: string
     sourceAttribute?: string
   },
-): PartialHasOneRelationship {
+): PartialHasOneRelationship<TTargetSchema> {
   return {
     type: "hasOne",
-    targetSchema: targetSchema ?? null,
+    targetSchema: (targetSchema ?? null) as TTargetSchema,
     targetAttribute: props?.targetAttribute ?? null,
     sourceAttribute: props?.sourceAttribute ?? null,
   }

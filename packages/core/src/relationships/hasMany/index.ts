@@ -1,18 +1,19 @@
 import type { PartialHasManyRelationship } from "./types"
 import { buildThrough } from "../hasManyThrough/buildThrough"
 
-export function hasMany(
-  schemaName?: string,
+// @todo HATCH-417
+export function hasMany<TTargetSchema extends string | undefined>(
+  schemaName?: TTargetSchema,
   props?: {
     targetAttribute: string
     sourceAttribute?: string
   },
-): PartialHasManyRelationship {
+): PartialHasManyRelationship<TTargetSchema> {
   const targetSchema = schemaName ?? null
 
   return {
     type: "hasMany",
-    targetSchema,
+    targetSchema: targetSchema as TTargetSchema,
     targetAttribute: props?.targetAttribute ?? null,
     sourceAttribute: props?.sourceAttribute ?? null,
     through: buildThrough(targetSchema),
