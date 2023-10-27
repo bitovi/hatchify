@@ -6,7 +6,6 @@ import CloseIcon from "@mui/icons-material/Close"
 import ColumnSelect from "./inputs/ColumnSelect"
 import OperatorSelect from "./inputs/OperatorSelect"
 import ValueInput from "./inputs/ValueInput"
-import capitalize from "lodash/capitalize"
 
 type ChangeParams =
   | {
@@ -255,10 +254,19 @@ export const getFieldAndAttributes = (
 ): { baseAttributes: FinalAttributeRecord; baseField: string } => {
   const baseField = field.includes(".") ? field.split(".")[1] : field
 
+  const getRelatedTargetSchema = () => {
+    const relatedField = field.split(".")[0]
+    const relations = finalSchemas[schemaName].relationships
+    if (relations && relations[relatedField]) {
+      return relations[relatedField].targetSchema
+    } else {
+      return relatedField
+    }
+  }
+
   const baseAttributes =
-    finalSchemas[
-      field.includes(".") ? capitalize(field.split(".")[0]) : schemaName
-    ].attributes
+    finalSchemas[field.includes(".") ? getRelatedTargetSchema() : schemaName]
+      .attributes
 
   return { baseAttributes, baseField }
 }

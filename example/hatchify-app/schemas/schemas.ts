@@ -10,19 +10,19 @@ import {
 } from "@hatchifyjs/core"
 
 const schemas = {
-  User: {
+  Test_User: {
     name: "User",
-    // namespace: "Admin",
+    namespace: "Test",
     attributes: {
       name: string(),
     },
     relationships: {
-      todos: hasMany("Todo"),
+      todos: hasMany("Admin_Todo"),
     },
   },
-  Todo: {
+  Admin_Todo: {
     name: "Todo",
-    // namespace: "Admin",
+    namespace: "Admin",
     attributes: {
       title: string(),
       dueDate: datetime(),
@@ -31,7 +31,7 @@ const schemas = {
       // status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
     },
     relationships: {
-      user: belongsTo("User"),
+      user: belongsTo("Test_User"),
       tags: hasMany("Tag"),
     },
   },
@@ -41,7 +41,7 @@ const schemas = {
       label: string(),
     },
     relationships: {
-      todos: hasMany("Todo"),
+      todos: hasMany("Admin_Todo"),
     },
   },
 } satisfies Record<string, PartialSchema>

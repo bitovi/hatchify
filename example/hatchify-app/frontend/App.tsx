@@ -11,12 +11,14 @@ export const hatchedReact = hatchifyReact(
   createJsonapiClient("http://localhost:3000/api", schemas),
 )
 
-const TodoList = hatchedReact.components.Todo.Collection
-const TodoColumn = hatchedReact.components.Todo.Column
-const TodoEmptyList = hatchedReact.components.Todo.Empty
-// hatchedReact.model.Todo.findAll({}).then(([todos]) => {
+const TodoList = hatchedReact.components.Admin_Todo.Collection
+const TodoColumn = hatchedReact.components.Admin_Todo.Column
+const TodoEmptyList = hatchedReact.components.Admin_Todo.Empty
+// hatchedReact.model.Admin_Todo.findAll({
+//   fields: { Admin_User: ["name"] },
+// }).then(([todos]) => {
 //   console.log(todos)
-//   todos[0].user.
+//   todos[0].user
 // })
 // hatchedReact.model.User.findAll({}).then(([users]) => {
 //   console.log(users)

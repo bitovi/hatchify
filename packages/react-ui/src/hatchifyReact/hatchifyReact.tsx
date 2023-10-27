@@ -108,7 +108,11 @@ export function hatchifyReact<
           <HatchifyCollection<TSchemas, GetSchemaNames<TSchemas>>
             finalSchemas={finalSchemas}
             partialSchemas={partialSchemas}
-            schemaName={schema.name}
+            schemaName={
+              schema.namespace
+                ? `${schema.namespace}_${schema.name}`
+                : schema.name
+            }
             restClient={reactRest}
             {...props}
           />
@@ -117,7 +121,11 @@ export function hatchifyReact<
           // todo fix ts!!!
           <HatchifyColumn<TSchemas, GetSchemaNames<TSchemas>>
             allSchemas={finalSchemas as any} // todo:arthur
-            schemaName={schema.name}
+            schemaName={
+              schema.namespace
+                ? `${schema.namespace}_${schema.name}`
+                : schema.name
+            }
             {...props}
           />
         ),

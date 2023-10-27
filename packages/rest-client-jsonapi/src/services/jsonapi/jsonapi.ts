@@ -35,6 +35,19 @@ export function jsonapi<
   // Default `type` to `schemaMap` key if not set in `schemaMap`
   const completeSchemaMap = Object.entries(schemaMap).reduce(
     (acc, [key, value]) => {
+      if (value.namespace) {
+        if (key !== `${value.namespace}_${value.name}`) {
+          console.error(
+            "hey guy these namespaces don't match",
+            key,
+            value.namespace,
+          )
+        }
+      } else {
+        if (key !== value.name) {
+          console.error("hey guy these names don't match", key, value.name)
+        }
+      }
       acc[key] = {
         ...value,
         name: value.name,
