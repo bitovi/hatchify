@@ -38,14 +38,12 @@ export function jsonapi<
       if (value.namespace) {
         if (key !== `${value.namespace}_${value.name}`) {
           console.error(
-            "hey guy these namespaces don't match",
-            key,
-            value.namespace,
+            "The schema name should be in the form of the namespace_name properties",
           )
         }
       } else {
         if (key !== value.name) {
-          console.error("hey guy these names don't match", key, value.name)
+          console.error("The schema name should match the name property")
         }
       }
       acc[key] = {
