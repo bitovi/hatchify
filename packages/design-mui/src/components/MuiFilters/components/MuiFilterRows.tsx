@@ -6,7 +6,6 @@ import CloseIcon from "@mui/icons-material/Close"
 import ColumnSelect from "./inputs/ColumnSelect"
 import OperatorSelect from "./inputs/OperatorSelect"
 import ValueInput from "./inputs/ValueInput"
-import capitalize from "lodash/capitalize"
 
 type ChangeParams =
   | {
@@ -87,24 +86,26 @@ export const MuiFilterRows: React.FC<{
 
     // modifying column select
     if (field === "field") {
+      console.log("field", field)
+      console.log("value", value)
+      console.log("index", index)
       // Get correct attributes for comparison
-      const { baseAttributes: newAttributes, baseField: newField } =
-        getFieldAndAttributes(finalSchemas, value, schemaName)
-      const { baseAttributes: currentAttributes, baseField: currentField } =
-        getFieldAndAttributes(finalSchemas, newFilters[index].field, schemaName)
+      const newControl = getAttributeControl(finalSchemas, value, schemaName)
+      const currentControl = getAttributeControl(
+        finalSchemas,
+        newFilters[index].field,
+        schemaName,
+      )
+      console.log("aaaaaaaaaa")
 
       // change the operator if existing operator does not exist on new column
       newFilters[index].operator = getAvailableOperator(
-        newField,
         newFilters[index].operator,
-        newAttributes,
+        newControl,
       )
 
       // reset the filter value if switching from one field type to another
-      if (
-        getFieldType(newAttributes, newField) !==
-        getFieldType(currentAttributes, currentField)
-      ) {
+      if (getFieldType(newControl) !== getFieldType(currentControl)) {
         newFilters[index].value = ""
       }
     }
@@ -131,7 +132,7 @@ export const MuiFilterRows: React.FC<{
   return (
     <Grid container spacing={1} alignItems="center" justifyContent="center">
       {filters.map((filter, index) => {
-        const { baseAttributes, baseField } = getFieldAndAttributes(
+        const control = getAttributeControl(
           finalSchemas,
           filter.field,
           schemaName,
@@ -165,7 +166,7 @@ export const MuiFilterRows: React.FC<{
               <OperatorSelect
                 labelId={`${index}-operator-label`}
                 value={filter.operator}
-                options={getPossibleOptions(baseField, baseAttributes)}
+                options={getPossibleOptions(control)}
                 onChange={(value) =>
                   onChange({
                     field: "operator",
@@ -179,19 +180,13 @@ export const MuiFilterRows: React.FC<{
               <ValueInput
                 data-testid="value-input"
                 labelId={`${index}-value-label`}
-                fieldType={getFieldType(baseAttributes, baseField)}
+                fieldType={getFieldType(control)}
                 value={filter.value}
                 operator={filter.operator}
                 onChange={(value: any) =>
                   onChange({ field: "value", value, index })
                 }
-                options={
-                  // "values" in baseAttributes[filter.field].control
-                  // ? baseAttributes[filter.field].control?.values
-                  "values" in baseAttributes[baseField].control
-                    ? baseAttributes[baseField].control?.values
-                    : []
-                }
+                options={"values" in control ? control?.values : []}
               />
             </Grid>
           </Fragment>
@@ -205,12 +200,11 @@ export default MuiFilterRows
 
 // Get the first available operator for the field type
 export function getAvailableOperator(
-  field: string,
   // todo: operator should be it's own type used in FilterArray & Option
   operator: string,
-  attributes: FinalAttributeRecord,
+  control: FinalAttributeRecord[string]["control"],
 ): Option["operator"] {
-  const availableOptions = getPossibleOptions(field, attributes)
+  const availableOptions = getPossibleOptions(control)
 
   const optionAvailable = availableOptions.find((option) => {
     return option.operator === operator ? option : undefined
@@ -221,12 +215,10 @@ export function getAvailableOperator(
 
 // Filter out operators that are not available for the field type
 export function getPossibleOptions(
-  field: string,
-  attributes: FinalAttributeRecord,
+  control: FinalAttributeRecord[string]["control"],
 ): Option[] {
-  const attribute = attributes[field]
-  const fieldType = attribute.control.type
-  const required = !attribute.control.allowNull
+  const fieldType = control.type
+  const required = !control.allowNull
 
   const options = operatorOptions[
     // todo(v2 schema): operatorOption types should match possible Attribute types
@@ -241,24 +233,28 @@ export function getPossibleOptions(
 }
 
 export const getFieldType = (
-  attributes: FinalAttributeRecord, // todo: stricter typing
-  field: string,
+  control: FinalAttributeRecord[string]["control"], // todo: stricter typing
 ): string => {
-  const attribute = attributes[field]
-  return attribute.control.type
+  return control.type
 }
 
-export const getFieldAndAttributes = (
+export const getAttributeControl = (
   finalSchemas: FinalSchemas,
   field: string,
   schemaName: string,
-): { baseAttributes: FinalAttributeRecord; baseField: string } => {
-  const baseField = field.includes(".") ? field.split(".")[1] : field
+): FinalAttributeRecord[string]["control"] => {
+  const getRelatedTargetSchema = () => {
+    const relatedField = field.split(".")[0]
+    const relations = finalSchemas[schemaName].relationships
 
-  const baseAttributes =
-    finalSchemas[
-      field.includes(".") ? capitalize(field.split(".")[0]) : schemaName
-    ].attributes
+    return relations && relations[relatedField]
+      ? relations[relatedField].targetSchema
+      : relatedField
+  }
 
-  return { baseAttributes, baseField }
+  const isRelationship = field.includes(".")
+  const attribute = isRelationship ? field.split(".")[1] : field
+  const schema = isRelationship ? getRelatedTargetSchema() : schemaName
+
+  return finalSchemas[schema].attributes[attribute].control
 }

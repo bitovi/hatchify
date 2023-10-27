@@ -31,6 +31,7 @@ const schemas = {
       // status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
     },
     relationships: {
+      owner: belongsTo("User"),
       user: belongsTo("User"),
       tags: hasMany("Tag"),
     },
