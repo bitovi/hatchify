@@ -103,16 +103,15 @@ export function hatchifyReact<
   const components = Object.entries(partialSchemas).reduce(
     (acc, [schemaName, schema]) => {
       const key = schemaName as keyof typeof acc
+      const finalSchemaName = schema.namespace
+        ? `${schema.namespace}_${schema.name}`
+        : schema.name
       acc[key] = {
         Collection: (props) => (
           <HatchifyCollection<TSchemas, GetSchemaNames<TSchemas>>
             finalSchemas={finalSchemas}
             partialSchemas={partialSchemas}
-            schemaName={
-              schema.namespace
-                ? `${schema.namespace}_${schema.name}`
-                : schema.name
-            }
+            schemaName={finalSchemaName}
             restClient={reactRest}
             {...props}
           />
@@ -121,11 +120,7 @@ export function hatchifyReact<
           // todo fix ts!!!
           <HatchifyColumn<TSchemas, GetSchemaNames<TSchemas>>
             allSchemas={finalSchemas as any} // todo:arthur
-            schemaName={
-              schema.namespace
-                ? `${schema.namespace}_${schema.name}`
-                : schema.name
-            }
+            schemaName={finalSchemaName}
             {...props}
           />
         ),

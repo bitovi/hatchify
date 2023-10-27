@@ -37,13 +37,14 @@ export function jsonapi<
     (acc, [key, value]) => {
       if (value.namespace) {
         if (key !== `${value.namespace}_${value.name}`) {
-          console.error(
-            "The schema name should be in the form of the namespace_name properties",
+          console.warn(
+            // the key ${key} .... ${namespace}_${name}
+            `The key ${key} should be ${value.namespace}_${value.name}`,
           )
         }
       } else {
         if (key !== value.name) {
-          console.error("The schema name should match the name property")
+          console.warn(`The key ${key} should be ${value.name}`)
         }
       }
       acc[key] = {

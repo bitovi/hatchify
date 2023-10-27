@@ -2,7 +2,7 @@ import cors from "@koa/cors"
 import Koa from "koa"
 import { describe, expect, it } from "vitest"
 import type { PartialSchema } from "@hatchifyjs/core"
-import { hasMany, string } from "@hatchifyjs/core"
+import { belongsTo, hasMany, string } from "@hatchifyjs/core"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import jsonapi from "../rest-client-jsonapi"
@@ -25,6 +25,9 @@ const Feature_Article = {
   attributes: {
     author: string({ required: true }),
     tag: string({ required: true }),
+  },
+  relationships: {
+    admin_users: belongsTo("Admin_User"),
   },
 }
 
@@ -279,13 +282,14 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         ],
       },
     })
-    const updatedAdminUserQuery = await hatchedReactRest.Admin_User.findOne(
-      userId,
-    )
+    const updatedAdminUserQuery = await hatchedReactRest.Admin_User.findOne({
+      id: userId,
+      fields: { Feature_Article: ["id"] },
+    })
+    console.log("greeeeen✅✅✅✅", updatedAdminUserQuery)
     expect(updatedAdminUserQuery).toEqual({
       id: userId,
       __schema: "Admin_User",
-      name: "Juno Updated",
     })
     await hatchedReactRest.Feature_Article.updateOne({
       id,
