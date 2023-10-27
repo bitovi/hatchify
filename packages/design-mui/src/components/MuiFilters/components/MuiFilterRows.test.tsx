@@ -234,9 +234,6 @@ describe("components/MuiFilterRows", () => {
 
       expect(result.type).toEqual("String")
       expect(result.allowNull).toEqual(false)
-      expect(result.type).toEqual("Datetime")
-      expect(result.allowNull).toEqual(true)
-      // todo v2: enums
     })
 
     it("Gets the correct field from a relationship field", () => {
@@ -250,13 +247,19 @@ describe("components/MuiFilterRows", () => {
   describe("getAvailableOperator", () => {
     it("works", () => {
       expect(
-        getAvailableOperator("$eq", finalSchemas["User"].attributes.name),
+        getAvailableOperator(
+          "$eq",
+          finalSchemas["User"].attributes.name.control,
+        ),
       ).toEqual("$eq")
     })
 
     it("Gets the first available operator if the current one is incompatible", () => {
       expect(
-        getAvailableOperator("$gt", finalSchemas["User"].attributes.name),
+        getAvailableOperator(
+          "$gt",
+          finalSchemas["User"].attributes.name.control,
+        ),
       ).toEqual("icontains")
     })
 
