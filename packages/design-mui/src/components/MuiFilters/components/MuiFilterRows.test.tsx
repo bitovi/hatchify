@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import MuiFilterRows, {
   getAvailableOperator,
-  getFieldAndAttributes,
+  getAttributeControl,
 } from "./MuiFilterRows"
 import type { PartialSchema } from "@hatchifyjs/core"
 import {
@@ -228,37 +228,35 @@ describe("components/MuiFilterRows", () => {
   //   ])
   // })
 
-  describe("getFieldAndAttributes", () => {
+  describe("getAttributeControl", () => {
     it("works", () => {
-      const result = getFieldAndAttributes(finalSchemas, "name", "Todo")
+      const result = getAttributeControl(finalSchemas, "name", "Todo")
 
-      expect(result.baseField).toEqual("name")
-      expect(result.baseAttributes.name.control.type).toEqual("String")
-      expect(result.baseAttributes.name.control.allowNull).toEqual(false)
-      expect(result.baseAttributes.date.control.type).toEqual("Datetime")
-      expect(result.baseAttributes.date.control.allowNull).toEqual(true)
+      expect(result.type).toEqual("String")
+      expect(result.allowNull).toEqual(false)
+      expect(result.type).toEqual("Datetime")
+      expect(result.allowNull).toEqual(true)
       // todo v2: enums
     })
 
     it("Gets the correct field from a relationship field", () => {
-      const result = getFieldAndAttributes(finalSchemas, "user.name", "Todo")
+      const result = getAttributeControl(finalSchemas, "user.name", "Todo")
 
-      expect(result.baseField).toEqual("name")
-      expect(result.baseAttributes.name.control.type).toEqual("String")
-      expect(result.baseAttributes.name.control.allowNull).toEqual(true)
+      expect(result.type).toEqual("String")
+      expect(result.allowNull).toEqual(true)
     })
   })
 
   describe("getAvailableOperator", () => {
     it("works", () => {
       expect(
-        getAvailableOperator("name", "$eq", finalSchemas["User"].attributes),
+        getAvailableOperator("$eq", finalSchemas["User"].attributes.name),
       ).toEqual("$eq")
     })
 
     it("Gets the first available operator if the current one is incompatible", () => {
       expect(
-        getAvailableOperator("name", "$gt", finalSchemas["User"].attributes),
+        getAvailableOperator("$gt", finalSchemas["User"].attributes.name),
       ).toEqual("icontains")
     })
 
@@ -299,8 +297,9 @@ describe("components/MuiFilterRows", () => {
         />,
       )
 
-      const dropdowns = screen.getAllByRole("button")
-      await userEvent.click(dropdowns[2])
+      const dropdownContainer = screen.getByTestId("operator-select")
+      const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+      await userEvent.click(dropdown as any)
 
       const emptySelection = screen.queryByText("starts with")
       expect(emptySelection).toBeTruthy()

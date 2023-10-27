@@ -10,9 +10,9 @@ import {
 } from "@hatchifyjs/core"
 
 const schemas = {
-  Test_User: {
+  Admin_User: {
     name: "User",
-    namespace: "Test",
+    namespace: "Admin",
     attributes: {
       name: string(),
     },
@@ -31,7 +31,8 @@ const schemas = {
       // status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
     },
     relationships: {
-      user: belongsTo("Test_User"),
+      owner: belongsTo("Admin_User"),
+      user: belongsTo("Admin_User"),
       tags: hasMany("Tag"),
     },
   },

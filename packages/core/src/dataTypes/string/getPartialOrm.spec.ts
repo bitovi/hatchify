@@ -41,6 +41,17 @@ describe("getPartialOrm", () => {
     )
   })
 
+  it("handles unique", () => {
+    expect(
+      getPartialOrm({ unique: undefined }).sequelize.unique,
+    ).toBeUndefined()
+    expect(
+      getPartialOrm({ unique: null as unknown as boolean }).sequelize.unique,
+    ).toBeNull()
+    expect(getPartialOrm({ unique: true }).sequelize.unique).toBe(true)
+    expect(getPartialOrm({ unique: false }).sequelize.unique).toBe(false)
+  })
+
   it("handles typeArgs", () => {
     expect(getPartialOrm().sequelize.typeArgs).toEqual([])
     expect(getPartialOrm({}).sequelize.typeArgs).toEqual([])

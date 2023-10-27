@@ -15,6 +15,7 @@ export interface PartialTextORM {
     allowNull?: boolean
     primaryKey?: boolean
     defaultValue?: string | (() => string) | null
+    unique?: boolean
   }
 }
 

@@ -1,5 +1,6 @@
 import type { PartialHasOneRelationship } from "./types"
 
+// @todo HATCH-417
 export function hasOne<TTargetSchema extends string | undefined>(
   targetSchema?: TTargetSchema,
   props?: {

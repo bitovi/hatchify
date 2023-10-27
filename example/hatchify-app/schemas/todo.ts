@@ -1,12 +1,12 @@
 import {
   PartialSchema,
   belongsTo,
-  // belongsTo,
   dateonly,
   datetime,
   // enumerate,
   integer,
   string,
+  text,
 } from "@hatchifyjs/core"
 
 export const Todo = {
@@ -16,8 +16,9 @@ export const Todo = {
     title: string(),
     dueDate: datetime(),
     importance: integer(),
-    completedDate: dateonly(),
     // status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
+    completionDate: dateonly(),
+    notes: text(),
   },
   relationships: {
     user: belongsTo("User"),

@@ -35,14 +35,12 @@ export async function updateOne<
     throw new SchemaNameNotStringError(schemaName)
   }
 
-  console.log("rest-client-jsonapi.updateOne.data", data)
   const jsonApiResource = hatchifyResourceToJsonApiResource(
     config,
     allSchemas[schemaName],
     schemaName,
     data,
   )
-  console.log("rest-client-jsonapi.updateOne.jsonApiResource", data)
 
   const json = await fetchJsonApi<JsonApiResource>(
     "PATCH",

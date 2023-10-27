@@ -30,6 +30,7 @@ describe("finalizeSchema", () => {
           sequelize: {
             allowNull: false,
             primaryKey: false,
+            unique: false,
             defaultValue: expect.any(Function),
             type: "UUID",
           },
@@ -55,6 +56,7 @@ describe("finalizeSchema", () => {
               allowNull: true,
               autoIncrement: false,
               primaryKey: false,
+              unique: false,
               defaultValue: null,
               type: "INTEGER",
               typeArgs: [],

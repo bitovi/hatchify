@@ -1,1 +1,1 @@
-ignores: ["@emotion/styled", "@testing-library/jest-dom", "@vitest/coverage-c8"]
+ignores: ["@emotion/styled", "@testing-library/jest-dom", "@vitest/coverage-c8", "lodash"]

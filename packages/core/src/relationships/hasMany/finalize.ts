@@ -7,6 +7,7 @@ import { pascalCaseToCamelCase } from "../../util/pascalCaseToCamelCase"
 import { singularize } from "../../util/singularize"
 import type { FinalRelationship, PartialRelationship } from "../types"
 
+// @todo HATCH-417
 export function finalize(
   sourceSchema: string,
   relationship: PartialHasManyRelationship<string | null | undefined>,

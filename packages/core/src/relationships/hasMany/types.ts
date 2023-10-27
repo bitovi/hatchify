@@ -3,6 +3,7 @@ import type {
   ThroughOrAttributes,
 } from "../hasManyThrough/types"
 
+// @todo HATCH-417
 export interface PartialHasManyRelationship<
   TTargetSchema extends string | undefined | null,
 > {
