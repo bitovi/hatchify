@@ -36,7 +36,10 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: uuid().finalize(),
+            userId: {
+              ...uuid({ hidden: true }).finalize(),
+              name: "uuid()",
+            },
           },
           relationships: {
             ...schemas.Todo.relationships,
@@ -94,7 +97,10 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: uuid().finalize(),
+            userId: {
+              ...uuid({ hidden: true }).finalize(),
+              name: "uuid()",
+            },
           },
           relationships: {
             ...schemas.Todo.relationships,
@@ -108,6 +114,9 @@ describe("finalizeRelationships", () => {
         },
         User: {
           ...schemas.User,
+          attributes: {
+            ...schemas.User.attributes,
+          },
           relationships: {
             ...schemas.User.relationships,
             todo: {
@@ -182,8 +191,8 @@ describe("finalizeRelationships", () => {
           name: "TodoUser",
           id: getDefaultPrimaryAttribute().finalize(),
           attributes: {
-            userId: uuid({ required: true }).finalize(),
-            todoId: uuid({ required: true }).finalize(),
+            userId: uuid({ required: true, hidden: true }).finalize(),
+            todoId: uuid({ required: true, hidden: true }).finalize(),
           },
         },
       }),
@@ -221,8 +230,14 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: uuid().finalize(),
-            user2Id: uuid().finalize(),
+            userId: {
+              ...uuid({ hidden: true }).finalize(),
+              name: "uuid()",
+            },
+            user2Id: {
+              ...uuid({ hidden: true }).finalize(),
+              name: "uuid()",
+            },
           },
           relationships: {
             ...schemas.Todo.relationships,
@@ -242,6 +257,9 @@ describe("finalizeRelationships", () => {
         },
         User: {
           ...schemas.User,
+          attributes: {
+            ...schemas.User.attributes,
+          },
           relationships: {
             ...schemas.User.relationships,
             todos: {

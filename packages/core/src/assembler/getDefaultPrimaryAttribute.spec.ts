@@ -10,6 +10,7 @@ describe("getDefaultPrimaryAttribute", () => {
       control: {
         allowNull: false,
         allowNullInfer: false,
+        hidden: null,
         max: 36,
         min: 36,
         default: expect.any(Function),
