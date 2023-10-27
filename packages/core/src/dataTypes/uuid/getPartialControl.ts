@@ -6,7 +6,7 @@ export function getPartialControl<TRequired extends boolean>(
 ): PartialUuidControlType<TRequired> {
   return {
     type: "String",
-    references: props?.references ?? null,
+    hidden: props?.hidden ?? null,
     allowNull: props?.required == null ? props?.required : !props.required,
     allowNullInfer: (props?.required == null
       ? props?.required

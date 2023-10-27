@@ -36,7 +36,7 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: uuid({ references: "User" }).finalize(),
+            userId: uuid({ hidden: true }).finalize(),
           },
           relationships: {
             ...schemas.Todo.relationships,
@@ -94,7 +94,7 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: uuid({ references: "User" }).finalize(),
+            userId: uuid({ hidden: true }).finalize(),
           },
           relationships: {
             ...schemas.Todo.relationships,
@@ -110,7 +110,6 @@ describe("finalizeRelationships", () => {
           ...schemas.User,
           attributes: {
             ...schemas.User.attributes,
-            // todoId: uuid({ references: "Todo" }).finalize(),
           },
           relationships: {
             ...schemas.User.relationships,
@@ -186,8 +185,8 @@ describe("finalizeRelationships", () => {
           name: "TodoUser",
           id: getDefaultPrimaryAttribute().finalize(),
           attributes: {
-            userId: uuid({ required: true, references: "User" }).finalize(),
-            todoId: uuid({ required: true, references: "Todo" }).finalize(),
+            userId: uuid({ required: true, hidden: true }).finalize(),
+            todoId: uuid({ required: true, hidden: true }).finalize(),
           },
         },
       }),
@@ -225,8 +224,8 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: uuid({ references: "User" }).finalize(),
-            user2Id: uuid({ references: "User" }).finalize(),
+            userId: uuid({ hidden: true }).finalize(),
+            user2Id: uuid({ hidden: true }).finalize(),
           },
           relationships: {
             ...schemas.Todo.relationships,

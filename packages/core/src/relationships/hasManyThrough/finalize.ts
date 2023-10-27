@@ -60,11 +60,11 @@ export function finalize(
       attributes: {
         [throughSourceAttribute]: uuid({
           required: true,
-          references: sourceSchema,
+          hidden: true,
         }).finalize(),
         [throughTargetAttribute]: uuid({
           required: true,
-          references: targetSchema,
+          hidden: true,
         }).finalize(),
       },
     },

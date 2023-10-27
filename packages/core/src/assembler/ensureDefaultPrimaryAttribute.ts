@@ -13,7 +13,7 @@ export function ensureDefaultPrimaryAttribute(
             ...schema.id.control,
             primary: true,
             allowNull: false,
-            references: null,
+            hidden: null,
           },
           orm: {
             ...schema.id.orm,

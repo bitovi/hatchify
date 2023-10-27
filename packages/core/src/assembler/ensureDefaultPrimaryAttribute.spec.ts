@@ -17,7 +17,7 @@ describe("ensureDefaultPrimaryAttribute", () => {
         name: 'uuid({"required":true})',
         control: {
           type: "String",
-          references: null,
+          hidden: null,
           allowNull: false,
           allowNullInfer: false,
           default: expect.any(Function),
@@ -52,7 +52,7 @@ describe("ensureDefaultPrimaryAttribute", () => {
         name: 'uuid({"primary":true,"required":true})',
         control: {
           type: "String",
-          references: null,
+          hidden: null,
           allowNull: false,
           allowNullInfer: false,
           default: expect.any(Function),

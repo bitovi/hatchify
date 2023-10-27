@@ -28,7 +28,7 @@ export function finalize(
   const sourceAttribute = relationship.sourceAttribute ?? "id"
   const targetAttributeValue =
     schemas[targetSchema].attributes[targetAttribute] ??
-    uuid({ references: sourceSchema }).finalize()
+    uuid({ hidden: true }).finalize()
 
   const relationships: Record<string, PartialRelationship | FinalRelationship> =
     {

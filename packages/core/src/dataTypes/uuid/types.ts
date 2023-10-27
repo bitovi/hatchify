@@ -8,12 +8,12 @@ export type PartialUuidProps<TRequired extends boolean> = PartialDataTypeProps<
   string,
   TRequired
 > & {
-  references?: string | null
+  hidden?: boolean | null
 }
 
 export interface PartialUuidControlType<TRequired extends boolean>
   extends PartialStringControlType<TRequired> {
-  references: string | null
+  hidden: boolean | null
 }
 
 export interface PartialUuidORM {
