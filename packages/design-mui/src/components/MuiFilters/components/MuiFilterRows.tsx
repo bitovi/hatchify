@@ -86,9 +86,6 @@ export const MuiFilterRows: React.FC<{
 
     // modifying column select
     if (field === "field") {
-      console.log("field", field)
-      console.log("value", value)
-      console.log("index", index)
       // Get correct attributes for comparison
       const newControl = getAttributeControl(finalSchemas, value, schemaName)
       const currentControl = getAttributeControl(
@@ -96,7 +93,6 @@ export const MuiFilterRows: React.FC<{
         newFilters[index].field,
         schemaName,
       )
-      console.log("aaaaaaaaaa")
 
       // change the operator if existing operator does not exist on new column
       newFilters[index].operator = getAvailableOperator(
