@@ -23,8 +23,7 @@ export function finalize(
     relationship.sourceAttribute ?? `${relationshipName}Id`
   const targetAttribute = relationship.targetAttribute ?? "id"
   const sourceAttributeValue =
-    schemas[sourceSchema].attributes[sourceAttribute] ??
-    uuid({ hidden: true }).finalize()
+    schemas[sourceSchema].attributes[sourceAttribute] ?? uuid().finalize()
 
   return {
     ...schemas,
@@ -32,7 +31,13 @@ export function finalize(
       ...schemas[sourceSchema],
       attributes: {
         ...schemas[sourceSchema].attributes,
-        [sourceAttribute]: sourceAttributeValue,
+        [sourceAttribute]: {
+          ...sourceAttributeValue,
+          control: {
+            ...sourceAttributeValue.control,
+            hidden: true,
+          },
+        },
       },
       relationships: {
         ...schemas[sourceSchema].relationships,

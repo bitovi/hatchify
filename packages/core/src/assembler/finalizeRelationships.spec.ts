@@ -36,7 +36,10 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: uuid({ hidden: true }).finalize(),
+            userId: {
+              ...uuid({ hidden: true }).finalize(),
+              name: "uuid()",
+            },
           },
           relationships: {
             ...schemas.Todo.relationships,
@@ -94,7 +97,10 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: uuid({ hidden: true }).finalize(),
+            userId: {
+              ...uuid({ hidden: true }).finalize(),
+              name: "uuid()",
+            },
           },
           relationships: {
             ...schemas.Todo.relationships,
@@ -224,8 +230,14 @@ describe("finalizeRelationships", () => {
           ...schemas.Todo,
           attributes: {
             ...schemas.Todo.attributes,
-            userId: uuid({ hidden: true }).finalize(),
-            user2Id: uuid({ hidden: true }).finalize(),
+            userId: {
+              ...uuid({ hidden: true }).finalize(),
+              name: "uuid()",
+            },
+            user2Id: {
+              ...uuid({ hidden: true }).finalize(),
+              name: "uuid()",
+            },
           },
           relationships: {
             ...schemas.Todo.relationships,
