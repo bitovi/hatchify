@@ -26,7 +26,7 @@ export const findAll = async <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  query: QueryList,
+  query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
   baseFilter?: Filters,
 ): Promise<
   [

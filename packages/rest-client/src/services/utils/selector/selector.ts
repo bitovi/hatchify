@@ -51,7 +51,9 @@ export function getIncludeFromFields<const TSchema extends PartialSchema>(
     const include = field
     includes[include] = true
   }
-  return Object.keys(includes)
+
+  // @todo HATCH-417
+  return Object.keys(includes) as Include<TSchema>
 }
 
 /**
@@ -104,27 +106,27 @@ export function getToOneRelationshipsAsFields(
 /**
  * Get the to-one relationships as include: [`${relationshipKey}`, ...]
  */
-export function getToOneRelationshipsAsInclude(
+export function getToOneRelationshipsAsInclude<TSchema extends PartialSchema>(
   schemas: Record<string, FinalSchema>,
   schemaName: string,
-): Include {
+): Include<TSchema> {
   return Object.entries(schemas[schemaName]?.relationships || [])
     .filter(([key, relationship]) => {
       return relationship.type === "belongsTo" || relationship.type === "hasOne"
     })
     .map(([key, relationship]) => {
       return key
-    })
+    }) as Include<TSchema> // @todo HATCH-417
 }
 
 /**
  * Either returns the fields from the selector, generates them from the include, or
  * returns the default fields (all attributes and to-one relationships).
  */
-export function getFields(
+export function getFields<TSchema extends PartialSchema>(
   schemas: Record<string, FinalSchema>,
   schemaName: string,
-  selector: QueryList | QueryOne,
+  selector: QueryList<TSchema> | QueryOne<TSchema>,
 ): Fields {
   if (selector.fields) {
     return selector.fields

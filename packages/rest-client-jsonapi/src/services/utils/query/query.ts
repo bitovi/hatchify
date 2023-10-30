@@ -1,4 +1,4 @@
-import { PartialSchema } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   Fields,
   FilterTypes,

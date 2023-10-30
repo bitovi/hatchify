@@ -5,7 +5,7 @@ export type Include<TPartialSchema extends PartialSchema> = Array<
 > &
   // @todo HATCH-417 - looser typing for now,
   // this should be an array of strings on relationship *AND* relationship's relationships, ie. `include: ["owner", "owner.address"]`
-  Array<string>
+  string[]
 
 // @todo HATCH-417
 // key should be typed by schemaName or namespace_schemaName

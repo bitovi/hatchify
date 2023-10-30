@@ -44,7 +44,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
         ]
       >
       findOne: (
-        query: QueryOne | string,
+        query: QueryOne<GetSchemaFromName<TSchemas, SchemaName>> | string,
       ) => Promise<
         | RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
         | undefined
@@ -69,14 +69,14 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
       deleteOne: (id: string) => Promise<void>
       // hooks
       useAll: (
-        query?: QueryList,
+        query?: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
         baseFilter?: Filters,
       ) => [
         Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>>,
         Meta,
       ]
       useOne: (
-        query: QueryOne | string,
+        query: QueryOne<GetSchemaFromName<TSchemas, SchemaName>> | string,
       ) => [
         (
           | RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
