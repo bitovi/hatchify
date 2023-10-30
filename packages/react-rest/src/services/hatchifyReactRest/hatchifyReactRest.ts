@@ -36,7 +36,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
     [SchemaName in keyof TSchemas]: {
       // promises
       findAll: (
-        query: QueryList,
+        query: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
       ) => Promise<
         [
           Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>>,
@@ -265,7 +265,9 @@ export const hatchifyReactRest = <
 //   attributes: { title: "hio", reqTitle: "", age: 0, important: false, created: "" },
 // })
 
-// app.Todo.findAll({}).then(([records]) => {
+// app.Todo.findAll({
+//   include: ["user", "users"]
+// }).then(([records]) => {
 //   records[0].user
 // })
 

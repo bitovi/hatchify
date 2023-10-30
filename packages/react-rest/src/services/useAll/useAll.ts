@@ -39,7 +39,7 @@ export const useAll = <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  query: QueryList,
+  query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
   baseFilter?: Filters,
 ): [
   Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,

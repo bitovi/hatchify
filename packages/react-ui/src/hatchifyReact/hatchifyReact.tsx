@@ -11,6 +11,7 @@ import type {
   RestClient,
   PaginationObject,
   GetSchemaNames,
+  GetSchemaFromName,
 } from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
@@ -83,7 +84,7 @@ export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
           SchemaName
         >["onSelectedChange"]
         fields?: Fields
-        include?: Include
+        include?: Include<GetSchemaFromName<TSchemas, SchemaName>>
         defaultPage?: PaginationObject
         defaultSort?: SortObject
         baseFilter?: Filters

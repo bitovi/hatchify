@@ -47,13 +47,13 @@ export interface RestClient<
   findAll: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
-    query: QueryList,
+    query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
     baseFilter?: Filters,
   ) => Promise<[Resources: Resource[], Meta: RequestMetaData]>
   findOne: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
-    query: QueryOne,
+    query: QueryOne<GetSchemaFromName<TSchemas, TSchemaName>>,
   ) => Promise<Resource[]>
   createOne: (
     allSchemas: FinalSchemas,

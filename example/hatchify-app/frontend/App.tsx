@@ -14,9 +14,10 @@ export const hatchedReact = hatchifyReact(
 const TodoList = hatchedReact.components.Todo.Collection
 const TodoColumn = hatchedReact.components.Todo.Column
 const TodoEmptyList = hatchedReact.components.Todo.Empty
-// hatchedReact.model.Todo.findAll({}).then(([todos]) => {
-//   console.log(todos)
-//   todos[0].user.
+// hatchedReact.model.Todo.createOne({
+//   attributes: {
+//     uuid: "1",
+//   }
 // })
 // hatchedReact.model.User.findAll({}).then(([users]) => {
 //   console.log(users)

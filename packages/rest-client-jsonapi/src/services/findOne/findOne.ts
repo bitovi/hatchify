@@ -4,6 +4,7 @@ import type {
   Resource,
   FinalSchemas,
   GetSchemaNames,
+  GetSchemaFromName,
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import {
@@ -28,7 +29,7 @@ export async function findOne<
   config: SourceConfig,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  query: QueryOne,
+  query: QueryOne<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): Promise<Resource[]> {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)

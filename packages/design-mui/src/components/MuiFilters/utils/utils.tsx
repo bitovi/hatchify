@@ -10,10 +10,10 @@ export function getFilterableFields(
   // get all filterable fields from the base schema
   const fields = Object.entries(allSchemas[schemaName].attributes)
     // todo: filtering should not rely on UUID type because it may still be an attribute
-    .filter(([, attr]) => attr.orm.sequelize.type !== "UUID")
-    .filter(([, attr]) =>
+    .filter(([, { control }]) => control.hidden !== true)
+    .filter(([, { control }]) =>
       ["string", "date", "dateonly", "datetime", "enum"].includes(
-        attr.control.type.toLowerCase(),
+        control.type.toLowerCase(),
       ),
     )
     .map(([key]) => key)
@@ -33,9 +33,10 @@ export function getFilterableFields(
     const includedFields = Object.entries(
       allSchemas[includedRelationships[i].schema].attributes,
     )
-      .filter(([, attr]) =>
+      .filter(([, { control }]) => control.hidden !== true)
+      .filter(([, { control }]) =>
         ["string", "date", "datetime", "enum"].includes(
-          attr.control.type.toLowerCase(),
+          control.type.toLowerCase(),
         ),
       )
       .map(([key]) => `${includedRelationships[i].relationship}.${key}`)

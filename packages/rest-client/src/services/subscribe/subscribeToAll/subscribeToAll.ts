@@ -17,7 +17,7 @@ export const subscribeToAll = <
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   resource: TSchemaName,
-  query: QueryList | undefined,
+  query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>> | undefined,
   onChange: (
     data: Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,
   ) => void,

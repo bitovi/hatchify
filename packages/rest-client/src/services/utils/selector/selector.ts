@@ -1,4 +1,4 @@
-import type { FinalSchema } from "@hatchifyjs/core"
+import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 import type { Include, Fields, QueryList, QueryOne } from "../../types"
 
 /**
@@ -24,7 +24,7 @@ export function getAttributesFromSchema(
     schemas[schemaName].attributes,
   )
     // todo: filtering should not rely on UUID type because it may still be an attribute
-    .filter(([attribute, details]) => details.orm.sequelize.type !== "UUID")
+    .filter(([, { control }]) => control.hidden !== true)
     .map(([attribute]) => attribute)
   return fields
 }
@@ -35,10 +35,10 @@ export function getAttributesFromSchema(
  * https://jsonapi.org/format/#fetching-includes
  */
 
-export function getIncludeFromFields(
+export function getIncludeFromFields<const TSchema extends PartialSchema>(
   fields: Fields,
   schemaName: string,
-): Include {
+): Include<TSchema> {
   const includes: Record<string, true> = {}
 
   const fieldKeys = Object.keys(fields)
@@ -59,10 +59,10 @@ export function getIncludeFromFields(
  * https://jsonapi.org/format/#fetching-includes
  * https://jsonapi.org/format/#fetching-sparse-fieldsets
  */
-export function getFieldsFromInclude(
+export function getFieldsFromInclude<const TSchema extends PartialSchema>(
   schemas: Record<string, FinalSchema>,
   schemaName: string,
-  include: Include,
+  include: Include<TSchema>,
 ): Fields {
   let fields: Fields = { ...getAttributesFromSchema(schemas, schemaName) }
 
@@ -142,11 +142,11 @@ export function getFields(
  * Either returns the include from the selector, generates them from the fields, or
  * returns the default include (all to-one relationships).
  */
-export function getInclude(
+export function getInclude<TSchema extends PartialSchema>(
   schemas: Record<string, FinalSchema>,
   schemaName: string,
-  selector: QueryList | QueryOne,
-): Include {
+  selector: QueryList<TSchema> | QueryOne<TSchema>,
+): Include<TSchema> {
   if (selector.include) {
     return selector.include
   } else if (selector.fields !== undefined) {
