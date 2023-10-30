@@ -104,7 +104,11 @@ export function updateEverything(hatchify: Hatchify, modelName: string) {
         }),
       ]
     }
-    const response = await hatchify.serialize[modelName].update(affectedCount)
+    const updated = await hatchify.model[modelName].findByPk(id)
+    const response = await hatchify.serialize[modelName].update(
+      updated,
+      affectedCount,
+    )
     return response
   }
 }

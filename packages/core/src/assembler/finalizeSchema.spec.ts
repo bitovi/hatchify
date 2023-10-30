@@ -18,6 +18,7 @@ describe("finalizeSchema", () => {
       id: {
         name: 'uuid({"required":true})',
         control: {
+          hidden: null,
           allowNull: false,
           max: 36,
           min: 36,
@@ -35,6 +36,11 @@ describe("finalizeSchema", () => {
             type: "UUID",
           },
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),

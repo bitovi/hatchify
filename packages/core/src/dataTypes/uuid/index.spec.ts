@@ -19,6 +19,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          hidden: null,
           allowNull: undefined,
           min: 36,
           max: 36,
@@ -31,10 +32,55 @@ describe("uuid", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(
+        setClientPropertyValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() => setClientPropertyValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientPropertyValue
+      expect(
+        serializeClientPropertyValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(
+        setClientQueryFilterValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(
+        serializeClientQueryFilterValue?.(
+          "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+        ),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+
+      // setClientPropertyValueFromResponse
+      expect(
+        setClientPropertyValueFromResponse?.(
+          "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+        ),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
 
       // serializeORMPropertyValue
       expect(
@@ -89,6 +135,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          hidden: null,
           allowNull: true,
           min: 36,
           max: 36,
@@ -96,6 +143,11 @@ describe("uuid", () => {
           default: null,
           regex: UUID_REGEX,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -118,6 +170,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          hidden: null,
           allowNull: false,
           allowNullInfer: false,
           min: 36,
@@ -131,10 +184,63 @@ describe("uuid", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(
+        setClientPropertyValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(() => setClientPropertyValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientPropertyValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientPropertyValue
+      expect(
+        serializeClientPropertyValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      // does not throw because it expects a coerced value
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(
+        setClientQueryFilterValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(
+        serializeClientQueryFilterValue?.(
+          "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+        ),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      // does not throw because it expects a coerced value
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+
+      // setClientPropertyValueFromResponse
+      expect(
+        setClientPropertyValueFromResponse?.(
+          "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+        ),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
 
       // serializeORMPropertyValue
       expect(
@@ -199,6 +305,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          hidden: null,
           allowNull: false,
           min: 36,
           max: 36,
@@ -206,6 +313,11 @@ describe("uuid", () => {
           default: null,
           regex: UUID_REGEX,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -228,6 +340,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          hidden: null,
           allowNull: undefined,
           min: 36,
           max: 36,
@@ -240,10 +353,63 @@ describe("uuid", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(
+        setClientPropertyValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(() => setClientPropertyValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientPropertyValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientPropertyValue
+      expect(
+        serializeClientPropertyValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      // does not throw because it expects a coerced value
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(
+        setClientQueryFilterValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(
+        serializeClientQueryFilterValue?.(
+          "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+        ),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      // does not throw because it expects a coerced value
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+
+      // setClientPropertyValueFromResponse
+      expect(
+        setClientPropertyValueFromResponse?.(
+          "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+        ),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
 
       // serializeORMPropertyValue
       expect(
@@ -308,6 +474,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          hidden: null,
           allowNull: false,
           min: 36,
           max: 36,
@@ -315,6 +482,11 @@ describe("uuid", () => {
           default: null,
           regex: UUID_REGEX,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),

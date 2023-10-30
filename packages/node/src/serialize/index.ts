@@ -35,7 +35,7 @@ export interface SerializeFunctions<
     attributes: any,
   ) => Promise<JSONAPIDocument>
   create: (data: T) => Promise<JSONAPIDocument>
-  update: (rowCount: number) => Promise<JSONAPIDocument>
+  update: (instance: T, rowCount: number) => Promise<JSONAPIDocument>
   destroy: (rowCount: number) => Promise<JSONAPIDocument>
 }
 
@@ -105,8 +105,13 @@ async function destroyImpl(hatchify: Hatchify, name: string, rowCount: number) {
   return hatchify.serializer.serialize(name, null, { count: rowCount })
 }
 
-async function updateImpl(hatchify: Hatchify, name: string, rowCount: number) {
-  return hatchify.serializer.serialize(name, null, { count: rowCount })
+async function updateImpl(
+  hatchify: Hatchify,
+  name: string,
+  instance: any,
+  rowCount: number,
+) {
+  return hatchify.serializer.serialize(name, instance, { count: rowCount })
 }
 
 export function buildSerializerForModel(
@@ -122,7 +127,8 @@ export function buildSerializerForModel(
       findAndCountAllImpl(hatchify, modelName, result, attributes),
     create: async (instance) => createImpl(hatchify, modelName, instance),
     destroy: async (rowCount) => destroyImpl(hatchify, modelName, rowCount),
-    update: async (rowCount) => updateImpl(hatchify, modelName, rowCount),
+    update: async (instance, rowCount) =>
+      updateImpl(hatchify, modelName, instance, rowCount),
   }
 }
 
