@@ -29,6 +29,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       relationships: {
         author: belongsTo("Person"),
         illustrators: hasMany("Person"),
+        tags: hasMany("Namespaced_Tag"),
       },
     } satisfies PartialSchema,
     Person: {
@@ -42,32 +43,61 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         illustrated: hasMany("Book"),
       },
     } satisfies PartialSchema,
+    Namespaced_Tag: {
+      name: "Tag",
+      namespace: "Namespaced",
+      attributes: {
+        name: string(),
+      },
+    } satisfies PartialSchema,
   }
   const schemaMap = {
     Book: { type: "book_type", ...partialSchemas["Book"] },
     Person: { type: "person_type", ...partialSchemas["Person"] },
+    Namespaced_Tag: {
+      type: "Namespaced_Tag",
+      ...partialSchemas["Namespaced_Tag"],
+    },
   }
   const finalSchemas = assembler(partialSchemas)
 
   describe("fieldsToQueryParam", () => {
     it("works", () => {
-      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
-      /* expect(() =>
-        fieldsToQueryParam(schemaMap, schemas, "Book", {
+      expect(() =>
+        fieldsToQueryParam(schemaMap, finalSchemas, "Book", {
           Book: ["title", "body"],
           author: ["name", "email"],
           illustrators: ["name", "email"],
         }),
-      ).toThrowError('"author" is not a valid schema') */
+      ).toThrowError('"author" is not a valid schema')
 
-      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
-      /* expect(() =>
-        fieldsToQueryParam(schemaMap, schemas, "Person", {
+      expect(() =>
+        fieldsToQueryParam(schemaMap, finalSchemas, "Person", {
           Person: ["firstName", "age"],
           authored: ["title", "year"],
           illustrated: ["title", "year"],
         }),
-      ).toThrowError('"authored" is not a valid schema') */
+      ).toThrowError('"authored" is not a valid schema')
+
+      expect(() =>
+        fieldsToQueryParam(schemaMap, finalSchemas, "Book", {
+          Book: ["title"],
+          tags: ["name"],
+        }),
+      ).toThrowError('"tags" is not a valid schema')
+
+      expect(
+        fieldsToQueryParam(schemaMap, finalSchemas, "Book", {
+          Book: ["title"],
+          Namespaced_Tag: ["name"],
+        }),
+      ).toEqual("fields[book_type]=title&fields[Namespaced_Tag]=name")
+
+      expect(
+        fieldsToQueryParam(schemaMap, finalSchemas, "Namespaced_Tag", {
+          Namespaced_Tag: ["name"],
+        }),
+      ).toEqual("fields[Namespaced_Tag]=name")
 
       expect(fieldsToQueryParam(schemaMap, finalSchemas, "Book", {})).toEqual(
         "",
@@ -108,8 +138,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
       )
 
-      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
-      /* expect(() =>
+      expect(() =>
         getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {
             Person: ["firstName", "age"],
@@ -117,7 +146,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           },
           include: ["illustrated", "authored"],
         }),
-      ).toThrowError('"authored" is not a valid schema') */
+      ).toThrowError('"authored" is not a valid schema')
     })
 
     it("works for when fields has values and include is empty", () => {
@@ -191,8 +220,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
         }),
       ).toEqual("")
 
-      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
-      /* expect(() =>
+      expect(() =>
         getQueryParams(schemaMap, finalSchemas, "Book", {
           fields: {
             Person: ["firstName", "age"],
@@ -207,7 +235,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           ],
           page: { number: 3, size: 30 },
         }),
-      ).toThrowError('"authored" is not a valid schema') */
+      ).toThrowError('"authored" is not a valid schema')
 
       expect(
         getQueryParams(schemaMap, finalSchemas, "Person", {
