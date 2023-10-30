@@ -10,11 +10,11 @@ export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
   <a href="./naming.md#schemapluralname">pluralName</a>: "SalesPeople",
   id: <a href="./attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   attributes: {
-    <a href="./naming.md#schemaattributesattribute_name">name</a>: <a href="./attribute-types/string.md">string</a>({ required: true }),
+    <a href="./schema.md#schemaattributesattribute_name">[AttributeName]</a>: AttributeType,
     description: <a href="./attribute-types/text">text</a>(),
-    dueDate: <a href="./attribute-types/datetime">datetime</a>(),
-    importance: <a href="./attribute-types/integer.md">integer</a>({min: 0, max: 100, step: 10}),
-    complete: <a href="./attribute-types/boolean.md">boolean</a>({ default: false }),
+    dueDate:     <a href="./attribute-types/datetime">datetime</a>(),
+    importance:  <a href="./attribute-types/integer.md">integer</a>({min: 0, max: 100, step: 10}),
+    complete:    <a href="./attribute-types/boolean.md">boolean</a>({ default: false }),
   },
   relationships: {
     salesGroup: <a href="./relationship-types/belongs-to.md">belongsTo</a>(),
