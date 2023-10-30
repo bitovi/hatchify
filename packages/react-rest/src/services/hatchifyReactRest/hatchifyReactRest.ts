@@ -128,14 +128,15 @@ export const hatchifyReactRest = <
 ): HatchifyReactRest<TSchemas> => {
   const { completeSchemaMap: partialSchemas } = restClient
   const finalSchemas = assembler(partialSchemas)
-  const storeKeys = Object.values(finalSchemas).map((schema) => schema.name)
+  const storeKeys = Object.values(finalSchemas).map((schema) =>
+    schema.namespace ? `${schema.namespace}_${schema.name}` : schema.name,
+  )
   createStore(storeKeys)
 
   const functions = Object.entries(partialSchemas).reduce(
     (acc, [schemaName, schema]) => {
       const key = schemaName as keyof typeof acc
       const typedSchemaName = schemaName as TSchemaName
-
       acc[key] = {
         // promises
         findAll: (query) =>

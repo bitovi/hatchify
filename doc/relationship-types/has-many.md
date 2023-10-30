@@ -1,4 +1,0 @@
-
-## hasMany()
-
-## hasMany(schemaName, {targetAttribute})
