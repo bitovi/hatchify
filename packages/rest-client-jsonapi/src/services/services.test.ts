@@ -126,11 +126,11 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         prefix: `/${testBackendEndpointConfig.api}`,
         database: {
           dialect: "postgres",
-          host: "localhost",
+          host: process.env.PG_DB_HOST,
           port: Number(process.env.PG_DB_PORT),
-          username: "postgres",
-          password: "postgres",
-          database: "postgres",
+          username: process.env.PG_DB_USERNAME,
+          password: process.env.PG_DB_PASSWORD,
+          database: process.env.PG_DB_NAME,
           logging: false,
         },
       },
@@ -165,11 +165,11 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     const [featureArticle] = featureArticles
     const { id } = featureArticle
     expect(featureArticles.length === 1)
-
     expect(featureArticle).toEqual({
       id,
       __schema: "Feature_Article",
       admin_UserId: null,
+      admin_usersId: null,
       author: "John Doe",
       tag: "Hatchify",
     })
@@ -186,6 +186,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       id,
       __schema: "Feature_Article",
       admin_UserId: null,
+      admin_usersId: null,
       author: "John Doe Updated",
       tag: "Hatchify Updated",
     })
@@ -206,11 +207,11 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         prefix: `/${testBackendEndpointConfig.api}`,
         database: {
           dialect: "postgres",
-          host: "localhost",
+          host: process.env.PG_DB_HOST,
           port: Number(process.env.PG_DB_PORT),
-          username: "postgres",
-          password: "postgres",
-          database: "postgres",
+          username: process.env.PG_DB_USERNAME,
+          password: process.env.PG_DB_PASSWORD,
+          database: process.env.PG_DB_NAME,
           logging: false,
         },
       },
@@ -251,6 +252,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     const [adminUser] = adminUsers
     const { id: userId } = adminUser
     expect(adminUsers.length === 1)
+
     expect(adminUser).toEqual({
       id: userId,
       __schema: "Admin_User",
@@ -259,12 +261,14 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     const [featureArticles] = await hatchedReactRest.Feature_Article.findAll({})
     const [featureArticle] = featureArticles
-    const { id } = featureArticle
+    const { id: articleId } = featureArticle
     expect(featureArticles.length === 1)
+
     expect(featureArticle).toEqual({
-      id,
+      id: articleId,
       __schema: "Feature_Article",
       admin_UserId: null,
+      admin_usersId: null,
       author: "John Doe",
       tag: "Hatchify",
     })
@@ -277,40 +281,70 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       relationships: {
         articles: [
           {
-            id,
+            id: articleId,
           },
         ],
       },
     })
     const updatedAdminUserQuery = await hatchedReactRest.Admin_User.findOne({
       id: userId,
-      fields: { Feature_Article: ["id"] },
+      include: ["articles"],
     })
-    console.log("greeeeen✅✅✅✅", updatedAdminUserQuery)
+
     expect(updatedAdminUserQuery).toEqual({
       id: userId,
+      name: "Juno Updated",
       __schema: "Admin_User",
+      articles: [
+        {
+          id: articleId,
+          __schema: "Feature_Article",
+          __label: "John Doe",
+          author: "John Doe",
+          tag: "Hatchify",
+          admin_usersId: null,
+          admin_UserId: userId,
+        },
+      ],
     })
+
     await hatchedReactRest.Feature_Article.updateOne({
-      id,
+      id: articleId,
       attributes: {
         author: "John Doe Updated",
         tag: "Hatchify Updated",
       },
+      relationships: {
+        admin_users: {
+          id: userId,
+        },
+      },
     })
+
     const updatedFeatureArticleQuery =
-      await hatchedReactRest.Feature_Article.findOne(id)
+      await hatchedReactRest.Feature_Article.findOne({
+        id: articleId,
+        include: ["admin_users"],
+      })
+
     expect(updatedFeatureArticleQuery).toEqual({
-      id,
+      id: articleId,
       __schema: "Feature_Article",
       admin_UserId: userId,
+      admin_users: {
+        __label: "Juno Updated",
+        __schema: "Admin_User",
+        id: userId,
+        name: "Juno Updated",
+      },
+      admin_usersId: userId,
       author: "John Doe Updated",
       tag: "Hatchify Updated",
     })
-    await hatchedReactRest.Feature_Article.deleteOne(id)
+    await hatchedReactRest.Feature_Article.deleteOne(articleId)
     await hatchedReactRest.Admin_User.deleteOne(userId)
     await expect(() =>
-      hatchedReactRest.Feature_Article.findOne(id),
+      hatchedReactRest.Feature_Article.findOne(articleId),
     ).rejects.toThrow()
     expect.assertions(7) // Useful for confirming that assertions were actually called against asynchronous functions
     server.close()
