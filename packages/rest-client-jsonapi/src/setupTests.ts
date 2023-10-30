@@ -5,6 +5,7 @@ export const testBackendEndpointConfig = {
   api: "api",
   schemaSegment: "articles",
   namespacedSchemaSegment: "feature/articles",
+  adminUserNamespaceSegment: "admin/users",
 }
 
 beforeAll(() =>
@@ -16,6 +17,9 @@ beforeAll(() =>
         ) ||
         req.url.pathname.startsWith(
           `/${testBackendEndpointConfig.api}/${testBackendEndpointConfig.namespacedSchemaSegment}`,
+        ) ||
+        req.url.pathname.startsWith(
+          `/${testBackendEndpointConfig.api}/${testBackendEndpointConfig.adminUserNamespaceSegment}`,
         )
       ) {
         return

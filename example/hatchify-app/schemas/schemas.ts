@@ -12,7 +12,6 @@ import {
 const schemas = {
   User: {
     name: "User",
-    // namespace: "Admin",
     attributes: {
       name: string(),
     },
@@ -22,7 +21,6 @@ const schemas = {
   },
   Todo: {
     name: "Todo",
-    // namespace: "Admin",
     attributes: {
       title: string(),
       dueDate: datetime(),
