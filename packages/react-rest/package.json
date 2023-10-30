@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react-rest",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "./dist/react-rest.js",
   "module": "./dist/react-rest.mjs",
   "types": "./dist/react-rest.d.ts",
@@ -24,8 +24,8 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/core": "^0.2.5",
-    "@hatchifyjs/rest-client": "^0.1.2"
+    "@hatchifyjs/core": "^0.2.6",
+    "@hatchifyjs/rest-client": "^0.1.3"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
