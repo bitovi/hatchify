@@ -1,17 +1,19 @@
 import type {
-  PartialControlType,
   PartialDataTypeProps,
   PartialSequelizeDataType,
 } from "../../types"
+import type { PartialStringControlType } from "../string"
 
 export type PartialUuidProps<TRequired extends boolean> = PartialDataTypeProps<
   string,
   TRequired
->
+> & {
+  hidden?: boolean | null
+}
 
 export interface PartialUuidControlType<TRequired extends boolean>
-  extends PartialControlType<string, TRequired> {
-  type: "String"
+  extends PartialStringControlType<TRequired> {
+  hidden: boolean | null
 }
 
 export interface PartialUuidORM {
