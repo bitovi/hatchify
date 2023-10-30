@@ -6,6 +6,7 @@ import type {
   SourceConfig,
   FinalSchemas,
   GetSchemaNames,
+  GetSchemaFromName,
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import {
@@ -30,7 +31,7 @@ export async function findAll<
   config: SourceConfig,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  query: QueryList,
+  query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
   baseFilter?: Filters,
 ): Promise<[Resources: Resource[], Meta: RequestMetaData]> {
   if (!schemaNameIsString(schemaName)) {

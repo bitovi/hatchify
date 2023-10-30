@@ -117,13 +117,12 @@ export function getDisplaysFromSchema(
   valueComponents: { [attribute: string]: ValueComponent } | null,
 ): HatchifyDisplay[] {
   const attributesDisplays = Object.entries(schema.attributes)
-    // todo: filtering should not rely on UUID type because it may still be an attribute
-    .filter(([, value]) => value.orm.sequelize.type !== "UUID")
-    .map(([key, value]) => {
+    .filter(([, { control }]) => control.hidden !== true)
+    .map(([attributeName, { control }]) => {
       return getHatchifyDisplay({
         sortable: true,
-        attribute: key,
-        attributeSchema: value.control,
+        attribute: attributeName,
+        attributeSchema: control,
         valueComponents,
         defaultValueComponents,
       })

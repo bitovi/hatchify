@@ -85,25 +85,35 @@ describe("rest-client-jsonapi/services/utils/query", () => {
   describe("getQueryParams", () => {
     it("works for when include and fields have values", () => {
       expect(
-        getQueryParams(schemaMap, finalSchemas, "Book", {
-          fields: {
-            Book: ["title", "body"],
-            Person: ["name", "email"],
+        getQueryParams<typeof partialSchemas.Book>(
+          schemaMap,
+          finalSchemas,
+          "Book",
+          {
+            fields: {
+              Book: ["title", "body"],
+              Person: ["name", "email"],
+            },
+            include: ["author", "illustrators"],
           },
-          include: ["author", "illustrators"],
-        }),
+        ),
       ).toEqual(
         "?include=author,illustrators&fields[book_type]=title,body&fields[person_type]=name,email",
       )
 
       expect(
-        getQueryParams(schemaMap, finalSchemas, "Person", {
-          fields: {
-            Person: ["firstName", "age"],
-            Book: ["title", "year"],
+        getQueryParams<typeof partialSchemas.Person>(
+          schemaMap,
+          finalSchemas,
+          "Person",
+          {
+            fields: {
+              Person: ["firstName", "age"],
+              Book: ["title", "year"],
+            },
+            include: ["illustrated", "authored"],
           },
-          include: ["illustrated", "authored"],
-        }),
+        ),
       ).toEqual(
         "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
       )
@@ -210,20 +220,25 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toThrowError('"authored" is not a valid schema') */
 
       expect(
-        getQueryParams(schemaMap, finalSchemas, "Person", {
-          fields: {
-            Person: ["firstName", "age"],
-            Book: ["title", "year"],
+        getQueryParams<typeof partialSchemas.Person>(
+          schemaMap,
+          finalSchemas,
+          "Person",
+          {
+            fields: {
+              Person: ["firstName", "age"],
+              Book: ["title", "year"],
+            },
+            include: ["illustrated", "authored"],
+            sort: ["-created", "title", "user.name"],
+            filter: [
+              { field: "name", value: ["John", "Joan"], operator: "$in" },
+              { field: "age", value: 21, operator: "$eq" },
+              { field: "employed", value: false, operator: "$eq" },
+            ],
+            page: { number: 3, size: 30 },
           },
-          include: ["illustrated", "authored"],
-          sort: ["-created", "title", "user.name"],
-          filter: [
-            { field: "name", value: ["John", "Joan"], operator: "$in" },
-            { field: "age", value: 21, operator: "$eq" },
-            { field: "employed", value: false, operator: "$eq" },
-          ],
-          page: { number: 3, size: 30 },
-        }),
+        ),
       ).toEqual(
         "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year&sort=-created,title,user.name&filter[name][$in][]=John&filter[name][$in][]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
       )
@@ -232,13 +247,19 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
   describe("includeToQueryParam", () => {
     it("works", () => {
-      expect(includeToQueryParam(["author", "illustrators"])).toEqual(
-        "include=author,illustrators",
-      )
+      expect(
+        includeToQueryParam<typeof partialSchemas.Book>([
+          "author",
+          "illustrators",
+        ]),
+      ).toEqual("include=author,illustrators")
 
-      expect(includeToQueryParam(["illustrated", "authored"])).toEqual(
-        "include=illustrated,authored",
-      )
+      expect(
+        includeToQueryParam<typeof partialSchemas.Person>([
+          "illustrated",
+          "authored",
+        ]),
+      ).toEqual("include=illustrated,authored")
     })
   })
 

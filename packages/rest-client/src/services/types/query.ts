@@ -1,8 +1,21 @@
-export type Include = string[] // todo: HATCH-417
+import type { PartialSchema } from "@hatchifyjs/core"
 
-export type Fields = { [key: string]: string[] } // todo: HATCH-417
+export type Include<TPartialSchema extends PartialSchema> = Array<
+  keyof TPartialSchema["relationships"]
+> &
+  // @todo HATCH-417 - looser typing for now,
+  // this should be an array of strings on relationship *AND* relationship's relationships, ie. `include: ["owner", "owner.address"]`
+  string[]
 
-export type Selector = { include?: Include; fields?: Fields }
+// @todo HATCH-417
+// key should be typed by schemaName or namespace_schemaName
+// string should then be typed by attributes or relationships of that schema
+export type Fields = { [key: string]: string[] }
+
+export type Selector<TPartialSchema extends PartialSchema> = {
+  include?: Include<TPartialSchema>
+  fields?: Fields
+}
 
 export type FilterArray = Array<{
   field: string
@@ -43,10 +56,12 @@ export interface PaginationObject {
   size: number
 }
 
-export type QueryList = Selector & {
-  page?: PaginationObject
-  sort?: string[] | string
-  filter?: Filters
-}
+export type QueryList<TPartialSchema extends PartialSchema> =
+  Selector<TPartialSchema> & {
+    page?: PaginationObject
+    sort?: string[] | string
+    filter?: Filters
+  }
 
-export type QueryOne = Selector & { id: string }
+export type QueryOne<TPartialSchema extends PartialSchema> =
+  Selector<TPartialSchema> & { id: string }

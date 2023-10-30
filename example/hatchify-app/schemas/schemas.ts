@@ -6,6 +6,7 @@ import {
   dateonly,
   datetime,
   integer,
+  uuid,
   // enumerate,
 } from "@hatchifyjs/core"
 
@@ -26,6 +27,7 @@ const schemas = {
       dueDate: datetime(),
       importance: integer(),
       completedDate: dateonly(),
+      uuid: uuid(),
       // status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
     },
     relationships: {

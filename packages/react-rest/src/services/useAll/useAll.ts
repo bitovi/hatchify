@@ -18,8 +18,12 @@ import type { PartialSchema } from "@hatchifyjs/core"
  * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
  */
 function useMemoByStringify(filterOrQuery: Filters): Filters
-function useMemoByStringify(filterOrQuery: QueryList): QueryList
-function useMemoByStringify(filterOrQuery: Filters | QueryList) {
+function useMemoByStringify<TSchema extends PartialSchema>(
+  filterOrQuery: QueryList<TSchema>,
+): QueryList<TSchema>
+function useMemoByStringify<TSchema extends PartialSchema>(
+  filterOrQuery: Filters | QueryList<TSchema>,
+) {
   const stringifiedQuery = JSON.stringify(filterOrQuery)
 
   // todo: query (nested objects) are causing infinite re-renders, need a better solution
@@ -39,7 +43,7 @@ export const useAll = <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  query: QueryList,
+  query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
   baseFilter?: Filters,
 ): [
   Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,

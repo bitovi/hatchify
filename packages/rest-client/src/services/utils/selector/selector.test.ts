@@ -107,10 +107,11 @@ describe("rest-client/services/utils/selector", () => {
   describe("getFieldsFromInclude", () => {
     it("works", () => {
       expect(
-        getFieldsFromInclude(bookAuthorSchemas, "Book", [
-          "author",
-          "illustrators",
-        ]),
+        getFieldsFromInclude<typeof partialBookAuthorSchemas.Book>(
+          bookAuthorSchemas,
+          "Book",
+          ["author", "illustrators"],
+        ),
       ).toEqual({
         Book: ["title", "year"],
         author: ["name", "rating"],
@@ -118,17 +119,22 @@ describe("rest-client/services/utils/selector", () => {
       })
 
       expect(
-        getFieldsFromInclude(bookAuthorSchemas, "Book", ["author"]),
+        getFieldsFromInclude<typeof partialBookAuthorSchemas.Book>(
+          bookAuthorSchemas,
+          "Book",
+          ["author"],
+        ),
       ).toEqual({
         Book: ["title", "year"],
         author: ["name", "rating"],
       })
 
       expect(
-        getFieldsFromInclude(bookAuthorSchemas, "Person", [
-          "authored",
-          "illustrated",
-        ]),
+        getFieldsFromInclude<typeof partialBookAuthorSchemas.Person>(
+          bookAuthorSchemas,
+          "Person",
+          ["authored", "illustrated"],
+        ),
       ).toEqual({
         Person: ["name", "rating"],
         authored: ["title", "year"],
@@ -136,7 +142,11 @@ describe("rest-client/services/utils/selector", () => {
       })
 
       expect(
-        getFieldsFromInclude(bookAuthorSchemas, "Person", ["illustrated"]),
+        getFieldsFromInclude<typeof partialBookAuthorSchemas.Person>(
+          bookAuthorSchemas,
+          "Person",
+          ["illustrated"],
+        ),
       ).toEqual({
         Person: ["name", "rating"],
         illustrated: ["title", "year"],
@@ -202,7 +212,13 @@ describe("rest-client/services/utils/selector", () => {
   describe("getFields", () => {
     it("works", () => {
       expect(
-        getFields(bookAuthorSchemas, "Book", { include: ["author"] }),
+        getFields<typeof partialBookAuthorSchemas.Book>(
+          bookAuthorSchemas,
+          "Book",
+          {
+            include: ["author"],
+          },
+        ),
       ).toEqual({ Book: ["title", "year"], author: ["name", "rating"] })
 
       expect(
@@ -221,7 +237,11 @@ describe("rest-client/services/utils/selector", () => {
   describe("getInclude", () => {
     it("works", () => {
       expect(
-        getInclude(bookAuthorSchemas, "Book", { include: ["author"] }),
+        getInclude<typeof partialBookAuthorSchemas.Book>(
+          bookAuthorSchemas,
+          "Book",
+          { include: ["author"] },
+        ),
       ).toEqual(["author"])
 
       expect(

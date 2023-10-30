@@ -24,7 +24,7 @@ export const findOne = async <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  query: QueryOne | string,
+  query: QueryOne<GetSchemaFromName<TSchemas, TSchemaName>> | string,
 ): Promise<
   RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>> | undefined
 > => {

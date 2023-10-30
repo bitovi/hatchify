@@ -30,7 +30,7 @@ export interface CollectionState<
   data: Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>
   meta: Meta
   fields?: Fields
-  include?: Include
+  include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>
   filter: Filters
   setFilter: (filters: Filters) => void
   page: HatchifyCollectionPage["page"]
@@ -64,7 +64,7 @@ export default function useCollectionState<
     defaultSelected?: HatchifyCollectionSelected["selected"]
     onSelectedChange?: HatchifyCollectionSelected["setSelected"]
     fields?: Fields
-    include?: Include
+    include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>
     defaultPage?: PaginationObject
     defaultSort?: SortObject
     baseFilter?: Filters

@@ -217,7 +217,7 @@ export function getPossibleOptions(
   const required = !control.allowNull
 
   const options = operatorOptions[
-    // todo(v2 schema): operatorOption types should match possible Attribute types
+    // @todo HATCH-417 - fieldType should not be any, it should be a TS type
     fieldType as keyof OperatorOption
   ].filter((option) => {
     return required
@@ -229,7 +229,7 @@ export function getPossibleOptions(
 }
 
 export const getFieldType = (
-  control: FinalAttributeRecord[string]["control"], // todo: stricter typing
+  control: FinalAttributeRecord[string]["control"],
 ): string => {
   return control.type
 }

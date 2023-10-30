@@ -1,3 +1,4 @@
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   Fields,
   FilterTypes,
@@ -50,7 +51,9 @@ export function fieldsToQueryParam(
 /**
  * Transforms the include array from rest-client into a JSON:API compliant query parameter.
  */
-export function includeToQueryParam(includes: Include): string {
+export function includeToQueryParam<const TSchema extends PartialSchema>(
+  includes: Include<TSchema>,
+): string {
   return includes.length ? `include=${includes.join(",")}` : ""
 }
 
@@ -202,13 +205,13 @@ export function pageToQueryParam(page: unknown): string {
 /**
  * Transforms the fields and include arrays from rest-client into a JSON:API compliant query parameter.
  */
-export function getQueryParams(
+export function getQueryParams<const TSchema extends PartialSchema>(
   schemaMap: RequiredSchemaMap, // todo: HATCH-417
   allSchemas: FinalSchemas,
   schemaName: string,
   query: {
     fields?: Fields
-    include?: Include
+    include?: Include<TSchema>
     sort?: string[] | string
     filter?: Filters
     page?: unknown
