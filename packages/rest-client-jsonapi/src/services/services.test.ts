@@ -27,7 +27,7 @@ const Feature_Article = {
     tag: string({ required: true }),
   },
   relationships: {
-    admin_users: belongsTo("Admin_User"),
+    admin_user: belongsTo("Admin_User"),
   },
 }
 
@@ -169,7 +169,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       id,
       __schema: "Feature_Article",
       admin_UserId: null,
-      admin_usersId: null,
+      admin_userId: null,
       author: "John Doe",
       tag: "Hatchify",
     })
@@ -186,7 +186,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       id,
       __schema: "Feature_Article",
       admin_UserId: null,
-      admin_usersId: null,
+      admin_userId: null,
       author: "John Doe Updated",
       tag: "Hatchify Updated",
     })
@@ -201,6 +201,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
   // Note: This test does not spin up a Postgres server on its own. You must have one running locally in order for this test to pass.
   it("successfully runs CRUD operations on schemas with different namespaces", async () => {
     const app = new Koa()
+
     const hatchedKoa = hatchifyKoa(
       { Feature_Article, Admin_User },
       {
@@ -268,7 +269,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       id: articleId,
       __schema: "Feature_Article",
       admin_UserId: null,
-      admin_usersId: null,
+      admin_userId: null,
       author: "John Doe",
       tag: "Hatchify",
     })
@@ -302,7 +303,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
           __label: "John Doe",
           author: "John Doe",
           tag: "Hatchify",
-          admin_usersId: null,
+          admin_userId: null,
           admin_UserId: userId,
         },
       ],
@@ -315,7 +316,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         tag: "Hatchify Updated",
       },
       relationships: {
-        admin_users: {
+        admin_user: {
           id: userId,
         },
       },
@@ -324,20 +325,20 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     const updatedFeatureArticleQuery =
       await hatchedReactRest.Feature_Article.findOne({
         id: articleId,
-        include: ["admin_users"],
+        include: ["admin_user"],
       })
 
     expect(updatedFeatureArticleQuery).toEqual({
       id: articleId,
       __schema: "Feature_Article",
       admin_UserId: userId,
-      admin_users: {
+      admin_user: {
         __label: "Juno Updated",
         __schema: "Admin_User",
         id: userId,
         name: "Juno Updated",
       },
-      admin_usersId: userId,
+      admin_userId: userId,
       author: "John Doe Updated",
       tag: "Hatchify Updated",
     })

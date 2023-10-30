@@ -38,7 +38,6 @@ export function jsonapi<
       if (value.namespace) {
         if (key !== `${value.namespace}_${value.name}`) {
           console.warn(
-            // the key ${key} .... ${namespace}_${name}
             `The key ${key} should be ${value.namespace}_${value.name}`,
           )
         }
