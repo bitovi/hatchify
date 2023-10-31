@@ -149,13 +149,18 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       )
 
       expect(() =>
-        getQueryParams(schemaMap, finalSchemas, "Person", {
-          fields: {
-            Person: ["firstName", "age"],
-            authored: ["title", "year"],
+        getQueryParams<typeof partialSchemas.Person>(
+          schemaMap,
+          finalSchemas,
+          "Person",
+          {
+            fields: {
+              Person: ["firstName", "age"],
+              authored: ["title", "year"],
+            },
+            include: ["illustrated", "authored"],
           },
-          include: ["illustrated", "authored"],
-        }),
+        ),
       ).toThrowError('"authored" is not a valid schema')
     })
 
@@ -231,7 +236,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
       ).toEqual("")
 
       expect(() =>
-        getQueryParams(schemaMap, finalSchemas, "Book", {
+        getQueryParams<any>(schemaMap, finalSchemas, "Book", {
           fields: {
             Person: ["firstName", "age"],
             authored: ["title", "year"],
