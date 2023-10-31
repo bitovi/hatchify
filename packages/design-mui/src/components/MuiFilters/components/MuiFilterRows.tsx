@@ -101,7 +101,7 @@ export const MuiFilterRows: React.FC<{
       )
 
       // reset the filter value if switching from one field type to another
-      if (getFieldType(newControl) !== getFieldType(currentControl)) {
+      if (newControl.type !== currentControl.type) {
         newFilters[index].value = ""
       }
     }
@@ -176,7 +176,7 @@ export const MuiFilterRows: React.FC<{
               <ValueInput
                 data-testid="value-input"
                 labelId={`${index}-value-label`}
-                fieldType={getFieldType(control)}
+                controlType={control.type}
                 value={filter.value}
                 operator={filter.operator}
                 onChange={(value: any) =>
@@ -226,12 +226,6 @@ export function getPossibleOptions(
   })
 
   return options
-}
-
-export const getFieldType = (
-  control: FinalAttributeRecord[string]["control"],
-): string => {
-  return control.type
 }
 
 export const getAttributeControl = (
