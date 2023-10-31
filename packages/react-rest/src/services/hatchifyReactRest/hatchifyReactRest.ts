@@ -39,7 +39,7 @@ export type ReactRest = {
     findAll: (
       query: QueryList,
     ) => Promise<[Records: Record[], Meta: RequestMetaData]>
-    updateOne: (data: UpdateData) => Promise<Record | null>
+    updateOne: (data: UpdateData) => Promise<Record>
     // hooks
     useCreateOne: () => [(data: CreateData) => void, Meta, Record?]
     useDeleteOne: () => [(id: string) => void, Meta]
