@@ -95,7 +95,7 @@ export function getFinalize(
     // Example : ?filter[age]=xyz ... xyz => throw "xyz is not a string";
     setORMQueryFilterValue: (queryValue: string): string | null => {
       if (["null", "undefined"].includes(queryValue)) {
-        if (control.allowNull) {
+        if (control.allowNull !== false) {
           return null
         }
         throw new HatchifyCoerceError("as a non-null value")
