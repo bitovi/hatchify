@@ -5,20 +5,21 @@ import StringInput from "./StringInput"
 
 const ValueInput: React.FC<{
   labelId: string
-  fieldType: string
+  controlType: string
   value: any
   operator: string
   onChange: (value: string | string[]) => void
   options?: string[]
-}> = ({ labelId, fieldType, value, operator, onChange, options = [] }) => {
+}> = ({ labelId, controlType, value, operator, onChange, options = [] }) => {
   if (operator === "empty" || operator === "nempty") {
     return null
   }
 
+  console.log("fieldType", controlType)
   return (
     <>
       <InputLabel id={labelId}>Value</InputLabel>
-      {fieldType === "String" && (
+      {controlType === "String" && (
         <StringInput
           labelId={labelId}
           operator={operator}
@@ -26,7 +27,7 @@ const ValueInput: React.FC<{
           onChange={onChange}
         />
       )}
-      {fieldType === "enum" && (
+      {controlType === "enum" && (
         <EnumInput
           labelId={labelId}
           operator={operator}
@@ -35,15 +36,14 @@ const ValueInput: React.FC<{
           options={options}
         />
       )}
-      {fieldType === "Datetime" ||
-        (fieldType === "Dateonly" && (
-          <DateInput
-            labelId={labelId}
-            value={value}
-            onChange={onChange}
-            fieldType={fieldType}
-          />
-        ))}
+      {(controlType === "Datetime" || controlType === "Dateonly") && (
+        <DateInput
+          labelId={labelId}
+          value={value}
+          onChange={onChange}
+          controlType={controlType}
+        />
+      )}
     </>
   )
 }
