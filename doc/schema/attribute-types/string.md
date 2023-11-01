@@ -77,6 +77,8 @@ DATA:
 
 # Grid Behavior
 
+The string value in its entirety is shown.  
+
 ![stringNullFilter](https://github.com/bitovi/hatchify/assets/109013/9e67c44d-11c2-434e-9bcc-68cefbfc3f95)
 
 ## Form Controls
