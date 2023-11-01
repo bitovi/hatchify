@@ -59,6 +59,22 @@ String data will be returned as a string value or `null` as follows:
 
 When creating or updating a string attribute, string value or `null` must be provided. Any other value will return a service error.
 
+```js
+POST /todos
+
+DATA:
+
+{
+  data: {
+    ...
+    attributes: {
+      name: "STRING VALUE" // or null
+    }
+  }
+}
+```
+
+
 # Grid Behavior
 
 ![stringNullFilter](https://github.com/bitovi/hatchify/assets/109013/9e67c44d-11c2-434e-9bcc-68cefbfc3f95)
