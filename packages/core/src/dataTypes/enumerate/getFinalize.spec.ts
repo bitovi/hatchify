@@ -9,7 +9,7 @@ describe("getFinalize", () => {
       control: {
         allowNull: undefined,
         primary: undefined,
-        type: "String",
+        type: "enum",
         values,
       },
       orm: {

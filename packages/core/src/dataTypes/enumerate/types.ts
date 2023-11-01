@@ -11,7 +11,7 @@ export interface PartialEnumProps
 
 export interface PartialEnumControlType
   extends PartialControlType<string, boolean> {
-  type: "String"
+  type: "enum"
   values: string[]
 }
 
