@@ -5,58 +5,57 @@ describe("finalizeControl", () => {
 
   it("handles allowNull", () => {
     expect(
-      finalizeControl({ values, type: "String", allowNull: undefined })
-        .allowNull,
+      finalizeControl({ values, type: "enum", allowNull: undefined }).allowNull,
     ).toBe(true)
     expect(
       finalizeControl({
         values,
-        type: "String",
+        type: "enum",
         allowNull: null as unknown as boolean,
       }).allowNull,
     ).toBe(true)
     expect(
-      finalizeControl({ values, type: "String", allowNull: true }).allowNull,
+      finalizeControl({ values, type: "enum", allowNull: true }).allowNull,
     ).toBe(true)
     expect(
-      finalizeControl({ values, type: "String", allowNull: false }).allowNull,
+      finalizeControl({ values, type: "enum", allowNull: false }).allowNull,
     ).toBe(false)
   })
 
   it("handles primary", () => {
     expect(
-      finalizeControl({ values, type: "String", primary: undefined }).primary,
+      finalizeControl({ values, type: "enum", primary: undefined }).primary,
     ).toBe(false)
     expect(
       finalizeControl({
         values,
-        type: "String",
+        type: "enum",
         primary: null as unknown as boolean,
       }).primary,
     ).toBe(false)
     expect(
-      finalizeControl({ values, type: "String", primary: true }).primary,
+      finalizeControl({ values, type: "enum", primary: true }).primary,
     ).toBe(true)
     expect(
-      finalizeControl({ values, type: "String", primary: false }).primary,
+      finalizeControl({ values, type: "enum", primary: false }).primary,
     ).toBe(false)
   })
 
   it("handles default", () => {
     expect(
-      finalizeControl({ values, type: "String", default: undefined }).default,
+      finalizeControl({ values, type: "enum", default: undefined }).default,
     ).toBeNull()
     expect(
-      finalizeControl({ values, type: "String", default: null }).default,
+      finalizeControl({ values, type: "enum", default: null }).default,
     ).toBeNull()
     expect(
-      finalizeControl({ values, type: "String", default: "foo" }).default,
+      finalizeControl({ values, type: "enum", default: "foo" }).default,
     ).toBe("foo")
 
     const func = () => "bar"
 
     expect(
-      finalizeControl({ values, type: "String", default: func }).default,
+      finalizeControl({ values, type: "enum", default: func }).default,
     ).toEqual(func)
   })
 })

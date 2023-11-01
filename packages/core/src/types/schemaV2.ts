@@ -37,7 +37,7 @@ export interface PartialDataTypeProps<
 }
 
 export type PartialControlType<PrimitiveType, TRequired extends boolean> = {
-  type: "Boolean" | "Number" | "String" | "Datetime" | "Dateonly"
+  type: "Boolean" | "Number" | "String" | "Datetime" | "Dateonly" | "enum"
   allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
   primary?: boolean
