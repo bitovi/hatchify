@@ -27,10 +27,7 @@ export const updateOne = async <
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   data: Omit<UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">,
-): Promise<RecordType<
-  TSchemas,
-  GetSchemaFromName<TSchemas, TSchemaName>
-> | null> => {
+): Promise<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
@@ -50,10 +47,6 @@ export const updateOne = async <
   })
 
   notifySubscribers()
-
-  if (!resources) {
-    return null
-  }
 
   // @ts-expect-error return from `flattenResourcesIntoRecords` needs to be `RecordType`
   return flattenResourcesIntoRecords(allSchemas, resources, schemaName)[0]

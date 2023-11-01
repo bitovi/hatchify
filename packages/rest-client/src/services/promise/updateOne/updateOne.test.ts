@@ -29,21 +29,6 @@ describe("rest-client/services/promise/updateOne", () => {
     expect(result).toEqual(expected)
   })
 
-  it("should return null if data source returns null", async () => {
-    const nullDataSource = {
-      ...fakeDataSource,
-      updateOne: () => Promise.resolve(null),
-    }
-
-    const result = await updateOne<typeof partialSchemas, "Article">(
-      nullDataSource,
-      schemas,
-      "Article",
-      data,
-    )
-    expect(result).toEqual(null)
-  })
-
   it.todo("should insert the record into the store")
 
   it.todo("should notify subscribers")

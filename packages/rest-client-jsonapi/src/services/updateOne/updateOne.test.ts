@@ -66,29 +66,6 @@ describe("rest-client-jsonapi/services/updateOne", () => {
     expect(result).toEqual(expected)
   })
 
-  it("works if server returns null", async () => {
-    server.use(
-      rest.patch(`${baseUrl}/articles/article-id-1`, (_, res, ctx) =>
-        res.once(ctx.status(200), ctx.json({ data: null })),
-      ),
-    )
-
-    const data = {
-      __schema: "Article",
-      id: "article-id-1",
-      attributes: { title: "A new world!" },
-    }
-
-    const result = await updateOne<typeof partialSchemaMap, "Article">(
-      sourceConfig,
-      finalSchemaMap,
-      "Article",
-      data,
-    )
-
-    expect(result).toEqual(null)
-  })
-
   it("throws an error if the request fails", async () => {
     const errors = [
       {
