@@ -52,6 +52,7 @@ following steps:
 
    ```bash
    node -v
+   npm -v
    ```
 
 2. Create a new Vite project titled “hatchify-app”:
@@ -172,10 +173,10 @@ and data fetchers. Because these schemas are the backbone of our
 frontend and backend, we will place them in a `/schemas`
 directory at the root directory of our project.
 
-**✏️ Create a** `schemas` **directory:**
+**✏️ Create a** `schemas.ts` **file in the root:**
 
 ```bash
-mkdir schemas
+touch schemas.ts
 ```
 
 The required fields of the schema are a `name` for your model and the
@@ -184,15 +185,13 @@ before, specifically Sequelize, this should look pretty familiar to you.
 HatchifyJS uses Sequelize, a Node.js- and TypeScript-compatible ORM,
 under the hood to talk to your database.
 
-**✏️ Create a** `schemas.ts`**:**
-
 > **Note:** Take note of lines commented with the 👀 emoji.
 
 ```ts
 // hatchify-app/schemas.ts
 import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
 
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
@@ -203,9 +202,9 @@ export const Todo: PartialSchema = {
   relationships: {
     user: belongsTo(),
   },
-}
+} satisfies PartialSchema
 
-export const User: PartialSchema = {
+export const User = {
   name: "User",
   attributes: {
     name: string({ required: true }),
@@ -213,8 +212,10 @@ export const User: PartialSchema = {
   relationships: {
     todos: hasMany(),
   },
-}
+} satisfies PartialSchema
 ```
+
+> **Note:** It is important to use _satisfies PartialSchema_ when typing our schemas. By using the satisfies keyword, we can make sure our schema objects are typed correctly and also get the benefit of type inference when passing our schemas into our hatchify functions.
 
 You can find all of the possible data types for a schema's `attributes`
 [here](https://sequelize.org/docs/v6/other-topics/other-data-types/).
@@ -485,17 +486,15 @@ thing we want to do is import `hatchifyReact`, `MuiProvider`, and
 overview of what each of these does:
 
 - `createJsonapiClient` - This is our rest client for JSON:API. We
-  pass in the `baseUrl` of our backend to it, as well as a mapping of
-  `schema: { endpoint: <url endpoint>`.
+  pass in the `baseUrl` of our backend to it, as well as our schemas.
 
 - `MuiProvider` - This is an MUI theme provider that we must wrap
   around our entire app so that our HatchifyJS components will render
   with the correct design system.
 
-- `createReact` - This function takes in our schemas and our rest
-  client and returns an object containing components and rest
-  functions for each schema. This returned object represents our
-  entire frontend HatchifyJS app.
+- `createReact` - This function takes in our rest client and returns
+  an object containing components and rest functions for each schema.
+  This returned object represents our entire frontend HatchifyJS app.
 
 Once we create our HatchifyJS app, we can pull the `Collection` component from
 the `Todo` key and render it.
@@ -534,18 +533,14 @@ following:**
 
 ```tsx
 // hatchify-app/frontend/App.tsx
-import { v2ToV1 } from "@hatchifyjs/core"
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { Todo, User } from "../schemas"
 
 export const hatchedReact = hatchifyReact(
-  createJsonapiClient(
-    "http://localhost:3000/api",
-    v2ToV1({
-      Todo,
-      User,
-    }),
-  ),
+  createJsonapiClient("http://localhost:3000/api", {
+    Todo,
+    User,
+  }),
 )
 
 const TodoList = hatchedReact.components.Todo.Collection
@@ -565,7 +560,7 @@ export default App
 [http://localhost:5173/](http://localhost:5173/). You
 should see:
 
-![](doc/attachments/394592353.png)
+![](doc/attachments/frontend-todo-list.png)
 
 And that’s it! With minimal code and some HatchifyJS magic, we've used our
 well-defined schemas to create a database, a running backend with REST endpoints, and a frontend that handles the JSX and data-fetching for us.
