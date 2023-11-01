@@ -31,10 +31,61 @@ describe("enumerate", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.("valid")).toBe("valid")
+      expect(() => setClientPropertyValue?.(8)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() => setClientPropertyValue?.(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
+      expect(() => setClientPropertyValue?.("invalid")).toThrow(
+        new HatchifyCoerceError("as one of 'valid', 'valid2'"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.("valid")).toBe("valid")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.("valid")).toBe("valid")
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() => setClientQueryFilterValue?.(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+      expect(() => setClientQueryFilterValue?.("invalid")).toThrow(
+        new HatchifyCoerceError("as one of 'valid', 'valid2'"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.("valid")).toBe("valid")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientQueryFilterValue?.("invalid")).toBe("invalid")
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.("valid")).toBe("valid")
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
+      expect(() => setClientPropertyValueFromResponse?.(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.("invalid")).toThrow(
+        new HatchifyCoerceError("as one of 'valid', 'valid2'"),
+      )
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
@@ -86,6 +137,11 @@ describe("enumerate", () => {
           default: null,
           values,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -120,10 +176,67 @@ describe("enumerate", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.("valid")).toBe("valid")
+      expect(() => setClientPropertyValue?.(8)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+      expect(() => setClientPropertyValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientPropertyValue?.(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
+      expect(() => setClientPropertyValue?.("invalid")).toThrow(
+        new HatchifyCoerceError("as one of 'valid', 'valid2'"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.("valid")).toBe("valid")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.("valid")).toBe("valid")
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientQueryFilterValue?.(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+      expect(() => setClientQueryFilterValue?.("invalid")).toThrow(
+        new HatchifyCoerceError("as one of 'valid', 'valid2'"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.("valid")).toBe("valid")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientQueryFilterValue?.("invalid")).toBe("invalid")
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.("valid")).toBe("valid")
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.("invalid")).toThrow(
+        new HatchifyCoerceError("as one of 'valid', 'valid2'"),
+      )
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
@@ -185,6 +298,11 @@ describe("enumerate", () => {
           default: null,
           values,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
@@ -218,10 +336,67 @@ describe("enumerate", () => {
 
     it("transforms correctly", () => {
       const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
         serializeORMPropertyValue,
         setORMPropertyValue,
         setORMQueryFilterValue,
       } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.("valid")).toBe("valid")
+      expect(() => setClientPropertyValue?.(8)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+      expect(() => setClientPropertyValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientPropertyValue?.(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
+      expect(() => setClientPropertyValue?.("invalid")).toThrow(
+        new HatchifyCoerceError("as one of 'valid', 'valid2'"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.("valid")).toBe("valid")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.("valid")).toBe("valid")
+      expect(() => setClientQueryFilterValue?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientQueryFilterValue?.(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+      expect(() => setClientQueryFilterValue?.("invalid")).toThrow(
+        new HatchifyCoerceError("as one of 'valid', 'valid2'"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.("valid")).toBe("valid")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+      // This function expects valid data, so it won't throw an error.
+      expect(serializeClientQueryFilterValue?.("invalid")).toBe("invalid")
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.("valid")).toBe("valid")
+      expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
+        new HatchifyCoerceError("as a non-null value"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.(undefined)).toThrow(
+        new HatchifyCoerceError("as a non-undefined value"),
+      )
+      expect(() => setClientPropertyValueFromResponse?.("invalid")).toThrow(
+        new HatchifyCoerceError("as one of 'valid', 'valid2'"),
+      )
 
       // serializeORMPropertyValue
       expect(serializeORMPropertyValue("valid")).toBe("valid")
@@ -283,6 +458,11 @@ describe("enumerate", () => {
           default: null,
           values,
         },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
         serializeORMPropertyValue: expect.any(Function),
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),

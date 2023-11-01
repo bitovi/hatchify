@@ -62,10 +62,9 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
           UpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
           "__schema"
         >,
-      ) => Promise<RecordType<
-        TSchemas,
-        GetSchemaFromName<TSchemas, SchemaName>
-      > | null>
+      ) => Promise<
+        RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
+      >
       deleteOne: (id: string) => Promise<void>
       // hooks
       useAll: (

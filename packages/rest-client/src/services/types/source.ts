@@ -64,7 +64,7 @@ export interface RestClient<
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
     data: UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
-  ) => Promise<Resource[] | null>
+  ) => Promise<Resource[]>
   deleteOne: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,

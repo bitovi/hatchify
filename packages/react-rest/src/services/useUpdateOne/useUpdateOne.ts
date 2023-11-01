@@ -20,10 +20,7 @@ type UpdateData<
 type UpdatedRecord<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
-> =
-  | RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>
-  | undefined
-  | null
+> = RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>> | undefined
 
 /**
  * Returns a function that updates a new record using the rest-client updateOne,

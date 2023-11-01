@@ -30,7 +30,7 @@ export async function updateOne<
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   data: UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
-): Promise<Resource[] | null> {
+): Promise<Resource[]> {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
@@ -49,10 +49,6 @@ export async function updateOne<
     }`,
     jsonApiResource,
   )
-
-  if (!json.data) {
-    return Promise.resolve(null)
-  }
 
   return Promise.resolve(
     convertToHatchifyResources(
