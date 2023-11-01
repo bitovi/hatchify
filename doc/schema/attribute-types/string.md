@@ -77,7 +77,7 @@ DATA:
 
 # Grid Behavior
 
-The string value in its entirety is shown.  
+The string value in its entirety is shown.  Null values and empty string values are shown as an empty table cell.
 
 ![stringNullFilter](https://github.com/bitovi/hatchify/assets/109013/9e67c44d-11c2-434e-9bcc-68cefbfc3f95)
 
