@@ -12,7 +12,7 @@ export function getPartialControl(
   }
 
   return {
-    type: "String",
+    type: "enum",
     allowNull: props?.required == null ? props?.required : !props.required,
     allowNullInfer: (props?.required == null
       ? props?.required

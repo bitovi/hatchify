@@ -20,7 +20,7 @@ describe("enumerate", () => {
           },
         },
         control: {
-          type: "String",
+          type: "enum",
           allowNull: undefined,
           primary: undefined,
           values,
@@ -131,7 +131,7 @@ describe("enumerate", () => {
           },
         },
         control: {
-          type: "String",
+          type: "enum",
           allowNull: true,
           primary: false,
           default: null,
@@ -164,7 +164,7 @@ describe("enumerate", () => {
           },
         },
         control: {
-          type: "String",
+          type: "enum",
           allowNull: false,
           allowNullInfer: false,
           primary: undefined,
@@ -292,7 +292,7 @@ describe("enumerate", () => {
           },
         },
         control: {
-          type: "String",
+          type: "enum",
           allowNull: false,
           primary: false,
           default: null,
@@ -325,7 +325,7 @@ describe("enumerate", () => {
           },
         },
         control: {
-          type: "String",
+          type: "enum",
           allowNull: undefined,
           primary: true,
           values,
@@ -452,7 +452,7 @@ describe("enumerate", () => {
           },
         },
         control: {
-          type: "String",
+          type: "enum",
           allowNull: false,
           primary: true,
           default: null,
