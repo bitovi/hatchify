@@ -11,6 +11,7 @@ import {
   belongsTo,
   boolean,
   datetime,
+  enumerate,
   hasMany,
 } from "@hatchifyjs/core"
 import { string } from "@hatchifyjs/core"
@@ -23,8 +24,7 @@ const partialSchemas = {
       name: string({ required: true }),
       date: datetime(),
       important: boolean(),
-      // todo: v2 enums
-      // status: { type: "enum", values: ["Pending", "Failed", "Complete"] },
+      status: enumerate({ values: ["Pending", "Failed", "Complete"] }),
     },
     relationships: {
       user: belongsTo(),
@@ -138,95 +138,95 @@ describe("components/MuiFilterRows", () => {
     ])
   })
 
-  // todo: v2 enums
-  // it("resets the value when switching from array operator type to another operator type", async () => {
-  //   const setFilters = vi.fn()
+  it("resets the value when switching from array operator type to another operator type", async () => {
+    const setFilters = vi.fn()
 
-  //   render(
-  //     <MuiFilterRows
-  //       finalSchemas={finalSchemas}
-  //       schemaName="Todo"
-  //       fields={["name", "date", "status"]}
-  //       filters={[{ field: "status", operator: "$nin", value: ["Pending"] }]}
-  //       setFilters={setFilters}
-  //       removeFilter={vi.fn()}
-  //     />,
-  //   )
+    render(
+      <MuiFilterRows
+        finalSchemas={finalSchemas}
+        schemaName="Todo"
+        fields={["name", "date", "status"]}
+        filters={[{ field: "status", operator: "$in", value: ["Pending"] }]}
+        setFilters={setFilters}
+        removeFilter={vi.fn()}
+      />,
+    )
 
-  //   const dropdowns = screen.getAllByRole("button")
-  //   await userEvent.click(dropdowns[2])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as HTMLDivElement)
 
-  //   const eqSelection = screen.getByText("is not")
-  //   await userEvent.click(eqSelection)
+    const eqSelection = screen.getByText("is not")
+    await userEvent.click(eqSelection)
 
-  //   expect(setFilters).toHaveBeenCalledWith([
-  //     {
-  //       field: "status",
-  //       operator: "$ne",
-  //       value: "",
-  //     },
-  //   ])
-  // })
+    expect(setFilters).toHaveBeenCalledWith([
+      {
+        field: "status",
+        operator: "$ne",
+        value: "",
+      },
+    ])
+  })
 
-  // todo: v2 enums
-  // it("resets the value when switching to array operator type from another operator type", async () => {
-  //   const setFilters = vi.fn()
+  it("resets the value when switching to array operator type from another operator type", async () => {
+    const setFilters = vi.fn()
 
-  //   render(
-  //     <MuiFilterRows
-  //       finalSchemas={finalSchemas}
-  //       schemaName="Todo"
-  //       fields={["name", "date", "status"]}
-  //       filters={[{ field: "status", operator: "$ne", value: "Pending" }]}
-  //       setFilters={setFilters}
-  //       removeFilter={vi.fn()}
-  //     />,
-  //   )
+    render(
+      <MuiFilterRows
+        finalSchemas={finalSchemas}
+        schemaName="Todo"
+        fields={["name", "date", "status"]}
+        filters={[{ field: "status", operator: "$ne", value: "Pending" }]}
+        setFilters={setFilters}
+        removeFilter={vi.fn()}
+      />,
+    )
 
-  //   const dropdowns = screen.getAllByRole("button")
-  //   await userEvent.click(dropdowns[2])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as HTMLDivElement)
 
-  //   const eqSelection = screen.getByText("is not any of")
-  //   await userEvent.click(eqSelection)
+    const eqSelection = screen.getByText("is not any of")
+    await userEvent.click(eqSelection)
 
-  //   expect(setFilters).toHaveBeenCalledWith([
-  //     {
-  //       field: "status",
-  //       operator: "$nin",
-  //       value: [],
-  //     },
-  //   ])
-  // })
+    expect(setFilters).toHaveBeenCalledWith([
+      {
+        field: "status",
+        operator: "$nin",
+        value: [],
+      },
+    ])
+  })
 
-  // todo: v2 enums
-  // it("leaves array value when switching between array type operators", async () => {
-  //   const setFilters = vi.fn()
+  it("leaves array value when switching between array type operators", async () => {
+    const setFilters = vi.fn()
 
-  //   render(
-  //     <MuiFilterRows
-  //       finalSchemas={finalSchemas}
-  //       schemaName="Todo"
-  //       fields={["name", "date", "status"]}
-  //       filters={[{ field: "status", operator: "$nin", value: ["Pending"] }]}
-  //       setFilters={setFilters}
-  //       removeFilter={vi.fn()}
-  //     />,
-  //   )
+    render(
+      <MuiFilterRows
+        finalSchemas={finalSchemas}
+        schemaName="Todo"
+        fields={["name", "date", "status"]}
+        filters={[{ field: "status", operator: "$nin", value: ["Pending"] }]}
+        setFilters={setFilters}
+        removeFilter={vi.fn()}
+      />,
+    )
 
-  //   const dropdowns = screen.getAllByRole("button")
-  //   await userEvent.click(dropdowns[2])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as HTMLDivElement)
 
-  //   const eqSelection = screen.getByText("is any of")
-  //   await userEvent.click(eqSelection)
+    const eqSelection = screen.getByText("is any of")
+    await userEvent.click(eqSelection)
 
-  //   expect(setFilters).toHaveBeenCalledWith([
-  //     {
-  //       field: "status",
-  //       operator: "$in",
-  //       value: ["Pending"],
-  //     },
-  //   ])
-  // })
+    expect(setFilters).toHaveBeenCalledWith([
+      {
+        field: "status",
+        operator: "$in",
+        value: ["Pending"],
+      },
+    ])
+  })
 
   describe("getAttributeControl", () => {
     it("works", () => {

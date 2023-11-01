@@ -6,6 +6,7 @@ import {
   belongsTo,
   boolean,
   datetime,
+  enumerate,
   hasMany,
   string,
 } from "@hatchifyjs/core"
@@ -19,8 +20,7 @@ const partialSchemas = {
       date: datetime(),
       note: string(),
       important: boolean({ required: false }),
-      // todo: v2 enums
-      // status: { type: "enum", values: ["Pending", "Failed", "Complete"] },
+      status: enumerate({ values: ["Pending", "Failed", "Complete"] }),
     },
     relationships: {
       user: belongsTo(),
@@ -34,8 +34,7 @@ const partialSchemas = {
       email: string(),
       planned_date: datetime(),
       another_date: datetime(),
-      // todo: v2 enums
-      // user_type: { type: "enum", values: ["Admin", "User"] },
+      user_type: enumerate({ values: ["Admin", "User"] }),
     },
     relationships: {
       todo: hasMany(),
@@ -62,14 +61,12 @@ describe("components/MuiFilters/utils", () => {
         "name",
         "date",
         "note",
-        // todo: v2 enums
-        // "status",
+        "status",
         "user.name",
         "user.email",
         "user.planned_date",
         "user.another_date",
-        // todo: v2 enums
-        // "user.user_type",
+        "user.user_type",
       ])
     })
 
@@ -77,13 +74,7 @@ describe("components/MuiFilters/utils", () => {
       const result = getFilterableFields(finalSchemas, "Todo", [])
 
       // boolean types are not supported yet, so important attribute is not returned
-      expect(result).toEqual([
-        "name",
-        "date",
-        "note",
-        // todo: v2 enums
-        // "status"
-      ])
+      expect(result).toEqual(["name", "date", "note", "status"])
     })
 
     it("it adds fields that are a string instead of an object", () => {
@@ -94,8 +85,7 @@ describe("components/MuiFilters/utils", () => {
         "email",
         "planned_date",
         "another_date",
-        // todo: v2 enums
-        // "user_type",
+        "user_type",
       ])
     })
 
