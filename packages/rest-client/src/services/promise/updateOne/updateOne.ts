@@ -11,14 +11,10 @@ export const updateOne = async (
   allSchemas: Schemas,
   schemaName: string,
   data: RestClientUpdateData, // todo: Resource or Record?
-): Promise<Record | null> => {
+): Promise<Record> => {
   const resources = await dataSource.updateOne(allSchemas, schemaName, data)
 
   notifySubscribers()
-
-  if (!resources) {
-    return null
-  }
 
   return flattenResourcesIntoRecords(allSchemas, resources, schemaName)[0]
 }
