@@ -28,7 +28,7 @@ The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.o
 
 ## Middleware Behavior
 
-## Querying Data
+### Querying Data
 
 If `required` is `false`, filtering `null` values is handled like the following:
 
