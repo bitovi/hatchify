@@ -35,7 +35,7 @@ export function getFilterableFields(
     )
       .filter(([, { control }]) => control.hidden !== true)
       .filter(([, { control }]) =>
-        ["string", "date", "datetime", "enum"].includes(
+        ["string", "date", "dateonly", "datetime", "enum"].includes(
           control.type.toLowerCase(),
         ),
       )

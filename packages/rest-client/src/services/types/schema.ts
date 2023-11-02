@@ -71,12 +71,14 @@ type UnionToObject<
   TMutate extends boolean,
 > = {
   [Key in Union["key"]]: Extract<Union, { key: Key }> extends {
-    control: { type: infer Type }
+    control: { type: infer Type; values: infer EnumValues }
   }
     ? Type extends "Number" | "number" | "NUMBER"
       ? number
       : Type extends "Boolean" | "boolean" | "BOOLEAN"
       ? boolean
+      : Type extends "Enum" | "enum" | "ENUM"
+      ? EnumValues
       : Type extends "String" | "string" | "STRING"
       ? string
       : Type extends "Datetime" | "datetime" | "DATETIME"
