@@ -3,6 +3,7 @@ import { validateValues } from "./validateValues"
 import { HatchifyInvalidSchemaError } from "../../types"
 
 export function getPartialControl<
+  // @todo HATCH-417
   TRequired extends boolean,
   const TValues extends readonly string[],
 >(
