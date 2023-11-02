@@ -9,11 +9,11 @@ import type {
 } from "./types"
 import type { PartialAttribute } from "../../types"
 
-export function enumerate(
-  props: PartialEnumProps,
+export function enumerate<TRequired extends boolean = false>(
+  props: PartialEnumProps<TRequired>,
 ): PartialAttribute<
   PartialEnumORM,
-  PartialEnumControlType,
+  PartialEnumControlType<TRequired>,
   string,
   FinalEnumORM
 > {
@@ -21,7 +21,7 @@ export function enumerate(
     name: `enumerate(${JSON.stringify(props)})`,
     orm: getPartialOrm(props),
     control: getPartialControl(props),
-    finalize: function finalizeText() {
+    finalize: function finalizeEnumerate() {
       return getFinalize(this)
     },
   }

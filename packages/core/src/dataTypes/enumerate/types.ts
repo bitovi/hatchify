@@ -4,13 +4,13 @@ import type {
   PartialSequelizeDataType,
 } from "../../types"
 
-export interface PartialEnumProps
-  extends PartialDataTypeProps<string, boolean> {
+export interface PartialEnumProps<TRequired extends boolean>
+  extends PartialDataTypeProps<string, TRequired> {
   values: string[]
 }
 
-export interface PartialEnumControlType
-  extends PartialControlType<string, boolean> {
+export interface PartialEnumControlType<TRequired extends boolean>
+  extends PartialControlType<string, TRequired> {
   type: "enum"
   values: string[]
 }
