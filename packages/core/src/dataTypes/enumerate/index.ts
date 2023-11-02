@@ -10,6 +10,7 @@ import type {
 import type { PartialAttribute } from "../../types"
 
 export function enumerate<
+  // @todo HATCH-417
   TRequired extends boolean = false,
   const TValues extends readonly string[] = string[],
 >(
