@@ -3,7 +3,7 @@ import { validateValues } from "./validateValues"
 import { HatchifyInvalidSchemaError } from "../../types"
 
 export function getPartialOrm(
-  props: PartialEnumProps<boolean, string[]>,
+  props: PartialEnumProps<boolean, any>,
 ): PartialEnumORM {
   if (!validateValues(props.values)) {
     throw new HatchifyInvalidSchemaError(

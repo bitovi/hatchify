@@ -43,7 +43,7 @@ describe("getPartialControl", () => {
 
   it("handles invalid values", () => {
     expect(() =>
-      getPartialControl({} as unknown as PartialEnumProps<boolean>),
+      getPartialControl({} as unknown as PartialEnumProps<boolean, string[]>),
     ).toThrow(
       new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
@@ -52,14 +52,17 @@ describe("getPartialControl", () => {
     expect(() =>
       getPartialControl({
         values: null,
-      } as unknown as PartialEnumProps<boolean>),
+      } as unknown as PartialEnumProps<boolean, string[]>),
     ).toThrow(
       new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
-      getPartialControl({ values: 1 } as unknown as PartialEnumProps<boolean>),
+      getPartialControl({ values: 1 } as unknown as PartialEnumProps<
+        boolean,
+        string[]
+      >),
     ).toThrow(
       new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
@@ -68,14 +71,17 @@ describe("getPartialControl", () => {
     expect(() =>
       getPartialControl({
         values: "foo",
-      } as unknown as PartialEnumProps<boolean>),
+      } as unknown as PartialEnumProps<boolean, string[]>),
     ).toThrow(
       new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
-      getPartialControl({ values: [] } as unknown as PartialEnumProps<boolean>),
+      getPartialControl({ values: [] } as unknown as PartialEnumProps<
+        boolean,
+        string[]
+      >),
     ).toThrow(
       new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
