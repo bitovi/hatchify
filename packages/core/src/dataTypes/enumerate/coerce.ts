@@ -4,7 +4,10 @@ import type { ValueInRequest } from "../../types"
 
 export function coerce(
   value: ValueInRequest,
-  control: Omit<PartialEnumControlType, "allowNullInfer">,
+  control: Omit<
+    PartialEnumControlType<boolean, readonly string[]>,
+    "allowNullInfer"
+  >,
 ): string | null {
   if (value === undefined) {
     throw new HatchifyCoerceError("as a non-undefined value")

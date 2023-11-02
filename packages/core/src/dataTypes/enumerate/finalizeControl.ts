@@ -1,8 +1,8 @@
 import type { PartialEnumControlType } from "./types"
 
-export function finalizeControl(
-  props: Omit<PartialEnumControlType, "allowNullInfer">,
-): Required<Omit<PartialEnumControlType, "allowNullInfer">> {
+export function finalizeControl<TValues extends readonly string[]>(
+  props: Omit<PartialEnumControlType<boolean, TValues>, "allowNullInfer">,
+): Required<Omit<PartialEnumControlType<boolean, TValues>, "allowNullInfer">> {
   // @ts-expect-error @todo HATCH-417
   delete props.allowNullInfer
   return {
