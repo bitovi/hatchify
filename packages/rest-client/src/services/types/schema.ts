@@ -1,5 +1,12 @@
 import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
-// import { belongsTo, boolean, hasMany, integer, string } from "@hatchifyjs/core"
+// import {
+//   belongsTo,
+//   boolean,
+//   hasMany,
+//   integer,
+//   string,
+//   enumerate,
+// } from "@hatchifyjs/core"
 
 export type EnumObject = { type: "enum"; allowNull?: boolean; values: string[] }
 export type AttributeObject = { type: string; allowNull?: boolean } | EnumObject
@@ -71,12 +78,14 @@ type UnionToObject<
   TMutate extends boolean,
 > = {
   [Key in Union["key"]]: Extract<Union, { key: Key }> extends {
-    control: { type: infer Type }
+    control: { type: infer Type; values?: infer EnumValues }
   }
     ? Type extends "Number" | "number" | "NUMBER"
       ? number
       : Type extends "Boolean" | "boolean" | "BOOLEAN"
       ? boolean
+      : Type extends "Enum" | "enum" | "ENUM"
+      ? EnumValues[any]
       : Type extends "String" | "string" | "STRING"
       ? string
       : Type extends "Datetime" | "datetime" | "DATETIME"
@@ -202,13 +211,17 @@ export type MutateRelationship = {
 //   name: "User",
 //   attributes: {
 //     name: string({ required: true }),
-//     optName: string(),
+//     // optName: string(),
 //     age: integer({ required: true }),
 //     optAge: integer(),
-//     employed: boolean({ required: true }),
-//     optEmployed: boolean({ required: false }),
+//     status: enumerate({
+//       required: true,
+//       values: ["active", "inactive"],
+//     }),
+//     // employed: boolean({ required: true }),
+//     // optEmployed: boolean({ required: false }),
 //   },
-// }
+// } satisfies PartialSchema
 
 // type Prettify<T> = {
 //   [K in keyof T]: T[K]
@@ -224,7 +237,9 @@ export type MutateRelationship = {
 // type AAA = (typeof partialTodo.relationships.user)["targetSchema"]
 // //   ^?
 
-// type BB = Prettify<AA>["attributes"]["name"]
+// const aaaaaa = enumerate({ values: ["active", "inactive"] })
+// type BB = (typeof aaaaaa)["control"]["values"]
+// type PBB = Prettify<BB>
 // //   ^?
 
 // type CC = {
@@ -235,6 +250,10 @@ export type MutateRelationship = {
 // //   ^?
 
 // type EE = TypedRelationships<Schemass, typeof partialTodo, false>
+
+// type AAAAAA = TypedAttributes<typeof partialUser.attributes, false>
+// type AAAAAAAAAA = Prettify<AAAAAA>
+// //   ^?
 
 // type EEE1 = Prettify<EE>["users"][0]["optEmployed"]
 // //   ^?

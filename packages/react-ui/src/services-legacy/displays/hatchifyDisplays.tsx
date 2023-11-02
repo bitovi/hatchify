@@ -36,7 +36,6 @@ export function getDefaultDisplayRender(
   // @todo primitive lists?
   const defaultRender = ({ record }: { record: FlatRecord }) => {
     const value = record[attribute]
-
     if (attributeType === "date" && typeof value === "string") {
       return <Date dateOnly={false} value={value} />
     }

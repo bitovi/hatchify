@@ -5,9 +5,9 @@ import {
   belongsTo,
   dateonly,
   datetime,
+  enumerate,
   integer,
   uuid,
-  // enumerate,
 } from "@hatchifyjs/core"
 
 const schemas = {
@@ -28,7 +28,7 @@ const schemas = {
       importance: integer(),
       completedDate: dateonly(),
       uuid: uuid(),
-      // status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
+      status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
     },
     relationships: {
       owner: belongsTo("User"),
