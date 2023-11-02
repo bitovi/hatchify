@@ -65,6 +65,7 @@ export type PartialAttributeRecord = Record<
     >
   | PartialAttribute<
       PartialEnumORM,
+      // @ts-expect-error @todo HATCH-417
       PartialEnumControlType,
       string,
       FinalEnumORM
@@ -140,7 +141,13 @@ export type FinalAttributeRecord = Record<
       Date,
       FinalDatetimeORM
     >
-  | FinalAttribute<PartialEnumORM, PartialEnumControlType, string, FinalEnumORM>
+  | FinalAttribute<
+      PartialEnumORM,
+      // @ts-expect-error @todo HATCH-417
+      PartialEnumControlType,
+      string,
+      FinalEnumORM
+    >
   | FinalAttribute<
       PartialNumberORM,
       // @ts-expect-error @todo HATCH-417

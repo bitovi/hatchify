@@ -70,34 +70,48 @@ describe("getPartialOrm", () => {
   })
 
   it("handles invalid values", () => {
-    expect(() => getPartialOrm({} as unknown as PartialEnumProps)).toThrow(
-      new HatchifyInvalidSchemaError(
-        "enum must be called with values as a non-empty string array",
-      ),
-    )
     expect(() =>
-      getPartialOrm({ values: null } as unknown as PartialEnumProps),
+      getPartialOrm({} as unknown as PartialEnumProps<boolean, string[]>),
     ).toThrow(
       new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
-      getPartialOrm({ values: 1 } as unknown as PartialEnumProps),
+      getPartialOrm({ values: null } as unknown as PartialEnumProps<
+        boolean,
+        string[]
+      >),
     ).toThrow(
       new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
-      getPartialOrm({ values: "foo" } as unknown as PartialEnumProps),
+      getPartialOrm({ values: 1 } as unknown as PartialEnumProps<
+        boolean,
+        string[]
+      >),
     ).toThrow(
       new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",
       ),
     )
     expect(() =>
-      getPartialOrm({ values: [] } as unknown as PartialEnumProps),
+      getPartialOrm({ values: "foo" } as unknown as PartialEnumProps<
+        boolean,
+        string[]
+      >),
+    ).toThrow(
+      new HatchifyInvalidSchemaError(
+        "enum must be called with values as a non-empty string array",
+      ),
+    )
+    expect(() =>
+      getPartialOrm({ values: [] } as unknown as PartialEnumProps<
+        boolean,
+        string[]
+      >),
     ).toThrow(
       new HatchifyInvalidSchemaError(
         "enum must be called with values as a non-empty string array",

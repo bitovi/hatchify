@@ -2,7 +2,10 @@ import type { PartialEnumORM, PartialEnumProps } from "./types"
 import { validateValues } from "./validateValues"
 import { HatchifyInvalidSchemaError } from "../../types"
 
-export function getPartialOrm(props: PartialEnumProps): PartialEnumORM {
+export function getPartialOrm(
+  // @todo HATCH-417
+  props: PartialEnumProps<boolean, any>,
+): PartialEnumORM {
   if (!validateValues(props.values)) {
     throw new HatchifyInvalidSchemaError(
       "enum must be called with values as a non-empty string array",
