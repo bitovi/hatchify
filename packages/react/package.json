@@ -26,8 +26,8 @@
   "dependencies": {
     "@hatchifyjs/core": "^0.2.9",
     "@hatchifyjs/design-mui": "^0.1.9",
-    "@hatchifyjs/react-ui": "^0.1.5",
-    "@hatchifyjs/rest-client-jsonapi": "^0.1.5"
+    "@hatchifyjs/react-ui": "^0.1.6",
+    "@hatchifyjs/rest-client-jsonapi": "^0.1.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
