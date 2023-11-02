@@ -17,13 +17,13 @@ import type {
 export function getFinalize(
   props: PartialAttribute<
     PartialEnumORM,
-    Omit<PartialEnumControlType, "allowNullInfer">,
+    Omit<PartialEnumControlType<boolean>, "allowNullInfer">,
     string,
     FinalEnumORM
   >,
 ): FinalAttribute<
   PartialEnumORM,
-  Omit<PartialEnumControlType, "allowNullInfer">,
+  Omit<PartialEnumControlType<boolean>, "allowNullInfer">,
   string,
   FinalEnumORM
 > {
