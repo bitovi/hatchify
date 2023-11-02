@@ -9,11 +9,14 @@ import type {
 } from "./types"
 import type { PartialAttribute } from "../../types"
 
-export function enumerate<TRequired extends boolean = false>(
-  props: PartialEnumProps<TRequired>,
+export function enumerate<
+  TRequired extends boolean = false,
+  const TValues extends readonly string[] = string[],
+>(
+  props: PartialEnumProps<TRequired, TValues>,
 ): PartialAttribute<
   PartialEnumORM,
-  PartialEnumControlType<TRequired>,
+  PartialEnumControlType<TRequired, TValues>,
   string,
   FinalEnumORM
 > {

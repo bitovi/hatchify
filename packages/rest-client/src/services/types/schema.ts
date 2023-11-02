@@ -7,7 +7,6 @@ import {
   string,
   enumerate,
 } from "@hatchifyjs/core"
-import { satisfies } from "semver"
 
 export type EnumObject = { type: "enum"; allowNull?: boolean; values: string[] }
 export type AttributeObject = { type: string; allowNull?: boolean } | EnumObject
@@ -86,7 +85,7 @@ type UnionToObject<
       : Type extends "Boolean" | "boolean" | "BOOLEAN"
       ? boolean
       : Type extends "Enum" | "enum" | "ENUM"
-      ? string[]
+      ? EnumValues[any]
       : Type extends "String" | "string" | "STRING"
       ? string
       : Type extends "Datetime" | "datetime" | "DATETIME"
@@ -237,10 +236,17 @@ type AA = GetSchemaFromName<
 
 type AAA = (typeof partialTodo.relationships.user)["targetSchema"]
 //   ^?
-
-const aaaaaa = enumerate({ values: ["active", "inactive"] })
+type Writeable<T> = { -readonly [P in keyof T]: T[P] }
+// const aaaaaa = enumerate<false, ["active", "inactive"]>({
+const aaaaaa = enumerate({
+  values: ["active", "inactive"],
+})
 type BB = (typeof aaaaaa)["control"]["values"]
 type PBB = Prettify<BB>
+//   ^?
+
+type RRRR = (typeof partialUser.attributes)["status"]["control"]
+type RRRRRRR = Prettify<RRRR>
 //   ^?
 
 type CC = {
@@ -253,7 +259,7 @@ type DD = Prettify<CC>
 type EE = TypedRelationships<Schemass, typeof partialTodo, false>
 
 type AAAAAA = TypedAttributes<typeof partialUser.attributes, false>
-type AAAAAAAAAA = Prettify<AAAAAA>
+type AAAAAAAAAA = Prettify<AAAAAA>["status"]
 //   ^?
 
 type EEE1 = Prettify<EE>["users"][0]["optEmployed"]
