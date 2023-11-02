@@ -14,16 +14,16 @@ import type {
   ValueInRequest,
 } from "../../types"
 
-export function getFinalize(
+export function getFinalize<TValues extends readonly string[]>(
   props: PartialAttribute<
     PartialEnumORM,
-    Omit<PartialEnumControlType<boolean>, "allowNullInfer">,
+    Omit<PartialEnumControlType<boolean, TValues>, "allowNullInfer">,
     string,
     FinalEnumORM
   >,
 ): FinalAttribute<
   PartialEnumORM,
-  Omit<PartialEnumControlType<boolean>, "allowNullInfer">,
+  Omit<PartialEnumControlType<boolean, TValues>, "allowNullInfer">,
   string,
   FinalEnumORM
 > {

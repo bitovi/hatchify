@@ -1,4 +1,4 @@
-export function validateValues(values: string[]): boolean {
+export function validateValues(values: readonly string[]): boolean {
   return (
     Array.isArray(values) &&
     values.length !== 0 &&
