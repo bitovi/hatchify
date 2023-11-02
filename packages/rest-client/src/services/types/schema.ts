@@ -7,6 +7,7 @@ import {
   string,
   enumerate,
 } from "@hatchifyjs/core"
+import { satisfies } from "semver"
 
 export type EnumObject = { type: "enum"; allowNull?: boolean; values: string[] }
 export type AttributeObject = { type: string; allowNull?: boolean } | EnumObject
@@ -221,7 +222,7 @@ const partialUser = {
     // employed: boolean({ required: true }),
     // optEmployed: boolean({ required: false }),
   },
-}
+} satisfies PartialSchema
 
 type Prettify<T> = {
   [K in keyof T]: T[K]
