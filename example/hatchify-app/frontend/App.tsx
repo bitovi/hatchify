@@ -47,21 +47,10 @@ const App: React.FC = () => {
         onSelectedChange={(selected) => setSelected(selected)}
       >
         <TodoEmptyList>No records to display</TodoEmptyList>
-        <TodoColumn
-          type="append"
-          label="Action"
-          renderValue={({ record }) => {
-            return (
-              <>
-                <button onClick={() => console.log(record)}>Download</button>
-                <button onClick={() => console.log(record)}>Open</button>
-                <button onClick={() => console.log(record)}>
-                  More Actions
-                </button>
-              </>
-            )
-          }}
-        />
+        <TodoColumn field="dueDate" label="Cool" />
+        <TodoColumn label="Beans," />
+        <TodoColumn type="append" label="My Dude" />
+        <TodoColumn type="prepend" label="Very" />
       </TodoList>
     </MuiProvider>
   )

@@ -54,17 +54,18 @@ export function getColumns(
   if (overwrite.length > 0) {
     for (let i = 0; i < overwrite.length; i++) {
       const { props } = overwrite[i]
+      const field = schema?.attributes?.[props.field]
       const relationship = schema?.relationships?.[props.field]
 
       hatchifyColumns.push(
         getHatchifyDisplay({
-          sortable: true,
+          sortable: field !== undefined,
           isRelationship: relationship !== undefined,
           label: props.label || null,
           attribute: props.field,
           attributeSchema: relationship
             ? null
-            : schema.attributes?.[props.field].control,
+            : schema.attributes?.[props?.field]?.control,
           renderValue: props.renderValue,
           ValueComponent: props.ValueComponent,
           defaultValueComponents: valueComponents,

@@ -53,8 +53,7 @@ export type OverwriteColumnProps<
   schemaName: TSchemaName
   type?: never
   label?: string
-  // todo: should field be never for overwrite?
-  field: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
+  field?: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
 } & { renderValue?: RenderValue; ValueComponent?: ValueComponent }
 
 export function HatchifyColumn<
