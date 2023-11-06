@@ -3,15 +3,17 @@ import { useState } from "react"
 import { v2ToV1 } from "@hatchifyjs/core"
 import {
   hatchifyReact,
-  MuiProvider,
+  HatchifyProvider,
   createJsonapiClient,
 } from "@hatchifyjs/react"
+import { createTheme, ThemeProvider } from "@mui/material"
 import { Todo } from "../schemas/todo"
 import { User } from "../schemas/user"
 
 export const hatchedReact = hatchifyReact(
   createJsonapiClient("http://localhost:3000/api", v2ToV1({ Todo, User })),
 )
+const defaultTheme = createTheme()
 
 const TodoList = hatchedReact.components.Todo.Collection
 const TodoColumn = hatchedReact.components.Todo.Column
@@ -31,32 +33,34 @@ const App: React.FC = () => {
   }
 
   return (
-    <MuiProvider>
-      <button onClick={onActionClick} style={{ margin: 10 }}>
-        action
-      </button>
-      <TodoList
-        defaultSelected={selected}
-        onSelectedChange={(selected) => setSelected(selected)}
-      >
-        <TodoEmptyList>No records to display</TodoEmptyList>
-        <TodoColumn
-          type="append"
-          label="Action"
-          renderValue={({ record }) => {
-            return (
-              <>
-                <button onClick={() => console.log(record)}>Download</button>
-                <button onClick={() => console.log(record)}>Open</button>
-                <button onClick={() => console.log(record)}>
-                  More Actions
-                </button>
-              </>
-            )
-          }}
-        />
-      </TodoList>
-    </MuiProvider>
+    <ThemeProvider theme={defaultTheme}>
+      <HatchifyProvider>
+        <button onClick={onActionClick} style={{ margin: 10 }}>
+          action
+        </button>
+        <TodoList
+          defaultSelected={selected}
+          onSelectedChange={(selected) => setSelected(selected)}
+        >
+          <TodoEmptyList>No records to display</TodoEmptyList>
+          <TodoColumn
+            type="append"
+            label="Action"
+            renderValue={({ record }) => {
+              return (
+                <>
+                  <button onClick={() => console.log(record)}>Download</button>
+                  <button onClick={() => console.log(record)}>Open</button>
+                  <button onClick={() => console.log(record)}>
+                    More Actions
+                  </button>
+                </>
+              )
+            }}
+          />
+        </TodoList>
+      </HatchifyProvider>
+    </ThemeProvider>
   )
 }
 

@@ -36,15 +36,15 @@
     "vitest": "^0.30.1"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
     "@hatchifyjs/react-ui": "^0.0.1-31",
     "@mui/icons-material": "^5.14.1",
-    "@mui/material": "^5.12.0",
     "@mui/utils": "^5.13.1",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.12.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
