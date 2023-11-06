@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "main": "./dist/react.js",
   "module": "./dist/react.mjs",
   "types": "./dist/react.d.ts",
@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@hatchifyjs/core": "^0.2.9",
-    "@hatchifyjs/design-mui": "^0.1.11",
-    "@hatchifyjs/react-ui": "^0.1.8",
+    "@hatchifyjs/design-mui": "^0.1.12",
+    "@hatchifyjs/react-ui": "^0.1.9",
     "@hatchifyjs/rest-client-jsonapi": "^0.1.7"
   },
   "devDependencies": {
