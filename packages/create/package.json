@@ -18,7 +18,9 @@
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
     "eslint": "eslint .",
-    "eslint:fix": "eslint --fix ."
+    "eslint:fix": "eslint --fix .",
+    "depcheck": "depcheck .",
+    "test": "echo 'TBD'"
   },
   "engines": {
     "node": "^18.0.0"
