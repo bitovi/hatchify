@@ -54,114 +54,11 @@ following steps:
    node -v
    ```
 
-2. Create a new Vite project titled “hatchify-app”:
+2. Create a new project:
 
    ```bash
-   npm create vite@latest hatchify-app -- --template react-ts
+   npm init @hatchifyjs
    ```
-
-3. Move into the “hatchify-app” directory and install the node modules:
-
-   ```bash
-   cd hatchify-app
-
-   npm install
-   ```
-
-4. Install `koa`, `@koa/cors`, and the frontend and backend HatchifyJS
-   libraries:
-
-   ```bash
-   npm install sequelize sqlite3 koa @koa/cors @hatchifyjs/core @hatchifyjs/koa @hatchifyjs/react
-   ```
-
-5. Install the following dev packages to run our backend server:
-
-   ```bash
-   npm install @types/koa @types/koa__cors nodemon ts-node --save-dev
-   ```
-
-6. Remove `"type": "module"` from `package.json` so that we can have
-   consistent TS imports across our backend and frontend apps
-
-7. Overwrite the value of the `scripts` property in `package.json` with the following:
-
-   ```bash
-   "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-   "dev:frontend": "vite",
-   "dev:backend": "nodemon --esm backend/index.ts --watch backend",
-   "build:frontend": "tsc && vite build --outDir dist/frontend",
-   "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
-   "start:frontend": "vite preview --outDir dist/frontend",
-   "start:backend": "node dist/backend/backend/index.js"
-   ```
-
-8. Create a “backend” directory at the root. This is where we will put
-   our backend code:
-
-   ```bash
-   mkdir backend
-   ```
-
-9. For consistency, we’re going to rename our “src” folder to
-   “frontend”:
-
-   ```bash
-   mv src frontend
-   ```
-
-   1. Additionally, we will also have to update line 11 in our
-      `index.html` from `src="/src/main.tsx"` to
-      `src="/frontend/main.tsx"`
-
-10. Replace the contents of your `tsconfig.json` with:
-
-    ```json
-    {
-      "experimentalResolver": true,
-      "compilerOptions": {
-        "module": "NodeNext",
-        "moduleResolution": "Node",
-        "target": "ESNext",
-        "lib": ["DOM", "DOM.Iterable", "ESNext"],
-        "jsx": "react-jsx",
-        "composite": true,
-        "declaration": true,
-        "incremental": true,
-        "strict": true,
-        "allowJs": false,
-        "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true,
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "isolatedModules": true,
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "resolveJsonModule": true,
-        "skipLibCheck": true,
-        "useDefineForClassFields": true
-      },
-      "include": ["frontend", "backend", "schemas", "vite.config.ts"],
-      "exclude": ["node_modules"]
-    }
-    ```
-
-11. Rename `tsconfig.node.json` to `tsconfig.backend.json`:
-
-    ```bash
-    mv tsconfig.node.json tsconfig.backend.json
-    ```
-
-    Then, replace its contents with:
-
-    ```json
-    {
-      "extends": "./tsconfig.json",
-      "compilerOptions": {},
-      "include": ["backend", "schemas"]
-    }
-    ```
 
 # Schemas
 
@@ -169,14 +66,8 @@ A schema is a definition of a resource used in our HatchifyJS system. We
 use these shared schemas across our backend and frontend to create
 database tables, generate REST endpoints, and create React components
 and data fetchers. Because these schemas are the backbone of our
-frontend and backend, we will place them in a `/schemas`
-directory at the root directory of our project.
-
-**✏️ Create a** `schemas` **directory:**
-
-```bash
-mkdir schemas
-```
+frontend and backend, we will place them in the empty `schemas.ts`
+file at the root directory of our project.
 
 The required fields of the schema are a `name` for your model and the
 `attributes` that will be held within it. If you have written ORM models
@@ -184,13 +75,14 @@ before, specifically Sequelize, this should look pretty familiar to you.
 HatchifyJS uses Sequelize, a Node.js- and TypeScript-compatible ORM,
 under the hood to talk to your database.
 
-**✏️ Create a** `schemas.ts`**:**
+**✏️ Update** `schemas.ts`**:**
 
 > **Note:** Take note of lines commented with the 👀 emoji.
 
 ```ts
 // hatchify-app/schemas.ts
-import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
+import { belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 
 export const Todo: PartialSchema = {
   name: "Todo",
@@ -236,39 +128,6 @@ check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/a
 
 # Backend - The Hatchify Middleware
 
-**✏️ Create an** `index.ts` **inside of the “backend” directory:**
-
-```ts
-// hatchify-app/backend/index.ts
-import Koa from "koa"
-import cors from "@koa/cors"
-import { hatchifyKoa } from "@hatchifyjs/koa"
-import { Todo, User } from "../schemas"
-
-const app = new Koa()
-const hatchedKoa = hatchifyKoa(
-  { Todo, User },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-      logging: false,
-    },
-  },
-)
-
-app.use(cors())
-app.use(hatchedKoa.middleware.allModels.all)
-;(async () => {
-  await hatchedKoa.createDatabase()
-
-  app.listen(3000, () => {
-    console.log("Started on port 3000")
-  })
-})()
-```
-
 Now if we run our application, HatchifyJS will create CRUD application
 endpoints for our `User` and `Todo` models automatically.
 
@@ -278,7 +137,11 @@ This step will take care of not only adding your schema files, but also
 validating them against each other, and setting up relationships for
 you.
 
-Next, we can start up the backend to see everything in action.
+Next, we can start up the backend to see everything in action. HatchifyJS will create CRUD application endpoints for our `User` and `Todo` models automatically.
+
+If you create additional schemas, export them the same way. This step will take care of not only adding your schema files, but also
+validating them against each other, and setting up relationships for
+you.
 
 ```bash
 npm run dev:backend
@@ -501,65 +364,6 @@ Once we create our HatchifyJS app, we can pull the `Collection` component from
 the `Todo` key and render it.
 
 ## Rendering a List
-
-**✏️ Modify the contents of `frontend/main.tsx`:**
-
-- Remove the extension from line 3. Now it should look like this:
-
-  `import App from './App'`
-
-- Get rid of the default Vite styles by removing line 4:
-
-  `import './index.css'`
-
-Your `main.tsx` should now look like this:
-
-```tsx
-import React from "react"
-import ReactDOM from "react-dom/client"
-import App from "./App"
-
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
-```
-
-Now we can go ahead and create an instance of a HatchifyJS react app and
-then render the Collection component for our todos.
-
-**✏️ Replace the contents of `frontend/App.tsx` with the
-following:**
-
-```tsx
-// hatchify-app/frontend/App.tsx
-import { v2ToV1 } from "@hatchifyjs/core"
-import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo, User } from "../schemas"
-
-export const hatchedReact = hatchifyReact(
-  createJsonapiClient(
-    "http://localhost:3000/api",
-    v2ToV1({
-      Todo,
-      User,
-    }),
-  ),
-)
-
-const TodoList = hatchedReact.components.Todo.Collection
-
-const App: React.FC = () => {
-  return (
-    <MuiProvider>
-      <TodoList />
-    </MuiProvider>
-  )
-}
-
-export default App
-```
 
 **✏️**In another terminal, run `npm run dev:frontend` and open
 [http://localhost:5173/](http://localhost:5173/). You
