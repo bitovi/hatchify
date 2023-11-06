@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.4",
     "@types/minimist": "^1.2.4",
     "@types/prompts": "^2.4.7",
     "cross-spawn": "^7.0.3",
