@@ -1,0 +1,12 @@
+ignore-dirs:
+  - /dist
+ignores:
+  - "@hatchifyjs/core"
+  - "@hatchifyjs/express"
+  - "@hatchifyjs/koa"
+  - "@hatchifyjs/react"
+  - "@koa/cors"
+  - "cors"
+  - "dotenv"
+  - "express"
+  - "koa"
