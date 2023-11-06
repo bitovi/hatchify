@@ -55,6 +55,9 @@ export function getColumns(
     for (let i = 0; i < overwrite.length; i++) {
       const { props } = overwrite[i]
       const relationship = schema?.relationships?.[props.field]
+      const attributeSchema = relationship
+        ? null
+        : schema.attributes?.[props.field]?.control || null
 
       hatchifyColumns.push(
         getHatchifyDisplay({
@@ -62,9 +65,7 @@ export function getColumns(
           isRelationship: relationship !== undefined,
           label: props.label || null,
           attribute: props.field,
-          attributeSchema: relationship
-            ? null
-            : schema.attributes?.[props.field].control,
+          attributeSchema: attributeSchema,
           renderValue: props.renderValue,
           ValueComponent: props.ValueComponent,
           defaultValueComponents: valueComponents,
@@ -82,6 +83,9 @@ export function getColumns(
       if (replaceWith) {
         const { props } = replaceWith
         const relationship = schema?.relationships?.[props.field]
+        const attributeSchema = relationship
+          ? null
+          : schema.attributes?.[props.field]?.control || null
 
         hatchifyColumns.push(
           getHatchifyDisplay({
@@ -89,9 +93,7 @@ export function getColumns(
             isRelationship: relationship !== undefined,
             label: props.label || null,
             attribute: props.field,
-            attributeSchema: relationship
-              ? null
-              : schema.attributes?.[props.field].control,
+            attributeSchema,
             renderValue: props.renderValue,
             ValueComponent: props.ValueComponent,
             defaultValueComponents: valueComponents,

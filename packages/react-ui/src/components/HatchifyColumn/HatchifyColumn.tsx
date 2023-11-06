@@ -41,7 +41,10 @@ export type ReplaceColumnProps<
   schemaName: TSchemaName
   type: "replace"
   label?: string
-  field: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
+  field:
+    | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
+    | "id"
+    | ""
 } & { renderValue?: RenderValue; ValueComponent?: ValueComponent }
 
 // todo: renderValue and ValueComponent should be optional, but only one can be provided
@@ -54,7 +57,10 @@ export type OverwriteColumnProps<
   type?: never
   label?: string
   // todo: should field be never for overwrite?
-  field: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
+  field:
+    | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
+    | "id"
+    | ""
 } & { renderValue?: RenderValue; ValueComponent?: ValueComponent }
 
 export function HatchifyColumn<
