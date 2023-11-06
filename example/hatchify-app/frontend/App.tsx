@@ -2,10 +2,11 @@
 import { useState } from "react"
 import {
   hatchifyReact,
-  MuiProvider,
+  HatchifyProvider,
   createJsonapiClient,
 } from "@hatchifyjs/react"
 import schemas from "../schemas/schemas"
+import { createTheme, ThemeProvider } from "@mui/material"
 
 export const hatchedReact = hatchifyReact(
   createJsonapiClient("http://localhost:3000/api", schemas),
@@ -38,32 +39,34 @@ const App: React.FC = () => {
   }
 
   return (
-    <MuiProvider>
-      <button onClick={onActionClick} style={{ margin: 10 }}>
-        action
-      </button>
-      <TodoList
-        defaultSelected={selected}
-        onSelectedChange={(selected) => setSelected(selected)}
-      >
-        <TodoEmptyList>No records to display</TodoEmptyList>
-        <TodoColumn
-          type="append"
-          label="Action"
-          renderValue={({ record }) => {
-            return (
-              <>
-                <button onClick={() => console.log(record)}>Download</button>
-                <button onClick={() => console.log(record)}>Open</button>
-                <button onClick={() => console.log(record)}>
-                  More Actions
-                </button>
-              </>
-            )
-          }}
-        />
-      </TodoList>
-    </MuiProvider>
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <button onClick={onActionClick} style={{ margin: 10 }}>
+          action
+        </button>
+        <TodoList
+          defaultSelected={selected}
+          onSelectedChange={(selected) => setSelected(selected)}
+        >
+          <TodoEmptyList>No records to display</TodoEmptyList>
+          <TodoColumn
+            type="append"
+            label="Action"
+            renderValue={({ record }) => {
+              return (
+                <>
+                  <button onClick={() => console.log(record)}>Download</button>
+                  <button onClick={() => console.log(record)}>Open</button>
+                  <button onClick={() => console.log(record)}>
+                    More Actions
+                  </button>
+                </>
+              )
+            }}
+          />
+        </TodoList>
+      </HatchifyProvider>
+    </ThemeProvider>
   )
 }
 
