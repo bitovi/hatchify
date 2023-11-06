@@ -47,7 +47,6 @@ const App: React.FC = () => {
         onSelectedChange={(selected) => setSelected(selected)}
       >
         <TodoEmptyList>No records to display</TodoEmptyList>
-        <TodoColumn field="" label="Select" />
         <TodoColumn
           type="append"
           label="Action"
