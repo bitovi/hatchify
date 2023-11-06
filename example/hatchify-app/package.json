@@ -16,10 +16,13 @@
     "start:backend": "node dist/backend/backend/index.js"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@hatchifyjs/core": "file:../../packages/core",
     "@hatchifyjs/koa": "file:../../packages/koa",
     "@hatchifyjs/react": "file:../../packages/react",
     "@koa/cors": "^4.0.0",
+    "@mui/material": "^5.12.0",
     "koa": "^2.14.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
