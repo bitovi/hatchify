@@ -16,7 +16,9 @@
     "dev": "unbuild --stub",
     "build": "unbuild",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "eslint": "eslint .",
+    "eslint:fix": "eslint --fix ."
   },
   "engines": {
     "node": "^18.0.0"
