@@ -2,7 +2,6 @@ import { Children as ReactChildren } from "react"
 import { hasValidChildren } from "../displays/hatchifyDisplays"
 import { HatchifyAttributeField } from "../../components"
 
-// import type { Schema } from "@hatchifyjs/rest-client";
 import type { Schema } from "../api/schemas" //TODO update to the right schema
 
 import type {

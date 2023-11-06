@@ -1,7 +1,7 @@
 import type {
   GetSchemaFromName,
   GetSchemaNames,
-  Schemas,
+  FinalSchemas,
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type {
@@ -25,7 +25,7 @@ export type RenderValue = ({
 
 // todo: renderValue and ValueComponent should be required, but only one can be provided
 export type AdditionalColumnProps = {
-  allSchemas: Schemas
+  allSchemas: FinalSchemas
   schemaName: string
   type: "append" | "prepend"
   label: string
@@ -37,7 +37,7 @@ export type ReplaceColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
-  allSchemas: Schemas
+  allSchemas: FinalSchemas
   schemaName: TSchemaName
   type: "replace"
   label?: string
@@ -49,7 +49,7 @@ export type OverwriteColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
-  allSchemas: Schemas
+  allSchemas: FinalSchemas
   schemaName: TSchemaName
   type?: never
   label?: string

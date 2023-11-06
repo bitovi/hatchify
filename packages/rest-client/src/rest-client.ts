@@ -28,7 +28,6 @@ export type {
   RestClient,
   Schema,
   SchemaMap,
-  Schemas,
   SchemalessResourceRelationship,
   SchemalessResourceRelationshipObject,
   SourceConfig,

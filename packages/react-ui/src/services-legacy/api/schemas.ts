@@ -1,5 +1,3 @@
-// import type { Schema } from "@hatchifyjs/rest-client"
-
 import type { Attribute } from "../../presentation/interfaces"
 
 // TODO there are 2 different Relationship interface. The other one is in presentation interfaces

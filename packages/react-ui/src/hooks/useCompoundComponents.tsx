@@ -1,9 +1,11 @@
-import type { FinalSchema } from "@hatchifyjs/core"
+import { FinalAttributeRecord, FinalSchema, uuidv4 } from "@hatchifyjs/core"
 import type { HatchifyDisplay } from "../services"
 import type { DefaultValueComponentsTypes } from "../components"
 import { useHatchifyPresentation } from "../components"
 import { Children as ReactChildren } from "react"
 import { getDisplaysFromSchema, getHatchifyDisplay } from "../services"
+import { FinalSchemas } from "@hatchifyjs/rest-client"
+import { ValueComponent } from "../presentation"
 
 interface CompoundComponents {
   columns: HatchifyDisplay[]
@@ -126,4 +128,110 @@ export function getEmptyList(childArray: JSX.Element[]): () => JSX.Element {
   const emptyDisplay: JSX.Element = emptyComponent?.props.children || undefined
   const EmptyList = () => emptyDisplay || <div>No records found</div>
   return EmptyList
+}
+
+// ================================================================================
+
+export function getHatchifyColumn({
+  finalSchemas,
+  schemaName,
+  control,
+  field,
+  compoundComponentProps,
+  isRelationship,
+  ValueComponent,
+  defaultValueComponents,
+}: {
+  finalSchemas: FinalSchemas
+  schemaName: string
+  control?: FinalAttributeRecord[string]["control"] | null
+  field?: string | null
+  compoundComponentProps: any
+  isRelationship?: boolean
+  ValueComponent?: ValueComponent | null
+  defaultValueComponents: DefaultValueComponentsTypes
+}) {
+  const isAdditional = control === undefined
+  const label = compoundComponentProps?.label || formatFieldAsLabel(field || "")
+
+  const column: HatchifyDisplay = {
+    sortable: !isAdditional && !isRelationship, // sortable if an attribute
+    key: field || uuidv4(), // if no field, then it's an additional column, but needs a key?
+    label,
+    render: () => null,
+  }
+
+  if (compoundComponentProps.render) {
+    column.render = ({ record }) => compoundComponentProps.render({ record })
+  } else if (compoundComponentProps.renderValue) {
+    column.render = ({ record }) =>
+      compoundComponentProps.renderValue({ record })
+  } else if (compoundComponentProps.ValueComponent) {
+    column.render = ({ record }) =>
+      compoundComponentProps.ValueComponent({ record })
+  } else if (ValueComponent) {
+    column.render = ({ record }) => (
+      <ValueComponent
+        value={record[field]}
+        record={record}
+        control={control}
+        field={field}
+      />
+    )
+  } else {
+    column.render = getDefaultColumnRender(
+      finalSchemas,
+      schemaName,
+      control,
+      field,
+      isRelationship,
+      defaultValueComponents,
+    )
+  }
+}
+
+function getDefaultColumnRender(
+  finalSchemas: FinalSchemas,
+  schemaName: string,
+  control: FinalAttributeRecord[string]["control"],
+  field: string,
+  isRelationship: boolean,
+  defaultValueComponents: DefaultValueComponentsTypes,
+): ({ record }: any) => React.ReactNode {
+  const type = control.type.toLowerCase()
+  const { String, Number, Boolean, Relationship, RelationshipList, Date } =
+    defaultValueComponents
+
+  const defaultRender = ({ record }: any) => {
+    const value = record[field]
+
+    if (type === "date" || type === "dateonly" || type === "datetime") {
+      return <Date value={value} dateOnly={type === "dateonly"} />
+    }
+
+    if (type === "string" || type === "enum") {
+      return <String value={value} />
+    }
+
+    if (type === "boolean") {
+      return <Boolean value={value} />
+    }
+
+    if (type === "number") {
+      return <Number value={value} />
+    }
+
+    if (isRelationship) {
+      // todo
+    }
+
+    // fallback - todo: error?
+    return <String value="" />
+  }
+
+  return defaultRender
+}
+
+function formatFieldAsLabel(field: string) {
+  return field
 }

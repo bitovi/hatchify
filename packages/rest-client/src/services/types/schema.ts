@@ -28,8 +28,6 @@ export interface Schema {
   pluralName?: string
 }
 
-export type Schemas = Record<string, Schema>
-
 export type FinalSchemas = Record<string, FinalSchema>
 
 export type GetSchemaNames<
