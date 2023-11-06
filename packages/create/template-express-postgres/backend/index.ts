@@ -7,7 +7,7 @@ import * as Schemas from "../schemas"
 dotenv.config()
 
 const app = Express()
-const hatchedKoa = hatchifyExpress(Schemas, {
+const hatchedExpress = hatchifyExpress(Schemas, {
   prefix: "/api",
   database: {
     dialect: "postgres",
@@ -20,9 +20,9 @@ const hatchedKoa = hatchifyExpress(Schemas, {
 })
 
 app.use(cors())
-app.use(hatchedKoa.middleware.allModels.all)
+app.use(hatchedExpress.middleware.allModels.all)
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedExpress.createDatabase()
 
   app.listen(3000, () => {
     console.log("Started on port 3000")
