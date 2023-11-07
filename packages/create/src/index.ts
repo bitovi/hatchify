@@ -80,9 +80,13 @@ const FRAMEWORKS: Framework[] = [
   },
 ]
 
-const TEMPLATES = FRAMEWORKS.map(
-  (f) => (f.databases && f.databases.map((v) => v.name)) || [f.name],
-).reduce((a, b) => a.concat(b), [])
+const TEMPLATES = FRAMEWORKS.reduce(
+  (acc, framework) =>
+    framework.name === "koa" // TODO: It was decided to limit to Koa at the moment
+      ? [...acc, ...framework.databases.map(({ name }) => name)]
+      : acc,
+  [] as string[],
+)
 
 const renameFiles: Record<string, string> = {
   _gitignore: ".gitignore",
@@ -221,6 +225,14 @@ async function init() {
     "../..",
     `template-${template}`,
   )
+
+  console.log("--------", {
+    root,
+    cwd,
+    file: fileURLToPath(import.meta.url),
+    template: `template-${template}`,
+    templateDir,
+  })
 
   await Promise.all([
     fs.promises.writeFile(
