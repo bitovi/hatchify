@@ -313,6 +313,9 @@ async function init() {
     ...database.dependencies,
     "@hatchifyjs/core",
     "@hatchifyjs/react",
+    "@mui/material",
+    "@emotion/react",
+    "@emotion/styled",
   ]
   const devDependencies = [
     ...framework.devDependencies,
