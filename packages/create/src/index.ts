@@ -226,14 +226,6 @@ async function init() {
     `template-${template}`,
   )
 
-  console.log("--------", {
-    root,
-    cwd,
-    file: fileURLToPath(import.meta.url),
-    template: `template-${template}`,
-    templateDir,
-  })
-
   await Promise.all([
     fs.promises.writeFile(
       path.join(root, "package.json"),
