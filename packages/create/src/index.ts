@@ -80,12 +80,8 @@ const FRAMEWORKS: Framework[] = [
   },
 ]
 
-const TEMPLATES = FRAMEWORKS.reduce(
-  (acc, framework) =>
-    framework.name === "koa" // TODO: It was decided to limit to Koa at the moment
-      ? [...acc, ...framework.databases.map(({ name }) => name)]
-      : acc,
-  [] as string[],
+const TEMPLATES = FRAMEWORKS.map((framework) =>
+  framework.databases.map(({ name }) => name),
 )
 
 const renameFiles: Record<string, string> = {
@@ -156,7 +152,9 @@ async function init() {
                 )
               : reset("Select a framework:"),
           initial: 0,
-          choices: FRAMEWORKS.map((framework) => {
+          choices: FRAMEWORKS.filter(
+            (framework) => framework.name === "koa", // TODO: It was decided to limit to Koa at the moment
+          ).map((framework) => {
             const frameworkColor = framework.color
             return {
               title: frameworkColor(framework.display || framework.name),
