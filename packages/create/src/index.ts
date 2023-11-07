@@ -80,8 +80,8 @@ const FRAMEWORKS: Framework[] = [
   },
 ]
 
-const TEMPLATES = FRAMEWORKS.map(
-  (f) => (f.databases && f.databases.map((v) => v.name)) || [f.name],
+const TEMPLATES = FRAMEWORKS.map(({ databases }) =>
+  databases.map(({ name }) => name),
 ).reduce((a, b) => a.concat(b), [])
 
 const renameFiles: Record<string, string> = {
@@ -152,7 +152,9 @@ async function init() {
                 )
               : reset("Select a framework:"),
           initial: 0,
-          choices: FRAMEWORKS.map((framework) => {
+          choices: FRAMEWORKS.filter(
+            (framework) => framework.name === "koa", // TODO: It was decided to limit to Koa at the moment
+          ).map((framework) => {
             const frameworkColor = framework.color
             return {
               title: frameworkColor(framework.display || framework.name),
@@ -311,6 +313,9 @@ async function init() {
     ...database.dependencies,
     "@hatchifyjs/core",
     "@hatchifyjs/react",
+    "@mui/material",
+    "@emotion/react",
+    "@emotion/styled",
   ]
   const devDependencies = [
     ...framework.devDependencies,

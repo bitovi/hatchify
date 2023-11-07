@@ -6,6 +6,7 @@ ignores:
   - "@hatchifyjs/koa"
   - "@hatchifyjs/react"
   - "@koa/cors"
+  - "@mui/material"
   - "cors"
   - "dotenv"
   - "express"
