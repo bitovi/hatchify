@@ -80,9 +80,9 @@ const FRAMEWORKS: Framework[] = [
   },
 ]
 
-const TEMPLATES = FRAMEWORKS.map((framework) =>
-  framework.databases.map(({ name }) => name),
-)
+const TEMPLATES = FRAMEWORKS.map(({ databases }) =>
+  databases.map(({ name }) => name),
+).reduce((a, b) => a.concat(b), [])
 
 const renameFiles: Record<string, string> = {
   _gitignore: ".gitignore",
