@@ -21,10 +21,12 @@ import type {
   ReplaceColumnProps,
   OverwriteColumnProps,
 } from "../components/HatchifyColumn"
+import type { HatchifyEverythingProps } from "../components/HatchifyEverything"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { HatchifyCollection } from "../components/HatchifyCollection"
 import { HatchifyColumn } from "../components/HatchifyColumn"
 import { HatchifyEmpty } from "../components/HatchifyEmpty"
+import { HatchifyEverything } from "../components/HatchifyEverything"
 import useCollectionState from "../hooks/useCollectionState"
 import type { SortObject } from "../presentation"
 
@@ -63,6 +65,9 @@ type Components<TSchemas extends Record<string, PartialSchema>> = {
 
 export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
   components: Components<TSchemas>
+  Everything: (
+    props: HatchifyEverythingProps<TSchemas, keyof TSchemas>,
+  ) => JSX.Element
   model: HatchifyReactRest<TSchemas>
   state: {
     [SchemaName in keyof TSchemas]: {
@@ -167,8 +172,19 @@ export function hatchifyReact<
     {} as HatchifyApp<TSchemas>["state"],
   )
 
+  const Everything = (
+    props: HatchifyEverythingProps<TSchemas, keyof TSchemas>,
+  ) => (
+    <HatchifyEverything
+      {...props}
+      finalSchemas={finalSchemas as any}
+      restClient={reactRest}
+    />
+  )
+
   return {
     components,
+    Everything,
     model: reactRest,
     state,
   }

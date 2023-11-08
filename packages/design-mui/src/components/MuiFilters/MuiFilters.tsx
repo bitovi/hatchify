@@ -1,6 +1,6 @@
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import type { FilterArray } from "@hatchifyjs/rest-client"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Badge, Button, Grid, Popover, debounce } from "@mui/material"
 import { MuiFilterRows } from "./components/MuiFilterRows"
 import FilterListIcon from "@mui/icons-material/FilterList"
@@ -54,6 +54,10 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
     _setFilters(filters)
     applyFilters(filters)
   }
+
+  useEffect(() => {
+    setFilters([defaultFilter])
+  }, [schemaName])
 
   const addNewFilter = () => {
     setFilters([...filters, defaultFilter])

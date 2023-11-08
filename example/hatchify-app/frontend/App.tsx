@@ -12,9 +12,10 @@ export const hatchedReact = hatchifyReact(
   createJsonapiClient("http://localhost:3000/api", schemas),
 )
 
-const TodoList = hatchedReact.components.Todo.Collection
-const TodoColumn = hatchedReact.components.Todo.Column
-const TodoEmptyList = hatchedReact.components.Todo.Empty
+// const TodoList = hatchedReact.components.Todo.Collection
+// const TodoColumn = hatchedReact.components.Todo.Column
+// const TodoEmptyList = hatchedReact.components.Todo.Empty
+const Everything = hatchedReact.Everything
 // hatchedReact.model.Todo.createOne({
 //   attributes: {
 //     uuid: "1",
@@ -44,7 +45,8 @@ const App: React.FC = () => {
         <button onClick={onActionClick} style={{ margin: 10 }}>
           action
         </button>
-        <TodoList
+        <Everything />
+        {/* <TodoList
           defaultSelected={selected}
           onSelectedChange={(selected) => setSelected(selected)}
         >
@@ -64,7 +66,7 @@ const App: React.FC = () => {
               )
             }}
           />
-        </TodoList>
+        </TodoList> */}
       </HatchifyProvider>
     </ThemeProvider>
   )

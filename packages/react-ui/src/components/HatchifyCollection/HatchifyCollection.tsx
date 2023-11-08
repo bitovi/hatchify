@@ -62,7 +62,7 @@ function HatchifyCollection<
       baseFilter,
     },
   )
-
+  console.log("butts ", children)
   return <Collection {...collectionState}>{children}</Collection>
 }
 
