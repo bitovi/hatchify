@@ -1,4 +1,4 @@
-# text({min, default, required})
+# text({default, required})
 
 Defines an attribute as having unlimited text length.
 
