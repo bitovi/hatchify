@@ -74,7 +74,20 @@ export function getFinalize(
     setClientPropertyValueFromResponse(
       jsonValue: ValueInRequest,
     ): number | null {
-      return coerce(jsonValue, control)
+      const value = typeof jsonValue === "string" ? +jsonValue : jsonValue
+
+      if (value == null) {
+        if (control.allowNull) {
+          return null
+        }
+        throw new HatchifyCoerceError("as a non-null value")
+      }
+
+      if (typeof value === "number" && isNaN(value)) {
+        throw new HatchifyCoerceError("as a number")
+      }
+
+      return coerce(value, control)
     },
 
     // Passed  - Any crazy value the client might send as a POST or PATCH
