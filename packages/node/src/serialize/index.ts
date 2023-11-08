@@ -41,94 +41,104 @@ export interface SerializeFunctions<
 
 async function findAllImpl(
   hatchify: Hatchify,
-  name: string,
+  schemaName: string,
   array: any[],
   attributes: any,
 ) {
-  if (hatchify.virtuals[name]) {
+  if (hatchify.virtuals[schemaName]) {
     return serializeWithoutUnsolicitedVirtuals(
       hatchify,
       array,
-      name,
+      schemaName,
       attributes,
-      Object.keys(hatchify.virtuals[name]),
+      Object.keys(hatchify.virtuals[schemaName]),
     )
   }
 
-  return hatchify.serializer.serialize(name, array)
+  return hatchify.serializer.serialize(schemaName, array)
 }
 
 async function findOneImpl(
   hatchify: Hatchify,
-  name: string,
+  schemaName: string,
   instance: any,
   attributes: any,
 ) {
-  if (hatchify.virtuals[name]) {
+  if (hatchify.virtuals[schemaName]) {
     return serializeWithoutUnsolicitedVirtuals(
       hatchify,
       instance,
-      name,
+      schemaName,
       attributes,
-      Object.keys(hatchify.virtuals[name]),
+      Object.keys(hatchify.virtuals[schemaName]),
     )
   }
-  return hatchify.serializer.serialize(name, instance)
+  return hatchify.serializer.serialize(schemaName, instance)
 }
 
 async function findAndCountAllImpl(
   hatchify: Hatchify,
-  name: string,
+  schemeName: string,
   result: any,
   attributes: any,
 ) {
-  if (hatchify.virtuals[name]) {
+  if (hatchify.virtuals[schemeName]) {
     return serializeWithoutUnsolicitedVirtuals(
       hatchify,
       result.rows,
-      name,
+      schemeName,
       attributes,
-      Object.keys(hatchify.virtuals[name]),
+      Object.keys(hatchify.virtuals[schemeName]),
     )
   }
 
-  return hatchify.serializer.serialize(name, result.rows, {
+  return hatchify.serializer.serialize(schemeName, result.rows, {
     unpaginatedCount: result.count,
   })
 }
 
-async function createImpl(hatchify: Hatchify, name: string, instance: any) {
-  return hatchify.serializer.serialize(name, instance)
+async function createImpl(
+  hatchify: Hatchify,
+  schemaName: string,
+  instance: any,
+) {
+  return hatchify.serializer.serialize(schemaName, instance)
 }
 
-async function destroyImpl(hatchify: Hatchify, name: string, rowCount: number) {
-  return hatchify.serializer.serialize(name, null, { count: rowCount })
+async function destroyImpl(
+  hatchify: Hatchify,
+  schemaName: string,
+  rowCount: number,
+) {
+  return hatchify.serializer.serialize(schemaName, null, { count: rowCount })
 }
 
 async function updateImpl(
   hatchify: Hatchify,
-  name: string,
+  schemaName: string,
   instance: any,
   rowCount: number,
 ) {
-  return hatchify.serializer.serialize(name, instance, { count: rowCount })
+  return hatchify.serializer.serialize(schemaName, instance, {
+    count: rowCount,
+  })
 }
 
 export function buildSerializerForModel(
   hatchify: Hatchify,
-  modelName: string,
+  schemaName: string,
 ): SerializeFunctions {
   return {
     findAll: async (array, attributes) =>
-      findAllImpl(hatchify, modelName, array, attributes),
+      findAllImpl(hatchify, schemaName, array, attributes),
     findOne: async (instance, attributes) =>
-      findOneImpl(hatchify, modelName, instance, attributes),
+      findOneImpl(hatchify, schemaName, instance, attributes),
     findAndCountAll: async (result, attributes) =>
-      findAndCountAllImpl(hatchify, modelName, result, attributes),
-    create: async (instance) => createImpl(hatchify, modelName, instance),
-    destroy: async (rowCount) => destroyImpl(hatchify, modelName, rowCount),
+      findAndCountAllImpl(hatchify, schemaName, result, attributes),
+    create: async (instance) => createImpl(hatchify, schemaName, instance),
+    destroy: async (rowCount) => destroyImpl(hatchify, schemaName, rowCount),
     update: async (instance, rowCount) =>
-      updateImpl(hatchify, modelName, instance, rowCount),
+      updateImpl(hatchify, schemaName, instance, rowCount),
   }
 }
 
@@ -172,18 +182,18 @@ export function registerSchema(
 const serializeWithoutUnsolicitedVirtuals = (
   hatchify: Hatchify,
   array: any[],
-  name: string,
+  schemaName: string,
   attributes: any[],
   virtualsForModel: any[],
 ) => {
   return hatchify.serializer.serialize(
-    name,
+    schemaName,
     array,
     "default",
     undefined,
     undefined,
     {
-      [name]: {
+      [schemaName]: {
         blacklist: attributes
           ? virtualsForModel.filter((virtual) => !attributes.includes(virtual))
           : virtualsForModel,
