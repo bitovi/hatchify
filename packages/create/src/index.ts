@@ -21,9 +21,9 @@ type Framework = {
   color: ColorFunc
   dependencies: string[]
   devDependencies: string[]
-  databases: FrameworkDatabase[]
+  dialects: Dialect[]
 }
-type FrameworkDatabase = {
+type Dialect = {
   name: string
   display: string
   color: ColorFunc
@@ -38,16 +38,16 @@ const FRAMEWORKS: Framework[] = [
     color: green,
     dependencies: ["koa", "@koa/cors", "@hatchifyjs/koa"],
     devDependencies: ["@types/koa", "@types/koa__cors"],
-    databases: [
+    dialects: [
       {
-        name: "koa-sqlite",
+        name: "sqlite",
         display: "SQLite",
         color: blue,
         dependencies: ["sqlite3"],
         devDependencies: [],
       },
       {
-        name: "koa-postgres",
+        name: "postgres",
         display: "Postgres",
         color: yellow,
         dependencies: ["pg", "dotenv"],
@@ -61,16 +61,16 @@ const FRAMEWORKS: Framework[] = [
     color: yellow,
     dependencies: ["express", "cors", "@hatchifyjs/express"],
     devDependencies: ["@types/cors"],
-    databases: [
+    dialects: [
       {
-        name: "express-sqlite",
+        name: "sqlite",
         display: "SQLite",
         color: blue,
         dependencies: ["sqlite3"],
         devDependencies: [],
       },
       {
-        name: "express-postgres",
+        name: "postgres",
         display: "Postgres",
         color: yellow,
         dependencies: ["pg", "dotenv"],
@@ -80,8 +80,8 @@ const FRAMEWORKS: Framework[] = [
   },
 ]
 
-const TEMPLATES = FRAMEWORKS.map(({ databases }) =>
-  databases.map(({ name }) => name),
+const TEMPLATES = FRAMEWORKS.map(({ dialects }) =>
+  dialects.map(({ name }) => name),
 ).reduce((a, b) => a.concat(b), [])
 
 const renameFiles: Record<string, string> = {
@@ -92,14 +92,26 @@ const defaultTargetDir = "hatchify-app"
 
 async function init() {
   const argTargetDir = formatTargetDir(argv._[0])
-  const argTemplate = argv.template || argv.t
+  const argFramework = argv.framework || argv.t
+  const argDialect = argv.dialect || argv.d
+  const argTemplate =
+    argFramework && argDialect && `${argFramework}-${argDialect}`
 
   let targetDir = argTargetDir || defaultTargetDir
   const getProjectName = () =>
     targetDir === "." ? path.basename(path.resolve()) : targetDir
 
   let result: prompts.Answers<
-    "projectName" | "overwrite" | "packageName" | "framework" | "database"
+    | "projectName"
+    | "overwrite"
+    | "packageName"
+    | "framework"
+    | "dialect"
+    | "databaseHost"
+    | "databasePort"
+    | "databaseUsername"
+    | "databasePassword"
+    | "databaseName"
   >
 
   try {
@@ -164,17 +176,49 @@ async function init() {
         },
         {
           type: (framework: Framework) =>
-            framework && framework.databases ? "select" : null,
-          name: "database",
-          message: reset("Select a database:"),
+            framework?.dialects ? "select" : null,
+          name: "dialect",
+          message: reset("Select a dialect:"),
           choices: (framework: Framework) =>
-            framework.databases.map((database) => {
-              const databaseColor = database.color
-              return {
-                title: databaseColor(database.display || database.name),
-                value: database,
-              }
-            }),
+            framework.dialects.map((dialect) => ({
+              title: dialect.color(dialect.display || dialect.name),
+              value: dialect,
+            })),
+        },
+        {
+          type: (dialect: Dialect) =>
+            dialect.name === "postgres" ? "text" : null,
+          name: "databaseHost",
+          message: reset("Database host:"),
+          initial: "localhost",
+        },
+        {
+          type: (_, { dialect }: { dialect: Dialect }) =>
+            dialect.name === "postgres" ? "number" : null,
+          name: "databasePort",
+          message: reset("Database port:"),
+          initial: 5432,
+        },
+        {
+          type: (_, { dialect }: { dialect: Dialect }) =>
+            dialect.name === "postgres" ? "text" : null,
+          name: "databaseUsername",
+          message: reset("Database username:"),
+          initial: "postgres",
+        },
+        {
+          type: (_, { dialect }: { dialect: Dialect }) =>
+            dialect.name === "postgres" ? "password" : null,
+          name: "databasePassword",
+          message: reset("Database password:"),
+          initial: "password",
+        },
+        {
+          type: (_, { dialect }: { dialect: Dialect }) =>
+            dialect.name === "postgres" ? "text" : null,
+          name: "databaseName",
+          message: reset("Database name:"),
+          initial: "postgres",
         },
       ],
       {
@@ -189,7 +233,17 @@ async function init() {
   }
 
   // user choice associated with prompts
-  const { framework, overwrite, packageName, database } = result
+  const {
+    framework,
+    overwrite,
+    packageName,
+    dialect,
+    databaseHost,
+    databasePort,
+    databaseUsername,
+    databasePassword,
+    databaseName,
+  } = result
 
   const root = path.join(cwd, targetDir)
 
@@ -200,7 +254,7 @@ async function init() {
   }
 
   // determine template
-  const template: string = database?.name || framework?.name || argTemplate
+  const template: string = argTemplate || `${framework.name}-${dialect.name}`
 
   const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent)
   const pkgManager = pkgInfo ? pkgInfo.name : "npm"
@@ -301,6 +355,17 @@ async function init() {
       ),
       "utf8",
     ),
+    fs.promises.writeFile(
+      path.join(root, ".env"),
+      [
+        `PG_DB_HOST=${databaseHost}`,
+        `PG_DB_PORT=${databasePort}`,
+        `PG_DB_USERNAME=${databaseUsername}`,
+        `PG_DB_PASSWORD=${databasePassword}`,
+        `PG_DB_NAME=${databaseName}`,
+      ].join("\n"),
+      "utf8",
+    ),
   ])
 
   await fs.promises.rm(path.join(root, "src"), { recursive: true, force: true })
@@ -310,7 +375,7 @@ async function init() {
   const dependencies = [
     "sequelize",
     ...framework.dependencies,
-    ...database.dependencies,
+    ...dialect.dependencies,
     "@hatchifyjs/core",
     "@hatchifyjs/react",
     "@mui/material",
@@ -319,13 +384,24 @@ async function init() {
   ]
   const devDependencies = [
     ...framework.devDependencies,
-    ...database.devDependencies,
+    ...dialect.devDependencies,
     "nodemon",
     "ts-node",
   ]
 
-  runCommand(`npm install ${dependencies.join(" ")}`, root)
-  runCommand(`npm install ${devDependencies.join(" ")} --save-dev`, root)
+  runCommand(
+    `npm install --package-lock-only --no-package-lock ${dependencies.join(
+      " ",
+    )}`,
+    root,
+  )
+  runCommand(
+    `npm install --package-lock-only --no-package-lock ${devDependencies.join(
+      " ",
+    )} --save-dev`,
+    root,
+  )
+  runCommand("npm install", root)
 
   const cdProjectName = path.relative(cwd, root)
   console.log(`\nDone. Now run:\n`)
@@ -344,6 +420,17 @@ async function init() {
       console.log(`  ${pkgManager} run dev`)
       break
   }
+
+  if (dialect.name === "postgres" && databaseHost === "localhost") {
+    console.log()
+    console.log(
+      "Make sure you have Postgres running already start a docker container using:",
+    )
+    console.log(
+      `docker run --name hatchify-database -p ${databasePort}:5432 -e POSTGRES_PASSWORD=${databasePassword} -e POSTGRES_USER=${databaseUsername} -d ${databaseName}`,
+    )
+  }
+
   console.log()
 }
 
