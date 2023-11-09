@@ -15,17 +15,18 @@ export default function useCompoundComponents(
   children: React.ReactNode | null,
 ): CompoundComponents {
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
-  const valueComponents = useHatchifyPresentation().defaultValueComponents
+  const defaultValueComponents =
+    useHatchifyPresentation().defaultValueComponents
 
   return {
-    columns: getColumns(schema, valueComponents, childArray),
+    columns: getColumns(schema, defaultValueComponents, childArray),
     Empty: getEmptyList(childArray),
   }
 }
 
 export function getColumns(
   schema: FinalSchema,
-  valueComponents: DefaultValueComponentsTypes,
+  defaultValueComponents: DefaultValueComponentsTypes,
   childArray: JSX.Element[],
 ): HatchifyDisplay[] {
   const hatchifyColumns: HatchifyDisplay[] = []
@@ -47,7 +48,7 @@ export function getColumns(
         dataCellRender: props.dataCellRenderValue,
         headerCellRender: props.headerCellRenderValue,
         DataCellValueComponent: props.DataCellValueComponent,
-        defaultValueComponents: valueComponents,
+        defaultValueComponents,
       }),
     )
   }
@@ -70,12 +71,16 @@ export function getColumns(
           dataCellRenderValue: props.dataCellRenderValue,
           headerCellRender: props.headerCellRenderValue,
           DataCellValueComponent: props.DataCellValueComponent,
-          defaultValueComponents: valueComponents,
+          defaultValueComponents,
         }),
       )
     }
   } else {
-    const schemaColumns = getDisplaysFromSchema(schema, valueComponents, null)
+    const schemaColumns = getDisplaysFromSchema(
+      schema,
+      defaultValueComponents,
+      null,
+    )
 
     for (let i = 0; i < schemaColumns.length; i++) {
       const replaceWith = replace.find(
@@ -98,7 +103,7 @@ export function getColumns(
             dataCellRender: props.dataCellRenderValue,
             headerCellRender: props.headerCellRenderValue,
             DataCellValueComponent: props.DataCellValueComponent,
-            defaultValueComponents: valueComponents,
+            defaultValueComponents,
           }),
         )
       } else {
@@ -118,7 +123,7 @@ export function getColumns(
         dataCellRender: props.dataCellRenderValue,
         headerCellRender: props.headerCellRenderValue,
         DataCellValueComponent: props.DataCellValueComponent,
-        defaultValueComponents: valueComponents,
+        defaultValueComponents,
       }),
     )
   }
