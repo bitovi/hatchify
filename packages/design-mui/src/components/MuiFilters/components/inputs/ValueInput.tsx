@@ -1,13 +1,15 @@
 import { InputLabel } from "@mui/material"
+import type { FilterableControls, Operators } from "../../constants"
 import DateInput from "./DateInput"
 import EnumInput from "./EnumInput"
 import StringInput from "./StringInput"
+import NumberInput from "./NumberInput"
 
 const ValueInput: React.FC<{
   labelId: string
-  controlType: string
+  controlType: FilterableControls
+  operator: Operators
   value: any
-  operator: string
   onChange: (value: string | string[]) => void
   options?: string[]
 }> = ({ labelId, controlType, value, operator, onChange, options = [] }) => {
@@ -15,7 +17,6 @@ const ValueInput: React.FC<{
     return null
   }
 
-  console.log("fieldType", controlType)
   return (
     <>
       <InputLabel id={labelId}>Value</InputLabel>
@@ -42,6 +43,14 @@ const ValueInput: React.FC<{
           value={value}
           onChange={onChange}
           controlType={controlType}
+        />
+      )}
+      {controlType === "Number" && (
+        <NumberInput
+          labelId={labelId}
+          operator={operator}
+          value={value}
+          onChange={onChange}
         />
       )}
     </>

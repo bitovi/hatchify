@@ -1,9 +1,10 @@
 import { MenuItem, Select } from "@mui/material"
 import MuiAutocomplete from "../../../MuiAutocomplete"
+import type { Operators } from "../../constants"
 
 const EnumInput: React.FC<{
   labelId: string
-  operator: string
+  operator: Operators
   value: string | string[]
   onChange: (value: any) => void
   options: string[]

@@ -1,4 +1,5 @@
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
+import { filterableControlTypes } from "../constants"
 
 type HatchifyMuiFilters = string[]
 
@@ -9,13 +10,8 @@ export function getFilterableFields(
 ): HatchifyMuiFilters {
   // get all filterable fields from the base schema
   const fields = Object.entries(allSchemas[schemaName].attributes)
-    // todo: filtering should not rely on UUID type because it may still be an attribute
     .filter(([, { control }]) => control.hidden !== true)
-    .filter(([, { control }]) =>
-      ["string", "date", "dateonly", "datetime", "enum"].includes(
-        control.type.toLowerCase(),
-      ),
-    )
+    .filter(([, { control }]) => filterableControlTypes.includes(control.type))
     .map(([key]) => key)
 
   // get related schemas that are part of the include
@@ -35,9 +31,7 @@ export function getFilterableFields(
     )
       .filter(([, { control }]) => control.hidden !== true)
       .filter(([, { control }]) =>
-        ["string", "date", "dateonly", "datetime", "enum"].includes(
-          control.type.toLowerCase(),
-        ),
+        filterableControlTypes.includes(control.type),
       )
       .map(([key]) => `${includedRelationships[i].relationship}.${key}`)
 

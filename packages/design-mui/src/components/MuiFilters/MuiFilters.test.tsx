@@ -14,7 +14,7 @@ import {
 const partialSchemas = {
   Todo: {
     name: "Todo",
-    attributes: { id: integer(), name: string() },
+    attributes: { name: string(), id: integer() },
     relationships: { user: belongsTo() },
   },
   User: {
