@@ -44,7 +44,8 @@ export function getColumns(
         isExtraDisplay: true,
         label: props.label,
         attribute: props.label,
-        render: props.renderValue,
+        dataCellRender: props.dataCellRenderValue,
+        headerCellRender: props.headerCellRenderValue,
         ValueComponent: props.ValueComponent,
         defaultValueComponents: valueComponents,
       }),
@@ -66,7 +67,8 @@ export function getColumns(
           attributeSchema: relationship
             ? null
             : schema.attributes?.[props?.field]?.control,
-          renderValue: props.renderValue,
+          dataCellRenderValue: props.dataCellRenderValue,
+          headerCellRender: props.headerCellRenderValue,
           ValueComponent: props.ValueComponent,
           defaultValueComponents: valueComponents,
         }),
@@ -93,7 +95,8 @@ export function getColumns(
             attributeSchema: relationship
               ? null
               : schema.attributes?.[props.field].control,
-            renderValue: props.renderValue,
+            dataCellRender: props.dataCellRenderValue,
+            headerCellRender: props.headerCellRenderValue,
             ValueComponent: props.ValueComponent,
             defaultValueComponents: valueComponents,
           }),
@@ -112,7 +115,8 @@ export function getColumns(
         isExtraDisplay: true,
         label: props.label,
         attribute: props.label,
-        render: props.renderValue,
+        dataCellRender: props.dataCellRenderValue,
+        headerCellRender: props.headerCellRenderValue,
         ValueComponent: props.ValueComponent,
         defaultValueComponents: valueComponents,
       }),

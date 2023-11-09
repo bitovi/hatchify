@@ -44,7 +44,10 @@ HatchifyEmptyList.displayName = "EmptyList"
 export type HatchifyColumnProps = {
   attribute: string
   label?: string
-} & ({ renderValue?: RenderValue } | { ValueComponent?: ValueComponent })
+} & (
+  | { dataCellRenderValue?: RenderValue; headerCellRenderValue?: RenderValue }
+  | { ValueComponent?: ValueComponent }
+)
 
 export const HatchifyColumn: React.FC<HatchifyColumnProps> = () => {
   return null

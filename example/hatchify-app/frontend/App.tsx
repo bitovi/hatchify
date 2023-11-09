@@ -47,8 +47,20 @@ const App: React.FC = () => {
         onSelectedChange={(selected) => setSelected(selected)}
       >
         <TodoEmptyList>No records to display</TodoEmptyList>
-        <TodoColumn field="dueDate" label="Cool" />
-        <TodoColumn label="Beans," />
+        <TodoColumn
+          field="dueDate"
+          label="Cool"
+          dataCellRenderValue={({ record }) => <>{record.importance}</>}
+          headerCellRenderValue={({ record }) => <>{record.foo}</>}
+        />
+        <TodoColumn
+          label="Beans,"
+          headerCellRenderValue={() => (
+            <div style={{ backgroundColor: "red", color: "white" }}>
+              <strong>Tada!</strong>
+            </div>
+          )}
+        />
         <TodoColumn type="append" label="My Dude" />
         <TodoColumn type="prepend" label="Very" />
       </TodoList>

@@ -23,16 +23,20 @@ export type RenderValue = ({
   attributeSchema?: Attribute
 }) => JSX.Element
 
-// todo: renderValue and ValueComponent should be required, but only one can be provided
+// todo: dataCellRenderValue and ValueComponent should be required, but only one can be provided
 export type AdditionalColumnProps = {
   allSchemas: Schemas
   schemaName: string
   type: "append" | "prepend"
   label: string
   field?: never
-} & { renderValue?: Render; ValueComponent?: ValueComponent }
+} & {
+  dataCellRenderValue?: Render
+  headerCellRenderValue?: Render
+  ValueComponent?: ValueComponent
+}
 
-// todo: renderValue and ValueComponent should be optional, but only one can be provided
+// todo: dataCellRenderValue and ValueComponent should be optional, but only one can be provided
 export type ReplaceColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -42,9 +46,13 @@ export type ReplaceColumnProps<
   type: "replace"
   label?: string
   field: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
-} & { renderValue?: RenderValue; ValueComponent?: ValueComponent }
+} & {
+  dataCellRenderValue?: RenderValue
+  headerCellRenderValue?: RenderValue
+  ValueComponent?: ValueComponent
+}
 
-// todo: renderValue and ValueComponent should be optional, but only one can be provided
+// todo: dataCellRenderValue and ValueComponent should be optional, but only one can be provided
 export type OverwriteColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -54,7 +62,11 @@ export type OverwriteColumnProps<
   type?: never
   label?: string
   field?: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
-} & { renderValue?: RenderValue; ValueComponent?: ValueComponent }
+} & {
+  dataCellRenderValue?: RenderValue
+  headerCellRenderValue?: RenderValue
+  ValueComponent?: ValueComponent
+}
 
 export function HatchifyColumn<
   const TSchemas extends Record<string, PartialSchema>,

@@ -26,7 +26,8 @@ export interface HatchifyDisplay {
   sortable: boolean
   key: string
   label: string
-  render: ({ record }: { record: Record }) => React.ReactNode
+  dataCellRender: ({ record }: { record: Record }) => React.ReactNode
+  headerCellRender: ({ record }: { record: Record }) => React.ReactNode
 }
 
 export function getDefaultDisplayRender(
@@ -104,7 +105,8 @@ export function getDisplaysFromChildren(
           : schema.attributes[props.attribute],
         ValueComponent: props.ValueComponent,
         defaultValueComponents,
-        renderValue: props.renderValue,
+        dataCellRenderValue: props.dataCellRenderValue,
+        headerCellRenderValue: props.headerCellRenderValue,
       })
     })
 
@@ -175,14 +177,16 @@ export function getHatchifyDisplay({
   attribute,
   sortable = true,
   isRelationship = false,
-  isExtraDisplay = false, // @todo necessary? should always be covered by `render` or `ValueComponent` case!
+  isExtraDisplay = false, // @todo necessary? should always be covered by `dataCellRender` or `ValueComponent` case!
   label = null,
   attributeSchema = null,
   ValueComponent = null,
   valueComponents = null,
   defaultValueComponents,
-  render = null,
-  renderValue = null,
+  dataCellRender = null,
+  dataCellRenderValue = null,
+  headerCellRender = null,
+  headerCellRenderValue = null,
 }: {
   isRelationship?: boolean
   sortable?: boolean
@@ -193,8 +197,10 @@ export function getHatchifyDisplay({
   ValueComponent?: ValueComponent | null
   valueComponents?: { [attribute: string]: ValueComponent } | null
   defaultValueComponents: DefaultValueComponentsTypes
-  render?: Render | null
-  renderValue?: RenderValue | null
+  dataCellRender?: Render | null
+  dataCellRenderValue?: RenderValue | null
+  headerCellRender?: Render | null
+  headerCellRenderValue?: RenderValue | null
 }): HatchifyDisplay {
   if (!attributeSchema) {
     attributeSchema = { type: "extra" }
@@ -217,24 +223,25 @@ export function getHatchifyDisplay({
         .replace(/(^\w)/g, (g) => g[0].toUpperCase())
         .replace(/([-_]\w)/g, (g) => " " + g[1].toUpperCase())
         .trim(),
-    render: () => null,
+    dataCellRender: () => null,
+    headerCellRender: () => null,
   }
 
   /**
    * cell render priority:
-   * 1. `renderValue` prop from `HatchifyExtraColumn` or `HatchifyColumn`
+   * 1. `dataCellRenderValue` prop from `HatchifyExtraColumn` or `HatchifyColumn`
    * 2. `ValueComponent` prop from `HatchifyExtraColumn` or `HatchifyColumn`
    * 3. `valueComponents` prop from `HatchifyList`
-   * 6. default `render` using presentation's defaultvalueComponents
+   * 6. default `dataCellRender` using presentation's defaultvalueComponents
    */
 
-  if (render) {
-    display.render = ({ record }) => render({ record })
-  } else if (renderValue) {
-    display.render = ({ record }) =>
-      renderValue({ record, value: record[attribute] })
+  if (dataCellRender) {
+    display.dataCellRender = ({ record }) => dataCellRender({ record })
+  } else if (dataCellRenderValue) {
+    display.dataCellRender = ({ record }) =>
+      dataCellRenderValue({ record, value: record[attribute] })
   } else if (ValueComponent) {
-    display.render = ({ record }) => (
+    display.dataCellRender = ({ record }) => (
       <ValueComponent
         value={record[attribute]}
         record={record}
@@ -244,7 +251,7 @@ export function getHatchifyDisplay({
     )
   } else if (valueComponents && valueComponents[attribute]) {
     const RenderCell = valueComponents[attribute]
-    display.render = ({ record }) => (
+    display.dataCellRender = ({ record }) => (
       <RenderCell
         value={record[attribute]}
         record={record}
@@ -252,11 +259,20 @@ export function getHatchifyDisplay({
       />
     )
   } else {
-    display.render = getDefaultDisplayRender(
+    display.dataCellRender = getDefaultDisplayRender(
       attribute,
       attributeSchema.type,
       defaultValueComponents,
     )
+  }
+
+  if (headerCellRender) {
+    display.headerCellRender = ({ record }) => headerCellRender({ record })
+  } else if (headerCellRenderValue) {
+    display.headerCellRender = ({ record }) =>
+      headerCellRenderValue({ record, value: record[attribute] })
+  } else {
+    display.headerCellRender = undefined
   }
 
   return display
@@ -279,7 +295,8 @@ export function injectExtraDisplays(
         isExtraDisplay: true,
         label: props.label,
         attribute: props.label,
-        render: props.render,
+        dataCellRender: props.dataCellRender,
+        headerCellRender: props.headerCellRender,
         ValueComponent: props.ValueComponent,
         defaultValueComponents,
       }),

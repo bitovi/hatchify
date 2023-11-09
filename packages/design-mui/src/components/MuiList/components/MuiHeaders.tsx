@@ -48,7 +48,11 @@ export const MuiHeaders: React.FC<
             css={styles.th}
             sortDirection={column.key === sortBy ? direction : false}
           >
-            {column.sortable ? (
+            {column.headerCellRender ? (
+              column.headerCellRender({
+                record: { id: "1", foo: "bar" },
+              })
+            ) : column.sortable ? (
               <TableSortLabel
                 disabled={meta.isLoading}
                 active={column.key === sortBy}

@@ -93,7 +93,8 @@ export function getDisplaysFromChildren(
           : schema.attributes[props.attribute],
         ValueComponent: props.ValueComponent,
         defaultValueComponents,
-        renderValue: props.renderValue,
+        dataCellRenderValue: props.dataCellRenderValue,
+        headerCellRenderValue: props.headerCellRenderValue,
       })
     })
 
@@ -152,7 +153,8 @@ export function getHatchifyDisplay({
   valueComponents = null,
   defaultValueComponents,
   render = null,
-  renderValue = null,
+  dataCellRenderValue = null,
+  headerCellRenderValue = null,
 }: {
   isRelationship?: boolean
   isExtraDisplay?: boolean
@@ -163,7 +165,8 @@ export function getHatchifyDisplay({
   valueComponents?: { [attribute: string]: ValueComponent } | null
   defaultValueComponents: DefaultValueComponentsTypes
   render?: Render | null
-  renderValue?: RenderValue | null
+  dataCellRenderValue?: RenderValue | null
+  headerCellRenderValue?: RenderValue | null
 }): HatchifyDisplay {
   if (!attributeSchema) {
     attributeSchema = { type: "extra", allowNull: true }
@@ -190,7 +193,7 @@ export function getHatchifyDisplay({
 
   /**
    * cell render priority:
-   * 1. `renderValue` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
+   * 1. `dataCellRenderValue` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
    * 2. `ValueComponent` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
    * 3. `valueComponents` prop from `HatchifyList`
    * 6. default `render` using presentation's defaultvalueComponents
@@ -198,9 +201,9 @@ export function getHatchifyDisplay({
 
   if (render) {
     display.render = ({ record }) => render({ record })
-  } else if (renderValue) {
+  } else if (dataCellRenderValue) {
     display.render = ({ record }) =>
-      renderValue({ record, value: record[attribute] })
+      dataCellRenderValue({ record, value: record[attribute] })
   } else if (ValueComponent) {
     display.render = ({ record }) => (
       <ValueComponent
