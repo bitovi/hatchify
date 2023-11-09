@@ -1,7 +1,7 @@
 import type {
   FlatRecord,
   FieldComponent,
-  DataCellValueComponent,
+  ValueComponent,
   CellValue,
   Attribute,
 } from "../../presentation/interfaces"
@@ -23,7 +23,13 @@ export type HatchifyExtraColumnProps = {
   // where is this used? do i need to update the render to be datacellrender or whatever?
   label: string
   after?: string
-} & ({ render: Render } | { DataCellValueComponent: DataCellValueComponent })
+} & (
+  | { render: Render }
+  | {
+      DataCellValueComponent: ValueComponent
+      HeaderCellValueComponent?: ValueComponent
+    }
+)
 
 export const HatchifyExtraColumn: React.FC<HatchifyExtraColumnProps> = () => {
   return null
@@ -47,7 +53,10 @@ export type HatchifyColumnProps = {
   label?: string
 } & (
   | { dataCellRenderValue?: RenderValue; headerCellRenderValue?: RenderValue }
-  | { DataCellValueComponent?: DataCellValueComponent }
+  | {
+      DataCellValueComponent?: ValueComponent
+      HeaderCellValueComponent?: ValueComponent
+    }
 )
 
 export const HatchifyColumn: React.FC<HatchifyColumnProps> = () => {

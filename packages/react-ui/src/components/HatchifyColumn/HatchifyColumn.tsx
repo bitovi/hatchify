@@ -6,7 +6,7 @@ import type {
 import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FlatRecord,
-  DataCellValueComponent,
+  ValueComponent,
   CellValue,
   Attribute,
 } from "../../presentation/interfaces"
@@ -32,8 +32,9 @@ export type AdditionalColumnProps = {
   field?: never
 } & {
   dataCellRenderValue?: Render
+  DataCellValueComponent?: ValueComponent
   headerCellRenderValue?: Render
-  DataCellValueComponent?: DataCellValueComponent
+  HeaderCellValueComponent?: ValueComponent
 }
 
 // todo: dataCellRenderValue and DataCellValueComponent should be optional, but only one can be provided
@@ -48,8 +49,9 @@ export type ReplaceColumnProps<
   field: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
 } & {
   dataCellRenderValue?: RenderValue
+  DataCellValueComponent?: ValueComponent
   headerCellRenderValue?: RenderValue
-  DataCellValueComponent?: DataCellValueComponent
+  HeaderCellValueComponent?: ValueComponent
 }
 
 // todo: dataCellRenderValue and DataCellValueComponent should be optional, but only one can be provided
@@ -64,8 +66,9 @@ export type OverwriteColumnProps<
   field?: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
 } & {
   dataCellRenderValue?: RenderValue
+  DataCellValueComponent?: ValueComponent
   headerCellRenderValue?: RenderValue
-  DataCellValueComponent?: DataCellValueComponent
+  HeaderCellValueComponent?: ValueComponent
 }
 
 export function HatchifyColumn<

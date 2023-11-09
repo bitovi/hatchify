@@ -41,6 +41,10 @@ const App: React.FC = () => {
     return <strong>{record.id}</strong>
   }
 
+  function HeadCom({ record }: { record: any }) {
+    return <strong>Header</strong>
+  }
+
   return (
     <MuiProvider>
       <button onClick={onActionClick} style={{ margin: 10 }}>
@@ -73,7 +77,12 @@ const App: React.FC = () => {
             </div>
           )}
         />
-        <TodoColumn type="append" label="My Dude" ValueComponent={ValCom} />
+        <TodoColumn
+          type="append"
+          label="My Dude"
+          HeaderCellValueComponent={HeadCom}
+          DataCellValueComponent={ValCom}
+        />
         <TodoColumn type="prepend" label="Very" />
       </TodoList>
     </MuiProvider>

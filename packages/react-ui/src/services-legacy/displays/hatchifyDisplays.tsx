@@ -10,7 +10,7 @@ import type {
   Attribute,
   Relationship as RelationshipType,
   FlatRecord,
-  DataCellValueComponent,
+  ValueComponent,
 } from "../../presentation/interfaces"
 
 import type {
@@ -105,7 +105,7 @@ export function getDisplaysFromSchema(
   schema: Schema,
   defaultValueComponents: DefaultValueComponentsTypes,
   dataCellValueComponents: {
-    [attribute: string]: DataCellValueComponent
+    [attribute: string]: ValueComponent
   } | null,
 ): HatchifyDisplay[] {
   const attributesDisplays = Object.entries(schema.attributes).map(
@@ -163,9 +163,9 @@ export function getHatchifyDisplay({
   attribute: string
   label?: string | null
   attributeSchema?: Attribute | null
-  DataCellValueComponent?: DataCellValueComponent | null
+  DataCellValueComponent?: ValueComponent | null
   dataCellValueComponents?: {
-    [attribute: string]: DataCellValueComponent
+    [attribute: string]: ValueComponent
   } | null
   defaultValueComponents: DefaultValueComponentsTypes
   render?: Render | null
@@ -275,9 +275,8 @@ export function hasValidChildren(
 
 export function getDisplays(
   schema: Schema,
-  dataCellValueComponents:
-    | { [field: string]: DataCellValueComponent }
-    | undefined,
+  dataCellValueComponents: { [field: string]: ValueComponent } | undefined,
+  headerCellValueComponents: { [field: string]: ValueComponent } | undefined,
   defaultValueComponents: DefaultValueComponentsTypes,
   children: React.ReactNode | null,
 ): HatchifyDisplay[] {
