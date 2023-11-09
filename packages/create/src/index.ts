@@ -1,10 +1,22 @@
 import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import spawn from "cross-spawn"
 import minimist from "minimist"
 import prompts from "prompts"
-import { blue, green, red, reset, yellow } from "kolorist"
+import { red, reset } from "kolorist"
+import {
+  copyDir,
+  emptyDir,
+  formatTargetDir,
+  isEmpty,
+  isValidPackageName,
+  pkgFromUserAgent,
+  replaceStringInFile,
+  runCommand,
+  toValidPackageName,
+} from "./util"
+import { DIALECTS, FRAMEWORKS } from "./constants"
+import type { Dialect } from "./types"
 
 // Avoids autoconversion to number of the project name by defining that the args
 // non associated with an option ( _ ) needs to be parsed as a string. See #4606
@@ -14,88 +26,12 @@ const argv = minimist<{
 }>(process.argv.slice(2), { string: ["_"] })
 const cwd = process.cwd()
 
-type ColorFunc = (str: string | number) => string
-type Framework = {
-  name: string
-  display: string
-  color: ColorFunc
-  dependencies: string[]
-  devDependencies: string[]
-  dialects: Dialect[]
-}
-type Dialect = {
-  name: string
-  display: string
-  color: ColorFunc
-  dependencies: string[]
-  devDependencies: string[]
-}
-
-const FRAMEWORKS: Framework[] = [
-  {
-    name: "koa",
-    display: "Koa",
-    color: green,
-    dependencies: ["koa", "@koa/cors", "@hatchifyjs/koa"],
-    devDependencies: ["@types/koa", "@types/koa__cors"],
-    dialects: [
-      {
-        name: "sqlite",
-        display: "SQLite",
-        color: blue,
-        dependencies: ["sqlite3"],
-        devDependencies: [],
-      },
-      {
-        name: "postgres",
-        display: "Postgres",
-        color: yellow,
-        dependencies: ["pg", "dotenv"],
-        devDependencies: ["@types/pg"],
-      },
-    ],
-  },
-  {
-    name: "express",
-    display: "Express",
-    color: yellow,
-    dependencies: ["express", "cors", "@hatchifyjs/express"],
-    devDependencies: ["@types/cors"],
-    dialects: [
-      {
-        name: "sqlite",
-        display: "SQLite",
-        color: blue,
-        dependencies: ["sqlite3"],
-        devDependencies: [],
-      },
-      {
-        name: "postgres",
-        display: "Postgres",
-        color: yellow,
-        dependencies: ["pg", "dotenv"],
-        devDependencies: ["@types/pg"],
-      },
-    ],
-  },
-]
-
-const TEMPLATES = FRAMEWORKS.map(({ dialects }) =>
-  dialects.map(({ name }) => name),
-).reduce((a, b) => a.concat(b), [])
-
-const renameFiles: Record<string, string> = {
-  _gitignore: ".gitignore",
-}
-
 const defaultTargetDir = "hatchify-app"
 
 async function init() {
   const argTargetDir = formatTargetDir(argv._[0])
-  const argFramework = argv.framework || argv.t
-  const argDialect = argv.dialect || argv.d
-  const argTemplate =
-    argFramework && argDialect && `${argFramework}-${argDialect}`
+  const argFramework = (argv.framework || argv.f)?.toUpperCase()
+  const argDialect = (argv.dialect || argv.d)?.toUpperCase()
 
   let targetDir = argTargetDir || defaultTargetDir
   const getProjectName = () =>
@@ -154,68 +90,68 @@ async function init() {
             isValidPackageName(dir) || "Invalid package.json name",
         },
         {
-          type:
-            argTemplate && TEMPLATES.includes(argTemplate) ? null : "select",
+          type: FRAMEWORKS[argFramework] ? null : "select",
           name: "framework",
           message:
-            typeof argTemplate === "string" && !TEMPLATES.includes(argTemplate)
+            argFramework && !FRAMEWORKS[argFramework]
               ? reset(
-                  `"${argTemplate}" isn't a valid template. Please choose from below: `,
+                  `"${argFramework}" isn't a valid framework. Please choose from below: `,
                 )
               : reset("Select a framework:"),
-          initial: 0,
-          choices: FRAMEWORKS.filter(
-            (framework) => framework.name === "koa", // TODO: It was decided to limit to Koa at the moment
-          ).map((framework) => {
-            const frameworkColor = framework.color
-            return {
-              title: frameworkColor(framework.display || framework.name),
+          choices: Object.values(FRAMEWORKS)
+            .filter(
+              (framework) => framework.name === "koa", // TODO: It was decided to limit to Koa at the moment
+            )
+            .map((framework) => ({
+              title: framework.color(framework.display || framework.name),
               value: framework,
-            }
-          }),
-        },
-        {
-          type: (framework: Framework) =>
-            framework?.dialects ? "select" : null,
-          name: "dialect",
-          message: reset("Select a dialect:"),
-          choices: (framework: Framework) =>
-            framework.dialects.map((dialect) => ({
-              title: dialect.color(dialect.display || dialect.name),
-              value: dialect,
             })),
         },
         {
+          type: DIALECTS[argDialect] ? null : "select",
+          name: "dialect",
+          message:
+            argDialect && !DIALECTS[argDialect]
+              ? reset(
+                  `"${argDialect}" isn't a valid dialect. Please choose from below: `,
+                )
+              : reset("Select a dialect:"),
+          choices: Object.values(DIALECTS).map((dialect) => ({
+            title: dialect.color(dialect.display || dialect.name),
+            value: dialect,
+          })),
+        },
+        {
           type: (dialect: Dialect) =>
-            dialect.name === "postgres" ? "text" : null,
+            dialect?.name === "postgres" ? "text" : null,
           name: "databaseHost",
           message: reset("Database host:"),
           initial: "localhost",
         },
         {
           type: (_, { dialect }: { dialect: Dialect }) =>
-            dialect.name === "postgres" ? "number" : null,
+            dialect?.name === "postgres" ? "number" : null,
           name: "databasePort",
           message: reset("Database port:"),
           initial: 5432,
         },
         {
           type: (_, { dialect }: { dialect: Dialect }) =>
-            dialect.name === "postgres" ? "text" : null,
+            dialect?.name === "postgres" ? "text" : null,
           name: "databaseUsername",
           message: reset("Database username:"),
           initial: "postgres",
         },
         {
           type: (_, { dialect }: { dialect: Dialect }) =>
-            dialect.name === "postgres" ? "password" : null,
+            dialect?.name === "postgres" ? "password" : null,
           name: "databasePassword",
           message: reset("Database password:"),
           initial: "password",
         },
         {
           type: (_, { dialect }: { dialect: Dialect }) =>
-            dialect.name === "postgres" ? "text" : null,
+            dialect?.name === "postgres" ? "text" : null,
           name: "databaseName",
           message: reset("Database name:"),
           initial: "postgres",
@@ -233,11 +169,11 @@ async function init() {
   }
 
   // user choice associated with prompts
+  const framework = result.framework || FRAMEWORKS[argFramework]
+  const dialect = result.dialect || DIALECTS[argDialect]
   const {
-    framework,
     overwrite,
     packageName,
-    dialect,
     databaseHost,
     databasePort,
     databaseUsername,
@@ -252,9 +188,6 @@ async function init() {
   } else if (!fs.existsSync(root)) {
     await fs.promises.mkdir(root, { recursive: true })
   }
-
-  // determine template
-  const template: string = argTemplate || `${framework.name}-${dialect.name}`
 
   const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent)
   const pkgManager = pkgInfo ? pkgInfo.name : "npm"
@@ -275,7 +208,11 @@ async function init() {
   const templateDir = path.resolve(
     fileURLToPath(import.meta.url),
     "../..",
-    `template-${template}`,
+    `template-${
+      argFramework && argDialect
+        ? `${argFramework}-${argDialect}`
+        : `${framework.name}-${dialect.name}`
+    }`,
   )
 
   await Promise.all([
@@ -421,7 +358,7 @@ async function init() {
       break
   }
 
-  if (dialect.name === "postgres" && databaseHost === "localhost") {
+  if (dialect?.name === "postgres" && databaseHost === "localhost") {
     console.log()
     console.log(
       "Make sure you have Postgres running already start a docker container using:",
@@ -432,107 +369,6 @@ async function init() {
   }
 
   console.log()
-}
-
-async function replaceStringInFile(
-  filePath: string,
-  searchValue: string,
-  replaceValue: string,
-) {
-  const indexHtml = await fs.promises.readFile(filePath, "utf8")
-
-  await fs.promises.writeFile(
-    filePath,
-    indexHtml.replaceAll(searchValue, replaceValue),
-    "utf8",
-  )
-}
-
-function runCommand(fullCommand: string, cwd: string, silent = false) {
-  const [command, ...args] = fullCommand.split(" ")
-  const { status } = spawn.sync(command, args, {
-    stdio: silent ? [] : "inherit",
-    cwd,
-  })
-
-  if (status) {
-    process.exit(status)
-  }
-}
-
-function formatTargetDir(targetDir: string | undefined) {
-  return targetDir?.trim().replace(/\/+$/g, "")
-}
-
-async function copyFile(src: string, dest: string) {
-  const stat = await fs.promises.stat(src)
-  if (stat.isDirectory()) {
-    await copyDir(src, dest)
-  } else {
-    await fs.promises.copyFile(src, dest)
-  }
-}
-
-function isValidPackageName(projectName: string) {
-  return /^(?:@[a-z\d\-*~][a-z\d\-*._~]*\/)?[a-z\d\-~][a-z\d\-._~]*$/.test(
-    projectName,
-  )
-}
-
-function toValidPackageName(projectName: string) {
-  return projectName
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/^[._]/, "")
-    .replace(/[^a-z\d\-~]+/g, "-")
-}
-
-async function copyDir(srcDir: string, destDir: string) {
-  const [files] = await Promise.all([
-    fs.promises.readdir(srcDir),
-    fs.promises.mkdir(destDir, { recursive: true }),
-  ])
-  await Promise.all(
-    files.map((file) =>
-      copyFile(
-        path.resolve(srcDir, file),
-        path.resolve(destDir, renameFiles[file] ?? file),
-      ),
-    ),
-  )
-}
-
-function isEmpty(path: string) {
-  const files = fs.readdirSync(path)
-  return files.length === 0 || (files.length === 1 && files[0] === ".git")
-}
-
-async function emptyDir(dir: string) {
-  if (!fs.existsSync(dir)) {
-    return
-  }
-
-  const files = await fs.promises.readdir(dir)
-
-  await Promise.all(
-    files.map((file) =>
-      file === ".git"
-        ? null
-        : fs.promises.rm(path.resolve(dir, file), {
-            recursive: true,
-            force: true,
-          }),
-    ),
-  )
-}
-
-function pkgFromUserAgent(userAgent: string | undefined) {
-  if (!userAgent) {
-    return undefined
-  }
-  const [name, version] = userAgent.split(" ")[0].split("/")
-  return { name, version }
 }
 
 init().catch((e) => {
