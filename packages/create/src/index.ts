@@ -210,7 +210,7 @@ async function init() {
     "../..",
     `template-${
       argFramework && argDialect
-        ? `${argFramework}-${argDialect}`
+        ? `${argFramework.toLowerCase()}-${argDialect.toLowerCase()}`
         : `${framework.name}-${dialect.name}`
     }`,
   )
@@ -358,7 +358,7 @@ async function init() {
       break
   }
 
-  if (dialect?.name === "postgres" && databaseHost === "localhost") {
+  if (dialect.name === "postgres" && databaseHost === "localhost") {
     console.log()
     console.log(
       "Make sure you have Postgres running already start a docker container using:",
