@@ -35,22 +35,20 @@ You can also directly specify the project name and the template you want to use 
 
 ```bash
 # npm 7+, extra double-dash is needed:
-npm create @hatchifyjs/create hatchify_app -- --template koa-sqlite
+npm create @hatchifyjs/create hatchify-app -- --framework koa --dialect sqlite
 
 # yarn
-yarn create @hatchifyjs/create hatchify_app --template koa-sqlite
+yarn create @hatchifyjs/create hatchify-app --framework koa --dialect sqlite
 
 # pnpm
-pnpm create @hatchifyjs/create hatchify_app --template koa-sqlite
+pnpm create @hatchifyjs/create hatchify-app --framework koa --dialect sqlite
 
 # Bun
-bunx @hatchifyjs/create hatchify_app --template koa-sqlite
+bunx @hatchifyjs/create hatchify-app --framework koa --dialect sqlite
 ```
 
 Currently supported template presets include:
 
-- `express-postgres`
-- `exporess-sqlite`
 - `koa-postgres`
 - `koa-sqlite`
 
