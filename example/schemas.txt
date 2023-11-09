@@ -4,11 +4,11 @@ import {
   dateonly,
   datetime,
   enumerate,
+  hasMany,
   integer,
   string,
   text,
 } from "@hatchifyjs/core"
-
 
 export const Todo: PartialSchema = {
   name: "Todo",
@@ -19,9 +19,20 @@ export const Todo: PartialSchema = {
     importance: integer(),
     status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
     completionDate: dateonly(),
-    notes: text()
+    notes: text(),
   },
   relationships: {
     user: belongsTo(),
+  },
+}
+
+export const User: PartialSchema = {
+  name: "User",
+  // namespace: "Admin",
+  attributes: {
+    name: string(),
+  },
+  relationships: {
+    todos: hasMany(),
   },
 }
