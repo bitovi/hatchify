@@ -7,18 +7,22 @@ import { getDisplays } from "../../services-legacy"
 
 import type { Schema } from "../../services-legacy/api/schemas" //TODO update schema
 
-import type { FlatRecord, ValueComponent } from "../../presentation/interfaces"
+import type {
+  FlatRecord,
+  DataCellValueComponent,
+} from "../../presentation/interfaces"
 
 interface HatchifyDetailsProps {
   schema: Schema
-  valueComponents?: { [attribute: string]: ValueComponent }
+  dataCellValueComponents?: { [attribute: string]: DataCellValueComponent }
   useData?: () => FlatRecord
   children?: React.ReactNode | null
 }
 
 export const HatchifyDetails: React.FC<HatchifyDetailsProps> = ({
+  // idk what this component does
   schema,
-  valueComponents,
+  dataCellValueComponents,
   useData,
   children,
 }) => {
@@ -26,7 +30,7 @@ export const HatchifyDetails: React.FC<HatchifyDetailsProps> = ({
   const { Details, defaultValueComponents } = useHatchifyPresentation()
   const displays = getDisplays(
     schema,
-    valueComponents,
+    dataCellValueComponents,
     defaultValueComponents,
     children,
   )

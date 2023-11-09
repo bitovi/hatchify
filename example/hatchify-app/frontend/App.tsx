@@ -37,6 +37,10 @@ const App: React.FC = () => {
     else alert(`action on items ${selected.ids.join(",")}`)
   }
 
+  function ValCom({ record }: { record: any }) {
+    return <strong>{record.id}</strong>
+  }
+
   return (
     <MuiProvider>
       <button onClick={onActionClick} style={{ margin: 10 }}>
@@ -56,12 +60,20 @@ const App: React.FC = () => {
         <TodoColumn
           label="Beans,"
           headerCellRenderValue={() => (
-            <div style={{ backgroundColor: "red", color: "white" }}>
+            <div
+              style={{
+                backgroundColor: "forestGreen",
+                color: "white",
+                borderRadius: "5px",
+                padding: "5px",
+                textAlign: "center",
+              }}
+            >
               <strong>Tada!</strong>
             </div>
           )}
         />
-        <TodoColumn type="append" label="My Dude" />
+        <TodoColumn type="append" label="My Dude" ValueComponent={ValCom} />
         <TodoColumn type="prepend" label="Very" />
       </TodoList>
     </MuiProvider>

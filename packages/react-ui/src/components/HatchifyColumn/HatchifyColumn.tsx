@@ -6,7 +6,7 @@ import type {
 import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FlatRecord,
-  ValueComponent,
+  DataCellValueComponent,
   CellValue,
   Attribute,
 } from "../../presentation/interfaces"
@@ -23,7 +23,7 @@ export type RenderValue = ({
   attributeSchema?: Attribute
 }) => JSX.Element
 
-// todo: dataCellRenderValue and ValueComponent should be required, but only one can be provided
+// todo: dataCellRenderValue and DataCellValueComponent should be required, but only one can be provided
 export type AdditionalColumnProps = {
   allSchemas: Schemas
   schemaName: string
@@ -33,10 +33,10 @@ export type AdditionalColumnProps = {
 } & {
   dataCellRenderValue?: Render
   headerCellRenderValue?: Render
-  ValueComponent?: ValueComponent
+  DataCellValueComponent?: DataCellValueComponent
 }
 
-// todo: dataCellRenderValue and ValueComponent should be optional, but only one can be provided
+// todo: dataCellRenderValue and DataCellValueComponent should be optional, but only one can be provided
 export type ReplaceColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -49,10 +49,10 @@ export type ReplaceColumnProps<
 } & {
   dataCellRenderValue?: RenderValue
   headerCellRenderValue?: RenderValue
-  ValueComponent?: ValueComponent
+  DataCellValueComponent?: DataCellValueComponent
 }
 
-// todo: dataCellRenderValue and ValueComponent should be optional, but only one can be provided
+// todo: dataCellRenderValue and DataCellValueComponent should be optional, but only one can be provided
 export type OverwriteColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -65,7 +65,7 @@ export type OverwriteColumnProps<
 } & {
   dataCellRenderValue?: RenderValue
   headerCellRenderValue?: RenderValue
-  ValueComponent?: ValueComponent
+  DataCellValueComponent?: DataCellValueComponent
 }
 
 export function HatchifyColumn<

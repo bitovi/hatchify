@@ -10,7 +10,7 @@ import type {
   Attribute,
   Relationship as RelationshipType,
   FlatRecord,
-  ValueComponent,
+  DataCellValueComponent,
 } from "../../presentation/interfaces"
 
 import type {
@@ -91,7 +91,7 @@ export function getDisplaysFromChildren(
         attributeSchema: relationship
           ? null
           : schema.attributes[props.attribute],
-        ValueComponent: props.ValueComponent,
+        DataCellValueComponent: props.DataCellValueComponent,
         defaultValueComponents,
         dataCellRenderValue: props.dataCellRenderValue,
         headerCellRenderValue: props.headerCellRenderValue,
@@ -104,14 +104,16 @@ export function getDisplaysFromChildren(
 export function getDisplaysFromSchema(
   schema: Schema,
   defaultValueComponents: DefaultValueComponentsTypes,
-  valueComponents: { [attribute: string]: ValueComponent } | null,
+  dataCellValueComponents: {
+    [attribute: string]: DataCellValueComponent
+  } | null,
 ): HatchifyDisplay[] {
   const attributesDisplays = Object.entries(schema.attributes).map(
     ([key, value]) => {
       return getHatchifyDisplay({
         attribute: key,
         attributeSchema: value,
-        valueComponents,
+        dataCellValueComponents,
         defaultValueComponents,
       })
     },
@@ -123,7 +125,7 @@ export function getDisplaysFromSchema(
       attribute: value.target,
       label: value.target,
       attributeSchema: null, // the schema in this case is a "relationship"
-      valueComponents,
+      dataCellValueComponents,
       defaultValueComponents,
     })
   })
@@ -134,7 +136,7 @@ export function getDisplaysFromSchema(
       attribute: value.target,
       label: value.target,
       attributeSchema: null, // the schema in this case is a "relationship"
-      valueComponents,
+      dataCellValueComponents,
       defaultValueComponents,
     })
   })
@@ -146,11 +148,11 @@ export function getDisplaysFromSchema(
 export function getHatchifyDisplay({
   attribute,
   isRelationship = false,
-  isExtraDisplay = false, // @todo necessary? should always be covered by `render` or `ValueComponent` case!
+  isExtraDisplay = false, // @todo necessary? should always be covered by `render` or `DataCellValueComponent` case!
   label = null,
   attributeSchema = null,
-  ValueComponent = null,
-  valueComponents = null,
+  DataCellValueComponent = null,
+  dataCellValueComponents = null,
   defaultValueComponents,
   render = null,
   dataCellRenderValue = null,
@@ -161,8 +163,10 @@ export function getHatchifyDisplay({
   attribute: string
   label?: string | null
   attributeSchema?: Attribute | null
-  ValueComponent?: ValueComponent | null
-  valueComponents?: { [attribute: string]: ValueComponent } | null
+  DataCellValueComponent?: DataCellValueComponent | null
+  dataCellValueComponents?: {
+    [attribute: string]: DataCellValueComponent
+  } | null
   defaultValueComponents: DefaultValueComponentsTypes
   render?: Render | null
   dataCellRenderValue?: RenderValue | null
@@ -194,7 +198,7 @@ export function getHatchifyDisplay({
   /**
    * cell render priority:
    * 1. `dataCellRenderValue` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
-   * 2. `ValueComponent` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
+   * 2. `DataCellValueComponent` prop from `HatchifyExtraColumn` or `HatchifyAttributeDisplay`
    * 3. `valueComponents` prop from `HatchifyList`
    * 6. default `render` using presentation's defaultvalueComponents
    */
@@ -204,17 +208,17 @@ export function getHatchifyDisplay({
   } else if (dataCellRenderValue) {
     display.render = ({ record }) =>
       dataCellRenderValue({ record, value: record[attribute] })
-  } else if (ValueComponent) {
+  } else if (DataCellValueComponent) {
     display.render = ({ record }) => (
-      <ValueComponent
+      <DataCellValueComponent
         value={record[attribute]}
         record={record}
         attributeSchema={attributeSchema}
         attribute={attribute}
       />
     )
-  } else if (valueComponents && valueComponents[attribute]) {
-    const RenderCell = valueComponents[attribute]
+  } else if (dataCellValueComponents && dataCellValueComponents[attribute]) {
+    const RenderCell = dataCellValueComponents[attribute]
     display.render = ({ record }) => (
       <RenderCell
         value={record[attribute]}
@@ -253,7 +257,7 @@ export function injectExtraDisplays(
         label: props.label,
         attribute: props.label,
         render: props.render,
-        ValueComponent: props.ValueComponent,
+        DataCellValueComponent: props.DataCellValueComponent,
         defaultValueComponents,
       }),
     )
@@ -271,7 +275,9 @@ export function hasValidChildren(
 
 export function getDisplays(
   schema: Schema,
-  valueComponents: { [field: string]: ValueComponent } | undefined,
+  dataCellValueComponents:
+    | { [field: string]: DataCellValueComponent }
+    | undefined,
   defaultValueComponents: DefaultValueComponentsTypes,
   children: React.ReactNode | null,
 ): HatchifyDisplay[] {
@@ -284,7 +290,7 @@ export function getDisplays(
     : getDisplaysFromSchema(
         schema,
         defaultValueComponents,
-        valueComponents || null,
+        dataCellValueComponents || null,
       )
 
   if (hasValidChildren(HatchifyExtraColumn.name, childArray)) {

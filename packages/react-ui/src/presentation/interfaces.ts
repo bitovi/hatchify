@@ -113,7 +113,7 @@ export type AttributeSchema = {
 
 export type Attribute = string | AttributeSchema
 
-export type ValueComponent = React.FC<{
+export type DataCellValueComponent = React.FC<{
   value: CellValue
   record: FlatRecord
   attributeSchema: NewAttribute | null
