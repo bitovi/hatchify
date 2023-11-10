@@ -62,7 +62,7 @@ export function getColumns(
 
       hatchifyColumns.push(
         getHatchifyDisplay({
-          sortable: field !== undefined,
+          sortable: props.sortable ?? field !== undefined,
           isRelationship: relationship !== undefined,
           label: props.label || null,
           attribute: props.field,
@@ -96,7 +96,7 @@ export function getColumns(
 
         hatchifyColumns.push(
           getHatchifyDisplay({
-            sortable: true,
+            sortable: props.sortable ?? true,
             isRelationship: relationship !== undefined,
             label: props.label || null,
             attribute: props.field,

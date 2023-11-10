@@ -10,12 +10,14 @@ import type {
   Attribute,
   Relationship as RelationshipType,
   FlatRecord,
-  ValueComponent,
+  DataCellValueComponent,
+  HeaderCellValueComponent,
 } from "../../presentation/interfaces"
 
 import type {
-  Render,
-  RenderValue,
+  DataCellRender,
+  HeaderCellRenderValue,
+  DataCellRenderValue,
   DefaultValueComponentsTypes,
 } from "../../components"
 
@@ -105,7 +107,7 @@ export function getDisplaysFromSchema(
   schema: Schema,
   defaultValueComponents: DefaultValueComponentsTypes,
   dataCellValueComponents: {
-    [attribute: string]: ValueComponent
+    [attribute: string]: DataCellValueComponent
   } | null,
 ): HatchifyDisplay[] {
   const attributesDisplays = Object.entries(schema.attributes).map(
@@ -163,14 +165,14 @@ export function getHatchifyDisplay({
   attribute: string
   label?: string | null
   attributeSchema?: Attribute | null
-  DataCellValueComponent?: ValueComponent | null
+  DataCellValueComponent?: DataCellValueComponent | null
   dataCellValueComponents?: {
-    [attribute: string]: ValueComponent
+    [attribute: string]: DataCellValueComponent
   } | null
   defaultValueComponents: DefaultValueComponentsTypes
-  render?: Render | null
-  dataCellRenderValue?: RenderValue | null
-  headerCellRenderValue?: RenderValue | null
+  render?: DataCellRender | null
+  dataCellRenderValue?: DataCellRenderValue | null
+  headerCellRenderValue?: HeaderCellRenderValue | null
 }): HatchifyDisplay {
   if (!attributeSchema) {
     attributeSchema = { type: "extra", allowNull: true }
@@ -275,8 +277,12 @@ export function hasValidChildren(
 
 export function getDisplays(
   schema: Schema,
-  dataCellValueComponents: { [field: string]: ValueComponent } | undefined,
-  headerCellValueComponents: { [field: string]: ValueComponent } | undefined,
+  dataCellValueComponents:
+    | { [field: string]: DataCellValueComponent }
+    | undefined,
+  headerCellValueComponents:
+    | { [field: string]: HeaderCellValueComponent }
+    | undefined,
   defaultValueComponents: DefaultValueComponentsTypes,
   children: React.ReactNode | null,
 ): HatchifyDisplay[] {

@@ -6,7 +6,9 @@ export {
 } from "./HatchifyDisplays"
 
 export type {
-  Render,
-  RenderValue,
+  HeaderCellRender,
+  DataCellRender,
+  HeaderCellRenderValue,
+  DataCellRenderValue,
   HatchifyAttributeFieldProps,
 } from "./HatchifyDisplays"

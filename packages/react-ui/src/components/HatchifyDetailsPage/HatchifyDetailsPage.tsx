@@ -1,13 +1,14 @@
 import { HatchifyDetails, useHatchifyPresentation } from ".."
 import type {
   FlatRecord,
-  ValueComponent,
+  DataCellValueComponent,
+  HeaderCellValueComponent,
   XLayoutProps,
 } from "../../presentation/interfaces"
 
 interface HatchifyDetailsPageProps extends XLayoutProps {
-  dataCellValueComponents?: { [attribute: string]: ValueComponent }
-  headerCellValueComponents?: { [attribute: string]: ValueComponent }
+  dataCellValueComponents?: { [attribute: string]: DataCellValueComponent }
+  headerCellValueComponents?: { [attribute: string]: HeaderCellValueComponent }
   useData?: () => FlatRecord
 }
 

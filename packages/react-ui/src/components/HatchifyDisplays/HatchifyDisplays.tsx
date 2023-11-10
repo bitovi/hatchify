@@ -1,15 +1,25 @@
+import type { Meta } from "@hatchifyjs/rest-client"
 import type {
   FlatRecord,
   FieldComponent,
-  ValueComponent,
+  DataCellValueComponent,
+  HeaderCellValueComponent,
   CellValue,
   Attribute,
 } from "../../presentation/interfaces"
+import type { HatchifyDisplay } from "../../services"
 import type { FormFieldRender } from "../../services-legacy"
 
-export type Render = ({ record }: { record: FlatRecord }) => JSX.Element
+export type DataCellRender = ({ record }: { record: FlatRecord }) => JSX.Element
+export type HeaderCellRender = (headerArgs: {
+  column: Omit<HatchifyDisplay, "dataCellRender" | "headerCellRender">
+  meta: Meta
+  sortBy: string | undefined
+  direction: "asc" | "desc" | undefined
+  setSort: (sortBy: string) => void
+}) => JSX.Element
 
-export type RenderValue = ({
+export type DataCellRenderValue = ({
   value,
   record,
   attributeSchema,
@@ -18,16 +28,22 @@ export type RenderValue = ({
   record: FlatRecord
   attributeSchema?: Attribute
 }) => JSX.Element
+export type HeaderCellRenderValue = (headerArgs: {
+  column: Omit<HatchifyDisplay, "dataCellRender" | "headerCellRender">
+  meta: Meta
+  sortBy: string | undefined
+  direction: "asc" | "desc" | undefined
+  setSort: (sortBy: string) => void
+}) => JSX.Element
 
 export type HatchifyExtraColumnProps = {
-  // where is this used? do i need to update the render to be datacellrender or whatever?
   label: string
   after?: string
 } & (
-  | { render: Render }
+  | { render: DataCellRender }
   | {
-      DataCellValueComponent: ValueComponent
-      HeaderCellValueComponent?: ValueComponent
+      DataCellValueComponent: DataCellValueComponent
+      HeaderCellValueComponent?: HeaderCellValueComponent
     }
 )
 
@@ -52,10 +68,13 @@ export type HatchifyColumnProps = {
   attribute: string
   label?: string
 } & (
-  | { dataCellRenderValue?: RenderValue; headerCellRenderValue?: RenderValue }
   | {
-      DataCellValueComponent?: ValueComponent
-      HeaderCellValueComponent?: ValueComponent
+      dataCellRenderValue?: DataCellRenderValue
+      headerCellRenderValue?: HeaderCellRenderValue
+    }
+  | {
+      DataCellValueComponent?: DataCellValueComponent
+      HeaderCellValueComponent?: HeaderCellValueComponent
     }
 )
 

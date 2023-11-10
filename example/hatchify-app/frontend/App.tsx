@@ -41,7 +41,8 @@ const App: React.FC = () => {
     return <strong>{record.id}</strong>
   }
 
-  function HeadCom({ record }: { record: any }) {
+  function HeadCom(props) {
+    console.log("🟠", props)
     return <strong>Header</strong>
   }
 
@@ -59,7 +60,10 @@ const App: React.FC = () => {
           field="dueDate"
           label="Cool"
           dataCellRenderValue={({ record }) => <>{record.importance}</>}
-          headerCellRenderValue={({ record }) => <>{record.foo}</>}
+          headerCellRenderValue={(props) => {
+            console.log("🟡", props)
+            return <>hcrv</>
+          }}
         />
         <TodoColumn
           label="Beans,"
@@ -76,10 +80,11 @@ const App: React.FC = () => {
               <strong>Tada!</strong>
             </div>
           )}
+          sortable={true}
         />
         <TodoColumn
           type="append"
-          label="My Dude"
+          label="test"
           HeaderCellValueComponent={HeadCom}
           DataCellValueComponent={ValCom}
         />

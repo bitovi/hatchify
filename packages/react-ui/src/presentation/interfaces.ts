@@ -1,6 +1,7 @@
 // import type { Schema } from "@hatchifyjs/rest-client"
 import type {
   GetSchemaNames,
+  Meta,
   Attribute as NewAttribute, // todo: replace Attribute with NewAttribute
 } from "@hatchifyjs/rest-client"
 import type { Schema } from "../services-legacy/api/schemas" //TODO update schema
@@ -13,6 +14,7 @@ import type { FormState } from "../components/HatchifyForm"
 import type { CollectionState } from "../hooks/useCollectionState"
 import type { Filters } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
+import type { HatchifyDisplay } from "../services"
 
 export type Primitive = string | boolean | number
 
@@ -113,11 +115,19 @@ export type AttributeSchema = {
 
 export type Attribute = string | AttributeSchema
 
-export type ValueComponent = React.FC<{
+export type DataCellValueComponent = React.FC<{
   value: CellValue
   record: FlatRecord
   attributeSchema: NewAttribute | null
   attribute?: string | null
+}>
+
+export type HeaderCellValueComponent = React.FC<{
+  column: Omit<HatchifyDisplay, "dataCellRender" | "headerCellRender">
+  meta: Meta
+  sortBy: string | undefined
+  direction: "asc" | "desc" | undefined
+  setSort: (sortBy: string) => void
 }>
 
 export type FieldComponent = React.FC<{
