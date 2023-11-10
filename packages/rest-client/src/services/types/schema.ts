@@ -60,10 +60,12 @@ export type RecordType<
   TSchemas extends Record<string, PartialSchema>,
   TPartialSchema extends PartialSchema,
   TMutate extends boolean = false,
+  TLooseTyping extends boolean = false,
 > = {
   id: string
 } & TypedAttributes<TPartialSchema["attributes"], TMutate> &
-  TypedRelationships<TSchemas, TPartialSchema, TMutate>
+  TypedRelationships<TSchemas, TPartialSchema, TMutate> &
+  (TLooseTyping extends true ? { [field: string]: any } : Record<string, never>)
 
 // Convert object of attributes into a union of attribute objects
 type CreateAttributeUnion<
@@ -260,8 +262,8 @@ export type MutateRelationship = {
 // type EEE2 = Prettify<EE>["user"]["optEmployed"]
 // //   ^?
 
-// type FF = Prettify<RecordType<Schemass, typeof partialTodo, false>>["user"][""]
-// // ^?
+// type FF = Prettify<RecordType<Schemass, typeof partialTodo, false>>
+// //   ^?
 
 // type GG = "belongsTo" extends "hasMany" | "belongsTo" ? true : false
 // //   ^?
