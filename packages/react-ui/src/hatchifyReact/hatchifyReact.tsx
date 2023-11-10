@@ -184,8 +184,10 @@ export function hatchifyReact<
 
 // todo: leaving for testing, remove before merge to main
 // const schemas = {
-//   Todo: {
+//   Admin_Todo: {
 //     name: "Todo",
+//     displayAttribute: "title",
+//     namespace: "Admin",
 //     attributes: {
 //       title: string(),
 //       reqTitle: string({ required: true }),
@@ -197,18 +199,18 @@ export function hatchifyReact<
 //       optCreated: datetime(),
 //     },
 //     relationships: {
-//       user: belongsTo("User"),
+//       user: belongsTo("Admin_User"),
 //     },
 //   },
-//   User: {
-//     name: "User",
+//   Admin_User: {
+//     name: "Admin_User",
 //     attributes: {
 //       name: string({ required: true }),
 //       age: integer({ required: true }),
 //       employed: boolean(),
 //     },
 //     relationships: {
-//       todos: hasMany("Todo"),
+//       todos: hasMany("Admin_Todo"),
 //     },
 //   },
 // } satisfies Record<string, PartialSchema>
@@ -216,6 +218,10 @@ export function hatchifyReact<
 // const app = hatchifyReact({
 //   completeSchemaMap: schemas,
 // } as RestClient<typeof schemas, any>)
+
+// type App = {
+//   app: HatchifyApp<typeof schemas>
+// }
 
 // app.model.Todo.createOne({
 //   attributes: {
@@ -234,9 +240,12 @@ export function hatchifyReact<
 //   records[0].shouldError
 // })
 
-// const state = app.state.Todo.useCollectionState()
+// const state = app.state.Admin_Todo.useCollectionState({
+//   include: ["user"],
+//   baseFilter: [{ field: "age", operator: ">", value: 1 }],
+// })
 // state.data.map((_todo) => {
-//   _todo
+//   _todo.
 // })
 // state.data[0].id
 // state.data[0].age
