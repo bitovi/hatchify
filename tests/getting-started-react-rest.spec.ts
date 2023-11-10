@@ -4,7 +4,7 @@ test("works", async ({ page }) => {
   await page.goto("http://localhost:5174")
 
   // * rows are visible
-  await expect(page.getByText("Workout")).toBeVisible()
+  await expect(page.getByText("Invalid")).toBeVisible()
   await expect(page.getByText("Shopping")).toBeVisible()
   await expect(page.getByText("Cooking")).toBeVisible()
 
