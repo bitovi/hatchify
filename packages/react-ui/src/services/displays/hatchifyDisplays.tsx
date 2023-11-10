@@ -306,7 +306,6 @@ export function getDisplays(
   // casting as JSX.Element because helper functions require access to
   // `child.type.name` and `child.props`
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
-
   let displays = hasValidChildren(HatchifyColumn.displayName || "", childArray)
     ? getDisplaysFromChildren(
         // todo: future; remove unknown, `getDisplays` used by Details page which is not yet implemented
@@ -327,7 +326,6 @@ export function getDisplays(
 
 export function getEmptyList(children: React.ReactNode): () => JSX.Element {
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
-
   const emptyChild = childArray.find(
     (child) => child.type.name === HatchifyEmptyList.displayName,
   )

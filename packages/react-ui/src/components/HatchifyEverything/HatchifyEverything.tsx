@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid"
 import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
 import Typography from "@mui/material/Typography"
+import { Eggbert } from "../../assets"
 
 export interface HatchifyEverythingProps<
   TSchemas extends Record<string, PartialSchema>,
@@ -65,7 +66,7 @@ function HatchifyEverything<
         {!finalSchemas ? (
           <>
             <Typography>Welcome to Hatchify!</Typography>
-            <img src={"../../assets/Eggboy.png"} alt="Hatchify logo" />
+            <Eggbert />
           </>
         ) : (
           <HatchifyCollection
@@ -76,7 +77,7 @@ function HatchifyEverything<
             restClient={restClient}
           >
             <HatchifyEmpty {...props}>
-              <img src={"../../assets/Eggboy.png"} alt="Hatchify logo" />
+              <Eggbert />
             </HatchifyEmpty>
           </HatchifyCollection>
         )}

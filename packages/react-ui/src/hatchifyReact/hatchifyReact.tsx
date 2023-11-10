@@ -65,9 +65,7 @@ type Components<TSchemas extends Record<string, PartialSchema>> = {
 
 export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
   components: Components<TSchemas>
-  Everything: (
-    props: HatchifyEverythingProps<TSchemas, keyof TSchemas>,
-  ) => JSX.Element
+  Everything: (props: HatchifyEverythingProps<TSchemas>) => JSX.Element
   model: HatchifyReactRest<TSchemas>
   state: {
     [SchemaName in keyof TSchemas]: {
@@ -172,9 +170,7 @@ export function hatchifyReact<
     {} as HatchifyApp<TSchemas>["state"],
   )
 
-  const Everything = (
-    props: HatchifyEverythingProps<TSchemas, keyof TSchemas>,
-  ) => (
+  const Everything = (props: HatchifyEverythingProps<TSchemas>) => (
     <HatchifyEverything
       {...props}
       finalSchemas={finalSchemas as any}
