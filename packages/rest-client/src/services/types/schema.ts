@@ -60,10 +60,17 @@ export type RecordType<
   TSchemas extends Record<string, PartialSchema>,
   TPartialSchema extends PartialSchema,
   TMutate extends boolean = false,
+  TLooseTyping extends boolean = false,
 > = {
   id: string
 } & TypedAttributes<TPartialSchema["attributes"], TMutate> &
-  TypedRelationships<TSchemas, TPartialSchema, TMutate>
+  TypedRelationships<TSchemas, TPartialSchema, TMutate> &
+  // A client is using computed fields which are not in the schema and then
+  // using compound column components. With `TLooseTyping` we can keep type
+  // safety for the schema attributes and relationships while allowing the
+  // client to use custom computed fields & not receive type errors.
+  // @TODO HATCH-417 - should we force the client to type beyond the schema?
+  (TLooseTyping extends true ? { [field: string]: any } : Record<string, never>)
 
 // Convert object of attributes into a union of attribute objects
 type CreateAttributeUnion<
@@ -260,8 +267,8 @@ export type MutateRelationship = {
 // type EEE2 = Prettify<EE>["user"]["optEmployed"]
 // //   ^?
 
-// type FF = Prettify<RecordType<Schemass, typeof partialTodo, false>>["user"][""]
-// // ^?
+// type FF = Prettify<RecordType<Schemass, typeof partialTodo, false>>
+// //   ^?
 
 // type GG = "belongsTo" extends "hasMany" | "belongsTo" ? true : false
 // //   ^?
