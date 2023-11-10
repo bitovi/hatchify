@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react-ui",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "main": "./dist/react-ui.js",
   "module": "./dist/react-ui.mjs",
   "types": "./dist/react-ui.d.ts",
@@ -37,8 +37,8 @@
   },
   "dependencies": {
     "@hatchifyjs/core": "^0.2.9",
-    "@hatchifyjs/react-rest": "^0.1.7",
-    "@hatchifyjs/rest-client": "^0.1.5",
+    "@hatchifyjs/react-rest": "^0.1.8",
+    "@hatchifyjs/rest-client": "^0.1.6",
     "lodash": "^4.17.21",
     "uuid": "^9.0.0"
   },

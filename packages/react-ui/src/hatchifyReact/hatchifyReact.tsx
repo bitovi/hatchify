@@ -1,6 +1,11 @@
 import {
   assembler,
-  // integer, datetime, string, boolean
+  // integer,
+  // datetime,
+  // string,
+  // boolean,
+  // hasMany,
+  // belongsTo,
 } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
@@ -40,7 +45,10 @@ type HatchifyColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > =
-  | Omit<AdditionalColumnProps, "allSchemas" | "schemaName">
+  | Omit<
+      AdditionalColumnProps<TSchemas, TSchemaName>,
+      "allSchemas" | "schemaName"
+    >
   | Omit<ReplaceColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
   | Omit<
       OverwriteColumnProps<TSchemas, TSchemaName>,
@@ -176,33 +184,45 @@ export function hatchifyReact<
 }
 
 // todo: leaving for testing, remove before merge to main
-// const partialTodo = {
-//   name: "Todo",
-//   attributes: {
-//     title: string(),
-//     reqTitle: string({ required: true }),
-//     age: integer({ required: true }),
-//     optAge: integer({ required: false }),
-//     important: boolean({ required: true }),
-//     optImportant: boolean(),
-//     created: datetime({ required: true }),
-//     optCreated: datetime(),
+// const schemas = {
+//   Admin_Todo: {
+//     name: "Todo",
+//     displayAttribute: "title",
+//     namespace: "Admin",
+//     attributes: {
+//       title: string(),
+//       reqTitle: string({ required: true }),
+//       age: integer({ required: true }),
+//       optAge: integer({ required: false }),
+//       important: boolean({ required: true }),
+//       optImportant: boolean(),
+//       created: datetime({ required: true }),
+//       optCreated: datetime(),
+//     },
+//     relationships: {
+//       user: belongsTo("Admin_User"),
+//     },
 //   },
-// } satisfies PartialSchema
-// const partialUser = {
-//   name: "User",
-//   attributes: {
-//     name: string({ required: true }),
-//     age: integer({ required: true }),
-//     employed: boolean(),
+//   Admin_User: {
+//     name: "Admin_User",
+//     attributes: {
+//       name: string({ required: true }),
+//       age: integer({ required: true }),
+//       employed: boolean(),
+//     },
+//     relationships: {
+//       todos: hasMany("Admin_Todo"),
+//     },
 //   },
-// }
-
-// const schemas = { Todo: partialTodo, User: partialUser }
+// } satisfies Record<string, PartialSchema>
 
 // const app = hatchifyReact({
 //   completeSchemaMap: schemas,
-// } as RestClient<typeof schemas>)
+// } as RestClient<typeof schemas, any>)
+
+// type App = {
+//   app: HatchifyApp<typeof schemas>
+// }
 
 // app.model.Todo.createOne({
 //   attributes: {
@@ -221,7 +241,13 @@ export function hatchifyReact<
 //   records[0].shouldError
 // })
 
-// const state = app.state.Todo.useCollectionState()
+// const state = app.state.Admin_Todo.useCollectionState({
+//   include: ["user"],
+//   baseFilter: [{ field: "age", operator: ">", value: 1 }],
+// })
+// state.data.map((_todo) => {
+//   _todo.
+// })
 // state.data[0].id
 // state.data[0].age
 // state.data[0].optAge
@@ -230,8 +256,20 @@ export function hatchifyReact<
 // const TodoList = app.components.Todo.Collection
 // const TodoColumn = app.components.Todo.Column
 
+// function AgeComponent() {
+//   return <div>hello</div>
+// }
+
 // function Test() {
-//   return <TodoList>
-//     <TodoColumn field="age" />
-//   </TodoList>
+//   return (
+//     <TodoList>
+//       <TodoColumn
+//         // field="age"
+//         label="Age"
+//         type="append"
+//         renderValue={({ record }) => <div>{record.asdfa}</div>}
+//         // ValueComponent={AgeComponent}
+//       />
+//     </TodoList>
+//   )
 // }
