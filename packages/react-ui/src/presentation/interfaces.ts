@@ -62,6 +62,10 @@ export interface XCollectionProps<
   children?: React.ReactNode
 }
 
+export interface XEverythingProps extends XCollectionProps {
+  setSelectedSchema: (schemaName: any) => void
+}
+
 export interface XLayoutProps {
   schema: Schema
   renderActions?: () => JSX.Element

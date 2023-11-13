@@ -9,6 +9,7 @@ import { MuiLayout } from "../MuiLayout"
 import { MuiForm } from "../MuiForm"
 import { MuiDetails } from "../MuiDetails"
 import MuiDataGrid from "../MuiDataGrid/MuiDataGrid"
+import { MuiEverything } from "../MuiEverything"
 import {
   String as StringInput,
   Number as NumberInput,
@@ -22,6 +23,7 @@ export const MuiProvider: React.FC<XProviderProps<Theme>> = ({ children }) => {
   return (
     <HatchifyPresentationProvider
       Collection={MuiDataGrid}
+      Everything={MuiEverything}
       Layout={MuiLayout}
       Details={MuiDetails}
       Form={MuiForm}

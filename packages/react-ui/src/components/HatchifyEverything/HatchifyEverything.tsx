@@ -6,14 +6,9 @@ import type {
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
-import { HatchifyCollection } from ".."
-import { HatchifyEmpty } from "../HatchifyEmpty"
+import { useHatchifyPresentation } from ".."
 import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
-import Grid from "@mui/material/Grid"
-import Tabs from "@mui/material/Tabs"
-import Tab from "@mui/material/Tab"
-import Typography from "@mui/material/Typography"
-import { Eggbert } from "../../assets"
+import useCollectionState from "../../hooks/useCollectionState"
 
 export interface HatchifyEverythingProps<
   TSchemas extends Record<string, PartialSchema>,
@@ -27,6 +22,7 @@ export interface HatchifyEverythingProps<
   defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters
+  setSelectedSchema: (schemaName: keyof TSchemas) => void
 }
 
 function HatchifyEverything<
@@ -35,54 +31,37 @@ function HatchifyEverything<
   finalSchemas,
   partialSchemas,
   restClient,
-  ...props
+  children,
+  defaultSelected,
+  onSelectedChange,
+  defaultPage,
+  defaultSort,
+  baseFilter,
 }: HatchifyEverythingProps<TSchemas>): JSX.Element {
   const schemasList = Object.keys(finalSchemas)
   const [selectedSchema, setSelectedSchema] = useState(schemasList[0])
+  const { Everything } = useHatchifyPresentation()
+
+  const collectionState = useCollectionState(
+    finalSchemas,
+    partialSchemas,
+    selectedSchema,
+    restClient,
+    {
+      defaultSelected,
+      onSelectedChange,
+      defaultPage,
+      defaultSort,
+      baseFilter,
+    },
+  )
 
   return (
-    <Grid container>
-      <Grid item xs={3} sx={{ backgroundColor: "lightgrey", height: "100%" }}>
-        {!finalSchemas ? (
-          <Typography>
-            There are no schemas. Create some to get started!
-          </Typography>
-        ) : (
-          <Tabs orientation="vertical" value={selectedSchema}>
-            {schemasList.map((schemaName) => {
-              return (
-                <Tab
-                  value={schemaName}
-                  label={schemaName}
-                  key={schemaName}
-                  onClick={() => setSelectedSchema(schemaName)}
-                />
-              )
-            })}
-          </Tabs>
-        )}
-      </Grid>
-      <Grid item xs={9}>
-        {!finalSchemas ? (
-          <>
-            <Typography>Welcome to Hatchify!</Typography>
-            <Eggbert />
-          </>
-        ) : (
-          <HatchifyCollection
-            {...props}
-            finalSchemas={finalSchemas}
-            partialSchemas={partialSchemas}
-            schemaName={selectedSchema}
-            restClient={restClient}
-          >
-            <HatchifyEmpty {...props}>
-              <Eggbert />
-            </HatchifyEmpty>
-          </HatchifyCollection>
-        )}
-      </Grid>
-    </Grid>
+    <Everything
+      {...collectionState}
+      schemaName={selectedSchema}
+      setSelectedSchema={setSelectedSchema}
+    />
   )
 }
 
