@@ -24,7 +24,6 @@ export interface FinalHasManyThroughRelationship {
   targetKey?: string
 }
 
-export type ThroughOrAttributes =
-  | string
+export type ThroughOptions =
   | { throughSourceAttribute: string; throughTargetAttribute: string }
   | { targetKey: string; sourceKey: string }
