@@ -13,7 +13,6 @@ const MuiEverything: React.FC<XEverythingProps> = ({
   setSelectedSchema,
   ...props
 }) => {
-  const schemasList = Object.keys(finalSchemas)
   return (
     <Grid container>
       <Grid item xs={3} sx={{ backgroundColor: "lightgrey" }} height="auto">
@@ -23,7 +22,7 @@ const MuiEverything: React.FC<XEverythingProps> = ({
           </Typography>
         ) : (
           <Tabs orientation="vertical" value={schemaName}>
-            {schemasList.map((schemaName) => {
+            {Object.keys(finalSchemas).map((schemaName) => {
               return (
                 <Tab
                   value={schemaName}

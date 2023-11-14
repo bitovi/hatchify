@@ -9,8 +9,6 @@ import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import { useHatchifyPresentation } from ".."
 import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
 import useCollectionState from "../../hooks/useCollectionState"
-// import { HatchifyEmpty } from "../HatchifyEmpty"
-// import { Eggbert } from "../../assets"
 
 export interface HatchifyEverythingProps<
   TSchemas extends Record<string, PartialSchema>,
@@ -24,7 +22,6 @@ export interface HatchifyEverythingProps<
   defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters
-  setSelectedSchema: (schemaName: keyof TSchemas) => void
 }
 
 function HatchifyEverything<
@@ -40,6 +37,13 @@ function HatchifyEverything<
   defaultSort,
   baseFilter,
 }: HatchifyEverythingProps<TSchemas>): JSX.Element {
+  console.log(
+    "rest defaultSelected ",
+    defaultSelected,
+    defaultPage,
+    defaultSort,
+    baseFilter,
+  )
   const schemasList = Object.keys(finalSchemas)
   const [selectedSchema, setSelectedSchema] = useState(schemasList[0])
   const { Everything } = useHatchifyPresentation()
