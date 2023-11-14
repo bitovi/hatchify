@@ -9,6 +9,8 @@ import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import { useHatchifyPresentation } from ".."
 import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
 import useCollectionState from "../../hooks/useCollectionState"
+// import { HatchifyEmpty } from "../HatchifyEmpty"
+// import { Eggbert } from "../../assets"
 
 export interface HatchifyEverythingProps<
   TSchemas extends Record<string, PartialSchema>,

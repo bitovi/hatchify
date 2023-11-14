@@ -48,32 +48,44 @@ const MuiEverything: React.FC<XEverythingProps> = ({
               <Eggbert />
             </Grid>
           </Grid>
-        ) : finalSchemas && data.length === 0 ? (
-          <Grid container rowSpacing={4} paddingTop="2rem">
-            <Grid item xs={12}>
-              <Typography
-                variant="body1"
-                justifyContent="center"
-                display="flex"
-              >
-                No records found. Create some to get started.
-              </Typography>
-            </Grid>
-            <Grid item xs={12} justifyContent="center" display="flex">
-              <Eggbert />
-            </Grid>
-          </Grid>
         ) : (
           <MuiDataGrid
             {...props}
             data={data}
             finalSchemas={finalSchemas}
             schemaName={schemaName}
-          />
+          >
+            <EverythingEmpty>
+              <Grid container rowSpacing={4} paddingTop="2rem">
+                <Grid item xs={12}>
+                  <Typography
+                    variant="body1"
+                    justifyContent="center"
+                    display="flex"
+                  >
+                    No records found. Create some to get started.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} justifyContent="center" display="flex">
+                  <Eggbert />
+                </Grid>
+              </Grid>
+            </EverythingEmpty>
+          </MuiDataGrid>
         )}
       </Grid>
     </Grid>
   )
 }
+
+export type EverythingEmptyProps = {
+  children: React.ReactNode
+}
+
+export const EverythingEmpty: React.FC<EverythingEmptyProps> = () => {
+  return null
+}
+
+EverythingEmpty.displayName = "Empty"
 
 export default MuiEverything
