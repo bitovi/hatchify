@@ -25,6 +25,8 @@ export function getColumn({
   const { ValueComponent } = compoundComponentProps
   const isAdditional = control == null
   const label = compoundComponentProps?.label || formatFieldAsLabel(field || "")
+  console.log("label", label)
+  // const label = "Asdfasdfa"
 
   const column: HatchifyColumn = {
     sortable: !isAdditional && !isRelationship, // sortable if an attribute

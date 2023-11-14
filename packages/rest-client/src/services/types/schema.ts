@@ -8,26 +8,6 @@ import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 //   enumerate,
 // } from "@hatchifyjs/core"
 
-export type EnumObject = { type: "enum"; allowNull?: boolean; values: string[] }
-export type AttributeObject = { type: string; allowNull?: boolean } | EnumObject
-export type Attribute = string | AttributeObject
-
-export interface Schema {
-  name: string // "Article"
-  namespace?: string
-  displayAttribute: string
-  attributes: {
-    [field: string]: Attribute
-  }
-  relationships?: {
-    [field: string]: {
-      type: "many" | "one"
-      schema: string
-    }
-  }
-  pluralName?: string
-}
-
 export type FinalSchemas = Record<string, FinalSchema>
 
 export type GetSchemaNames<

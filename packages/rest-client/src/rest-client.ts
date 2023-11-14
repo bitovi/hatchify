@@ -1,8 +1,5 @@
 export type {
-  Attribute,
-  AttributeObject,
   CreateType,
-  EnumObject,
   Fields,
   FilterArray,
   FilterTypes,
@@ -26,7 +23,6 @@ export type {
   Resource,
   ResourceRelationship,
   RestClient,
-  Schema,
   SchemaMap,
   SchemalessResourceRelationship,
   SchemalessResourceRelationshipObject,

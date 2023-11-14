@@ -10,6 +10,7 @@ import {
 import { getDefaultColumnRender } from "."
 import { HatchifyPresentationDefaultValueComponents } from "../../../components"
 
+/* eslint-disable testing-library/render-result-naming-convention */
 describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
   const finalSchemas = assembler({
     Todo: {
@@ -35,7 +36,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
   })
 
   it("works for attribute", () => {
-    const renderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultColumnRender({
       finalSchemas,
       schemaName: "Todo",
       control: finalSchemas.Todo.attributes.title.control,
@@ -47,11 +48,11 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
     const record = { record: { id: "1", title: "test" } }
 
     // @ts-ignore
-    expect(renderFn(record).props.value).toEqual("test")
+    expect(columnRenderFn(record).props.value).toEqual("test")
   })
 
   it("returns empty string for attribute with no value", () => {
-    const renderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultColumnRender({
       finalSchemas,
       schemaName: "Todo",
       control: finalSchemas.Todo.attributes.title.control,
@@ -63,11 +64,11 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
     const record = { record: { id: "1" } }
 
     // @ts-ignore
-    expect(renderFn(record).props.value).toEqual("")
+    expect(columnRenderFn(record).props.value).toEqual("")
   })
 
   it("works for boolean attribute", () => {
-    const renderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultColumnRender({
       finalSchemas,
       schemaName: "Todo",
       control: finalSchemas.Todo.attributes.important.control,
@@ -79,12 +80,12 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
 
     expect(
       // @ts-ignore
-      renderFn({ record: { id: "1", important: true } }).props.value,
+      columnRenderFn({ record: { id: "1", important: true } }).props.value,
     ).toEqual(true)
   })
 
   it("works for dateonly attribute", () => {
-    const renderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultColumnRender({
       finalSchemas,
       schemaName: "Todo",
       control: finalSchemas.Todo.attributes.created.control,
@@ -96,11 +97,11 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
     const record = { record: { id: "1", created: "2023-10-27T21" } }
 
     // @ts-ignore
-    expect(renderFn(record).props.value).toEqual("2023-10-27T21")
+    expect(columnRenderFn(record).props.value).toEqual("2023-10-27T21")
   })
 
   it("works for relationship", () => {
-    const renderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultColumnRender({
       finalSchemas,
       schemaName: "Todo",
       control: null,
@@ -114,10 +115,11 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
     }
 
     // @ts-ignore
-    expect(renderFn(record).props.value).toEqual({
+    expect(columnRenderFn(record).props.value).toEqual({
       id: "user-01",
       label: "user-01",
       type: "User",
     })
   })
 })
+/* eslint-enable testing-library/render-result-naming-convention */

@@ -21,14 +21,15 @@ const styles = {
 }
 
 export const MuiLayout: React.FC<XLayoutProps> = ({
-  schema,
+  partialSchemas,
+  schemaName,
   renderActions,
   children,
 }) => {
   return (
     <Container disableGutters maxWidth={false}>
       <div css={styles.headerRow}>
-        <h1 css={styles.header}>{schema.name}</h1>
+        <h1 css={styles.header}>{schemaName}</h1>
         {/* @todo Filters */}
         <div>{renderActions && renderActions()}</div>
       </div>

@@ -2,9 +2,7 @@ import { createContext, useContext } from "react"
 
 import type {
   XLayoutProps,
-  XDetailsProps,
   Relationship as RelationshipType,
-  XFormProps,
   XCollectionProps,
 } from "../../presentation/interfaces"
 
@@ -74,10 +72,10 @@ export interface DefaultFieldComponentsTypes {
 export interface HatchifyPresentationContextProps {
   Collection: React.FC<XCollectionProps>
   Layout: React.FC<XLayoutProps>
-  Details: React.FC<XDetailsProps>
-  Form: React.FC<XFormProps>
+  // Details: React.FC<XDetailsProps>
+  // Form: React.FC<XFormProps>
   defaultValueComponents: DefaultValueComponentsTypes
-  defaultFieldComponents: DefaultFieldComponentsTypes
+  // defaultFieldComponents: DefaultFieldComponentsTypes
 }
 
 export const HatchifyPresentationDefaultValueComponents = {
@@ -103,13 +101,13 @@ export const HatchifyPresentationDefaultFieldComponents = {
 
 export const HatchifyPresentationContext =
   createContext<HatchifyPresentationContextProps>({
-    // @todo default/headless components?
+    // should we have a default (headless) implementation of these?
     Collection: () => null,
     Layout: () => null,
-    Details: () => null,
-    Form: () => null,
+    // Details,
+    // Form
     defaultValueComponents: HatchifyPresentationDefaultValueComponents,
-    defaultFieldComponents: HatchifyPresentationDefaultFieldComponents,
+    // defaultFieldComponents
   })
 
 export const useHatchifyPresentation = (): HatchifyPresentationContextProps =>
@@ -122,24 +120,13 @@ interface HatchifyPresentationProviderProps
 
 export const HatchifyPresentationProvider: React.FC<
   HatchifyPresentationProviderProps
-> = ({
-  Collection,
-  Layout,
-  Details,
-  Form,
-  defaultValueComponents,
-  defaultFieldComponents,
-  children,
-}) => {
+> = ({ Collection, Layout, defaultValueComponents, children }) => {
   return (
     <HatchifyPresentationContext.Provider
       value={{
         Collection,
         Layout,
-        Details,
-        Form,
         defaultValueComponents,
-        defaultFieldComponents,
       }}
     >
       {children}

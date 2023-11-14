@@ -26,9 +26,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
-    "@types/lodash": "^4.14.192",
     "@types/react": "^18.0.28",
-    "@types/uuid": "^9.0.1",
     "@vitejs/plugin-react": "^4.0.0",
     "@vitest/coverage-c8": "^0.32.2",
     "vite": "^4.3.1",
@@ -38,9 +36,7 @@
   "dependencies": {
     "@hatchifyjs/core": "^0.2.9",
     "@hatchifyjs/react-rest": "^0.1.8",
-    "@hatchifyjs/rest-client": "^0.1.6",
-    "lodash": "^4.17.21",
-    "uuid": "^9.0.0"
+    "@hatchifyjs/rest-client": "^0.1.6"
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.2.x",
