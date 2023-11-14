@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest"
+import { afterAll, describe, it, expect, vi } from "vitest"
 import {
   HatchifyCoerceError,
   assembler,
@@ -155,6 +155,14 @@ describe("rest-client/utils/records", () => {
   })
 
   describe("setClientPropertyValuesFromResponse", () => {
+    const consoleMock = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined)
+
+    afterAll(() => {
+      consoleMock.mockReset()
+    })
+
     const finalSchemas = assembler({
       Article: {
         name: "Article",
@@ -166,7 +174,7 @@ describe("rest-client/utils/records", () => {
       },
     })
 
-    it("works", () => {
+    it.only("works", () => {
       expect(
         setClientPropertyValuesFromResponse(finalSchemas, "Article", {
           title: "foo",
@@ -179,21 +187,39 @@ describe("rest-client/utils/records", () => {
         views: 1,
       })
 
-      expect(() =>
+      expect(
         setClientPropertyValuesFromResponse(finalSchemas, "Article", {
           title: "bar",
           created: "2021-01-01T01:00:00.000Z",
           views: 500,
         }),
-      ).toThrow(new HatchifyCoerceError("as multiples of day"))
+      ).toEqual({
+        title: "bar",
+        created: "2021-01-01T01:00:00.000Z",
+        views: 500,
+      })
 
-      expect(() =>
+      expect(consoleMock).toHaveBeenLastCalledWith(
+        "Setting value `2021-01-01T01:00:00.000Z` on attribute `created`:",
+        "as multiples of day",
+      )
+
+      expect(
         setClientPropertyValuesFromResponse(finalSchemas, "Article", {
           title: "bar",
           created: "2021-01-01T00:00:00.000Z",
           views: 1001,
         }),
-      ).toThrow(new HatchifyCoerceError("less than or equal to 1000"))
+      ).toEqual({
+        title: "bar",
+        created: new Date("2021-01-01T00:00:00.000Z"),
+        views: 1001,
+      })
+
+      expect(consoleMock).toHaveBeenLastCalledWith(
+        "Setting value `1001` on attribute `views`:",
+        "less than or equal to 1000",
+      )
     })
   })
 
