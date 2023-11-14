@@ -1,8 +1,8 @@
 import { TextField } from "@mui/material"
-import type { Operators } from "../../constants"
 import MuiAutocomplete from "../../../MuiAutocomplete/MuiAutocomplete"
+import type { Operators } from "../../constants"
 
-const StringInput: React.FC<{
+const NumberInput: React.FC<{
   labelId: string
   operator: Operators
   value: string | string[]
@@ -14,6 +14,7 @@ const StringInput: React.FC<{
       <MuiAutocomplete
         freeSolo
         disableClearable
+        textFieldType="number"
         options={options || []}
         selectedOptions={Array.isArray(value) ? (value as string[]) : []}
         handleChange={(value) => onChange(value)}
@@ -26,11 +27,11 @@ const StringInput: React.FC<{
       fullWidth
       placeholder="Filter Value"
       variant="standard"
-      type="text"
-      value={value as string}
+      type="number"
+      value={value}
       onChange={(e) => onChange(e.target.value)}
     />
   )
 }
 
-export default StringInput
+export default NumberInput

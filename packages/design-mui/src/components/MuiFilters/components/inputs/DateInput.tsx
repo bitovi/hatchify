@@ -1,7 +1,8 @@
 import { TextField } from "@mui/material"
+import type { FilterableControls } from "../../constants"
 
 const DateInput: React.FC<{
-  controlType: string
+  controlType: FilterableControls
   labelId: string
   value: string
   onChange: (value: string) => void

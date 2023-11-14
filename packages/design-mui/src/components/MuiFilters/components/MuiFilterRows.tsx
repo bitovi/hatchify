@@ -1,11 +1,13 @@
-import type { FinalAttributeRecord } from "@hatchifyjs/core"
-import type { FilterArray, FinalSchemas } from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
+import type { FinalAttributeRecord } from "@hatchifyjs/core"
+import type { FilterArray, FinalSchemas } from "@hatchifyjs/rest-client"
+import type { FilterableControls, Operators, Option } from "../constants"
 import ColumnSelect from "./inputs/ColumnSelect"
 import OperatorSelect from "./inputs/OperatorSelect"
 import ValueInput from "./inputs/ValueInput"
+import { operatorOptionsByType } from "../constants"
 
 type ChangeParams =
   | {
@@ -18,56 +20,9 @@ type ChangeParams =
       value: string
       index: number
     }
-interface Option {
-  operator: string
-  text: string
-}
-
-type OperatorOption = {
-  [key in "enum" | "Dateonly" | "Datetime" | "String"]: Option[]
-}
-
-const operatorOptions: OperatorOption = {
-  String: [
-    { operator: "icontains", text: "contains" },
-    { operator: "istarts", text: "starts with" },
-    { operator: "iends", text: "ends with" },
-    { operator: "$eq", text: "equals" },
-    { operator: "empty", text: "is empty" },
-    { operator: "nempty", text: "is not empty" },
-    { operator: "$in", text: "is any of" },
-  ],
-  Dateonly: [
-    { operator: "$eq", text: "is" },
-    { operator: "$gt", text: "is after" },
-    { operator: "$gte", text: "is on or after" },
-    { operator: "$lt", text: "is before" },
-    { operator: "$lte", text: "is on or before" },
-    { operator: "empty", text: "is empty" },
-    { operator: "nempty", text: "is not empty" },
-  ],
-  Datetime: [
-    { operator: "$eq", text: "is" },
-    { operator: "$gt", text: "is after" },
-    { operator: "$gte", text: "is on or after" },
-    { operator: "$lt", text: "is before" },
-    { operator: "$lte", text: "is on or before" },
-    { operator: "empty", text: "is empty" },
-    { operator: "nempty", text: "is not empty" },
-  ],
-  enum: [
-    { operator: "$eq", text: "is" },
-    { operator: "$ne", text: "is not" },
-    { operator: "empty", text: "is empty" },
-    { operator: "nempty", text: "is not empty" },
-    { operator: "$in", text: "is any of" },
-    { operator: "$nin", text: "is not any of" },
-  ],
-}
 
 export const MuiFilterRows: React.FC<{
-  // todo: stricter typing
-  fields: string[]
+  fields: string[] // @todo HATCH-417 - stricter typing for fields
   filters: FilterArray
   finalSchemas: FinalSchemas
   schemaName: string
@@ -176,9 +131,9 @@ export const MuiFilterRows: React.FC<{
               <ValueInput
                 data-testid="value-input"
                 labelId={`${index}-value-label`}
-                controlType={control.type}
+                controlType={control.type as FilterableControls}
+                operator={filter.operator as Operators}
                 value={filter.value}
-                operator={filter.operator}
                 onChange={(value: any) =>
                   onChange({ field: "value", value, index })
                 }
@@ -213,12 +168,12 @@ export function getAvailableOperator(
 export function getPossibleOptions(
   control: FinalAttributeRecord[string]["control"],
 ): Option[] {
+  // @todo HATCH-417 - fieldType should not be any, it should be a TS type
   const fieldType = control.type
   const required = !control.allowNull
 
-  const options = operatorOptions[
-    // @todo HATCH-417 - fieldType should not be any, it should be a TS type
-    fieldType as keyof OperatorOption
+  const options = operatorOptionsByType[
+    fieldType as keyof typeof operatorOptionsByType
   ].filter((option) => {
     return required
       ? option.operator !== "empty" && option.operator !== "nempty"

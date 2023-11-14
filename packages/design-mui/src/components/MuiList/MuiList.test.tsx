@@ -2,7 +2,7 @@ import "@testing-library/jest-dom"
 import { createElement } from "react"
 import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
-import { assembler, integer } from "@hatchifyjs/core"
+import { assembler, string } from "@hatchifyjs/core"
 import { MuiList } from "./MuiList"
 
 describe("components/MuiList", () => {
@@ -11,23 +11,17 @@ describe("components/MuiList", () => {
       name: "User",
       displayAttribute: "firstName",
       attributes: {
-        // todo: change back to strings when v2 supports strings
-        firstName: integer(),
-        lastName: integer(),
+        firstName: string(),
+        lastName: string(),
       },
     },
   }
 
   const finalSchemas = assembler(partialSchemas)
 
-  // todo: change back to strings when v2 supports strings
   const data = [
-    {
-      id: "uuid1",
-      firstName: 5,
-      lastName: 15,
-    },
-    { id: "uuid2", firstName: 25, lastName: 30 },
+    { id: "uuid1", firstName: "John", lastName: "Smith" },
+    { id: "uuid2", firstName: "Jane", lastName: "Doe" },
   ]
 
   const meta = {
@@ -70,10 +64,10 @@ describe("components/MuiList", () => {
 
     expect(await screen.findByText("FirstName")).toBeInTheDocument()
     expect(await screen.findByText("LastName")).toBeInTheDocument()
-    expect(await screen.findByText("5")).toBeInTheDocument()
-    expect(await screen.findByText("15")).toBeInTheDocument()
-    expect(await screen.findByText("25")).toBeInTheDocument()
-    expect(await screen.findByText("30")).toBeInTheDocument()
+    expect(await screen.findByText("John")).toBeInTheDocument()
+    expect(await screen.findByText("Smith")).toBeInTheDocument()
+    expect(await screen.findByText("Jane")).toBeInTheDocument()
+    expect(await screen.findByText("Doe")).toBeInTheDocument()
   })
 
   it("fires sort callback", async () => {

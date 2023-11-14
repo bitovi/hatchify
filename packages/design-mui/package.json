@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/design-mui",
-  "version": "0.1.13",
+  "version": "0.1.16",
   "main": "./dist/design-mui.js",
   "module": "./dist/design-mui.mjs",
   "types": "./dist/design-mui.d.ts",
@@ -24,7 +24,7 @@
     "build": "vite build"
   },
   "devDependencies": {
-    "@hatchifyjs/rest-client": "^0.1.5",
+    "@hatchifyjs/rest-client": "^0.1.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.2.0",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@hatchifyjs/core": "^0.2.9",
-    "@hatchifyjs/react-ui": "^0.1.9",
+    "@hatchifyjs/react-ui": "^0.1.11",
     "@mui/icons-material": "^5.14.1",
     "@mui/utils": "^5.13.1",
     "lodash": "^4.17.21"
