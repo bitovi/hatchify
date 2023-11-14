@@ -174,7 +174,7 @@ describe("rest-client/utils/records", () => {
       },
     })
 
-    it.only("works", () => {
+    it("works", () => {
       expect(
         setClientPropertyValuesFromResponse(finalSchemas, "Article", {
           title: "foo",
