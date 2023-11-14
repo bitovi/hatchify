@@ -116,9 +116,32 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
 
     // @ts-ignore
     expect(columnRenderFn(record).props.value).toEqual({
-      id: "user-01",
+      ...record.record.user,
       label: "user-01",
-      type: "User",
+    })
+  })
+
+  it("works for relationship with label", () => {
+    const columnRenderFn = getDefaultColumnRender({
+      finalSchemas,
+      schemaName: "Todo",
+      control: null,
+      field: "user",
+      isRelationship: true,
+      isAdditional: false,
+      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+    })
+    const record = {
+      record: {
+        id: "1",
+        user: { id: "user-01", type: "User", __label: "John" },
+      },
+    }
+
+    // @ts-ignore
+    expect(columnRenderFn(record).props.value).toEqual({
+      ...record.record.user,
+      label: "John",
     })
   })
 })

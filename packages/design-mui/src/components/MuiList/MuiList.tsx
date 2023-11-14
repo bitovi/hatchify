@@ -23,7 +23,6 @@ export function MuiList<
     props.schemaName,
     props.children,
   )
-  console.log("columns...........", columns)
 
   return (
     <TableContainer>

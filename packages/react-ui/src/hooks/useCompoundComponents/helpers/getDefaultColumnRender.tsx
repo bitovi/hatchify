@@ -25,13 +25,9 @@ export function getDefaultColumnRender({
 
   const defaultRender = ({ record }: { record: Record }) => {
     const value = record[field]
-    // value.label = "Asdfasf"
 
-    if (isRelationship) {
-      // console.log("value", value)
-      // console.log("value.__label", value?.__label)
-      // console.log("value.id", value?.id)
-      // value.label = value?.__label || value?.id || "Adfasf"
+    if (isRelationship && value) {
+      value.label = value?.__label || value?.id
 
       return Array.isArray(value) ? (
         <RelationshipList values={value} />
