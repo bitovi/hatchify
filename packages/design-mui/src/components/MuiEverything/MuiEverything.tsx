@@ -56,7 +56,7 @@ const MuiEverything: React.FC<XEverythingProps> = ({
             schemaName={schemaName}
           >
             <EverythingEmpty>
-              <Grid container rowSpacing={4} paddingTop="2rem">
+              <Grid container rowSpacing={4}>
                 <Grid item xs={12}>
                   <Typography
                     variant="body1"
