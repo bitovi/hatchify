@@ -1,6 +1,6 @@
 # Schema Namespacing with Postgres
 
-Postgres supports “schemas” which act like namespaces for tables.  You can configure the [namespace](naming.md#schemanamespace-postgres-only) setting of a Hatchify schema to set a Postgres schema. If this is confusing, the following might clarify:
+Postgres supports “schemas” which act like namespaces for tables. You can configure the [namespace](naming.md#schemanamespace-postgres-only) setting of a Hatchify schema to set a Postgres schema. If this is confusing, the following might clarify:
 
 In Hatchify:
 
@@ -13,7 +13,7 @@ In Postgres:
 
 Sometimes, you want to have multiple tables named the same thing in different domains. Hatchify namespaces can solve this.
 
-The following extends from the [Using Postgres](next-steps/using-postgres-db.md) guide to have `Todo`’s reference a `User`, who created the todo, and a `Engineering_User` who is someone who can actually get stuff done. 
+The following extends from the [Using Postgres](next-steps/using-postgres-db.md) guide to have `Todo`’s reference a `User`, who created the todo, and a `Engineering_User` who is someone who can actually get stuff done.
 
 - Update schemas/schemas.ts as follows:
 
@@ -123,17 +123,16 @@ curl 'http://localhost:3000/api/todos' \
   }
 }'
 ```
- 
+
 - Update the frontend/App.tsx to view the people assigned to the employee:
 
 ```
 // hatchify-app/frontend/App.tsx
-import { v2ToV1 } from "@hatchifyjs/core"
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo, User, Engineering_User } from "../schemas"
+import * as Schemas from "../schemas"
 
 export const hatchedReact = hatchifyReact(
-  v2ToV1({ Todo, User, Engineering_User }),
+  Schemas,
   createJsonapiClient("http://localhost:3000/api", {
     Todo: { endpoint: "todos" },
     User: { endpoint: "users" },
@@ -154,4 +153,4 @@ const App: React.FC = () => {
 export default App
 ```
 
-- Check to make sure your data got loaded correctly.  It should be visible in the grid.
+- Check to make sure your data got loaded correctly. It should be visible in the grid.

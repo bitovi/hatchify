@@ -1,7 +1,7 @@
 import cors from "@koa/cors"
 import Koa from "koa"
 import { describe, expect, it } from "vitest"
-import { string, v2ToV1 } from "@hatchifyjs/core"
+import { string } from "@hatchifyjs/core"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import jsonapi from "../rest-client-jsonapi"
@@ -49,13 +49,12 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     const jsonApi = jsonapi(
       `http://localhost:3010/${testBackendEndpointConfig.api}`,
-      v2ToV1({
+      {
         Article: {
           ...Article,
-          // @ts-expect-error will be fixed when v2ToV1 is no longer needed
           endpoint: `${testBackendEndpointConfig.schemaSegment}`,
         },
-      }),
+      },
     )
     const hatchedReactRest = hatchifyReactRest(jsonApi)
 
@@ -123,13 +122,12 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     const jsonApi = jsonapi(
       `http://localhost:3011/${testBackendEndpointConfig.api}`,
-      v2ToV1({
+      {
         Feature_Article: {
           ...Feature_Article,
-          // @ts-expect-error will be fixed when v2ToV1 is no longer needed
           endpoint: `${testBackendEndpointConfig.namespacedSchemaSegment}`,
         },
-      }),
+      },
     )
 
     const hatchedReactRest = hatchifyReactRest(jsonApi)
