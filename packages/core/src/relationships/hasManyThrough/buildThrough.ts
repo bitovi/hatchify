@@ -1,49 +1,38 @@
-import type {
-  PartialHasManyThroughRelationship,
-  ThroughOrAttributes,
-} from "./types"
+import type { PartialHasManyThroughRelationship, ThroughOptions } from "./types"
 
 export function buildThrough(targetSchema: string | null) {
   return function through(
-    throughOrAttributes?: ThroughOrAttributes,
+    through?: string | null,
+    options?: ThroughOptions,
   ): PartialHasManyThroughRelationship {
     const baseFields = {
       type: "hasManyThrough" as const,
       targetSchema,
+      through: through ?? null,
     }
 
-    if (throughOrAttributes == null) {
-      return {
-        ...baseFields,
-        through: null,
-        throughSourceAttribute: null,
-        throughTargetAttribute: null,
+    if (options) {
+      if ("throughSourceAttribute" in options) {
+        return {
+          ...baseFields,
+          ...options,
+        }
       }
-    }
 
-    if (typeof throughOrAttributes === "string") {
-      return {
-        ...baseFields,
-        through: throughOrAttributes,
-        throughSourceAttribute: null,
-        throughTargetAttribute: null,
-      }
-    }
-
-    if ("sourceKey" in throughOrAttributes) {
-      return {
-        ...baseFields,
-        through: null,
-        throughSourceAttribute: null,
-        throughTargetAttribute: null,
-        ...throughOrAttributes,
+      if ("sourceKey" in options) {
+        return {
+          ...baseFields,
+          throughSourceAttribute: null,
+          throughTargetAttribute: null,
+          ...options,
+        }
       }
     }
 
     return {
       ...baseFields,
-      through: null,
-      ...throughOrAttributes,
+      throughSourceAttribute: null,
+      throughTargetAttribute: null,
     }
   }
 }

@@ -104,6 +104,7 @@ describe("integer", () => {
       expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
       expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.("1")).toBe(1)
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() =>
         setClientPropertyValueFromResponse?.("invalid" as unknown as number),
@@ -311,6 +312,7 @@ describe("integer", () => {
       expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
       expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.("1")).toBe(1)
       expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
@@ -523,6 +525,7 @@ describe("integer", () => {
       expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
       expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.("1")).toBe(1)
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() =>
         setClientPropertyValueFromResponse?.("invalid" as unknown as number),
@@ -727,6 +730,7 @@ describe("integer", () => {
       expect(setClientPropertyValueFromResponse?.(-1)).toBe(-1)
       expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
+      expect(setClientPropertyValueFromResponse?.("1")).toBe(1)
       expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
