@@ -261,11 +261,10 @@ or individually:
 You can also run the Playwright E2E tests:
 
 ```bash
-npx playwright install
-npx playwright test
+npm run e2e
 ```
 
-#### 4.1. Testing aginst a Hatchify app
+#### 4.1. Testing against a Hatchify app
 
 After creating an app like the example in [the getting started guide](./README.md), you can test it against your hatchify changes by changing the package dependency references to packages in your Hatchify development directory.
 
