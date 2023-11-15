@@ -4,6 +4,7 @@ import {
   dateonly,
   datetime,
   enumerate,
+  hasMany,
   integer,
   string,
   text,
@@ -22,5 +23,16 @@ export const Todo = {
   },
   relationships: {
     user: belongsTo("User"),
+  },
+} satisfies PartialSchema
+
+export const User = {
+  name: "User",
+  // namespace: "Admin",
+  attributes: {
+    name: string(),
+  },
+  relationships: {
+    todos: hasMany(),
   },
 } satisfies PartialSchema

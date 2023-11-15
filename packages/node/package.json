@@ -50,7 +50,7 @@
     "ts-jest": "^29.0.3"
   },
   "peerDependencies": {
-    "@hatchifyjs/core": "^0.2.x",
+    "@hatchifyjs/core": "^0.3.x",
     "sequelize": "6.x"
   },
   "eslintConfig": {

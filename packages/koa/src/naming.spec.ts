@@ -418,7 +418,7 @@ describe("Naming rules", () => {
             firstName: string(),
           },
           relationships: {
-            accounts: hasMany().through({
+            accounts: hasMany().through(null, {
               throughSourceAttribute: "sellerId",
               throughTargetAttribute: "accountId",
             }),
@@ -605,7 +605,7 @@ describe("Naming rules", () => {
             firstName: string(),
           },
           relationships: {
-            salesAccounts: hasMany("Account").through({
+            salesAccounts: hasMany("Account").through(null, {
               throughSourceAttribute: "sellerId",
               throughTargetAttribute: "accountId",
             }),
@@ -639,7 +639,7 @@ describe("Naming rules", () => {
             firstName: string(),
           },
           relationships: {
-            salesAccounts: hasMany("Account").through({
+            salesAccounts: hasMany("Account").through(null, {
               throughSourceAttribute: "salesPersonId",
               throughTargetAttribute: "soldAccountId",
             }),

@@ -593,7 +593,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           jsonapi: {
             version: "1.0",
           },
-          data: [mrPagination.data],
+          data: [{ ...mrPagination.data, id: expect.any(String) }],
           meta: { unpaginatedCount: 2 },
         })
       })
@@ -925,7 +925,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         firstName: string(),
       },
       relationships: {
-        aliasedAccounts: hasMany("Account").through({
+        aliasedAccounts: hasMany("Account").through(null, {
           throughSourceAttribute: "salesPersonId",
           throughTargetAttribute: "accountId",
         }),
@@ -937,7 +937,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         name: string(),
       },
       relationships: {
-        aliasedSalesPersons: hasMany("SalesPerson").through({
+        aliasedSalesPersons: hasMany("SalesPerson").through(null, {
           throughSourceAttribute: "accountId",
           throughTargetAttribute: "salesPersonId",
         }),

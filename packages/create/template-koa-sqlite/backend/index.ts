@@ -1,15 +1,15 @@
-// hatchify-app/backend/index.ts
 import Koa from "koa"
 import cors from "@koa/cors"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import schemas from "../schemas/schemas"
+import * as Schemas from "../schemas"
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa(schemas, {
+const hatchedKoa = hatchifyKoa(Schemas, {
   prefix: "/api",
   database: {
     dialect: "sqlite",
     storage: ":memory:",
+    logging: false,
   },
 })
 

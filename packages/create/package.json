@@ -1,0 +1,50 @@
+{
+  "name": "@hatchifyjs/create",
+  "version": "0.0.13",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "create-hatchifyjs": "index.js",
+    "hatchify": "index.js"
+  },
+  "files": [
+    "index.js",
+    "template-express-postgres",
+    "template-express-sqlite",
+    "template-koa-postgres",
+    "template-koa-sqlite",
+    "dist"
+  ],
+  "scripts": {
+    "dev": "unbuild --stub",
+    "build": "unbuild",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "eslint": "eslint .",
+    "eslint:fix": "eslint --fix .",
+    "depcheck": "depcheck .",
+    "test": "echo 'TBD'"
+  },
+  "engines": {
+    "node": "^18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitovi/hatchify.git",
+    "directory": "packages/create"
+  },
+  "bugs": {
+    "url": "https://github.com/bitovi/hatchify/issues"
+  },
+  "homepage": "https://github.com/bitovi/hatchify#readme",
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.4",
+    "@types/minimist": "^1.2.4",
+    "@types/prompts": "^2.4.7",
+    "cross-spawn": "^7.0.3",
+    "kolorist": "^1.8.0",
+    "minimist": "^1.2.8",
+    "prompts": "^2.4.2",
+    "unbuild": "^2.0.0"
+  }
+}

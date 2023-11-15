@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react",
-  "version": "0.1.14",
+  "version": "0.1.16",
   "main": "./dist/react.js",
   "module": "./dist/react.mjs",
   "types": "./dist/react.d.ts",
@@ -25,9 +25,9 @@
   },
   "dependencies": {
     "@hatchifyjs/core": "^0.2.9",
-    "@hatchifyjs/design-mui": "^0.1.15",
-    "@hatchifyjs/react-ui": "^0.1.10",
-    "@hatchifyjs/rest-client-jsonapi": "^0.1.8"
+    "@hatchifyjs/design-mui": "^0.1.17",
+    "@hatchifyjs/react-ui": "^0.1.12",
+    "@hatchifyjs/rest-client-jsonapi": "^0.1.9"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
@@ -39,7 +39,7 @@
     "vitest": "^0.30.1"
   },
   "peerDependencies": {
-    "@hatchifyjs/core": "^0.2.x",
+    "@hatchifyjs/core": "^0.3.x",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }

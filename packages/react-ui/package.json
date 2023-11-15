@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react-ui",
-  "version": "0.1.10",
+  "version": "0.1.12",
   "main": "./dist/react-ui.js",
   "module": "./dist/react-ui.mjs",
   "types": "./dist/react-ui.d.ts",
@@ -35,11 +35,11 @@
   },
   "dependencies": {
     "@hatchifyjs/core": "^0.2.9",
-    "@hatchifyjs/react-rest": "^0.1.8",
-    "@hatchifyjs/rest-client": "^0.1.6"
+    "@hatchifyjs/react-rest": "^0.1.9",
+    "@hatchifyjs/rest-client": "^0.1.7"
   },
   "peerDependencies": {
-    "@hatchifyjs/core": "^0.2.x",
+    "@hatchifyjs/core": "^0.3.x",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0"

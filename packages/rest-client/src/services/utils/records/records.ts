@@ -160,10 +160,18 @@ export const setClientPropertyValuesFromResponse = (
   return Object.entries(attributes).reduce((acc, [key, value]) => {
     const attribute = allSchemas[schemaName].attributes[key]
     if (attribute != null && attribute.setClientPropertyValueFromResponse) {
-      acc[key] = attribute?.setClientPropertyValueFromResponse(value)
-    } else {
-      acc[key] = value
+      try {
+        acc[key] = attribute?.setClientPropertyValueFromResponse(value)
+        return acc
+      } catch (e: any) {
+        console.error(
+          `Setting value \`${value}\` on attribute \`${key}\`:`,
+          e?.message,
+        )
+      }
     }
+
+    acc[key] = value
     return acc
   }, {} as globalThis.Record<string, unknown>)
 }

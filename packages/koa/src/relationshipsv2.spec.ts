@@ -1359,7 +1359,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
     })
   })
 
-  describe(`${dialect} - hasMany().through({ throughTargetAttribute, throughSourceAttribute })`, () => {
+  describe(`${dialect} - hasMany().through(schemaName, { throughTargetAttribute, throughSourceAttribute })`, () => {
     const Account: PartialSchema = {
       name: "Account",
       attributes: {
@@ -1372,7 +1372,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         firstName: string(),
       },
       relationships: {
-        accounts: hasMany().through({
+        accounts: hasMany().through(null, {
           throughTargetAttribute: "theAccountId",
           throughSourceAttribute: "sellerId",
         }),
@@ -1554,7 +1554,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
     })
   })
 
-  describe(`${dialect} - hasMany().through({ targetKey, sourceKey })`, () => {
+  describe(`${dialect} - hasMany().through(schemaName, { targetKey, sourceKey })`, () => {
     const Account: PartialSchema = {
       name: "Account",
       attributes: {
@@ -1569,7 +1569,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
         sellerTypeId: uuid({ unique: true }),
       },
       relationships: {
-        accounts: hasMany().through({
+        accounts: hasMany().through(null, {
           targetKey: "accountSaleTypeId",
           sourceKey: "sellerTypeId",
         }),
