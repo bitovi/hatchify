@@ -1,13 +1,16 @@
+import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 import type {
   RequiredSchemaMap,
   Resource,
   ResourceRelationship,
-  RestClientCreateData,
-  RestClientUpdateData,
-  Schema,
   SourceConfig,
   SchemalessResourceRelationship,
-  SchemalessResourceRelationshipObject,
+  CreateType,
+  GetSchemaFromName,
+  GetSchemaNames,
+  UpdateType,
+  MutateRelationships,
+  MutateRelationship,
 } from "@hatchifyjs/rest-client"
 import type {
   JsonApiResource,
@@ -22,7 +25,7 @@ type Relationship = Record<
 >
 
 export const getTypeToSchema = (
-  schemaMap: RequiredSchemaMap,
+  schemaMap: RequiredSchemaMap, // todo: HATCH-417
 ): Record<string, string> => {
   return Object.entries(schemaMap).reduce((acc, [key, value]) => {
     acc[value.type] = key
@@ -79,7 +82,7 @@ export function jsonApiResourceToHatchifyResource(
  */
 export function convertToHatchifyResources(
   data: JsonApiResource | JsonApiResource[],
-  schemaMap: RequiredSchemaMap,
+  schemaMap: RequiredSchemaMap, // todo: HATCH-417
 ): Resource[] {
   const typeToSchema = getTypeToSchema(schemaMap)
 
@@ -94,17 +97,16 @@ export function convertToHatchifyResources(
  * Converts a single Hatchify relationship to a JSON:API relationship
  */
 function hatchifyRelationshipToJsonApiRelationship(
-  config: SourceConfig,
-  schema: Schema,
+  config: SourceConfig, // todo: HATCH-417
+  schema: FinalSchema,
   typeName: string,
-  resourceRelationships:
-    | SchemalessResourceRelationship
-    | SchemalessResourceRelationship[],
+  resourceRelationships: MutateRelationship | MutateRelationship[] | undefined,
 ): JsonApiRelationship | JsonApiRelationship[] {
   const jsonApiRelationships = ([] as SchemalessResourceRelationship[])
-    .concat(resourceRelationships)
+    .concat(resourceRelationships || [])
     .map((resourceRelationship) => {
       const { id } = resourceRelationship
+
       const type = Object.keys(schema?.relationships || {}).reduce(
         (type, relationshipKey) => {
           if (type) {
@@ -115,7 +117,8 @@ function hatchifyRelationshipToJsonApiRelationship(
 
           if (relationship && relationshipKey === typeName) {
             type =
-              config.schemaMap[relationship.schema]?.type ?? relationship.schema
+              config.schemaMap[relationship.targetSchema]?.type ??
+              relationship.targetSchema
           }
 
           return type
@@ -137,35 +140,46 @@ function hatchifyRelationshipToJsonApiRelationship(
 /**
  * Converts Hatchify relationship object to JSON:API relationship object
  */
-export function convertToJsonApiRelationships(
-  config: SourceConfig,
-  schema: Schema,
-  resourceRelationships: SchemalessResourceRelationshipObject,
+export function convertToJsonApiRelationships<
+  const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
+  config: SourceConfig, // todo: HATCH-417
+  schema: FinalSchema,
+  resourceRelationships: MutateRelationships<
+    GetSchemaFromName<TSchemas, TSchemaName>
+  >,
 ): Record<string, JsonApiResourceRelationship> {
   return Object.keys(resourceRelationships).reduce(
     (jsonApiRelationshipObject, relationshipKey) => {
-      jsonApiRelationshipObject[relationshipKey] = {
+      const relationship = relationshipKey as TSchemaName
+      jsonApiRelationshipObject[relationship] = {
         data: hatchifyRelationshipToJsonApiRelationship(
           config,
           schema,
           relationshipKey,
-          resourceRelationships[relationshipKey],
+          resourceRelationships[relationship],
         ),
       }
       return jsonApiRelationshipObject
     },
-    {} as Record<string, JsonApiResourceRelationship>,
+    {} as Record<TSchemaName, JsonApiResourceRelationship>,
   )
 }
 
 /**
  * Converts a Hatchify resource into a JSON:API resource.
  */
-export function hatchifyResourceToJsonApiResource(
-  config: SourceConfig,
-  schema: Schema,
+export function hatchifyResourceToJsonApiResource<
+  const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
+  config: SourceConfig, // todo: HATCH-417
+  schema: FinalSchema,
   schemaName: string,
-  hatchifyResource: RestClientCreateData | RestClientUpdateData,
+  hatchifyResource:
+    | CreateType<GetSchemaFromName<TSchemas, TSchemaName>>
+    | UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): JsonApiResource | CreateJsonApiResource {
   const { attributes, relationships } = hatchifyResource
   const id = "id" in hatchifyResource ? hatchifyResource?.id : null

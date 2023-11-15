@@ -1,25 +1,19 @@
 import { describe, expect, it } from "vitest"
-import type { SchemaRecord } from "@hatchifyjs/react-rest"
 import { reactJsonapi } from "./react-jsonapi"
+import { hasMany, integer } from "@hatchifyjs/core"
 
-const TestSchema: SchemaRecord = {
+const TestSchema = {
   Article: {
     name: "Article",
-    displayAttribute: "title",
-    attributes: { title: "string", body: "string" },
+    attributes: { views: integer() },
   },
   Person: {
     name: "Person",
-    displayAttribute: "name",
     attributes: {
-      name: "string",
-      age: "integer",
+      age: integer(),
     },
     relationships: {
-      Article: {
-        type: "many",
-        schema: "yes",
-      },
+      article: hasMany("Article"),
     },
   },
 }
@@ -40,6 +34,8 @@ describe("react-jsonapi", () =>
         useAll: expect.any(Function),
         useOne: expect.any(Function),
         useUpdateOne: expect.any(Function),
+        // subscribeToAll: expect.any(Function),
+        // subscribeToOne: expect.any(Function),
       },
       Person: {
         createOne: expect.any(Function),
@@ -52,6 +48,8 @@ describe("react-jsonapi", () =>
         useAll: expect.any(Function),
         useOne: expect.any(Function),
         useUpdateOne: expect.any(Function),
+        // subscribeToAll: expect.any(Function),
+        // subscribeToOne: expect.any(Function),
       },
     })
   }))

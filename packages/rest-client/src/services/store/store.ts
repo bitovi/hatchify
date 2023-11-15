@@ -1,4 +1,4 @@
-import type { Record, Resource, Schemas, Subscription } from "../types"
+import type { FinalSchemas, Record, Resource, Subscription } from "../types"
 import { flattenResourcesIntoRecords, keyResourcesById } from "../utils/records"
 
 export interface ResourceStore {
@@ -37,7 +37,7 @@ export function getStore(schema: string): ResourceStore {
 /**
  * Returns the records for a given schema.
  */
-export function getRecords(allSchemas: Schemas, schema: string): Record[] {
+export function getRecords(allSchemas: FinalSchemas, schema: string): Record[] {
   return store[schema] && "data" in store[schema]
     ? flattenResourcesIntoRecords(
         allSchemas,
@@ -51,7 +51,7 @@ export function getRecords(allSchemas: Schemas, schema: string): Record[] {
  * Inserts data into the store and notifies subscribers.
  */
 export function insert(
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas,
   schemaName: string,
   data: Resource[],
 ): void {
@@ -63,7 +63,8 @@ export function insert(
   const records = flattenResourcesIntoRecords(allSchemas, data, schemaName)
 
   for (const subscriber of store[schemaName].subscribers) {
-    subscriber(records)
+    // @ts-expect-error
+    subscriber(records) // fix with v2 types
   }
 }
 
@@ -89,7 +90,7 @@ export function notifySubscribers(schemaName?: string): void {
  * Removes ids from the store and notifies subscribers.
  */
 export function remove(
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas,
   schema: string,
   ids: string[],
 ): void {
@@ -104,6 +105,7 @@ export function remove(
   const records = getRecords(allSchemas, schema)
 
   for (const subscriber of store[schema].subscribers) {
-    subscriber(records)
+    // @ts-expect-error
+    subscriber(records) // fix with v2 types
   }
 }

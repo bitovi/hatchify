@@ -1,15 +1,32 @@
+import type { PartialSchema } from "@hatchifyjs/core"
 import { getStore } from "../../store"
-import type { QueryList, Record, Unsubscribe } from "../../types"
+import type {
+  GetSchemaFromName,
+  GetSchemaNames,
+  QueryList,
+  RecordType,
+  Unsubscribe,
+} from "../../types"
+import { SchemaNameNotStringError, schemaNameIsString } from "../../utils"
 
 /**
  * Adds a subscriber to the store for a given schema.
  */
-export const subscribeToAll = (
-  resource: string,
-  query: QueryList | undefined,
-  onChange: (data: Record[]) => void,
+export const subscribeToAll = <
+  const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
+  resource: TSchemaName,
+  query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>> | undefined,
+  onChange: (
+    data: Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,
+  ) => void,
 ): Unsubscribe => {
-  const store = getStore(resource)
+  if (!schemaNameIsString) {
+    throw new SchemaNameNotStringError(resource)
+  }
+
+  const store = getStore(resource as string)
 
   store.subscribers.push(onChange)
 

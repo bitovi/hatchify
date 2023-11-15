@@ -1,24 +1,43 @@
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
-  Source,
-  Record,
+  RestClient,
   QueryList,
-  Schemas,
   RequestMetaData,
+  GetSchemaNames,
+  GetSchemaFromName,
+  RecordType,
+  FinalSchemas,
   Filters,
 } from "../../types"
-import { flattenResourcesIntoRecords } from "../../utils"
+import {
+  SchemaNameNotStringError,
+  flattenResourcesIntoRecords,
+  schemaNameIsString,
+} from "../../utils"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,
  * notifies subscribers, and returns them as records.
  */
-export const findAll = async (
-  dataSource: Source,
-  allSchemas: Schemas,
-  schemaName: string,
-  query: QueryList,
+export const findAll = async <
+  const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
+  dataSource: RestClient<TSchemas, TSchemaName>,
+  allSchemas: FinalSchemas,
+  schemaName: TSchemaName,
+  query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
   baseFilter?: Filters,
-): Promise<[Records: Record[], RequestMetaData: RequestMetaData]> => {
+): Promise<
+  [
+    Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,
+    RequestMetaData,
+  ]
+> => {
+  if (!schemaNameIsString(schemaName)) {
+    throw new SchemaNameNotStringError(schemaName)
+  }
+
   const [resources, requestMetaData] = await dataSource.findAll(
     allSchemas,
     schemaName,
@@ -27,6 +46,7 @@ export const findAll = async (
   )
 
   return [
+    // @ts-expect-error todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
     flattenResourcesIntoRecords(allSchemas, resources, schemaName),
     requestMetaData,
   ]

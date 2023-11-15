@@ -20,6 +20,7 @@ import type {
   RenderValue,
   DefaultValueComponentsTypes,
 } from "../../components"
+import type { FinalSchema } from "@hatchifyjs/core"
 
 export interface HatchifyDisplay {
   sortable: boolean
@@ -41,8 +42,8 @@ export function getDefaultDisplayRender(
   const defaultRender = ({ record }: { record: Record }) => {
     const value = record[attribute]
 
-    if (attType === "date" && typeof value === "string") {
-      return <Date value={value} />
+    if (["date", "dateonly", "datetime"].includes(attType)) {
+      return <Date value={value} dateOnly={attType === "dateonly"} />
     }
 
     if (
@@ -111,41 +112,44 @@ export function getDisplaysFromChildren(
 }
 
 export function getDisplaysFromSchema(
-  schema: Schema,
+  schema: FinalSchema,
   defaultValueComponents: DefaultValueComponentsTypes,
   valueComponents: { [attribute: string]: ValueComponent } | null,
 ): HatchifyDisplay[] {
-  const attributesDisplays = Object.entries(schema.attributes).map(
-    ([key, value]) => {
+  const attributesDisplays = Object.entries(schema.attributes)
+    .filter(([, { control }]) => control.hidden !== true)
+    .map(([attributeName, { control }]) => {
       return getHatchifyDisplay({
         sortable: true,
-        attribute: key,
-        attributeSchema: value,
+        attribute: attributeName,
+        attributeSchema: control,
         valueComponents,
         defaultValueComponents,
       })
-    },
-  )
+    })
 
-  const manyRelationshipDisplays = Object.entries(schema?.relationships || {})
-    .filter(([key, relationship]) => {
-      return relationship.type === "many"
-    })
-    .map(([key, relationship]) => {
-      // related schema = schema[relationship.schema]
-      return getHatchifyDisplay({
-        isRelationship: true,
-        attribute: key,
-        label: key,
-        attributeSchema: null, // the schema in this case is a "relationship"
-        valueComponents,
-        defaultValueComponents,
-      })
-    })
+  // table does not need to show many relationships by default at the moment
+  // const manyRelationshipDisplays = Object.entries(schema?.relationships || {})
+  //   .filter(([key, relationship]) => {
+  //     return (
+  //       relationship.type === "hasMany" ||
+  //       relationship.type === "hasManyThrough"
+  //     )
+  //   })
+  //   .map(([key, relationship]) => {
+  //     return getHatchifyDisplay({
+  //       isRelationship: true,
+  //       attribute: key,
+  //       label: key,
+  //       attributeSchema: null, // the schema in this case is a "relationship"
+  //       valueComponents,
+  //       defaultValueComponents,
+  //     })
+  //   })
 
   const oneRelationshipDisplays = Object.entries(schema?.relationships || {})
     .filter(([key, relationship]) => {
-      return relationship.type === "one"
+      return relationship.type === "belongsTo" || relationship.type === "hasOne"
     })
     .map(([key, relationship]) => {
       // related schema = schema[relationship.schema]
@@ -161,7 +165,7 @@ export function getDisplaysFromSchema(
 
   return [
     ...attributesDisplays,
-    ...manyRelationshipDisplays,
+    // ...manyRelationshipDisplays,
     ...oneRelationshipDisplays,
   ]
 }
@@ -293,7 +297,8 @@ export function hasValidChildren(
 }
 
 export function getDisplays(
-  schema: Schema,
+  // todo: future; remove any, `getDisplays` used by Details page which is not yet implemented
+  schema: FinalSchema,
   valueComponents: { [field: string]: ValueComponent } | undefined,
   defaultValueComponents: DefaultValueComponentsTypes,
   children: React.ReactNode | null,
@@ -303,7 +308,12 @@ export function getDisplays(
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
 
   let displays = hasValidChildren(HatchifyColumn.displayName || "", childArray)
-    ? getDisplaysFromChildren(schema, defaultValueComponents, childArray)
+    ? getDisplaysFromChildren(
+        // todo: future; remove unknown, `getDisplays` used by Details page which is not yet implemented
+        schema as unknown as Schema,
+        defaultValueComponents,
+        childArray,
+      )
     : getDisplaysFromSchema(
         schema,
         defaultValueComponents,

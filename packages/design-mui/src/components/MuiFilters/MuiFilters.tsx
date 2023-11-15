@@ -1,15 +1,16 @@
-import type { XCollectionProps } from "@hatchifyjs/react-ui"
-import type { FilterArray } from "@hatchifyjs/rest-client"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Badge, Button, Grid, Popover, debounce } from "@mui/material"
-import { MuiFilterRows } from "./components/MuiFilterRows"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
+import type { XCollectionProps } from "@hatchifyjs/react-ui"
+import type { FilterArray } from "@hatchifyjs/rest-client"
+import { MuiFilterRows } from "./components/MuiFilterRows"
 import { getFilterableFields } from "./utils"
 
 export const MuiFilters: React.FC<XCollectionProps> = ({
-  allSchemas,
+  finalSchemas,
+  partialSchemas,
   include,
   schemaName,
   filter: queryFilter,
@@ -18,8 +19,8 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   setPage,
 }) => {
   const fields = useMemo(
-    () => getFilterableFields(allSchemas, schemaName, include ?? []),
-    [allSchemas, include, schemaName],
+    () => getFilterableFields(finalSchemas, schemaName, include ?? []),
+    [finalSchemas, include, schemaName],
   )
 
   const defaultFilter = {
@@ -90,7 +91,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
         <Grid container spacing={1} width="39.5rem" padding="0.75rem">
           <Grid item xs={12}>
             <MuiFilterRows
-              allSchemas={allSchemas}
+              finalSchemas={finalSchemas}
               schemaName={schemaName}
               fields={fields}
               filters={filters}

@@ -2,13 +2,16 @@ import { useEffect } from "react"
 import type {
   Fields,
   Filters,
+  FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
   Include,
   Meta,
+  RecordType,
   PaginationObject,
-  Record,
-  Schemas,
 } from "@hatchifyjs/rest-client"
-import type { ReactRest } from "@hatchifyjs/react-rest"
+import type { PartialSchema } from "@hatchifyjs/core"
+import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   HatchifyCollectionPage,
   HatchifyCollectionSelected,
@@ -20,11 +23,16 @@ import useSort from "./useSort"
 import useSelected from "./useSelected"
 import useFilter from "./useFilter"
 
-export interface CollectionState {
-  data: Record[]
+export interface CollectionState<
+  TSchemas extends Record<string, PartialSchema>,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> {
+  data: Array<
+    RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>, false, true>
+  >
   meta: Meta
   fields?: Fields
-  include?: Include
+  include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>
   filter: Filters
   setFilter: (filters: Filters) => void
   page: HatchifyCollectionPage["page"]
@@ -33,14 +41,19 @@ export interface CollectionState {
   setSort: HatchifyCollectionSort["setSort"]
   selected: HatchifyCollectionSelected["selected"] | undefined
   setSelected: HatchifyCollectionSelected["setSelected"] | undefined
-  allSchemas: Schemas
+  finalSchemas: FinalSchemas
+  partialSchemas: TSchemas
   schemaName: string
 }
 
-export default function useCollectionState(
-  allSchemas: Schemas,
-  schemaName: string,
-  restClient: ReactRest,
+export default function useCollectionState<
+  const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
+  finalSchemas: FinalSchemas,
+  partialSchemas: TSchemas,
+  schemaName: TSchemaName,
+  restClient: HatchifyReactRest<TSchemas>,
   {
     defaultSelected,
     onSelectedChange,
@@ -53,12 +66,18 @@ export default function useCollectionState(
     defaultSelected?: HatchifyCollectionSelected["selected"]
     onSelectedChange?: HatchifyCollectionSelected["setSelected"]
     fields?: Fields
-    include?: Include
+    include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>
     defaultPage?: PaginationObject
     defaultSort?: SortObject
     baseFilter?: Filters
   } = {},
-): CollectionState {
+): CollectionState<TSchemas, TSchemaName> {
+  if (typeof schemaName !== "string") {
+    throw new Error(
+      `Expected schemaName to be a string, received ${typeof schemaName}`,
+    )
+  }
+
   const { page, setPage } = usePage(defaultPage)
   const { sort, sortQueryString, setSort } = useSort(defaultSort)
   const { filter, setFilter } = useFilter()
@@ -97,7 +116,8 @@ export default function useCollectionState(
     setSort,
     selected: onSelectedChange !== undefined ? selected : undefined,
     setSelected: onSelectedChange !== undefined ? setSelected : undefined,
-    allSchemas,
+    finalSchemas,
+    partialSchemas,
     schemaName,
   }
 }

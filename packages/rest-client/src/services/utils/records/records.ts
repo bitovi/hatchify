@@ -1,9 +1,13 @@
+import type { PartialSchema, SerializedValue } from "@hatchifyjs/core"
 import type {
   Record,
   Resource,
   RecordRelationship,
-  Schemas,
   ResourceRelationship,
+  FinalSchemas,
+  CreateType,
+  GetSchemaFromName,
+  GetSchemaNames,
 } from "../../types"
 
 type Relationship = globalThis.Record<
@@ -29,7 +33,7 @@ export function keyResourcesById(data: Resource[]): {
  * does not have a schema for.
  */
 export function isMissingSchema(
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas,
   resource: ResourceRelationship | ResourceRelationship[],
 ): boolean {
   if (Array.isArray(resource)) {
@@ -46,7 +50,7 @@ export function isMissingSchema(
  * record's schema.
  */
 export function resourceToRecordRelationship(
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas,
   resourcesById: globalThis.Record<string, Resource>,
   resource: ResourceRelationship,
 ): RecordRelationship {
@@ -59,13 +63,20 @@ export function resourceToRecordRelationship(
   }
 
   const attributes = resourcesById[resource.id].attributes
-  const displayAttribute = allSchemas[resource.__schema].displayAttribute
+  // use first attribute as displayAttribute until displayAttribute is implemented
+  const displayAttribute = Object.keys(
+    allSchemas[resource.__schema].attributes,
+  )[0]
 
   return {
     id: resource.id,
     __schema: resource.__schema,
     __label: attributes?.[displayAttribute],
-    ...attributes,
+    ...setClientPropertyValuesFromResponse(
+      allSchemas,
+      resource.__schema,
+      attributes || {},
+    ),
   }
 }
 
@@ -75,18 +86,18 @@ export function resourceToRecordRelationship(
  * Merges the attribute data of the related records into the top-level records.
  */
 export function flattenResourcesIntoRecords(
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas,
   resources: Resource[],
   topLevelSchemaName: string,
 ): Record[]
 export function flattenResourcesIntoRecords(
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas,
   resources: Resource[],
   topLevelRecordSchemaName: string,
   id: string,
 ): Record | undefined
 export function flattenResourcesIntoRecords(
-  allSchemas: Schemas,
+  allSchemas: FinalSchemas,
   resources: Resource[],
   topLevelRecordSchemaName: string,
   id?: string,
@@ -122,7 +133,11 @@ export function flattenResourcesIntoRecords(
       return {
         id: resource.id,
         __schema: resource.__schema,
-        ...resource.attributes,
+        ...setClientPropertyValuesFromResponse(
+          allSchemas,
+          resource.__schema,
+          resource.attributes || {},
+        ),
         ...(relationships ? relationships : {}),
       }
     })
@@ -132,4 +147,86 @@ export function flattenResourcesIntoRecords(
   }
 
   return flattened
+}
+
+/**
+ * Coerces the value from the server into the value expected by the client.
+ */
+export const setClientPropertyValuesFromResponse = (
+  allSchemas: FinalSchemas,
+  schemaName: string,
+  attributes: globalThis.Record<string, any>,
+): globalThis.Record<string, unknown> => {
+  return Object.entries(attributes).reduce((acc, [key, value]) => {
+    const attribute = allSchemas[schemaName].attributes[key]
+    if (attribute != null && attribute.setClientPropertyValueFromResponse) {
+      try {
+        acc[key] = attribute?.setClientPropertyValueFromResponse(value)
+        return acc
+      } catch (e: any) {
+        console.error(
+          `Setting value \`${value}\` on attribute \`${key}\`:`,
+          e?.message,
+        )
+      }
+    }
+
+    acc[key] = value
+    return acc
+  }, {} as globalThis.Record<string, unknown>)
+}
+
+/**
+ * Coerces the value from the internal client data into something that can be sent with JSON.
+ */
+export const serializeClientPropertyValuesForRequest = <
+  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
+  allSchemas: FinalSchemas,
+  schemaName: string,
+  attributes: Omit<
+    CreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
+    "__schema"
+  >["attributes"],
+): globalThis.Record<string, SerializedValue> => {
+  return Object.entries(attributes).reduce((acc, [key, value]) => {
+    const attribute = allSchemas[schemaName].attributes[key]
+
+    if (
+      attribute != null &&
+      attribute.setClientPropertyValue &&
+      attribute.serializeClientPropertyValue
+    ) {
+      const coerced = attribute.setClientPropertyValue(value as any) // todo HATCH-417 remove any
+      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-417 remove any
+    } else {
+      acc[key] = value as SerializedValue
+    }
+    return acc
+  }, {} as globalThis.Record<string, SerializedValue>)
+}
+
+/**
+ * Coerces the value from the internal client data into something that can be sent through a filter query.
+ */
+export const serializeClientQueryFilterValuesForRequest = (
+  allSchemas: FinalSchemas,
+  schemaName: string,
+  filters: globalThis.Record<string, any>,
+): globalThis.Record<string, unknown> => {
+  return Object.entries(filters).reduce((acc, [key, value]) => {
+    const attribute = allSchemas[schemaName].attributes[key]
+    if (
+      attribute != null &&
+      attribute.setClientQueryFilterValue &&
+      attribute.serializeClientQueryFilterValue
+    ) {
+      const coerced = attribute.setClientQueryFilterValue(value)
+      acc[key] = attribute.serializeClientQueryFilterValue(coerced as any) // todo: arthur, fix with stricter typing
+    } else {
+      acc[key] = value
+    }
+    return acc
+  }, {} as globalThis.Record<string, unknown>)
 }

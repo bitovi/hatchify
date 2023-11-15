@@ -328,9 +328,9 @@ async function init() {
   ]
 
   runCommand(
-    `npm install --package-lock-only --no-package-lock ${dependencies.join(
-      " ",
-    )}`,
+    `npm install --package-lock-only --no-package-lock ${dependencies
+      .map((dependency) => `${dependency}@latest`)
+      .join(" ")}`,
     root,
   )
   runCommand(

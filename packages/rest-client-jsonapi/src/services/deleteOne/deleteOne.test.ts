@@ -1,25 +1,32 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import type { Schema } from "@hatchifyjs/rest-client"
 import { baseUrl } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { deleteOne } from "./deleteOne"
+import { assembler } from "@hatchifyjs/core"
 
-const schemaMap = {
+const partialSchemaMap = {
   Article: {
-    ...({ name: "Article" } as Schema),
+    name: "Article",
+    attributes: {},
     type: "article",
     endpoint: "articles",
   },
 }
-const sourceConfig = { baseUrl, schemaMap }
+const sourceConfig = { baseUrl, schemaMap: partialSchemaMap }
+const finalSchemaMap = assembler(partialSchemaMap)
 
 describe("rest-client-jsonapi/services/deleteOne", () => {
   it("works", async () => {
     const data = "article-id-1"
     const expected = undefined
-    const result = await deleteOne(sourceConfig, schemaMap, "Article", data)
+    const result = await deleteOne(
+      sourceConfig,
+      finalSchemaMap,
+      "Article",
+      data,
+    )
     expect(result).toEqual(expected)
   })
 
@@ -40,15 +47,15 @@ describe("rest-client-jsonapi/services/deleteOne", () => {
     )
 
     await expect(() =>
-      deleteOne(sourceConfig, schemaMap, "Article", "article-id-1"),
+      deleteOne(sourceConfig, finalSchemaMap, "Article", "article-id-1"),
     ).rejects.toEqual(errors)
   })
 
-  it("can be called from a Source", async () => {
-    const dataSource = jsonapi(baseUrl, schemaMap)
+  it("can be called from a rest client", async () => {
+    const dataSource = jsonapi(baseUrl, partialSchemaMap)
     const data = "article-id-2"
     const spy = vi.spyOn(dataSource, "deleteOne")
-    await dataSource.deleteOne(schemaMap, "Article", data)
-    expect(spy).toHaveBeenCalledWith(schemaMap, "Article", data)
+    await dataSource.deleteOne(finalSchemaMap, "Article", data)
+    expect(spy).toHaveBeenCalledWith(finalSchemaMap, "Article", data)
   })
 })

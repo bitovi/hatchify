@@ -28,7 +28,7 @@ test("works", async ({ page, request }) => {
 
   // validate frontend is running
   await page.goto(frontend)
-  await expect(page.getByText("Name")).toBeVisible()
+  await expect(page.getByText("Title")).toBeVisible()
   await expect(page.getByText("DueDate")).toBeVisible()
   await expect(page.getByText("Importance")).toBeVisible()
   await expect(page.getByText("user", { exact: true })).toBeVisible()
@@ -39,9 +39,10 @@ test("works", async ({ page, request }) => {
       data: {
         type: "Todo",
         attributes: {
-          name: "Walk the dog",
+          title: "Walk the dog",
           dueDate: "2023-07-05T20:30:52.767Z",
           importance: 6,
+          status: "Pending",
         },
       },
     },
@@ -65,6 +66,7 @@ test("works", async ({ page, request }) => {
       },
     },
   })
+
   expect(newUser.ok()).toBeTruthy()
   const newUserData = await newUser.json()
 

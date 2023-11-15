@@ -9,6 +9,15 @@ export const hatchedReactRest = hatchifyReactRest(
   createJsonapiClient("http://localhost:3000/api", { Todo, User }),
 )
 
+// hatchedReactRest.Todo.createOne({
+//   attributes: {
+//     name: "",
+//   },
+//   relationships: {
+//     user: { id: "123" },
+//   }
+// })
+
 const App: React.FC = () => {
   return (
     <div>
@@ -30,7 +39,7 @@ function Todos() {
   const [todos, todosState] = hatchedReactRest.Todo.useAll({
     include: ["user"],
     fields: { Todo: ["name"] },
-    filter: enableFilter ? { name: ["Workout", "other"] } : undefined,
+    // filter: enableFilter ? { name: ["Workout", "other"] } : undefined,
   })
   const [users, usersState] = hatchedReactRest.User.useAll()
   const [createTodo, createState] = hatchedReactRest.Todo.useCreateOne()
@@ -39,7 +48,7 @@ function Todos() {
   const [selectedUser, setSelectedUser] = useState("")
 
   useEffect(() => {
-    console.log("todosState has changed", todosState)
+    // console.log("todosState has changed", todosState)
   }, [todosState])
 
   if (todosState.isLoading) return <div>fetching todos...</div>
@@ -70,11 +79,10 @@ function Todos() {
         type="button"
         onClick={() => {
           createTodo({
-            type: "Todo",
             attributes: { name: todoName },
             relationships: selectedUser
               ? {
-                  user: { data: { type: "User", id: selectedUser } },
+                  user: { id: selectedUser },
                 }
               : undefined,
           })
@@ -139,7 +147,7 @@ function Users() {
         disabled={createState.isLoading}
         type="button"
         onClick={() => {
-          createUser({ type: "User", attributes: { name: userName } })
+          createUser({ attributes: { name: userName } })
           setUserName("")
         }}
       >
@@ -213,7 +221,7 @@ function EditUser({ id, setUserIdToEdit }: any) {
         disabled={updateState.isLoading}
         type="button"
         onClick={() => {
-          updateUser({ id, type: "User", attributes: { name } })
+          updateUser({ id, attributes: { name } })
           setUserIdToEdit(null)
         }}
       >

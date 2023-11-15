@@ -1,17 +1,25 @@
 import type {
   Filters,
   PaginationObject,
-  Schemas,
+  FinalSchemas,
+  GetSchemaNames,
+  Include,
+  GetSchemaFromName,
 } from "@hatchifyjs/rest-client"
-import type { ReactRest } from "@hatchifyjs/react-rest"
+import type { PartialSchema } from "@hatchifyjs/core"
+import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
 import { useHatchifyPresentation } from ".."
 import useCollectionState from "../../hooks/useCollectionState"
 
-export interface HatchifyCollectionProps {
-  allSchemas: Schemas
-  schemaName: string
-  restClient: ReactRest
+export interface HatchifyCollectionProps<
+  TSchemas extends Record<string, PartialSchema>,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> {
+  finalSchemas: FinalSchemas
+  partialSchemas: TSchemas
+  schemaName: TSchemaName
+  restClient: HatchifyReactRest<TSchemas>
   children?: React.ReactNode | null
   defaultSelected?: HatchifyCollectionSelected["selected"]
   onSelectedChange?: HatchifyCollectionSelected["setSelected"]
@@ -20,8 +28,12 @@ export interface HatchifyCollectionProps {
   baseFilter?: Filters
 }
 
-export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
-  allSchemas,
+function HatchifyCollection<
+  const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>({
+  finalSchemas,
+  partialSchemas,
   schemaName,
   restClient,
   children,
@@ -30,11 +42,15 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
   defaultPage,
   defaultSort,
   baseFilter,
-}) => {
+}: HatchifyCollectionProps<TSchemas, TSchemaName>): JSX.Element {
   const { Collection } = useHatchifyPresentation()
-  const defaultInclude = getDefaultInclude(allSchemas, schemaName)
+  const defaultInclude = getDefaultInclude<
+    GetSchemaFromName<TSchemas, TSchemaName>
+  >(finalSchemas, schemaName as string)
+
   const collectionState = useCollectionState(
-    allSchemas,
+    finalSchemas,
+    partialSchemas,
     schemaName,
     restClient,
     {
@@ -52,8 +68,11 @@ export const HatchifyCollection: React.FC<HatchifyCollectionProps> = ({
 
 export default HatchifyCollection
 
-function getDefaultInclude(allSchemas: Schemas, schemaName: string) {
+function getDefaultInclude<TSchema extends PartialSchema>(
+  allSchemas: FinalSchemas,
+  schemaName: string,
+): Include<TSchema> {
   return Object.entries(allSchemas[schemaName]?.relationships || [])
-    .filter(([_, value]) => value.type === "one")
-    .map(([key, _]) => key)
+    .filter(([_, value]) => ["belongsTo", "hasOne"].includes(value.type))
+    .map(([key, _]) => key) as Include<TSchema> // @todo HATCH-417
 }

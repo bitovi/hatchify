@@ -1,4 +1,4 @@
-import type { Schema } from "@hatchifyjs/rest-client"
+import type { FinalSchema } from "@hatchifyjs/core"
 import type { HatchifyDisplay } from "../services"
 import type { DefaultValueComponentsTypes } from "../components"
 import { useHatchifyPresentation } from "../components"
@@ -11,7 +11,7 @@ interface CompoundComponents {
 }
 
 export default function useCompoundComponents(
-  schema: Schema,
+  schema: FinalSchema,
   children: React.ReactNode | null,
 ): CompoundComponents {
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
@@ -24,7 +24,7 @@ export default function useCompoundComponents(
 }
 
 export function getColumns(
-  schema: Schema,
+  schema: FinalSchema,
   valueComponents: DefaultValueComponentsTypes,
   childArray: JSX.Element[],
 ): HatchifyDisplay[] {
@@ -55,6 +55,9 @@ export function getColumns(
     for (let i = 0; i < overwrite.length; i++) {
       const { props } = overwrite[i]
       const relationship = schema?.relationships?.[props.field]
+      const attributeSchema = relationship
+        ? null
+        : schema.attributes?.[props.field]?.control || null
 
       hatchifyColumns.push(
         getHatchifyDisplay({
@@ -62,9 +65,7 @@ export function getColumns(
           isRelationship: relationship !== undefined,
           label: props.label || null,
           attribute: props.field,
-          attributeSchema: relationship
-            ? null
-            : schema.attributes?.[props.field],
+          attributeSchema: attributeSchema,
           renderValue: props.renderValue,
           ValueComponent: props.ValueComponent,
           defaultValueComponents: valueComponents,
@@ -82,6 +83,9 @@ export function getColumns(
       if (replaceWith) {
         const { props } = replaceWith
         const relationship = schema?.relationships?.[props.field]
+        const attributeSchema = relationship
+          ? null
+          : schema.attributes?.[props.field]?.control || null
 
         hatchifyColumns.push(
           getHatchifyDisplay({
@@ -89,9 +93,7 @@ export function getColumns(
             isRelationship: relationship !== undefined,
             label: props.label || null,
             attribute: props.field,
-            attributeSchema: relationship
-              ? null
-              : schema.attributes?.[props.field],
+            attributeSchema,
             renderValue: props.renderValue,
             ValueComponent: props.ValueComponent,
             defaultValueComponents: valueComponents,

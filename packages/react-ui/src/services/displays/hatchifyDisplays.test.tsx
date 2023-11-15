@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom"
 import { describe, it, expect } from "vitest"
 import { render, screen } from "@testing-library/react"
+import { string } from "@hatchifyjs/core"
 import {
   getEmptyList,
   //   getDisplays,
@@ -19,15 +20,18 @@ import type { HatchifyEmptyListProps } from "../../components/HatchifyDisplays/H
 import type { HatchifyExtraColumnProps } from "../../components/HatchifyDisplays/HatchifyDisplays"
 import type { HatchifyColumnProps } from "../../components/HatchifyDisplays/HatchifyDisplays"
 
-// const TestSchema: Schema = {
-//   name: "Test",
-//   attributes: { id: "string", name: "string" },
-//   displayAttribute: "name",
-// }
+const schemas = {
+  Test: {
+    name: "Test",
+    attributes: { name: string() },
+  },
+}
 
 const testComponents = {
   Test: {
-    List: (props: HatchifyCollectionProps) => <HatchifyCollection {...props} />,
+    List: (props: HatchifyCollectionProps<typeof schemas, "Test">) => (
+      <HatchifyCollection {...props} />
+    ),
     EmptyList: (props: HatchifyEmptyListProps) => (
       <HatchifyEmptyList {...props} />
     ),

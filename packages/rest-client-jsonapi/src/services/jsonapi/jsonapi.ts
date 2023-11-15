@@ -1,8 +1,9 @@
 import { getEndpoint } from "@hatchifyjs/core"
 import type {
-  Source,
-  SchemaMap,
+  RestClient,
   RequiredSchemaMap,
+  SourceSchema,
+  GetSchemaNames,
 } from "@hatchifyjs/rest-client"
 import { createOne, deleteOne, findAll, findOne, updateOne } from ".."
 
@@ -25,12 +26,26 @@ export interface JsonApiResource {
 export type CreateJsonApiResource = Omit<JsonApiResource, "id">
 
 /**
- * Creates a new JSON:API Source.
+ * Creates a new JSON:API rest client.
  */
-export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
+export function jsonapi<
+  const TSchemas extends Record<string, SourceSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(baseUrl: string, schemaMap: TSchemas): RestClient<TSchemas, TSchemaName> {
   // Default `type` to `schemaMap` key if not set in `schemaMap`
   const completeSchemaMap = Object.entries(schemaMap).reduce(
     (acc, [key, value]) => {
+      if (value.namespace) {
+        if (key !== `${value.namespace}_${value.name}`) {
+          console.warn(
+            `The key ${key} should be ${value.namespace}_${value.name}`,
+          )
+        }
+      } else {
+        if (key !== value.name) {
+          console.warn(`The key ${key} should be ${value.name}`)
+        }
+      }
       acc[key] = {
         ...value,
         name: value.name,
@@ -46,17 +61,23 @@ export function jsonapi(baseUrl: string, schemaMap: SchemaMap): Source {
   const config = { baseUrl, schemaMap: completeSchemaMap }
 
   return {
-    completeSchemaMap: completeSchemaMap,
+    completeSchemaMap: completeSchemaMap as TSchemas,
     version: 0,
     findAll: (allSchemas, schemaName, query, baseFilter) =>
-      findAll(config, allSchemas, schemaName, query, baseFilter),
+      findAll<TSchemas, TSchemaName>(
+        config,
+        allSchemas,
+        schemaName,
+        query,
+        baseFilter,
+      ),
     findOne: (allSchemas, schemaName, query) =>
-      findOne(config, allSchemas, schemaName, query),
+      findOne<TSchemas, TSchemaName>(config, allSchemas, schemaName, query),
     createOne: (allSchemas, schemaName, data) =>
-      createOne(config, allSchemas, schemaName, data),
+      createOne<TSchemas, TSchemaName>(config, allSchemas, schemaName, data),
     updateOne: (allSchemas, schemaName, data) =>
-      updateOne(config, allSchemas, schemaName, data),
+      updateOne<TSchemas, TSchemaName>(config, allSchemas, schemaName, data),
     deleteOne: (allSchemas, schemaName, id) =>
-      deleteOne(config, allSchemas, schemaName, id),
+      deleteOne<TSchemas, TSchemaName>(config, allSchemas, schemaName, id),
   }
 }

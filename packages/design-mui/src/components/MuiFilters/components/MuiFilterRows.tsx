@@ -1,16 +1,13 @@
-import type {
-  Attribute,
-  EnumObject,
-  FilterArray,
-  Schemas,
-} from "@hatchifyjs/rest-client"
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
+import type { FinalAttributeRecord } from "@hatchifyjs/core"
+import type { FilterArray, FinalSchemas } from "@hatchifyjs/rest-client"
+import type { FilterableControls, Operators, Option } from "../constants"
 import ColumnSelect from "./inputs/ColumnSelect"
 import OperatorSelect from "./inputs/OperatorSelect"
 import ValueInput from "./inputs/ValueInput"
-import capitalize from "lodash/capitalize"
+import { operatorOptionsByType } from "../constants"
 
 type ChangeParams =
   | {
@@ -23,53 +20,16 @@ type ChangeParams =
       value: string
       index: number
     }
-interface Option {
-  operator: string
-  text: string
-}
-
-type OperatorOption = {
-  [key in "enum" | "date" | "string"]: Option[]
-}
-
-const operatorOptions: OperatorOption = {
-  string: [
-    { operator: "icontains", text: "contains" },
-    { operator: "istarts", text: "starts with" },
-    { operator: "iends", text: "ends with" },
-    { operator: "$eq", text: "equals" },
-    { operator: "empty", text: "is empty" },
-    { operator: "nempty", text: "is not empty" },
-    { operator: "$in", text: "is any of" },
-  ],
-  date: [
-    { operator: "$eq", text: "is" },
-    { operator: "$gt", text: "is after" },
-    { operator: "$gte", text: "is on or after" },
-    { operator: "$lt", text: "is before" },
-    { operator: "$lte", text: "is on or before" },
-    { operator: "empty", text: "is empty" },
-    { operator: "nempty", text: "is not empty" },
-  ],
-  enum: [
-    { operator: "$eq", text: "is" },
-    { operator: "$ne", text: "is not" },
-    { operator: "empty", text: "is empty" },
-    { operator: "nempty", text: "is not empty" },
-    { operator: "$in", text: "is any of" },
-    { operator: "$nin", text: "is not any of" },
-  ],
-}
 
 export const MuiFilterRows: React.FC<{
-  fields: string[]
+  fields: string[] // @todo HATCH-417 - stricter typing for fields
   filters: FilterArray
-  allSchemas: Schemas
+  finalSchemas: FinalSchemas
   schemaName: string
   setFilters: (filters: FilterArray) => void
   removeFilter: (index: number) => void
 }> = ({
-  allSchemas,
+  finalSchemas,
   fields,
   filters,
   schemaName,
@@ -81,24 +41,22 @@ export const MuiFilterRows: React.FC<{
 
     // modifying column select
     if (field === "field") {
-      //Get correct attributes for comparison
-      const { baseAttributes: newAttributes, baseField: newField } =
-        getFieldAndAttributes(allSchemas, value, schemaName)
-      const { baseAttributes: currentAttributes, baseField: currentField } =
-        getFieldAndAttributes(allSchemas, newFilters[index].field, schemaName)
+      // Get correct attributes for comparison
+      const newControl = getAttributeControl(finalSchemas, value, schemaName)
+      const currentControl = getAttributeControl(
+        finalSchemas,
+        newFilters[index].field,
+        schemaName,
+      )
 
       // change the operator if existing operator does not exist on new column
       newFilters[index].operator = getAvailableOperator(
-        newField,
         newFilters[index].operator,
-        newAttributes,
+        newControl,
       )
 
       // reset the filter value if switching from one field type to another
-      if (
-        getFieldType(newAttributes, newField) !==
-        getFieldType(currentAttributes, currentField)
-      ) {
+      if (newControl.type !== currentControl.type) {
         newFilters[index].value = ""
       }
     }
@@ -125,11 +83,12 @@ export const MuiFilterRows: React.FC<{
   return (
     <Grid container spacing={1} alignItems="center" justifyContent="center">
       {filters.map((filter, index) => {
-        const { baseAttributes, baseField } = getFieldAndAttributes(
-          allSchemas,
+        const control = getAttributeControl(
+          finalSchemas,
           filter.field,
           schemaName,
         )
+
         return (
           <Fragment key={index}>
             <Grid item xs={1}>
@@ -158,7 +117,7 @@ export const MuiFilterRows: React.FC<{
               <OperatorSelect
                 labelId={`${index}-operator-label`}
                 value={filter.operator}
-                options={getPossibleOptions(baseField, baseAttributes)}
+                options={getPossibleOptions(control)}
                 onChange={(value) =>
                   onChange({
                     field: "operator",
@@ -170,14 +129,15 @@ export const MuiFilterRows: React.FC<{
             </Grid>
             <Grid item xs={4}>
               <ValueInput
+                data-testid="value-input"
                 labelId={`${index}-value-label`}
-                fieldType={getFieldType(baseAttributes, baseField)}
+                controlType={control.type as FilterableControls}
+                operator={filter.operator as Operators}
                 value={filter.value}
-                operator={filter.operator}
                 onChange={(value: any) =>
                   onChange({ field: "value", value, index })
                 }
-                options={(baseAttributes[filter.field] as EnumObject)?.values}
+                options={"values" in control ? control?.values : []}
               />
             </Grid>
           </Fragment>
@@ -191,14 +151,11 @@ export default MuiFilterRows
 
 // Get the first available operator for the field type
 export function getAvailableOperator(
-  field: string,
   // todo: operator should be it's own type used in FilterArray & Option
   operator: string,
-  attributes: {
-    [field: string]: Attribute
-  },
+  control: FinalAttributeRecord[string]["control"],
 ): Option["operator"] {
-  const availableOptions = getPossibleOptions(field, attributes)
+  const availableOptions = getPossibleOptions(control)
 
   const optionAvailable = availableOptions.find((option) => {
     return option.operator === operator ? option : undefined
@@ -209,18 +166,14 @@ export function getAvailableOperator(
 
 // Filter out operators that are not available for the field type
 export function getPossibleOptions(
-  field: string,
-  attributes: {
-    [field: string]: Attribute
-  },
+  control: FinalAttributeRecord[string]["control"],
 ): Option[] {
-  const attribute = attributes[field]
-  const fieldType = typeof attribute === "string" ? attribute : attribute.type
-  const required = typeof attribute === "string" ? false : !attribute.allowNull
+  // @todo HATCH-417 - fieldType should not be any, it should be a TS type
+  const fieldType = control.type
+  const required = !control.allowNull
 
-  const options = operatorOptions[
-    // todo(v2 schema): operatorOption types should match possible Attribute types
-    fieldType as keyof OperatorOption
+  const options = operatorOptionsByType[
+    fieldType as keyof typeof operatorOptionsByType
   ].filter((option) => {
     return required
       ? option.operator !== "empty" && option.operator !== "nempty"
@@ -230,24 +183,23 @@ export function getPossibleOptions(
   return options
 }
 
-export const getFieldType = (
-  attributes: Record<string, Attribute>,
-  field: string,
-): string => {
-  const attribute = attributes[field]
-  return typeof attribute === "string" ? attribute : attribute.type
-}
-
-export const getFieldAndAttributes = (
-  allSchemas: Schemas,
+export const getAttributeControl = (
+  finalSchemas: FinalSchemas,
   field: string,
   schemaName: string,
-): { baseAttributes: Record<string, Attribute>; baseField: string } => {
-  const baseField = field.includes(".") ? field.split(".")[1] : field
+): FinalAttributeRecord[string]["control"] => {
+  const getRelatedTargetSchema = () => {
+    const relatedField = field.split(".")[0]
+    const relations = finalSchemas[schemaName].relationships
 
-  const baseAttributes =
-    allSchemas[
-      field.includes(".") ? capitalize(field.split(".")[0]) : schemaName
-    ].attributes
-  return { baseAttributes, baseField }
+    return relations && relations[relatedField]
+      ? relations[relatedField].targetSchema
+      : relatedField
+  }
+
+  const isRelationship = field.includes(".")
+  const attribute = isRelationship ? field.split(".")[1] : field
+  const schema = isRelationship ? getRelatedTargetSchema() : schemaName
+
+  return finalSchemas[schema].attributes[attribute].control
 }

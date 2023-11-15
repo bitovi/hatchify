@@ -1,8 +1,10 @@
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   Fields,
   FilterTypes,
   Filters,
   FiltersObject,
+  FinalSchemas,
   Include,
   RequiredSchemaMap,
   Schemas,
@@ -15,8 +17,8 @@ import type {
  * where "book_type" and "person_type" are the JSON:API types for the "Book" and "Person" schemas.
  */
 export function fieldsToQueryParam(
-  schemaMap: RequiredSchemaMap,
-  allSchemas: Schemas,
+  schemaMap: RequiredSchemaMap, // todo: HATCH-417
+  allSchemas: Schemas | FinalSchemas,
   schemaName: string,
   fields: Fields,
 ): string {
@@ -30,7 +32,7 @@ export function fieldsToQueryParam(
     }
 
     if (schemaMap[field] === undefined) {
-      // throw new Error(`"${field}" is not a valid schema`) // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
+      throw new Error(`"${field}" is not a valid schema`) // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
     }
 
     fieldsObj[schemaMap[field].type] = fields[field]
@@ -49,7 +51,9 @@ export function fieldsToQueryParam(
 /**
  * Transforms the include array from rest-client into a JSON:API compliant query parameter.
  */
-export function includeToQueryParam(includes: Include): string {
+export function includeToQueryParam<const TSchema extends PartialSchema>(
+  includes: Include<TSchema>,
+): string {
   return includes.length ? `include=${includes.join(",")}` : ""
 }
 
@@ -201,13 +205,13 @@ export function pageToQueryParam(page: unknown): string {
 /**
  * Transforms the fields and include arrays from rest-client into a JSON:API compliant query parameter.
  */
-export function getQueryParams(
-  schemaMap: RequiredSchemaMap,
-  allSchemas: Schemas,
+export function getQueryParams<const TSchema extends PartialSchema>(
+  schemaMap: RequiredSchemaMap, // todo: HATCH-417
+  allSchemas: FinalSchemas,
   schemaName: string,
   query: {
     fields?: Fields
-    include?: Include
+    include?: Include<TSchema>
     sort?: string[] | string
     filter?: Filters
     page?: unknown

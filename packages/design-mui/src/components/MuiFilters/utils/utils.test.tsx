@@ -1,56 +1,60 @@
-import type { Schemas } from "@hatchifyjs/rest-client"
 import "@testing-library/jest-dom"
 import { describe, it, expect } from "vitest"
 import { getFilterableFields } from "./utils"
+import {
+  assembler,
+  belongsTo,
+  boolean,
+  datetime,
+  enumerate,
+  hasMany,
+  string,
+} from "@hatchifyjs/core"
 
-const schemas: Schemas = {
+const partialSchemas = {
   Todo: {
     name: "Todo",
     displayAttribute: "name",
     attributes: {
-      name: { type: "string", allowNull: true },
-      date: "date",
-      note: "string",
-      important: { type: "boolean", allowNull: true },
-      status: { type: "enum", values: ["Pending", "Failed", "Complete"] },
+      name: string(),
+      date: datetime(),
+      note: string(),
+      important: boolean({ required: false }),
+      status: enumerate({ values: ["Pending", "Failed", "Complete"] }),
     },
     relationships: {
-      user: {
-        schema: "User",
-        type: "one",
-      },
+      user: belongsTo(),
     },
   },
   User: {
     name: "User",
     displayAttribute: "name",
     attributes: {
-      name: { type: "string" },
-      email: "string",
-      planned_date: { type: "date" },
-      another_date: "date",
-      user_type: { type: "enum", values: ["Admin", "User"] },
+      name: string(),
+      email: string(),
+      planned_date: datetime(),
+      another_date: datetime(),
+      user_type: enumerate({ values: ["Admin", "User"] }),
     },
     relationships: {
-      todo: {
-        schema: "Todo",
-        type: "many",
-      },
+      todo: hasMany(),
     },
   },
   Planner: {
     name: "Planner",
     displayAttribute: "title",
     attributes: {
-      title: "string",
+      title: string(),
     },
   },
 }
 
+const finalSchemas = assembler(partialSchemas)
+
 describe("components/MuiFilters/utils", () => {
   describe("getFilterableFields", () => {
     it("it has related fields if include is passed in with a value", () => {
-      const result = getFilterableFields(schemas, "Todo", ["user"])
+      const result = getFilterableFields(finalSchemas, "Todo", ["user"])
 
       // boolean types are not supported yet, so important attribute is not returned
       expect(result).toEqual([
@@ -67,14 +71,14 @@ describe("components/MuiFilters/utils", () => {
     })
 
     it("it does not have related fields if include is empty", () => {
-      const result = getFilterableFields(schemas, "Todo", [])
+      const result = getFilterableFields(finalSchemas, "Todo", [])
 
       // boolean types are not supported yet, so important attribute is not returned
       expect(result).toEqual(["name", "date", "note", "status"])
     })
 
     it("it adds fields that are a string instead of an object", () => {
-      const result = getFilterableFields(schemas, "User", [])
+      const result = getFilterableFields(finalSchemas, "User", [])
 
       expect(result).toEqual([
         "name",
@@ -86,7 +90,7 @@ describe("components/MuiFilters/utils", () => {
     })
 
     it("It works on schemas that do not have relationships", () => {
-      const result = getFilterableFields(schemas, "Planner", [])
+      const result = getFilterableFields(finalSchemas, "Planner", [])
 
       expect(result).toEqual(["title"])
     })

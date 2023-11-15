@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest"
-import type { Schemas } from "@hatchifyjs/rest-client"
 import {
   fieldsToQueryParam,
   filterToQueryParam,
@@ -9,76 +8,103 @@ import {
   pageToQueryParam,
   sortToQueryParam,
 } from "./query"
+import type { PartialSchema } from "@hatchifyjs/core"
+import {
+  assembler,
+  belongsTo,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 
 describe("rest-client-jsonapi/services/utils/query", () => {
-  const schemas: Schemas = {
+  const partialSchemas = {
     Book: {
       name: "Book",
-      displayAttribute: "title",
       attributes: {
-        title: "string",
-        year: "number",
-        date: "string",
+        title: string(),
+        year: integer(),
+        date: string(),
       },
       relationships: {
-        author: {
-          type: "one",
-          schema: "Person",
-        },
-        illustrators: {
-          type: "many",
-          schema: "Person",
-        },
+        author: belongsTo("Person"),
+        illustrators: hasMany("Person"),
+        tags: hasMany("Namespaced_Tag"),
       },
-    },
+    } satisfies PartialSchema,
     Person: {
       name: "Person",
-      displayAttribute: "name",
       attributes: {
-        name: "string",
-        rating: "number",
+        name: string(),
+        rating: integer(),
       },
       relationships: {
-        authored: {
-          type: "many",
-          schema: "Book",
-        },
-        illustrated: {
-          type: "many",
-          schema: "Book",
-        },
+        authored: hasMany("Book"),
+        illustrated: hasMany("Book"),
       },
-    },
+    } satisfies PartialSchema,
+    Namespaced_Tag: {
+      name: "Tag",
+      namespace: "Namespaced",
+      attributes: {
+        name: string(),
+      },
+    } satisfies PartialSchema,
   }
   const schemaMap = {
-    Book: { type: "book_type", ...schemas["Book"] },
-    Person: { type: "person_type", ...schemas["Person"] },
+    Book: { type: "book_type", ...partialSchemas["Book"] },
+    Person: { type: "person_type", ...partialSchemas["Person"] },
+    Namespaced_Tag: {
+      type: "Namespaced_Tag",
+      ...partialSchemas["Namespaced_Tag"],
+    },
   }
+  const finalSchemas = assembler(partialSchemas)
 
   describe("fieldsToQueryParam", () => {
     it("works", () => {
-      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
-      /* expect(() =>
-        fieldsToQueryParam(schemaMap, schemas, "Book", {
+      expect(() =>
+        fieldsToQueryParam(schemaMap, finalSchemas, "Book", {
           Book: ["title", "body"],
           author: ["name", "email"],
           illustrators: ["name", "email"],
         }),
-      ).toThrowError('"author" is not a valid schema') */
+      ).toThrowError('"author" is not a valid schema')
 
-      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
-      /* expect(() =>
-        fieldsToQueryParam(schemaMap, schemas, "Person", {
+      expect(() =>
+        fieldsToQueryParam(schemaMap, finalSchemas, "Person", {
           Person: ["firstName", "age"],
           authored: ["title", "year"],
           illustrated: ["title", "year"],
         }),
-      ).toThrowError('"authored" is not a valid schema') */
+      ).toThrowError('"authored" is not a valid schema')
 
-      expect(fieldsToQueryParam(schemaMap, schemas, "Book", {})).toEqual("")
+      expect(() =>
+        fieldsToQueryParam(schemaMap, finalSchemas, "Book", {
+          Book: ["title"],
+          tags: ["name"],
+        }),
+      ).toThrowError('"tags" is not a valid schema')
 
       expect(
-        fieldsToQueryParam(schemaMap, schemas, "Book", {
+        fieldsToQueryParam(schemaMap, finalSchemas, "Book", {
+          Book: ["title"],
+          Namespaced_Tag: ["name"],
+        }),
+      ).toEqual("fields[book_type]=title&fields[Namespaced_Tag]=name")
+
+      expect(
+        fieldsToQueryParam(schemaMap, finalSchemas, "Namespaced_Tag", {
+          Namespaced_Tag: ["name"],
+        }),
+      ).toEqual("fields[Namespaced_Tag]=name")
+
+      expect(fieldsToQueryParam(schemaMap, finalSchemas, "Book", {})).toEqual(
+        "",
+      )
+
+      expect(
+        fieldsToQueryParam(schemaMap, finalSchemas, "Book", {
           Book: ["title", "body"],
           Person: ["name", "email"],
         }),
@@ -89,51 +115,65 @@ describe("rest-client-jsonapi/services/utils/query", () => {
   describe("getQueryParams", () => {
     it("works for when include and fields have values", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", {
-          fields: {
-            Book: ["title", "body"],
-            Person: ["name", "email"],
+        getQueryParams<typeof partialSchemas.Book>(
+          schemaMap,
+          finalSchemas,
+          "Book",
+          {
+            fields: {
+              Book: ["title", "body"],
+              Person: ["name", "email"],
+            },
+            include: ["author", "illustrators"],
           },
-          include: ["author", "illustrators"],
-        }),
+        ),
       ).toEqual(
         "?include=author,illustrators&fields[book_type]=title,body&fields[person_type]=name,email",
       )
 
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
-          fields: {
-            Person: ["firstName", "age"],
-            Book: ["title", "year"],
+        getQueryParams<typeof partialSchemas.Person>(
+          schemaMap,
+          finalSchemas,
+          "Person",
+          {
+            fields: {
+              Person: ["firstName", "age"],
+              Book: ["title", "year"],
+            },
+            include: ["illustrated", "authored"],
           },
-          include: ["illustrated", "authored"],
-        }),
+        ),
       ).toEqual(
         "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year",
       )
 
-      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
-      /* expect(() =>
-        getQueryParams(schemaMap, schemas, "Person", {
-          fields: {
-            Person: ["firstName", "age"],
-            authored: ["title", "year"],
+      expect(() =>
+        getQueryParams<typeof partialSchemas.Person>(
+          schemaMap,
+          finalSchemas,
+          "Person",
+          {
+            fields: {
+              Person: ["firstName", "age"],
+              authored: ["title", "year"],
+            },
+            include: ["illustrated", "authored"],
           },
-          include: ["illustrated", "authored"],
-        }),
-      ).toThrowError('"authored" is not a valid schema') */
+        ),
+      ).toThrowError('"authored" is not a valid schema')
     })
 
     it("works for when fields has values and include is empty", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", {
+        getQueryParams(schemaMap, finalSchemas, "Book", {
           fields: { Book: ["title", "body"] },
           include: [],
         }),
       ).toEqual("?fields[book_type]=title,body")
 
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: { Person: ["firstName", "age"] },
           include: [],
         }),
@@ -142,10 +182,13 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works when both fields and include are empty", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+        getQueryParams(schemaMap, finalSchemas, "Book", {
+          fields: {},
+          include: [],
+        }),
       ).toEqual("")
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {},
           include: [],
         }),
@@ -154,10 +197,13 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works when sort is a string", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+        getQueryParams(schemaMap, finalSchemas, "Book", {
+          fields: {},
+          include: [],
+        }),
       ).toEqual("")
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {},
           include: [],
           sort: "-created",
@@ -167,10 +213,13 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works when sort is an array of strings", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+        getQueryParams(schemaMap, finalSchemas, "Book", {
+          fields: {},
+          include: [],
+        }),
       ).toEqual("")
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
+        getQueryParams(schemaMap, finalSchemas, "Person", {
           fields: {},
           include: [],
           sort: ["-created", "title", "user.name"],
@@ -180,12 +229,14 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
     it("works when include, fields, sort, filter, and page have values", () => {
       expect(
-        getQueryParams(schemaMap, schemas, "Book", { fields: {}, include: [] }),
+        getQueryParams(schemaMap, finalSchemas, "Book", {
+          fields: {},
+          include: [],
+        }),
       ).toEqual("")
 
-      // TODO need to handle namespace.field. Jira link: https://bitovi.atlassian.net/browse/HATCH-387
-      /* expect(() =>
-        getQueryParams(schemaMap, schemas, "Book", {
+      expect(() =>
+        getQueryParams<any>(schemaMap, finalSchemas, "Book", {
           fields: {
             Person: ["firstName", "age"],
             authored: ["title", "year"],
@@ -199,23 +250,28 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           ],
           page: { number: 3, size: 30 },
         }),
-      ).toThrowError('"authored" is not a valid schema') */
+      ).toThrowError('"authored" is not a valid schema')
 
       expect(
-        getQueryParams(schemaMap, schemas, "Person", {
-          fields: {
-            Person: ["firstName", "age"],
-            Book: ["title", "year"],
+        getQueryParams<typeof partialSchemas.Person>(
+          schemaMap,
+          finalSchemas,
+          "Person",
+          {
+            fields: {
+              Person: ["firstName", "age"],
+              Book: ["title", "year"],
+            },
+            include: ["illustrated", "authored"],
+            sort: ["-created", "title", "user.name"],
+            filter: [
+              { field: "name", value: ["John", "Joan"], operator: "$in" },
+              { field: "age", value: 21, operator: "$eq" },
+              { field: "employed", value: false, operator: "$eq" },
+            ],
+            page: { number: 3, size: 30 },
           },
-          include: ["illustrated", "authored"],
-          sort: ["-created", "title", "user.name"],
-          filter: [
-            { field: "name", value: ["John", "Joan"], operator: "$in" },
-            { field: "age", value: 21, operator: "$eq" },
-            { field: "employed", value: false, operator: "$eq" },
-          ],
-          page: { number: 3, size: 30 },
-        }),
+        ),
       ).toEqual(
         "?include=illustrated,authored&fields[person_type]=firstName,age&fields[book_type]=title,year&sort=-created,title,user.name&filter[name][$in][]=John&filter[name][$in][]=Joan&filter[age][$eq]=21&filter[employed][$eq]=false&page[number]=3&page[size]=30",
       )
@@ -224,13 +280,19 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
   describe("includeToQueryParam", () => {
     it("works", () => {
-      expect(includeToQueryParam(["author", "illustrators"])).toEqual(
-        "include=author,illustrators",
-      )
+      expect(
+        includeToQueryParam<typeof partialSchemas.Book>([
+          "author",
+          "illustrators",
+        ]),
+      ).toEqual("include=author,illustrators")
 
-      expect(includeToQueryParam(["illustrated", "authored"])).toEqual(
-        "include=illustrated,authored",
-      )
+      expect(
+        includeToQueryParam<typeof partialSchemas.Person>([
+          "illustrated",
+          "authored",
+        ]),
+      ).toEqual("include=illustrated,authored")
     })
   })
 

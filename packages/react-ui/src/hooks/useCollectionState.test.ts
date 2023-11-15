@@ -1,23 +1,23 @@
 import { describe, expect, it, vi } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import useCollectionState from "./useCollectionState"
+import { assembler, integer } from "@hatchifyjs/core"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
+import useCollectionState from "./useCollectionState"
 
-const completeSchemaMap = {
+const partialSchemas = {
   Todo: {
     name: "Todo",
-    type: "Todo",
-    displayAttribute: "name",
     attributes: {
-      name: "string",
-      created: "date",
-      important: "boolean",
+      importance: integer(),
     },
   },
 }
+
+const finalSchemas = assembler(partialSchemas)
+
 const fakeRestClient = hatchifyReactRest({
   version: 0,
-  completeSchemaMap,
+  completeSchemaMap: partialSchemas,
   findAll: () =>
     Promise.resolve([
       [
@@ -40,18 +40,13 @@ const fakeRestClient = hatchifyReactRest({
 describe("useCollectionState", () => {
   it("works", async () => {
     const { result } = renderHook(() =>
-      useCollectionState(
-        completeSchemaMap,
-        completeSchemaMap.Todo.name,
-        fakeRestClient,
-        {
-          defaultSelected: { all: false, ids: [] },
-          onSelectedChange: vi.fn(),
-          defaultPage: { size: 1, number: 2 },
-          defaultSort: { direction: "desc", sortBy: "id" },
-          baseFilter: [{ field: "id", value: "1", operator: "$eq" }],
-        },
-      ),
+      useCollectionState(finalSchemas, partialSchemas, "Todo", fakeRestClient, {
+        defaultSelected: { all: false, ids: [] },
+        onSelectedChange: vi.fn(),
+        defaultPage: { size: 1, number: 2 },
+        defaultSort: { direction: "desc", sortBy: "id" },
+        baseFilter: [{ field: "id", value: "1", operator: "$eq" }],
+      }),
     )
 
     const expected = {
@@ -88,7 +83,8 @@ describe("useCollectionState", () => {
         ids: [],
       },
       setSelected: expect.any(Function),
-      allSchemas: completeSchemaMap,
+      finalSchemas,
+      partialSchemas,
       schemaName: "Todo",
       filter: undefined,
       setFilter: expect.any(Function),

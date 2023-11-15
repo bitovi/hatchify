@@ -18,8 +18,7 @@ Update `/src/App.tsx` to the following:
 ```tsx
 // hatchify-app/frontend/App.tsx
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo } from "../schemas/Todo"
-import { User } from "../schemas/User"
+import { Todo, User } from "../schemas"
 import { useState } from "react" // 👀
 
 export const hatchedReact = hatchifyReact(
@@ -32,7 +31,8 @@ export const hatchedReact = hatchifyReact(
 const TodoList = hatchedReact.components.Todo.Collection
 
 const App: React.FC = () => {
-  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({ // 👀
+  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
+    // 👀
     all: false,
     ids: [],
   })

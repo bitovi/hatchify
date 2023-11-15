@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest"
-import type { Schema } from "../../types"
+import type { PartialSchema } from "@hatchifyjs/core"
+import {
+  assembler,
+  belongsTo,
+  boolean,
+  datetime,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 import {
   getAttributesFromSchema,
   getFieldsFromInclude,
@@ -10,77 +19,61 @@ import {
   getInclude,
 } from "./selector"
 
-const Todo: Schema = {
-  name: "Todo",
-  displayAttribute: "name",
-  attributes: {
-    name: "string",
-    important: "boolean",
-    dueDate: "date",
-  },
-  relationships: {
-    user: {
-      type: "one",
-      schema: "User",
+const partialTodoUserSchemas = {
+  Todo: {
+    name: "Todo",
+    displayAttribute: "name",
+    attributes: {
+      name: string(),
+      important: boolean(),
+      dueDate: datetime(),
+    },
+    relationships: {
+      user: belongsTo(),
     },
   },
-}
-
-const User: Schema = {
-  name: "User",
-  displayAttribute: "name",
-  attributes: {
-    name: "string",
-    email: "string",
-  },
-  relationships: {
-    todos: {
-      type: "many",
-      schema: "Todo",
+  User: {
+    name: "User",
+    displayAttribute: "name",
+    attributes: {
+      name: string(),
+      email: string(),
+    },
+    relationships: {
+      todos: hasMany(),
     },
   },
-}
+} satisfies Record<string, PartialSchema>
 
-const todoUserSchemas = { Todo, User }
-
-const bookAuthorSchemas: Record<string, Schema> = {
+const partialBookAuthorSchemas = {
   Book: {
     name: "Book",
     displayAttribute: "title",
     attributes: {
-      title: "string",
-      year: "number",
+      title: string(),
+      year: integer(),
     },
     relationships: {
-      author: {
-        type: "one",
-        schema: "Person",
-      },
-      illustrators: {
-        type: "many",
-        schema: "Person",
-      },
+      author: belongsTo("Person"),
+      illustrators: hasMany("Person"),
     },
   },
   Person: {
     name: "Person",
     displayAttribute: "name",
     attributes: {
-      name: "string",
-      rating: "number",
+      name: string(),
+      rating: integer(),
     },
     relationships: {
-      authored: {
-        type: "many",
-        schema: "Book",
-      },
-      illustrated: {
-        type: "many",
-        schema: "Book",
-      },
+      authored: hasMany("Book"),
+      illustrated: hasMany("Book"),
     },
   },
-}
+} satisfies Record<string, PartialSchema>
+
+const todoUserSchemas = assembler(partialTodoUserSchemas)
+const bookAuthorSchemas = assembler(partialBookAuthorSchemas)
 
 describe("rest-client/services/utils/selector", () => {
   describe("getAttributesFromSchema", () => {
@@ -114,10 +107,11 @@ describe("rest-client/services/utils/selector", () => {
   describe("getFieldsFromInclude", () => {
     it("works", () => {
       expect(
-        getFieldsFromInclude(bookAuthorSchemas, "Book", [
-          "author",
-          "illustrators",
-        ]),
+        getFieldsFromInclude<typeof partialBookAuthorSchemas.Book>(
+          bookAuthorSchemas,
+          "Book",
+          ["author", "illustrators"],
+        ),
       ).toEqual({
         Book: ["title", "year"],
         author: ["name", "rating"],
@@ -125,17 +119,22 @@ describe("rest-client/services/utils/selector", () => {
       })
 
       expect(
-        getFieldsFromInclude(bookAuthorSchemas, "Book", ["author"]),
+        getFieldsFromInclude<typeof partialBookAuthorSchemas.Book>(
+          bookAuthorSchemas,
+          "Book",
+          ["author"],
+        ),
       ).toEqual({
         Book: ["title", "year"],
         author: ["name", "rating"],
       })
 
       expect(
-        getFieldsFromInclude(bookAuthorSchemas, "Person", [
-          "authored",
-          "illustrated",
-        ]),
+        getFieldsFromInclude<typeof partialBookAuthorSchemas.Person>(
+          bookAuthorSchemas,
+          "Person",
+          ["authored", "illustrated"],
+        ),
       ).toEqual({
         Person: ["name", "rating"],
         authored: ["title", "year"],
@@ -143,7 +142,11 @@ describe("rest-client/services/utils/selector", () => {
       })
 
       expect(
-        getFieldsFromInclude(bookAuthorSchemas, "Person", ["illustrated"]),
+        getFieldsFromInclude<typeof partialBookAuthorSchemas.Person>(
+          bookAuthorSchemas,
+          "Person",
+          ["illustrated"],
+        ),
       ).toEqual({
         Person: ["name", "rating"],
         illustrated: ["title", "year"],
@@ -209,7 +212,13 @@ describe("rest-client/services/utils/selector", () => {
   describe("getFields", () => {
     it("works", () => {
       expect(
-        getFields(bookAuthorSchemas, "Book", { include: ["author"] }),
+        getFields<typeof partialBookAuthorSchemas.Book>(
+          bookAuthorSchemas,
+          "Book",
+          {
+            include: ["author"],
+          },
+        ),
       ).toEqual({ Book: ["title", "year"], author: ["name", "rating"] })
 
       expect(
@@ -228,7 +237,11 @@ describe("rest-client/services/utils/selector", () => {
   describe("getInclude", () => {
     it("works", () => {
       expect(
-        getInclude(bookAuthorSchemas, "Book", { include: ["author"] }),
+        getInclude<typeof partialBookAuthorSchemas.Book>(
+          bookAuthorSchemas,
+          "Book",
+          { include: ["author"] },
+        ),
       ).toEqual(["author"])
 
       expect(

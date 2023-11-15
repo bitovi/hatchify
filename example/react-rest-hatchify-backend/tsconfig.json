@@ -2,13 +2,12 @@
   "experimentalResolver": true,
   "compilerOptions": {
     "module": "NodeNext",
-    "moduleResolution": "Node",
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
 
-    "composite": true,
-    "declaration": true,
+    // "composite": true,
+    // "declaration": true,
     "incremental": true,
     "strict": true,
   

@@ -10,16 +10,17 @@ describe("components/MuiFilters/components/MuiAutocomplete", () => {
 
     render(<TestWrapper handleChange={handleChange} />)
 
-    const dropdown = screen.getByRole("combobox")
+    const dropdownContainer = screen.getByTestId("autocomplete-input")
+    const dropdown = dropdownContainer.querySelector("input") // eslint-disable-line testing-library/no-node-access
 
-    await userEvent.click(dropdown)
+    await userEvent.click(dropdown as any)
     const firstOption = screen.getByText("Pending")
 
     //updates values when items are selected in the multiselect.
     await userEvent.click(firstOption)
     expect(handleChange).toHaveBeenCalledWith(["Pending"])
 
-    await userEvent.click(dropdown)
+    await userEvent.click(dropdown as any)
     const secondOption = screen.getByText("Failed")
     await userEvent.click(secondOption)
 
@@ -31,7 +32,7 @@ describe("components/MuiFilters/components/MuiAutocomplete", () => {
     expect(handleChange).toHaveBeenCalledWith(["Failed"])
 
     //The Close icon closes out all selected chips
-    await userEvent.click(dropdown)
+    await userEvent.click(dropdown as any)
     const reselectedPending = screen.getByText("Pending")
 
     await userEvent.click(reselectedPending)

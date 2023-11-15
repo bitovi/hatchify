@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest"
 import { createStore } from "../../store"
 import { updateOne } from "./updateOne"
 import { fakeDataSource, schemas } from "../../mocks/testData"
+import type { partialSchemas } from "../../mocks/testData"
 
 describe("rest-client/services/promise/updateOne", () => {
   const data = {
@@ -19,7 +20,12 @@ describe("rest-client/services/promise/updateOne", () => {
 
   it("should return the new record", async () => {
     createStore(["Article"])
-    const result = await updateOne(fakeDataSource, schemas, "Article", data)
+    const result = await updateOne<typeof partialSchemas, "Article">(
+      fakeDataSource,
+      schemas,
+      "Article",
+      data,
+    )
     expect(result).toEqual(expected)
   })
 
@@ -43,7 +49,12 @@ describe("rest-client/services/promise/updateOne", () => {
     }
 
     await expect(
-      updateOne(errorDataSource, schemas, "Article", data),
+      updateOne<typeof partialSchemas, "Article">(
+        errorDataSource,
+        schemas,
+        "Article",
+        data,
+      ),
     ).rejects.toEqual(errors)
   })
 })

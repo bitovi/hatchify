@@ -58,28 +58,51 @@ export const BooleanList: React.FC<{ values: boolean[] }> = ({ values }) => {
   )
 }
 
-export const Date: React.FC<{ value: string }> = ({ value }) => {
-  const formattedDate = isNaN(window.Date.parse(value))
-    ? undefined
-    : new Intl.DateTimeFormat(navigator.language, {
+export const Date: React.FC<{ dateOnly: boolean; value: string }> = ({
+  dateOnly,
+  value,
+}) => {
+  const offsetDate = new window.Date(value)
+  if (dateOnly) {
+    offsetDate.setMinutes(
+      offsetDate.getMinutes() + offsetDate.getTimezoneOffset(),
+    )
+  }
+
+  const formatSettings: Intl.DateTimeFormatOptions = dateOnly
+    ? {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      }
+    : {
         year: "numeric",
         month: "numeric",
         day: "numeric",
         hour: "numeric",
         minute: "numeric",
         second: "numeric",
-      }).format(new window.Date(value))
+      }
+
+  const formattedDate = isNaN(window.Date.parse(value))
+    ? undefined
+    : new Intl.DateTimeFormat(navigator.language, { ...formatSettings }).format(
+        offsetDate,
+      )
 
   return <>{formattedDate}</>
 }
 
-export const DateList: React.FC<{ values: string[] }> = ({ values }) => {
+export const DateList: React.FC<{ dateOnly: boolean; values: string[] }> = ({
+  dateOnly,
+  values,
+}) => {
   return (
     <>
       {values.map((value, index) => {
         return (
           <Fragment key={index}>
-            <Date value={value} />
+            <Date dateOnly={dateOnly} value={value} />
             {index !== values.length - 1 && "; "}
           </Fragment>
         )

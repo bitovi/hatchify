@@ -1,25 +1,28 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import type { Schema } from "@hatchifyjs/rest-client"
 import { baseUrl } from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { updateOne } from "./updateOne"
+import { assembler } from "@hatchifyjs/core"
 
-const schemaMap = {
+const partialSchemaMap = {
   Article: {
-    ...({ name: "Article" } as Schema),
+    name: "Article",
+    attributes: {},
     type: "article",
     endpoint: "articles",
   },
   Person: {
-    ...({ name: "Person" } as Schema),
+    name: "Person",
+    attributes: {},
     type: "person",
     endpoint: "people",
   },
-  Tag: { ...({ name: "Tag" } as Schema), type: "tag", endpoint: "tags" },
+  Tag: { name: "Tag", attributes: {}, type: "tag", endpoint: "tags" },
 }
-const sourceConfig = { baseUrl, schemaMap }
+const sourceConfig = { baseUrl, schemaMap: partialSchemaMap }
+const finalSchemaMap = assembler(partialSchemaMap)
 
 describe("rest-client-jsonapi/services/updateOne", () => {
   it("works", async () => {
@@ -54,7 +57,12 @@ describe("rest-client-jsonapi/services/updateOne", () => {
         },
       },
     ]
-    const result = await updateOne(sourceConfig, schemaMap, "Article", data)
+    const result = await updateOne<typeof partialSchemaMap, "Article">(
+      sourceConfig,
+      finalSchemaMap,
+      "Article",
+      data,
+    )
     expect(result).toEqual(expected)
   })
 
@@ -75,22 +83,22 @@ describe("rest-client-jsonapi/services/updateOne", () => {
     )
 
     await expect(() =>
-      updateOne(sourceConfig, schemaMap, "Article", {
+      updateOne(sourceConfig, finalSchemaMap, "Article", {
         __schema: "Article",
         id: "article-id-1",
       }),
     ).rejects.toEqual(errors)
   })
 
-  it("can be called from a Source", async () => {
-    const dataSource = jsonapi(baseUrl, schemaMap)
+  it("can be called from a rest client", async () => {
+    const dataSource = jsonapi(baseUrl, partialSchemaMap)
     const data = {
       __schema: "Article",
       id: "article-id-1",
       attributes: { title: "Hello, World!" },
     }
     const spy = vi.spyOn(dataSource, "updateOne")
-    await dataSource.updateOne(schemaMap, "Article", data)
-    expect(spy).toHaveBeenCalledWith(schemaMap, "Article", data)
+    await dataSource.updateOne(finalSchemaMap, "Article", data)
+    expect(spy).toHaveBeenCalledWith(finalSchemaMap, "Article", data)
   })
 })

@@ -1,19 +1,17 @@
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
+import { filterableControlTypes } from "../constants"
 
 type HatchifyMuiFilters = string[]
 
 export function getFilterableFields(
-  allSchemas: XCollectionProps["allSchemas"],
+  allSchemas: XCollectionProps["finalSchemas"],
   schemaName: XCollectionProps["schemaName"],
   include: string[],
 ): HatchifyMuiFilters {
   // get all filterable fields from the base schema
   const fields = Object.entries(allSchemas[schemaName].attributes)
-    .filter(([, attr]) =>
-      typeof attr === "object"
-        ? attr.type === "string" || attr.type === "date" || attr.type === "enum"
-        : attr === "string" || attr === "date",
-    )
+    .filter(([, { control }]) => control.hidden !== true)
+    .filter(([, { control }]) => filterableControlTypes.includes(control.type))
     .map(([key]) => key)
 
   // get related schemas that are part of the include
@@ -22,7 +20,7 @@ export function getFilterableFields(
   )
     .map(([key, obj]) => ({
       relationship: key,
-      schema: obj.schema,
+      schema: obj.targetSchema,
     }))
     .filter((item) => include?.includes(item.relationship))
 
@@ -31,12 +29,9 @@ export function getFilterableFields(
     const includedFields = Object.entries(
       allSchemas[includedRelationships[i].schema].attributes,
     )
-      .filter(([, attr]) =>
-        typeof attr === "object"
-          ? attr.type === "string" ||
-            attr.type === "date" ||
-            attr.type === "enum"
-          : attr === "string" || attr === "date",
+      .filter(([, { control }]) => control.hidden !== true)
+      .filter(([, { control }]) =>
+        filterableControlTypes.includes(control.type),
       )
       .map(([key]) => `${includedRelationships[i].relationship}.${key}`)
 

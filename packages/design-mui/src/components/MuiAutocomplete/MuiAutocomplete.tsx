@@ -6,15 +6,18 @@ export const MuiAutocomplete: React.FC<{
   options: string[]
   handleChange: (value: string[]) => void
   selectedOptions: string[]
+  textFieldType?: string
 }> = ({
   options,
   handleChange,
   selectedOptions,
   freeSolo = false,
   disableClearable = false,
+  textFieldType = "text",
 }) => {
   return (
     <Autocomplete
+      data-testid="autocomplete-input"
       multiple
       freeSolo={freeSolo}
       disableClearable={disableClearable}
@@ -34,7 +37,12 @@ export const MuiAutocomplete: React.FC<{
         ))
       }
       renderInput={(params) => (
-        <TextField {...params} variant="standard" fullWidth />
+        <TextField
+          {...params}
+          variant="standard"
+          fullWidth
+          type={textFieldType}
+        />
       )}
       onChange={(e, value) => {
         handleChange(value)

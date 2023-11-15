@@ -1,41 +1,29 @@
-import type { Schemas } from "@hatchifyjs/rest-client"
 import "@testing-library/jest-dom"
 import { describe, it, expect, vi } from "vitest"
 import { render, screen, act } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import MuiFilters from "./MuiFilters"
+import {
+  assembler,
+  belongsTo,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 
-const schemas: Schemas = {
+const partialSchemas = {
   Todo: {
     name: "Todo",
-    displayAttribute: "name",
-    attributes: {
-      name: { type: "string", allowNull: true },
-      date: { type: "date", allowNull: true },
-      important: { type: "boolean", allowNull: true },
-      status: { type: "enum", values: ["Pending", "Failed", "Complete"] },
-    },
-    relationships: {
-      user: {
-        schema: "User",
-        type: "one",
-      },
-    },
+    attributes: { name: string(), id: integer() },
+    relationships: { user: belongsTo() },
   },
   User: {
     name: "User",
-    displayAttribute: "name",
-    attributes: {
-      name: { type: "string" },
-    },
-    relationships: {
-      todo: {
-        schema: "Todo",
-        type: "many",
-      },
-    },
+    attributes: { name: string() },
+    relationships: { todo: hasMany() },
   },
 }
+const finalSchemas = assembler(partialSchemas)
 
 const meta = {
   status: "success",
@@ -51,11 +39,13 @@ const meta = {
   isSuccess: true,
 } as any
 
+// todo: v2 schema only supports numbers, filter does not support numbers
 describe("components/MuiFilters", () => {
   it("works", async () => {
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -97,7 +87,8 @@ describe("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -144,7 +135,8 @@ describe("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -168,8 +160,9 @@ describe("components/MuiFilters", () => {
 
     await userEvent.click(filter)
 
-    const dropdowns = screen.getAllByRole("combobox")
-    await userEvent.click(dropdowns[1])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as any)
     const emptySelection = screen.getByText("is empty")
     await userEvent.click(emptySelection)
 
@@ -193,7 +186,8 @@ describe("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -217,8 +211,9 @@ describe("components/MuiFilters", () => {
 
     await userEvent.click(filter)
 
-    const dropdowns = screen.getAllByRole("combobox")
-    await userEvent.click(dropdowns[1])
+    const dropdownContainer = screen.getByTestId("operator-select")
+    const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
+    await userEvent.click(dropdown as any)
     const emptySelection = screen.getByText("equals")
     await userEvent.click(emptySelection)
 
@@ -236,7 +231,8 @@ describe("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -281,7 +277,8 @@ describe("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -333,7 +330,8 @@ describe("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}
@@ -383,7 +381,8 @@ describe("components/MuiFilters", () => {
 
     render(
       <MuiFilters
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="Todo"
         data={[]}
         meta={meta}

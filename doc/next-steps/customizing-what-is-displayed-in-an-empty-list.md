@@ -12,8 +12,7 @@ Update `/src/App.tsx` to the following:
 ```tsx
 // hatchify-app/frontend/App.tsx
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo } from "../schemas/Todo"
-import { User } from "../schemas/User"
+import { Todo, User } from "../schemas"
 
 export const hatchedReact = hatchifyReact(
   createJsonapiClient("http://localhost:3000/api", {

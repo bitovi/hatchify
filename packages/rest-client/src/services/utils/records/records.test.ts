@@ -1,4 +1,11 @@
-import { describe, it, expect } from "vitest"
+import { afterAll, describe, it, expect, vi } from "vitest"
+import {
+  HatchifyCoerceError,
+  assembler,
+  datetime,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 import type { Resource } from "../../types"
 import { testData, schemas } from "../../mocks/testData"
 import {
@@ -6,6 +13,8 @@ import {
   isMissingSchema,
   resourceToRecordRelationship,
   flattenResourcesIntoRecords,
+  setClientPropertyValuesFromResponse,
+  serializeClientPropertyValuesForRequest,
 } from "./records"
 
 describe("rest-client/utils/records", () => {
@@ -47,15 +56,14 @@ describe("rest-client/utils/records", () => {
 
   describe("resourceToRecordRelationship", () => {
     it("works", () => {
-      const schemas = {
+      const finalSchemas = assembler({
         Person: {
           name: "Person",
-          displayAttribute: "name",
           attributes: {
-            name: "string",
+            name: string(),
           },
         },
-      }
+      })
 
       const resource = {
         id: "person-1",
@@ -74,7 +82,7 @@ describe("rest-client/utils/records", () => {
 
       expect(
         resourceToRecordRelationship(
-          schemas,
+          finalSchemas,
           { "person-1": resource },
           resource,
         ),
@@ -143,6 +151,128 @@ describe("rest-client/utils/records", () => {
       expect(
         flattenResourcesIntoRecords(schemas, testData, "Article", "article-2"),
       ).toEqual(expected)
+    })
+  })
+
+  describe("setClientPropertyValuesFromResponse", () => {
+    const consoleMock = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined)
+
+    afterAll(() => {
+      consoleMock.mockReset()
+    })
+
+    const finalSchemas = assembler({
+      Article: {
+        name: "Article",
+        attributes: {
+          title: string({ required: true }),
+          created: datetime({ step: "day" }),
+          views: integer({ max: 1000 }),
+        },
+      },
+    })
+
+    it("works", () => {
+      expect(
+        setClientPropertyValuesFromResponse(finalSchemas, "Article", {
+          title: "foo",
+          created: "2021-01-01T00:00:00.000Z",
+          views: 1,
+        }),
+      ).toEqual({
+        title: "foo",
+        created: new Date("2021-01-01T00:00:00.000Z"),
+        views: 1,
+      })
+
+      expect(
+        setClientPropertyValuesFromResponse(finalSchemas, "Article", {
+          title: "bar",
+          created: "2021-01-01T01:00:00.000Z",
+          views: 500,
+        }),
+      ).toEqual({
+        title: "bar",
+        created: "2021-01-01T01:00:00.000Z",
+        views: 500,
+      })
+
+      expect(consoleMock).toHaveBeenLastCalledWith(
+        "Setting value `2021-01-01T01:00:00.000Z` on attribute `created`:",
+        "as multiples of day",
+      )
+
+      expect(
+        setClientPropertyValuesFromResponse(finalSchemas, "Article", {
+          title: "bar",
+          created: "2021-01-01T00:00:00.000Z",
+          views: 1001,
+        }),
+      ).toEqual({
+        title: "bar",
+        created: new Date("2021-01-01T00:00:00.000Z"),
+        views: 1001,
+      })
+
+      expect(consoleMock).toHaveBeenLastCalledWith(
+        "Setting value `1001` on attribute `views`:",
+        "less than or equal to 1000",
+      )
+    })
+  })
+
+  describe("serializeClientPropertyValuesForRequest", () => {
+    it("works", () => {
+      const partialSchemas = {
+        Article: {
+          name: "Article",
+          attributes: {
+            title: string({ required: true }),
+            created: datetime({ step: "day" }),
+            views: integer({ max: 1000 }),
+          },
+        },
+      }
+      const finalSchemas = assembler(partialSchemas)
+
+      expect(
+        serializeClientPropertyValuesForRequest<
+          typeof partialSchemas,
+          keyof typeof partialSchemas
+        >(finalSchemas, "Article", {
+          title: "foo",
+          created: new Date("2021-01-01T00:00:00.000Z"),
+          views: 1,
+        }),
+      ).toEqual({
+        title: "foo",
+        created: "2021-01-01T00:00:00.000Z",
+        views: 1,
+      })
+
+      expect(() =>
+        serializeClientPropertyValuesForRequest<
+          typeof partialSchemas,
+          keyof typeof partialSchemas
+        >(finalSchemas, "Article", {
+          title: "bar",
+          created: new Date("2021-01-01T01:00:00.000Z"),
+          views: 500,
+        }),
+      ).toThrow(new HatchifyCoerceError("as multiples of day"))
+
+      expect(() =>
+        serializeClientPropertyValuesForRequest<
+          typeof partialSchemas,
+          keyof typeof partialSchemas
+        >(finalSchemas, "Article", {
+          title: "bar",
+          created: new Date("2021-01-01T00:00:00.000Z"),
+          views: 1001,
+        }),
+      ).toThrow(new HatchifyCoerceError("less than or equal to 1000"))
     })
   })
 })

@@ -2,27 +2,26 @@ import "@testing-library/jest-dom"
 import { createElement } from "react"
 import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
+import { assembler, string } from "@hatchifyjs/core"
 import { MuiList } from "./MuiList"
 
 describe("components/MuiList", () => {
-  const schemas = {
+  const partialSchemas = {
     User: {
       name: "User",
       displayAttribute: "firstName",
       attributes: {
-        firstName: "string",
-        lastName: "string",
+        firstName: string(),
+        lastName: string(),
       },
     },
   }
 
+  const finalSchemas = assembler(partialSchemas)
+
   const data = [
-    {
-      id: "uuid1",
-      firstName: "Joe",
-      lastName: "Smith",
-    },
-    { id: "uuid2", firstName: "John", lastName: "Snow" },
+    { id: "uuid1", firstName: "John", lastName: "Smith" },
+    { id: "uuid2", firstName: "Jane", lastName: "Doe" },
   ]
 
   const meta = {
@@ -41,7 +40,7 @@ describe("components/MuiList", () => {
 
   it("works", async () => {
     render(
-      <MuiList
+      <MuiList<typeof partialSchemas, "User">
         data={data}
         meta={meta}
         sort={{
@@ -53,7 +52,8 @@ describe("components/MuiList", () => {
         setPage={vi.fn()}
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="User"
         fields={{}}
         include={[]}
@@ -64,17 +64,17 @@ describe("components/MuiList", () => {
 
     expect(await screen.findByText("FirstName")).toBeInTheDocument()
     expect(await screen.findByText("LastName")).toBeInTheDocument()
-    expect(await screen.findByText("Joe")).toBeInTheDocument()
-    expect(await screen.findByText("Smith")).toBeInTheDocument()
     expect(await screen.findByText("John")).toBeInTheDocument()
-    expect(await screen.findByText("Snow")).toBeInTheDocument()
+    expect(await screen.findByText("Smith")).toBeInTheDocument()
+    expect(await screen.findByText("Jane")).toBeInTheDocument()
+    expect(await screen.findByText("Doe")).toBeInTheDocument()
   })
 
   it("fires sort callback", async () => {
     const setSort = vi.fn()
 
     render(
-      <MuiList
+      <MuiList<typeof partialSchemas, "User">
         data={data}
         meta={meta}
         sort={{
@@ -86,7 +86,8 @@ describe("components/MuiList", () => {
         setPage={vi.fn()}
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="User"
         fields={{}}
         include={[]}
@@ -106,7 +107,7 @@ describe("components/MuiList", () => {
 
     const renderWithSelected = (selected: { all: boolean; ids: string[] }) =>
       render(
-        <MuiList
+        <MuiList<typeof partialSchemas, "User">
           data={data}
           meta={meta}
           sort={{
@@ -118,7 +119,8 @@ describe("components/MuiList", () => {
           setPage={vi.fn()}
           selected={selected}
           setSelected={setSelected}
-          allSchemas={schemas}
+          finalSchemas={finalSchemas}
+          partialSchemas={partialSchemas}
           schemaName="User"
           fields={{}}
           include={[]}
@@ -188,7 +190,7 @@ describe("components/MuiList", () => {
     const Empty = () => <div>so empty inside</div>
 
     render(
-      <MuiList
+      <MuiList<typeof partialSchemas, "User">
         data={[]}
         meta={meta}
         sort={{
@@ -200,7 +202,8 @@ describe("components/MuiList", () => {
         setPage={vi.fn()}
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
-        allSchemas={schemas}
+        finalSchemas={finalSchemas}
+        partialSchemas={partialSchemas}
         schemaName="User"
         fields={{}}
         include={[]}

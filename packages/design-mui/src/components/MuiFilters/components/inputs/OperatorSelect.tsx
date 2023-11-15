@@ -1,7 +1,11 @@
 import { InputLabel, MenuItem, Select } from "@mui/material"
+import type {
+  OptionsByFilterableControls,
+  FilterableControls,
+} from "../../constants"
 
 const OperatorSelect: React.FC<{
-  options: Array<{ operator: string; text: string }>
+  options: OptionsByFilterableControls[FilterableControls]
   labelId: string
   value: string
   onChange: (value: string) => void
@@ -10,6 +14,7 @@ const OperatorSelect: React.FC<{
     <>
       <InputLabel id={labelId}>Operator</InputLabel>
       <Select
+        data-testid="operator-select"
         fullWidth
         variant="standard"
         labelId={labelId}

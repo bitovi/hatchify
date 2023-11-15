@@ -1,57 +1,46 @@
-import type { Schema, Source } from "../types"
+import { assembler, belongsTo, hasMany, hasOne, string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
+import type { RestClient } from "../types"
 
-export const ArticleSchema: Schema = {
+export const ArticleSchema = {
   name: "Article",
-  displayAttribute: "title",
   attributes: {
-    title: { type: "string" },
-    body: { type: "string" },
+    title: string(),
+    body: string(),
   },
   relationships: {
-    author: {
-      type: "one",
-      schema: "Person",
-    },
-    tags: {
-      type: "many",
-      schema: "Tag",
-    },
+    author: hasOne("Person"),
+    tags: hasMany("Tag"),
   },
-}
+} satisfies PartialSchema
 
-export const PersonSchema: Schema = {
+export const PersonSchema = {
   name: "Person",
-  displayAttribute: "name",
   attributes: {
-    name: { type: "string" },
+    name: string(),
   },
   relationships: {
-    authored: {
-      type: "many",
-      schema: "Article",
-    },
+    authored: belongsTo("Article"),
   },
-}
+} satisfies PartialSchema
 
-export const TagSchema: Schema = {
+export const TagSchema: PartialSchema = {
   name: "Tag",
-  displayAttribute: "title",
   attributes: {
-    title: { type: "string" },
+    title: string(),
   },
   relationships: {
-    articles: {
-      type: "many",
-      schema: "Article",
-    },
+    articles: hasMany("Article"),
   },
-}
+} satisfies PartialSchema
 
-export const schemas = {
+export const partialSchemas = {
   Article: ArticleSchema,
   Person: PersonSchema,
   Tag: TagSchema,
 }
+
+export const schemas = assembler(partialSchemas)
 
 export const schemaMap = {
   Article: { type: "article", endpoint: "articles" },
@@ -108,7 +97,7 @@ export const testMeta = {
   unpaginatedCount: 2,
 }
 
-export const fakeDataSource: Source = {
+export const fakeDataSource: RestClient<any, any> = {
   version: 0,
   completeSchemaMap: {},
   findAll: () => Promise.resolve([testData, testMeta]),

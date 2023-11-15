@@ -1,25 +1,26 @@
 import { describe, it, expect } from "vitest"
-import type { Source } from "@hatchifyjs/rest-client"
+import type { RestClient } from "@hatchifyjs/rest-client"
 import { hatchifyReact } from "./hatchifyReact"
+import { integer, string } from "@hatchifyjs/core"
 
 describe("react-ui/hatchifyReact", () => {
   it("should return objects for each schema", () => {
-    const fakeDataSource: Source = {
+    const fakeDataSource: RestClient<any, any> = {
       completeSchemaMap: {
         Article: {
           name: "Article",
           type: "Article",
           attributes: {
-            title: "string",
-            body: "string",
+            title: string(),
+            body: string(),
           },
         },
         Person: {
           name: "Person",
           type: "Person",
           attributes: {
-            name: "string",
-            age: "integer",
+            name: string(),
+            age: integer(),
           },
         },
       },
@@ -80,15 +81,15 @@ describe("react-ui/hatchifyReact", () => {
   })
 
   it("should accept schemas with namespaces", () => {
-    const fakeDataSource: Source = {
+    const fakeDataSource: RestClient<any, any> = {
       completeSchemaMap: {
         Feature_Article: {
           name: "Article",
           type: "Article",
           namespace: "Feature",
           attributes: {
-            title: "string",
-            body: "string",
+            title: string(),
+            body: string(),
           },
         },
       },

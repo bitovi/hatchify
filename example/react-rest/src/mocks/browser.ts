@@ -11,20 +11,32 @@ const todos = [
   {
     id: "todo-1",
     type: "Todo",
-    attributes: { name: "Workout" },
-    relationships: { user: { data: { id: "user-1", type: "User" } } },
+    attributes: {
+      name: "Workout",
+      importance: 3,
+    },
+    // attributes: { name: "Workout" },
+    // relationships: { user: { data: { id: "user-1", type: "User" } } },
   },
   {
     id: "todo-2",
     type: "Todo",
-    attributes: { name: "Shopping" },
-    relationships: { user: { data: { id: "user-2", type: "User" } } },
+    attributes: {
+      name: "Shopping",
+      importance: 5,
+    },
+    // attributes: { name: "Shopping" },
+    // relationships: { user: { data: { id: "user-2", type: "User" } } },
   },
   {
     id: "todo-3",
     type: "Todo",
-    attributes: { name: "Cooking" },
-    relationships: { user: { data: { id: "user-3", type: "User" } } },
+    attributes: {
+      name: "Cooking",
+      importance: 1,
+    },
+    // attributes: { name: "Cooking" },
+    // relationships: { user: { data: { id: "user-3", type: "User" } } },
   },
 ]
 

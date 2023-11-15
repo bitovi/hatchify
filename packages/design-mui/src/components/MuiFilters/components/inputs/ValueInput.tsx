@@ -1,16 +1,18 @@
 import { InputLabel } from "@mui/material"
+import type { FilterableControls, Operators } from "../../constants"
 import DateInput from "./DateInput"
 import EnumInput from "./EnumInput"
 import StringInput from "./StringInput"
+import NumberInput from "./NumberInput"
 
 const ValueInput: React.FC<{
   labelId: string
-  fieldType: string
+  controlType: FilterableControls
+  operator: Operators
   value: any
-  operator: string
   onChange: (value: string | string[]) => void
   options?: string[]
-}> = ({ labelId, fieldType, value, operator, onChange, options = [] }) => {
+}> = ({ labelId, controlType, value, operator, onChange, options = [] }) => {
   if (operator === "empty" || operator === "nempty") {
     return null
   }
@@ -18,7 +20,7 @@ const ValueInput: React.FC<{
   return (
     <>
       <InputLabel id={labelId}>Value</InputLabel>
-      {fieldType === "string" && (
+      {controlType === "String" && (
         <StringInput
           labelId={labelId}
           operator={operator}
@@ -26,7 +28,7 @@ const ValueInput: React.FC<{
           onChange={onChange}
         />
       )}
-      {fieldType === "enum" && (
+      {controlType === "enum" && (
         <EnumInput
           labelId={labelId}
           operator={operator}
@@ -35,8 +37,21 @@ const ValueInput: React.FC<{
           options={options}
         />
       )}
-      {fieldType === "date" && (
-        <DateInput labelId={labelId} value={value} onChange={onChange} />
+      {(controlType === "Datetime" || controlType === "Dateonly") && (
+        <DateInput
+          labelId={labelId}
+          value={value}
+          onChange={onChange}
+          controlType={controlType}
+        />
+      )}
+      {controlType === "Number" && (
+        <NumberInput
+          labelId={labelId}
+          operator={operator}
+          value={value}
+          onChange={onChange}
+        />
       )}
     </>
   )

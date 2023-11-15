@@ -10,11 +10,11 @@ import {
   text,
 } from "@hatchifyjs/core"
 
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   // namespace: "Admin",
   attributes: {
-    name: string(),
+    title: string(),
     dueDate: datetime(),
     importance: integer(),
     status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
@@ -22,11 +22,11 @@ export const Todo: PartialSchema = {
     notes: text(),
   },
   relationships: {
-    user: belongsTo(),
+    user: belongsTo("User"),
   },
-}
+} satisfies PartialSchema
 
-export const User: PartialSchema = {
+export const User = {
   name: "User",
   // namespace: "Admin",
   attributes: {
@@ -35,4 +35,4 @@ export const User: PartialSchema = {
   relationships: {
     todos: hasMany(),
   },
-}
+} satisfies PartialSchema

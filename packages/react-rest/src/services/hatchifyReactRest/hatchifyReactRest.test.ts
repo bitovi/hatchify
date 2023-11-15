@@ -1,28 +1,30 @@
 import { describe, it, expect } from "vitest"
-import type { Source } from "@hatchifyjs/rest-client"
+import type { RestClient } from "@hatchifyjs/rest-client"
+import { integer, string } from "@hatchifyjs/core"
 import { hatchifyReactRest } from "./hatchifyReactRest"
 
 describe("react-rest/services/hatchifyReactRest", () => {
   it("should return functions for each schema", () => {
-    const fakeDataSource: Source = {
-      completeSchemaMap: {
-        Article: {
-          name: "Article",
-          type: "Article",
-          attributes: {
-            title: "string",
-            body: "string",
-          },
-        },
-        Person: {
-          name: "Person",
-          type: "Person",
-          attributes: {
-            name: "string",
-            age: "integer",
-          },
+    const schemas = {
+      Article: {
+        name: "Article",
+        type: "Article",
+        attributes: {
+          title: string(),
+          body: string(),
         },
       },
+      Person: {
+        name: "Person",
+        type: "Person",
+        attributes: {
+          name: string(),
+          age: integer(),
+        },
+      },
+    }
+    const fakeDataSource: RestClient<typeof schemas, keyof typeof schemas> = {
+      completeSchemaMap: schemas,
       version: 0,
       findAll: () => Promise.resolve([[], {}]),
       findOne: () => Promise.resolve([]),
@@ -62,15 +64,15 @@ describe("react-rest/services/hatchifyReactRest", () => {
   })
 
   it("should accept schemas with namespaces", () => {
-    const fakeDataSource: Source = {
+    const fakeDataSource: RestClient<any, any> = {
       completeSchemaMap: {
         Feature_Article: {
           name: "Article",
           type: "Feature_Article",
           namespace: "Feature",
           attributes: {
-            title: "string",
-            body: "string",
+            title: string(),
+            body: string(),
           },
         },
       },

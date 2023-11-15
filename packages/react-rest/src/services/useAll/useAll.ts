@@ -1,23 +1,29 @@
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { findAll, getMeta, subscribeToAll } from "@hatchifyjs/rest-client"
-
 import type {
+  FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
   Filters,
   Meta,
   MetaError,
   QueryList,
-  Record,
+  RecordType,
   RequestMetaData,
-  Schemas,
-  Source,
+  RestClient,
 } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
 
 /**
  * Prevents useEffect loops when the user provides `{}` directly to the `useAll` hook.
  */
 function useMemoByStringify(filterOrQuery: Filters): Filters
-function useMemoByStringify(filterOrQuery: QueryList): QueryList
-function useMemoByStringify(filterOrQuery: Filters | QueryList) {
+function useMemoByStringify<TSchema extends PartialSchema>(
+  filterOrQuery: QueryList<TSchema>,
+): QueryList<TSchema>
+function useMemoByStringify<TSchema extends PartialSchema>(
+  filterOrQuery: Filters | QueryList<TSchema>,
+) {
   const stringifiedQuery = JSON.stringify(filterOrQuery)
 
   // todo: query (nested objects) are causing infinite re-renders, need a better solution
@@ -30,23 +36,31 @@ function useMemoByStringify(filterOrQuery: Filters | QueryList) {
  * Fetches a list of records using the rest-client findAll function,
  * subscribes to the store for updates to the list, returns the list.
  */
-export const useAll = (
-  dataSource: Source,
-  allSchemas: Schemas,
-  schemaName: string,
-  query: QueryList,
+export const useAll = <
+  const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
+  dataSource: RestClient<TSchemas, TSchemaName>,
+  allSchemas: FinalSchemas,
+  schemaName: TSchemaName,
+  query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
   baseFilter?: Filters,
-): [Record[], Meta] => {
+): [
+  Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,
+  Meta,
+] => {
   const memoizedQuery = useMemoByStringify(query)
   const memoizedBaseFilter = useMemoByStringify(baseFilter)
-  const [data, setData] = useState<Record[]>([])
+  const [data, setData] = useState<
+    Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>
+  >([])
   const [requestMeta, setRequestMeta] = useState<RequestMetaData>()
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
   const fetchAll = useCallback(() => {
     setLoading(true)
-    findAll(
+    findAll<TSchemas, TSchemaName>(
       dataSource,
       allSchemas,
       schemaName,
@@ -72,7 +86,11 @@ export const useAll = (
   }, [fetchAll])
 
   useEffect(() => {
-    return subscribeToAll(schemaName, query, fetchAll)
+    return subscribeToAll<TSchemas, GetSchemaNames<TSchemas>>(
+      schemaName,
+      query,
+      fetchAll,
+    )
   }, [schemaName, fetchAll])
 
   const meta = useMemo(

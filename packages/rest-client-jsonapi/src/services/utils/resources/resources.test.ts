@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest"
+import { assembler, belongsTo, hasMany, string } from "@hatchifyjs/core"
+import type { SchemalessResourceRelationshipObject } from "@hatchifyjs/rest-client"
 import type {
   JsonApiResource,
   JsonApiResourceRelationship,
@@ -9,25 +11,32 @@ import {
   getTypeToSchema,
   jsonApiResourceToHatchifyResource,
 } from "./resources"
-import type {
-  Schema,
-  SchemalessResourceRelationshipObject,
-} from "@hatchifyjs/rest-client"
 
 describe("rest-client-jsonapi/services/utils/resources", () => {
   const typeToSchema = { article: "Article", person: "Person", tag: "Tag" }
   const schemaMap = {
     Article: {
-      ...({ name: "Article" } as Schema),
+      name: "Article",
+      attributes: {
+        title: string(),
+      },
       type: "article",
       endpoint: "articles",
     },
     Person: {
-      ...({ name: "Person" } as Schema),
+      name: "Person",
+      attributes: {
+        name: string(),
+      },
       type: "person",
       endpoint: "people",
     },
-    Tag: { ...({ name: "Tag" } as Schema), type: "tag", endpoint: "tags" },
+    Tag: {
+      name: "Tag",
+      attributes: { label: string() },
+      type: "tag",
+      endpoint: "tags",
+    },
   }
 
   describe("getTypeToSchema", () => {
@@ -184,22 +193,32 @@ describe("convertToJsonApiRelationships", () => {
         displayAttribute: "name",
         type: "Article",
         attributes: {
-          title: "string",
-          body: "string",
+          title: string(),
+          body: string(),
         },
         relationships: {
-          person: {
-            type: "one",
-            schema: "Person",
-          },
-          tag: {
-            type: "many",
-            schema: "Tag",
-          },
+          person: belongsTo(),
+          tag: hasMany(),
         },
       },
-      Person: { name: "Person", type: "Person", attributes: {} },
-      Tag: { name: "Tag", type: "Tag", attributes: {} },
+      Person: {
+        name: "Person",
+        type: "Person",
+        attributes: {
+          name: string(),
+        },
+        relationships: {
+          article: hasMany(),
+        },
+      },
+      Tag: {
+        name: "Tag",
+        type: "Tag",
+        attributes: {
+          label: string(),
+        },
+        relationships: { article: hasMany() },
+      },
     }
     const sourceConfig = { baseUrl: "http://localhost:3000/api", schemaMap }
 
@@ -221,7 +240,7 @@ describe("convertToJsonApiRelationships", () => {
     expect(
       convertToJsonApiRelationships(
         sourceConfig,
-        schemaMap.Article as Schema,
+        assembler(schemaMap).Article,
         relationships,
       ),
     ).toEqual(expected)
@@ -234,18 +253,31 @@ describe("convertToJsonApiRelationships", () => {
         displayAttribute: "name",
         type: "Article",
         attributes: {
-          title: "string",
-          body: "string",
+          title: string(),
+          body: string(),
         },
         relationships: {
-          person: {
-            type: "one",
-            schema: "Person",
-          },
+          person: belongsTo(),
         },
       },
-      Person: { name: "Person", type: "person_custom", attributes: {} },
-      Tag: { name: "Tag", type: "Tag", attributes: {} },
+      Person: {
+        name: "Person",
+        type: "person_custom",
+        attributes: {
+          name: string(),
+        },
+        relationships: {
+          article: hasMany(),
+        },
+      },
+      Tag: {
+        name: "Tag",
+        type: "Tag",
+        attributes: {
+          label: string(),
+        },
+        relationships: { article: hasMany() },
+      },
     }
     const sourceConfig = {
       baseUrl: "http://localhost:3000/api",
@@ -263,7 +295,7 @@ describe("convertToJsonApiRelationships", () => {
     expect(
       convertToJsonApiRelationships(
         sourceConfig,
-        schemaMap.Article as Schema,
+        assembler(schemaMap).Article,
         relationships,
       ),
     ).toEqual(expected)

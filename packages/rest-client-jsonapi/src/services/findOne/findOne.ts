@@ -2,7 +2,14 @@ import type {
   SourceConfig,
   QueryOne,
   Resource,
-  Schemas,
+  FinalSchemas,
+  GetSchemaNames,
+  GetSchemaFromName,
+} from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
+import {
+  schemaNameIsString,
+  SchemaNameNotStringError,
 } from "@hatchifyjs/rest-client"
 import {
   convertToHatchifyResources,
@@ -15,12 +22,19 @@ import type { JsonApiResource } from "../jsonapi"
  * Fetches a single resource, adds the __schema to the request response,
  * and returns it.
  */
-export async function findOne(
+export async function findOne<
+  const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   config: SourceConfig,
-  allSchemas: Schemas,
-  schemaName: string,
-  query: QueryOne,
+  allSchemas: FinalSchemas,
+  schemaName: TSchemaName,
+  query: QueryOne<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): Promise<Resource[]> {
+  if (!schemaNameIsString(schemaName)) {
+    throw new SchemaNameNotStringError(schemaName)
+  }
+
   const queryParams = getQueryParams(config.schemaMap, allSchemas, schemaName, {
     fields: query.fields,
     include: query.include,

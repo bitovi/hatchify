@@ -16,6 +16,7 @@
     "start:backend": "node dist/backend/backend/index.js"
   },
   "dependencies": {
+    "@hatchifyjs/core": "file:../../packages/core",
     "@hatchifyjs/koa": "file:../../packages/koa",
     "@hatchifyjs/react-rest": "file:../../packages/react-rest",
     "@hatchifyjs/rest-client-jsonapi": "file:../../packages/rest-client-jsonapi",
