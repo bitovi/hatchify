@@ -27,9 +27,6 @@ export interface MiddlewareFunctionsExpress {
   create: ExpressMiddleware
   update: ExpressMiddleware
   destroy: ExpressMiddleware
-  frontend: ExpressMiddleware
-  schema: ExpressMiddleware
-  crud: ExpressMiddleware
 
   /**
    * The `middleware.allModels.all` Middleware provides the primary hooks

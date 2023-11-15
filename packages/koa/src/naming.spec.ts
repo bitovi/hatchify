@@ -115,7 +115,7 @@ describe("Naming rules", () => {
         Tenancy_DocumentLibrary: {
           name: "DocumentLibrary",
           namespace: "Tenancy",
-          pluralName: "Tenancy_DocumentLibrary",
+          pluralName: "DocumentLibrary",
           attributes: {
             name: string(),
           },
