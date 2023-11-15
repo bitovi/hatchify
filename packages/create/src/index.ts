@@ -328,15 +328,15 @@ async function init() {
   ]
 
   runCommand(
-    `npm install --package-lock-only --no-package-lock ${dependencies.join(
-      " ",
-    )}`,
+    `npm install --package-lock-only --no-package-lock ${dependencies
+      .map((name) => `${name}@latest`)
+      .join(" ")}`,
     root,
   )
   runCommand(
-    `npm install --package-lock-only --no-package-lock ${devDependencies.join(
-      " ",
-    )} --save-dev`,
+    `npm install --package-lock-only --no-package-lock ${devDependencies
+      .map((name) => `${name}@latest`)
+      .join(" ")} --save-dev`,
     root,
   )
   runCommand("npm install", root)
