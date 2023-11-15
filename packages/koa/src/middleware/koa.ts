@@ -21,9 +21,6 @@ export interface MiddlewareFunctionsKoa {
   create: KoaMiddleware
   update: KoaMiddleware
   destroy: KoaMiddleware
-  frontend: KoaMiddleware
-  schema: KoaMiddleware
-  crud: KoaMiddleware
 
   /**
    * The `middleware.allModels.all` Middleware provides the primary hooks
