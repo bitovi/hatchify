@@ -1,4 +1,9 @@
-import { assembler, pascalCaseToCamelCase, singularize } from "@hatchifyjs/core"
+import {
+  assembler,
+  pascalCaseToCamelCase,
+  pluralize,
+  singularize,
+} from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type JSONAPISerializer from "json-api-serializer"
 
@@ -11,7 +16,6 @@ import type {
   SequelizeWithHatchify,
 } from "../types"
 import { getFullModelName } from "../utils/getFullModelName"
-import { pluralize } from "../utils/pluralize"
 
 export function convertHatchifyModels(
   sequelize: SequelizeWithHatchify,
@@ -113,6 +117,7 @@ export function convertHatchifyModels(
 
   return {
     associationsLookup,
+    finalSchemas,
     models: sequelize.models as SequelizeModelsCollection,
   }
 }

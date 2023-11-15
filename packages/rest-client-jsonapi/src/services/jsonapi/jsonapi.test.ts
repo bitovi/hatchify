@@ -36,13 +36,13 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
           attributes: {
             name: string(),
           },
-          pluralName: "articles",
+          pluralName: "Articles",
         },
       })
 
       expect(dataSource.completeSchemaMap.Article.name).toEqual("Article")
       expect(dataSource.completeSchemaMap.Article.pluralName).toEqual(
-        "articles",
+        "Articles",
       )
       // @ts-expect-error
       expect(dataSource.completeSchemaMap.Article.type).toEqual("Article")
@@ -124,7 +124,7 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
           attributes: {
             name: string(),
           },
-          pluralName: "sales-people",
+          pluralName: "SalesPeople",
         },
       })
 
@@ -132,7 +132,7 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
         "SalesPerson",
       )
       expect(dataSource.completeSchemaMap.SalesPerson.pluralName).toEqual(
-        "sales-people",
+        "SalesPeople",
       )
       // @ts-expect-error
       expect(dataSource.completeSchemaMap.SalesPerson.type).toEqual(

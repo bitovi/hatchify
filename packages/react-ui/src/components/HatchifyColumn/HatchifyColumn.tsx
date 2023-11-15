@@ -65,6 +65,7 @@ export type ReplaceColumnProps<
   label?: string
   field:
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
+    | keyof GetSchemaFromName<TSchemas, TSchemaName>["relationships"]
     | "id"
     | ""
 } & {
@@ -83,6 +84,7 @@ export type OverwriteColumnProps<
   label?: string
   field:
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
+    | keyof GetSchemaFromName<TSchemas, TSchemaName>["relationships"]
     | "id"
     | ""
 } & {

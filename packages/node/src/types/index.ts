@@ -66,6 +66,7 @@ export type SequelizeModelsCollection = {
 
 export interface ICreateHatchifyModel {
   associationsLookup: Record<string, Record<string, IAssociation> | undefined>
+  finalSchemas: Record<string, FinalSchema>
   models: SequelizeModelsCollection
 }
 
