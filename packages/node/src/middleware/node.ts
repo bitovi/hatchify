@@ -25,15 +25,6 @@ export function getMiddlewareFunctions(
     create: createMiddleware(hatchify, modelName),
     destroy: destroyMiddleware(hatchify, modelName),
     update: updateMiddleware(hatchify, modelName),
-    frontend: async ({ errorCallback }) => {
-      errorCallback(500, "Not Implemented")
-    },
-    schema: async ({ errorCallback }) => {
-      errorCallback(500, "Not Implemented")
-    },
-    crud: async ({ errorCallback }) => {
-      errorCallback(500, "Not Implemented")
-    },
     all: handleAllMiddleware(hatchify),
   }
 }
@@ -67,11 +58,11 @@ export function findOneMiddleware(hatchify: Hatchify, modelName: string) {
 
     // If this is a wildcard or allModel situation, figure out the model from the route
     if (modelName === "*") {
-      if (!params.model) {
+      if (!params.modelName) {
         throw errorCallback(400, "BAD_REQUEST")
       }
 
-      modelName = params.model
+      modelName = params.modelName
     }
 
     return {
@@ -118,7 +109,7 @@ export function createMiddleware(hatchify: Hatchify, modelName: string) {
         body: await hatchify.everything[modelName].create(body, querystring),
       }
     } catch (ex) {
-      console.log("error", ex)
+      console.error("error", ex)
       return { body: {} }
     }
   }
@@ -135,14 +126,10 @@ export function updateMiddleware(hatchify: Hatchify, modelName: string) {
       modelName = resolveWildcard(hatchify, path)
     }
 
-    const params = hatchify.getHatchifyURLParamsForRoute(path)
+    const { id } = hatchify.getHatchifyURLParamsForRoute(path)
 
     return {
-      body: await hatchify.everything[modelName].update(
-        body,
-        querystring,
-        params.id,
-      ),
+      body: await hatchify.everything[modelName].update(body, querystring, id),
     }
   }
 }
@@ -158,17 +145,14 @@ export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
       modelName = resolveWildcard(hatchify, path)
     }
 
-    const params = hatchify.getHatchifyURLParamsForRoute(path)
+    const { id } = hatchify.getHatchifyURLParamsForRoute(path)
 
-    if (!params.id) {
+    if (!id) {
       throw errorCallback(400, "BAD_REQUEST")
     }
 
     return {
-      body: await hatchify.everything[modelName].destroy(
-        querystring,
-        params.id,
-      ),
+      body: await hatchify.everything[modelName].destroy(querystring, id),
     }
   }
 }
@@ -186,24 +170,25 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         return await next()
       }
 
-      const params = hatchify.getHatchifyURLParamsForRoute(path)
-      if (!params.model) {
+      const { modelName, id } = hatchify.getHatchifyURLParamsForRoute(path)
+
+      if (!modelName) {
         return await next()
       }
 
       switch (method) {
         case "GET": {
-          if (params.id) {
+          if (id) {
             return {
-              body: await hatchify.everything[params.model].findOne(
+              body: await hatchify.everything[modelName].findOne(
                 querystring,
-                params.id,
+                id,
               ),
             }
           }
 
           return {
-            body: await hatchify.everything[params.model].findAndCountAll(
+            body: await hatchify.everything[modelName].findAndCountAll(
               querystring,
             ),
           }
@@ -211,7 +196,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
 
         case "POST": {
           return {
-            body: await hatchify.everything[params.model].create(
+            body: await hatchify.everything[modelName].create(
               body,
               querystring,
             ),
@@ -219,7 +204,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         }
 
         case "PATCH": {
-          if (!params.id) {
+          if (!id) {
             throw [
               new ValidationError({
                 status: statusCodes.UNPROCESSABLE_ENTITY,
@@ -230,16 +215,16 @@ export function handleAllMiddleware(hatchify: Hatchify) {
           }
 
           return {
-            body: await hatchify.everything[params.model].update(
+            body: await hatchify.everything[modelName].update(
               body,
               querystring,
-              params.id,
+              id,
             ),
           }
         }
 
         case "DELETE": {
-          if (!params.id) {
+          if (!id) {
             throw [
               new ValidationError({
                 status: statusCodes.UNPROCESSABLE_ENTITY,
@@ -250,10 +235,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
           }
 
           return {
-            body: await hatchify.everything[params.model].destroy(
-              querystring,
-              params.id,
-            ),
+            body: await hatchify.everything[modelName].destroy(querystring, id),
           }
         }
 
@@ -273,8 +255,8 @@ export function handleAllMiddleware(hatchify: Hatchify) {
 }
 
 function resolveWildcard(hatchify: Hatchify, path: string): string {
-  const params = hatchify.getHatchifyURLParamsForRoute(path)
-  if (!params.model) {
+  const { modelName } = hatchify.getHatchifyURLParamsForRoute(path)
+  if (!modelName) {
     throw [
       new ValidationError({
         status: statusCodes.UNPROCESSABLE_ENTITY,
@@ -284,7 +266,7 @@ function resolveWildcard(hatchify: Hatchify, path: string): string {
     ]
   }
 
-  if (!hatchify.model[params.model]) {
+  if (!hatchify.model[modelName]) {
     throw [
       new ValidationError({
         status: statusCodes.UNPROCESSABLE_ENTITY,
@@ -294,5 +276,5 @@ function resolveWildcard(hatchify: Hatchify, path: string): string {
     ]
   }
 
-  return params.model
+  return modelName
 }

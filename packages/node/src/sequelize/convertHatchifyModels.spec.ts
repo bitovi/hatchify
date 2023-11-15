@@ -21,6 +21,7 @@ describe("convertHatchifyModels", () => {
 
     expect(models).toEqual({
       associationsLookup: { User: {} },
+      finalSchemas: expect.any(Object),
       models: {
         User: expect.any(Function),
       },

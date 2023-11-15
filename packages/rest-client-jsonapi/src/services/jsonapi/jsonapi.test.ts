@@ -36,7 +36,7 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
           attributes: {
             name: string(),
           },
-          pluralName: "articles",
+          pluralName: "Articles",
         },
       })
 
@@ -124,7 +124,7 @@ describe("rest-client-jsonapi/services/jsonapi", () => {
           attributes: {
             name: string(),
           },
-          pluralName: "sales-people",
+          pluralName: "SalesPeople",
         },
       })
 

@@ -43,7 +43,7 @@ describe("JSON:API Tests", () => {
 
   it("should handle JSON:API create body", async () => {
     //JK will separate cases into different it() tests
-    const r1 = await fetch("/api/testschema_models", {
+    const r1 = await fetch("/api/test-schema/models", {
       method: "post",
       body: serialize({
         firstName: "firstName",
@@ -56,7 +56,7 @@ describe("JSON:API Tests", () => {
     expect(r1.body.data).toHaveProperty("id")
     expect(r1.body.data.id).toBeTruthy()
 
-    const r2 = await fetch("/api/testschema/models", {
+    const r2 = await fetch("/api/test-schema/models", {
       method: "post",
       body: serialize({
         firstName: "firstName2",
@@ -79,7 +79,7 @@ describe("JSON:API Tests", () => {
   })
 
   it("should be able to omit namespace when referring to fields that belongs to the same namespace", async () => {
-    const r1 = await fetch("/api/testschema_models", {
+    const r1 = await fetch("/api/test-schema/models", {
       method: "post",
       body: serialize({
         firstName: "firstName",

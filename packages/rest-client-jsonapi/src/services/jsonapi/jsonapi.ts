@@ -1,3 +1,4 @@
+import { getEndpoint } from "@hatchifyjs/core"
 import type {
   RestClient,
   RequiredSchemaMap,
@@ -5,7 +6,6 @@ import type {
   GetSchemaNames,
 } from "@hatchifyjs/rest-client"
 import { createOne, deleteOne, findAll, findOne, updateOne } from ".."
-import { getEndpoint } from "../utils/schema"
 
 export type Relationship = {
   id: string | number
@@ -51,12 +51,7 @@ export function jsonapi<
         name: value.name,
         attributes: { ...value.attributes },
         type: value.type || key,
-        endpoint: getEndpoint(
-          value.endpoint,
-          value.namespace,
-          value.pluralName,
-          value.name,
-        ),
+        endpoint: value.endpoint ?? getEndpoint(value),
       }
       return acc
     },

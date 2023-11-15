@@ -1,8 +1,10 @@
+import { getEndpoint, pascalCaseToKebabCase, pluralize } from "@hatchifyjs/core"
 import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import JSONAPISerializer from "json-api-serializer"
 import { snakeCase } from "lodash"
 import { match } from "path-to-regexp"
+import type { MatchFunction } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
 import type { Database } from "sqlite3"
 
@@ -28,7 +30,6 @@ import type {
   SequelizeWithHatchify,
   Virtuals,
 } from "./types"
-import { pluralize } from "./utils/pluralize"
 
 /**
  * Hatchify can be imported from the `@hatchifyjs/koa` package
@@ -46,9 +47,9 @@ export class Hatchify {
   private _sequelizeModels: SequelizeModelsCollection
   private _sequelize: SequelizeWithHatchify
   private _serializer = new JSONAPISerializer()
-  private _allowedMethods = ["GET", "POST", "PATCH", "DELETE"]
-  private _pluralToSingularModelNames: { [plural: string]: string }
-  private _prefix: string
+  private _prefix?: string
+  private _schemas: Record<string, FinalSchema>
+  private _pathMatch: MatchFunction<{ "0": string; id: Identifier }>
 
   virtuals: Virtuals = {}
 
@@ -67,6 +68,8 @@ export class Hatchify {
     schemas: Record<string, PartialSchema>,
     options: HatchifyOptions = {},
   ) {
+    this._prefix = options.prefix
+
     // Prepare the ORM instance and keep references to the different Models
     this._sequelize = createSequelizeInstance(options.database)
 
@@ -85,28 +88,44 @@ export class Hatchify {
     }
     this._serializer = new JSONAPISerializer()
 
-    const { associationsLookup, models } = convertHatchifyModels(
+    const { associationsLookup, finalSchemas, models } = convertHatchifyModels(
       this._sequelize,
       this._serializer,
       schemas,
     )
 
     this.associationsLookup = associationsLookup
+    this._schemas = finalSchemas
     this._sequelizeModels = models
 
-    this._pluralToSingularModelNames = Object.keys(
-      this._sequelizeModels,
-    ).reduce((acc, fullModelName) => {
-      const key = schemas[fullModelName]?.pluralName ?? pluralize(fullModelName)
-      return { ...acc, [key.toLowerCase()]: fullModelName }
-    }, {})
-
-    // Store the route prefix if the user set one
-    this._prefix = options.prefix ?? ""
+    this._pathMatch = match(
+      `${options.prefix ?? ""}/(${Object.values(finalSchemas)
+        .map((schema) => getEndpoint(schema))
+        .join("|")})/:id?`,
+      {
+        decode: decodeURIComponent,
+        end: false,
+      },
+    )
 
     if (options.sync) {
       this.createDatabase()
     }
+  }
+
+  printEndpoints(): void {
+    const endpoints = Object.values(this._schemas).reduce((acc, schema) => {
+      const endpoint = `${this._prefix}/${getEndpoint(schema)}`
+      return [
+        ...acc,
+        `GET    ${endpoint}`,
+        `POST   ${endpoint}`,
+        `GET    ${endpoint}/:id`,
+        `PATCH  ${endpoint}/:id`,
+        `DELETE ${endpoint}/:id`,
+      ]
+    }, [] as string[])
+    console.info("Hatchify endpoints:\r\n\r\n" + endpoints.join("\r\n"))
   }
 
   /**
@@ -248,174 +267,49 @@ export class Hatchify {
    */
   isValidHatchifyRoute(method: string, path: string): boolean {
     return (
-      !!this._allowedMethods.includes(method) &&
-      !!this.getHatchifyModelNameForRoute(path)
+      !!["GET", "POST", "PATCH", "DELETE"].includes(method) &&
+      !!this.getHatchifyURLParamsForRoute(path).modelName
     )
   }
 
   /**
    * This function will take a URL and attempt to pull Hatchify
-   * specific parameters from it. Generally these are the `model` and or `id`
+   * specific parameters from it. Generally these are the `modelName` and or `id`
    *
    * Note: While this function is exported from Hatchify it is unusual to need to it externally
    *
    * @param path Usually the incoming request URL
-   * @returns { model?: string; id?: Identifier }
+   * @returns { modelName?: string; id?: Identifier }
    * @internal
    */
   getHatchifyURLParamsForRoute(path: string): {
-    model?: string
+    modelName?: string
     id?: Identifier
   } {
-    const isPathWithModelId = match<{ model: string; id: Identifier }>(
-      this._prefix + "/:model/:id",
-      {
-        decode: decodeURIComponent,
-        strict: false,
-        sensitive: false,
-        end: false,
-      },
-    )
+    const parsedUrl = this._pathMatch(path)
 
-    const isPathWithModelIdResult = isPathWithModelId(path)
-    if (isPathWithModelIdResult) {
-      const endpointName = this.getHatchifyModelNameForEndpointName(
-        isPathWithModelIdResult.params.model,
-      )
-
-      if (endpointName) {
-        isPathWithModelIdResult.params.model = endpointName
-
-        return isPathWithModelIdResult.params
-      }
+    if (!parsedUrl) {
+      return {}
     }
-    // with namespace
-    const isPathWithNameSpaceModelId = match<{
-      namespace: string
-      model: string
-      id: Identifier
-    }>(this._prefix + "/:namespace/:model/:id", {
-      decode: decodeURIComponent,
-      strict: false,
-      sensitive: false,
-      end: false,
+
+    const { params } = parsedUrl
+    const urlParts = params["0"].split("/")
+    const [kebabNamespace, kebabSchemaName] =
+      urlParts.length === 1 ? [undefined, urlParts[0]] : urlParts
+
+    const modelName = Object.keys(this._schemas).find((schemaName) => {
+      const schema = this._schemas[schemaName]
+      return (
+        pascalCaseToKebabCase(schema.namespace) === kebabNamespace &&
+        pascalCaseToKebabCase(schema.pluralName ?? pluralize(schema.name)) ===
+          kebabSchemaName
+      )
     })
 
-    const isPathWithNameSpaceModelIdResult = isPathWithNameSpaceModelId(path)
-    if (isPathWithNameSpaceModelIdResult) {
-      let modelName = isPathWithNameSpaceModelIdResult.params.model
-      if (!modelName.includes("_")) {
-        modelName =
-          isPathWithNameSpaceModelIdResult.params.namespace + "_" + modelName
-      }
-      const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
-
-      if (endpointName) {
-        isPathWithNameSpaceModelIdResult.params.model = endpointName
-
-        return isPathWithNameSpaceModelIdResult.params
-      }
+    return {
+      modelName,
+      id: params.id,
     }
-
-    const isPathWithModel = match<{ model: string }>(this._prefix + "/:model", {
-      decode: decodeURIComponent,
-      strict: false,
-      sensitive: false,
-      end: false,
-    })
-
-    const isPathWithModelResult = isPathWithModel(path)
-    if (isPathWithModelResult) {
-      const endpointName = this.getHatchifyModelNameForEndpointName(
-        isPathWithModelResult.params.model,
-      )
-
-      if (endpointName) {
-        isPathWithModelResult.params.model = endpointName
-
-        return isPathWithModelResult.params
-      }
-    }
-
-    // with namespace/model
-    const isPathWithNamespaceModel = match<{
-      namespace: string
-      model: string
-    }>(this._prefix + "/:namespace/:model", {
-      decode: decodeURIComponent,
-      strict: false,
-      sensitive: false,
-      end: false,
-    })
-
-    const isPathWithNamespaceModelResult = isPathWithNamespaceModel(path)
-    if (isPathWithNamespaceModelResult) {
-      let modelName = isPathWithNamespaceModelResult.params.model
-      if (!modelName.includes("_")) {
-        modelName =
-          isPathWithNamespaceModelResult.params.namespace + "_" + modelName
-      }
-      const endpointName = this.getHatchifyModelNameForEndpointName(modelName)
-
-      if (endpointName) {
-        isPathWithNamespaceModelResult.params.model = endpointName
-
-        return isPathWithNamespaceModelResult.params
-      }
-    }
-
-    return {}
-  }
-
-  /**
-   * This function will take a plural, lowercase endpoint name and attempt to find the
-   * corresponding Hatchify Model name for it.
-   *
-   * @param path the endpoint or include name for a Hatchify model
-   * @returns the endpoint's singular capitalized Model name if found, otherwise false
-   */
-  getHatchifyModelNameForEndpointName(endpointName: string): string | null {
-    // Validate if endpoint name is lowercase
-    if (endpointName === endpointName.toLowerCase()) {
-      // Endpoints follow kebab-case convention; this convert it to flat case to compare
-      const flatCaseEndpointName = endpointName.replace("-", "")
-
-      const singular = this._pluralToSingularModelNames[flatCaseEndpointName]
-
-      // Validate if endpoint name is plural
-      if (singular && endpointName !== singular) {
-        return singular
-      }
-    }
-
-    return null
-  }
-
-  /**
-   * This function will take a URL and attempt to pull a Hatchify model name
-   * parameter from it. If one is found, and valid, it will be returned.
-   *
-   * If there is no model, or it is not a known name, `false` will be returned
-   *
-   * Note: While this function is exported from Hatchify it is unusual to need to it externally
-   *
-   * @param {string} path Usually the incoming request URL
-   * @returns {string | false} Returns a `string` with the model name, if found, otherwise `false`
-   * @internal
-   */
-  getHatchifyModelNameForRoute(path: string): false | string {
-    const result = this.getHatchifyURLParamsForRoute(path)
-
-    if (result.model) {
-      const pathModelName = result.model
-      const matchedModelName = Object.keys(this._sequelizeModels).find(
-        (name) => name.toLowerCase() === pathModelName.toLowerCase(),
-      )
-      if (matchedModelName) {
-        return matchedModelName
-      }
-    }
-    return false
   }
 
   /**
