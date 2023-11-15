@@ -1,6 +1,6 @@
 import type {
   PartialHasManyThroughRelationship,
-  ThroughOrAttributes,
+  ThroughOptions,
 } from "../hasManyThrough/types"
 
 // @todo HATCH-417
@@ -12,7 +12,8 @@ export interface PartialHasManyRelationship<
   targetAttribute: string | null
   sourceAttribute: string | null
   through: (
-    throughOrAttributes?: ThroughOrAttributes,
+    through?: string | null,
+    options?: ThroughOptions,
   ) => PartialHasManyThroughRelationship
 }
 

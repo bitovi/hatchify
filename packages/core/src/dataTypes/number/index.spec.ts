@@ -106,6 +106,8 @@ describe("number", () => {
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
       expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
       expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValueFromResponse?.("1.1")).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.("1.11")).toBe(1.11)
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() =>
         setClientPropertyValueFromResponse?.("invalid" as unknown as number),
@@ -309,6 +311,8 @@ describe("number", () => {
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
       expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
       expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValueFromResponse?.("1")).toBe(1)
+      expect(setClientPropertyValueFromResponse?.("1.11")).toBe(1.11)
       expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
@@ -518,6 +522,8 @@ describe("number", () => {
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
       expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
       expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValueFromResponse?.("1.1")).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.("1.11")).toBe(1.11)
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() =>
         setClientPropertyValueFromResponse?.("invalid" as unknown as number),
@@ -719,6 +725,8 @@ describe("number", () => {
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
       expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
       expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValueFromResponse?.("1.1")).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.("1.11")).toBe(1.11)
       expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
@@ -730,9 +738,6 @@ describe("number", () => {
       )
       expect(() => setClientPropertyValueFromResponse?.(Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
-      )
-      expect(() => setClientPropertyValueFromResponse?.("1.0")).toThrow(
-        new HatchifyCoerceError("as a number"),
       )
 
       // serializeORMPropertyValue
@@ -934,6 +939,8 @@ describe("number", () => {
       expect(setClientPropertyValueFromResponse?.(0)).toBe(0)
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
       expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.("1")).toBe(1)
+      expect(setClientPropertyValueFromResponse?.("1.1")).toBe(1.1)
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() => setClientPropertyValueFromResponse?.(1.11)).toThrow(
         new HatchifyCoerceError("as multiples of 0.1"),
@@ -1147,6 +1154,8 @@ describe("number", () => {
       expect(setClientPropertyValueFromResponse?.(1)).toBe(1)
       expect(setClientPropertyValueFromResponse?.(1.1)).toBe(1.1)
       expect(setClientPropertyValueFromResponse?.(1.11)).toBe(1.11)
+      expect(setClientPropertyValueFromResponse?.("1.1")).toBe(1.1)
+      expect(setClientPropertyValueFromResponse?.("1.11")).toBe(1.11)
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
       expect(() => setClientPropertyValueFromResponse?.(-1)).toThrow(
         new HatchifyCoerceError("greater than or equal to 1"),

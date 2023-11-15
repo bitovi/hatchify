@@ -1,4 +1,4 @@
-# text({min, default, required})
+# text({default, required})
 
 Defines an attribute as having unlimited text length.
 
@@ -14,8 +14,6 @@ export const Todo: PartialSchema = {
 ## Parameters
 
 - `default` [{String}] - The default value of the attribute.  Example: `text({default: "hello"})`
-- ❓ `max` 
-- `min` [{Number=0}] - The minimum number of characters allowed.  Defaults to 0. Example: `text({min: 1})`
 - `required` [{Boolean=false}] - If the attribute must be provided.
 
 ## Form Controls

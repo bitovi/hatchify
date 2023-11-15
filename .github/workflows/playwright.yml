@@ -17,10 +17,8 @@ jobs:
         run: npm ci
       - name: Build nx packages
         run: npx nx run-many -t build
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npm run e2e
       - uses: actions/upload-artifact@v3
         if: always()
         with:

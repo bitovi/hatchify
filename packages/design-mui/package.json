@@ -1,6 +1,10 @@
 {
   "name": "@hatchifyjs/design-mui",
+<<<<<<< HEAD
   "version": "0.1.16",
+=======
+  "version": "0.1.18",
+>>>>>>> main
   "main": "./dist/design-mui.js",
   "module": "./dist/design-mui.mjs",
   "types": "./dist/design-mui.d.ts",
@@ -36,13 +40,13 @@
     "vitest": "^0.30.1"
   },
   "dependencies": {
-    "@hatchifyjs/core": "^0.2.9",
-    "@hatchifyjs/react-ui": "^0.1.11",
+    "@hatchifyjs/react-ui": "^0.1.13",
     "@mui/icons-material": "^5.14.1",
     "@mui/utils": "^5.13.1",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
+    "@hatchifyjs/core": "^0.3.x",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.12.0",

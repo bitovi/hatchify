@@ -29,7 +29,7 @@ describe("hasMany", () => {
     })
 
     expect(
-      relationship.through?.({
+      relationship.through?.(null, {
         throughTargetAttribute: "theAccountId",
         throughSourceAttribute: "sellerId",
       }),
@@ -42,7 +42,20 @@ describe("hasMany", () => {
     })
 
     expect(
-      relationship.through?.({
+      relationship.through?.("Commission", {
+        throughTargetAttribute: "theAccountId",
+        throughSourceAttribute: "sellerId",
+      }),
+    ).toEqual({
+      type: "hasManyThrough",
+      targetSchema: null,
+      through: "Commission",
+      throughTargetAttribute: "theAccountId",
+      throughSourceAttribute: "sellerId",
+    })
+
+    expect(
+      relationship.through?.(null, {
         targetKey: "accountSaleTypeId",
         sourceKey: "sellerTypeId",
       }),
@@ -50,6 +63,21 @@ describe("hasMany", () => {
       type: "hasManyThrough",
       targetSchema: null,
       through: null,
+      throughTargetAttribute: null,
+      throughSourceAttribute: null,
+      targetKey: "accountSaleTypeId",
+      sourceKey: "sellerTypeId",
+    })
+
+    expect(
+      relationship.through?.("Commission", {
+        targetKey: "accountSaleTypeId",
+        sourceKey: "sellerTypeId",
+      }),
+    ).toEqual({
+      type: "hasManyThrough",
+      targetSchema: null,
+      through: "Commission",
       throughTargetAttribute: null,
       throughSourceAttribute: null,
       targetKey: "accountSaleTypeId",
@@ -85,7 +113,7 @@ describe("hasMany", () => {
     })
 
     expect(
-      relationship.through?.({
+      relationship.through?.(null, {
         throughTargetAttribute: "theAccountId",
         throughSourceAttribute: "sellerId",
       }),
@@ -98,7 +126,20 @@ describe("hasMany", () => {
     })
 
     expect(
-      relationship.through?.({
+      relationship.through?.("Commission", {
+        throughTargetAttribute: "theAccountId",
+        throughSourceAttribute: "sellerId",
+      }),
+    ).toEqual({
+      type: "hasManyThrough",
+      targetSchema: "SalesPerson",
+      through: "Commission",
+      throughTargetAttribute: "theAccountId",
+      throughSourceAttribute: "sellerId",
+    })
+
+    expect(
+      relationship.through?.(null, {
         targetKey: "accountSaleTypeId",
         sourceKey: "sellerTypeId",
       }),
@@ -106,6 +147,21 @@ describe("hasMany", () => {
       type: "hasManyThrough",
       targetSchema: "SalesPerson",
       through: null,
+      throughTargetAttribute: null,
+      throughSourceAttribute: null,
+      targetKey: "accountSaleTypeId",
+      sourceKey: "sellerTypeId",
+    })
+
+    expect(
+      relationship.through?.("Commission", {
+        targetKey: "accountSaleTypeId",
+        sourceKey: "sellerTypeId",
+      }),
+    ).toEqual({
+      type: "hasManyThrough",
+      targetSchema: "SalesPerson",
+      through: "Commission",
       throughTargetAttribute: null,
       throughSourceAttribute: null,
       targetKey: "accountSaleTypeId",

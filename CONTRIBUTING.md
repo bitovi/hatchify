@@ -261,8 +261,7 @@ or individually:
 You can also run the Playwright E2E tests:
 
 ```bash
-npx playwright install
-npx playwright test
+npm run e2e
 ```
 
 #### 4.1. Testing aginst a Hatchify app

@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/node",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Fullstack CRUD Application Solution",
   "main": "./dist/exports.js",
   "types": "./dist/exports.d.ts",
@@ -50,7 +50,7 @@
     "ts-jest": "^29.0.3"
   },
   "peerDependencies": {
-    "@hatchifyjs/core": "^0.2.x",
+    "@hatchifyjs/core": "^0.3.x",
     "sequelize": "6.x"
   },
   "eslintConfig": {
