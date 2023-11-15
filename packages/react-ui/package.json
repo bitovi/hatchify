@@ -42,7 +42,7 @@
     "uuid": "^9.0.0"
   },
   "peerDependencies": {
-    "@hatchifyjs/core": "^0.3.x",
+    "@hatchifyjs/core": "^0.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0"

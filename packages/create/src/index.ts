@@ -328,13 +328,13 @@ async function init() {
   ]
 
   runCommand(
-    `npm install --package-lock-only --no-package-lock --legacy-peer-deps ${dependencies.join(
+    `npm install --package-lock-only --no-package-lock ${dependencies.join(
       " ",
     )}`,
     root,
   )
   runCommand(
-    `npm install --package-lock-only --no-package-lock --legacy-peer-deps ${devDependencies.join(
+    `npm install --package-lock-only --no-package-lock ${devDependencies.join(
       " ",
     )} --save-dev`,
     root,
