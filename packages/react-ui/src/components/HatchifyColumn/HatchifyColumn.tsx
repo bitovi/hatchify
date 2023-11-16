@@ -1,8 +1,8 @@
 import type {
   GetSchemaFromName,
   GetSchemaNames,
+  FinalSchemas,
   RecordType,
-  Schemas,
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { ValueComponent, CellValue } from "../../presentation/interfaces"
@@ -44,7 +44,7 @@ export type AdditionalColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
-  allSchemas: Schemas
+  allSchemas: FinalSchemas
   schemaName: string
   type: "append" | "prepend"
   label: string
@@ -59,12 +59,13 @@ export type ReplaceColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
-  allSchemas: Schemas
+  allSchemas: FinalSchemas
   schemaName: TSchemaName
   type: "replace"
   label?: string
   field:
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
+    | keyof GetSchemaFromName<TSchemas, TSchemaName>["relationships"]
     | "id"
     | ""
 } & {
@@ -77,12 +78,13 @@ export type OverwriteColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
-  allSchemas: Schemas
+  allSchemas: FinalSchemas
   schemaName: TSchemaName
   type?: never
   label?: string
   field:
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
+    | keyof GetSchemaFromName<TSchemas, TSchemaName>["relationships"]
     | "id"
     | ""
 } & {

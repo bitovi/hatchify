@@ -3,9 +3,7 @@ import { createContext, useContext } from "react"
 import type {
   XEverythingProps,
   XLayoutProps,
-  XDetailsProps,
   Relationship as RelationshipType,
-  XFormProps,
   XCollectionProps,
 } from "../../presentation/interfaces"
 
@@ -75,11 +73,9 @@ export interface DefaultFieldComponentsTypes {
 export interface HatchifyPresentationContextProps {
   Collection: React.FC<XCollectionProps>
   Layout: React.FC<XLayoutProps>
-  Details: React.FC<XDetailsProps>
   Everything: React.FC<XEverythingProps>
-  Form: React.FC<XFormProps>
   defaultValueComponents: DefaultValueComponentsTypes
-  defaultFieldComponents: DefaultFieldComponentsTypes
+  // future: defaultFieldComponents
 }
 
 export const HatchifyPresentationDefaultValueComponents = {
@@ -105,14 +101,12 @@ export const HatchifyPresentationDefaultFieldComponents = {
 
 export const HatchifyPresentationContext =
   createContext<HatchifyPresentationContextProps>({
-    // @todo default/headless components?
+    // should we have a default (headless) implementation of these?
     Collection: () => null,
-    Details: () => null,
     Everything: () => null,
-    Form: () => null,
     Layout: () => null,
     defaultValueComponents: HatchifyPresentationDefaultValueComponents,
-    defaultFieldComponents: HatchifyPresentationDefaultFieldComponents,
+    // future: defaultFieldComponents
   })
 
 export const useHatchifyPresentation = (): HatchifyPresentationContextProps =>
@@ -125,26 +119,14 @@ interface HatchifyPresentationProviderProps
 
 export const HatchifyPresentationProvider: React.FC<
   HatchifyPresentationProviderProps
-> = ({
-  Collection,
-  Details,
-  Everything,
-  Form,
-  Layout,
-  defaultValueComponents,
-  defaultFieldComponents,
-  children,
-}) => {
+> = ({ Collection, Everything, Layout, defaultValueComponents, children }) => {
   return (
     <HatchifyPresentationContext.Provider
       value={{
         Collection,
-        Details,
         Everything,
-        Form,
         Layout,
         defaultValueComponents,
-        defaultFieldComponents,
       }}
     >
       {children}

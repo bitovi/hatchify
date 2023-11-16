@@ -118,6 +118,7 @@ export function hatchifyReact<
       const finalSchemaName = schema.namespace
         ? `${schema.namespace}_${schema.name}`
         : schema.name
+
       acc[key] = {
         Collection: (props) => (
           <HatchifyCollection<TSchemas, GetSchemaNames<TSchemas>>

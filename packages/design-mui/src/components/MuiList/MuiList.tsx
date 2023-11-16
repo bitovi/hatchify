@@ -19,7 +19,8 @@ export function MuiList<
   const TSchemaNames extends GetSchemaNames<TSchemas> = any,
 >(props: XCollectionProps<TSchemas, TSchemaNames>): JSX.Element {
   const { columns, Empty } = useCompoundComponents(
-    props.finalSchemas[props.schemaName],
+    props.finalSchemas,
+    props.schemaName,
     props.children,
   )
 

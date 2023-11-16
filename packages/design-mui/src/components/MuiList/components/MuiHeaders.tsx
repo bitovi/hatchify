@@ -9,7 +9,7 @@ import {
   TableRow,
   TableSortLabel,
 } from "@mui/material"
-import type { HatchifyDisplay, XCollectionProps } from "@hatchifyjs/react-ui"
+import type { HatchifyColumn, XCollectionProps } from "@hatchifyjs/react-ui"
 
 const styles = {
   th: css`
@@ -18,7 +18,7 @@ const styles = {
 }
 
 export const MuiHeaders: React.FC<
-  XCollectionProps & { columns: HatchifyDisplay[] }
+  XCollectionProps & { columns: HatchifyColumn[] }
 > = ({ selected, setSelected, sort, setSort, data, columns, meta }) => {
   const selectable = selected !== undefined && setSelected !== undefined
   const { direction, sortBy } = sort

@@ -1,3 +1,4 @@
+import { getSchemaKey } from "@hatchifyjs/core"
 import type { FinalSchema } from "@hatchifyjs/core"
 import type { FindOptions } from "sequelize"
 
@@ -5,7 +6,6 @@ import type { QueryStringParser, QueryStringParsingError } from "./builder"
 import { getColumnName } from "./getColumnName"
 import { walk } from "./walk"
 import { UnexpectedValueError } from "../error"
-import { getFullModelName } from "../utils/getFullModelName"
 
 interface Include {
   association: string
@@ -36,7 +36,7 @@ export function handleWhere(
         )
       }
 
-      return [null, `$${getColumnName(`${getFullModelName(schema)}.${key}`)}$`]
+      return [null, `$${getColumnName(`${getSchemaKey(schema)}.${key}`)}$`]
     }
 
     const [relationshipName] = key.split(".")

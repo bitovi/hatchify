@@ -1,5 +1,6 @@
 import {
   assembler,
+  getSchemaKey,
   pascalCaseToCamelCase,
   pluralize,
   singularize,
@@ -15,7 +16,6 @@ import type {
   SequelizeModelsCollection,
   SequelizeWithHatchify,
 } from "../types"
-import { getFullModelName } from "../utils/getFullModelName"
 
 export function convertHatchifyModels(
   sequelize: SequelizeWithHatchify,
@@ -28,12 +28,12 @@ export function convertHatchifyModels(
 
   const hatchifyModels = Object.values(finalSchemas)
   hatchifyModels.forEach((schema) => {
-    sequelize.models[getFullModelName(schema)][HatchifySymbolModel] = schema
+    sequelize.models[getSchemaKey(schema)][HatchifySymbolModel] = schema
   })
 
   // Create the serializer schema for the model
   const associationsLookup = hatchifyModels.reduce((modelAcc, model) => {
-    const fullModelName = getFullModelName(model)
+    const fullModelName = getSchemaKey(model)
 
     const associations = Object.entries(
       finalSchemas[fullModelName].relationships ?? {},
@@ -63,7 +63,7 @@ export function convertHatchifyModels(
             otherKey: relationship.throughTargetAttribute,
           },
         )
-        sequelize.models[getFullModelName(model)].hasMany(
+        sequelize.models[getSchemaKey(model)].hasMany(
           sequelize.models[relationship.through],
           {
             as: pluralize(pascalCaseToCamelCase(relationship.through)),
@@ -72,7 +72,7 @@ export function convertHatchifyModels(
           },
         )
       } else if (type === "belongsTo") {
-        sequelize.models[getFullModelName(model)][type](
+        sequelize.models[getSchemaKey(model)][type](
           sequelize.models[targetSchema],
           {
             as: relationshipName,
@@ -81,7 +81,7 @@ export function convertHatchifyModels(
           },
         )
       } else {
-        sequelize.models[getFullModelName(model)][type](
+        sequelize.models[getSchemaKey(model)][type](
           sequelize.models[targetSchema],
           {
             as: relationshipName,
@@ -112,7 +112,7 @@ export function convertHatchifyModels(
 
     registerSchema(serializer, model, associations, "id")
 
-    return { ...modelAcc, [getFullModelName(model)]: associations }
+    return { ...modelAcc, [getSchemaKey(model)]: associations }
   }, {})
 
   return {
