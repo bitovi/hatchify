@@ -7,7 +7,6 @@ import type {
   FinalSchemas,
   Include,
   RequiredSchemaMap,
-  Schemas,
 } from "@hatchifyjs/rest-client"
 
 /**
@@ -18,7 +17,7 @@ import type {
  */
 export function fieldsToQueryParam(
   schemaMap: RequiredSchemaMap, // todo: HATCH-417
-  allSchemas: Schemas | FinalSchemas,
+  allSchemas: FinalSchemas,
   schemaName: string,
   fields: Fields,
 ): string {

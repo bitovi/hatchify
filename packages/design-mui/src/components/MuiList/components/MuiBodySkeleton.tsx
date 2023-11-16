@@ -1,7 +1,7 @@
 import { Skeleton, TableCell, TableRow } from "@mui/material"
-import type { HatchifyDisplay } from "@hatchifyjs/react-ui"
+import type { HatchifyColumn } from "@hatchifyjs/react-ui"
 
-export const MuiBodySkeleton: React.FC<{ columns: HatchifyDisplay[] }> = ({
+export const MuiBodySkeleton: React.FC<{ columns: HatchifyColumn[] }> = ({
   columns,
 }) => {
   return (

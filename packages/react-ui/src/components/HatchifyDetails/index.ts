@@ -1,1 +1,0 @@
-export { HatchifyDetails } from "./HatchifyDetails"
