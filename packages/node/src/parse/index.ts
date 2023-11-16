@@ -1,4 +1,4 @@
-import type { FinalSchema } from "@hatchifyjs/core"
+import { FinalSchema, getSchemaKey } from "@hatchifyjs/core"
 import type {
   CreateOptions,
   DestroyOptions,
@@ -11,7 +11,6 @@ import { buildDestroyOptions, buildFindOptions } from "./builder"
 import { validateFindOptions, validateStructure } from "./validator"
 import type { Hatchify } from "../node"
 import type { JSONObject } from "../types"
-import { getFullModelName } from "../utils/getFullModelName"
 
 /**
  * Provides a set of exported functions, per Model, that
@@ -126,7 +125,7 @@ async function createImpl<T extends FinalSchema = FinalSchema>(
 ) {
   validateStructure(body, schema, hatchify)
   const parsedBody = await hatchify.serializer.deserialize(
-    getFullModelName(schema),
+    getSchemaKey(schema),
     body,
   )
 
@@ -144,7 +143,7 @@ async function updateImpl(
 ) {
   validateStructure(body, schema, hatchify)
   const parsedBody = await hatchify.serializer.deserialize(
-    getFullModelName(schema),
+    getSchemaKey(schema),
     body,
   )
 

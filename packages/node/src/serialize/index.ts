@@ -1,11 +1,10 @@
-import type { FinalSchema } from "@hatchifyjs/core"
+import { FinalSchema, getSchemaKey } from "@hatchifyjs/core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import type JSONAPISerializer from "json-api-serializer"
 import type { JSONAPIDocument } from "json-api-serializer"
 import type { Model } from "sequelize"
 
 import type { Hatchify } from "../node"
-import { getFullModelName } from "../utils/getFullModelName"
 
 /**
  * Provides a set of exported functions, per Model, that
@@ -148,7 +147,7 @@ export function registerSchema(
   associations: Record<string, IAssociation>,
   primaryKey: string,
 ): void {
-  serializer.register(getFullModelName(model), {
+  serializer.register(getSchemaKey(model), {
     id: primaryKey,
     whitelist: Object.keys(model.attributes),
     relationships: Object.entries(associations).reduce(

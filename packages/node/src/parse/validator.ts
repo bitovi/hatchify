@@ -1,4 +1,4 @@
-import type { FinalSchema } from "@hatchifyjs/core"
+import { FinalSchema, getSchemaKey } from "@hatchifyjs/core"
 import type { FindOptions } from "sequelize"
 
 import {
@@ -8,7 +8,6 @@ import {
 } from "../error"
 import type { HatchifyError } from "../error/types"
 import type { Hatchify } from "../node"
-import { getFullModelName } from "../utils/getFullModelName"
 
 function isObject(value: any): boolean {
   return value && typeof value === "object" && !Array.isArray(value)
@@ -24,8 +23,7 @@ export function validateFindOptions<T extends FinalSchema = FinalSchema>(
       ? options.include
       : [options.include]
 
-    const associations =
-      hatchify.associationsLookup[getFullModelName(schema)] || {}
+    const associations = hatchify.associationsLookup[getSchemaKey(schema)] || {}
     const includeErrors: Error[] = []
 
     if (include.length && !Object.keys(associations).length) {
@@ -101,10 +99,10 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
     ]
   }
 
-  if (body.data.type !== getFullModelName(schema)) {
+  if (body.data.type !== getSchemaKey(schema)) {
     throw [
       new UnexpectedValueError({
-        detail: `Payload must have 'type' as '${getFullModelName(schema)}'.`,
+        detail: `Payload must have 'type' as '${getSchemaKey(schema)}'.`,
         pointer: "/data/type",
       }),
     ]
@@ -169,7 +167,7 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
 
     const relationshipErrors: HatchifyError[] = []
 
-    const associations = hatchify.associationsLookup[getFullModelName(schema)]
+    const associations = hatchify.associationsLookup[getSchemaKey(schema)]
 
     let modelAssociation
     if (associations) {
