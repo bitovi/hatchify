@@ -1,5 +1,6 @@
 import type { PartialSchema } from "./types"
 import { integer, uuid } from "../dataTypes"
+import { HatchifyInvalidSchemaError } from "../types"
 import { uuidv4 } from "../util/uuidv4"
 
 import { assembler } from "."
@@ -13,6 +14,37 @@ describe("assembler", () => {
         importance: integer({ min: 0 }),
       },
     }
+
+    describe("key", () => {
+      it("enforces key to equal ${name}", () => {
+        expect(() =>
+          assembler({
+            Invalid: {
+              name: "Todo",
+              attributes: {},
+            },
+          }),
+        ).toThrow(
+          new HatchifyInvalidSchemaError("Schema key needs to equal Todo"),
+        )
+      })
+
+      it("enforces key to equal ${namespace}_${name}", () => {
+        expect(() =>
+          assembler({
+            Invalid: {
+              name: "Todo",
+              namespace: "Admin",
+              attributes: {},
+            },
+          }),
+        ).toThrow(
+          new HatchifyInvalidSchemaError(
+            "Schema key needs to equal Admin_Todo",
+          ),
+        )
+      })
+    })
 
     describe("id", () => {
       it("injects primary key", () => {

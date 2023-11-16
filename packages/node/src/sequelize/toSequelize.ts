@@ -1,3 +1,4 @@
+import { getSchemaKey } from "@hatchifyjs/core"
 import type { FinalSchema } from "@hatchifyjs/core"
 import { omit, snakeCase } from "lodash"
 import { DataTypes } from "sequelize"
@@ -10,7 +11,6 @@ import type {
 } from "sequelize"
 
 import { getSequelizeSchemaName } from "./getSequelizeSchemaName"
-import { getFullModelName } from "../utils/getFullModelName"
 
 export function toSequelize(
   schemas: { [schemaName: string]: FinalSchema },
@@ -23,7 +23,7 @@ export function toSequelize(
     (acc, [schemaName, finalizedSchema]) => ({
       ...acc,
       [schemaName]: sequelize.define<Model<FinalSchema["attributes"]>>(
-        getFullModelName(finalizedSchema),
+        getSchemaKey(finalizedSchema),
         Object.entries({
           id: finalizedSchema.id,
           ...finalizedSchema.attributes,
