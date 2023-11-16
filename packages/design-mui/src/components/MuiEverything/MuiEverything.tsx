@@ -22,7 +22,7 @@ export function MuiEverything<
 }: XEverythingProps<TSchemas, TSchemaName>): JSX.Element {
   return (
     <Grid container>
-      <Grid item xs={3} sx={{ backgroundColor: "lightgrey" }} height="auto">
+      <Grid item xs={3} sx={{ backgroundColor: "white" }} height="auto">
         {!finalSchemas ? (
           <Typography variant="body1" margin="1rem">
             There are no schemas. Create some to get started!
