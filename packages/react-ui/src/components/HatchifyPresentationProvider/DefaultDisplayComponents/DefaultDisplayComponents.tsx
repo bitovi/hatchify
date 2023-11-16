@@ -114,8 +114,7 @@ export const DateList: React.FC<{ dateOnly: boolean; values: string[] }> = ({
 export const Relationship: React.FC<{ value: RelationshipType }> = ({
   value,
 }) => {
-  // return <>{value.label}</>
-  return <>value.label</>
+  return <>{value.label}</>
 }
 
 export const RelationshipList: React.FC<{ values: RelationshipType[] }> = ({

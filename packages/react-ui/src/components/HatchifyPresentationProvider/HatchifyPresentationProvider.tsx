@@ -72,10 +72,9 @@ export interface DefaultFieldComponentsTypes {
 export interface HatchifyPresentationContextProps {
   Collection: React.FC<XCollectionProps>
   Layout: React.FC<XLayoutProps>
-  // Details: React.FC<XDetailsProps>
-  // Form: React.FC<XFormProps>
+  // future: Details, Form
   defaultValueComponents: DefaultValueComponentsTypes
-  // defaultFieldComponents: DefaultFieldComponentsTypes
+  // future: defaultFieldComponents
 }
 
 export const HatchifyPresentationDefaultValueComponents = {
@@ -104,10 +103,9 @@ export const HatchifyPresentationContext =
     // should we have a default (headless) implementation of these?
     Collection: () => null,
     Layout: () => null,
-    // Details,
-    // Form
+    // future: Details, Form
     defaultValueComponents: HatchifyPresentationDefaultValueComponents,
-    // defaultFieldComponents
+    // future: defaultFieldComponents
   })
 
 export const useHatchifyPresentation = (): HatchifyPresentationContextProps =>

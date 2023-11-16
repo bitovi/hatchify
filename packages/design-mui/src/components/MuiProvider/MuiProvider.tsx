@@ -13,14 +13,13 @@ export const MuiProvider: React.FC<XProviderProps<Theme>> = ({ children }) => {
     <HatchifyPresentationProvider
       Collection={MuiDataGrid}
       Layout={MuiLayout}
-      // Details
-      // Form
+      // future: Details, Form
       defaultValueComponents={{
         ...HatchifyPresentationDefaultValueComponents,
         Relationship,
         RelationshipList,
       }}
-      // defaultFieldComponents
+      // future: defaultFieldComponents
     >
       {children}
     </HatchifyPresentationProvider>
