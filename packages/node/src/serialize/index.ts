@@ -1,4 +1,5 @@
-import { FinalSchema, getSchemaKey } from "@hatchifyjs/core"
+import { getSchemaKey } from "@hatchifyjs/core"
+import type { FinalSchema } from "@hatchifyjs/core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import type JSONAPISerializer from "json-api-serializer"
 import type { JSONAPIDocument } from "json-api-serializer"

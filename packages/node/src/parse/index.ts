@@ -1,4 +1,5 @@
-import { FinalSchema, getSchemaKey } from "@hatchifyjs/core"
+import { getSchemaKey } from "@hatchifyjs/core"
+import type { FinalSchema } from "@hatchifyjs/core"
 import type {
   CreateOptions,
   DestroyOptions,
