@@ -52,9 +52,10 @@ export interface XCollectionProps<
 }
 
 export interface XEverythingProps<
-  TSchemas extends Record<string, PartialSchema>,
+  TSchemas extends Record<string, PartialSchema> = any,
+  TSchemaName extends GetSchemaNames<TSchemas> = any,
 > extends XCollectionProps {
-  setSelectedSchema: (schemaName: keyof TSchemas) => void
+  setSelectedSchema: (schemaName: TSchemaName) => void
 }
 
 export interface XLayoutProps<

@@ -37,13 +37,6 @@ function HatchifyEverything<
   defaultSort,
   baseFilter,
 }: HatchifyEverythingProps<TSchemas>): JSX.Element {
-  console.log(
-    "rest defaultSelected ",
-    defaultSelected,
-    defaultPage,
-    defaultSort,
-    baseFilter,
-  )
   const schemasList = Object.keys(finalSchemas)
   const [selectedSchema, setSelectedSchema] = useState(schemasList[0])
   const { Everything } = useHatchifyPresentation()
