@@ -5,14 +5,18 @@ import Tab from "@mui/material/Tab"
 import Typography from "@mui/material/Typography"
 import { Eggbert } from "../../assets"
 import type { XEverythingProps } from "@hatchifyjs/react-ui"
+import type { PartialSchema } from "@hatchifyjs/core"
 
-const MuiEverything: React.FC<XEverythingProps> = ({
+export function MuiEverything<
+  const TSchemas extends Record<string, PartialSchema>,
+>({
+  children,
   data,
   finalSchemas,
   schemaName,
   setSelectedSchema,
   ...props
-}) => {
+}: XEverythingProps<TSchemas>): JSX.Element {
   return (
     <Grid container>
       <Grid item xs={3} sx={{ backgroundColor: "lightgrey" }} height="auto">
