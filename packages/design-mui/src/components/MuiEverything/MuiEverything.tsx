@@ -6,9 +6,11 @@ import Typography from "@mui/material/Typography"
 import { Eggbert } from "../../assets"
 import type { XEverythingProps } from "@hatchifyjs/react-ui"
 import type { PartialSchema } from "@hatchifyjs/core"
+import type { GetSchemaNames } from "@hatchifyjs/rest-client"
 
 export function MuiEverything<
   const TSchemas extends Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
 >({
   children,
   data,
@@ -16,7 +18,7 @@ export function MuiEverything<
   schemaName,
   setSelectedSchema,
   ...props
-}: XEverythingProps<TSchemas>): JSX.Element {
+}: XEverythingProps<TSchemas, TSchemaName>): JSX.Element {
   return (
     <Grid container>
       <Grid item xs={3} sx={{ backgroundColor: "lightgrey" }} height="auto">

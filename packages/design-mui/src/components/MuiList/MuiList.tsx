@@ -13,7 +13,6 @@ const styles = {
   `,
 }
 
-// export const MuiList: React.FC<XCollectionProps> = (props) => {
 export function MuiList<
   const TSchemas extends Record<string, PartialSchema> = any,
   const TSchemaNames extends GetSchemaNames<TSchemas> = any,
