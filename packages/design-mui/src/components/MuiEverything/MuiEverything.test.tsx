@@ -2,7 +2,7 @@ import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import { assembler, string } from "@hatchifyjs/core"
-import { default as MuiEverything, EverythingEmpty } from "./MuiEverything"
+import { default as MuiEverything } from "./MuiEverything"
 
 describe("components/MuiList", () => {
   const partialSchemas = {
@@ -132,9 +132,5 @@ describe("components/MuiList", () => {
     expect(
       await screen.findByText("No records found. Create some to get started."),
     ).toBeInTheDocument()
-  })
-
-  it("EverythingEmpty works", () => {
-    render(<EverythingEmpty>No records!</EverythingEmpty>)
   })
 })

@@ -7,6 +7,7 @@ import { Eggbert } from "../../assets"
 import type { XEverythingProps } from "@hatchifyjs/react-ui"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { GetSchemaNames } from "@hatchifyjs/rest-client"
+import { HatchifyEmpty } from "@hatchifyjs/react-ui"
 
 export function MuiEverything<
   const TSchemas extends Record<string, PartialSchema>,
@@ -34,7 +35,7 @@ export function MuiEverything<
                   value={schemaName}
                   label={schemaName}
                   key={schemaName}
-                  onClick={() => setSelectedSchema(schemaName)}
+                  onClick={() => setSelectedSchema(schemaName as TSchemaName)}
                 />
               )
             })}
@@ -60,7 +61,7 @@ export function MuiEverything<
             finalSchemas={finalSchemas}
             schemaName={schemaName}
           >
-            <EverythingEmpty>
+            <HatchifyEmpty>
               <Grid container rowSpacing={4}>
                 <Grid item xs={12}>
                   <Typography
@@ -75,22 +76,12 @@ export function MuiEverything<
                   <Eggbert />
                 </Grid>
               </Grid>
-            </EverythingEmpty>
+            </HatchifyEmpty>
           </MuiDataGrid>
         )}
       </Grid>
     </Grid>
   )
 }
-
-export type EverythingEmptyProps = {
-  children: React.ReactNode
-}
-
-export const EverythingEmpty: React.FC<EverythingEmptyProps> = () => {
-  return null
-}
-
-EverythingEmpty.displayName = "Empty"
 
 export default MuiEverything
