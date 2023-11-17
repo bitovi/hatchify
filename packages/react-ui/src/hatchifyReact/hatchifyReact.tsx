@@ -19,6 +19,7 @@ import type {
   GetSchemaFromName,
 } from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
+import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from "../components/HatchifyEverything"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
 import type { CollectionState } from "../hooks/useCollectionState"
 import type {
@@ -26,7 +27,6 @@ import type {
   ReplaceColumnProps,
   OverwriteColumnProps,
 } from "../components/HatchifyColumn"
-import type { HatchifyEverythingProps } from "../components/HatchifyEverything"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { HatchifyCollection } from "../components/HatchifyCollection"
 import { HatchifyColumn } from "../components/HatchifyColumn"
@@ -34,6 +34,12 @@ import { HatchifyEmpty } from "../components/HatchifyEmpty"
 import { HatchifyEverything } from "../components/HatchifyEverything"
 import useCollectionState from "../hooks/useCollectionState"
 import type { SortObject } from "../presentation"
+
+type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
+  Omit<
+    InternalHatchifyEverythingProps<TSchemas>,
+    "finalSchemas" | "partialSchemas" | "restClient"
+  >
 
 type HatchifyCollectionProps<
   TSchemas extends Record<string, PartialSchema>,
@@ -182,7 +188,8 @@ export function hatchifyReact<
   const Everything = (props: HatchifyEverythingProps<TSchemas>) => (
     <HatchifyEverything
       {...props}
-      finalSchemas={finalSchemas as any}
+      finalSchemas={finalSchemas}
+      partialSchemas={partialSchemas}
       restClient={reactRest}
     />
   )
