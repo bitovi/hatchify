@@ -1,5 +1,6 @@
 export * from "./MuiProvider"
 export * from "./MuiDataGrid"
+export * from "./MuiEverything"
 export * from "./MuiFilters"
 export * from "./MuiLayout"
 export * from "./MuiList"

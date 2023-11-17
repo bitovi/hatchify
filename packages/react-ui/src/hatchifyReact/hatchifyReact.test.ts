@@ -35,6 +35,7 @@ describe("react-ui/hatchifyReact", () => {
     const api = hatchifyReact(fakeDataSource)
 
     expect(api).toEqual({
+      Everything: expect.any(Function),
       components: {
         Article: {
           Collection: expect.any(Function),
@@ -104,6 +105,7 @@ describe("react-ui/hatchifyReact", () => {
     const api = hatchifyReact(fakeDataSource)
 
     expect(api).toEqual({
+      Everything: expect.any(Function),
       components: {
         Feature_Article: {
           Collection: expect.any(Function),

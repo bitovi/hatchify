@@ -6,12 +6,14 @@ import {
 } from "@hatchifyjs/react-ui"
 import { MuiLayout } from "../MuiLayout"
 import MuiDataGrid from "../MuiDataGrid/MuiDataGrid"
+import { MuiEverything } from "../MuiEverything"
 import { Relationship, RelationshipList } from "./DefaultDisplayComponents"
 
 export const MuiProvider: React.FC<XProviderProps<Theme>> = ({ children }) => {
   return (
     <HatchifyPresentationProvider
       Collection={MuiDataGrid}
+      Everything={MuiEverything}
       Layout={MuiLayout}
       // future: Details, Form
       defaultValueComponents={{
