@@ -51,6 +51,13 @@ export interface XCollectionProps<
   children?: React.ReactNode
 }
 
+export interface XEverythingProps<
+  TSchemas extends Record<string, PartialSchema> = any,
+  TSchemaName extends GetSchemaNames<TSchemas> = any,
+> extends XCollectionProps {
+  setSelectedSchema: (schemaName: TSchemaName) => void
+}
+
 export interface XLayoutProps<
   TSchemas extends Record<string, PartialSchema> = any,
   TSchemaName extends GetSchemaNames<TSchemas> = any,

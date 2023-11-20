@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react"
 
 import type {
+  XEverythingProps,
   XLayoutProps,
   Relationship as RelationshipType,
   XCollectionProps,
@@ -72,7 +73,7 @@ export interface DefaultFieldComponentsTypes {
 export interface HatchifyPresentationContextProps {
   Collection: React.FC<XCollectionProps>
   Layout: React.FC<XLayoutProps>
-  // future: Details, Form
+  Everything: React.FC<XEverythingProps>
   defaultValueComponents: DefaultValueComponentsTypes
   // future: defaultFieldComponents
 }
@@ -102,8 +103,8 @@ export const HatchifyPresentationContext =
   createContext<HatchifyPresentationContextProps>({
     // should we have a default (headless) implementation of these?
     Collection: () => null,
+    Everything: () => null,
     Layout: () => null,
-    // future: Details, Form
     defaultValueComponents: HatchifyPresentationDefaultValueComponents,
     // future: defaultFieldComponents
   })
@@ -118,11 +119,12 @@ interface HatchifyPresentationProviderProps
 
 export const HatchifyPresentationProvider: React.FC<
   HatchifyPresentationProviderProps
-> = ({ Collection, Layout, defaultValueComponents, children }) => {
+> = ({ Collection, Everything, Layout, defaultValueComponents, children }) => {
   return (
     <HatchifyPresentationContext.Provider
       value={{
         Collection,
+        Everything,
         Layout,
         defaultValueComponents,
       }}

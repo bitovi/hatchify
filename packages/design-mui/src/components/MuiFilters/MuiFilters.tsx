@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Badge, Button, Grid, Popover, debounce } from "@mui/material"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
@@ -23,11 +23,10 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
     [finalSchemas, include, schemaName],
   )
 
-  const defaultFilter = {
-    field: fields[0],
-    operator: "icontains",
-    value: "",
-  }
+  const defaultFilter = useMemo(
+    () => ({ field: fields[0], operator: "icontains", value: "" }),
+    [fields],
+  )
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)
@@ -50,10 +49,17 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
     [setQueryFilter],
   )
 
-  const setFilters = (filters: FilterArray) => {
-    _setFilters(filters)
-    applyFilters(filters)
-  }
+  const setFilters = useCallback(
+    (filters: FilterArray) => {
+      _setFilters(filters)
+      applyFilters(filters)
+    },
+    [applyFilters],
+  )
+
+  useEffect(() => {
+    setFilters([defaultFilter])
+  }, [defaultFilter, schemaName, setFilters])
 
   const addNewFilter = () => {
     setFilters([...filters, defaultFilter])

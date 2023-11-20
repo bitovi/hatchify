@@ -19,6 +19,7 @@ import type {
   GetSchemaFromName,
 } from "@hatchifyjs/rest-client"
 import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
+import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from "../components/HatchifyEverything"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
 import type { CollectionState } from "../hooks/useCollectionState"
 import type {
@@ -30,8 +31,15 @@ import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { HatchifyCollection } from "../components/HatchifyCollection"
 import { HatchifyColumn } from "../components/HatchifyColumn"
 import { HatchifyEmpty } from "../components/HatchifyEmpty"
+import { HatchifyEverything } from "../components/HatchifyEverything"
 import useCollectionState from "../hooks/useCollectionState"
 import type { SortObject } from "../presentation"
+
+type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
+  Omit<
+    InternalHatchifyEverythingProps<TSchemas>,
+    "finalSchemas" | "partialSchemas" | "restClient"
+  >
 
 type HatchifyCollectionProps<
   TSchemas extends Record<string, PartialSchema>,
@@ -71,6 +79,7 @@ type Components<TSchemas extends Record<string, PartialSchema>> = {
 
 export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
   components: Components<TSchemas>
+  Everything: (props: HatchifyEverythingProps<TSchemas>) => JSX.Element
   model: HatchifyReactRest<TSchemas>
   state: {
     [SchemaName in keyof TSchemas]: {
@@ -176,8 +185,18 @@ export function hatchifyReact<
     {} as HatchifyApp<TSchemas>["state"],
   )
 
+  const Everything = (props: HatchifyEverythingProps<TSchemas>) => (
+    <HatchifyEverything
+      {...props}
+      finalSchemas={finalSchemas}
+      partialSchemas={partialSchemas}
+      restClient={reactRest}
+    />
+  )
+
   return {
     components,
+    Everything,
     model: reactRest,
     state,
   }
