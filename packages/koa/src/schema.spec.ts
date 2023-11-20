@@ -6,6 +6,7 @@ import {
   enumerate,
   hasMany,
   integer,
+  number,
   string,
   text,
   uuid,
@@ -34,7 +35,7 @@ describe.each(dbDialects)("schema", (dialect) => {
         name: "User",
         attributes: {
           name: string({ min: 1, max: 10, default: "test" }),
-          age: integer({ min: 0, default: 1 }),
+          age: number({ min: 0, default: 1 }),
           yearsWorked: integer({ min: 0, default: 2 }),
           hireDate: datetime({
             min: new Date("2022-12-31T00:00:00.000Z"),
@@ -93,7 +94,7 @@ describe.each(dbDialects)("schema", (dialect) => {
             allowNull: true,
             default: "1",
             primary: false,
-            type: dialect === "postgres" ? "integer" : "INTEGER",
+            type: dialect === "postgres" ? "numeric" : "DECIMAL",
           },
           {
             name: "bio",
@@ -1401,6 +1402,115 @@ describe.each(dbDialects)("schema", (dialect) => {
               },
             ],
             meta: { unpaginatedCount: 2 },
+          })
+        })
+      })
+
+      describe("type edge cases", () => {
+        const uuid = "913e33e4-4d2b-49ec-8bf9-da1c0fa3cd0e"
+        let userId: number
+
+        beforeAll(async () => {
+          await hatchify.orm.query(
+            `INSERT INTO "user" (id, age) VALUES ('${uuid}', 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999) ON CONFLICT DO NOTHING`,
+          )
+        })
+
+        afterEach(async () => {
+          await fetch(`/api/users/${userId}`, { method: "delete" })
+        })
+
+        afterAll(async () => {
+          await hatchify.orm.query(`DELETE FROM "user" WHERE id = '${uuid}'`)
+        })
+
+        it("should return a JSON:API error when posting out-of-range integers", async () => {
+          const { status, body } = await fetch("/api/users", {
+            method: "post",
+            body: {
+              data: {
+                type: "User",
+                attributes: {
+                  yearsWorked: Number.MAX_SAFE_INTEGER,
+                  birthday: "1970-01-01",
+                },
+              },
+            },
+          })
+
+          userId = body.data?.id ?? 0
+
+          expect(status).toBe(dialect === "postgres" ? 422 : 200)
+          expect(body).toEqual({
+            jsonapi: { version: "1.0" },
+            ...(dialect === "postgres"
+              ? {
+                  errors: [
+                    {
+                      status: 422,
+                      code: "unexpected-value",
+                      detail:
+                        'value "9007199254740991" is out of range for type integer',
+                      title: "Unexpected value.",
+                    },
+                  ],
+                }
+              : {
+                  data: {
+                    type: "User",
+                    // eslint-disable-next-line jest/no-conditional-expect
+                    id: expect.any(String),
+                    attributes: {
+                      name: "test",
+                      age: 1,
+                      yearsWorked: 9007199254740991,
+                      hireDate: "2022-12-31T00:00:00.000Z",
+                      bio: "test",
+                      status: "active",
+                      isDeleted: false,
+                      birthday: "1970-01-01",
+                      uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                    },
+                  },
+                }),
+          })
+        })
+
+        it("should return a JSON:API error for getting out-of-range decimals", async () => {
+          const { status, body } = await fetch(`/api/users/${uuid}`)
+
+          expect(status).toBe(dialect === "postgres" ? 422 : 200)
+          expect(body).toEqual({
+            jsonapi: { version: "1.0" },
+            ...(dialect === "postgres"
+              ? {
+                  errors: [
+                    {
+                      status: 422,
+                      code: "unexpected-value",
+                      detail:
+                        "Retrieved number is outside of the JavaScript number range",
+                      title: "Unexpected value.",
+                    },
+                  ],
+                }
+              : {
+                  data: {
+                    type: "User",
+                    id: uuid,
+                    attributes: {
+                      name: "test",
+                      age: null,
+                      yearsWorked: 2,
+                      hireDate: "2022-12-31T00:00:00.000Z",
+                      bio: "test",
+                      status: "active",
+                      isDeleted: false,
+                      birthday: "1970-01-01",
+                      uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                    },
+                  },
+                }),
           })
         })
       })

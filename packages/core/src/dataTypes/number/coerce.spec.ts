@@ -41,6 +41,17 @@ describe("coerce", () => {
     )
   })
 
+  it("handles unsafe integers", () => {
+    // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
+    expect(() => coerce(9999999999999999, { type: "Number" })).toThrow(
+      new HatchifyCoerceError("within safe integer range"),
+    )
+    // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
+    expect(() => coerce(-9999999999999999, { type: "Number" })).toThrow(
+      new HatchifyCoerceError("within safe integer range"),
+    )
+  })
+
   it("handles boundaries", () => {
     expect(() => coerce(-1, { type: "Number", min: 0 })).toThrow(
       new HatchifyCoerceError("greater than or equal to 0"),
