@@ -26,6 +26,10 @@ export function coerce(
     throw new HatchifyCoerceError("different than Infinity")
   }
 
+  if (value < Number.MIN_SAFE_INTEGER || value > Number.MAX_SAFE_INTEGER) {
+    throw new HatchifyCoerceError("within safe integer range")
+  }
+
   if (control.min != null && value < control.min) {
     throw new HatchifyCoerceError(`greater than or equal to ${control.min}`)
   }
