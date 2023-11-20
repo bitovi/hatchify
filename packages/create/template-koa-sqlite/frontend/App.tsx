@@ -10,13 +10,13 @@ export const hatchedReact = hatchifyReact(
   createJsonapiClient("http://localhost:3000/api", Schemas),
 )
 
-const TodoList = hatchedReact.components.Todo.Collection
+const Everything = hatchedReact.Everything
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
-        <TodoList />
+        <Everything />
       </HatchifyProvider>
     </ThemeProvider>
   )
