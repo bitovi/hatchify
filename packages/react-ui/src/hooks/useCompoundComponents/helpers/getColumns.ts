@@ -1,16 +1,26 @@
-import type { FinalSchemas } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
+import type {
+  FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
+  Include,
+} from "@hatchifyjs/rest-client"
 import type { HatchifyColumn } from "../useCompoundComponents"
 import type { DefaultValueComponentsTypes } from "../../../components"
 import { getColumn, getColumnsFromSchema } from "."
 
-export function getColumns(
+export function getColumns<
+  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   finalSchemas: FinalSchemas,
-  schemaName: string,
+  schemaName: TSchemaName,
   valueComponents: DefaultValueComponentsTypes,
   childArray: JSX.Element[],
+  include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): HatchifyColumn[] {
   const hatchifyColumns: HatchifyColumn[] = []
-  const schema = finalSchemas[schemaName]
+  const schema = finalSchemas[schemaName as string]
 
   const columns = childArray.filter((c) => c.type.name === "Column")
   const prepend = columns.filter((c) => c.props.type === "prepend")
@@ -20,7 +30,7 @@ export function getColumns(
 
   const getHatchifyColumnCommon = {
     finalSchemas,
-    schemaName,
+    schemaName: schemaName as string,
     defaultValueComponents: valueComponents,
   }
 
@@ -60,6 +70,7 @@ export function getColumns(
       finalSchemas,
       schemaName,
       valueComponents,
+      include,
     )
 
     for (let i = 0; i < schemaColumns.length; i++) {

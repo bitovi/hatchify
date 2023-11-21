@@ -1,8 +1,15 @@
-import type { FinalAttributeRecord } from "@hatchifyjs/core"
-import type { FinalSchemas, Record } from "@hatchifyjs/rest-client"
+import type { FinalAttributeRecord, PartialSchema } from "@hatchifyjs/core"
+import type {
+  FinalSchemas,
+  GetSchemaNames,
+  Record,
+} from "@hatchifyjs/rest-client"
 import type { DefaultValueComponentsTypes } from "../../../components"
 
-export function getDefaultColumnRender({
+export function getDefaultColumnRender<
+  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>({
   finalSchemas,
   schemaName,
   control,
@@ -12,7 +19,7 @@ export function getDefaultColumnRender({
   defaultValueComponents,
 }: {
   finalSchemas: FinalSchemas
-  schemaName: string
+  schemaName: TSchemaName
   control: FinalAttributeRecord[string]["control"]
   field: string
   isRelationship: boolean

@@ -1,5 +1,12 @@
 import { Children as ReactChildren } from "react"
-import type { FinalSchemas, Record } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
+import type {
+  FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
+  Include,
+  Record,
+} from "@hatchifyjs/rest-client"
 import { useHatchifyPresentation } from "../../components"
 import { getColumns, getEmptyList } from "./helpers"
 
@@ -15,16 +22,26 @@ interface CompoundComponents {
   Empty: () => JSX.Element
 }
 
-export default function useCompoundComponents(
+export default function useCompoundComponents<
+  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   finalSchemas: FinalSchemas,
-  schemaName: string,
+  schemaName: TSchemaName,
   children: React.ReactNode | null,
+  include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): CompoundComponents {
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
   const valueComponents = useHatchifyPresentation().defaultValueComponents
 
   return {
-    columns: getColumns(finalSchemas, schemaName, valueComponents, childArray),
+    columns: getColumns(
+      finalSchemas,
+      schemaName,
+      valueComponents,
+      childArray,
+      include,
+    ),
     Empty: getEmptyList(childArray),
   }
 }

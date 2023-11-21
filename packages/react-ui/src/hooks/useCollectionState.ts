@@ -43,7 +43,7 @@ export interface CollectionState<
   setSelected: HatchifyCollectionSelected["setSelected"] | undefined
   finalSchemas: FinalSchemas
   partialSchemas: TSchemas
-  schemaName: string
+  schemaName: TSchemaName
 }
 
 export default function useCollectionState<
