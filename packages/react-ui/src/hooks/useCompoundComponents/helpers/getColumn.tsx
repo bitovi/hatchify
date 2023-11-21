@@ -1,11 +1,15 @@
 import { uuidv4 } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type { FinalAttributeRecord } from "@hatchifyjs/core"
-import type { FinalSchemas } from "@hatchifyjs/rest-client"
+import type { FinalSchemas, GetSchemaNames } from "@hatchifyjs/rest-client"
 import type { DefaultValueComponentsTypes } from "../../../components"
 import type { HatchifyColumn } from "../useCompoundComponents"
 import { getDefaultColumnRender } from "."
 
-export function getColumn({
+export function getColumn<
+  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>({
   finalSchemas,
   schemaName,
   control,
@@ -15,7 +19,7 @@ export function getColumn({
   defaultValueComponents,
 }: {
   finalSchemas: FinalSchemas
-  schemaName: string
+  schemaName: TSchemaName
   control?: FinalAttributeRecord[string]["control"] | null
   field: string
   compoundComponentProps: any
@@ -56,7 +60,7 @@ export function getColumn({
   } else {
     column.render = getDefaultColumnRender({
       finalSchemas,
-      schemaName,
+      schemaName: schemaName as string,
       control,
       field: field,
       isRelationship: isRelationship === true,

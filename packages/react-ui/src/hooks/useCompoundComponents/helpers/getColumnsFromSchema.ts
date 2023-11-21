@@ -1,19 +1,29 @@
-import type { FinalSchemas } from "@hatchifyjs/rest-client"
+import type { PartialSchema } from "@hatchifyjs/core"
+import type {
+  FinalSchemas,
+  GetSchemaFromName,
+  GetSchemaNames,
+  Include,
+} from "@hatchifyjs/rest-client"
 import type { DefaultValueComponentsTypes } from "../../../components"
 import type { HatchifyColumn } from "../useCompoundComponents"
 import { getColumn } from "."
 
-export function getColumnsFromSchema(
+export function getColumnsFromSchema<
+  const TSchemas extends globalThis.Record<string, PartialSchema>,
+  const TSchemaName extends GetSchemaNames<TSchemas>,
+>(
   finalSchemas: FinalSchemas,
-  schemaName: string,
+  schemaName: TSchemaName,
   defaultValueComponents: DefaultValueComponentsTypes,
+  include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): HatchifyColumn[] {
-  const schema = finalSchemas[schemaName]
+  const schema = finalSchemas[schemaName as string]
 
   const attributesDisplays = Object.entries(schema.attributes)
     .filter(([, { control }]) => control.hidden !== true)
     .map(([attributeName, { control }]) => {
-      return getColumn({
+      return getColumn<TSchemas, TSchemaName>({
         finalSchemas,
         schemaName,
         defaultValueComponents,
@@ -28,11 +38,15 @@ export function getColumnsFromSchema(
 
   const oneRelationshipDisplays = Object.entries(schema?.relationships || {})
     .filter(([key, relationship]) => {
-      return relationship.type === "belongsTo" || relationship.type === "hasOne"
+      return (
+        include &&
+        include.includes(key) &&
+        (relationship.type === "belongsTo" || relationship.type === "hasOne")
+      )
     })
     .map(([key, relationship]) => {
       // related schema = schema[relationship.schema]
-      return getColumn({
+      return getColumn<TSchemas, TSchemaName>({
         finalSchemas,
         schemaName,
         defaultValueComponents,

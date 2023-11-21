@@ -11,7 +11,7 @@ import { HatchifyPresentationDefaultValueComponents } from "../../../components"
 import { getColumnsFromSchema } from "."
 
 describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
-  const finalSchemas = assembler({
+  const partialSchemas = {
     Todo: {
       name: "Todo",
       attributes: {
@@ -32,7 +32,8 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
         todos: hasMany("Todo"),
       },
     },
-  })
+  }
+  const finalSchemas = assembler(partialSchemas)
 
   it("works", () => {
     expect(
@@ -40,6 +41,34 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
         finalSchemas,
         "Todo",
         HatchifyPresentationDefaultValueComponents,
+      ),
+    ).toEqual([
+      {
+        key: "title",
+        label: "Title",
+        render: expect.any(Function),
+        sortable: true,
+      },
+      {
+        key: "created",
+        label: "Created",
+        render: expect.any(Function),
+        sortable: true,
+      },
+      {
+        key: "important",
+        label: "Important",
+        render: expect.any(Function),
+        sortable: true,
+      },
+    ])
+
+    expect(
+      getColumnsFromSchema<typeof partialSchemas, "Todo">(
+        finalSchemas,
+        "Todo",
+        HatchifyPresentationDefaultValueComponents,
+        ["user"],
       ),
     ).toEqual([
       {
