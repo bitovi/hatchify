@@ -16,21 +16,12 @@ import type {
 } from "../../presentation/interfaces"
 import type { HatchifyDisplay } from "../../services"
 
-export type DataRender = ({ record }: { record: FlatRecord }) => JSX.Element
-export type HeaderRender = (headerArgs: {
-  column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
-  meta: Meta
-  sortBy: SortObject["sortBy"]
-  direction: SortObject["direction"]
-  setSort: HatchifyCollectionSort["setSort"]
-}) => JSX.Element
-
 export type DataRenderValue = ({
   value,
   record,
   attributeSchema,
 }: {
-  value: DataValue
+  value?: DataValue
   record: FlatRecord
   attributeSchema?: Attribute
 }) => JSX.Element
@@ -51,9 +42,9 @@ export type AdditionalColumnProps = {
   label: string
   field?: never
 } & {
-  dataRenderValue?: DataRender
+  dataRenderValue?: DataRenderValue
   DataValueComponent?: DataValueComponent
-  headerRenderValue?: HeaderRender
+  headerRenderValue?: HeaderRenderValue
   HeaderValueComponent?: HeaderValueComponent
 }
 
