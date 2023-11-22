@@ -10,14 +10,14 @@ import type {
   Attribute,
   Relationship as RelationshipType,
   FlatRecord,
-  DataCellValueComponent,
-  HeaderCellValueComponent,
+  DataValueComponent,
+  HeaderValueComponent,
 } from "../../presentation/interfaces"
 
 import type {
-  DataCellRender,
-  HeaderCellRenderValue,
-  DataCellRenderValue,
+  DataRender,
+  HeaderRenderValue,
+  DataRenderValue,
   DefaultValueComponentsTypes,
 } from "../../components"
 
@@ -107,7 +107,7 @@ export function getDisplaysFromSchema(
   schema: Schema,
   defaultValueComponents: DefaultValueComponentsTypes,
   dataCellValueComponents: {
-    [attribute: string]: DataCellValueComponent
+    [attribute: string]: DataValueComponent
   } | null,
 ): HatchifyDisplay[] {
   const attributesDisplays = Object.entries(schema.attributes).map(
@@ -165,14 +165,14 @@ export function getHatchifyDisplay({
   attribute: string
   label?: string | null
   attributeSchema?: Attribute | null
-  DataCellValueComponent?: DataCellValueComponent | null
+  DataCellValueComponent?: DataValueComponent | null
   dataCellValueComponents?: {
-    [attribute: string]: DataCellValueComponent
+    [attribute: string]: DataValueComponent
   } | null
   defaultValueComponents: DefaultValueComponentsTypes
-  render?: DataCellRender | null
-  dataCellRenderValue?: DataCellRenderValue | null
-  headerCellRenderValue?: HeaderCellRenderValue | null
+  render?: DataRender | null
+  dataCellRenderValue?: DataRenderValue | null
+  headerCellRenderValue?: HeaderRenderValue | null
 }): HatchifyDisplay {
   if (!attributeSchema) {
     attributeSchema = { type: "extra", allowNull: true }
@@ -277,11 +277,9 @@ export function hasValidChildren(
 
 export function getDisplays(
   schema: Schema,
-  dataCellValueComponents:
-    | { [field: string]: DataCellValueComponent }
-    | undefined,
+  dataCellValueComponents: { [field: string]: DataValueComponent } | undefined,
   headerCellValueComponents:
-    | { [field: string]: HeaderCellValueComponent }
+    | { [field: string]: HeaderValueComponent }
     | undefined,
   defaultValueComponents: DefaultValueComponentsTypes,
   children: React.ReactNode | null,

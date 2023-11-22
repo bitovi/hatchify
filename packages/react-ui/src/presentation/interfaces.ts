@@ -97,11 +97,11 @@ export type Relationship = {
   [field: string]: Primitive
 }
 
-export type CellValue = Primitive | Relationship | Relationship[]
+export type DataValue = Primitive | Relationship | Relationship[]
 
 export interface FlatRecord {
   id: string | number
-  [field: string]: CellValue
+  [field: string]: DataValue
 }
 
 export type AttributeSchema = {
@@ -116,7 +116,7 @@ export type AttributeSchema = {
 export type Attribute = string | AttributeSchema
 
 export type DataValueComponent = React.FC<{
-  value: CellValue
+  value: DataValue
   record: FlatRecord
   attributeSchema: NewAttribute | null
   attribute?: string | null

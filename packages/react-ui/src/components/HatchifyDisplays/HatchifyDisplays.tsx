@@ -4,7 +4,7 @@ import type {
   FieldComponent,
   DataValueComponent,
   HeaderValueComponent,
-  CellValue,
+  DataValue,
   Attribute,
 } from "../../presentation/interfaces"
 import type { HatchifyDisplay } from "../../services"
@@ -24,7 +24,7 @@ export type DataRenderValue = ({
   record,
   attributeSchema,
 }: {
-  value: CellValue
+  value: DataValue
   record: FlatRecord
   attributeSchema?: Attribute
 }) => JSX.Element
