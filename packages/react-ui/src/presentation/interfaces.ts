@@ -125,9 +125,9 @@ export type DataValueComponent = React.FC<{
 export type HeaderValueComponent = React.FC<{
   column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
   meta: Meta
-  sortBy: string | undefined
-  direction: "asc" | "desc" | undefined
-  setSort: (sortBy: string) => void
+  sortBy: SortObject["sortBy"]
+  direction: SortObject["direction"]
+  setSort: HatchifyCollectionSort["setSort"]
 }>
 
 export type FieldComponent = React.FC<{

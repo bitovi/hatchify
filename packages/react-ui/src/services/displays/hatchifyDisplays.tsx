@@ -14,6 +14,8 @@ import type {
   // Attribute,
   Relationship as RelationshipType,
   DataValueComponent,
+  SortObject,
+  HatchifyCollectionSort,
 } from "../../presentation/interfaces"
 
 import type {
@@ -39,9 +41,9 @@ export interface HatchifyDisplay {
   }: {
     column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
     meta: Meta
-    sortBy: string | undefined
-    direction: "asc" | "desc" | undefined
-    setSort: (sortBy: string) => void
+    sortBy: SortObject["sortBy"]
+    direction: SortObject["direction"]
+    setSort: HatchifyCollectionSort["setSort"]
   }) => React.ReactNode
 }
 

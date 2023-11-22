@@ -6,6 +6,8 @@ import type {
   HeaderValueComponent,
   DataValue,
   Attribute,
+  SortObject,
+  HatchifyCollectionSort,
 } from "../../presentation/interfaces"
 import type { HatchifyDisplay } from "../../services"
 import type { FormFieldRender } from "../../services-legacy"
@@ -14,9 +16,9 @@ export type DataRender = ({ record }: { record: FlatRecord }) => JSX.Element
 export type HeaderRender = (headerArgs: {
   column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
   meta: Meta
-  sortBy: string | undefined
-  direction: "asc" | "desc" | undefined
-  setSort: (sortBy: string) => void
+  sortBy: SortObject["sortBy"]
+  direction: SortObject["direction"]
+  setSort: HatchifyCollectionSort["setSort"]
 }) => JSX.Element
 
 export type DataRenderValue = ({
@@ -31,9 +33,9 @@ export type DataRenderValue = ({
 export type HeaderRenderValue = (headerArgs: {
   column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
   meta: Meta
-  sortBy: string | undefined
-  direction: "asc" | "desc" | undefined
-  setSort: (sortBy: string) => void
+  sortBy: SortObject["sortBy"]
+  direction: SortObject["direction"]
+  setSort: HatchifyCollectionSort["setSort"]
 }) => JSX.Element
 
 export type HatchifyExtraColumnProps = {
