@@ -316,7 +316,7 @@ export function getHatchifyDisplay({
     const RenderHeader = headerValueComponents[attribute]
     display.renderHeader = (headerProps) => <RenderHeader {...headerProps} />
   } else {
-    display.renderHeader = undefined
+    display.renderHeader = ({ column }) => column.label
   }
 
   return display

@@ -2,7 +2,7 @@
 import { css } from "@emotion/react"
 import { Checkbox, TableCell, TableHead, TableRow } from "@mui/material"
 import type { HatchifyDisplay, XCollectionProps } from "@hatchifyjs/react-ui"
-import { Header, Sortable } from "./components"
+import { Sortable } from "./components"
 
 const styles = {
   th: css`
@@ -49,13 +49,17 @@ export const MuiHeaders: React.FC<
               sortable={column.sortable}
               sortBy={sortBy}
             >
-              <Header
-                column={column}
-                direction={direction}
-                meta={meta}
-                setSort={setSort}
-                sortBy={sortBy}
-              />
+              {column.renderHeader({
+                column: {
+                  sortable: column.sortable,
+                  key: column.key,
+                  label: column.label,
+                },
+                meta,
+                sortBy,
+                direction,
+                setSort,
+              })}
             </Sortable>
           </TableCell>
         ))}
