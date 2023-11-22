@@ -45,10 +45,10 @@ export function getColumns(
         isExtraDisplay: true,
         label: props.label,
         attribute: props.label,
-        dataCellRender: props.dataCellRenderValue,
-        DataCellValueComponent: props.DataCellValueComponent,
-        headerCellRender: props.headerCellRenderValue,
-        HeaderCellValueComponent: props.HeaderCellValueComponent,
+        renderData: props.dataRenderValue,
+        DataValueComponent: props.DataValueComponent,
+        renderHeader: props.headerRenderValue,
+        HeaderValueComponent: props.HeaderValueComponent,
         defaultValueComponents,
       }),
     )
@@ -69,10 +69,10 @@ export function getColumns(
           attributeSchema: relationship
             ? null
             : schema.attributes?.[props?.field]?.control,
-          dataCellRenderValue: props.dataCellRenderValue,
-          headerCellRender: props.headerCellRenderValue,
-          HeaderCellValueComponent: props.HeaderCellValueComponent,
-          DataCellValueComponent: props.DataCellValueComponent,
+          renderData: props.dataRenderValue,
+          renderHeader: props.headerRenderValue,
+          HeaderValueComponent: props.HeaderValueComponent,
+          DataValueComponent: props.DataValueComponent,
           defaultValueComponents,
         }),
       )
@@ -103,10 +103,10 @@ export function getColumns(
             attributeSchema: relationship
               ? null
               : schema.attributes?.[props.field].control,
-            dataCellRender: props.dataCellRenderValue,
-            headerCellRender: props.headerCellRenderValue,
-            HeaderCellValueComponent: props.HeaderCellValueComponent,
-            DataCellValueComponent: props.DataCellValueComponent,
+            renderData: props.dataRenderValue,
+            renderHeader: props.headerRenderValue,
+            HeaderValueComponent: props.HeaderValueComponent,
+            DataValueComponent: props.DataValueComponent,
             defaultValueComponents,
           }),
         )
@@ -124,10 +124,10 @@ export function getColumns(
         isExtraDisplay: true,
         label: props.label,
         attribute: props.label,
-        dataCellRender: props.dataCellRenderValue,
-        headerCellRender: props.headerCellRenderValue,
-        HeaderCellValueComponent: props.HeaderCellValueComponent,
-        DataCellValueComponent: props.DataCellValueComponent,
+        renderData: props.dataRenderValue,
+        renderHeader: props.headerRenderValue,
+        HeaderValueComponent: props.HeaderValueComponent,
+        DataValueComponent: props.DataValueComponent,
         defaultValueComponents,
       }),
     )

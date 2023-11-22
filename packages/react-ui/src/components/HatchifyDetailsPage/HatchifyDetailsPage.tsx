@@ -1,21 +1,21 @@
 import { HatchifyDetails, useHatchifyPresentation } from ".."
 import type {
   FlatRecord,
-  DataCellValueComponent,
-  HeaderCellValueComponent,
+  DataValueComponent,
+  HeaderValueComponent,
   XLayoutProps,
 } from "../../presentation/interfaces"
 
 interface HatchifyDetailsPageProps extends XLayoutProps {
-  dataCellValueComponents?: { [attribute: string]: DataCellValueComponent }
-  headerCellValueComponents?: { [attribute: string]: HeaderCellValueComponent }
+  dataValueComponents?: { [attribute: string]: DataValueComponent }
+  headerValueComponents?: { [attribute: string]: HeaderValueComponent }
   useData?: () => FlatRecord
 }
 
 export const HatchifyDetailsPage: React.FC<HatchifyDetailsPageProps> = ({
   schema,
-  dataCellValueComponents,
-  headerCellValueComponents,
+  dataValueComponents,
+  headerValueComponents,
   renderActions,
   children,
   useData,
@@ -26,8 +26,8 @@ export const HatchifyDetailsPage: React.FC<HatchifyDetailsPageProps> = ({
     <Layout schema={schema} renderActions={renderActions}>
       <HatchifyDetails
         schema={schema}
-        dataCellValueComponents={dataCellValueComponents}
-        headerCellValueComponents={headerCellValueComponents}
+        dataValueComponents={dataValueComponents}
+        headerValueComponents={headerValueComponents}
         useData={useData}
       >
         {children}

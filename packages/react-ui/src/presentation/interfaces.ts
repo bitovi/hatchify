@@ -115,15 +115,15 @@ export type AttributeSchema = {
 
 export type Attribute = string | AttributeSchema
 
-export type DataCellValueComponent = React.FC<{
+export type DataValueComponent = React.FC<{
   value: CellValue
   record: FlatRecord
   attributeSchema: NewAttribute | null
   attribute?: string | null
 }>
 
-export type HeaderCellValueComponent = React.FC<{
-  column: Omit<HatchifyDisplay, "dataCellRender" | "headerCellRender">
+export type HeaderValueComponent = React.FC<{
+  column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
   meta: Meta
   sortBy: string | undefined
   direction: "asc" | "desc" | undefined

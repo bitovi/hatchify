@@ -7,23 +7,23 @@ import type {
 import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FlatRecord,
-  DataCellValueComponent,
-  HeaderCellValueComponent,
+  DataValueComponent,
+  HeaderValueComponent,
   CellValue,
   Attribute,
 } from "../../presentation/interfaces"
 import type { HatchifyDisplay } from "../../services"
 
-export type DataCellRender = ({ record }: { record: FlatRecord }) => JSX.Element
-export type HeaderCellRender = (headerArgs: {
-  column: Omit<HatchifyDisplay, "dataCellRender" | "headerCellRender">
+export type DataRender = ({ record }: { record: FlatRecord }) => JSX.Element
+export type HeaderRender = (headerArgs: {
+  column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
   meta: Meta
   sortBy: string | undefined
   direction: "asc" | "desc" | undefined
   setSort: (sortBy: string) => void
 }) => JSX.Element
 
-export type DataCellRenderValue = ({
+export type DataRenderValue = ({
   value,
   record,
   attributeSchema,
@@ -33,15 +33,15 @@ export type DataCellRenderValue = ({
   attributeSchema?: Attribute
 }) => JSX.Element
 
-export type HeaderCellRenderValue = (headerArgs: {
-  column: Omit<HatchifyDisplay, "dataCellRender" | "headerCellRender">
+export type HeaderRenderValue = (headerArgs: {
+  column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
   meta: Meta
   sortBy: string | undefined
   direction: "asc" | "desc" | undefined
   setSort: (sortBy: string) => void
 }) => JSX.Element
 
-// todo: dataCellRenderValue and DataCellValueComponent should be required, but only one can be provided
+// todo: dataRenderValue and DataValueComponent should be required, but only one can be provided
 export type AdditionalColumnProps = {
   allSchemas: Schemas
   schemaName: string
@@ -49,13 +49,13 @@ export type AdditionalColumnProps = {
   label: string
   field?: never
 } & {
-  dataCellRenderValue?: DataCellRender
-  DataCellValueComponent?: DataCellValueComponent
-  headerCellRenderValue?: HeaderCellRender
-  HeaderCellValueComponent?: HeaderCellValueComponent
+  dataRenderValue?: DataRender
+  DataValueComponent?: DataValueComponent
+  headerRenderValue?: HeaderRender
+  HeaderValueComponent?: HeaderValueComponent
 }
 
-// todo: dataCellRenderValue and DataCellValueComponent should be optional, but only one can be provided
+// todo: dataRenderValue and DataValueComponent should be optional, but only one can be provided
 export type ReplaceColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -67,13 +67,13 @@ export type ReplaceColumnProps<
   label?: string
   field: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
 } & {
-  dataCellRenderValue?: DataCellRenderValue
-  DataCellValueComponent?: DataCellValueComponent
-  headerCellRenderValue?: HeaderCellRenderValue
-  HeaderCellValueComponent?: HeaderCellValueComponent
+  dataRenderValue?: DataRenderValue
+  DataValueComponent?: DataValueComponent
+  headerRenderValue?: HeaderRenderValue
+  HeaderValueComponent?: HeaderValueComponent
 }
 
-// todo: dataCellRenderValue and DataCellValueComponent should be optional, but only one can be provided
+// todo: dataRenderValue and DataValueComponent should be optional, but only one can be provided
 export type OverwriteColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -85,10 +85,10 @@ export type OverwriteColumnProps<
   label?: string
   field?: keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"] | "id"
 } & {
-  dataCellRenderValue?: DataCellRenderValue
-  DataCellValueComponent?: DataCellValueComponent
-  headerCellRenderValue?: HeaderCellRenderValue
-  HeaderCellValueComponent?: HeaderCellValueComponent
+  dataRenderValue?: DataRenderValue
+  DataValueComponent?: DataValueComponent
+  headerRenderValue?: HeaderRenderValue
+  HeaderValueComponent?: HeaderValueComponent
 }
 
 export function HatchifyColumn<

@@ -51,7 +51,7 @@ export const MuiBody: React.FC<
               )}
               {columns.map((column) => (
                 <TableCell key={`${item.id}-${column.key}`}>
-                  {column.dataCellRender({
+                  {column.renderData({
                     record: item,
                   })}
                 </TableCell>

@@ -6,9 +6,9 @@ export {
 } from "./HatchifyDisplays"
 
 export type {
-  HeaderCellRender,
-  DataCellRender,
-  HeaderCellRenderValue,
-  DataCellRenderValue,
+  HeaderRender,
+  DataRender,
+  HeaderRenderValue,
+  DataRenderValue,
   HatchifyAttributeFieldProps,
 } from "./HatchifyDisplays"

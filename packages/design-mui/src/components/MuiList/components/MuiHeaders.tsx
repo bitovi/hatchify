@@ -48,7 +48,7 @@ export const MuiHeaders: React.FC<
             css={styles.th}
             sortDirection={column.key === sortBy ? direction : false}
           >
-            {column.headerCellRender ? (
+            {column.renderHeader ? (
               column.sortable ? (
                 <TableSortLabel
                   disabled={meta.isLoading}
@@ -56,7 +56,7 @@ export const MuiHeaders: React.FC<
                   direction={sortBy === sortBy ? direction : "asc"}
                   onClick={() => setSort(column.key)}
                 >
-                  {column.headerCellRender({
+                  {column.renderHeader({
                     column: {
                       sortable: column.sortable,
                       key: column.key,
@@ -76,7 +76,7 @@ export const MuiHeaders: React.FC<
                   ) : null}
                 </TableSortLabel>
               ) : (
-                column.headerCellRender({
+                column.renderHeader({
                   column: {
                     sortable: column.sortable,
                     key: column.key,

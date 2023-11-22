@@ -2,24 +2,24 @@ import type { Meta } from "@hatchifyjs/rest-client"
 import type {
   FlatRecord,
   FieldComponent,
-  DataCellValueComponent,
-  HeaderCellValueComponent,
+  DataValueComponent,
+  HeaderValueComponent,
   CellValue,
   Attribute,
 } from "../../presentation/interfaces"
 import type { HatchifyDisplay } from "../../services"
 import type { FormFieldRender } from "../../services-legacy"
 
-export type DataCellRender = ({ record }: { record: FlatRecord }) => JSX.Element
-export type HeaderCellRender = (headerArgs: {
-  column: Omit<HatchifyDisplay, "dataCellRender" | "headerCellRender">
+export type DataRender = ({ record }: { record: FlatRecord }) => JSX.Element
+export type HeaderRender = (headerArgs: {
+  column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
   meta: Meta
   sortBy: string | undefined
   direction: "asc" | "desc" | undefined
   setSort: (sortBy: string) => void
 }) => JSX.Element
 
-export type DataCellRenderValue = ({
+export type DataRenderValue = ({
   value,
   record,
   attributeSchema,
@@ -28,8 +28,8 @@ export type DataCellRenderValue = ({
   record: FlatRecord
   attributeSchema?: Attribute
 }) => JSX.Element
-export type HeaderCellRenderValue = (headerArgs: {
-  column: Omit<HatchifyDisplay, "dataCellRender" | "headerCellRender">
+export type HeaderRenderValue = (headerArgs: {
+  column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
   meta: Meta
   sortBy: string | undefined
   direction: "asc" | "desc" | undefined
@@ -40,10 +40,13 @@ export type HatchifyExtraColumnProps = {
   label: string
   after?: string
 } & (
-  | { render: DataCellRender }
   | {
-      DataCellValueComponent: DataCellValueComponent
-      HeaderCellValueComponent?: HeaderCellValueComponent
+      dataRender: DataRender
+      headerRender: HeaderRender
+    }
+  | {
+      DataValueComponent: DataValueComponent
+      HeaderValueComponent?: HeaderValueComponent
     }
 )
 
@@ -69,12 +72,12 @@ export type HatchifyColumnProps = {
   label?: string
 } & (
   | {
-      dataCellRenderValue?: DataCellRenderValue
-      headerCellRenderValue?: HeaderCellRenderValue
+      dataRenderValue?: DataRenderValue
+      headerRenderValue?: HeaderRenderValue
     }
   | {
-      DataCellValueComponent?: DataCellValueComponent
-      HeaderCellValueComponent?: HeaderCellValueComponent
+      DataValueComponent?: DataValueComponent
+      HeaderValueComponent?: HeaderValueComponent
     }
 )
 
