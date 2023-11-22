@@ -613,3 +613,9 @@ npm publish
 7. Repeat steps 4-6 for any dependent packages
 
    1. For each dependent package, update the version of the dependency in the `package.json` file before running the publish command.
+
+### Updating the Grid Demo
+
+The grid demo is in a separate [repository](https://github.com/bitovi/hatchify-grid-demo) from Hatchify.
+
+Instructions for updating the grid demo can be found in the project's [README](https://github.com/bitovi/hatchify-grid-demo/blob/main/README.md).
