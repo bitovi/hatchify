@@ -1,16 +1,10 @@
-import type { HatchifyDisplay } from "@hatchifyjs/react-ui"
-import type { Meta } from "@hatchifyjs/rest-client"
 import { Box, TableSortLabel } from "@mui/material"
 import { visuallyHidden } from "@mui/utils"
+import type { RenderHeaderProps } from "./interfaces"
 
-export const Sort: React.FC<{
-  children: React.ReactNode
-  column: HatchifyDisplay
-  direction: "asc" | "desc" | undefined
-  meta: Meta
-  setSort: (sortBy: string) => void
-  sortBy?: string
-}> = ({ children, column, direction, meta, setSort, sortBy }) => (
+export const Sort: React.FC<
+  RenderHeaderProps & { children: React.ReactNode }
+> = ({ children, column, direction, meta, setSort, sortBy }) => (
   <TableSortLabel
     disabled={meta.isLoading}
     active={column.key === sortBy}

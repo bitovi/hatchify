@@ -1,13 +1,12 @@
-import type { HatchifyDisplay } from "@hatchifyjs/react-ui"
-import type { Meta } from "@hatchifyjs/rest-client"
+import type { RenderHeaderProps } from "./interfaces"
 
-export const Header: React.FC<{
-  column: HatchifyDisplay
-  direction: "asc" | "desc" | undefined
-  meta: Meta
-  setSort: (sortBy: string) => void
-  sortBy?: string
-}> = ({ column, direction, meta, setSort, sortBy }) =>
+export const Header: React.FC<RenderHeaderProps> = ({
+  column,
+  direction,
+  meta,
+  setSort,
+  sortBy,
+}) =>
   column.renderHeader
     ? column.renderHeader({
         column: {
