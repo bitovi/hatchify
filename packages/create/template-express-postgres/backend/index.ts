@@ -1,6 +1,6 @@
 import dotenv from "dotenv"
 import Express from "express"
-import cors from "cors"
+import { createServer as createViteServer } from "vite"
 import { hatchifyExpress } from "@hatchifyjs/express"
 import * as Schemas from "../schemas"
 
@@ -19,10 +19,16 @@ const hatchedExpress = hatchifyExpress(Schemas, {
   },
 })
 
-app.use(cors())
-app.use(hatchedExpress.middleware.allModels.all)
 ;(async () => {
   await hatchedExpress.createDatabase()
+
+  const vite = await createViteServer({
+    root: `${__dirname}/../`,
+    server: { middlewareMode: true },
+  })
+
+  app.use(hatchedExpress.middleware.allModels.all)
+  app.use(vite.middlewares)
 
   app.listen(3000, () => {
     console.log("Started on port 3000")
