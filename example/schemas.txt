@@ -14,7 +14,7 @@ export const Todo = {
   name: "Todo",
   // namespace: "Admin",
   attributes: {
-    title: string(),
+    name: string(),
     dueDate: datetime(),
     importance: integer(),
     status: enumerate({ values: ["Pending", "Failed", "Completed"] }),

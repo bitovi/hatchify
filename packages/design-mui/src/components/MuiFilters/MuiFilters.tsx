@@ -30,7 +30,7 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState<boolean>(false)
-  const [filters, _setFilters] = useState<FilterArray>([defaultFilter])
+  const [filters, _setFilters] = useState<FilterArray>([{ ...defaultFilter }])
 
   const applyFilters = useCallback(
     debounce((filters: FilterArray) => {
@@ -58,16 +58,16 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   )
 
   useEffect(() => {
-    setFilters([defaultFilter])
+    setFilters([{ ...defaultFilter }])
   }, [defaultFilter, schemaName, setFilters])
 
   const addNewFilter = () => {
-    setFilters([...filters, defaultFilter])
+    setFilters([...filters, { ...defaultFilter }])
   }
 
   const clearFilters = () => {
     setOpen(false)
-    setFilters([defaultFilter])
+    setFilters([{ ...defaultFilter }])
   }
 
   const removeFilter = (index: number) => {
