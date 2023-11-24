@@ -1436,6 +1436,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 attributes: {
                   yearsWorked: Number.MAX_SAFE_INTEGER,
                   birthday: "1970-01-01",
+                  uuid: "3ed97046-cbcb-4939-bc51-1f4440296c08",
                 },
               },
             },
@@ -1472,7 +1473,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                       status: "active",
                       isDeleted: false,
                       birthday: "1970-01-01",
-                      uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                      uuid: "3ed97046-cbcb-4939-bc51-1f4440296c08",
                     },
                   },
                 }),
