@@ -1,5 +1,5 @@
 import Express from "express"
-import { createServer as createViteServer } from 'vite'
+import { createServer as createViteServer } from "vite"
 import { hatchifyExpress } from "@hatchifyjs/express"
 import * as Schemas from "../schemas"
 
@@ -18,7 +18,7 @@ const hatchedExpress = hatchifyExpress(Schemas, {
 
   const vite = await createViteServer({
     root: `${__dirname}/../`,
-    server: { middlewareMode: true }
+    server: { middlewareMode: true },
   })
 
   app.use(hatchedExpress.middleware.allModels.all)

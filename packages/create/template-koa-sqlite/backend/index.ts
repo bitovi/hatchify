@@ -1,6 +1,6 @@
 import Koa from "koa"
 import c2k from "koa-connect"
-import { createServer as createViteServer } from 'vite'
+import { createServer as createViteServer } from "vite"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import * as Schemas from "../schemas"
 
@@ -19,7 +19,7 @@ const hatchedKoa = hatchifyKoa(Schemas, {
 
   const vite = await createViteServer({
     root: `${__dirname}/../`,
-    server: { middlewareMode: true }
+    server: { middlewareMode: true },
   })
 
   app.use(hatchedKoa.middleware.allModels.all)
