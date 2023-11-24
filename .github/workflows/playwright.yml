@@ -17,8 +17,10 @@ jobs:
         run: npm ci
       - name: Build nx packages
         run: npx nx run-many -t build
-      - name: Run Playwright tests
-        run: npm run e2e
+      - name: Run Playwright tests for Koa
+        run: npm run e2e --backend=koa --database=sqlite --frontend=react
+      - name: Run Playwright tests for Express
+        run: npm run e2e --backend=express --database=sqlite --frontend=react
       - uses: actions/upload-artifact@v3
         if: always()
         with:
