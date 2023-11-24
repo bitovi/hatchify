@@ -346,7 +346,7 @@ async function init() {
     `npm install --package-lock-only --no-package-lock ${dependencies
       .map((dependency) =>
         argPackagePath && dependency.startsWith("@hatchifyjs/")
-          ? `${argPackagePath}/${dependency}`
+          ? `${argPackagePath}/${dependency.replace("@hatchifyjs/", "")}`
           : `${dependency}@latest`,
       )
       .join(" ")}`,
@@ -356,7 +356,7 @@ async function init() {
     `npm install --package-lock-only --no-package-lock ${devDependencies
       .map((dependency) =>
         argPackagePath && dependency.startsWith("@hatchifyjs/")
-          ? `${argPackagePath}/${dependency}`
+          ? `${argPackagePath}/${dependency.replace("@hatchifyjs/", "")}`
           : `${dependency}@latest`,
       )
       .join(" ")} --save-dev`,
