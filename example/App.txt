@@ -22,15 +22,18 @@ const App: React.FC = () => {
   })
 
   function onActionClick() {
-    if (!selected.all && !selected.ids.length) alert("action on no items")
-    else if (selected.all)
+    if (!selected.all && !selected.ids.length) {
+      alert("action on no items")
+    } else if (selected.all) {
       alert(`action on ALL ITEMS or items ${selected.ids.join(",")}`)
-    else alert(`action on items ${selected.ids.join(",")}`)
+    } else {
+      alert(`action on items ${selected.ids.join(",")}`)
+    }
   }
 
   return (
     <ThemeProvider theme={createTheme()}>
-      <HatchifyProvider> 
+      <HatchifyProvider>
         <button onClick={onActionClick} style={{ margin: 10 }}>
           action
         </button>

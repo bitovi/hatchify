@@ -10,7 +10,7 @@ export const hatchedReact = hatchifyReact(
   createJsonapiClient("http://localhost:3000/api", Schemas),
 )
 
-const Everything = hatchedReact.Everything
+const { Everything } = hatchedReact
 
 const App: React.FC = () => {
   return (

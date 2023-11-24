@@ -1,7 +1,7 @@
 import { blue, green, yellow } from "kolorist"
-import type { Dialect, Framework } from "./types"
+import type { Database, Backend, Frontend } from "./types"
 
-export const FRAMEWORKS: Record<string, Framework> = {
+export const BACKENDS: Record<string, Backend> = {
   EXPRESS: {
     name: "express",
     display: "Express",
@@ -18,7 +18,7 @@ export const FRAMEWORKS: Record<string, Framework> = {
   },
 }
 
-export const DIALECTS: Record<string, Dialect> = {
+export const DATABASES: Record<string, Database> = {
   POSTGRES: {
     name: "postgres",
     display: "Postgres",
@@ -31,6 +31,21 @@ export const DIALECTS: Record<string, Dialect> = {
     display: "SQLite",
     color: blue,
     dependencies: ["sqlite3"],
+    devDependencies: [],
+  },
+}
+
+export const FRONTENDS: Record<string, Frontend> = {
+  REACT: {
+    name: "react",
+    display: "React",
+    color: yellow,
+    dependencies: [
+      "@hatchifyjs/react",
+      "@mui/material",
+      "@emotion/react",
+      "@emotion/styled",
+    ],
     devDependencies: [],
   },
 }
