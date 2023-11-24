@@ -33,6 +33,7 @@ async function init() {
   const argBackend = (argv.backend || argv.b)?.toUpperCase()
   const argDatabase = (argv.database || argv.d)?.toUpperCase()
   const argFrontend = (argv.frontend || argv.f || "react")?.toUpperCase()
+  const argPackagePath = argv.path
 
   let targetDir = argTargetDir || defaultTargetDir
   const getProjectName = () =>
@@ -343,14 +344,22 @@ async function init() {
 
   runCommand(
     `npm install --package-lock-only --no-package-lock ${dependencies
-      .map((dependency) => `${dependency}@latest`)
+      .map((dependency) =>
+        argPackagePath && dependency.startsWith("@hatchifyjs/")
+          ? `${argPackagePath}/${dependency}`
+          : `${dependency}@latest`,
+      )
       .join(" ")}`,
     root,
   )
   runCommand(
-    `npm install --package-lock-only --no-package-lock ${devDependencies.join(
-      " ",
-    )} --save-dev`,
+    `npm install --package-lock-only --no-package-lock ${devDependencies
+      .map((dependency) =>
+        argPackagePath && dependency.startsWith("@hatchifyjs/")
+          ? `${argPackagePath}/${dependency}`
+          : `${dependency}@latest`,
+      )
+      .join(" ")} --save-dev`,
     root,
   )
   runCommand("npm install", root)
