@@ -505,7 +505,7 @@ npx nx eslint @hatchifyjs/koa
 └── tsconfig.json
 ```
 
-## Making releases
+## Making a release
 
 **ALL packages** MUST follow the Semantic Versioning guidelines in the form of `MAJOR.MINOR.PATCH` for
 
@@ -523,44 +523,99 @@ Before making any release please make sure that:
 
 All Hatchify packages have the same structure which allows making releases through npm scripts.
 
-To make a release:
+#### Making a release through GitHub Actions
 
-1. Move to the `master` branch
+1. Select a package to release in the Actions tab
+2. Click the `Run workflow` button and input the version segment to increment: `major`, `minor`, or `patch`
+3. Run the workflow
+
+#### Making a release through the CLI
+
+1. Move to the `main` branch
 2. Fetch all latest changes from the repository
-3. Reinstall all Node modules in their latest version
+3. Go to the directory of the package you want to release
 
-   ```
-   git checkout master
-   git fetch --all && git rebase
-   npm cache verify
-   rm -rf node_modules
-   npm install
-   ```
+```
+cd packages/<packagename>
+```
 
-4. Then run `npm run release:<versiontype>`. For example, to make a `PATCH` release:
+4. Rebuild the package to make sure it is up to date
 
-   ```
-   npm run release:patch
-   ```
+```
+nx run @hatchifyjs/<packagename>:build
+```
 
-This will run the tests, build, bump the version number accordingly and publish the module to [npm](https://www.npmjs.com/).
+5. Increment the version. For example, to make a `PATCH` release:
+
+```
+npm version patch
+```
+
+6. Publish the package
+
+```
+npm publish
+```
+
+7. Follow the prompts to log in to npm and publish the package
 
 #### Making pre-releases
 
-If you’re already a branch being used for pre-releases, you can run the following to make the next pre-release:
+If you want to release a pre-release, you can run the following command before publishing to increment the pre-release version:
 
 ```
-npm run release:pre
+npm version prerelease
 ```
-
-If you’re making the first pre-release, you can run one of the following commands, depending on how you need to bump the version:
-
-- Major: `npm version premajor --preid=pre && npm publish --tag=pre`
-- Minor: `npm version preminor --preid=pre && npm publish --tag=pre`
-- Patch: `npm version prepatch --preid=pre && npm publish --tag=pre`
 
 #### Publishing release notes
 
 After you have released the package, you will need to update the release on GitHub. Make sure the newly created tag has been pushed to GitHub (`git push --tags`).
 
 Then go to `https://github.com/bitovi/hatchify/releases` and edit the most recent tag. Give it a title and add any notes or links to issues, then click `Update release`.
+
+### Dependent Releases
+
+If you are making a release and another package depends on it, you will need to update the dependent package to use the new version.
+
+For example, if you are making a release for `@hatchifyjs/rest-client`, then you will need to update `@hatchifyjs/react-rest` to use the new version of `@hatchifyjs/rest-client`. And repeat the process for any other packages that depend on `@hatchifyjs/rest-client`. Once `@hatchifyjs/react-rest` has been updated, you will need to continue the process for any of its dependent packages.
+
+#### Dependent Releases through GitHub Actions
+
+Follow the same steps as above, but make sure to select the dependent package in the Actions tab.
+
+**Note:** Before making a release for a dependent package, make sure to increment the version of the dependency in the `package.json` file in a separate commit.
+
+#### Dependent Releases through the CLI
+
+Because of the number of frontend packages, it is recommended to release through CLI commands instead of using GitHub Actions.
+
+1. Move to the `main` branch
+2. Fetch all latest changes from the repository
+3. Rebuild all packages
+
+```
+nx run-many -t build
+```
+
+4. Go to the directory of the package you want to release
+5. Run `npm version <versiontype>`. For example, to make a `PATCH` release:
+
+```
+npm version patch
+```
+
+6. Publish the package
+
+```
+npm publish
+```
+
+7. Repeat steps 4-6 for any dependent packages
+
+   1. For each dependent package, update the version of the dependency in the `package.json` file before running the publish command.
+
+### Updating the Grid Demo
+
+The grid demo is in a separate [repository](https://github.com/bitovi/hatchify-grid-demo) from Hatchify.
+
+Instructions for updating the grid demo can be found in the project's [README](https://github.com/bitovi/hatchify-grid-demo/blob/main/README.md).
