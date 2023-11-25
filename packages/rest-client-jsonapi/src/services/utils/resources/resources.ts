@@ -1,9 +1,9 @@
 import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 import type {
-  RequiredSchemaMap,
+  RestClientSchemaMap,
   Resource,
   ResourceRelationship,
-  SourceConfig,
+  RestClientConfig,
   SchemalessResourceRelationship,
   CreateType,
   GetSchemaFromName,
@@ -24,8 +24,12 @@ type Relationship = Record<
   ResourceRelationship | ResourceRelationship[]
 >
 
+/**
+ * Returns a map of schema json:api type to schema name. In most cases, the schema
+ * name is the same as the json:api type.
+ */
 export const getTypeToSchema = (
-  schemaMap: RequiredSchemaMap, // todo: HATCH-417
+  schemaMap: RestClientSchemaMap, // todo: HATCH-417
 ): Record<string, string> => {
   return Object.entries(schemaMap).reduce((acc, [key, value]) => {
     acc[value.type] = key
@@ -82,7 +86,7 @@ export function jsonApiResourceToHatchifyResource(
  */
 export function convertToHatchifyResources(
   data: JsonApiResource | JsonApiResource[],
-  schemaMap: RequiredSchemaMap, // todo: HATCH-417
+  schemaMap: RestClientSchemaMap, // todo: HATCH-417
 ): Resource[] {
   const typeToSchema = getTypeToSchema(schemaMap)
 
@@ -97,7 +101,7 @@ export function convertToHatchifyResources(
  * Converts a single Hatchify relationship to a JSON:API relationship
  */
 function hatchifyRelationshipToJsonApiRelationship(
-  config: SourceConfig, // todo: HATCH-417
+  config: RestClientConfig, // todo: HATCH-417
   schema: FinalSchema,
   typeName: string,
   resourceRelationships: MutateRelationship | MutateRelationship[] | undefined,
@@ -144,7 +148,7 @@ export function convertToJsonApiRelationships<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  config: SourceConfig, // todo: HATCH-417
+  config: RestClientConfig, // todo: HATCH-417
   schema: FinalSchema,
   resourceRelationships: MutateRelationships<
     GetSchemaFromName<TSchemas, TSchemaName>
@@ -174,7 +178,7 @@ export function hatchifyResourceToJsonApiResource<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  config: SourceConfig, // todo: HATCH-417
+  config: RestClientConfig, // todo: HATCH-417
   schema: FinalSchema,
   schemaName: string,
   hatchifyResource:

@@ -25,10 +25,10 @@ describe("react-ui/hatchifyReact", () => {
         },
       },
       version: 0,
-      findAll: () => Promise.resolve([[], {}]),
-      findOne: () => Promise.resolve([]),
-      createOne: () => Promise.resolve([]),
-      updateOne: () => Promise.resolve([]),
+      findAll: () => Promise.resolve([{ records: [], related: [] }, {}]),
+      findOne: () => Promise.resolve({ record: {} as any, related: [] }),
+      createOne: () => Promise.resolve({ record: {} as any, related: [] }),
+      updateOne: () => Promise.resolve({ record: {} as any, related: [] }),
       deleteOne: () => Promise.resolve(),
     }
 
@@ -95,10 +95,10 @@ describe("react-ui/hatchifyReact", () => {
         },
       },
       version: 0,
-      findAll: () => Promise.resolve([[], {}]),
-      findOne: () => Promise.resolve([]),
-      createOne: () => Promise.resolve([]),
-      updateOne: () => Promise.resolve([]),
+      findAll: () => Promise.resolve([{ records: [], related: [] }, {}]),
+      findOne: () => Promise.resolve({ record: {} as any, related: [] }),
+      createOne: () => Promise.resolve({ record: {} as any, related: [] }),
+      updateOne: () => Promise.resolve({ record: {} as any, related: [] }),
       deleteOne: () => Promise.resolve(),
     }
 

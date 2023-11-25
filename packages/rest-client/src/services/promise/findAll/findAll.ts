@@ -9,11 +9,8 @@ import type {
   FinalSchemas,
   Filters,
 } from "../../types"
-import {
-  SchemaNameNotStringError,
-  flattenResourcesIntoRecords,
-  schemaNameIsString,
-} from "../../utils"
+import { SchemaNameNotStringError, schemaNameIsString } from "../../utils"
+import { flattenResourcesIntoRecords } from "../../utils/records"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,
@@ -38,6 +35,7 @@ export const findAll = async <
     throw new SchemaNameNotStringError(schemaName)
   }
 
+  // todo: HATCH-417; return from `findAll` needs to be a typed `Resource` using generics
   const [resources, requestMetaData] = await dataSource.findAll(
     allSchemas,
     schemaName,
@@ -46,8 +44,13 @@ export const findAll = async <
   )
 
   return [
-    // @ts-expect-error todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
-    flattenResourcesIntoRecords(allSchemas, resources, schemaName),
+    // todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
+    // @ts-expect-error
+    flattenResourcesIntoRecords(
+      allSchemas,
+      resources.records,
+      resources.related,
+    ),
     requestMetaData,
   ]
 }

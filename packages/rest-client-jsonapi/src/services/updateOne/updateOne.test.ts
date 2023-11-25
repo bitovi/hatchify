@@ -1,28 +1,17 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import { baseUrl } from "../../mocks/handlers"
+import {
+  baseUrl,
+  finalSchemas,
+  partialSchemas,
+  restClientConfig,
+  testData,
+} from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { updateOne } from "./updateOne"
-import { assembler } from "@hatchifyjs/core"
-
-const partialSchemaMap = {
-  Article: {
-    name: "Article",
-    attributes: {},
-    type: "article",
-    endpoint: "articles",
-  },
-  Person: {
-    name: "Person",
-    attributes: {},
-    type: "person",
-    endpoint: "people",
-  },
-  Tag: { name: "Tag", attributes: {}, type: "tag", endpoint: "tags" },
-}
-const sourceConfig = { baseUrl, schemaMap: partialSchemaMap }
-const finalSchemaMap = assembler(partialSchemaMap)
+import { convertToHatchifyResources } from "../utils"
+import type { JsonApiResource } from "../jsonapi"
 
 describe("rest-client-jsonapi/services/updateOne", () => {
   it("works", async () => {
@@ -31,35 +20,52 @@ describe("rest-client-jsonapi/services/updateOne", () => {
       id: "article-id-1",
       attributes: { title: "A new world!" },
     }
-    const expected = [
-      {
-        __schema: "Article",
-        id: "article-id-1",
-        attributes: {
-          title: "A new world!",
-          body: "Article 1 body",
-        },
-        relationships: {
-          author: {
-            __schema: "Person",
-            id: "person-id-1",
+
+    const toUpdate = testData.data.find((d) => d.id === data.id)
+
+    const expected = {
+      record: convertToHatchifyResources(
+        {
+          ...toUpdate,
+          attributes: {
+            ...toUpdate?.attributes,
+            title: "A new world!",
           },
-          tags: [
-            {
-              __schema: "Tag",
-              id: "tag-id-1",
-            },
-            {
-              __schema: "Tag",
-              id: "tag-id-2",
-            },
-          ],
-        },
-      },
-    ]
-    const result = await updateOne<typeof partialSchemaMap, "Article">(
-      sourceConfig,
-      finalSchemaMap,
+        } as JsonApiResource,
+        partialSchemas,
+      )[0],
+      related: [],
+    }
+    // const expected = [
+    //   {
+    //     __schema: "Article",
+    //     id: "article-id-1",
+    //     attributes: {
+    //       title: "A new world!",
+    //       body: "Article 1 body",
+    //     },
+    //     relationships: {
+    //       author: {
+    //         __schema: "Person",
+    //         id: "person-id-1",
+    //       },
+    //       tags: [
+    //         {
+    //           __schema: "Tag",
+    //           id: "tag-id-1",
+    //         },
+    //         {
+    //           __schema: "Tag",
+    //           id: "tag-id-2",
+    //         },
+    //       ],
+    //     },
+    //   },
+    // ]
+
+    const result = await updateOne<typeof partialSchemas, "Article">(
+      restClientConfig,
+      finalSchemas,
       "Article",
       data,
     )
@@ -83,7 +89,7 @@ describe("rest-client-jsonapi/services/updateOne", () => {
     )
 
     await expect(() =>
-      updateOne(sourceConfig, finalSchemaMap, "Article", {
+      updateOne(restClientConfig, finalSchemas, "Article", {
         __schema: "Article",
         id: "article-id-1",
       }),
@@ -91,14 +97,16 @@ describe("rest-client-jsonapi/services/updateOne", () => {
   })
 
   it("can be called from a rest client", async () => {
-    const dataSource = jsonapi(baseUrl, partialSchemaMap)
+    const dataSource = jsonapi(baseUrl, partialSchemas)
     const data = {
       __schema: "Article",
       id: "article-id-1",
       attributes: { title: "Hello, World!" },
     }
     const spy = vi.spyOn(dataSource, "updateOne")
-    await dataSource.updateOne(finalSchemaMap, "Article", data)
-    expect(spy).toHaveBeenCalledWith(finalSchemaMap, "Article", data)
+
+    await dataSource.updateOne(finalSchemas, "Article", data)
+
+    expect(spy).toHaveBeenCalledWith(finalSchemas, "Article", data)
   })
 })

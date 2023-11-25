@@ -3,7 +3,7 @@ import type {
   QueryList,
   RequestMetaData,
   Resource,
-  SourceConfig,
+  RestClientConfig,
   FinalSchemas,
   GetSchemaNames,
   GetSchemaFromName,
@@ -28,12 +28,17 @@ export async function findAll<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  config: SourceConfig,
+  config: RestClientConfig,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
   baseFilter?: Filters,
-): Promise<[Resources: Resource[], Meta: RequestMetaData]> {
+): Promise<
+  [
+    Resources: { records: Resource[]; related: Resource[] },
+    Meta: RequestMetaData,
+  ]
+> {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
@@ -58,10 +63,13 @@ export async function findAll<
   )
 
   return Promise.resolve([
-    convertToHatchifyResources(
-      [...json.data, ...(json.included || [])],
-      config.schemaMap,
-    ),
+    {
+      records: convertToHatchifyResources(json.data, config.schemaMap),
+      related: convertToHatchifyResources(
+        json.included || [],
+        config.schemaMap,
+      ),
+    },
     json.meta,
   ])
 }

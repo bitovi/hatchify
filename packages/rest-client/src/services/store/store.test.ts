@@ -6,22 +6,26 @@ import {
   notifySubscribers,
   remove,
 } from "./store"
-import { schemas } from "../mocks/testData"
+import { testFinalSchemas } from "../mocks/testData"
 import { subscribeToAll } from "../subscribe"
 
 describe("rest-client/store", () => {
   afterEach(() => {
     // reset the store's state
-    createStore(["Article", "Person"])
+    createStore(["Company", "Person", "Todo"])
   })
   describe("createStore", () => {
     it("should create a ResourceStore for each schema", () => {
-      expect(createStore(["Article", "Person"])).toEqual({
-        Article: {
+      expect(createStore(["Company", "Person", "Todo"])).toEqual({
+        Todo: {
           data: {},
           subscribers: [],
         },
         Person: {
+          data: {},
+          subscribers: [],
+        },
+        Company: {
           data: {},
           subscribers: [],
         },
@@ -31,87 +35,94 @@ describe("rest-client/store", () => {
 
   describe("insert", () => {
     it("should insert data into the store", () => {
-      const store = createStore(["Article", "Person"])
-      insert(schemas, "Article", [
+      const store = createStore(["Todo", "Person"])
+
+      insert(testFinalSchemas, "Todo", [
         {
-          id: "1",
-          __schema: "Article",
-          attributes: { title: "title-1", body: "body-1" },
+          id: "todo-1",
+          __schema: "Todo",
+          attributes: { title: "title-1", important: false },
         },
       ])
-      insert(schemas, "Person", [
+
+      insert(testFinalSchemas, "Person", [
         {
-          id: "1",
+          id: "person-1",
           __schema: "Person",
-          attributes: { name: "name-1", age: 30 },
+          attributes: { name: "name-1" },
         },
       ])
-      insert(schemas, "Article", [
+
+      insert(testFinalSchemas, "Todo", [
         {
-          id: "2",
-          __schema: "Article",
-          attributes: { title: "title-2", body: "body-2" },
+          id: "todo-2",
+          __schema: "Todo",
+          attributes: { title: "title-2", important: false },
         },
         {
-          id: "3",
-          __schema: "Article",
-          attributes: { title: "title-3", body: "body-3" },
+          id: "todo-3",
+          __schema: "Todo",
+          attributes: { title: "title-3", important: false },
         },
       ])
 
       expect(store).toEqual({
-        Article: {
+        Todo: {
           data: {
-            "1": {
-              id: "1",
-              __schema: "Article",
-              attributes: { title: "title-1", body: "body-1" },
+            "todo-1": {
+              id: "todo-1",
+              __schema: "Todo",
+              attributes: { title: "title-1", important: false },
             },
-            "2": {
-              id: "2",
-              __schema: "Article",
-              attributes: { title: "title-2", body: "body-2" },
+            "todo-2": {
+              id: "todo-2",
+              __schema: "Todo",
+              attributes: { title: "title-2", important: false },
             },
-            "3": {
-              id: "3",
-              __schema: "Article",
-              attributes: { title: "title-3", body: "body-3" },
+            "todo-3": {
+              id: "todo-3",
+              __schema: "Todo",
+              attributes: { title: "title-3", important: false },
             },
           },
           subscribers: [],
         },
         Person: {
           data: {
-            "1": {
-              id: "1",
+            "person-1": {
+              id: "person-1",
               __schema: "Person",
-              attributes: { name: "name-1", age: 30 },
+              attributes: { name: "name-1" },
             },
           },
+          subscribers: [],
+        },
+        Company: {
+          data: {},
           subscribers: [],
         },
       })
     })
 
     it("should notify subscribers with Record, not Resource", () => {
-      const store = createStore(["Article", "Person"])
+      const store = createStore(["Todo", "Person"])
       const subscriber = vi.fn()
-      store.Article.subscribers.push(subscriber)
+      store.Todo.subscribers.push(subscriber)
 
-      insert(schemas, "Article", [
+      insert(testFinalSchemas, "Todo", [
         {
-          id: "article-1",
-          __schema: "Article",
-          attributes: { title: "title-1", body: "body-1" },
+          id: "todo-1",
+          __schema: "Todo",
+          attributes: { title: "title-1", important: true },
         },
       ])
 
       expect(subscriber).toHaveBeenCalledWith([
         {
-          id: "article-1",
-          __schema: "Article",
+          id: "todo-1",
+          __schema: "Todo",
           title: "title-1",
-          body: "body-1",
+          important: true,
         },
       ])
     })
@@ -119,87 +130,87 @@ describe("rest-client/store", () => {
 
   describe("getRecords", () => {
     it("should return an array of records for a given schema", () => {
-      createStore(["Article", "Person"])
-      insert(schemas, "Article", [
+      createStore(["Todo", "Person"])
+      insert(testFinalSchemas, "Todo", [
         {
-          id: "article-1",
-          __schema: "Article",
-          attributes: { title: "title-1", body: "body-1" },
+          id: "todo-1",
+          __schema: "Todo",
+          attributes: { title: "title-1", important: true },
         },
       ])
-      insert(schemas, "Person", [
+      insert(testFinalSchemas, "Person", [
         {
           id: "person-1",
           __schema: "Person",
-          attributes: { name: "name-1", age: 30 },
+          attributes: { name: "name-1" },
         },
       ])
 
-      expect(getRecords(schemas, "Article")).toEqual([
+      expect(getRecords(testFinalSchemas, "Todo")).toEqual([
         {
-          id: "article-1",
-          __schema: "Article",
+          id: "todo-1",
+          __schema: "Todo",
           title: "title-1",
-          body: "body-1",
+          important: true,
         },
       ])
     })
 
     it("should return an empty array if there are no records for a given schema", () => {
-      expect(getRecords(schemas, "Tags")).toEqual([])
+      expect(getRecords(testFinalSchemas, "Tags")).toEqual([])
     })
   })
 
   describe("remove", () => {
     it("should remove records from the store", () => {
-      createStore(["Article"])
-      insert(schemas, "Article", [
+      createStore(["Todo"])
+      insert(testFinalSchemas, "Todo", [
         {
-          id: "article-1",
-          __schema: "Article",
-          attributes: { title: "title-1", body: "body-1" },
+          id: "todo-1",
+          __schema: "Todo",
+          attributes: { title: "title-1", important: false },
         },
         {
-          id: "article-2",
-          __schema: "Article",
-          attributes: { title: "title-2", body: "body-2" },
+          id: "todo-2",
+          __schema: "Todo",
+          attributes: { title: "title-2", important: false },
         },
         {
-          id: "article-3",
-          __schema: "Article",
-          attributes: { title: "title-3", body: "body-3" },
+          id: "todo-3",
+          __schema: "Todo",
+          attributes: { title: "title-3", important: false },
         },
       ])
 
-      expect(getRecords(schemas, "Article")).toEqual([
+      expect(getRecords(testFinalSchemas, "Todo")).toEqual([
         {
-          id: "article-1",
-          __schema: "Article",
+          id: "todo-1",
+          __schema: "Todo",
           title: "title-1",
-          body: "body-1",
+          important: false,
         },
         {
-          id: "article-2",
-          __schema: "Article",
+          id: "todo-2",
+          __schema: "Todo",
           title: "title-2",
-          body: "body-2",
+          important: false,
         },
         {
-          id: "article-3",
-          __schema: "Article",
+          id: "todo-3",
+          __schema: "Todo",
           title: "title-3",
-          body: "body-3",
+          important: false,
         },
       ])
 
-      remove(schemas, "Article", ["article-1", "article-3"])
+      remove(testFinalSchemas, "Todo", ["todo-1", "todo-3"])
 
-      expect(getRecords(schemas, "Article")).toEqual([
+      expect(getRecords(testFinalSchemas, "Todo")).toEqual([
         {
-          id: "article-2",
-          __schema: "Article",
+          id: "todo-2",
+          __schema: "Todo",
           title: "title-2",
-          body: "body-2",
+          important: false,
         },
       ])
     })
@@ -207,11 +218,11 @@ describe("rest-client/store", () => {
 
   describe("nofitySubscribers", () => {
     it("should notify all subscribers if no schemaName is provided", () => {
-      createStore(["Article", "Person"])
+      createStore(["Todo", "Person"])
       const subscriber1 = vi.fn()
       const subscriber2 = vi.fn()
 
-      subscribeToAll("Article", undefined, subscriber1)
+      subscribeToAll("Todo", undefined, subscriber1)
       subscribeToAll("Person", undefined, subscriber2)
 
       notifySubscribers()
@@ -221,11 +232,11 @@ describe("rest-client/store", () => {
     })
 
     it("should notify all subscribers for a given schema", () => {
-      createStore(["Article", "Person"])
+      createStore(["Todo", "Person"])
       const subscriber1 = vi.fn()
       const subscriber2 = vi.fn()
 
-      subscribeToAll("Article", undefined, subscriber1)
+      subscribeToAll("Todo", undefined, subscriber1)
       subscribeToAll("Person", undefined, subscriber2)
 
       notifySubscribers("Person")

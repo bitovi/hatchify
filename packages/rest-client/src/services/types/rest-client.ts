@@ -1,38 +1,31 @@
 import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   CreateType,
+  Filters,
   FinalSchemas,
   GetSchemaFromName,
   GetSchemaNames,
+  QueryList,
+  QueryOne,
+  RequestMetaData,
+  Resource,
   UpdateType,
-} from "./schema"
-import type { Filters, QueryList, QueryOne } from "./query"
+  WithRequiredProperty,
+} from "."
 
-import type { Resource } from "./data"
-import type { RequestMetaData } from "./meta"
-
-export type SourceSchema = PartialSchema & {
+export type RestClientSchema = PartialSchema & {
   type?: string
   endpoint?: string
 }
 
-type WithRequiredProperty<Type, Key extends keyof Type> = Type & {
-  [Property in Key]-?: Type[Property]
-}
-
-export type SchemaMap<TSchemas extends Record<string, PartialSchema>> = Record<
+export type RestClientSchemaMap = Record<
   string,
-  TSchemas
+  WithRequiredProperty<RestClientSchema, "type">
 >
 
-export type RequiredSchemaMap = Record<
-  string,
-  WithRequiredProperty<SourceSchema, "type">
->
-
-export interface SourceConfig {
+export interface RestClientConfig {
   baseUrl: string
-  schemaMap: RequiredSchemaMap
+  schemaMap: RestClientSchemaMap
 }
 
 // always return a Resource[] even if it's a single resource because
@@ -42,29 +35,33 @@ export interface RestClient<
   TSchemaName extends GetSchemaNames<TSchemas>,
 > {
   version: 0
-  // completeSchemaMap: RequiredSchemaMap
   completeSchemaMap: TSchemas
   findAll: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
     query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
     baseFilter?: Filters,
-  ) => Promise<[Resources: Resource[], Meta: RequestMetaData]>
+  ) => Promise<
+    [
+      Resources: { records: Resource[]; related: Resource[] },
+      Meta: RequestMetaData,
+    ]
+  >
   findOne: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
     query: QueryOne<GetSchemaFromName<TSchemas, TSchemaName>>,
-  ) => Promise<Resource[]>
+  ) => Promise<{ record: Resource; related: Resource[] }>
   createOne: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
     data: CreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
-  ) => Promise<Resource[]>
+  ) => Promise<{ record: Resource; related: Resource[] }>
   updateOne: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
     data: UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
-  ) => Promise<Resource[]>
+  ) => Promise<{ record: Resource; related: Resource[] }>
   deleteOne: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
