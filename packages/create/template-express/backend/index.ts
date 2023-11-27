@@ -10,12 +10,7 @@ const app = Express()
 const hatchedExpress = hatchifyExpress(Schemas, {
   prefix: "/api",
   database: {
-    dialect: "postgres",
-    host: process.env.PG_DB_HOST,
-    port: Number(process.env.PG_DB_PORT),
-    username: process.env.PG_DB_USERNAME,
-    password: process.env.PG_DB_PASSWORD,
-    database: process.env.PG_DB_NAME,
+    uri: process.env.DB_URI,
   },
 })
 

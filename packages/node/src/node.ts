@@ -107,10 +107,6 @@ export class Hatchify {
         end: false,
       },
     )
-
-    if (options.sync) {
-      this.createDatabase()
-    }
   }
 
   printEndpoints(): void {
