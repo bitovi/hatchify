@@ -30,13 +30,6 @@ export type DataRenderValue = ({
   record: FlatRecord
   attributeSchema?: Attribute
 }) => JSX.Element
-export type HeaderRenderValue = (headerArgs: {
-  column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
-  meta: Meta
-  sortBy: SortObject["sortBy"]
-  direction: SortObject["direction"]
-  setSort: HatchifyCollectionSort["setSort"]
-}) => JSX.Element
 
 export type HatchifyExtraColumnProps = {
   label: string
@@ -75,7 +68,7 @@ export type HatchifyColumnProps = {
 } & (
   | {
       dataRenderValue?: DataRenderValue
-      headerRenderValue?: HeaderRenderValue
+      headerRenderValue?: HeaderRender
     }
   | {
       DataValueComponent?: DataValueComponent

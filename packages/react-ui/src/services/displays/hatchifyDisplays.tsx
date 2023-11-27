@@ -23,7 +23,6 @@ import type {
   DataRenderValue,
   DefaultValueComponentsTypes,
   HeaderRender,
-  HeaderRenderValue,
 } from "../../components"
 import type { FinalSchema } from "@hatchifyjs/core"
 
@@ -123,7 +122,7 @@ export function getDisplaysFromChildren(
         defaultValueComponents,
         dataRenderValue: props.dataRenderValue,
         DataValueComponent: props.DataValueComponent,
-        headerRenderValue: props.headerRenderValue,
+        renderHeader: props.headerRenderValue,
         HeaderValueComponent: props.HeaderValueComponent,
       })
     })
@@ -213,7 +212,6 @@ export function getHatchifyDisplay({
   renderData = null,
   dataRenderValue = null,
   renderHeader = null,
-  headerRenderValue = null,
 }: {
   isRelationship?: boolean
   sortable?: boolean
@@ -233,7 +231,6 @@ export function getHatchifyDisplay({
   renderData?: DataRender | null
   dataRenderValue?: DataRenderValue | null
   renderHeader?: HeaderRender | null
-  headerRenderValue?: HeaderRenderValue | null
 }): HatchifyDisplay {
   if (!attributeSchema) {
     attributeSchema = { type: "extra" }
@@ -252,7 +249,6 @@ export function getHatchifyDisplay({
     key: attribute || uuidv4(),
     label:
       renderHeader ||
-      headerRenderValue ||
       HeaderValueComponent ||
       (headerValueComponents && headerValueComponents[attribute])
         ? undefined
@@ -306,8 +302,6 @@ export function getHatchifyDisplay({
 
   if (renderHeader) {
     display.renderHeader = (headerArgs) => renderHeader(headerArgs)
-  } else if (headerRenderValue) {
-    display.renderHeader = (headerArgs) => headerRenderValue(headerArgs)
   } else if (HeaderValueComponent) {
     display.renderHeader = (headerProps) => (
       <HeaderValueComponent {...headerProps} />

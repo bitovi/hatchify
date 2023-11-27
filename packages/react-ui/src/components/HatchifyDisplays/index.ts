@@ -8,7 +8,6 @@ export {
 export type {
   HeaderRender,
   DataRender,
-  HeaderRenderValue,
   DataRenderValue,
   HatchifyAttributeFieldProps,
 } from "./HatchifyDisplays"

@@ -35,14 +35,6 @@ export type DataRenderValue = ({
   attributeSchema?: Attribute
 }) => JSX.Element
 
-export type HeaderRenderValue = (headerArgs: {
-  column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
-  meta: Meta
-  sortBy: SortObject["sortBy"]
-  direction: SortObject["direction"]
-  setSort: HatchifyCollectionSort["setSort"]
-}) => JSX.Element
-
 // todo: dataRenderValue and DataValueComponent should be required, but only one can be provided
 export type AdditionalColumnProps = {
   allSchemas: Schemas
@@ -71,7 +63,7 @@ export type ReplaceColumnProps<
 } & {
   dataRenderValue?: DataRenderValue
   DataValueComponent?: DataValueComponent
-  headerRenderValue?: HeaderRenderValue
+  headerRenderValue?: HeaderRender
   HeaderValueComponent?: HeaderValueComponent
 }
 
@@ -89,7 +81,7 @@ export type OverwriteColumnProps<
 } & {
   dataRenderValue?: DataRenderValue
   DataValueComponent?: DataValueComponent
-  headerRenderValue?: HeaderRenderValue
+  headerRenderValue?: HeaderRender
   HeaderValueComponent?: HeaderValueComponent
 }
 

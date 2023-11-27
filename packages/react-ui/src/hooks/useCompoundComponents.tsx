@@ -70,7 +70,7 @@ export function getColumns(
             ? null
             : schema.attributes?.[props?.field]?.control,
           dataRenderValue: props.dataRenderValue,
-          headerRenderValue: props.headerRenderValue,
+          renderHeader: props.headerRenderValue,
           HeaderValueComponent: props.HeaderValueComponent,
           DataValueComponent: props.DataValueComponent,
           defaultValueComponents,
@@ -104,7 +104,7 @@ export function getColumns(
               ? null
               : schema.attributes?.[props.field].control,
             dataRenderValue: props.dataRenderValue,
-            headerRenderValue: props.headerRenderValue,
+            renderHeader: props.headerRenderValue,
             HeaderValueComponent: props.HeaderValueComponent,
             DataValueComponent: props.DataValueComponent,
             defaultValueComponents,
