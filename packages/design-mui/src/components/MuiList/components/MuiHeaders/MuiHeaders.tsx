@@ -1,15 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react"
-import { visuallyHidden } from "@mui/utils"
-import {
-  Box,
-  Checkbox,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-} from "@mui/material"
+import { Checkbox, TableCell, TableHead, TableRow } from "@mui/material"
 import type { HatchifyColumn, XCollectionProps } from "@hatchifyjs/react-ui"
+import { Sortable } from "./components"
 
 const styles = {
   th: css`
@@ -45,28 +38,29 @@ export const MuiHeaders: React.FC<
         {columns.map((column) => (
           <TableCell
             key={column.key}
-            css={styles.th}
+            css={column.isHeaderOverridden ? "" : styles.th}
             sortDirection={column.key === sortBy ? direction : false}
           >
-            {column.sortable ? (
-              <TableSortLabel
-                disabled={meta.isLoading}
-                active={column.key === sortBy}
-                direction={sortBy === sortBy ? direction : "asc"}
-                onClick={() => setSort(column.key)}
-              >
-                {column.label}
-                {column.key === sortBy ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {direction === "desc"
-                      ? "sorted descending"
-                      : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            ) : (
-              column.label
-            )}
+            <Sortable
+              column={column}
+              direction={direction}
+              meta={meta}
+              setSort={setSort}
+              sortable={column.sortable}
+              sortBy={sortBy}
+            >
+              {column.renderHeader({
+                column: {
+                  sortable: column.sortable,
+                  key: column.key,
+                  label: column.label,
+                },
+                meta,
+                sortBy,
+                direction,
+                setSort,
+              })}
+            </Sortable>
           </TableCell>
         ))}
       </TableRow>

@@ -1,13 +1,21 @@
 import type {
+  Meta,
+  FinalSchemas,
   GetSchemaFromName,
   GetSchemaNames,
-  FinalSchemas,
   RecordType,
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { ValueComponent, CellValue } from "../../presentation/interfaces"
+import type {
+  DataValue,
+  DataValueComponent,
+  HatchifyCollectionSort,
+  HeaderValueComponent,
+  SortObject,
+} from "../../presentation/interfaces"
+import { HatchifyColumn } from "../../hooks"
 
-export type Render<
+export type RenderData<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = ({
@@ -21,7 +29,18 @@ export type Render<
   >
 }) => JSX.Element
 
-export type RenderValue<
+export type RenderHeader = (headerArgs: {
+  column: Omit<
+    HatchifyColumn,
+    "isHeaderOverridden" | "renderData" | "renderHeader"
+  >
+  meta: Meta
+  sortBy: SortObject["sortBy"]
+  direction: SortObject["direction"]
+  setSort: HatchifyCollectionSort["setSort"]
+}) => JSX.Element
+
+export type RenderDataValue<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = ({
@@ -29,7 +48,7 @@ export type RenderValue<
   record,
 }: // control
 {
-  value: CellValue // @TODO HATCH-417 - CellValue should be replaced with type of the field for this column
+  value: DataValue // @TODO HATCH-417 - DataValue should be replaced with type of the field for this column
   // @TODO HATCH-417 - `control` for this column's field should be forwarded here
   record: RecordType<
     TSchemas,
@@ -39,7 +58,7 @@ export type RenderValue<
   >
 }) => JSX.Element
 
-// todo: renderValue and ValueComponent should be required, but only one can be provided
+// todo: renderDataValue and DataValueComponent should be required, but only one can be provided
 export type AdditionalColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -47,18 +66,21 @@ export type AdditionalColumnProps<
   allSchemas: FinalSchemas
   schemaName: string
   type: "append" | "prepend"
-  label: string
+  label?: string
   field?: never
 } & {
-  renderValue?: Render<TSchemas, TSchemaName>
-  ValueComponent?: ValueComponent
+  renderDataValue?: RenderData<TSchemas, TSchemaName>
+  DataValueComponent?: DataValueComponent
+  renderHeaderValue?: RenderHeader
+  HeaderValueComponent?: HeaderValueComponent
 }
 
-// todo: renderValue and ValueComponent should be optional, but only one can be provided
+// todo: renderDataValue and DataValueComponent should be optional, but only one can be provided
 export type ReplaceColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
+  sortable?: boolean
   allSchemas: FinalSchemas
   schemaName: TSchemaName
   type: "replace"
@@ -69,27 +91,32 @@ export type ReplaceColumnProps<
     | "id"
     | ""
 } & {
-  renderValue?: RenderValue<TSchemas, TSchemaName>
-  ValueComponent?: ValueComponent
+  renderDataValue?: RenderDataValue<TSchemas, TSchemaName>
+  DataValueComponent?: DataValueComponent
+  renderHeaderValue?: RenderHeader
+  HeaderValueComponent?: HeaderValueComponent
 }
 
-// todo: renderValue and ValueComponent should be optional, but only one can be provided
+// todo: renderDataValue and DataValueComponent should be optional, but only one can be provided
 export type OverwriteColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
+  sortable?: boolean
   allSchemas: FinalSchemas
   schemaName: TSchemaName
   type?: never
   label?: string
-  field:
+  field?:
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["relationships"]
     | "id"
     | ""
 } & {
-  renderValue?: RenderValue<TSchemas, TSchemaName>
-  ValueComponent?: ValueComponent // @TODO HATCH-417 - not sure if this is possible to strictly type
+  renderDataValue?: RenderDataValue<TSchemas, TSchemaName>
+  DataValueComponent?: DataValueComponent // @TODO HATCH-417 - not sure if this is possible to strictly type
+  renderHeaderValue?: RenderHeader
+  HeaderValueComponent?: HeaderValueComponent
 }
 
 export function HatchifyColumn<
