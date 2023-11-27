@@ -12,16 +12,24 @@ import type {
 import type { HatchifyDisplay } from "../../services"
 import type { FormFieldRender } from "../../services-legacy"
 
+export type DataRender = ({ record }: { record: FlatRecord }) => JSX.Element
+export type HeaderRender = (headerArgs: {
+  column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
+  meta: Meta
+  sortBy: SortObject["sortBy"]
+  direction: SortObject["direction"]
+  setSort: HatchifyCollectionSort["setSort"]
+}) => JSX.Element
+
 export type DataRenderValue = ({
   value,
   record,
   attributeSchema,
 }: {
-  value?: DataValue
+  value: DataValue
   record: FlatRecord
   attributeSchema?: Attribute
 }) => JSX.Element
-
 export type HeaderRenderValue = (headerArgs: {
   column: Omit<HatchifyDisplay, "renderData" | "renderHeader">
   meta: Meta
@@ -35,8 +43,8 @@ export type HatchifyExtraColumnProps = {
   after?: string
 } & (
   | {
-      dataRender: DataRenderValue
-      headerRender: HeaderRenderValue
+      dataRender: DataRender
+      headerRender: HeaderRender
     }
   | {
       DataValueComponent: DataValueComponent

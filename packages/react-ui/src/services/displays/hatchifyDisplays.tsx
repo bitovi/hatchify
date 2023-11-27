@@ -19,8 +19,10 @@ import type {
 } from "../../presentation/interfaces"
 
 import type {
+  DataRender,
   DataRenderValue,
   DefaultValueComponentsTypes,
+  HeaderRender,
   HeaderRenderValue,
 } from "../../components"
 import type { FinalSchema } from "@hatchifyjs/core"
@@ -209,7 +211,9 @@ export function getHatchifyDisplay({
   headerValueComponents = null,
   defaultValueComponents,
   renderData = null,
+  dataRenderValue = null,
   renderHeader = null,
+  headerRenderValue = null,
 }: {
   isRelationship?: boolean
   sortable?: boolean
@@ -226,8 +230,10 @@ export function getHatchifyDisplay({
     [attribute: string]: HeaderValueComponent
   } | null
   defaultValueComponents: DefaultValueComponentsTypes
-  renderData?: DataRenderValue | null
-  renderHeader?: HeaderRenderValue | null
+  renderData?: DataRender | null
+  dataRenderValue?: DataRenderValue | null
+  renderHeader?: HeaderRender | null
+  headerRenderValue?: HeaderRenderValue | null
 }): HatchifyDisplay {
   if (!attributeSchema) {
     attributeSchema = { type: "extra" }
@@ -246,6 +252,7 @@ export function getHatchifyDisplay({
     key: attribute || uuidv4(),
     label:
       renderHeader ||
+      headerRenderValue ||
       HeaderValueComponent ||
       (headerValueComponents && headerValueComponents[attribute])
         ? undefined
@@ -267,8 +274,10 @@ export function getHatchifyDisplay({
    */
 
   if (renderData) {
+    display.renderData = ({ record }) => renderData({ record })
+  } else if (dataRenderValue) {
     display.renderData = ({ record }) =>
-      renderData({ record, value: record[attribute] })
+      dataRenderValue({ record, value: record[attribute] })
   } else if (DataValueComponent) {
     display.renderData = ({ record }) => (
       <DataValueComponent
@@ -297,6 +306,8 @@ export function getHatchifyDisplay({
 
   if (renderHeader) {
     display.renderHeader = (headerArgs) => renderHeader(headerArgs)
+  } else if (headerRenderValue) {
+    display.renderHeader = (headerArgs) => headerRenderValue(headerArgs)
   } else if (HeaderValueComponent) {
     display.renderHeader = (headerProps) => (
       <HeaderValueComponent {...headerProps} />
@@ -328,9 +339,9 @@ export function injectExtraDisplays(
         isExtraDisplay: true,
         label: props.label,
         attribute: props.label,
-        renderData: props.dataRenderValue,
+        renderData: props.dataRender,
         DataValueComponent: props.DataValueComponent,
-        renderHeader: props.headerRenderValue,
+        renderHeader: props.headerRender,
         HeaderValueComponent: props.HeaderValueComponent,
         defaultValueComponents,
       }),
