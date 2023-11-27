@@ -29,17 +29,7 @@ export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
 ## Backend
 
 <pre>
-const hatchedKoa = hatchifyKoa(
-  { SalesPerson },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-      logging: false,
-    },
-  }
-)
+const hatchedKoa = hatchifyKoa({ SalesPerson }, { prefix: "/api" })
 </pre>
 
 - `.middleware`

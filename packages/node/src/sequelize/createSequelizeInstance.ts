@@ -1,34 +1,30 @@
 import { extendSequelize } from "@hatchifyjs/sequelize-create-with-associations"
 import { Sequelize } from "sequelize"
-import type { Options } from "sequelize"
 
 import { CustomDecimal } from "./customTypes/CustomDecimal"
 import { CustomInteger } from "./customTypes/CustomInteger"
-import type { SequelizeWithHatchify } from "../types"
+import type { DatabaseOptions, SequelizeWithHatchify } from "../types"
 
 export function createSequelizeInstance(
-  options: Options = {
-    dialect: "sqlite",
-    storage: ":memory:",
-    logging: false,
-  },
+  options?: DatabaseOptions,
 ): SequelizeWithHatchify {
+  const { uri, logging, additionalOptions } = {
+    ...options,
+    uri: options?.uri || "sqlite://localhost/:memory",
+  }
+
   extendSequelize(Sequelize)
 
-  const sequelize = new Sequelize({
-    ...options,
+  const sequelize = new Sequelize(uri, {
+    dialectOptions: additionalOptions,
+    logging: logging ?? false,
     hooks: {
-      ...options.hooks,
-      afterConnect: async function afterConnectWrapper(connection, config) {
+      afterConnect: function afterConnectWrapper() {
         // @ts-expect-error
         this.connectionManager.refreshTypeParser({
           DECIMAL: CustomDecimal,
           INTEGER: CustomInteger,
         })
-
-        if (options.hooks?.afterConnect) {
-          await options.hooks.afterConnect(connection, config)
-        }
       },
     },
   })
