@@ -30,10 +30,11 @@ const fakeMeta = {
 const fakeDataSource: RestClient<any, any> = {
   version: 0,
   completeSchemaMap: {},
-  findAll: () => Promise.resolve([fakeData, fakeMeta]),
-  findOne: () => Promise.resolve([]),
-  createOne: () => Promise.resolve([]),
-  updateOne: () => Promise.resolve([]),
+  findAll: () =>
+    Promise.resolve([{ records: fakeData, related: [] }, fakeMeta]),
+  findOne: () => Promise.resolve({ record: {} as any, related: [] }),
+  createOne: () => Promise.resolve({ record: {} as any, related: [] }),
+  updateOne: () => Promise.resolve({ record: {} as any, related: [] }),
   deleteOne: () => Promise.resolve(),
 }
 
@@ -57,7 +58,7 @@ describe("react-rest/services/useAll", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(schemas, fakeData, "Article"),
+        flattenResourcesIntoRecords(schemas, fakeData, []),
         {
           status: "success",
           meta: fakeMeta,
@@ -83,7 +84,7 @@ describe("react-rest/services/useAll", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(schemas, fakeData, "Article"),
+        flattenResourcesIntoRecords(schemas, fakeData, []),
         {
           status: "success",
           meta: fakeMeta,
@@ -110,7 +111,8 @@ describe("react-rest/services/useAll", () => {
         attributes: { title: "qux", body: "qux-body" },
       },
     ]
-    fakeDataSource.findAll = () => Promise.resolve([newFakeData, fakeMeta])
+    fakeDataSource.findAll = () =>
+      Promise.resolve([{ records: newFakeData, related: [] }, fakeMeta])
 
     store.Article.subscribers.forEach((subscriber: Subscription) =>
       subscriber([]),
@@ -118,7 +120,7 @@ describe("react-rest/services/useAll", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(schemas, newFakeData, "Article"),
+        flattenResourcesIntoRecords(schemas, newFakeData, []),
         {
           status: "success",
           meta: fakeMeta,
@@ -133,7 +135,8 @@ describe("react-rest/services/useAll", () => {
       ]),
     )
 
-    fakeDataSource.findAll = () => Promise.resolve([[], {}])
+    fakeDataSource.findAll = () =>
+      Promise.resolve([{ records: [], related: [] }, {}])
 
     // unrelated schema subscribe(mutate) should trigger refetch
     // todo: remove once subscribe/can-query-logic is properly implemented

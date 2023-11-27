@@ -1,95 +1,83 @@
-import { assembler, belongsTo, hasMany, hasOne, string } from "@hatchifyjs/core"
+import {
+  assembler,
+  belongsTo,
+  boolean,
+  hasMany,
+  hasOne,
+  string,
+} from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { RestClient } from "../types"
+import type { Resource, RestClient } from "../types"
 
-export const ArticleSchema = {
-  name: "Article",
-  attributes: {
-    title: string(),
-    body: string(),
+export const testPartialSchemas = {
+  Todo: {
+    name: "Todo",
+    attributes: { title: string(), important: boolean() },
+    relationships: { user: belongsTo("Person") },
   },
-  relationships: {
-    author: hasOne("Person"),
-    tags: hasMany("Tag"),
+  Person: {
+    name: "Person",
+    attributes: { name: string() },
+    relationships: {
+      todos: hasMany("Todo"),
+      employer: belongsTo("Company"),
+    },
   },
-} satisfies PartialSchema
+  Company: {
+    name: "Company",
+    attributes: { name: string() },
+    relationships: {
+      employees: hasMany("Person"),
+      parentCompany: belongsTo("Company"),
+      childCompany: hasOne("Company"),
+    },
+  },
+} satisfies globalThis.Record<string, PartialSchema>
 
-export const PersonSchema = {
-  name: "Person",
-  attributes: {
-    name: string(),
-  },
-  relationships: {
-    authored: belongsTo("Article"),
-  },
-} satisfies PartialSchema
+export const testFinalSchemas = assembler(testPartialSchemas)
 
-export const TagSchema: PartialSchema = {
-  name: "Tag",
-  attributes: {
-    title: string(),
-  },
-  relationships: {
-    articles: hasMany("Article"),
-  },
-} satisfies PartialSchema
-
-export const partialSchemas = {
-  Article: ArticleSchema,
-  Person: PersonSchema,
-  Tag: TagSchema,
+export const testSchemaMap = {
+  Todo: { type: "Todo", endpoint: "todos" },
+  Person: { type: "Person", endpoint: "persons" },
+  Company: { type: "Company", endpoint: "companys" },
 }
 
-export const schemas = assembler(partialSchemas)
-
-export const schemaMap = {
-  Article: { type: "article", endpoint: "articles" },
-  Person: { type: "person", endpoint: "people" },
-  Tag: { type: "tag", endpoint: "tags" },
-}
-
-export const testData = [
+export const testDataRecords: Resource[] = [
   {
-    id: "article-1",
-    __schema: "Article",
-    attributes: {
-      title: "foo",
-      body: "foo-body",
-    },
-    relationships: {
-      author: { id: "person-1", __schema: "Person" },
-      tags: [
-        { id: "tag-1", __schema: "Tag" },
-        { id: "tag-2", __schema: "Tag" },
-      ],
-    },
+    id: "todo-1",
+    __schema: "Todo",
+    attributes: { title: "Code Review", important: true },
+    relationships: { user: { id: "person-1", __schema: "Person" } },
   },
   {
-    id: "article-2",
-    __schema: "Article",
-    attributes: {
-      title: "foo",
-      body: "foo-body",
-    },
-    relationships: {
-      author: { id: "person-1", __schema: "Person" },
-      tags: [{ id: "tag-1", __schema: "Tag" }],
-    },
+    id: "todo-2",
+    __schema: "Todo",
+    attributes: { title: "Refactor", important: false },
+    relationships: { user: { id: "person-1", __schema: "Person" } },
   },
+]
+
+export const testDataRelatedRecords: Resource[] = [
   {
     id: "person-1",
     __schema: "Person",
-    attributes: { name: "foo" },
+    attributes: { name: "John" },
+    relationships: {
+      employer: { id: "company-1", __schema: "Company" },
+    },
   },
   {
-    id: "tag-1",
-    __schema: "Tag",
-    attributes: { title: "tag-1" },
+    id: "company-1",
+    __schema: "Company",
+    attributes: { name: "Alphabet" },
+    relationships: {
+      parentCompany: { id: "company-2", __schema: "Company" },
+    },
   },
   {
-    id: "tag-2",
-    __schema: "Tag",
-    attributes: { title: "tag-2" },
+    id: "company-2",
+    __schema: "Company",
+    attributes: { name: "Alphabet" },
   },
 ]
 
@@ -100,30 +88,28 @@ export const testMeta = {
 export const fakeDataSource: RestClient<any, any> = {
   version: 0,
   completeSchemaMap: {},
-  findAll: () => Promise.resolve([testData, testMeta]),
+  findAll: () =>
+    Promise.resolve([
+      { records: testDataRecords, related: testDataRelatedRecords },
+      testMeta,
+    ]),
   findOne: () =>
-    Promise.resolve([testData[0], testData[2], testData[3], testData[4]]),
+    Promise.resolve({
+      record: testDataRecords[0],
+      related: testDataRelatedRecords,
+    }),
   createOne: () =>
-    Promise.resolve([
-      {
-        id: "article-3",
-        __schema: "Article",
-        attributes: {
-          title: "baz",
-          body: "baz-body",
-        },
-      },
-    ]),
+    Promise.resolve({
+      record: testDataRecords[0],
+      related: [],
+    }),
   updateOne: () =>
-    Promise.resolve([
-      {
-        id: "article-1",
-        __schema: "Article",
-        attributes: {
-          title: "updated title",
-          body: "updated body",
-        },
+    Promise.resolve({
+      record: {
+        ...testDataRecords[0],
+        attributes: { ...testDataRecords[0].attributes, title: "foo" },
       },
-    ]),
+      related: [],
+    }),
   deleteOne: () => Promise.resolve(),
 }

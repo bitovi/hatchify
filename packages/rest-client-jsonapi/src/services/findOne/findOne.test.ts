@@ -1,51 +1,36 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import { baseUrl } from "../../mocks/handlers"
+import {
+  baseUrl,
+  finalSchemas,
+  partialSchemas,
+  restClientConfig,
+  testData,
+} from "../../mocks/handlers"
 import { server } from "../../mocks/server"
 import jsonapi from "../../rest-client-jsonapi"
 import { findOne } from "./findOne"
-import { assembler } from "@hatchifyjs/core"
-
-const partialSchemaMap = {
-  Article: {
-    name: "Article",
-    attributes: {},
-    type: "article",
-    endpoint: "articles",
-  },
-  Person: {
-    name: "Person",
-    attributes: {},
-    type: "person",
-    endpoint: "people",
-  },
-  Tag: { name: "Tag", attributes: {}, type: "tag", endpoint: "tags" },
-}
-const sourceConfig = { baseUrl, schemaMap: partialSchemaMap }
-const finalSchemaMap = assembler(partialSchemaMap)
+import { convertToHatchifyResources } from "../utils"
+import type { JsonApiResource } from "../jsonapi"
 
 describe("rest-client-jsonapi/services/findOne", () => {
   const query = { id: "article-id-1", fields: {}, include: [] }
 
   it("works", async () => {
-    const expected = [
-      {
-        __schema: "Article",
-        id: "article-id-1",
-        attributes: {
-          title: "Article 1",
-          body: "Article 1 body",
-        },
-        relationships: {
-          author: { id: "person-id-1", __schema: "Person" },
-          tags: [
-            { id: "tag-id-1", __schema: "Tag" },
-            { id: "tag-id-2", __schema: "Tag" },
-          ],
-        },
-      },
-    ]
-    const result = await findOne(sourceConfig, finalSchemaMap, "Article", query)
+    const expected = {
+      record: convertToHatchifyResources(
+        testData.data[0] as JsonApiResource,
+        partialSchemas,
+      )[0],
+      related: [],
+    }
+
+    const result = await findOne(
+      restClientConfig,
+      finalSchemas,
+      "Article",
+      query,
+    )
     expect(result).toEqual(expected)
   })
 
@@ -66,14 +51,16 @@ describe("rest-client-jsonapi/services/findOne", () => {
     )
 
     await expect(
-      findOne(sourceConfig, finalSchemaMap, "Article", query),
+      findOne(restClientConfig, finalSchemas, "Article", query),
     ).rejects.toEqual(errors)
   })
 
   it("can be called from a rest client", async () => {
-    const dataSource = jsonapi(baseUrl, partialSchemaMap)
+    const dataSource = jsonapi(baseUrl, partialSchemas)
     const spy = vi.spyOn(dataSource, "findOne")
-    await dataSource.findOne(finalSchemaMap, "Article", query)
-    expect(spy).toHaveBeenCalledWith(finalSchemaMap, "Article", query)
+
+    await dataSource.findOne(finalSchemas, "Article", query)
+
+    expect(spy).toHaveBeenCalledWith(finalSchemas, "Article", query)
   })
 })

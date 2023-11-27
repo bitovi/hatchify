@@ -4,7 +4,7 @@ import type {
   GetSchemaFromName,
   GetSchemaNames,
   Resource,
-  SourceConfig,
+  RestClientConfig,
   UpdateType,
 } from "@hatchifyjs/rest-client"
 import {
@@ -26,11 +26,11 @@ export async function updateOne<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  config: SourceConfig, // todo: HATCH-417
+  config: RestClientConfig, // todo: HATCH-417
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   data: UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
-): Promise<Resource[]> {
+): Promise<{ record: Resource; related: Resource[] }> {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
@@ -50,10 +50,9 @@ export async function updateOne<
     jsonApiResource,
   )
 
-  return Promise.resolve(
-    convertToHatchifyResources(
-      [json.data, ...(json.included || [])],
-      config.schemaMap,
-    ),
-  )
+  return Promise.resolve({
+    // @todo: remove this [0]
+    record: convertToHatchifyResources(json.data, config.schemaMap)[0],
+    related: convertToHatchifyResources(json.included || [], config.schemaMap),
+  })
 }

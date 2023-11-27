@@ -7,11 +7,8 @@ import type {
   GetSchemaFromName,
   FinalSchemas,
 } from "../../types"
-import {
-  SchemaNameNotStringError,
-  flattenResourcesIntoRecords,
-  schemaNameIsString,
-} from "../../utils"
+import { SchemaNameNotStringError, schemaNameIsString } from "../../utils"
+import { flattenResourcesIntoRecords } from "../../utils/records"
 
 /**
  * Fetches a single resource from a data source, inserts it into the store,
@@ -34,17 +31,18 @@ export const findOne = async <
 
   const updatedQuery = typeof query === "string" ? { id: query } : { ...query }
 
+  // todo: HATCH-417; return from `findAll` needs to be a typed `Resource` using generics
   const resources = await dataSource.findOne(
     allSchemas,
     schemaName,
     updatedQuery,
   )
 
-  // @ts-expect-error todo HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
+  // todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
+  // @ts-expect-error
   return flattenResourcesIntoRecords(
     allSchemas,
-    resources,
-    schemaName,
-    updatedQuery.id,
+    resources.record,
+    resources.related,
   )
 }

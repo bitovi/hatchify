@@ -71,7 +71,7 @@ export function getFieldsFromInclude<const TSchema extends PartialSchema>(
   for (const relationship of include) {
     fields = {
       ...fields,
-      ...getAttributesFromSchema(schemas, schemaName, relationship),
+      ...getAttributesFromSchema(schemas, schemaName, relationship as string),
     }
   }
 

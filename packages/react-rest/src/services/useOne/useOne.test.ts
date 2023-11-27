@@ -25,10 +25,10 @@ const fakeData = [
 const fakeDataSource: RestClient<any, any> = {
   version: 0,
   completeSchemaMap: {},
-  findAll: () => Promise.resolve([[], {}]),
-  findOne: () => Promise.resolve([fakeData[0]]),
-  createOne: () => Promise.resolve([]),
-  updateOne: () => Promise.resolve([]),
+  findAll: () => Promise.resolve([{ records: [], related: [] }, {}]),
+  findOne: () => Promise.resolve({ record: fakeData[0], related: [] }),
+  createOne: () => Promise.resolve({ record: {} as any, related: [] }),
+  updateOne: () => Promise.resolve({ record: {} as any, related: [] }),
   deleteOne: () => Promise.resolve(),
 }
 
@@ -49,7 +49,7 @@ describe("react-rest/services/useOne", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(schemas, fakeData, "Article", "1"),
+        flattenResourcesIntoRecords(schemas, fakeData[0], []),
         {
           status: "success",
           meta: undefined,
@@ -74,7 +74,7 @@ describe("react-rest/services/useOne", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(schemas, fakeData, "Article", "1"),
+        flattenResourcesIntoRecords(schemas, fakeData[0], []),
         {
           status: "success",
           meta: undefined,
@@ -102,7 +102,7 @@ describe("react-rest/services/useOne", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(schemas, fakeData, "Article", "1"),
+        flattenResourcesIntoRecords(schemas, fakeData[0], []),
         {
           status: "success",
           meta: undefined,
@@ -124,7 +124,8 @@ describe("react-rest/services/useOne", () => {
         attributes: { title: "new title", body: "new body" },
       },
     ]
-    fakeDataSource.findOne = () => Promise.resolve(newFakeData)
+    fakeDataSource.findOne = () =>
+      Promise.resolve({ record: newFakeData[0], related: [] })
 
     store.Article.subscribers.forEach((subscriber: Subscription) =>
       subscriber([]),
@@ -132,7 +133,7 @@ describe("react-rest/services/useOne", () => {
 
     await waitFor(() =>
       expect(result.current).toEqual([
-        flattenResourcesIntoRecords(schemas, newFakeData, "Article", "1"),
+        flattenResourcesIntoRecords(schemas, newFakeData[0], []),
         {
           status: "success",
           meta: undefined,

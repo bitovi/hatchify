@@ -38,13 +38,21 @@ export function getStore(schema: string): ResourceStore {
  * Returns the records for a given schema.
  */
 export function getRecords(allSchemas: FinalSchemas, schema: string): Record[] {
-  return store[schema] && "data" in store[schema]
-    ? flattenResourcesIntoRecords(
-        allSchemas,
-        Object.values(store[schema].data),
-        schema,
-      )
-    : []
+  if (!store[schema] || !("data" in store[schema])) {
+    return []
+  }
+
+  const records = flattenResourcesIntoRecords(
+    allSchemas,
+    Object.values(store[schema].data),
+    [],
+  )
+
+  if (!records) {
+    return []
+  }
+
+  return Array.isArray(records) ? records : [records]
 }
 
 /**
@@ -60,7 +68,7 @@ export function insert(
     ...keyResourcesById(data),
   }
 
-  const records = flattenResourcesIntoRecords(allSchemas, data, schemaName)
+  const records = flattenResourcesIntoRecords(allSchemas, data, [])
 
   for (const subscriber of store[schemaName].subscribers) {
     // @ts-expect-error

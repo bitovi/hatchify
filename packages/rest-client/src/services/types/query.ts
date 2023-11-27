@@ -1,11 +1,9 @@
 import type { PartialSchema } from "@hatchifyjs/core"
 
-export type Include<TPartialSchema extends PartialSchema> = Array<
-  keyof TPartialSchema["relationships"]
-> &
-  // @todo HATCH-417 - looser typing for now,
-  // this should be an array of strings on relationship *AND* relationship's relationships, ie. `include: ["owner", "owner.address"]`
-  string[]
+export type Include<TPartialSchema extends PartialSchema> =
+  | Array<keyof TPartialSchema["relationships"]>
+  // todo HATCH-452
+  | string[]
 
 // @todo HATCH-417
 // key should be typed by schemaName or namespace_schemaName

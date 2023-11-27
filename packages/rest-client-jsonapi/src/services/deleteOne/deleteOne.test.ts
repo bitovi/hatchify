@@ -14,7 +14,7 @@ const partialSchemaMap = {
     endpoint: "articles",
   },
 }
-const sourceConfig = { baseUrl, schemaMap: partialSchemaMap }
+const restClientConfig = { baseUrl, schemaMap: partialSchemaMap }
 const finalSchemaMap = assembler(partialSchemaMap)
 
 describe("rest-client-jsonapi/services/deleteOne", () => {
@@ -22,7 +22,7 @@ describe("rest-client-jsonapi/services/deleteOne", () => {
     const data = "article-id-1"
     const expected = undefined
     const result = await deleteOne(
-      sourceConfig,
+      restClientConfig,
       finalSchemaMap,
       "Article",
       data,
@@ -47,7 +47,7 @@ describe("rest-client-jsonapi/services/deleteOne", () => {
     )
 
     await expect(() =>
-      deleteOne(sourceConfig, finalSchemaMap, "Article", "article-id-1"),
+      deleteOne(restClientConfig, finalSchemaMap, "Article", "article-id-1"),
     ).rejects.toEqual(errors)
   })
 
