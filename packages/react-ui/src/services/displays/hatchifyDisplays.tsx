@@ -121,9 +121,9 @@ export function getDisplaysFromChildren(
           ? null
           : schema.attributes[props.attribute],
         defaultValueComponents,
-        renderData: props.dataRenderValue,
+        dataRenderValue: props.dataRenderValue,
         DataValueComponent: props.DataValueComponent,
-        renderHeader: props.headerRenderValue,
+        headerRenderValue: props.headerRenderValue,
         HeaderValueComponent: props.HeaderValueComponent,
       })
     })

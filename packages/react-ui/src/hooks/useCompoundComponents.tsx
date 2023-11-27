@@ -69,8 +69,8 @@ export function getColumns(
           attributeSchema: relationship
             ? null
             : schema.attributes?.[props?.field]?.control,
-          renderData: props.dataRenderValue,
-          renderHeader: props.headerRenderValue,
+          dataRenderValue: props.dataRenderValue,
+          headerRenderValue: props.headerRenderValue,
           HeaderValueComponent: props.HeaderValueComponent,
           DataValueComponent: props.DataValueComponent,
           defaultValueComponents,
@@ -103,8 +103,8 @@ export function getColumns(
             attributeSchema: relationship
               ? null
               : schema.attributes?.[props.field].control,
-            renderData: props.dataRenderValue,
-            renderHeader: props.headerRenderValue,
+            dataRenderValue: props.dataRenderValue,
+            headerRenderValue: props.headerRenderValue,
             HeaderValueComponent: props.HeaderValueComponent,
             DataValueComponent: props.DataValueComponent,
             defaultValueComponents,
