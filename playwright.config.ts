@@ -75,12 +75,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: "cd example/hatchify-app && npm run dev:frontend",
-      reuseExistingServer: !process.env.CI,
-      port: 5173,
-    },
-    {
-      command: "cd example/hatchify-app && npm run dev:backend",
+      command: "cd example/hatchify-app && npm run dev",
       reuseExistingServer: !process.env.CI,
       port: 3000,
     },
