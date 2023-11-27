@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test"
 
 test("works", async ({ page, request }) => {
   const backend = "http://localhost:3000"
-  const frontend = "http://localhost:5173"
+  const frontend = "http://localhost:3000"
   let response
   let json
 
