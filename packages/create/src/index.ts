@@ -289,7 +289,7 @@ async function init() {
             skipLibCheck: true,
             useDefineForClassFields: true,
           },
-          include: ["frontend", "backend", "schemas", "vite.config.ts"],
+          include: ["frontend", "backend", "schemas.ts", "vite.config.ts"],
           exclude: ["node_modules"],
         },
         null,

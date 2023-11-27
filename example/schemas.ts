@@ -23,7 +23,7 @@ const schemas = {
   Todo: {
     name: "Todo",
     attributes: {
-      title: string(),
+      name: string(),
       dueDate: datetime(),
       importance: integer(),
       completedDate: dateonly(),

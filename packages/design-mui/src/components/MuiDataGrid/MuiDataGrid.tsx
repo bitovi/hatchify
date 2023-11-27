@@ -6,7 +6,7 @@ import MuiFilters from "../MuiFilters/MuiFilters"
 
 const MuiDataGrid: React.FC<XCollectionProps> = ({ children, ...props }) => {
   return (
-    <Grid container>
+    <Grid container sx={{ backgroundColor: "white" }}>
       <Grid item xs={12}>
         <MuiFilters {...props} />
       </Grid>
