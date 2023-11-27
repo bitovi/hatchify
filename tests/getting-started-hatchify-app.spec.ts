@@ -6,10 +6,6 @@ test("works", async ({ page, request }) => {
   let response
   let json
 
-  // validate backend is running
-  await page.goto(backend)
-  await expect(page.getByText("Not found")).toBeVisible()
-
   // validate todos endpoint exists
   response = await page.goto(`${backend}/api/todos`)
   if (!response) {
@@ -28,7 +24,7 @@ test("works", async ({ page, request }) => {
 
   // validate frontend is running
   await page.goto(frontend)
-  await expect(page.getByText("Title")).toBeVisible()
+  await expect(page.getByText("Name")).toBeVisible()
   await expect(page.getByText("DueDate")).toBeVisible()
   await expect(page.getByText("Importance")).toBeVisible()
   await expect(page.getByText("User", { exact: true })).toBeVisible()
