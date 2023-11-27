@@ -15,8 +15,8 @@ import {
   runCommand,
   toValidPackageName,
 } from "./util"
-import { DIALECTS, FRAMEWORKS } from "./constants"
-import type { Dialect } from "./types"
+import { DATABASES, BACKENDS, FRONTENDS } from "./constants"
+import type { Database } from "./types"
 
 // Avoids autoconversion to number of the project name by defining that the args
 // non associated with an option ( _ ) needs to be parsed as a string. See #4606
@@ -30,8 +30,13 @@ const defaultTargetDir = "hatchify-app"
 
 async function init() {
   const argTargetDir = formatTargetDir(argv._[0])
-  const argFramework = (argv.framework || argv.f)?.toUpperCase()
-  const argDialect = (argv.dialect || argv.d)?.toUpperCase()
+  const argBackend = (argv.backend || argv.b)?.toUpperCase()
+  const argDatabaseUri = argv.database || argv.d
+  const argDatabase =
+    argDatabaseUri &&
+    new URL(argDatabaseUri).protocol.replace(":", "").toUpperCase()
+  const argFrontend = (argv.frontend || argv.f || "REACT")?.toUpperCase()
+  const argPackagePath = argv.path
 
   let targetDir = argTargetDir || defaultTargetDir
   const getProjectName = () =>
@@ -41,13 +46,14 @@ async function init() {
     | "projectName"
     | "overwrite"
     | "packageName"
-    | "framework"
-    | "dialect"
+    | "backend"
+    | "database"
     | "databaseHost"
     | "databasePort"
     | "databaseUsername"
     | "databasePassword"
     | "databaseName"
+    | "frontend"
   >
 
   try {
@@ -90,71 +96,77 @@ async function init() {
             isValidPackageName(dir) || "Invalid package.json name",
         },
         {
-          type: FRAMEWORKS[argFramework] ? null : "select",
-          name: "framework",
+          type: BACKENDS[argBackend] ? null : "select",
+          name: "backend",
           message:
-            argFramework && !FRAMEWORKS[argFramework]
+            argBackend && !BACKENDS[argBackend]
               ? reset(
-                  `"${argFramework}" isn't a valid framework. Please choose from below: `,
+                  `"${argBackend}" isn't a valid backend. Please choose from below: `,
                 )
-              : reset("Select a framework:"),
-          choices: Object.values(FRAMEWORKS)
+              : reset("Select a backend:"),
+          choices: Object.values(BACKENDS)
             .filter(
-              (framework) => framework.name === "koa", // TODO: It was decided to limit to Koa at the moment
+              (backend) => backend.name === "koa", // TODO: It was decided to limit to Koa at the moment
             )
-            .map((framework) => ({
-              title: framework.color(framework.display || framework.name),
-              value: framework,
+            .map((backend) => ({
+              title: backend.color(backend.display || backend.name),
+              value: backend,
             })),
         },
         {
-          type: DIALECTS[argDialect] ? null : "select",
-          name: "dialect",
+          type: DATABASES[argDatabase] ? null : "select",
+          name: "database",
           message:
-            argDialect && !DIALECTS[argDialect]
+            argDatabase && !DATABASES[argDatabase]
               ? reset(
-                  `"${argDialect}" isn't a valid dialect. Please choose from below: `,
+                  `"${argDatabase}" isn't a valid database. Please choose from below: `,
                 )
-              : reset("Select a dialect:"),
-          choices: Object.values(DIALECTS).map((dialect) => ({
-            title: dialect.color(dialect.display || dialect.name),
-            value: dialect,
+              : reset("Select a database:"),
+          choices: Object.values(DATABASES).map((database) => ({
+            title: database.color(database.display || database.name),
+            value: database,
           })),
         },
         {
-          type: (dialect: Dialect) =>
-            dialect?.name === "postgres" ? "text" : null,
+          type: (database: Database) =>
+            database?.name === "postgres" && !argDatabaseUri ? "text" : null,
           name: "databaseHost",
           message: reset("Database host:"),
           initial: "localhost",
         },
         {
-          type: (_, { dialect }: { dialect: Dialect }) =>
-            dialect?.name === "postgres" ? "number" : null,
+          type: (_, { database }: { database: Database }) =>
+            database?.name === "postgres" && !argDatabaseUri ? "number" : null,
           name: "databasePort",
           message: reset("Database port:"),
           initial: 5432,
         },
         {
-          type: (_, { dialect }: { dialect: Dialect }) =>
-            dialect?.name === "postgres" ? "text" : null,
+          type: (_, { database }: { database: Database }) =>
+            database?.name === "postgres" && !argDatabaseUri ? "text" : null,
           name: "databaseUsername",
           message: reset("Database username:"),
           initial: "postgres",
         },
         {
-          type: (_, { dialect }: { dialect: Dialect }) =>
-            dialect?.name === "postgres" ? "password" : null,
+          type: (_, { database }: { database: Database }) =>
+            database?.name === "postgres" && !argDatabaseUri
+              ? "password"
+              : null,
           name: "databasePassword",
           message: reset("Database password:"),
           initial: "password",
         },
         {
-          type: (_, { dialect }: { dialect: Dialect }) =>
-            dialect?.name === "postgres" ? "text" : null,
+          type: (_, { database }: { database: Database }) =>
+            database?.name === "postgres" && !argDatabaseUri ? "text" : null,
           name: "databaseName",
           message: reset("Database name:"),
           initial: "postgres",
+        },
+        {
+          type: null,
+          name: "frontend",
         },
       ],
       {
@@ -169,8 +181,10 @@ async function init() {
   }
 
   // user choice associated with prompts
-  const framework = result.framework || FRAMEWORKS[argFramework]
-  const dialect = result.dialect || DIALECTS[argDialect]
+  const backend = result.backend || BACKENDS[argBackend]
+  const database = result.database || DATABASES[argDatabase]
+  const frontend = result.frontend || FRONTENDS[argFrontend]
+
   const {
     overwrite,
     packageName,
@@ -180,6 +194,16 @@ async function init() {
     databasePassword,
     databaseName,
   } = result
+
+  const databaseUri =
+    argDatabaseUri ||
+    (database?.name === "sqlite"
+      ? "sqlite://localhost/:memory"
+      : `${database.name}://${encodeURIComponent(
+          databaseUsername,
+        )}:${encodeURIComponent(databasePassword)}@${encodeURIComponent(
+          databaseHost,
+        )}:${databasePort}/${encodeURIComponent(databaseName)}`)
 
   const root = path.join(cwd, targetDir)
 
@@ -205,14 +229,15 @@ async function init() {
     "utf-8",
   )
 
-  const templateDir = path.resolve(
+  const backendTemplateDir = path.resolve(
     fileURLToPath(import.meta.url),
     "../..",
-    `template-${
-      argFramework && argDialect
-        ? `${argFramework.toLowerCase()}-${argDialect.toLowerCase()}`
-        : `${framework.name}-${dialect.name}`
-    }`,
+    `template-${argBackend ? argBackend.toLowerCase() : backend.name}`,
+  )
+  const frontendTemplateDir = path.resolve(
+    fileURLToPath(import.meta.url),
+    "../..",
+    "template-react",
   )
 
   await Promise.all([
@@ -225,10 +250,7 @@ async function init() {
           type: undefined,
           scripts: {
             lint: "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-            dev: "npm run dev:backend & npm run dev:frontend",
-            "dev:frontend": "vite",
-            "dev:backend":
-              "nodemon --esm backend/index.ts --watch backend --watch schemas.ts",
+            dev: "nodemon --esm backend/index.ts --watch backend --watch schemas.ts",
             "build:frontend": "tsc && vite build --outDir dist/frontend",
             "build:backend":
               "tsc --outDir dist/backend --project tsconfig.backend.json",
@@ -271,7 +293,7 @@ async function init() {
             skipLibCheck: true,
             useDefineForClassFields: true,
           },
-          include: ["frontend", "backend", "schemas", "vite.config.ts"],
+          include: ["frontend", "backend", "schemas.ts", "vite.config.ts"],
           exclude: ["node_modules"],
         },
         null,
@@ -295,48 +317,51 @@ async function init() {
     ),
     fs.promises.writeFile(
       path.join(root, ".env"),
-      [
-        `PG_DB_HOST=${databaseHost}`,
-        `PG_DB_PORT=${databasePort}`,
-        `PG_DB_USERNAME=${databaseUsername}`,
-        `PG_DB_PASSWORD=${databasePassword}`,
-        `PG_DB_NAME=${databaseName}`,
-      ].join("\n"),
+      `DB_URI=${databaseUri}`,
       "utf8",
     ),
   ])
 
   await fs.promises.rm(path.join(root, "src"), { recursive: true, force: true })
 
-  await copyDir(templateDir, root)
+  await Promise.all([
+    copyDir(backendTemplateDir, root),
+    copyDir(frontendTemplateDir, path.join(root, "frontend")),
+  ])
 
   const dependencies = [
     "sequelize",
-    ...framework.dependencies,
-    ...dialect.dependencies,
     "@hatchifyjs/core",
-    "@hatchifyjs/react",
-    "@mui/material",
-    "@emotion/react",
-    "@emotion/styled",
+    ...backend.dependencies,
+    ...database.dependencies,
+    ...frontend.dependencies,
   ]
   const devDependencies = [
-    ...framework.devDependencies,
-    ...dialect.devDependencies,
+    ...backend.devDependencies,
+    ...database.devDependencies,
+    ...frontend.devDependencies,
     "nodemon",
     "ts-node",
   ]
 
   runCommand(
     `npm install --package-lock-only --no-package-lock ${dependencies
-      .map((dependency) => `${dependency}@latest`)
+      .map((dependency) =>
+        argPackagePath && dependency.startsWith("@hatchifyjs/")
+          ? `${argPackagePath}/${dependency.replace("@hatchifyjs/", "")}`
+          : `${dependency}@latest`,
+      )
       .join(" ")}`,
     root,
   )
   runCommand(
-    `npm install --package-lock-only --no-package-lock ${devDependencies.join(
-      " ",
-    )} --save-dev`,
+    `npm install --package-lock-only --no-package-lock ${devDependencies
+      .map((dependency) =>
+        argPackagePath && dependency.startsWith("@hatchifyjs/")
+          ? `${argPackagePath}/${dependency.replace("@hatchifyjs/", "")}`
+          : `${dependency}@latest`,
+      )
+      .join(" ")} --save-dev`,
     root,
   )
   runCommand("npm install", root)
@@ -359,7 +384,7 @@ async function init() {
       break
   }
 
-  if (dialect.name === "postgres" && databaseHost === "localhost") {
+  if (database.name === "postgres" && databaseHost === "localhost") {
     console.log()
     console.log(
       "Make sure you have Postgres running already start a docker container using:",

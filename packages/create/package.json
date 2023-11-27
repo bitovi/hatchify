@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/create",
-  "version": "0.0.15",
+  "version": "0.0.24",
   "type": "module",
   "license": "MIT",
   "bin": {
@@ -9,10 +9,9 @@
   },
   "files": [
     "index.js",
-    "template-express-postgres",
-    "template-express-sqlite",
-    "template-koa-postgres",
-    "template-koa-sqlite",
+    "template-express",
+    "template-koa",
+    "template-react",
     "dist"
   ],
   "scripts": {

@@ -5,7 +5,7 @@
   "scripts": {
     "check-packages": "ts-node ./scripts/check-packages",
     "e2e": "playwright test",
-    "pree2e": "cd example && rm -rf hatchify-app && npm init @hatchifyjs@latest hatchify-app -- --framework koa --dialect sqlite && cp schemas.txt hatchify-app/schemas.ts && cp App.txt hatchify-app/frontend/App.tsx",
+    "pree2e": "cd example && rm -rf hatchify-app && npm init @hatchifyjs@latest hatchify-app -- --frontend ${npm_config_frontend} --backend ${npm_config_backend} --database ${npm_config_database} --path ../../packages && cp schemas.txt hatchify-app/schemas.ts && cp App.txt hatchify-app/frontend/App.tsx",
     "poste2e": "cd example && rm -rf hatchify-app",
     "postinstall": "playwright install --with-deps"
   },

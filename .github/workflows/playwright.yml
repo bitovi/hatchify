@@ -8,6 +8,19 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -17,8 +30,14 @@ jobs:
         run: npm ci
       - name: Build nx packages
         run: npx nx run-many -t build
-      - name: Run Playwright tests
-        run: npm run e2e
+      - name: Run Playwright tests for Koa/SQLite
+        run: npm run e2e --frontend=react --backend=koa --database=sqlite://localhost/:memory
+      - name: Run Playwright tests for Koa/Postgres
+        run: npm run e2e --frontend=react --backend=koa --database=postgres://postgres:postgres@localhost:5432/postgres
+      - name: Run Playwright tests for Express/SQLite
+        run: npm run e2e --frontend=react --backend=express --database=sqlite://localhost/:memory
+      - name: Run Playwright tests for Express/Postgres
+        run: npm run e2e --frontend=react --backend=express ---database=postgres://postgres:postgres@localhost:5432/postgres
       - uses: actions/upload-artifact@v3
         if: always()
         with:

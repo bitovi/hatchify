@@ -20,3 +20,4 @@ npm-debug.log*
 /playwright-report/
 /playwright/.cache/
 /example/hatchify-app
+/packages/create/hatchify-app

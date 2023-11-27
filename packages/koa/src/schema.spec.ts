@@ -48,7 +48,10 @@ describe.each(dbDialects)("schema", (dialect) => {
           }),
           isDeleted: boolean({ default: false }),
           birthday: dateonly({ default: '"1970-01-01"' }),
-          uuid: uuid({ default: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678" }),
+          uuid: uuid({
+            default: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+            unique: true,
+          }),
         },
         relationships: {
           todos: hasMany(),
@@ -1433,6 +1436,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 attributes: {
                   yearsWorked: Number.MAX_SAFE_INTEGER,
                   birthday: "1970-01-01",
+                  uuid: "3ed97046-cbcb-4939-bc51-1f4440296c08",
                 },
               },
             },
@@ -1469,7 +1473,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                       status: "active",
                       isDeleted: false,
                       birthday: "1970-01-01",
-                      uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                      uuid: "3ed97046-cbcb-4939-bc51-1f4440296c08",
                     },
                   },
                 }),
@@ -1511,6 +1515,34 @@ describe.each(dbDialects)("schema", (dialect) => {
                     },
                   },
                 }),
+          })
+        })
+
+        it("should return a JSON:API error for violating unique constraints", async () => {
+          const { status, body } = await fetch(`/api/users/${uuid}`, {
+            method: "post",
+            body: {
+              data: {
+                type: "User",
+                attributes: {
+                  birthday: "1970-01-01",
+                  uuid: "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                },
+              },
+            },
+          })
+
+          expect(status).toBe(409)
+          expect(body).toEqual({
+            jsonapi: { version: "1.0" },
+            errors: [
+              {
+                status: 409,
+                code: "resource-conflict-occurred",
+                title: "Unique key constraint violation.",
+                detail: "Record with uuid already exists",
+              },
+            ],
           })
         })
       })

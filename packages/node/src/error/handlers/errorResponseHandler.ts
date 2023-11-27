@@ -44,6 +44,35 @@ export function errorResponseHandler(
     return { errors: error, status: error[0].status }
   }
 
+  if (error instanceof UniqueConstraintError) {
+    return {
+      status: statusCodes.CONFLICT,
+      errors: error.errors.map(
+        ({ path }) =>
+          new HatchifyError({
+            status: statusCodes.CONFLICT,
+            code: codes.ERR_CONFLICT,
+            title: "Unique key constraint violation.",
+            detail: `Record with ${path} already exists`,
+          }),
+      ),
+    }
+  }
+
+  if (error instanceof ForeignKeyConstraintError) {
+    return {
+      status: statusCodes.CONFLICT,
+      errors: [
+        new HatchifyError({
+          status: statusCodes.CONFLICT,
+          code: codes.ERR_CONFLICT,
+          title: "Foreign key constraint violation.",
+          detail: error.message,
+        }),
+      ],
+    }
+  }
+
   if (error instanceof ValidationError) {
     const { errors } = error
 
@@ -112,35 +141,6 @@ export function errorResponseHandler(
           status: statusCodes.INTERNAL_SERVER_ERROR,
           code: codes.ERR_SERVER_ERROR,
           title: "Unexpected Error",
-          detail: error.message,
-        }),
-      ],
-    }
-  }
-
-  if (error instanceof UniqueConstraintError) {
-    return {
-      status: statusCodes.CONFLICT,
-      errors: error.errors.map(
-        ({ path }) =>
-          new HatchifyError({
-            status: statusCodes.CONFLICT,
-            code: codes.ERR_CONFLICT,
-            title: "Foreign key constraint violation",
-            detail: `Record with ${path} already exists`,
-          }),
-      ),
-    }
-  }
-
-  if (error instanceof ForeignKeyConstraintError) {
-    return {
-      status: statusCodes.CONFLICT,
-      errors: [
-        new HatchifyError({
-          status: statusCodes.CONFLICT,
-          code: codes.ERR_CONFLICT,
-          title: "Foreign key constraint violation",
           detail: error.message,
         }),
       ],
