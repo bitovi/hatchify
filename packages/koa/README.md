@@ -39,16 +39,7 @@ const User = {
 }
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa(
-  { User },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-    },
-  },
-)
+const hatchedKoa = hatchifyKoa({ User }, { prefix: "/api" })
 
 app.use(hatchedKoa.middleware.allModels.all)
 
@@ -126,16 +117,7 @@ const User = {
 }
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa(
-  { User },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-    },
-  },
-)
+const hatchedKoa = hatchifyKoa({ User }, { prefix: "/api" })
 
 app.use(hatchedKoa.middleware.allModels.all)
 
@@ -203,16 +185,7 @@ import { hatchifyKoa } from "@hatchifyjs/koa"
 import { Player, Team } from "./models"
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa(
-  { Player, Team },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-    },
-  },
-)
+const hatchedKoa = hatchifyKoa({ Player, Team }, { prefix: "/api" })
 
 app.use(hatchedKoa.middleware.allModels.all)
 
@@ -319,16 +292,7 @@ import { Player, Team, User } from "./models"
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchedKoa = hatchifyKoa(
-  { Player, Team, User },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-    },
-  },
-)
+const hatchedKoa = hatchifyKoa({ Player, Team, User }, { prefix: "/api" })
 
 router.get("/api/users", async (ctx) => {
   if (ctx.headers.authorization !== "custom-value") {
@@ -362,16 +326,7 @@ The main Hatchify constructor can, optionally, take a database parameter that ca
 This example shows how to use a sqlite local file storage
 
 ```typescript
-const hatchedKoa = hatchifyKoa(
-  { Player, Team, User },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-    },
-  },
-)
+const hatchedKoa = hatchifyKoa({ Player, Team, User }, { prefix: "/api" })
 ```
 
 This example shows how to use a postgresql database
@@ -382,11 +337,7 @@ const hatchedKoa = hatchifyKoa(
   {
     prefix: "/api",
     database: {
-      dialect: "postgres",
-      host: "localhost",
-      port: 5432,
-      username: "example_user",
-      password: "example_password",
+      uri: "postgres://example_user:example_password@localhost:5432",
     },
   },
 )
@@ -448,16 +399,7 @@ import { Player, Team, User } from "./models"
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchedKoa = hatchifyKoa(
-  { Player, Team, User },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-    },
-  },
-)
+const hatchedKoa = hatchifyKoa({ Player, Team, User }, { prefix: "/api" })
 
 router.get("/generate-report", async (ctx) => {
   const requestedStartDate = ctx.params.startDate
@@ -505,16 +447,7 @@ import { Player, Team, User } from "./models"
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchedKoa = hatchifyKoa(
-  { Player, Team, User },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-    },
-  },
-)
+const hatchedKoa = hatchifyKoa({ Player, Team, User }, { prefix: "/api" })
 
 router.get(
   "/api/players",
@@ -595,16 +528,7 @@ import { Assignment, Employee } from "./models"
 const app = new Koa()
 const router = new KoaRouter()
 
-const hatchedKoa = hatchifyKoa(
-  { Assignment, Employee },
-  {
-    prefix: "/api",
-    database: {
-      dialect: "sqlite",
-      storage: ":memory:",
-    },
-  },
-)
+const hatchedKoa = hatchifyKoa({ Assignment, Employee }, { prefix: "/api" })
 
 router.post("/Assignment", async (ctx, next) => {
   // Run a parse first to do a general check that all the required

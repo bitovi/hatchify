@@ -9,9 +9,7 @@ import type {
   HasOneOptions,
   Model,
   ModelAttributeColumnOptions,
-  ModelCtor,
   ModelStatic,
-  Options,
   Sequelize,
 } from "sequelize"
 
@@ -19,6 +17,23 @@ import type { Hatchify } from "../node"
 
 export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"
+
+export interface DatabaseOptions {
+  /**
+   * A full database URI. Defaults to in-memory SQLite.
+   */
+  uri?: string
+
+  /**
+   * A function that gets executed while running the query to log the sql.
+   */
+  logging?: (sql: string, timing?: number | undefined) => void
+
+  /**
+   * An object of additional options, which are passed directly to the connection library
+   */
+  additionalOptions?: object
+}
 
 /**
  * Hatchify Configuration
@@ -31,17 +46,7 @@ export interface HatchifyOptions {
    * This is used internally for regex path matching
    */
   prefix?: string
-
-  /**
-   * This flag should mostly be used for development and will
-   * force your Models onto the database schema at startup.
-   */
-  sync?: boolean
-
-  /**
-   * Notes about Sequelize connections
-   */
-  database?: Options
+  database?: DatabaseOptions
 }
 
 export const HatchifySymbolModel = Symbol("hatchify")
@@ -77,7 +82,7 @@ export interface ICreateHatchifyModel {
  */
 export interface SequelizeWithHatchify extends Sequelize {
   readonly models: {
-    [key: string]: ModelCtor<Model> & {
+    [key: string]: ModelStatic<Model> & {
       [HatchifySymbolModel]: FinalSchema
     }
   }

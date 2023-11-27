@@ -7,7 +7,6 @@ import { toSequelize } from "./toSequelize"
 describe("toSequelize", () => {
   const sequelize = new Sequelize({
     dialect: "sqlite",
-    storage: ":memory:",
     logging: false,
   })
   let schemas: {

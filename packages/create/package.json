@@ -9,10 +9,8 @@
   },
   "files": [
     "index.js",
-    "template-express-postgres",
-    "template-express-sqlite",
-    "template-koa-postgres",
-    "template-koa-sqlite",
+    "template-express",
+    "template-koa",
     "template-react",
     "dist"
   ],

@@ -31,8 +31,11 @@ const defaultTargetDir = "hatchify-app"
 async function init() {
   const argTargetDir = formatTargetDir(argv._[0])
   const argBackend = (argv.backend || argv.b)?.toUpperCase()
-  const argDatabase = (argv.database || argv.d)?.toUpperCase()
-  const argFrontend = (argv.frontend || argv.f || "react")?.toUpperCase()
+  const argDatabaseUri = argv.database || argv.d
+  const argDatabase = !argDatabaseUri
+    ? "SQLITE"
+    : new URL(argDatabaseUri).protocol.replace(":", "").toUpperCase()
+  const argFrontend = (argv.frontend || argv.f || "REACT")?.toUpperCase()
   const argPackagePath = argv.path
 
   let targetDir = argTargetDir || defaultTargetDir
@@ -126,35 +129,37 @@ async function init() {
         },
         {
           type: (database: Database) =>
-            database?.name === "postgres" ? "text" : null,
+            database?.name === "postgres" && !argDatabaseUri ? "text" : null,
           name: "databaseHost",
           message: reset("Database host:"),
           initial: "localhost",
         },
         {
           type: (_, { database }: { database: Database }) =>
-            database?.name === "postgres" ? "number" : null,
+            database?.name === "postgres" && !argDatabaseUri ? "number" : null,
           name: "databasePort",
           message: reset("Database port:"),
           initial: 5432,
         },
         {
           type: (_, { database }: { database: Database }) =>
-            database?.name === "postgres" ? "text" : null,
+            database?.name === "postgres" && !argDatabaseUri ? "text" : null,
           name: "databaseUsername",
           message: reset("Database username:"),
           initial: "postgres",
         },
         {
           type: (_, { database }: { database: Database }) =>
-            database?.name === "postgres" ? "password" : null,
+            database?.name === "postgres" && !argDatabaseUri
+              ? "password"
+              : null,
           name: "databasePassword",
           message: reset("Database password:"),
           initial: "password",
         },
         {
           type: (_, { database }: { database: Database }) =>
-            database?.name === "postgres" ? "text" : null,
+            database?.name === "postgres" && !argDatabaseUri ? "text" : null,
           name: "databaseName",
           message: reset("Database name:"),
           initial: "postgres",
@@ -190,6 +195,12 @@ async function init() {
     databaseName,
   } = result
 
+  const databaseConnectionString =
+    argDatabaseUri ||
+    (database?.name === "sqlite"
+      ? "sqlite://localhost/:memory"
+      : `${database.name}://${databaseUsername}:${databasePassword}@${databaseHost}:${databasePort}/${databaseName}`)
+
   const root = path.join(cwd, targetDir)
 
   if (overwrite) {
@@ -217,11 +228,7 @@ async function init() {
   const backendTemplateDir = path.resolve(
     fileURLToPath(import.meta.url),
     "../..",
-    `template-${
-      argBackend && argDatabase
-        ? `${argBackend.toLowerCase()}-${argDatabase.toLowerCase()}`
-        : `${backend.name}-${database.name}`
-    }`,
+    `template-${argBackend ? argBackend.toLowerCase() : backend.name}`,
   )
   const frontendTemplateDir = path.resolve(
     fileURLToPath(import.meta.url),
@@ -306,13 +313,7 @@ async function init() {
     ),
     fs.promises.writeFile(
       path.join(root, ".env"),
-      [
-        `PG_DB_HOST=${databaseHost}`,
-        `PG_DB_PORT=${databasePort}`,
-        `PG_DB_USERNAME=${databaseUsername}`,
-        `PG_DB_PASSWORD=${databasePassword}`,
-        `PG_DB_NAME=${databaseName}`,
-      ].join("\n"),
+      `DB_URI=${databaseConnectionString}`,
       "utf8",
     ),
   ])
