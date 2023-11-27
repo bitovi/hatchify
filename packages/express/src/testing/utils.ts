@@ -29,19 +29,11 @@ export async function startServerWith(
   const hatchify = new Hatchify(models, {
     prefix: "/api",
     database: {
-      dialect,
-      logging: false,
-      ...(dialect === "postgres"
-        ? {
-            host: process.env.PG_DB_HOST,
-            port: Number(process.env.PG_DB_PORT),
-            username: process.env.PG_DB_USERNAME,
-            password: process.env.PG_DB_PASSWORD,
-            database: process.env.PG_DB_NAME,
-          }
-        : {
-            storage: ":memory:",
-          }),
+      ...(dialect === "postgres" && {
+        uri:
+          process.env.DB_URI ||
+          "postgres://postgres:password@localhost:5432/postgres",
+      }),
     },
   })
   app.use(errorHandlerMiddleware)

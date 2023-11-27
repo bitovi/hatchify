@@ -48,14 +48,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     const app = new Koa()
     const hatchedKoa = hatchifyKoa(
       { Article },
-      {
-        prefix: `/${testBackendEndpointConfig.api}`,
-        database: {
-          dialect: "sqlite",
-          storage: ":memory:",
-          logging: false,
-        },
-      },
+      { prefix: `/${testBackendEndpointConfig.api}` },
     )
     app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
@@ -125,13 +118,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       {
         prefix: `/${testBackendEndpointConfig.api}`,
         database: {
-          dialect: "postgres",
-          host: process.env.PG_DB_HOST,
-          port: Number(process.env.PG_DB_PORT),
-          username: process.env.PG_DB_USERNAME,
-          password: process.env.PG_DB_PASSWORD,
-          database: process.env.PG_DB_NAME,
-          logging: false,
+          uri: process.env.DB_URI,
         },
       },
     )
@@ -207,13 +194,7 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       {
         prefix: `/${testBackendEndpointConfig.api}`,
         database: {
-          dialect: "postgres",
-          host: process.env.PG_DB_HOST,
-          port: Number(process.env.PG_DB_PORT),
-          username: process.env.PG_DB_USERNAME,
-          password: process.env.PG_DB_PASSWORD,
-          database: process.env.PG_DB_NAME,
-          logging: false,
+          uri: process.env.DB_URI,
         },
       },
     )

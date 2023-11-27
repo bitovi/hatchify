@@ -186,11 +186,7 @@ For more information on creating a connection, [this tutorial](https://dbeaver.c
 2. Fill your .env file with the following content:
 
    ```bash
-   PG_DB_HOST=localhost
-   PG_DB_PORT=5432
-   PG_DB_USERNAME=example_user
-   PG_DB_PASSWORD=example_password
-   PG_DB_NAME=postgres
+   DB_URI=postgres://example_user:example_password@localhost:5432/postgres
    ```
 
 #### 3.3. With a database engine in a Docker container (recommended)
@@ -261,7 +257,10 @@ or individually:
 You can also run the Playwright E2E tests:
 
 ```bash
-npm run e2e
+npm run e2e --backend=koa --database=sqlite --frontend=react
+npm run e2e --backend=koa --database=postgres --frontend=react
+npm run e2e --backend=express --database=sqlite --frontend=react
+npm run e2e --backend=express --database=postgres --frontend=react
 ```
 
 #### 4.1. Testing aginst a Hatchify app

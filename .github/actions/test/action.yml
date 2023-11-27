@@ -13,10 +13,4 @@ runs:
       shell: bash
       run: npx nx test ${{ inputs.package }}
       env:
-        # The hostname used to communicate with the PostgreSQL service container
-        PG_DB_HOST: localhost
-        # The default PostgreSQL port
-        PG_DB_PORT: 5432
-        PG_DB_USERNAME: postgres
-        PG_DB_PASSWORD: postgres
-        PG_DB_NAME: postgres
+        DB_URI: postgres://postgres:postgres@localhost:5432/postgres

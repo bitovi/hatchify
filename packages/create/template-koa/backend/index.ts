@@ -1,16 +1,17 @@
+import dotenv from "dotenv"
 import Koa from "koa"
 import c2k from "koa-connect"
 import { createServer as createViteServer } from "vite"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import * as Schemas from "../schemas"
 
+dotenv.config()
+
 const app = new Koa()
 const hatchedKoa = hatchifyKoa(Schemas, {
   prefix: "/api",
   database: {
-    dialect: "sqlite",
-    storage: ":memory:",
-    logging: false,
+    uri: process.env.DB_URI,
   },
 })
 
