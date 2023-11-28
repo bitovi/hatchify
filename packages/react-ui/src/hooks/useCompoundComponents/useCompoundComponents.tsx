@@ -15,7 +15,7 @@ export interface HatchifyColumn {
   sortable: boolean
   key: string
   label: string
-  isHeaderOverridden: boolean
+  headerOverride: boolean
   renderData: ({ record }: { record: Record }) => React.ReactNode
   renderHeader: (headerProps: HeaderProps) => React.ReactNode
 }

@@ -46,7 +46,7 @@ export function getColumn<
     label,
     renderData: () => null, // default render so TS doesn't complain
     renderHeader: () => null, // default render so TS doesn't complain
-    isHeaderOverridden: renderHeaderValue ?? HeaderValueComponent ?? false,
+    headerOverride: renderHeaderValue ?? HeaderValueComponent ?? false,
   }
 
   // render priority:

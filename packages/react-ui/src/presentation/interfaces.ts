@@ -95,7 +95,7 @@ export type HeaderProps =
   | (HeaderPropsCommon & {
       column: Omit<
         HatchifyColumn,
-        "isHeaderOverridden" | "renderData" | "renderHeader"
+        "headerOverride" | "renderData" | "renderHeader"
       >
     })
 

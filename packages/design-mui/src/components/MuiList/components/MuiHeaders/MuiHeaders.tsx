@@ -38,7 +38,7 @@ export const MuiHeaders: React.FC<
         {columns.map((column) => (
           <TableCell
             key={column.key}
-            css={column.isHeaderOverridden ? "" : styles.th}
+            css={column.headerOverride ? "" : styles.th}
             sortDirection={column.key === sortBy ? direction : false}
           >
             <Sortable
