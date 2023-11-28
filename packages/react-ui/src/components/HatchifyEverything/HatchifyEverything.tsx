@@ -30,7 +30,7 @@ function HatchifyEverything<
 >({ finalSchemas, ...rest }: HatchifyEverythingProps<TSchemas>): JSX.Element {
   return (
     <>
-      {JSON.stringify(finalSchemas) !== "{}" ? (
+      {Object.keys(finalSchemas).length !== 0 ? (
         <HatchifyEverythingWithSchema {...rest} finalSchemas={finalSchemas} />
       ) : (
         <HatchifyEverythingNoSchema />
