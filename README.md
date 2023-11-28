@@ -58,7 +58,7 @@ following steps:
 2. Create a new project:
 
    ```bash
-   npm init @hatchifyjs
+   npm init @hatchifyjs@latest
    ```
 
 # Schemas
