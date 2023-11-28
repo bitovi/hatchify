@@ -17,15 +17,17 @@ Update `/src/App.tsx` to the following:
 
 ```tsx
 // hatchify-app/frontend/App.tsx
-import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo, User } from "../schemas"
+import {
+  hatchifyReact,
+  HatchifyProvider,
+  createJsonapiClient,
+} from "@hatchifyjs/react"
+import { createTheme, ThemeProvider } from "@mui/material"
+import * as schemas from "../schemas"
 import { useState } from "react" // 👀
 
 export const hatchedReact = hatchifyReact(
-  createJsonapiClient("http://localhost:3000/api", {
-    Todo,
-    User,
-  }),
+  createJsonapiClient("http://localhost:3000/api", schemas),
 )
 
 const TodoList = hatchedReact.components.Todo.Collection
@@ -36,15 +38,15 @@ const App: React.FC = () => {
     all: false,
     ids: [],
   })
-
+  
   return (
-    <MuiProvider>
-      {/*👀*/}
-      <button onClick={() => alert(`all: ${selected.all}, ids: ${selected.ids}`)}>action</button>
-      {/*👀*/}
-      <TodoList defaultSelected={selected} onSelectedChange={(selected) => setSelected(selected)}></TodoList>
-    </MuiProvider>
-  )
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <button onClick={() => alert(`all: ${selected.all}, ids: ${selected.ids}`)}>action</button>
+        <TodoList defaultSelected={selected} onSelectedChange={(selected) => setSelected(selected)}></TodoList>
+      </HatchifyProvider>
+    </ThemeProvider>
+    )
 }
 
 export default App
