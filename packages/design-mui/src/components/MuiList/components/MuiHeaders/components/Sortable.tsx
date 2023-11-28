@@ -1,4 +1,4 @@
-import { Sort } from "./Sort"
+import Sort from "./Sort"
 import type { RenderHeaderProps } from "./interfaces"
 
 export const Sortable: React.FC<
@@ -20,3 +20,5 @@ export const Sortable: React.FC<
   ) : (
     children
   )
+
+export default Sortable

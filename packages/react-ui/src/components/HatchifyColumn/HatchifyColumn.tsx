@@ -59,6 +59,7 @@ export type RenderDataValue<
 }) => JSX.Element
 
 // todo: renderDataValue and DataValueComponent should be required, but only one can be provided
+// todo: renderHeaderValue and HeaderValueComponent should be required, but only one can be provided
 export type AdditionalColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -76,6 +77,7 @@ export type AdditionalColumnProps<
 }
 
 // todo: renderDataValue and DataValueComponent should be optional, but only one can be provided
+// todo: renderHeaderValue and HeaderValueComponent should be optional, but only one can be provided
 export type ReplaceColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -98,6 +100,7 @@ export type ReplaceColumnProps<
 }
 
 // todo: renderDataValue and DataValueComponent should be optional, but only one can be provided
+// todo: renderHeaderValue and HeaderValueComponent should be optional, but only one can be provided
 export type OverwriteColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -116,7 +119,7 @@ export type OverwriteColumnProps<
   renderDataValue?: RenderDataValue<TSchemas, TSchemaName>
   DataValueComponent?: DataValueComponent // @TODO HATCH-417 - not sure if this is possible to strictly type
   renderHeaderValue?: RenderHeader
-  HeaderValueComponent?: HeaderValueComponent
+  HeaderValueComponent?: HeaderValueComponent // @TODO HATCH-417 - not sure if this is possible to strictly type
 }
 
 export function HatchifyColumn<

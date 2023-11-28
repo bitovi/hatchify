@@ -19,3 +19,5 @@ export const Sort: React.FC<
     ) : null}
   </TableSortLabel>
 )
+
+export default Sort

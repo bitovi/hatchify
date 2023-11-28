@@ -1,2 +1,2 @@
-export * from "./Sort"
-export * from "./Sortable"
+export { default as Sort } from "./Sort"
+export { default as Sortable } from "./Sortable"

@@ -45,7 +45,7 @@ export function getColumn<
     key: field || uuidv4(), // if no field, then it's an additional column, but needs a key?
     label,
     renderData: () => null, // default render so TS doesn't complain
-    renderHeader: () => null,
+    renderHeader: () => null, // default render so TS doesn't complain
     isHeaderOverridden: renderHeaderValue ?? HeaderValueComponent ?? false,
   }
 

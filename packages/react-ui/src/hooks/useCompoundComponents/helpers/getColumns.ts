@@ -31,7 +31,7 @@ export function getColumns<
   const getHatchifyColumnCommon = {
     finalSchemas,
     schemaName: schemaName as string,
-    defaultValueComponents: defaultValueComponents,
+    defaultValueComponents,
   }
 
   for (let i = 0; i < prepend.length; i++) {
@@ -83,8 +83,6 @@ export function getColumns<
       if (replaceWith) {
         const { props } = replaceWith
         const relationship = schema?.relationships?.[props.field]
-
-        console.log("⭐", props)
 
         hatchifyColumns.push(
           getColumn({
