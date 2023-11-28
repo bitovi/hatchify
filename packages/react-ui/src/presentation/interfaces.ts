@@ -54,8 +54,8 @@ export interface XCollectionProps<
 export interface XEverythingProps<
   TSchemas extends Record<string, PartialSchema> = any,
   TSchemaName extends GetSchemaNames<TSchemas> = any,
-> extends XCollectionProps {
-  setSelectedSchema: (schemaName: TSchemaName) => void
+> extends Partial<XCollectionProps> {
+  setSelectedSchema?: (schemaName: TSchemaName) => void
 }
 
 export interface XLayoutProps<

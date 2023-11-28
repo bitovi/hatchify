@@ -27,6 +27,28 @@ export interface HatchifyEverythingProps<
 
 function HatchifyEverything<
   const TSchemas extends Record<string, PartialSchema>,
+>({ finalSchemas, ...rest }: HatchifyEverythingProps<TSchemas>): JSX.Element {
+  return (
+    <>
+      {JSON.stringify(finalSchemas) !== "{}" ? (
+        <HatchifyEverythingWithSchema {...rest} finalSchemas={finalSchemas} />
+      ) : (
+        <HatchifyEverythingNoSchema />
+      )}
+    </>
+  )
+}
+
+HatchifyEverything.displayName = "Everything"
+
+function HatchifyEverythingNoSchema(): JSX.Element {
+  const { Everything } = useHatchifyPresentation()
+
+  return <Everything setSelectedSchema={() => undefined} />
+}
+
+function HatchifyEverythingWithSchema<
+  const TSchemas extends Record<string, PartialSchema>,
 >({
   finalSchemas,
   partialSchemas,
@@ -41,6 +63,7 @@ function HatchifyEverything<
   const schemasList = Object.keys(finalSchemas) as Array<
     GetSchemaNames<TSchemas>
   >
+
   const [selectedSchema, setSelectedSchema] = useState(schemasList[0])
   const { Everything } = useHatchifyPresentation()
 
@@ -66,7 +89,5 @@ function HatchifyEverything<
     />
   )
 }
-
-HatchifyEverything.displayName = "Everything"
 
 export default HatchifyEverything
