@@ -5,12 +5,11 @@ import type {
   GetSchemaFromName,
   GetSchemaNames,
   Include,
-  Meta,
   Record,
 } from "@hatchifyjs/rest-client"
 import { useHatchifyPresentation } from "../../components"
 import { getColumns, getEmptyList } from "./helpers"
-import type { HatchifyCollectionSort, SortObject } from "../../presentation"
+import type { HeaderProps } from "../../presentation"
 
 export interface HatchifyColumn {
   sortable: boolean
@@ -18,16 +17,7 @@ export interface HatchifyColumn {
   label: string
   isHeaderOverridden: boolean
   renderData: ({ record }: { record: Record }) => React.ReactNode
-  renderHeader: (headerProps: {
-    column: Omit<
-      HatchifyColumn,
-      "isHeaderOverridden" | "renderData" | "renderHeader"
-    >
-    direction: SortObject["direction"]
-    meta: Meta
-    setSort: HatchifyCollectionSort["setSort"]
-    sortBy?: SortObject["sortBy"]
-  }) => React.ReactNode
+  renderHeader: (headerProps: HeaderProps) => React.ReactNode
 }
 
 interface CompoundComponents {

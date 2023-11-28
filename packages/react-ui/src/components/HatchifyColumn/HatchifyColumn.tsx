@@ -1,5 +1,4 @@
 import type {
-  Meta,
   FinalSchemas,
   GetSchemaFromName,
   GetSchemaNames,
@@ -9,9 +8,8 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   DataValue,
   DataValueComponent,
-  HatchifyCollectionSort,
+  HeaderProps,
   HeaderValueComponent,
-  SortObject,
 } from "../../presentation/interfaces"
 import { HatchifyColumn } from "../../hooks"
 
@@ -29,16 +27,7 @@ export type RenderData<
   >
 }) => JSX.Element
 
-export type RenderHeader = (headerArgs: {
-  column: Omit<
-    HatchifyColumn,
-    "isHeaderOverridden" | "renderData" | "renderHeader"
-  >
-  meta: Meta
-  sortBy: SortObject["sortBy"]
-  direction: SortObject["direction"]
-  setSort: HatchifyCollectionSort["setSort"]
-}) => JSX.Element
+export type RenderHeader = (headerArgs: HeaderProps) => JSX.Element
 
 export type RenderDataValue<
   TSchemas extends Record<string, PartialSchema>,

@@ -1,9 +1,9 @@
 import { Box, TableSortLabel } from "@mui/material"
 import { visuallyHidden } from "@mui/utils"
-import type { RenderHeaderProps } from "./interfaces"
+import type { RenderHeaderProps1 } from "./interfaces"
 
 export const Sort: React.FC<
-  RenderHeaderProps & { children: React.ReactNode }
+  RenderHeaderProps1 & { children: React.ReactNode }
 > = ({ children, column, direction, meta, setSort, sortBy }) => (
   <TableSortLabel
     disabled={meta.isLoading}

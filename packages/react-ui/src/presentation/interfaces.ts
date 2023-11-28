@@ -85,13 +85,23 @@ export type DataValueComponent = React.FC<{
   control: FinalAttributeRecord[string]["control"]
   field?: string | null
 }>
-export type HeaderValueComponent = React.FC<{
-  column: Omit<
-    HatchifyColumn,
-    "isHeaderOverridden" | "renderData" | "renderHeader"
-  >
+
+export type HeaderValueComponent = React.FC<HeaderProps>
+
+export type HeaderProps =
+  | (HeaderPropsCommon & {
+      column: HatchifyColumn
+    })
+  | (HeaderPropsCommon & {
+      column: Omit<
+        HatchifyColumn,
+        "isHeaderOverridden" | "renderData" | "renderHeader"
+      >
+    })
+
+interface HeaderPropsCommon {
   meta: Meta
   sortBy: SortObject["sortBy"]
   direction: SortObject["direction"]
   setSort: HatchifyCollectionSort["setSort"]
-}>
+}

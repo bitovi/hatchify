@@ -1,8 +1,8 @@
-import Sort from "./Sort"
-import type { RenderHeaderProps } from "./interfaces"
+import { Sort } from "./Sort"
+import type { HeaderProps } from "@hatchifyjs/react-ui"
 
 export const Sortable: React.FC<
-  RenderHeaderProps & {
+  HeaderProps & {
     children: React.ReactNode
     sortable: boolean
   }
