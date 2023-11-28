@@ -151,7 +151,7 @@ validating them against each other, and setting up relationships for
 you.
 
 ```bash
-npm run dev:backend
+npm run dev
 ```
 
 You can navigate to the following endpoints to get a list of users and todos
