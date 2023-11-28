@@ -39,8 +39,6 @@ function HatchifyEverything<
   )
 }
 
-HatchifyEverything.displayName = "Everything"
-
 function HatchifyEverythingNoSchema(): JSX.Element {
   const { Everything } = useHatchifyPresentation()
 
@@ -89,5 +87,7 @@ function HatchifyEverythingWithSchema<
     />
   )
 }
+
+HatchifyEverything.displayName = "Everything"
 
 export default HatchifyEverything
