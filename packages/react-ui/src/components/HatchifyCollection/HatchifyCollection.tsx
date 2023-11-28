@@ -68,7 +68,7 @@ function HatchifyCollection<
 
 export default HatchifyCollection
 
-function getDefaultInclude<TSchema extends PartialSchema>(
+export function getDefaultInclude<TSchema extends PartialSchema>(
   allSchemas: FinalSchemas,
   schemaName: string,
 ): Include<TSchema> {

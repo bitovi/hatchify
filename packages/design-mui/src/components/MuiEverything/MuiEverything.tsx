@@ -1,13 +1,13 @@
-import { MuiDataGrid } from "../MuiDataGrid"
 import Grid from "@mui/material/Grid"
 import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
 import Typography from "@mui/material/Typography"
-import { Eggbert } from "../../assets"
+import { HatchifyEmpty } from "@hatchifyjs/react-ui"
 import type { XEverythingProps } from "@hatchifyjs/react-ui"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { GetSchemaNames } from "@hatchifyjs/rest-client"
-import { HatchifyEmpty } from "@hatchifyjs/react-ui"
+import { MuiDataGrid } from "../MuiDataGrid"
+import { Eggbert } from "../../assets"
 
 export function MuiEverything<
   const TSchemas extends Record<string, PartialSchema>,
