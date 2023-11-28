@@ -7,11 +7,11 @@ import {
   hasMany,
   string,
 } from "@hatchifyjs/core"
-import { getDefaultColumnRender } from "."
+import { getDefaultDataRender } from "."
 import { HatchifyPresentationDefaultValueComponents } from "../../../components"
 
 /* eslint-disable testing-library/render-result-naming-convention */
-describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
+describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
   const finalSchemas = assembler({
     Todo: {
       name: "Todo",
@@ -36,7 +36,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
   })
 
   it("works for attribute", () => {
-    const columnRenderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
       control: finalSchemas.Todo.attributes.title.control,
@@ -52,7 +52,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
   })
 
   it("returns empty string for attribute with no value", () => {
-    const columnRenderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
       control: finalSchemas.Todo.attributes.title.control,
@@ -68,7 +68,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
   })
 
   it("works for boolean attribute", () => {
-    const columnRenderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
       control: finalSchemas.Todo.attributes.important.control,
@@ -85,7 +85,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
   })
 
   it("works for dateonly attribute", () => {
-    const columnRenderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
       control: finalSchemas.Todo.attributes.created.control,
@@ -101,7 +101,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
   })
 
   it("works for relationship", () => {
-    const columnRenderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
       control: null,
@@ -122,7 +122,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultColumnRender", () => {
   })
 
   it("works for relationship with label", () => {
-    const columnRenderFn = getDefaultColumnRender({
+    const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
       control: null,
