@@ -41,7 +41,7 @@ export function getColumn<
 
   const column: HatchifyColumn = {
     sortable:
-      sortable !== undefined ? sortable : !isAdditional && !isRelationship, // sortable if an attribute
+      sortable !== undefined ? sortable : !isAdditional && !isRelationship, // reference sortable prop; otherwise sortable if an attribute
     key: field || uuidv4(), // if no field, then it's an additional column, but needs a key?
     label,
     renderData: () => null, // default render so TS doesn't complain
@@ -50,9 +50,9 @@ export function getColumn<
   }
 
   // render priority:
-  // 1. prop: render (render function)
-  // 2. prop: renderValue (render function)
-  // 3. prop: ValueComponent (component)
+  // 1. prop: renderData (render function)
+  // 2. prop: renderDataValue (render function)
+  // 3. prop: DataValueComponent (component)
   // 4. default render (based on type)
 
   if (renderData) {
@@ -79,6 +79,11 @@ export function getColumn<
       defaultValueComponents,
     })
   }
+
+  // render priority:
+  // 2. prop: renderHeaderValue (render function)
+  // 3. prop: HeaderValueComponent (component)
+  // 4. render label
 
   if (renderHeaderValue) {
     column.renderHeader = (headerArgs) => {
