@@ -100,8 +100,8 @@ export type HeaderProps =
     })
 
 interface HeaderPropsCommon {
-  meta: Meta
-  sortBy: SortObject["sortBy"]
   direction: SortObject["direction"]
+  meta: Meta
   setSort: HatchifyCollectionSort["setSort"]
+  sortBy: SortObject["sortBy"]
 }

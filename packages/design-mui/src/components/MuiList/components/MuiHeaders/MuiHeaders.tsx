@@ -42,9 +42,9 @@ export const MuiHeaders: React.FC<
             sortDirection={column.key === sortBy ? direction : false}
           >
             <Sortable
-              column={column}
               direction={direction}
-              meta={meta}
+              isLoading={meta.isLoading}
+              key={column.key}
               setSort={setSort}
               sortable={column.sortable}
               sortBy={sortBy}

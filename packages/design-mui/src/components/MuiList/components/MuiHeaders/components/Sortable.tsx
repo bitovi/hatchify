@@ -1,17 +1,20 @@
+import type { Meta } from "@hatchifyjs/rest-client"
 import { Sort } from "./Sort"
-import type { HeaderProps } from "@hatchifyjs/react-ui"
+import type { HatchifyColumn, HeaderProps } from "@hatchifyjs/react-ui"
 
 export const Sortable: React.FC<
-  HeaderProps & {
+  Pick<HeaderProps, "direction" | "setSort" | "sortBy"> & {
     children: React.ReactNode
+    isLoading: Meta["isLoading"]
+    key: HatchifyColumn["key"]
     sortable: boolean
   }
-> = ({ children, column, direction, meta, setSort, sortable, sortBy }) =>
+> = ({ children, key, direction, isLoading, setSort, sortable, sortBy }) =>
   sortable ? (
     <Sort
-      column={column}
       direction={direction}
-      meta={meta}
+      isLoading={isLoading}
+      key={key}
       setSort={setSort}
       sortBy={sortBy}
     >
