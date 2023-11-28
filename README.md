@@ -364,8 +364,8 @@ the `Todo` key and render it.
 
 ## Rendering a List
 
-**✏️**In another terminal, run `npm run dev:frontend` and open
-[http://localhost:5173/](http://localhost:5173/). You
+**✏️**Open
+[http://localhost:3000/](http://localhost:3000/). You
 should see:
 
 ![](doc/attachments/frontend-todo-list.png)
