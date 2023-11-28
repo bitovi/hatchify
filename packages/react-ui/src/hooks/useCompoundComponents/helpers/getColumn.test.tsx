@@ -45,10 +45,12 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     })
 
     expect(column).toEqual({
+      headerOverride: false,
       sortable: true,
       key: "title",
       label: "Title",
-      render: expect.any(Function),
+      renderData: expect.any(Function),
+      renderHeader: expect.any(Function),
     })
   })
 
@@ -65,10 +67,12 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     })
 
     expect(column).toEqual({
+      headerOverride: false,
       sortable: true,
       key: "created",
       label: "CREATED",
-      render: expect.any(Function),
+      renderData: expect.any(Function),
+      renderHeader: expect.any(Function),
     })
   })
 
@@ -83,10 +87,12 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     })
 
     expect(column).toEqual({
+      headerOverride: false,
       sortable: false,
       key: column.key,
       label: "Additional Column",
-      render: expect.any(Function),
+      renderData: expect.any(Function),
+      renderHeader: expect.any(Function),
     })
   })
 
@@ -101,10 +107,12 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     })
 
     expect(column).toEqual({
+      headerOverride: false,
       sortable: false,
       key: "user",
       label: "User",
-      render: expect.any(Function),
+      renderData: expect.any(Function),
+      renderHeader: expect.any(Function),
     })
   })
 })
