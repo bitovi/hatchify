@@ -21,7 +21,7 @@ export const Sortable: React.FC<
       {children}
     </Sort>
   ) : (
-    children
+    <>{children}</>
   )
 
 export default Sortable
