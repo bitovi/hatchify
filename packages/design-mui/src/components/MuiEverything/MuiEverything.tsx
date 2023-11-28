@@ -14,7 +14,6 @@ export function MuiEverything<
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >({
   children,
-  data,
   finalSchemas,
   schemaName,
   setSelectedSchema,
@@ -31,7 +30,10 @@ export function MuiEverything<
                   value={schemaName}
                   label={schemaName}
                   key={schemaName}
-                  onClick={() => setSelectedSchema(schemaName as TSchemaName)}
+                  onClick={() =>
+                    setSelectedSchema &&
+                    setSelectedSchema(schemaName as TSchemaName)
+                  }
                 />
               )
             })}
@@ -68,8 +70,7 @@ export function MuiEverything<
           </Grid>
         ) : (
           <MuiDataGrid
-            {...props}
-            data={data}
+            {...(props as Required<XEverythingProps>)}
             finalSchemas={finalSchemas}
             schemaName={schemaName}
           >
