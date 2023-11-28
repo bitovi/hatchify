@@ -44,7 +44,7 @@ HatchifyEverything.displayName = "Everything"
 function HatchifyEverythingNoSchema(): JSX.Element {
   const { Everything } = useHatchifyPresentation()
 
-  return <Everything setSelectedSchema={() => undefined} />
+  return <Everything />
 }
 
 function HatchifyEverythingWithSchema<
