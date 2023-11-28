@@ -1,62 +1,86 @@
-# integer({min, max, references, default, required, autoIncrement})
+# integer({autoIncrement, min, max, step, primary, required, default, unique})
 
 Defines an attribute as being an integer.
 
 ```ts
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     importance: integer({ required: true }),
-  }
-}
+  },
+} satisfies PartialSchema
 ```
 
 ## Parameters
 
-- `autoIncrement` [{Boolean=false}] - If `true`, increments the field. Example: `integer({autoIncrement: true})`
-- `default` [{Integer}] - The default value of the attribute.  Example: `integer({default: 10})`
-- `max` [{Integer=Infinity}] - The maximum number allowed. Defaults to Infinity. Example: `integer({max: 1000})`
-- `min` [{Integer=-Infinity}] - The minimum number of characters allowed.  Defaults to -Infinity. Example: `integer({min: 1})`
-- `references` - [See References]()
-- `required` [{Boolean=false}] - If the attribute must be provided.
-- `step` [{Integer=1}] - If the granularity the value must adhere to. This number must be an integer itself. Example: `integer({step: 2})`
+| key             | description                                                                         |   type    | optional |   default   |
+| --------------- | ----------------------------------------------------------------------------------- | :-------: | :------: | :---------: |
+| `unique`        | If the value must be unqiue. <br/> Example: `integer({unique: true})`               | `Boolean` |   Yes    |   `false`   |
+| `default`       | The default value of the attribute. <br/> Example: `integer({default: 0})`          | `Integer` |   Yes    |   `null`    |
+| `required`      | If the attribute must be provided. <br/> Example: `integer({required: true})`       | `Boolean` |   Yes    |   `false`   |
+| `primary`       | If the attribute is a primary key. <br/> Example: `integer({primary: true})`        | `Boolean` |   Yes    |   `false`   |
+| `step`          | The granularity the value must adhere to. <br/> Example: `integer({step: 5})`       | `Integer` |   Yes    |     `1`     |
+| `max`           | The maximum value allowed. <br/> Example: `integer({max: 100})`                     | `Integer` |   Yes    | `-Infinity` |
+| `min`           | The minimum value allowed. <br/> Example: `integer({min: 1})`                       | `Integer` |   Yes    | `Infinity`  |
+| `autoIncrement` | If the value should be incremented. <br/> Example: `integer({autoIncrement: true})` | `Boolean` |   Yes    |   `false`   |
 
-## Form Controls
+## Database and Sequelize Behavior
 
-`integer()` will produce a [`<input type="number" step="1">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number) control. 
+The `integer` type will create a sequelize [DataTypes.INTEGER](https://sequelize.org/docs/v6/core-concepts/model-basics/#numbers) column.
 
+## Middleware Behavior
 
-<details>
-<summary>
+### Querying Data
 
-## Advanced Details
+For integers, use any whole number value and `%00` in your queries as follows:
 
-</summary>
+```js
+GET /todos?filter[importance][$gte]=5  // all todos with importance >= 5
+GET /todos?filter[importance][$eq]=1   // all todos with importance = 1
+GET /todos?filter[importance][$eq]=%00 // all todos with importance = null
+```
 
-### Control Type
+Any other value will return a service error.
+
+Checkout the [compatibility table](../../filtering-data/filtering-data.md#compatibility) for what operators can be used with integers.
+
+### Data Response
+
+Integer data will be returned as a number:
 
 ```js
 {
-  type: "Number",
-  allowNull: Boolean, 
-  step: 1,
-  max: Infinity,
-  min: -Infinity
+  data: {
+    ...
+    attributes: {
+      importance: 7
+    }
+  }
 }
 ```
 
+### Mutating Data
 
-### Sequelize Type
+When creating or updating an integer attribute, A whole number or `null` must be provided. Any other value will return a service error.
 
-```js
-{
- type: "INTEGER",
- typeArgs: [],
- allowNull: Boolean,
-autoIncrement: Boolean
-}
+## React Rest Behavior
+
+Similar to the middleware, you MUST provide react rest models a whole number or `null` value. Likewise, they will always return these values:
+
+```ts
+Todo.createOne({ attributes: { importance: 0 } })
+
+const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
+todo.importance //-> number or null
 ```
-  
-</details>
 
+## Grid Behavior
 
+The integer value will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+
+// @todo update
+![Grid Example](https://github.com/bitovi/hatchify/assets/78602/ddbf26a1-180b-4fc7-a483-fde52dc4fce9)
+
+## Form Behavior
+
+`integer()` will produce a [`<input type="number" step="1">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number) control. Empty values will be treated as `null`.
