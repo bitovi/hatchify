@@ -144,7 +144,7 @@ Then, we'll extend the app to handle relationships:
    )
    ```
 
-7. Run `npm run dev`, and open http://localhost:5173/ to see the starter app in action.
+7. Run `npm run dev`, and open http://localhost:3000/ to see the starter app in action.
 
 ![image](https://github.com/bitovi/hatchify/assets/78602/c7445b31-534f-4e03-868a-5ea28b0eabbf)
 
