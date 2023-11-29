@@ -15,6 +15,9 @@ export const Sort: React.FC<
     active={columnKey === sortBy}
     direction={sortBy === sortBy ? direction : "asc"}
     onClick={() => setSort(columnKey)}
+    sx={{
+      display: "flex",
+    }}
   >
     {children}
     {columnKey === sortBy ? (
