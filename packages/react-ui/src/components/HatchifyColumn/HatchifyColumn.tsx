@@ -57,7 +57,7 @@ export type AdditionalColumnProps<
   allSchemas: FinalSchemas
   schemaName: string
   type: "append" | "prepend"
-  label?: string
+  label: string
   field?: never
 } & {
   renderDataValue?: RenderData<TSchemas, TSchemaName>

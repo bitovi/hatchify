@@ -81,9 +81,9 @@ export function getColumn<
   }
 
   // render priority:
-  // 2. prop: renderHeaderValue (render function)
-  // 3. prop: HeaderValueComponent (component)
-  // 4. render label
+  // 1. prop: renderHeaderValue (render function)
+  // 2. prop: HeaderValueComponent (component)
+  // 3. render label
 
   if (renderHeaderValue) {
     column.renderHeader = (headerArgs) => {
