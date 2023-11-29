@@ -1,7 +1,35 @@
 /* c8 ignore start */
 import { rest } from "msw"
+import { assembler, hasMany, hasOne, string } from "@hatchifyjs/core"
+import type { RestClientSchema } from "@hatchifyjs/rest-client"
 
 export const baseUrl = "http://api.example.com"
+
+export const partialSchemas = {
+  Article: {
+    name: "Article",
+    attributes: {
+      title: string(),
+      body: string(),
+    },
+    relationships: {
+      author: hasOne("Person"),
+      tags: hasMany("Tag"),
+    },
+    type: "article",
+    endpoint: "articles",
+  },
+  Person: {
+    name: "Person",
+    attributes: {},
+    type: "person",
+    endpoint: "people",
+  },
+  Tag: { name: "Tag", attributes: {}, type: "tag", endpoint: "tags" },
+} satisfies globalThis.Record<string, RestClientSchema>
+
+export const restClientConfig = { baseUrl, schemaMap: partialSchemas }
+export const finalSchemas = assembler(partialSchemas)
 
 export const testData = {
   data: [

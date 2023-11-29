@@ -1,21 +1,44 @@
-import { afterAll, describe, it, expect, vi } from "vitest"
+import { describe, it, expect } from "vitest"
 import {
-  HatchifyCoerceError,
   assembler,
-  datetime,
-  integer,
+  belongsTo,
+  boolean,
+  hasMany,
   string,
 } from "@hatchifyjs/core"
-import type { Resource } from "../../types"
-import { testData, schemas } from "../../mocks/testData"
+import type { Record, Resource } from "../../types"
 import {
   keyResourcesById,
   isMissingSchema,
   resourceToRecordRelationship,
   flattenResourcesIntoRecords,
-  setClientPropertyValuesFromResponse,
-  serializeClientPropertyValuesForRequest,
 } from "./records"
+
+const partialSchemas = {
+  Todo: {
+    name: "Todo",
+    attributes: { title: string(), important: boolean() },
+    relationships: { user: belongsTo("Person") },
+  },
+  Person: {
+    name: "Person",
+    attributes: { name: string() },
+    relationships: {
+      todos: hasMany("Todo"),
+      employer: belongsTo("Company"),
+    },
+  },
+  Company: {
+    name: "Company",
+    attributes: { name: string() },
+    relationships: {
+      employees: hasMany("Person"),
+      parentCompany: belongsTo("Company"),
+    },
+  },
+}
+
+const finalSchemas = assembler(partialSchemas)
 
 describe("rest-client/utils/records", () => {
   describe("keyResourcesById", () => {
@@ -35,244 +58,234 @@ describe("rest-client/utils/records", () => {
   describe("isMissingSchema", () => {
     it("should return true if a schema is missing", () => {
       expect(
-        isMissingSchema(schemas, { id: "article-1", __schema: "Foo" }),
+        isMissingSchema(finalSchemas, { id: "foo-1", __schema: "Foo" }),
       ).toBe(true)
 
       expect(
-        isMissingSchema(schemas, [{ id: "article-1", __schema: "" }]),
+        isMissingSchema(finalSchemas, [{ id: "missing-1", __schema: "" }]),
       ).toBe(true)
     })
 
     it("should return false if a schema is not missing", () => {
       expect(
-        isMissingSchema(schemas, { id: "person-1", __schema: "Person" }),
+        isMissingSchema(finalSchemas, { id: "todo-1", __schema: "Todo" }),
       ).toBe(false)
 
       expect(
-        isMissingSchema(schemas, [{ id: "article-1", __schema: "Article" }]),
+        isMissingSchema(finalSchemas, [{ id: "person-1", __schema: "Person" }]),
       ).toBe(false)
     })
   })
 
   describe("resourceToRecordRelationship", () => {
     it("works", () => {
-      const finalSchemas = assembler({
-        Person: {
-          name: "Person",
-          attributes: {
-            name: string(),
-          },
-        },
-      })
-
       const resource = {
-        id: "person-1",
-        __schema: "Person",
+        id: "todo-1",
+        __schema: "Todo",
         attributes: {
-          name: "Foo",
+          title: "Foo",
+          important: false,
         },
       }
 
+      const resourceById = { [resource["id"]]: resource }
+
       const expected = {
-        id: "person-1",
-        __schema: "Person",
+        id: "todo-1",
+        __schema: "Todo",
         __label: "Foo",
-        name: "Foo",
+        title: "Foo",
+        important: false,
       }
 
       expect(
-        resourceToRecordRelationship(
-          finalSchemas,
-          { "person-1": resource },
-          resource,
-        ),
+        resourceToRecordRelationship(finalSchemas, resourceById, resource),
       ).toEqual(expected)
     })
   })
 
   describe("flattenResourcesIntoRecords", () => {
     it("works for many resources", () => {
-      const expected = [
+      const resources: Resource[] = [
         {
-          id: "article-1",
-          __schema: "Article",
-          title: "foo",
-          body: "foo-body",
-          author: {
-            id: "person-1",
-            __schema: "Person",
-            __label: "foo",
-            name: "foo",
+          id: "todo-1",
+          __schema: "Todo",
+          attributes: {
+            title: "Code Review",
+            important: false,
           },
-          tags: [
-            { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-            { id: "tag-2", __schema: "Tag", __label: "tag-2", title: "tag-2" },
-          ],
+          relationships: {
+            user: { id: "person-1", __schema: "Person" },
+          },
         },
         {
-          id: "article-2",
-          __schema: "Article",
-          title: "foo",
-          body: "foo-body",
-          author: {
+          id: "todo-2",
+          __schema: "Todo",
+          attributes: {
+            title: "Refactor",
+            important: true,
+          },
+          relationships: {
+            user: { id: "person-2", __schema: "Person" },
+          },
+        },
+      ]
+      const related: Resource[] = [
+        {
+          id: "person-1",
+          __schema: "Person",
+          attributes: {
+            name: "John",
+          },
+          relationships: {
+            company: { id: "company-1", __schema: "Company" },
+            todos: [
+              { id: "todo-1", __schema: "Todo" },
+              { id: "todo-3", __schema: "Todo" },
+            ],
+          },
+        },
+        {
+          id: "person-2",
+          __schema: "Person",
+          attributes: {
+            name: "Jane",
+          },
+          relationships: {
+            company: { id: "company-1", __schema: "Company" },
+            todos: [{ id: "todo-2", __schema: "Todo" }],
+          },
+        },
+        {
+          id: "company-1",
+          __schema: "Google",
+          attributes: {
+            name: "Alphabet",
+          },
+          relationships: {
+            parentCompany: { id: "company-2", __schema: "Company" },
+          },
+        },
+        {
+          id: "company-2",
+          __schema: "Company",
+          attributes: {
+            name: "Alphabet",
+          },
+        },
+      ]
+      const expected: Record[] = [
+        {
+          id: "todo-1",
+          __schema: "Todo",
+          title: "Code Review",
+          important: false,
+          user: {
             id: "person-1",
             __schema: "Person",
-            __label: "foo",
-            name: "foo",
+            __label: "John",
+            name: "John",
+            company: {
+              id: "company-1",
+              __schema: "Company",
+              __label: "Alphabet",
+              name: "Alphabet",
+              parentCompany: {
+                id: "company-2",
+                __schema: "Company",
+                __label: "Alphabet",
+                name: "Alphabet",
+              },
+            },
+            todos: [
+              {
+                id: "todo-1",
+                __schema: "Todo",
+                __label: "todo-1",
+              },
+              {
+                id: "todo-3",
+                __schema: "Todo",
+                __label: "todo-3",
+              },
+            ],
           },
-          tags: [
-            { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-          ],
+        },
+        {
+          id: "todo-2",
+          __schema: "Todo",
+          title: "Refactor",
+          important: true,
+          user: {
+            id: "person-2",
+            __schema: "Person",
+            __label: "Jane",
+            name: "Jane",
+            company: {
+              id: "company-1",
+              __schema: "Company",
+              __label: "Alphabet",
+              name: "Alphabet",
+              parentCompany: {
+                id: "company-2",
+                __schema: "Company",
+                __label: "Alphabet",
+                name: "Alphabet",
+              },
+            },
+            todos: [
+              {
+                id: "todo-2",
+                __schema: "Todo",
+                __label: "todo-2",
+              },
+            ],
+          },
         },
       ]
 
-      expect(flattenResourcesIntoRecords(schemas, testData, "Article")).toEqual(
-        expected,
-      )
+      expect(
+        flattenResourcesIntoRecords(finalSchemas, resources, related),
+      ).toEqual(expected)
     })
 
     it("works for a single resource", () => {
-      const expected = {
-        id: "article-2",
-        __schema: "Article",
-        title: "foo",
-        body: "foo-body",
-        author: {
-          id: "person-1",
-          __schema: "Person",
-          __label: "foo",
-          name: "foo",
+      const record: Resource = {
+        id: "company-1",
+        __schema: "Company",
+        attributes: {
+          name: "Google",
         },
-        tags: [
-          { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-        ],
+        relationships: {
+          parentCompany: { id: "company-2", __schema: "Company" },
+        },
       }
 
-      expect(
-        flattenResourcesIntoRecords(schemas, testData, "Article", "article-2"),
-      ).toEqual(expected)
-    })
-  })
-
-  describe("setClientPropertyValuesFromResponse", () => {
-    const consoleMock = vi
-      .spyOn(console, "error")
-      .mockImplementation(() => undefined)
-
-    afterAll(() => {
-      consoleMock.mockReset()
-    })
-
-    const finalSchemas = assembler({
-      Article: {
-        name: "Article",
-        attributes: {
-          title: string({ required: true }),
-          created: datetime({ step: "day" }),
-          views: integer({ max: 1000 }),
-        },
-      },
-    })
-
-    it("works", () => {
-      expect(
-        setClientPropertyValuesFromResponse(finalSchemas, "Article", {
-          title: "foo",
-          created: "2021-01-01T00:00:00.000Z",
-          views: 1,
-        }),
-      ).toEqual({
-        title: "foo",
-        created: new Date("2021-01-01T00:00:00.000Z"),
-        views: 1,
-      })
-
-      expect(
-        setClientPropertyValuesFromResponse(finalSchemas, "Article", {
-          title: "bar",
-          created: "2021-01-01T01:00:00.000Z",
-          views: 500,
-        }),
-      ).toEqual({
-        title: "bar",
-        created: "2021-01-01T01:00:00.000Z",
-        views: 500,
-      })
-
-      expect(consoleMock).toHaveBeenLastCalledWith(
-        "Setting value `2021-01-01T01:00:00.000Z` on attribute `created`:",
-        "as multiples of day",
-      )
-
-      expect(
-        setClientPropertyValuesFromResponse(finalSchemas, "Article", {
-          title: "bar",
-          created: "2021-01-01T00:00:00.000Z",
-          views: 1001,
-        }),
-      ).toEqual({
-        title: "bar",
-        created: new Date("2021-01-01T00:00:00.000Z"),
-        views: 1001,
-      })
-
-      expect(consoleMock).toHaveBeenLastCalledWith(
-        "Setting value `1001` on attribute `views`:",
-        "less than or equal to 1000",
-      )
-    })
-  })
-
-  describe("serializeClientPropertyValuesForRequest", () => {
-    it("works", () => {
-      const partialSchemas = {
-        Article: {
-          name: "Article",
+      const related: Resource[] = [
+        {
+          id: "company-2",
+          __schema: "Company",
           attributes: {
-            title: string({ required: true }),
-            created: datetime({ step: "day" }),
-            views: integer({ max: 1000 }),
+            name: "Alphabet",
           },
         },
+      ]
+
+      const expected: Record = {
+        id: "company-1",
+        __schema: "Company",
+        name: "Google",
+        parentCompany: {
+          id: "company-2",
+          __schema: "Company",
+          __label: "Alphabet",
+          name: "Alphabet",
+        },
       }
-      const finalSchemas = assembler(partialSchemas)
 
       expect(
-        serializeClientPropertyValuesForRequest<
-          typeof partialSchemas,
-          keyof typeof partialSchemas
-        >(finalSchemas, "Article", {
-          title: "foo",
-          created: new Date("2021-01-01T00:00:00.000Z"),
-          views: 1,
-        }),
-      ).toEqual({
-        title: "foo",
-        created: "2021-01-01T00:00:00.000Z",
-        views: 1,
-      })
-
-      expect(() =>
-        serializeClientPropertyValuesForRequest<
-          typeof partialSchemas,
-          keyof typeof partialSchemas
-        >(finalSchemas, "Article", {
-          title: "bar",
-          created: new Date("2021-01-01T01:00:00.000Z"),
-          views: 500,
-        }),
-      ).toThrow(new HatchifyCoerceError("as multiples of day"))
-
-      expect(() =>
-        serializeClientPropertyValuesForRequest<
-          typeof partialSchemas,
-          keyof typeof partialSchemas
-        >(finalSchemas, "Article", {
-          title: "bar",
-          created: new Date("2021-01-01T00:00:00.000Z"),
-          views: 1001,
-        }),
-      ).toThrow(new HatchifyCoerceError("less than or equal to 1000"))
+        flattenResourcesIntoRecords(finalSchemas, record, related),
+      ).toEqual(expected)
     })
   })
 })

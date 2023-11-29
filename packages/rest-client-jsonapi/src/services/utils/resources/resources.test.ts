@@ -220,7 +220,7 @@ describe("convertToJsonApiRelationships", () => {
         relationships: { article: hasMany() },
       },
     }
-    const sourceConfig = { baseUrl: "http://localhost:3000/api", schemaMap }
+    const restClientConfig = { baseUrl: "http://localhost:3000/api", schemaMap }
 
     const relationships: SchemalessResourceRelationshipObject = {
       person: { id: "1" },
@@ -239,7 +239,7 @@ describe("convertToJsonApiRelationships", () => {
 
     expect(
       convertToJsonApiRelationships(
-        sourceConfig,
+        restClientConfig,
         assembler(schemaMap).Article,
         relationships,
       ),
@@ -279,7 +279,7 @@ describe("convertToJsonApiRelationships", () => {
         relationships: { article: hasMany() },
       },
     }
-    const sourceConfig = {
+    const restClientConfig = {
       baseUrl: "http://localhost:3000/api",
       schemaMap,
     }
@@ -294,7 +294,7 @@ describe("convertToJsonApiRelationships", () => {
 
     expect(
       convertToJsonApiRelationships(
-        sourceConfig,
+        restClientConfig,
         assembler(schemaMap).Article,
         relationships,
       ),

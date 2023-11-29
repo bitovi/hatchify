@@ -1,5 +1,5 @@
 import type {
-  SourceConfig,
+  RestClientConfig,
   QueryOne,
   Resource,
   FinalSchemas,
@@ -26,11 +26,11 @@ export async function findOne<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  config: SourceConfig,
+  config: RestClientConfig,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   query: QueryOne<GetSchemaFromName<TSchemas, TSchemaName>>,
-): Promise<Resource[]> {
+): Promise<{ record: Resource; related: Resource[] }> {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
@@ -45,10 +45,9 @@ export async function findOne<
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${query.id}${queryParams}`,
   )
 
-  return Promise.resolve(
-    convertToHatchifyResources(
-      [json.data, ...(json.included || [])],
-      config.schemaMap,
-    ),
-  )
+  return Promise.resolve({
+    // @todo: remove this [0]
+    record: convertToHatchifyResources(json.data, config.schemaMap)[0],
+    related: convertToHatchifyResources(json.included || [], config.schemaMap),
+  })
 }

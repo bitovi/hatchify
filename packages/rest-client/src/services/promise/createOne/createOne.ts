@@ -10,10 +10,11 @@ import type {
 import { notifySubscribers } from "../../store"
 import {
   SchemaNameNotStringError,
-  flattenResourcesIntoRecords,
+  // flattenResourcesIntoRecords,
   schemaNameIsString,
   serializeClientPropertyValuesForRequest,
 } from "../../utils"
+import { flattenResourcesIntoRecords } from "../../utils/records"
 
 /**
  * Creates a new resource in the data source, notifies subscribers,
@@ -32,6 +33,7 @@ export const createOne = async <
     throw new SchemaNameNotStringError(schemaName)
   }
 
+  // todo: HATCH-417; return from `findAll` needs to be a typed `Resource` using generics
   const resources = await dataSource.createOne(allSchemas, schemaName, {
     __schema: schemaName,
     attributes: serializeClientPropertyValuesForRequest(
@@ -45,6 +47,11 @@ export const createOne = async <
 
   notifySubscribers()
 
-  // @ts-expect-error todo HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
-  return flattenResourcesIntoRecords(allSchemas, resources, schemaName)[0]
+  // todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
+  // @ts-expect-error
+  return flattenResourcesIntoRecords(
+    allSchemas,
+    resources.record,
+    resources.related,
+  )
 }

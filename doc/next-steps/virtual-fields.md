@@ -27,7 +27,7 @@ export const User = {
 }
 ```
 
-2. Start or restart your server. To restart, type `rs` if running the `dev:backend` script, or use `ctrl+c` to stop the server before starting again from the command line.
+2. Start or restart your server. To restart, type `rs` if running the `dev` script, or use `ctrl+c` to stop the server before starting again from the command line.
 
 3. Create a new Todo
 

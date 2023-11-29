@@ -1,8 +1,8 @@
 import { getEndpoint } from "@hatchifyjs/core"
 import type {
   RestClient,
-  RequiredSchemaMap,
-  SourceSchema,
+  RestClientSchemaMap,
+  RestClientSchema,
   GetSchemaNames,
 } from "@hatchifyjs/rest-client"
 import { createOne, deleteOne, findAll, findOne, updateOne } from ".."
@@ -29,7 +29,7 @@ export type CreateJsonApiResource = Omit<JsonApiResource, "id">
  * Creates a new JSON:API rest client.
  */
 export function jsonapi<
-  const TSchemas extends Record<string, SourceSchema>,
+  const TSchemas extends Record<string, RestClientSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(baseUrl: string, schemaMap: TSchemas): RestClient<TSchemas, TSchemaName> {
   // Default `type` to `schemaMap` key if not set in `schemaMap`
@@ -55,7 +55,7 @@ export function jsonapi<
       }
       return acc
     },
-    {} as RequiredSchemaMap,
+    {} as RestClientSchemaMap,
   )
 
   const config = { baseUrl, schemaMap: completeSchemaMap }

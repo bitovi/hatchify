@@ -22,8 +22,15 @@ const hatchedExpress = hatchifyExpress(Schemas, {
     server: { middlewareMode: true },
   })
 
+  app.use((req, res, next) => {
+    if (req.url.startsWith("/api")) {
+      next()
+    } else {
+      vite.middlewares.handle(req, res, next)
+    }
+  })
+
   app.use(hatchedExpress.middleware.allModels.all)
-  app.use(vite.middlewares)
 
   app.listen(3000, () => {
     console.log("Started on port 3000")

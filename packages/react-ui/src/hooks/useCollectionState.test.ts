@@ -20,20 +20,23 @@ const fakeRestClient = hatchifyReactRest({
   completeSchemaMap: partialSchemas,
   findAll: () =>
     Promise.resolve([
-      [
-        {
-          id: "1",
-          __schema: "Todo",
-          attributes: { name: "foo", created: "2021-01-01", important: true },
-        },
-      ],
+      {
+        records: [
+          {
+            id: "1",
+            __schema: "Todo",
+            attributes: { name: "foo", created: "2021-01-01", important: true },
+          },
+        ],
+        related: [],
+      },
       {
         unpaginatedCount: 1,
       },
     ]),
-  findOne: () => Promise.resolve([]),
-  createOne: () => Promise.resolve([]),
-  updateOne: () => Promise.resolve([]),
+  findOne: () => Promise.resolve({ record: {} as any, related: [] }),
+  createOne: () => Promise.resolve({ record: {} as any, related: [] }),
+  updateOne: () => Promise.resolve({ record: {} as any, related: [] }),
   deleteOne: () => Promise.resolve(),
 })
 

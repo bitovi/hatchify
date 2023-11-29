@@ -40,7 +40,7 @@ export function getColumnsFromSchema<
     .filter(([key, relationship]) => {
       return (
         include &&
-        include.includes(key) &&
+        (include as string[]).includes(key) &&
         (relationship.type === "belongsTo" || relationship.type === "hasOne")
       )
     })

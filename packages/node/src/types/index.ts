@@ -27,7 +27,7 @@ export interface DatabaseOptions {
   /**
    * A function that gets executed while running the query to log the sql.
    */
-  logging?: (sql: string, timing?: number | undefined) => void
+  logging?: (sql: string, timing?: number) => void
 
   /**
    * An object of additional options, which are passed directly to the connection library

@@ -1,32 +1,37 @@
 import { describe, it, expect } from "vitest"
 import { createStore } from "../../store"
 import { updateOne } from "./updateOne"
-import { fakeDataSource, schemas } from "../../mocks/testData"
-import type { partialSchemas } from "../../mocks/testData"
+import { flattenResourcesIntoRecords } from "../../utils/records"
+import {
+  fakeDataSource,
+  testDataRecords,
+  testFinalSchemas,
+} from "../../mocks/testData"
+import type { testPartialSchemas } from "../../mocks/testData"
 
 describe("rest-client/services/promise/updateOne", () => {
-  const data = {
-    __schema: "Article",
-    id: "article-1",
-    attributes: { title: "updated title", body: "updated body" },
-  }
-
-  const expected = {
-    id: "article-1",
-    __schema: "Article",
-    title: "updated title",
-    body: "updated body",
-  }
+  const updateData = { id: "todo-1", attributes: { title: "foo" } }
 
   it("should return the new record", async () => {
     createStore(["Article"])
-    const result = await updateOne<typeof partialSchemas, "Article">(
+
+    const result = await updateOne<typeof testPartialSchemas, "Todo">(
       fakeDataSource,
-      schemas,
-      "Article",
-      data,
+      testFinalSchemas,
+      "Todo",
+      updateData,
     )
-    expect(result).toEqual(expected)
+
+    expect(result).toEqual(
+      flattenResourcesIntoRecords(
+        testFinalSchemas,
+        {
+          ...testDataRecords[0],
+          attributes: { ...testDataRecords[0].attributes, title: "foo" },
+        },
+        [],
+      ),
+    )
   })
 
   it.todo("should insert the record into the store")
@@ -49,11 +54,11 @@ describe("rest-client/services/promise/updateOne", () => {
     }
 
     await expect(
-      updateOne<typeof partialSchemas, "Article">(
+      updateOne<typeof testPartialSchemas, "Todo">(
         errorDataSource,
-        schemas,
-        "Article",
-        data,
+        testFinalSchemas,
+        "Todo",
+        updateData,
       ),
     ).rejects.toEqual(errors)
   })
