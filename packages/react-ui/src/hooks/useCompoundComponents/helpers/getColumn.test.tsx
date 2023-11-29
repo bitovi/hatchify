@@ -76,6 +76,28 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     })
   })
 
+  it("correctly sets headerOverride", () => {
+    const column = getColumn({
+      finalSchemas: finalSchemas,
+      schemaName: "Todo",
+      field: "title",
+      control: finalSchemas.Todo.attributes.created.control,
+      compoundComponentProps: {
+        renderHeaderValue: () => null,
+      },
+      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+    })
+
+    expect(column).toEqual({
+      headerOverride: true,
+      sortable: true,
+      key: "title",
+      label: "Title",
+      renderData: expect.any(Function),
+      renderHeader: expect.any(Function),
+    })
+  })
+
   it("works with additional column", () => {
     const column = getColumn({
       finalSchemas: finalSchemas,
