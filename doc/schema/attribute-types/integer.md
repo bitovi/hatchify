@@ -32,12 +32,12 @@ The `integer` type will create a sequelize [DataTypes.INTEGER](https://sequelize
 
 ### Querying Data
 
-For integers, use any whole number value and `%00` in your queries as follows:
+For integers, use any whole number value and `%00` 🛑 in your queries as follows:
 
 ```js
 GET /todos?filter[importance][$gte]=5  // all todos with importance >= 5
-GET /todos?filter[importance][$eq]=1   // all todos with importance = 1
-GET /todos?filter[importance][$eq]=%00 // all todos with importance = null
+GET /todos?filter[importance][$eq]=%00 // all todos with importance = null 🛑
+GET /todos?filter[importance][$in][]=1&filter[importance][$in][]=2 // all todos with importance = 1 or 2
 ```
 
 Any other value will return a service error.
@@ -78,8 +78,7 @@ todo.importance //-> number or null
 
 The integer value will be presented in the grid. If the value is `null`, no value will be presented in the grid.
 
-// @todo update
-![Grid Example](https://github.com/bitovi/hatchify/assets/78602/ddbf26a1-180b-4fc7-a483-fde52dc4fce9)
+![Grid Example](../../attachments/integer-column.png)
 
 ## Form Behavior
 
