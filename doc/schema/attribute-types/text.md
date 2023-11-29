@@ -15,7 +15,7 @@ export const Todo: PartialSchema = {
 
 |      key      | description                                                                 | type            | optional  | default |
 | ------------- | --------------------------------------------------------------------------- | :-------------: | :-------: | :-----: |
-| `default`     | The default value of the attribute. <br/> Example: `text({default: true})`  | `String`        | Yes       |         |
+| `default`     | The default value of the attribute. <br/> Example: `text({default: true})`  | `Boolean`        | Yes       |         |
 | `required`    | If the attribute must be provided.  <br/> Example: `text({required: true})` | `Boolean`       | Yes       | `false` |
 
 ## Database and Sequelize Behavior
