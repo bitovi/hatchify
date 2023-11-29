@@ -14,7 +14,6 @@ export function MuiEverything<
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >({
   children,
-  data,
   finalSchemas,
   schemaName,
   setSelectedSchema,
@@ -22,12 +21,8 @@ export function MuiEverything<
 }: XEverythingProps<TSchemas, TSchemaName>): JSX.Element {
   return (
     <Grid container>
-      <Grid item xs={3} sx={{ backgroundColor: "white" }} height="auto">
-        {!finalSchemas ? (
-          <Typography variant="body1" margin="1rem">
-            There are no schemas. Create some to get started!
-          </Typography>
-        ) : (
+      {finalSchemas && (
+        <Grid item xs={3} sx={{ backgroundColor: "white" }} height="auto">
           <Tabs orientation="vertical" value={schemaName}>
             {Object.keys(finalSchemas).map((schemaName) => {
               return (
@@ -35,29 +30,47 @@ export function MuiEverything<
                   value={schemaName}
                   label={schemaName}
                   key={schemaName}
-                  onClick={() => setSelectedSchema(schemaName as TSchemaName)}
+                  onClick={() =>
+                    setSelectedSchema &&
+                    setSelectedSchema(schemaName as TSchemaName)
+                  }
                 />
               )
             })}
           </Tabs>
-        )}
-      </Grid>
-      <Grid item xs={9}>
+        </Grid>
+      )}
+      <Grid item xs={finalSchemas ? 9 : 12}>
         {!finalSchemas ? (
           <Grid container rowSpacing={4}>
             <Grid item xs={12}>
-              <Typography variant="h2" justifyContent="center" display="flex">
+              <Typography
+                variant="h2"
+                justifyContent="center"
+                display="flex"
+                color="black"
+              >
                 Welcome to Hatchify!
               </Typography>
             </Grid>
             <Grid item xs={12} justifyContent="center" display="flex">
               <Eggbert />
             </Grid>
+            <Grid item xs={12}>
+              <Typography
+                variant="body1"
+                margin="1rem"
+                color="black"
+                justifyContent="center"
+                display="flex"
+              >
+                There are no schemas. Create some to get started!
+              </Typography>
+            </Grid>
           </Grid>
         ) : (
           <MuiDataGrid
-            {...props}
-            data={data}
+            {...(props as Required<XEverythingProps>)}
             finalSchemas={finalSchemas}
             schemaName={schemaName}
           >

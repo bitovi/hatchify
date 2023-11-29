@@ -257,13 +257,13 @@ or individually:
 You can also run the Playwright E2E tests:
 
 ```bash
-npm run e2e --backend=koa --database=sqlite --frontend=react
-npm run e2e --backend=koa --database=postgres --frontend=react
-npm run e2e --backend=express --database=sqlite --frontend=react
-npm run e2e --backend=express --database=postgres --frontend=react
+npm run e2e --frontend=react --backend=koa --database=sqlite://localhost/:memory
+npm run e2e --frontend=react --backend=koa --database=postgres://postgres:postgres@localhost:5432/postgres
+npm run e2e --frontend=react --backend=express --database=sqlite://localhost/:memory
+npm run e2e --frontend=react --backend=express ---database=postgres://postgres:postgres@localhost:5432/postgres
 ```
 
-#### 4.1. Testing aginst a Hatchify app
+#### 4.1. Testing against a Hatchify app
 
 After creating an app like the example in [the getting started guide](./README.md), you can test it against your hatchify changes by changing the package dependency references to packages in your Hatchify development directory.
 

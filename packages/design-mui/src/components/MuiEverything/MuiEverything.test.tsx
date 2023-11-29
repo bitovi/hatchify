@@ -74,7 +74,6 @@ describe("components/MuiList", () => {
   it("Works when no schema is present", async () => {
     render(
       <MuiEverything
-        // @ts-expect-error
         data={undefined}
         setSelectedSchema={vi.fn()}
         meta={meta}
@@ -87,7 +86,6 @@ describe("components/MuiList", () => {
         setPage={vi.fn()}
         selected={{ all: false, ids: [] }}
         setSelected={vi.fn()}
-        // @ts-expect-error
         finalSchemas={undefined}
         partialSchemas={undefined}
         schemaName="User"

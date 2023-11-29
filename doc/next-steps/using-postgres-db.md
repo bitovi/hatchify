@@ -12,16 +12,11 @@ There are two primary steps we must perform:
 
 ## Install PostgreSQL
 
-There are many different ways to install PostgreSQL (brew, choco, downloading the installer for their website). In order to simplify this tutorial, we will be using Docker to get PostgreSQL. We will
-then create a `hatchyify-app` database.
+There are many different ways to install PostgreSQL (brew, choco, downloading the installer for their website). In order to simplify this tutorial, we will be using Docker to get PostgreSQL. We will then create a `hatchyify_app` database.
 
 ✏️ Perform the following steps to install PostgreSQL:
 
 1. If you don't have Docker installed on your computer yet, download it from [Docker's official website](https://www.docker.com/products/docker-desktop/).
-
-   ```bash
-   docker pull postgres
-   ```
 
 2. To create and run PostgreSQL database, run the following command:
 
@@ -82,92 +77,41 @@ the benefits of storing config in the environment [here](https://12factor.net/co
 
 ✏️ Perform the following steps to connect the Getting Started Guide app to the `hatchify_app` database:
 
-1.  Remove SQLite:
+1. Remove SQLite:
 
-    ```bash
-    npm uninstall sqlite3
-    ```
+   ```bash
+   npm uninstall sqlite3
+   ```
 
-2.  Install PostgreSQL' package and [dotenv](https://www.npmjs.com/package/dotenv):
+2. Install PostgreSQL' package and [dotenv](https://www.npmjs.com/package/dotenv):
 
-    ```bash
-    npm install pg dotenv
-    ```
+   ```bash
+   npm install pg dotenv
+   ```
 
-    [dotenv](https://www.npmjs.com/package/dotenv) will load our
-    configuration.
+   [dotenv](https://www.npmjs.com/package/dotenv) will load our
+   configuration.
 
-3.  Install PostgreSQL' types package:
+3. Install PostgreSQL' types package:
 
-    ```bash
-    npm install -D @types/pg
-    ```
+   ```bash
+   npm install -D @types/pg
+   ```
 
-4.  Run the following command in the root directory of your project to create a new .env file to store your credentials:
+4. Update your `.env` file with the following content:
 
-    ```bash
-    echo > .env
-    ```
+   ```bash
+   DB_URI=postgres://example_user:example_password@localhost:5432/hatchify_app
+   ```
 
-5.  Fill your .env file with the following content:
-
-    ```bash
-    DB_URI=postgres://example_user:example_password@localhost:5432/hatchify_app
-    ```
-
-6.  Edit your Hatchify app's server (`backend/index.ts`) to use your newly created database:
-
-    ```js
-    // hatchify-app/backend/index.ts
-    import Koa from "koa"
-    import cors from "@koa/cors"
-    import { hatchifyKoa } from "@hatchifyjs/koa"
-    import { Todo } from "../schemas/Todo"
-    import { User } from "../schemas/User"
-
-    import dotenv from "dotenv" // 👀
-    dotenv.config() // 👀
-
-    const app = new Koa()
-
-    const hatchedKoa = hatchifyKoa(
-      { Todo, User },
-      {
-        prefix: "/api",
-        database: {
-          uri: process.env.DB_URI, // 👀
-        },
-      },
-    )
-
-    app.use(cors())
-    app.use(hatchedKoa.middleware.allModels.all)
-    ;(async () => {
-      await hatchedKoa.createDatabase()
-
-      app.listen(3000, () => {
-        console.log("Started on port 3000")
-      })
-    })()
-    ```
-
-7.  Restart your server:
-
-    ```bash
-    npm run dev:backend
-    ```
+5. Your server will restart automatically
 
 > **Note:** the new PostgreSQL db we just created is empty, so you'll need to seed it just like we did in the [getting started guide](../../README.md#seeding-data)
 
 #### The following options are allowed within the db options object:
 
-| Property | Type   | Default   | Details                                                            |
-| -------- | ------ | --------- | ------------------------------------------------------------------ |
-| host     | string | localhost | The host of the relational database                                |
-| port     | number | null      | The port of the relational database                                |
-| username | string | null      | The username which is used to authenticate against the database    |
-| password | string | null      | The password which is used to authenticate against the database    |
-| dialect  | string | null      | One of the following: mysql, postgres, sqlite, db2, mariadb, mssql |
-| storage  | string | :memory:  | For sqlite dialect only, specifies the file storage location       |
-
-For more complete references see the Sequelize documentation [for the instance constructor](https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor)
+| Property          | Type                                   | Default                    | Details                                                                                                                     |
+| ----------------- | -------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| uri               | string                                 | sqlite://localhost/:memory | The database URI / connection string of the relational database. Ex. `postgres://user:password@host:port/database?ssl=true` |
+| logging           | (sql: string, timing?: number) => void | undefined                  | A function that gets executed every time Sequelize would log something.                                                     |
+| additionalOptions | object                                 | undefined                  | An object of additional options, which are passed directly to the connection library.                                       |

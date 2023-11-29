@@ -9,17 +9,18 @@ import { assembler, string } from "@hatchifyjs/core"
 const fakeDataSource: RestClient<any, any> = {
   version: 0,
   completeSchemaMap: {},
-  findAll: () => Promise.resolve([[], {}]),
-  findOne: () => Promise.resolve([]),
+  findAll: () => Promise.resolve([{ records: [], related: [] }, {}]),
+  findOne: () => Promise.resolve({ record: {} as any, related: [] }),
   createOne: () =>
-    Promise.resolve([
-      {
+    Promise.resolve({
+      record: {
         id: "3",
         __schema: "Article",
         attributes: { title: "baz", body: "baz-body" },
       },
-    ]),
-  updateOne: () => Promise.resolve([]),
+      related: [],
+    }),
+  updateOne: () => Promise.resolve({ record: {} as any, related: [] }),
   deleteOne: () => Promise.resolve(),
 }
 
@@ -151,13 +152,14 @@ describe("react-rest/services/useCreateOne", () => {
     )
 
     fakeDataSource.createOne = () =>
-      Promise.resolve([
-        {
+      Promise.resolve({
+        record: {
           id: "3",
           __schema: "Article",
           attributes: { title: "baz", body: "baz-body" },
         },
-      ])
+        related: [],
+      })
 
     await result.current[0]({ attributes: { title: "baz", body: "baz-body" } })
 

@@ -1,16 +1,14 @@
-import type { PartialSchema, SerializedValue } from "@hatchifyjs/core"
 import type {
   Record,
   Resource,
   RecordRelationship,
   ResourceRelationship,
   FinalSchemas,
-  CreateType,
-  GetSchemaFromName,
-  GetSchemaNames,
+  ResourceRelationshipObject,
 } from "../../types"
+import { setClientPropertyValuesFromResponse } from ".."
 
-type Relationship = globalThis.Record<
+type Relationships = globalThis.Record<
   string,
   RecordRelationship | RecordRelationship[]
 >
@@ -63,170 +61,96 @@ export function resourceToRecordRelationship(
   }
 
   const attributes = resourcesById[resource.id].attributes
+  const relationships = resourcesById[resource.id].relationships
   // use first attribute as displayAttribute until displayAttribute is implemented
   const displayAttribute = Object.keys(
     allSchemas[resource.__schema].attributes,
   )[0]
 
+  const coercedAttributes = setClientPropertyValuesFromResponse(
+    allSchemas,
+    resource.__schema,
+    attributes || {},
+  )
+
+  // if the relationship has relationships, recursively flatten them
+  const nestedRelationships = flattenRelationships(
+    allSchemas,
+    relationships,
+    resourcesById,
+  )
+
   return {
     id: resource.id,
     __schema: resource.__schema,
     __label: attributes?.[displayAttribute],
-    ...setClientPropertyValuesFromResponse(
-      allSchemas,
-      resource.__schema,
-      attributes || {},
-    ),
+    ...coercedAttributes,
+    ...(nestedRelationships ? nestedRelationships : {}),
   }
 }
 
-/**
- * Takes a list of Resources containing both top-level records and related records and
- * flattens them into a list of Records. Flattens the attributes and relationships keys.
- * Merges the attribute data of the related records into the top-level records.
- */
-export function flattenResourcesIntoRecords(
-  allSchemas: FinalSchemas,
-  resources: Resource[],
-  topLevelSchemaName: string,
-): Record[]
-export function flattenResourcesIntoRecords(
-  allSchemas: FinalSchemas,
-  resources: Resource[],
-  topLevelRecordSchemaName: string,
-  id: string,
-): Record | undefined
-export function flattenResourcesIntoRecords(
-  allSchemas: FinalSchemas,
-  resources: Resource[],
-  topLevelRecordSchemaName: string,
-  id?: string,
-): Record[] | Record | undefined {
-  const resourcesById = keyResourcesById(resources)
-
-  const flattened = resources
-    .filter((resource) => {
-      return resource.__schema === topLevelRecordSchemaName
-    })
-    .map((resource) => {
-      let relationships = undefined
-
-      if (resource.relationships) {
-        relationships = Object.entries(resource.relationships).reduce(
-          (acc: Relationship, [key, value]) => {
-            if (isMissingSchema(allSchemas, value)) {
-              return acc
-            }
-
-            acc[key] = Array.isArray(value)
-              ? value.map((item) =>
-                  resourceToRecordRelationship(allSchemas, resourcesById, item),
-                )
-              : resourceToRecordRelationship(allSchemas, resourcesById, value)
-
-            return acc
-          },
-          {},
-        )
-      }
-
-      return {
-        id: resource.id,
-        __schema: resource.__schema,
-        ...setClientPropertyValuesFromResponse(
-          allSchemas,
-          resource.__schema,
-          resource.attributes || {},
-        ),
-        ...(relationships ? relationships : {}),
-      }
-    })
-
-  if (id) {
-    return flattened.find((record) => record.id === id) || undefined
+export function flattenRelationships(
+  finalSchemas: FinalSchemas,
+  relationships: ResourceRelationshipObject | null | undefined,
+  relatedById: globalThis.Record<string, Resource>,
+): Relationships | undefined {
+  if (!relationships) {
+    return undefined
   }
 
-  return flattened
-}
-
-/**
- * Coerces the value from the server into the value expected by the client.
- */
-export const setClientPropertyValuesFromResponse = (
-  allSchemas: FinalSchemas,
-  schemaName: string,
-  attributes: globalThis.Record<string, any>,
-): globalThis.Record<string, unknown> => {
-  return Object.entries(attributes).reduce((acc, [key, value]) => {
-    const attribute = allSchemas[schemaName].attributes[key]
-    if (attribute != null && attribute.setClientPropertyValueFromResponse) {
-      try {
-        acc[key] = attribute?.setClientPropertyValueFromResponse(value)
+  return Object.entries(relationships).reduce(
+    (acc: Relationships, [key, value]) => {
+      if (isMissingSchema(finalSchemas, value)) {
         return acc
-      } catch (e: any) {
-        console.error(
-          `Setting value \`${value}\` on attribute \`${key}\`:`,
-          e?.message,
-        )
       }
-    }
 
-    acc[key] = value
-    return acc
-  }, {} as globalThis.Record<string, unknown>)
+      acc[key] = Array.isArray(value)
+        ? value.map((item) =>
+            resourceToRecordRelationship(finalSchemas, relatedById, item),
+          )
+        : resourceToRecordRelationship(finalSchemas, relatedById, value)
+
+      return acc
+    },
+    {},
+  )
 }
 
 /**
- * Coerces the value from the internal client data into something that can be sent with JSON.
+ * Converts a Resource|Resource[] which is a unflattened object response from rest-client-*
+ * into a Record|Record[] which is a flattened object.
+ * ie. converting JSON:API data and included into a single object with nested relationships.
  */
-export const serializeClientPropertyValuesForRequest = <
-  const TSchemas extends globalThis.Record<string, PartialSchema>,
-  const TSchemaName extends GetSchemaNames<TSchemas>,
->(
-  allSchemas: FinalSchemas,
-  schemaName: string,
-  attributes: Omit<
-    CreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
-    "__schema"
-  >["attributes"],
-): globalThis.Record<string, SerializedValue> => {
-  return Object.entries(attributes).reduce((acc, [key, value]) => {
-    const attribute = allSchemas[schemaName].attributes[key]
+export function flattenResourcesIntoRecords(
+  finalSchemas: FinalSchemas,
+  records: Resource | Resource[],
+  related: Resource[],
+): Record[] | Record | undefined {
+  const relatedById = keyResourcesById(related)
+  const flattened = (Array.isArray(records) ? records : [records]).map((r) => {
+    const coercedAttributes = setClientPropertyValuesFromResponse(
+      finalSchemas,
+      r.__schema,
+      r.attributes || {},
+    )
 
-    if (
-      attribute != null &&
-      attribute.setClientPropertyValue &&
-      attribute.serializeClientPropertyValue
-    ) {
-      const coerced = attribute.setClientPropertyValue(value as any) // todo HATCH-417 remove any
-      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-417 remove any
-    } else {
-      acc[key] = value as SerializedValue
-    }
-    return acc
-  }, {} as globalThis.Record<string, SerializedValue>)
-}
+    const relationships = flattenRelationships(
+      finalSchemas,
+      r.relationships,
+      relatedById,
+    )
 
-/**
- * Coerces the value from the internal client data into something that can be sent through a filter query.
- */
-export const serializeClientQueryFilterValuesForRequest = (
-  allSchemas: FinalSchemas,
-  schemaName: string,
-  filters: globalThis.Record<string, any>,
-): globalThis.Record<string, unknown> => {
-  return Object.entries(filters).reduce((acc, [key, value]) => {
-    const attribute = allSchemas[schemaName].attributes[key]
-    if (
-      attribute != null &&
-      attribute.setClientQueryFilterValue &&
-      attribute.serializeClientQueryFilterValue
-    ) {
-      const coerced = attribute.setClientQueryFilterValue(value)
-      acc[key] = attribute.serializeClientQueryFilterValue(coerced as any) // todo: arthur, fix with stricter typing
-    } else {
-      acc[key] = value
+    return {
+      id: r.id,
+      __schema: r.__schema,
+      ...coercedAttributes,
+      ...(relationships ? relationships : {}),
     }
-    return acc
-  }, {} as globalThis.Record<string, unknown>)
+  })
+
+  if (Array.isArray(records)) {
+    return flattened
+  }
+
+  return flattened.length ? flattened[0] : undefined
 }

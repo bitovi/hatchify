@@ -1,7 +1,14 @@
 import { afterEach, describe, it, expect } from "vitest"
 import { createStore } from "../../store"
 import { findOne } from "./findOne"
-import { fakeDataSource, schemas } from "../../mocks/testData"
+import { flattenResourcesIntoRecords } from "../../utils/records"
+import {
+  fakeDataSource,
+  testDataRecords,
+  testDataRelatedRecords,
+  testFinalSchemas,
+} from "../../mocks/testData"
+import type { testPartialSchemas } from "../../mocks/testData"
 
 describe("rest-client/promise", () => {
   afterEach(() => {
@@ -10,59 +17,40 @@ describe("rest-client/promise", () => {
   })
 
   describe("findOne", () => {
-    const query = { id: "article-1" }
-
     it("should return a record", async () => {
       createStore(["Article"])
-      const result = await findOne(fakeDataSource, schemas, "Article", query)
+      const result = await findOne<typeof testPartialSchemas, "Todo">(
+        fakeDataSource,
+        testFinalSchemas,
+        "Todo",
+        { id: "article-1" },
+      )
 
-      const expected = {
-        id: "article-1",
-        __schema: "Article",
-        title: "foo",
-        body: "foo-body",
-        author: {
-          id: "person-1",
-          __schema: "Person",
-          __label: "foo",
-          name: "foo",
-        },
-        tags: [
-          { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-          { id: "tag-2", __schema: "Tag", __label: "tag-2", title: "tag-2" },
-        ],
-      }
-
-      expect(result).toEqual(expected)
+      expect(result).toEqual(
+        flattenResourcesIntoRecords(
+          testFinalSchemas,
+          testDataRecords[0],
+          testDataRelatedRecords,
+        ),
+      )
     })
 
     it("should work if query is a string", async () => {
       createStore(["Article"])
-      const result = await findOne(
+      const result = await findOne<typeof testPartialSchemas, "Todo">(
         fakeDataSource,
-        schemas,
-        "Article",
+        testFinalSchemas,
+        "Todo",
         "article-1",
       )
 
-      const expected = {
-        id: "article-1",
-        __schema: "Article",
-        title: "foo",
-        body: "foo-body",
-        author: {
-          id: "person-1",
-          __schema: "Person",
-          __label: "foo",
-          name: "foo",
-        },
-        tags: [
-          { id: "tag-1", __schema: "Tag", __label: "tag-1", title: "tag-1" },
-          { id: "tag-2", __schema: "Tag", __label: "tag-2", title: "tag-2" },
-        ],
-      }
-
-      expect(result).toEqual(expected)
+      expect(result).toEqual(
+        flattenResourcesIntoRecords(
+          testFinalSchemas,
+          testDataRecords[0],
+          testDataRelatedRecords,
+        ),
+      )
     })
 
     it("should throw an error if the request fails", async () => {
@@ -81,7 +69,12 @@ describe("rest-client/promise", () => {
       }
 
       await expect(
-        findOne(errorDataSource, schemas, "Article", query),
+        findOne<typeof testPartialSchemas, "Todo">(
+          errorDataSource,
+          testFinalSchemas,
+          "Todo",
+          { id: "article-1" },
+        ),
       ).rejects.toEqual(errors)
     })
   })

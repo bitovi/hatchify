@@ -2,7 +2,7 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FinalSchemas,
   GetSchemaNames,
-  SourceConfig,
+  RestClientConfig,
 } from "@hatchifyjs/rest-client"
 import {
   SchemaNameNotStringError,
@@ -17,7 +17,7 @@ export async function deleteOne<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
-  config: SourceConfig,
+  config: RestClientConfig,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   id: string,

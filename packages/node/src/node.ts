@@ -49,7 +49,7 @@ export class Hatchify {
   private _serializer = new JSONAPISerializer()
   private _prefix?: string
   private _schemas: Record<string, FinalSchema>
-  private _pathMatch: MatchFunction<{ "0": string; id: Identifier }>
+  private _pathMatch?: MatchFunction<{ "0": string; id: Identifier }>
 
   virtuals: Virtuals = {}
 
@@ -98,15 +98,16 @@ export class Hatchify {
     this._schemas = finalSchemas
     this._sequelizeModels = models
 
-    this._pathMatch = match(
-      `${options.prefix ?? ""}/(${Object.values(finalSchemas)
-        .map((schema) => getEndpoint(schema))
-        .join("|")})/:id?`,
-      {
-        decode: decodeURIComponent,
-        end: false,
-      },
+    const endpoints = Object.values(finalSchemas).map((schema) =>
+      getEndpoint(schema),
     )
+
+    this._pathMatch = endpoints.length
+      ? match(`${options.prefix ?? ""}/(${endpoints.join("|")})/:id?`, {
+          decode: decodeURIComponent,
+          end: false,
+        })
+      : undefined
   }
 
   printEndpoints(): void {
@@ -282,7 +283,7 @@ export class Hatchify {
     modelName?: string
     id?: Identifier
   } {
-    const parsedUrl = this._pathMatch(path)
+    const parsedUrl = this._pathMatch?.(path)
 
     if (!parsedUrl) {
       return {}

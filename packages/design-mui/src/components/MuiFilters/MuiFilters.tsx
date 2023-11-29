@@ -19,7 +19,12 @@ export const MuiFilters: React.FC<XCollectionProps> = ({
   setPage,
 }) => {
   const fields = useMemo(
-    () => getFilterableFields(finalSchemas, schemaName, include ?? []),
+    () =>
+      getFilterableFields(
+        finalSchemas,
+        schemaName,
+        (include as string[]) ?? [],
+      ),
     [finalSchemas, include, schemaName],
   )
 

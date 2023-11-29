@@ -32,9 +32,9 @@ async function init() {
   const argTargetDir = formatTargetDir(argv._[0])
   const argBackend = (argv.backend || argv.b)?.toUpperCase()
   const argDatabaseUri = argv.database || argv.d
-  const argDatabase = !argDatabaseUri
-    ? "SQLITE"
-    : new URL(argDatabaseUri).protocol.replace(":", "").toUpperCase()
+  const argDatabase =
+    argDatabaseUri &&
+    new URL(argDatabaseUri).protocol.replace(":", "").toUpperCase()
   const argFrontend = (argv.frontend || argv.f || "REACT")?.toUpperCase()
   const argPackagePath = argv.path
 
@@ -195,11 +195,15 @@ async function init() {
     databaseName,
   } = result
 
-  const databaseConnectionString =
+  const databaseUri =
     argDatabaseUri ||
     (database?.name === "sqlite"
       ? "sqlite://localhost/:memory"
-      : `${database.name}://${databaseUsername}:${databasePassword}@${databaseHost}:${databasePort}/${databaseName}`)
+      : `${database.name}://${encodeURIComponent(
+          databaseUsername,
+        )}:${encodeURIComponent(databasePassword)}@${encodeURIComponent(
+          databaseHost,
+        )}:${databasePort}/${encodeURIComponent(databaseName)}`)
 
   const root = path.join(cwd, targetDir)
 
@@ -313,7 +317,7 @@ async function init() {
     ),
     fs.promises.writeFile(
       path.join(root, ".env"),
-      `DB_URI=${databaseConnectionString}`,
+      `DB_URI=${databaseUri}`,
       "utf8",
     ),
   ])
