@@ -50,7 +50,6 @@ export interface XCollectionProps<
 > extends CollectionState<TSchemas, TSchemaName> {
   children?: React.ReactNode
 }
-
 export interface XEverythingProps<
   TSchemas extends Record<string, PartialSchema> = any,
   TSchemaName extends GetSchemaNames<TSchemas> = any,
