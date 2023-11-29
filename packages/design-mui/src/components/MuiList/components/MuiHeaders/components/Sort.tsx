@@ -7,17 +7,17 @@ export const Sort: React.FC<
   Pick<HeaderProps, "direction" | "setSort" | "sortBy"> & {
     children: React.ReactNode
     isLoading: Meta["isLoading"]
-    key: HatchifyColumn["key"]
+    columnKey: HatchifyColumn["key"]
   }
-> = ({ children, key, direction, isLoading, setSort, sortBy }) => (
+> = ({ children, columnKey, direction, isLoading, setSort, sortBy }) => (
   <TableSortLabel
     disabled={isLoading}
-    active={key === sortBy}
+    active={columnKey === sortBy}
     direction={sortBy === sortBy ? direction : "asc"}
-    onClick={() => setSort(key)}
+    onClick={() => setSort(columnKey)}
   >
     {children}
-    {key === sortBy ? (
+    {columnKey === sortBy ? (
       <Box component="span" sx={visuallyHidden}>
         {direction === "desc" ? "sorted descending" : "sorted ascending"}
       </Box>

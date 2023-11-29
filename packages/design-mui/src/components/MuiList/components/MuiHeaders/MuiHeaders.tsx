@@ -44,7 +44,7 @@ export const MuiHeaders: React.FC<
             <Sortable
               direction={direction}
               isLoading={meta.isLoading}
-              key={column.key}
+              columnKey={column.key}
               setSort={setSort}
               sortable={column.sortable}
               sortBy={sortBy}

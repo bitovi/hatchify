@@ -6,15 +6,23 @@ export const Sortable: React.FC<
   Pick<HeaderProps, "direction" | "setSort" | "sortBy"> & {
     children: React.ReactNode
     isLoading: Meta["isLoading"]
-    key: HatchifyColumn["key"]
+    columnKey: HatchifyColumn["key"]
     sortable: boolean
   }
-> = ({ children, key, direction, isLoading, setSort, sortable, sortBy }) =>
+> = ({
+  children,
+  columnKey,
+  direction,
+  isLoading,
+  setSort,
+  sortable,
+  sortBy,
+}) =>
   sortable ? (
     <Sort
       direction={direction}
       isLoading={isLoading}
-      key={key}
+      columnKey={columnKey}
       setSort={setSort}
       sortBy={sortBy}
     >
