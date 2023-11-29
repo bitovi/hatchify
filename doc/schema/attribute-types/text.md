@@ -13,10 +13,12 @@ export const Todo: PartialSchema = {
 
 ## Parameters
 
-|      key      | description                                                                 | type            | optional  | default |
-| ------------- | --------------------------------------------------------------------------- | :-------------: | :-------: | :-----: |
-| `default`     | The default value of the attribute. <br/> Example: `text({default: true})`  | `Boolean`       | Yes       |         |
-| `required`    | If the attribute must be provided.  <br/> Example: `text({required: true})` | `Boolean`       | Yes       | `false` |
+|      key      | description                                                                      | type            | optional  | default |
+| ------------- | -------------------------------------------------------------------------------- | :-------------: | :-------: | :-----: |
+| `default`     | The default value of the attribute. <br/> Example: `text({default: 'no text'})`  | `String`        | Yes       |         |
+| `required`    | If the attribute must be provided.  <br/> Example: `text({required: true})`      | `Boolean`       | Yes       | `false` |
+| `primary`     | The attribute is a primary key.     <br/> Example: `text({primary: true})`       | `Boolean`       | Yes       | `false` |
+| `unique`      | The attribute must be unique.       <br/> Example: `text({unique: true})`        | `Boolean`       | Yes       | `false` |
 
 ## Database and Sequelize Behavior
 
@@ -26,11 +28,11 @@ The `text` type will create a sequelize [DataTypes.TEXT](https://sequelize.org/d
 
 ### Querying Data
 
-For text, use any string value in your queries as follows:
+For text, use any string value, or `%00` 🛑 in your queries as follows:
 
 ```js
 GET /todos?filter[notes][$eq]=this%20is%20super%20important //all todos with notes that equal "this is super important"
-GET /todos?filter[notes][$eq]=null //all todos with notes that are null
+GET /todos?filter[notes][$eq]=%00 //all todos with notes that are null 🛑
 GET /todos?filter[notes][$ilike]=%25important //all todos with notes that end in "important"
 GET /todos?filter[notes][$ilike]=this%25 //all todos with notes that start with "this"
 GET /todos?filter[notes][$ilike]=%25is%20super%25 //all todos with notes that contain "is super"
