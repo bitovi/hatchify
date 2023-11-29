@@ -47,8 +47,9 @@ export type RenderDataValue<
   >
 }) => JSX.Element
 
-// todo: renderDataValue and DataValueComponent should be required, but only one can be provided
-// todo: renderHeaderValue and HeaderValueComponent should be required, but only one can be provided
+// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be required, but only one can be provided
+// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue and HeaderValueComponent should be required, but only one can be provided
+// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
 export type AdditionalColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -65,8 +66,9 @@ export type AdditionalColumnProps<
   HeaderValueComponent?: HeaderValueComponent
 }
 
-// todo: renderDataValue and DataValueComponent should be optional, but only one can be provided
-// todo: renderHeaderValue and HeaderValueComponent should be optional, but only one can be provided
+// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be optional, but only one can be provided
+// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue and HeaderValueComponent should be optional, but only one can be provided
+// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
 export type ReplaceColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -88,8 +90,9 @@ export type ReplaceColumnProps<
   HeaderValueComponent?: HeaderValueComponent
 }
 
-// todo: renderDataValue and DataValueComponent should be optional, but only one can be provided
-// todo: renderHeaderValue and HeaderValueComponent should be optional, but only one can be provided
+// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be optional, but only one can be provided
+// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue and HeaderValueComponent should be optional, but only one can be provided
+// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
 export type OverwriteColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
