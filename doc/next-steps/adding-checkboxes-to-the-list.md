@@ -4,7 +4,7 @@ This guide shows how to build and use a checklist column and integrate it with a
 
 ## Outcome
 
-![image](https://github.com/bitovi/hatchify/assets/78602/792044c9-7764-49e3-a75f-269c3adfa57f)
+![image](https://github.com/bitovi/hatchify/assets/2623867/28aa4e2f-f6a0-47ca-b481-fad856ce9d35)
 
 Users can:
 
@@ -17,15 +17,17 @@ Update `/src/App.tsx` to the following:
 
 ```tsx
 // hatchify-app/frontend/App.tsx
-import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo, User } from "../schemas"
+import {
+  hatchifyReact,
+  HatchifyProvider,
+  createJsonapiClient,
+} from "@hatchifyjs/react"
+import { createTheme, ThemeProvider } from "@mui/material"
+import * as schemas from "../schemas"
 import { useState } from "react" // 👀
 
 export const hatchedReact = hatchifyReact(
-  createJsonapiClient("http://localhost:3000/api", {
-    Todo,
-    User,
-  }),
+  createJsonapiClient("http://localhost:3000/api", schemas),
 )
 
 const TodoList = hatchedReact.components.Todo.Collection
@@ -36,15 +38,15 @@ const App: React.FC = () => {
     all: false,
     ids: [],
   })
-
+  
   return (
-    <MuiProvider>
-      {/*👀*/}
-      <button onClick={() => alert(`all: ${selected.all}, ids: ${selected.ids}`)}>action</button>
-      {/*👀*/}
-      <TodoList defaultSelected={selected} onSelectedChange={(selected) => setSelected(selected)}></TodoList>
-    </MuiProvider>
-  )
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <button onClick={() => alert(`all: ${selected.all}, ids: ${selected.ids}`)}>action</button>
+        <TodoList defaultSelected={selected} onSelectedChange={(selected) => setSelected(selected)}></TodoList>
+      </HatchifyProvider>
+    </ThemeProvider>
+    )
 }
 
 export default App
