@@ -63,6 +63,7 @@ Text data will be returned as a string:
 When creating or updating a text attribute, a string value, or `null` must be provided. Any other value will return a service error.
 
 ## React Rest Behavior
+
 Similar to the middleware, you MUST provide react rest models a string value, or `null`. Likewise, they will always return these values:
 
 ```ts
@@ -74,7 +75,7 @@ todo.notes //-> string or null
 
 ## Grid Behavior
 
-The text will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+The text will be presented in the grid. If the value is `null`, no value will be presented in the grid. For large amounts of text: the column will stretch to a max width, an ellipsis will be displayed, and the overflow will be hidden. When hovering over that cell, the full text will be displayed 🛑
 
 ![Grid Example](../../attachments/text-grid.png)
 
