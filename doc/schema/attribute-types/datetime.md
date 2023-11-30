@@ -15,92 +15,84 @@ Use [dateonly] for a date type without time.
 
 ## Parameters
 
-- `default` [{ISODateString | DateNumber | Date}] - The default value of the attribute.  Example: `datetime({default: '2023-10-02T21:16:15.349Z'})`
-- `max` [{ISODateString | DateNumber | Date = Infinity}] - The maximum date allowed. Defaults to allowing any maximum date.
+|      key      | description                                                                                                       | type            | optional  | default    |
+| ------------- | ----------------------------------------------------------------------------------------------------------------- | :-------------: | :-------: | :--------: |
+| `default`     | The default value of the attribute. <br/> Example: `datetime({default: 2023-10-02T21:16:15.349Z})`                | `Date`          | Yes       | `undefined`|
+| `required`    | If the attribute must be provided.  <br/> Example: `datetime({required: true})`                                   | `Boolean`       | Yes       | `false`    |
+| `primary`     | If the attribute is a primary key.  <br/> Example: `datetime({primary: true})`                                    | `Boolean`       | Yes       | `false`    |
+| `unique`      | If the attribute must be unique.    <br/> Example: `datetime({unique: true})`                                     | `Boolean`       | Yes       | `false`    |
+| `max`         | The max date allowed.               <br/> Example: `datetime({max: new Date()})`, `datetime({max: 1696283660000})`| `Date, number`  | Yes       | `undefined`|
+| `min`         | The min date allowed.               <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})`| `Date, number`  | Yes       | `undefined`|
+| `step`        | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`, `datetime({step: 7})`| `"day", number`| Yes | `undefined`|
 
-  `max` can be set to an `ISODateString`. Example: `datetime({max: '2023-10-02T21:16:15.349Z'})`.
+## Database and Sequelize Behavior
 
-  `max` can be set to an `DateNumber`. Example: `datetime({max: 1696283660000})`.
+The `datetime` and `dateonly` types will create sequelize [DataTypes.DATE/DATEONLY](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) columns, respectively.
 
-  `max` can be set to a `Date`. Example: `datetime({max: new Date()})`.
+## Middleware Behavior
 
-- `min` [{ISODateString | DateNumber | Date = Infinity}] - The minimum date allowed. Defaults to allowing any minimum date.
+### Querying Data
 
-  `min` can be set to an `ISODateString`. Example: `datetime({min: '2023-10-02T21:16:15.349Z'})`.
+For dates, use an `1990-12-31T06:00:00.000Z`, `1990-12-31` value, in your queries as follows:
 
-  `min` can be set to an `DateNumber`. Example: `datetime({min: 1696283660000})`.
+GET /todos?filter[dueDate][$eq]=2023-12-01T20%3A00%3A00.000Z //all todos with a due date that matches 2023-12-01T20%3A00%3A00.000Z
 
-  `min` can be set to a `Date`. Example: `datetime({min: new Date()})`.
+GET /todos?filter[dueDate][$gte]=2023-12-01T20%3A03%3A00.000Z //all todos that are on or after 2023-12-01T20%3A00%3A00.000Z
 
-- `required` [{Boolean=false}] - If the attribute must be provided.
+Any other value type will return a service error.
 
-- 🛑 `step` [DateStepNumber | DateStepString = "minute"] - How far apart dates need to be. 
+Checkout the [compatibility table](../../filtering-data/filtering-data.md#compatibility) for what operators can be used with dates
 
-  `step` can be set to a `DateStepString` value of `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, `"year"`.
+### Data Response
 
-  `step` can be set to a `DateStepNumber` that specifies the spacing between dates in miliseconds. For example, the following
-  sets the step size to allow dates every other hour: `datetime({step: 1000*60*60*2})`
+Dateonly and datetime data will be returned as `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` as follows:
 
-## Form Controls
+```js
+{
+  data: {
+    ...
+    attributes: {
+      ...
+      dueDate: "1990-12-31T06:00:00.000Z"
+    }
+  }
+}
+```
+
+### Mutating Data
+
+When creating or updating a datetime or dateonly attribute, a valid date in the form of `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` must be provided. Any other value type will return a service error.
+
+When `datetime` is given a step of `"day"`, a valid date must be in the form of `1990-12-31`, or `null`, Any other value type will return a service error.
+
+Note: Both formats work with both date types. If a `datetime` attribute is created/updated with `1990-12-31` the returned value will be `1990-12-31T06:00:00.000Z`. For `dateonly`, the opposite is true. Any time portion used in creating/updating the attribute will be truncated.
+
+## React Rest Behavior
+
+Similar to the middleware, you MUST provide react rest models a valid date in the form of `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` value. Likewise, they will always return these values:
+
+```ts
+Todo.createOne({ attributes: { dueDate: "1990-12-31T06:00:00.000Z" } })
+
+const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
+todo.dueDate //-> "1990-12-31T06:00:00.000Z", "1990-12-31", null, or undefined
+```
+
+## Grid Behavior
+
+The text date values will be presented in the grid. If the value is `null` or `undefined`, no value will be presented in the grid.
+
+![Grid Example](../../attachments/datetime-column.png)
+![Grid Example](../../attachments/dateonly-column.png)
+
+## Form Behavior
 
 `datetime()` will result in a [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) control
 with minute resolution.
 
-`datetime({step: "day"})` in a [`<input type="date">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date) control with day resolution.
+`datetime({ step: "day" })` will result in a [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) control
+with minute resolution.
 
-`datetime({step: "week"})` in a [`<input type="week">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/week) control with week resolution.
-
-`datetime({step: "month"})` in a [`<input type="month">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/month) control with month resolution.
-
-`datetime({step: "month"})` in a [`<input type="month">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/month) control with month resolution.
+`dateonly()` in a [`<input type="date">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date) control with day resolution.
 
 Currently, any other step value will result in a [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) control which will be validated after the value is set.
-
-
-
-<details>
-<summary>
-
-## Advanced Details
-
-</summary>
-
-### Control Type
-
-```js
-{
-  type: "Date",
-  allowNull: Boolean, 
-  min: ISODateString | -Infinity,
-  max: ISODateString | Infinity,
-  step: DateStepNumber | DateStepString
-}
-```
-
-
-### Sequelize Type
-
-If `step="day"`:
-
-```js
-{
-  type: "DATEONLY",
-  typeArgs: [],
-  allowNull: Boolean
-}
-```
-
-Else:
-
-```js
-{
-  type: "DATE",
-  typeArgs: [],
-  allowNull: Boolean
-}
-```
-
-
-  
-</details>
-
