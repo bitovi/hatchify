@@ -47,7 +47,7 @@ export function getColumn<
     column.render = ({ record }) => compoundComponentProps.render({ record })
   } else if (compoundComponentProps.renderValue) {
     column.render = ({ record }) =>
-      compoundComponentProps.renderValue({ record })
+      compoundComponentProps.renderValue({ record, value: record[field] })
   } else if (ValueComponent) {
     column.render = ({ record }) => (
       <ValueComponent
