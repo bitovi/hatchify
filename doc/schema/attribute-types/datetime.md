@@ -85,6 +85,8 @@ The text date values will be presented in the grid. If the value is `null` or `u
 ![Grid Example](../../attachments/datetime-column.png)
 ![Grid Example](../../attachments/dateonly-column.png)
 
+Note: The displayed values will be formatted to your locale.
+
 ## Form Behavior
 
 `datetime()` will result in a [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) control
