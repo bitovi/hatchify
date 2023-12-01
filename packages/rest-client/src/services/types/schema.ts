@@ -117,14 +117,8 @@ type TypedAttributes<
     { control: { type: string; allowNullInfer?: boolean } }
   >,
   TMutate extends boolean,
-  TForceOptional extends boolean = false,
-> = TForceOptional extends true
-  ? Partial<
-      AllowNulls<T, { control: { allowNullInfer: true } }, TMutate> &
-        NoNulls<T, { control: { allowNullInfer: false } }, TMutate>
-    >
-  : AllowNulls<T, { control: { allowNullInfer: true } }, TMutate> &
-      NoNulls<T, { control: { allowNullInfer: false } }, TMutate>
+> = AllowNulls<T, { control: { allowNullInfer: true } }, TMutate> &
+  NoNulls<T, { control: { allowNullInfer: false } }, TMutate>
 
 // For each relationship on a schema, determine the type of the relationship: one or many
 type TypedRelationships<
