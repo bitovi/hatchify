@@ -3,19 +3,19 @@
 Defines an attribute as being a boolean.
 
 ```ts
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     complete: boolean({ required: true }),
   },
-}
+} satisfies PartialSchema
 ```
 
 ## Parameters
 
 |      key      | description                                                              | type            | optional  | default |
 | ------------- | ------------------------------------------------------------------------ | :-------------: | :-------: | :-----: | 
-| `default`     | The default value of the attribute. <br/> Example: `boolean({default: true})`  | `String`        | Yes       |         |
+| `default`     | The default value of the attribute. <br/> Example: `boolean({default: true})`  | `Boolean`        | Yes       |         |
 | `required`    | If the attribute must be provided.  <br/> Example: `boolean({required: true})` | `Boolean`       | Yes       | `false` |
 
 ## Database and Sequelize Behavior
@@ -36,7 +36,7 @@ GET /todos?complete=false // all false todos
 
 Any other value will return a service error.
 
-Checkout the [compatibility table](../filtering-data/filtering-data.md#compatibility) for what operators can be used with booleans.
+Checkout the [compatibility table](../../filtering-data/filtering-data.md#compatibility) for what operators can be used with booleans.
 
 ### Data Response
 

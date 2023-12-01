@@ -39,8 +39,8 @@ Unlike code generation tools—which allow you to write your schema and then gen
 
 In this guide, we will be setting up a project containing a HatchifyJS
 frontend and backend. Our frontend will use React and MUI, and our backend
-will be using Koa. We will be setting up our project using Vite so that
-it handles all the React configurations for us.
+will be using Koa. The project also uses Vite as a dev server which handles
+much of the React configuration for us.
 
 > **Note:** The ✏️ icon indicates when to follow along!
 
@@ -138,7 +138,7 @@ This step will take care of not only adding your schema files, but also
 validating them against each other, and setting up relationships for
 you.
 
-Next, we can start up the backend to see everything in action. HatchifyJS will create CRUD application endpoints for our `User` and `Todo` models automatically.
+Next, we can start up the dev server to see everything in action. HatchifyJS will create CRUD application endpoints for our `User` and `Todo` models automatically.
 
 If you create additional schemas, export them the same way. This step will take care of not only adding your schema files, but also
 validating them against each other, and setting up relationships for
@@ -155,7 +155,7 @@ You can navigate to the following endpoints to get a list of users and todos
 
 [http://localhost:3000/api/todos](http://localhost:3000/api/todos)
 
-Now that we have our basic backend up and running we can start
+Now that we have our dev server up and running we can start
 looking at how to make changes and further develop our example.
 
 ## Using the server endpoints
@@ -342,33 +342,35 @@ curl 'http://localhost:3000/api/users' \
 
 # Frontend with React and MUI
 
-Now that our backend is configured and running we can use the same
-schemas that we defined earlier to quickly "hatch" our frontend. The first
-thing we want to do is import `hatchifyReact`, `MuiProvider`, and
+Now that our server is up and running we can review the contents of 
+`frontend/App.tsx` to see how the schemas that we defined earlier convientenly 
+"hatch" our frontend.
+
+The first thing we do is import `hatchifyReact`, `HatchifyProvider`, and
 `createJsonapiClient` from the `@hatchify/react` library. Here’s a quick
 overview of what each of these does:
 
 - `createJsonapiClient` - This is our rest client for JSON:API. We
   pass in the `baseUrl` of our backend to it, as well as our schemas.
 
-- `MuiProvider` - This is an MUI theme provider that we must wrap
+- `HatchifyProvider` - This is a MUI theme provider that we must wrap
   around our entire app so that our HatchifyJS components will render
-  with the correct design system.
+  with the correct style.
 
-- `createReact` - This function takes in our rest client and returns
-  an object containing components and rest functions for each schema.
+- `hatchifyReact` - This function takes in our rest client and returns
+  an object containing React components and data access functions for each schema.
   This returned object represents our entire frontend HatchifyJS app.
 
-Once we create our HatchifyJS app, we can pull the `Collection` component from
-the `Todo` key and render it.
+With that HatchifyJS app created, we can pull the `Everything` "splash screen"
+from the returned components and render it. 
 
-## Rendering a List
+## Rendering an index of schemas & data
 
 **✏️**Open
 [http://localhost:3000/](http://localhost:3000/). You
 should see:
 
-![](doc/attachments/frontend-todo-list.png)
+![image](https://github.com/bitovi/hatchify/assets/2623867/9b5b8f0d-970d-4f86-a893-2f48c74f0474)
 
 And that’s it! With minimal code and some HatchifyJS magic, we've used our
 well-defined schemas to create a database, a running backend with REST endpoints, and a frontend that handles the JSX and data-fetching for us.

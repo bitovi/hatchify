@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import type {
   Filters,
   PaginationObject,
@@ -44,9 +45,14 @@ function HatchifyCollection<
   baseFilter,
 }: HatchifyCollectionProps<TSchemas, TSchemaName>): JSX.Element {
   const { Collection } = useHatchifyPresentation()
-  const defaultInclude = getDefaultInclude<
-    GetSchemaFromName<TSchemas, TSchemaName>
-  >(finalSchemas, schemaName as string)
+  const defaultInclude = useMemo(
+    () =>
+      getDefaultInclude<GetSchemaFromName<TSchemas, TSchemaName>>(
+        finalSchemas,
+        schemaName as string,
+      ),
+    [finalSchemas, schemaName],
+  )
 
   const collectionState = useCollectionState(
     finalSchemas,
@@ -68,7 +74,7 @@ function HatchifyCollection<
 
 export default HatchifyCollection
 
-function getDefaultInclude<TSchema extends PartialSchema>(
+export function getDefaultInclude<TSchema extends PartialSchema>(
   allSchemas: FinalSchemas,
   schemaName: string,
 ): Include<TSchema> {

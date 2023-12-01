@@ -58,7 +58,7 @@ export function getColumn<
   if (renderData) {
     column.renderData = ({ record }) => renderData({ record })
   } else if (renderDataValue) {
-    column.renderData = ({ record }) => renderDataValue({ record })
+    column.renderData = ({ record }) => renderDataValue({ record, value: record[field] })
   } else if (DataValueComponent) {
     column.renderData = ({ record }) => (
       <DataValueComponent
