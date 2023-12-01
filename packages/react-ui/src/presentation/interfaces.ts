@@ -1,7 +1,7 @@
-import type { GetSchemaNames } from "@hatchifyjs/rest-client"
+import type { GetSchemaNames, Filters, Meta } from "@hatchifyjs/rest-client"
 import type { CollectionState } from "../hooks/useCollectionState"
-import type { Filters } from "@hatchifyjs/rest-client"
 import type { FinalAttributeRecord, PartialSchema } from "@hatchifyjs/core"
+import type { HatchifyColumn } from "../hooks"
 
 export type Primitive = string | boolean | number
 
@@ -73,14 +73,34 @@ export type Relationship = {
   [field: string]: Primitive
 }
 
-export type CellValue = Primitive | Relationship | Relationship[]
+export type DataValue = Primitive | Relationship | Relationship[]
 
-export type ValueComponent = React.FC<{
-  value: CellValue
+export type DataValueComponent = React.FC<{
+  value: DataValue
   record: {
     id: string | number
-    [field: string]: CellValue
+    [field: string]: DataValue
   }
   control: FinalAttributeRecord[string]["control"]
   field?: string | null
 }>
+
+export type HeaderValueComponent = React.FC<HeaderProps>
+
+export type HeaderProps =
+  | (HeaderPropsCommon & {
+      column: HatchifyColumn
+    })
+  | (HeaderPropsCommon & {
+      column: Omit<
+        HatchifyColumn,
+        "headerOverride" | "renderData" | "renderHeader"
+      >
+    })
+
+interface HeaderPropsCommon {
+  direction: SortObject["direction"]
+  meta: Meta
+  setSort: HatchifyCollectionSort["setSort"]
+  sortBy: SortObject["sortBy"]
+}

@@ -15,7 +15,7 @@ export function getColumns<
 >(
   finalSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  valueComponents: DefaultValueComponentsTypes,
+  defaultValueComponents: DefaultValueComponentsTypes,
   childArray: JSX.Element[],
   include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): HatchifyColumn[] {
@@ -31,7 +31,7 @@ export function getColumns<
   const getHatchifyColumnCommon = {
     finalSchemas,
     schemaName: schemaName as string,
-    defaultValueComponents: valueComponents,
+    defaultValueComponents,
   }
 
   for (let i = 0; i < prepend.length; i++) {
@@ -50,6 +50,7 @@ export function getColumns<
   if (overwrite.length > 0) {
     for (let i = 0; i < overwrite.length; i++) {
       const { props } = overwrite[i]
+      const validField = schema?.attributes?.[props.field]
       const relationship = schema?.relationships?.[props.field]
 
       hatchifyColumns.push(
@@ -59,9 +60,10 @@ export function getColumns<
           control: relationship
             ? null
             : schema.attributes?.[props.field]?.control || null,
-          field: props.field,
+          field: validField ? props.field : "",
           compoundComponentProps: props,
           isRelationship: relationship !== undefined,
+          sortable: props.sortable,
         }),
       )
     }
@@ -69,7 +71,7 @@ export function getColumns<
     const schemaColumns = getColumnsFromSchema(
       finalSchemas,
       schemaName,
-      valueComponents,
+      defaultValueComponents,
       include,
     )
 
@@ -92,6 +94,7 @@ export function getColumns<
             field: props.field,
             compoundComponentProps: props,
             isRelationship: relationship !== undefined,
+            sortable: props.sortable,
           }),
         )
       } else {
