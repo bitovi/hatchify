@@ -9,17 +9,17 @@ import {
   // hasMany,
 } from "@hatchifyjs/core"
 import type {
-  CreateType,
   GetSchemaFromName,
   GetSchemaNames,
   RecordType,
   RestClient,
-  UpdateType,
   Filters,
   Meta,
   QueryList,
   QueryOne,
   RequestMetaData,
+  FlatCreateType,
+  FlatUpdateType,
 } from "@hatchifyjs/rest-client"
 import {
   createStore,
@@ -51,7 +51,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
       >
       createOne: (
         data: Omit<
-          CreateType<GetSchemaFromName<TSchemas, SchemaName>>,
+          FlatCreateType<GetSchemaFromName<TSchemas, SchemaName>>,
           "__schema"
         >,
       ) => Promise<
@@ -59,7 +59,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
       >
       updateOne: (
         data: Omit<
-          UpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
+          FlatUpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
           "__schema"
         >,
       ) => Promise<
@@ -86,7 +86,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
       useCreateOne: () => [
         (
           data: Omit<
-            CreateType<GetSchemaFromName<TSchemas, SchemaName>>,
+            FlatCreateType<GetSchemaFromName<TSchemas, SchemaName>>,
             "__schema"
           >,
         ) => void,
@@ -96,7 +96,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
       useUpdateOne: () => [
         (
           data: Omit<
-            UpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
+            FlatUpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
             "__schema"
           >,
         ) => void,

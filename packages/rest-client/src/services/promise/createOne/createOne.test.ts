@@ -10,7 +10,7 @@ import {
 import type { testPartialSchemas } from "../../mocks/testData"
 
 describe("rest-client/services/promise/createOne", () => {
-  const createData = { attributes: { title: "Code Review", important: true } }
+  const createData = { title: "Code Review", important: true }
 
   it("should return the new record", async () => {
     createStore(["Article"])

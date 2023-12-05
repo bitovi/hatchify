@@ -1,4 +1,5 @@
 import type { PartialSchema } from "@hatchifyjs/core"
+import isEmpty from "lodash/isEmpty"
 import type {
   RestClient,
   GetSchemaNames,
@@ -6,6 +7,7 @@ import type {
   UpdateType,
   GetSchemaFromName,
   RecordType,
+  FlatUpdateType,
 } from "../../types"
 import { notifySubscribers } from "../../store"
 import {
@@ -13,7 +15,7 @@ import {
   schemaNameIsString,
   serializeClientPropertyValuesForRequest,
 } from "../../utils"
-import { flattenResourcesIntoRecords } from "../../utils/records"
+import { flattenResourcesIntoRecords, unflattenData } from "../../utils/records"
 
 /**
  * Updates a resource in the data source, notifies subscribers,
@@ -26,25 +28,35 @@ export const updateOne = async <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  data: Omit<UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">,
+  data: Omit<
+    FlatUpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
+    "__schema"
+  >,
 ): Promise<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
 
+  const { attributes, relationships } = unflattenData(
+    allSchemas,
+    schemaName,
+    data,
+  )
+
+  const serializedAttributes = isEmpty(attributes)
+    ? undefined
+    : (serializeClientPropertyValuesForRequest(
+        allSchemas,
+        schemaName,
+        attributes,
+      ) as UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>["attributes"])
+
   // todo: HATCH-417; return from `findAll` needs to be a typed `Resource` using generics
   const resources = await dataSource.updateOne(allSchemas, schemaName, {
     __schema: schemaName,
     id: data.id,
-    attributes: data?.attributes
-      ? (serializeClientPropertyValuesForRequest(
-          allSchemas,
-          schemaName,
-          data.attributes,
-        ) as UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>["attributes"])
-      : undefined,
-    // does not need to be serialized! only ids, does not contain attribute values
-    relationships: data?.relationships || undefined,
+    attributes: serializedAttributes,
+    relationships: relationships || undefined, // does not need to be serialized! only ids, does not contain attribute values
   })
 
   notifySubscribers()

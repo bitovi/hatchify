@@ -31,5 +31,8 @@
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.3.x"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }
