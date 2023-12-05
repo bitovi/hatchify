@@ -281,7 +281,7 @@ function EditUser({ id, setUserIdToEdit }: any) {
     }
   }, [user?.name])
 
-  if (userState.isLoading) return <div>fetching user...</div>
+  if (userState.isPending) return <div>fetching user...</div>
   if (!user || userState.isRejected) return <div>failed to fetch user</div>
 
   return (

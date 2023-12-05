@@ -1,7 +1,6 @@
 // @ts-ignore TS7016
 import querystringParser from "@bitovi/sequelize-querystring-parser"
 import type { FinalSchema } from "@hatchifyjs/core"
-import { noCase } from "no-case"
 import type {
   CreateOptions,
   DestroyOptions,
@@ -72,22 +71,17 @@ export function buildFindOptions(
       ops.data.attributes.unshift("id")
     }
 
-    const modelName = [schema.namespace, schema.name]
-      .filter((x) => x)
-      .map((x) => noCase(x as string, { delimiter: "-" }))
-      .join("-")
-
     ops.data.attributes.forEach((attribute: string | ProjectionAlias) => {
       const stringAttribute: string = attribute as unknown as string // no other types come out of the parser
       if (stringAttribute !== "id" && !schema.attributes[stringAttribute]) {
         ops.errors.push(
           new UnexpectedValueError({
-            detail: `URL must have 'fields[${modelName}]' as comma separated values containing one or more of ${Object.keys(
+            detail: `URL must have 'fields[]' as comma separated values containing one or more of ${Object.keys(
               schema.attributes,
             )
               .map((attribute) => `'${attribute}'`)
               .join(", ")}.`,
-            parameter: `fields[${modelName}]`,
+            parameter: `fields[]`,
           }),
         )
       }

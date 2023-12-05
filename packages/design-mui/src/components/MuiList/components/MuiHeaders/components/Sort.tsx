@@ -6,12 +6,12 @@ import { visuallyHidden } from "@mui/utils"
 export const Sort: React.FC<
   Pick<HeaderProps, "direction" | "setSort" | "sortBy"> & {
     children: React.ReactNode
-    isLoading: Meta["isLoading"]
+    isPending: Meta["isPending"]
     columnKey: HatchifyColumn["key"]
   }
-> = ({ children, columnKey, direction, isLoading, setSort, sortBy }) => (
+> = ({ children, columnKey, direction, isPending, setSort, sortBy }) => (
   <TableSortLabel
-    disabled={isLoading}
+    disabled={isPending}
     active={columnKey === sortBy}
     direction={sortBy === sortBy ? direction : "asc"}
     onClick={() => setSort(columnKey)}

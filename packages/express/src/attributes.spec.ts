@@ -42,7 +42,7 @@ describe("Attribute Tests", () => {
     expect(create.body.data).toHaveProperty("id")
 
     const find1 = await fetch(
-      `/api/models/${create.body.data.id}?fields[Model]=firstName`,
+      `/api/models/${create.body.data.id}?fields[]=firstName`,
     )
 
     expect(find1).toBeTruthy()
@@ -52,7 +52,7 @@ describe("Attribute Tests", () => {
     expect(find1.body.data.attributes).not.toHaveProperty("lastName")
 
     const find2 = await fetch(
-      `/api/models/${create.body.data.id}?fields[Model]=lastName`,
+      `/api/models/${create.body.data.id}?fields[]=lastName`,
     )
 
     expect(find2).toBeTruthy()
@@ -81,7 +81,7 @@ describe("Attribute Tests", () => {
     expect(create.body.data).toHaveProperty("id")
 
     const find1 = await fetch(
-      `/api/models/${create.body.data.id}?fields[Model]=badAttribute`,
+      `/api/models/${create.body.data.id}?fields[]=badAttribute`,
     )
 
     expect(find1).toBeTruthy()
@@ -128,7 +128,7 @@ describe("Attribute Tests", () => {
       },
     })
 
-    const find1 = await fetch("/api/models/?fields[Model]=firstName")
+    const find1 = await fetch("/api/models/?fields[]=firstName")
 
     expect(find1).toBeTruthy()
     expect(find1.status).toBe(200)
@@ -139,7 +139,7 @@ describe("Attribute Tests", () => {
       expect(entry.attributes).not.toHaveProperty("lastName")
     })
 
-    const find2 = await fetch("/api/models/?fields[Model]=lastName")
+    const find2 = await fetch("/api/models/?fields[]=lastName")
 
     expect(find2).toBeTruthy()
     expect(find2.status).toBe(200)

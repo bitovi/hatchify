@@ -56,13 +56,13 @@ describe("builder", () => {
       const options = buildFindOptions(
         hatchify,
         Todo,
-        "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5&sort=-dueDate,name",
+        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5&sort=-dueDate,name",
       )
 
       expect(options).toEqual({
         data: {
           attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [] }],
+          include: [{ association: "user", include: [], attributes: ["name"] }],
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -78,11 +78,7 @@ describe("builder", () => {
     })
 
     it("adds ID attribute if not specified", () => {
-      const options = buildFindOptions(
-        hatchify,
-        Todo,
-        "fields[todo]=name,dueDate",
-      )
+      const options = buildFindOptions(hatchify, Todo, "fields[]=name,dueDate")
 
       expect(options).toEqual({
         data: {
@@ -204,11 +200,11 @@ describe("builder", () => {
 
     it("handles unknown attributes", async () => {
       await expect(async () =>
-        buildFindOptions(hatchify, Todo, "fields[todo]=invalid"),
+        buildFindOptions(hatchify, Todo, "fields[]=invalid"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
-          detail: `URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.`,
-          parameter: `fields[todo]`,
+          detail: `URL must have 'fields[]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.`,
+          parameter: `fields[]`,
         }),
       ])
     })
@@ -285,13 +281,13 @@ describe("builder", () => {
   describe("buildCreateOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildCreateOptions(
-        "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(options).toEqual({
         data: {
           attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [] }],
+          include: [{ association: "user", include: [], attributes: ["name"] }],
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -320,13 +316,13 @@ describe("builder", () => {
   describe("buildUpdateOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildUpdateOptions(
-        "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(options).toEqual({
         data: {
           attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [] }],
+          include: [{ association: "user", include: [], attributes: ["name"] }],
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -338,7 +334,7 @@ describe("builder", () => {
     })
 
     it("does not add ID attribute if not specified", () => {
-      const options = buildUpdateOptions("fields[todo]=name,dueDate")
+      const options = buildUpdateOptions("fields[]=name,dueDate")
 
       expect(options).toEqual({
         data: {
@@ -376,7 +372,7 @@ describe("builder", () => {
     })
 
     it("does not error on unknown attributes", () => {
-      const options = buildUpdateOptions("fields[todo]=invalid")
+      const options = buildUpdateOptions("fields[]=invalid")
 
       expect(options).toEqual({
         data: { attributes: ["invalid"], where: {} },
@@ -400,13 +396,13 @@ describe("builder", () => {
   describe("buildDestroyOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildDestroyOptions(
-        "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(options).toEqual({
         data: {
           attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [] }],
+          include: [{ association: "user", include: [], attributes: ["name"] }],
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -418,7 +414,7 @@ describe("builder", () => {
     })
 
     it("does not add ID attribute if not specified", () => {
-      const options = buildDestroyOptions("fields[todo]=name,dueDate")
+      const options = buildDestroyOptions("fields[]=name,dueDate")
 
       expect(options).toEqual({
         data: {
@@ -456,7 +452,7 @@ describe("builder", () => {
     })
 
     it("does not error on unknown attributes", () => {
-      const options = buildDestroyOptions("fields[todo]=invalid")
+      const options = buildDestroyOptions("fields[]=invalid")
 
       expect(options).toEqual({
         data: { attributes: ["invalid"], where: {} },

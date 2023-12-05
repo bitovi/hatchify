@@ -55,12 +55,12 @@ describe("index", () => {
     describe("findAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAll(
-          "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [] }],
+          include: [{ association: "user", include: [], attributes: ["name"] }],
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -69,7 +69,7 @@ describe("index", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findAll("fields[todo]=name,dueDate")
+        const results = await findAll("fields[]=name,dueDate")
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
@@ -86,11 +86,11 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findAll("fields[todo]=invalid")).rejects.toEqualErrors([
+        await expect(findAll("fields[]=invalid")).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
-            parameter: "fields[todo]",
+              "URL must have 'fields[]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
+            parameter: "fields[]",
           }),
         ])
       })
@@ -117,12 +117,12 @@ describe("index", () => {
     describe("findAndCountAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAndCountAll(
-          "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [] }],
+          include: [{ association: "user", include: [], attributes: ["name"] }],
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -131,7 +131,7 @@ describe("index", () => {
       })
 
       it("adds attribute if not specified", async () => {
-        const results = await findAndCountAll("fields[todo]=name,dueDate")
+        const results = await findAndCountAll("fields[]=name,dueDate")
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
@@ -148,15 +148,15 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(
-          findAndCountAll("fields[todo]=invalid"),
-        ).rejects.toEqualErrors([
-          new UnexpectedValueError({
-            detail:
-              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
-            parameter: "fields[todo]",
-          }),
-        ])
+        await expect(findAndCountAll("fields[]=invalid")).rejects.toEqualErrors(
+          [
+            new UnexpectedValueError({
+              detail:
+                "URL must have 'fields[]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
+              parameter: "fields[]",
+            }),
+          ],
+        )
       })
 
       it("handles invalid query string", async () => {
@@ -185,13 +185,13 @@ describe("index", () => {
     describe("findOne", () => {
       it("works with ID attribute provided", async () => {
         const results = await findOne(
-          "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
           1,
         )
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [] }],
+          include: [{ association: "user", include: [], attributes: ["name"] }],
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -200,7 +200,7 @@ describe("index", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findOne("fields[todo]=name,dueDate", 1)
+        const results = await findOne("fields[]=name,dueDate", 1)
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
@@ -217,11 +217,11 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findOne("fields[todo]=invalid", 1)).rejects.toEqualErrors([
+        await expect(findOne("fields[]=invalid", 1)).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
-            parameter: "fields[todo]",
+              "URL must have 'fields[]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
+            parameter: "fields[]",
           }),
         ])
       })
@@ -309,12 +309,12 @@ describe("index", () => {
     describe("destroy", () => {
       it("works with ID attribute provided", async () => {
         const results = await destroy(
-          "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [] }],
+          include: [{ association: "user", include: [], attributes: ["name"] }],
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -323,7 +323,7 @@ describe("index", () => {
       })
 
       it("does not add ID attribute if not specified", async () => {
-        const results = await destroy("fields[todo]=name,dueDate")
+        const results = await destroy("fields[]=name,dueDate")
 
         expect(results).toEqual({
           attributes: ["name", "dueDate"],
@@ -351,7 +351,7 @@ describe("index", () => {
       })
 
       it("does not error on unknown attributes", async () => {
-        const results = await destroy("fields[todo]=invalid")
+        const results = await destroy("fields[]=invalid")
 
         expect(results).toEqual({
           attributes: ["invalid"],
@@ -409,12 +409,12 @@ describe("index", () => {
       expect(parser.destroy).toEqual(expect.any(Function))
 
       const results = await parser.findAll(
-        "include=user&filter[name]=laundry&fields[todo]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
       )
 
       expect(results).toEqual({
         attributes: ["id", "name", "dueDate"],
-        include: [{ association: "user", include: [] }],
+        include: [{ association: "user", include: [], attributes: ["name"] }],
         limit: 5,
         offset: 10,
         subQuery: false,

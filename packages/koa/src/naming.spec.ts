@@ -69,7 +69,7 @@ describe("Naming rules", () => {
           },
         },
         {
-          url: "/api/sales-persons?fields[SalesPerson]=name",
+          url: "/api/sales-persons?fields[]=name",
           options: {
             method: "get",
           },

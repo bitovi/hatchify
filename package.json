@@ -53,6 +53,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@bitovi/sequelize-querystring-parser": "^0.2.16",
     "pg": "^8.11.3",
     "semver": "^7.5.0"
   }
