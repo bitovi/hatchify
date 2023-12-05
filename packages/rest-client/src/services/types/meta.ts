@@ -4,7 +4,7 @@ export type Error = any // todo
 export type Meta = MetaLoading | MetaSuccess | MetaError
 
 // * isResolved: no more network requests: true if status is "success" or "error"
-// * isLoading: network request in progress: true if status is "loading"
+// * isPending: network request in progress: true if status is "loading"
 // * isRejected: network request failed: true if status is "error"
 // * isRevalidating: network request in progress and data is stale: true if status is "loading" and isStale is true
 // * isStale: data is stale: true if status is "loading" or "error"
@@ -16,7 +16,7 @@ export interface MetaLoading {
   error: undefined
 
   isResolved: false
-  isLoading: true
+  isPending: true
   isRejected: false
   isRevalidating: boolean
   isStale: boolean
@@ -28,7 +28,7 @@ export interface MetaSuccess {
   error: undefined
 
   isResolved: true
-  isLoading: false
+  isPending: false
   isRejected: false
   isRevalidating: false
   isStale: false
@@ -40,7 +40,7 @@ export interface MetaError {
   error: Error
 
   isResolved: true
-  isLoading: false
+  isPending: false
   isRejected: true
   isRevalidating: false
   isStale: boolean

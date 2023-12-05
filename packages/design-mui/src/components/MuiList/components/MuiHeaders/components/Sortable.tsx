@@ -5,7 +5,7 @@ import type { HatchifyColumn, HeaderProps } from "@hatchifyjs/react-ui"
 export const Sortable: React.FC<
   Pick<HeaderProps, "direction" | "setSort" | "sortBy"> & {
     children: React.ReactNode
-    isLoading: Meta["isLoading"]
+    isPending: Meta["isPending"]
     columnKey: HatchifyColumn["key"]
     sortable: boolean
   }
@@ -13,7 +13,7 @@ export const Sortable: React.FC<
   children,
   columnKey,
   direction,
-  isLoading,
+  isPending,
   setSort,
   sortable,
   sortBy,
@@ -21,7 +21,7 @@ export const Sortable: React.FC<
   sortable ? (
     <Sort
       direction={direction}
-      isLoading={isLoading}
+      isPending={isPending}
       columnKey={columnKey}
       setSort={setSort}
       sortBy={sortBy}

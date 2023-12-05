@@ -9,7 +9,7 @@ describe("rest-client/services/utils/meta", () => {
         status: "loading",
         error: undefined,
         isResolved: false,
-        isLoading: true,
+        isPending: true,
         isRejected: false,
         isRevalidating: false,
         isStale: false,
@@ -23,7 +23,7 @@ describe("rest-client/services/utils/meta", () => {
         status: "success",
         error: undefined,
         isResolved: true,
-        isLoading: false,
+        isPending: false,
         isRejected: false,
         isRevalidating: false,
         isStale: false,
@@ -38,13 +38,12 @@ describe("rest-client/services/utils/meta", () => {
         status: "error",
         error,
         isResolved: true,
-        isLoading: false,
+        isPending: false,
         isRejected: true,
         isRevalidating: false,
         isStale: false,
         isSuccess: false,
       }
-      console.log("expected 🟢🟢🟢🟢🟢", expected)
 
       expect(getMeta(error, false, false, undefined)).toEqual(expected)
     })

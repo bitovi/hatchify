@@ -182,7 +182,7 @@ function App() {
   const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
   const [todoName, setTodoName] = useState("")
 
-  if (todosMeta.isLoading) {
+  if (todosMeta.isPending) {
     return <div>loading...</div>
   }
 
@@ -191,14 +191,14 @@ function App() {
       <div>
         <input type="text" value={todoName} onChange={(e) => setTodoName(e.target.value)} />
         <button
-          disabled={createState.isLoading}
+          disabled={createState.isPending}
           type="button"
           onClick={() => {
             createTodo({ attributes: { name: todoName } })
             setTodoName("")
           }}
         >
-          {createState.isLoading ? "submitting..." : "submit"}
+          {createState.isPending ? "submitting..." : "submit"}
         </button>
       </div>
       <table>
@@ -207,7 +207,7 @@ function App() {
             <tr key={todo.id}>
               <td>{todo.name}</td>
               <td>
-                <button disabled={deleteState.isLoading} type="button" onClick={() => deleteTodo(todo.id)}>
+                <button disabled={deleteState.isPending} type="button" onClick={() => deleteTodo(todo.id)}>
                   delete
                 </button>
               </td>
@@ -301,7 +301,7 @@ The return from `useAll` is an array where the first index contains an array of 
 const [todos, todosMeta] = hatchedReactRest.Todo.useAll()
 
 // 👀
-if (todosMeta.isLoading) {
+if (todosMeta.isPending) {
   return <div>loading...</div>
 }
 
@@ -335,7 +335,7 @@ const [createTodo, createState] = hatchedReactRest.Todo.useCreateOne()
 const [todoName, setTodoName] = useState("")
 
 // 👀
-if (todosMeta.isLoading) {
+if (todosMeta.isPending) {
   return <div>loading...</div>
 }
 
@@ -346,8 +346,8 @@ return (
       {/* 👀 */}
       <input type="text" value={todoName} onChange={(e) => setTodoName(e.target.value)} />
       {/* 👀 */}
-      <button disabled={createState.isLoading} type="button" onClick={() => createTodo({ attributes: { name: todoName } })}>
-        {createState.isLoading ? "submitting..." : "submit"}
+      <button disabled={createState.isPending} type="button" onClick={() => createTodo({ attributes: { name: todoName } })}>
+        {createState.isPending ? "submitting..." : "submit"}
       </button>
     </div>
     <table>
@@ -377,7 +377,7 @@ const [createTodo, createState] = hatchedReactRest.Todo.useCreateOne()
 const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
 const [todoName, setTodoName] = useState("")
 
-if (todosMeta.isLoading) {
+if (todosMeta.isPending) {
   return <div>loading...</div>
 }
 
@@ -385,8 +385,8 @@ return (
   <div>
     <div>
       <input type="text" value={todoName} onChange={(e) => setTodoName(e.target.value)} />
-      <button disabled={createState.isLoading} type="button" onClick={() => createTodo({ attributes: { name: todoName } })}>
-        {createState.isLoading ? "submitting..." : "submit"}
+      <button disabled={createState.isPending} type="button" onClick={() => createTodo({ attributes: { name: todoName } })}>
+        {createState.isPending ? "submitting..." : "submit"}
       </button>
     </div>
     <table>
@@ -396,7 +396,7 @@ return (
             <td>{todo.name}</td>
             {/* 👀 */}
             <td>
-              <button disabled={deleteState.isLoading} type="button" onClick={() => deleteTodo(todo.id)}>
+              <button disabled={deleteState.isPending} type="button" onClick={() => deleteTodo(todo.id)}>
                 delete
               </button>
             </td>
@@ -497,7 +497,7 @@ const [todos, todosMeta] = hatchedReactRest.Todo.useAll({ include: ["user"] }) /
       {/* 👀 */}
       <td>{todo.user?.name}</td>
       <td>
-        <button disabled={deleteState.isLoading} type="button" onClick={() => deleteTodo(todo.id)}>
+        <button disabled={deleteState.isPending} type="button" onClick={() => deleteTodo(todo.id)}>
           delete
         </button>
       </td>
@@ -553,7 +553,7 @@ function App() {
   const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
   const [todoName, setTodoName] = useState("")
 
-  if (todosMeta.isLoading) {
+  if (todosMeta.isPending) {
     return <div>loading...</div>
   }
 
@@ -562,14 +562,14 @@ function App() {
       <div>
         <input type="text" value={todoName} onChange={(e) => setTodoName(e.target.value)} />
         <button
-          disabled={createState.isLoading}
+          disabled={createState.isPending}
           type="button"
           onClick={() => {
             createTodo({ attributes: { name: todoName } })
             setTodoName("")
           }}
         >
-          {createState.isLoading ? "submitting..." : "submit"}
+          {createState.isPending ? "submitting..." : "submit"}
         </button>
       </div>
       <table>
@@ -579,7 +579,7 @@ function App() {
               <td>{todo.name}</td>
               <td>{todo.user?.name}</td>
               <td>
-                <button disabled={deleteState.isLoading} type="button" onClick={() => deleteTodo(todo.id)}>
+                <button disabled={deleteState.isPending} type="button" onClick={() => deleteTodo(todo.id)}>
                   delete
                 </button>
               </td>
@@ -627,7 +627,7 @@ const [selectedUser, setSelectedUser] = useState("")
 />
 {/* 👀 */}
 <select
-  disabled={usersMeta.isLoading}
+  disabled={usersMeta.isPending}
   value={selectedUser}
   onChange={(e) => setSelectedUser(e.target.value)}
 >
@@ -639,7 +639,7 @@ const [selectedUser, setSelectedUser] = useState("")
   ))}
 </select>
 <button
-  disabled={createState.isLoading}
+  disabled={createState.isPending}
   type="button"
   onClick={() => {
     createTodo({
@@ -648,7 +648,7 @@ const [selectedUser, setSelectedUser] = useState("")
     setTodoName("")
   }}
 >
-  {createState.isLoading ? "submitting..." : "submit"}
+  {createState.isPending ? "submitting..." : "submit"}
 </button>
 ```
 
@@ -663,7 +663,7 @@ Now that we have a `select` populated with users, we can create a todo with a us
 ```tsx
 // App.tsx: App component
 <button
-  disabled={createState.isLoading}
+  disabled={createState.isPending}
   type="button"
   onClick={() => {
     createTodo({
@@ -676,7 +676,7 @@ Now that we have a `select` populated with users, we can create a todo with a us
     setSelectedUser("")
   }}
 >
-  {createState.isLoading ? "submitting..." : "submit"}
+  {createState.isPending ? "submitting..." : "submit"}
 </button>
 ```
 
@@ -730,7 +730,7 @@ function App() {
   const [users, usersMeta] = hatchedReactRest.User.useAll()
   const [selectedUser, setSelectedUser] = useState("")
 
-  if (todosMeta.isLoading) {
+  if (todosMeta.isPending) {
     return <div>loading...</div>
   }
 
@@ -738,7 +738,7 @@ function App() {
     <div>
       <div>
         <input type="text" value={todoName} onChange={(e) => setTodoName(e.target.value)} />
-        <select disabled={usersMeta.isLoading} value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+        <select disabled={usersMeta.isPending} value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
           <option value="">select user</option>
           {users.map((user) => (
             <option key={user.id} value={user.id}>
@@ -747,7 +747,7 @@ function App() {
           ))}
         </select>
         <button
-          disabled={createState.isLoading}
+          disabled={createState.isPending}
           type="button"
           onClick={() => {
             createTodo({
@@ -758,7 +758,7 @@ function App() {
             setSelectedUser("")
           }}
         >
-          {createState.isLoading ? "submitting..." : "submit"}
+          {createState.isPending ? "submitting..." : "submit"}
         </button>
       </div>
       <table>
@@ -768,7 +768,7 @@ function App() {
               <td>{todo.name}</td>
               <td>{todo.user?.name}</td>
               <td>
-                <button disabled={deleteState.isLoading} type="button" onClick={() => deleteTodo(todo.id)}>
+                <button disabled={deleteState.isPending} type="button" onClick={() => deleteTodo(todo.id)}>
                   delete
                 </button>
               </td>
