@@ -8,7 +8,7 @@ describe("rest-client/services/utils/meta", () => {
       const expected: MetaLoading = {
         status: "loading",
         error: undefined,
-        isDone: false,
+        isResolved: false,
         isLoading: true,
         isRejected: false,
         isRevalidating: false,
@@ -22,7 +22,7 @@ describe("rest-client/services/utils/meta", () => {
       const expected: MetaSuccess = {
         status: "success",
         error: undefined,
-        isDone: true,
+        isResolved: true,
         isLoading: false,
         isRejected: false,
         isRevalidating: false,
@@ -37,7 +37,7 @@ describe("rest-client/services/utils/meta", () => {
       const expected = {
         status: "error",
         error,
-        isDone: true,
+        isResolved: true,
         isLoading: false,
         isRejected: true,
         isRevalidating: false,

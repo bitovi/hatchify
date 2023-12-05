@@ -31,7 +31,7 @@ const meta = {
     unpaginatedCount: 30, // 3 pages
   },
   error: undefined,
-  isDone: true,
+  isResolved: true,
   isLoading: false,
   isRejected: false,
   isRevalidating: false,

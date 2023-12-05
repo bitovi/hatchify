@@ -64,7 +64,7 @@ describe("useCollectionState", () => {
       ],
       meta: {
         error: undefined,
-        isDone: true,
+        isResolved: true,
         isLoading: false,
         isRejected: false,
         isRevalidating: false,
