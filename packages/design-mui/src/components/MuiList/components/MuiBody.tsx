@@ -7,7 +7,7 @@ export const MuiBody: React.FC<
 > = ({ columns, data, meta, selected, setSelected, Empty }) => {
   const selectable = selected !== undefined && setSelected !== undefined
 
-  if (meta.isLoading) {
+  if (meta.isPending) {
     return (
       <TableBody>
         <MuiBodySkeleton columns={columns} />

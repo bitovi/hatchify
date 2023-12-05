@@ -20,7 +20,7 @@ const hatchedReactRest = hatchifyReactRest(jsonapi)
 function App() {
   const [todos, listState] = hatchedReactRest.Todo.useAll()
 
-  if (listState.isLoading) {
+  if (listState.isPending) {
     return <div>loading...</div>
   }
 
@@ -91,7 +91,7 @@ export default App
 //   const [users, usersState] = hatchedReactRest.User.useAll()
 //   const [selectedUser, setSelectedUser] = useState("")
 
-//   if (listState.isLoading) {
+//   if (listState.isPending) {
 //     return <div>loading...</div>
 //   }
 
@@ -104,7 +104,7 @@ export default App
 //           onChange={(e) => setTodoName(e.target.value)}
 //         />
 //         <select
-//           disabled={usersState.isLoading}
+//           disabled={usersState.isPending}
 //           value={selectedUser}
 //           onChange={(e) => setSelectedUser(e.target.value)}
 //         >
@@ -116,7 +116,7 @@ export default App
 //           ))}
 //         </select>
 //         <button
-//           disabled={createState.isLoading}
+//           disabled={createState.isPending}
 //           type="button"
 //           onClick={() => {
 //             createTodo({
@@ -127,7 +127,7 @@ export default App
 //             setSelectedUser("")
 //           }}
 //         >
-//           {createState.isLoading ? "submitting..." : "submit"}
+//           {createState.isPending ? "submitting..." : "submit"}
 //         </button>
 //       </div>
 //       <table>
@@ -138,7 +138,7 @@ export default App
 //               <td>{todo.user?.name}</td>
 //               <td>
 //                 <button
-//                   disabled={deleteState.isLoading}
+//                   disabled={deleteState.isPending}
 //                   type="button"
 //                   onClick={() => deleteTodo(todo.id)}
 //                 >

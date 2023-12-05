@@ -22,7 +22,7 @@ export const MuiHeaders: React.FC<
         {selectable && (
           <TableCell css={styles.th}>
             <Checkbox
-              disabled={meta.isLoading}
+              disabled={meta.isPending}
               aria-label="select all"
               checked={selected.all}
               indeterminate={Boolean(!selected.all && selected.ids.length)}
@@ -43,7 +43,7 @@ export const MuiHeaders: React.FC<
           >
             <Sortable
               direction={direction}
-              isLoading={meta.isLoading}
+              isPending={meta.isPending}
               columnKey={column.key}
               setSort={setSort}
               sortable={column.sortable}
