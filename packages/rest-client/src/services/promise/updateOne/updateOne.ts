@@ -14,8 +14,9 @@ import {
   SchemaNameNotStringError,
   schemaNameIsString,
   serializeClientPropertyValuesForRequest,
+  flattenResourcesIntoRecords,
+  unflattenData,
 } from "../../utils"
-import { flattenResourcesIntoRecords, unflattenData } from "../../utils"
 
 /**
  * Updates a resource in the data source, notifies subscribers,
