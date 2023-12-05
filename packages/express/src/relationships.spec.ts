@@ -124,12 +124,10 @@ describe("Relationships", () => {
             name: "Walk the dog",
             dueDate: "2024-12-12T00:00:00.000Z",
           },
-          relationships: { user: { data: { type: "User", id: user.data.id } } },
+          relationships: { user: { data: { type: "User" } } },
         },
       ],
-      included: [
-        { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
-      ],
+      included: [{ type: "User", attributes: { name: "John Doe" } }],
       meta: { unpaginatedCount: 1 },
     })
 
@@ -147,12 +145,10 @@ describe("Relationships", () => {
             name: "Walk the dog",
             dueDate: "2024-12-12T00:00:00.000Z",
           },
-          relationships: { user: { data: { type: "User", id: user.data.id } } },
+          relationships: { user: { data: { type: "User" } } },
         },
       ],
-      included: [
-        { type: "User", id: user.data.id, attributes: { name: "John Doe" } },
-      ],
+      included: [{ type: "User", attributes: { name: "John Doe" } }],
       meta: { unpaginatedCount: 1 },
     })
   })
