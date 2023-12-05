@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from "react"
 import { createOne, getMeta } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type {
-  CreateType,
   FinalSchemas,
   GetSchemaFromName,
   GetSchemaNames,
@@ -10,12 +9,13 @@ import type {
   Meta,
   MetaError,
   RestClient,
+  FlatCreateType,
 } from "@hatchifyjs/rest-client"
 
 type CreateData<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
-> = Omit<CreateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
+> = Omit<FlatCreateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
 
 type CreatedRecord<
   TSchemas extends Record<string, PartialSchema>,

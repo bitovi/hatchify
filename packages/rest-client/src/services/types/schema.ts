@@ -19,16 +19,20 @@ export type GetSchemaFromName<
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = TSchemas[TSchemaName]
 
-export type CreateType<
-  // TSchemas extends Record<string, PartialSchema>,
-  TPartialSchema extends PartialSchema,
-> = {
+export type FlatCreateType<TPartialSchema extends PartialSchema> = {
   __schema: TPartialSchema["name"]
-} & {
-  attributes: TypedAttributes<TPartialSchema["attributes"], true>
-} & {
+} & TypedAttributes<TPartialSchema["attributes"], true> &
+  MutateRelationships<TPartialSchema>
+
+export type CreateType<TPartialSchema extends PartialSchema> = {
+  __schema: TPartialSchema["name"]
+} & { attributes: TypedAttributes<TPartialSchema["attributes"], true> } & {
   relationships?: MutateRelationships<TPartialSchema>
 }
+
+export type FlatUpdateType<TPartialSchema extends PartialSchema> = {
+  id: string
+} & Partial<FlatCreateType<TPartialSchema>>
 
 export type UpdateType<TPartialSchema extends PartialSchema> = {
   id: string
@@ -243,4 +247,7 @@ export type MutateRelationship = {
 // //   ^?
 
 // type GG = "belongsTo" extends "hasMany" | "belongsTo" ? true : false
+// //   ^?
+
+// type CCCCC = Prettify<CreateType<typeof partialUser>>
 // //   ^?

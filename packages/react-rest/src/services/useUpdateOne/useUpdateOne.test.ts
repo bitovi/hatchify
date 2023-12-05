@@ -65,7 +65,8 @@ describe("react-rest/services/useUpdateOne", () => {
 
     await result.current[0]({
       id: "1",
-      attributes: { title: "updated-title", body: "baz-body" },
+      title: "updated-title",
+      body: "baz-body",
     })
 
     await waitFor(() =>
@@ -134,7 +135,8 @@ describe("react-rest/services/useUpdateOne", () => {
 
     await result.current[0]({
       id: "1",
-      attributes: { title: "updated-title", body: "baz-body" },
+      title: "updated-title",
+      body: "baz-body",
     })
 
     await waitFor(() =>
@@ -167,7 +169,8 @@ describe("react-rest/services/useUpdateOne", () => {
 
     await result.current[0]({
       id: "1",
-      attributes: { title: "updated-title", body: "baz-body" },
+      title: "updated-title",
+      body: "baz-body",
     })
 
     await waitFor(() =>

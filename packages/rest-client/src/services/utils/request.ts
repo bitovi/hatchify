@@ -4,44 +4,7 @@ import type {
   FinalSchemas,
   GetSchemaFromName,
   GetSchemaNames,
-} from "../../types"
-
-export function schemaNameIsString(schemaName: unknown): schemaName is string {
-  return typeof schemaName === "string"
-}
-
-export class SchemaNameNotStringError extends Error {
-  constructor(schemaName: unknown) {
-    super(`Expected schemaName to be a string, received ${typeof schemaName}`)
-  }
-}
-
-/**
- * Coerces the value from the server into the value expected by the client.
- */
-export const setClientPropertyValuesFromResponse = (
-  allSchemas: FinalSchemas,
-  schemaName: string,
-  attributes: globalThis.Record<string, any>,
-): globalThis.Record<string, unknown> => {
-  return Object.entries(attributes).reduce((acc, [key, value]) => {
-    const attribute = allSchemas[schemaName].attributes[key]
-    if (attribute != null && attribute.setClientPropertyValueFromResponse) {
-      try {
-        acc[key] = attribute?.setClientPropertyValueFromResponse(value)
-        return acc
-      } catch (e: any) {
-        console.error(
-          `Setting value \`${value}\` on attribute \`${key}\`:`,
-          e?.message,
-        )
-      }
-    }
-
-    acc[key] = value
-    return acc
-  }, {} as globalThis.Record<string, unknown>)
-}
+} from "../types"
 
 /**
  * Coerces the value from the internal client data into something that can be sent with JSON.

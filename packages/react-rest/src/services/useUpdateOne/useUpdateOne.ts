@@ -5,7 +5,7 @@ import type {
   GetSchemaNames,
   FinalSchemas,
   GetSchemaFromName,
-  UpdateType,
+  FlatUpdateType,
   RecordType,
   Meta,
   MetaError,
@@ -15,7 +15,7 @@ import type {
 type UpdateData<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
-> = Omit<UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
+> = Omit<FlatUpdateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">
 
 type UpdatedRecord<
   TSchemas extends Record<string, PartialSchema>,

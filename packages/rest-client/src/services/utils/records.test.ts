@@ -6,7 +6,7 @@ import {
   hasMany,
   string,
 } from "@hatchifyjs/core"
-import type { Record, Resource } from "../../types"
+import type { Record, Resource } from "../types"
 import {
   keyResourcesById,
   isMissingSchema,

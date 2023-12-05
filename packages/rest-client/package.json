@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/rest-client",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "main": "./dist/rest-client.js",
   "module": "./dist/rest-client.mjs",
   "types": "./dist/rest-client.d.ts",
@@ -31,5 +31,8 @@
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.3.x"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }

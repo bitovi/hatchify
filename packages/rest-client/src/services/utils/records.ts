@@ -5,8 +5,8 @@ import type {
   ResourceRelationship,
   FinalSchemas,
   ResourceRelationshipObject,
-} from "../../types"
-import { setClientPropertyValuesFromResponse } from ".."
+} from "../types"
+import { setClientPropertyValuesFromResponse } from "."
 
 type Relationships = globalThis.Record<
   string,
