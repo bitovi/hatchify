@@ -1,10 +1,9 @@
 import { uuidv4 } from "@hatchifyjs/core"
-import type { PartialSchema } from "@hatchifyjs/core"
-import type { FinalAttributeRecord } from "@hatchifyjs/core"
+import type { PartialSchema, FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FinalSchemas, GetSchemaNames } from "@hatchifyjs/rest-client"
 import type { DefaultValueComponentsTypes } from "../../../components"
 import type { HatchifyColumn } from "../useCompoundComponents"
-import { getDefaultColumnRender } from "."
+import { getDefaultDataRender } from "."
 
 export function getColumn<
   const TSchemas extends globalThis.Record<string, PartialSchema>,
@@ -17,6 +16,7 @@ export function getColumn<
   compoundComponentProps,
   isRelationship,
   defaultValueComponents,
+  sortable,
 }: {
   finalSchemas: FinalSchemas
   schemaName: TSchemaName
@@ -25,32 +25,44 @@ export function getColumn<
   compoundComponentProps: any
   isRelationship?: boolean
   defaultValueComponents: DefaultValueComponentsTypes
+  sortable?: boolean
 }): HatchifyColumn {
-  const { ValueComponent } = compoundComponentProps
+  const {
+    label: labelProp,
+    renderHeaderValue,
+    HeaderValueComponent,
+    renderDataValue,
+    DataValueComponent,
+    renderData,
+  } = compoundComponentProps
+
   const isAdditional = control == null
-  const label = compoundComponentProps?.label || formatFieldAsLabel(field || "")
+  const label = labelProp || formatFieldAsLabel(field || "")
 
   const column: HatchifyColumn = {
-    sortable: !isAdditional && !isRelationship, // sortable if an attribute
+    sortable:
+      sortable !== undefined ? sortable : !isAdditional && !isRelationship, // reference sortable prop; otherwise sortable if an attribute
     key: field || uuidv4(), // if no field, then it's an additional column, but needs a key?
     label,
-    render: () => null, // default render so TS doesn't complain
+    renderData: () => null, // default render so TS doesn't complain
+    renderHeader: () => null, // default render so TS doesn't complain
+    headerOverride: !!(renderHeaderValue ?? HeaderValueComponent),
   }
 
   // render priority:
-  // 1. prop: render (render function)
-  // 2. prop: renderValue (render function)
-  // 3. prop: ValueComponent (component)
+  // 1. prop: renderData (render function)
+  // 2. prop: renderDataValue (render function)
+  // 3. prop: DataValueComponent (component)
   // 4. default render (based on type)
 
-  if (compoundComponentProps.render) {
-    column.render = ({ record }) => compoundComponentProps.render({ record })
-  } else if (compoundComponentProps.renderValue) {
-    column.render = ({ record }) =>
-      compoundComponentProps.renderValue({ record })
-  } else if (ValueComponent) {
-    column.render = ({ record }) => (
-      <ValueComponent
+  if (renderData) {
+    column.renderData = ({ record }) => renderData({ record })
+  } else if (renderDataValue) {
+    column.renderData = ({ record }) =>
+      renderDataValue({ record, value: record[field] })
+  } else if (DataValueComponent) {
+    column.renderData = ({ record }) => (
+      <DataValueComponent
         record={record}
         field={field}
         value={record[field]}
@@ -58,7 +70,7 @@ export function getColumn<
       />
     )
   } else {
-    column.render = getDefaultColumnRender({
+    column.renderData = getDefaultDataRender({
       finalSchemas,
       schemaName: schemaName as string,
       control,
@@ -67,6 +79,23 @@ export function getColumn<
       isAdditional,
       defaultValueComponents,
     })
+  }
+
+  // render priority:
+  // 1. prop: renderHeaderValue (render function)
+  // 2. prop: HeaderValueComponent (component)
+  // 3. render label
+
+  if (renderHeaderValue) {
+    column.renderHeader = (headerArgs) => {
+      return renderHeaderValue(headerArgs)
+    }
+  } else if (HeaderValueComponent) {
+    column.renderHeader = (headerProps) => (
+      <HeaderValueComponent {...headerProps} />
+    )
+  } else {
+    column.renderHeader = () => label
   }
 
   return column

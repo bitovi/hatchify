@@ -13,43 +13,76 @@ export const Todo: PartialSchema = {
 
 ## Parameters
 
-- `default` [{String}] - The default value of the attribute.  Example: `text({default: "hello"})`
-- `required` [{Boolean=false}] - If the attribute must be provided.
+|      key      | description                                                                      | type            | optional  | default |
+| ------------- | -------------------------------------------------------------------------------- | :-------------: | :-------: | :-----: |
+| `default`     | The default value of the attribute. <br/> Example: `text({default: 'no text'})`  | `String`        | Yes       |         |
+| `required`    | If the attribute must be provided.  <br/> Example: `text({required: true})`      | `Boolean`       | Yes       | `false` |
+| `primary`     | The attribute is a primary key.     <br/> Example: `text({primary: true})`       | `Boolean`       | Yes       | `false` |
+| `unique`      | The attribute must be unique.       <br/> Example: `text({unique: true})`        | `Boolean`       | Yes       | `false` |
 
-## Form Controls
+## Database and Sequelize Behavior
 
-`text()` will produce a [`<textarea>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) control. 
+The `text` type will create a sequelize [DataTypes.TEXT](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
 
+## Middleware Behavior
 
-<details>
-<summary>
+### Querying Data
 
-## Advanced Details
+For text, use any string value, or `%00` 🛑 in your queries as follows:
 
-</summary>
+```
+GET /todos?filter[notes][$eq]=this%20is%20super%20important //all todos with notes that equal "this is super important"
 
-### Control Type
+GET /todos?filter[notes][$eq]=%00 //all todos with notes that are null 🛑
+
+GET /todos?filter[notes][$ilike]=%25important //all todos with notes that end in "important"
+
+GET /todos?filter[notes][$ilike]=this%25 //all todos with notes that start with "this"
+
+GET /todos?filter[notes][$ilike]=%25is%20super%25 //all todos with notes that contain "is super"
+```
+
+Note:
+`%25` is the ASCII value for `%`, and serves as a wildcard in `ilike` queries
+`%20` is the ASCII value for space.
+
+### Data Response
+
+Text data will be returned as a string:
 
 ```js
 {
-  type: "String",
-  allowNull: Boolean, 
-  max: Infinity,
-  min: 0
+  data: {
+    ...
+    attributes: {
+      ...
+      notes: "this is super important",
+    },
+  }
 }
 ```
 
+### Mutating Data
 
-### Sequelize Type
+When creating or updating a text attribute, a string value, or `null` must be provided. Any other value will return a service error.
 
-```js
-{
- type: "TEXT",
- typeArgs: [],
- allowNull: Boolean
-}
+## React Rest Behavior
+
+Similar to the middleware, you MUST provide react rest models a string value, or `null`. Likewise, they will always return these values:
+
+```ts
+Todo.createOne({ attributes: { notes: "this is super important" } })
+
+const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
+todo.notes //-> string or null
 ```
-  
-</details>
 
+## Grid Behavior
 
+The text will be presented in the grid. If the value is `null`, no value will be presented in the grid. For large amounts of text: the column will stretch to a max width, an ellipsis will be displayed, and the overflow will be hidden. When hovering over that cell, the full text will be displayed 🛑
+
+![Grid Example](../../attachments/text-grid.png)
+
+## Form Behavior
+
+`text()` will produce a [`<textarea>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) control.
