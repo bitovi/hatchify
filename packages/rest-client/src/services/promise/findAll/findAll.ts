@@ -10,7 +10,7 @@ import type {
   Filters,
 } from "../../types"
 import { SchemaNameNotStringError, schemaNameIsString } from "../../utils"
-import { flattenResourcesIntoRecords } from "../../utils/records"
+import { flattenResourcesIntoRecords } from "../../utils"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,

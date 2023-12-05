@@ -8,7 +8,7 @@ import type {
   FinalSchemas,
 } from "../../types"
 import { SchemaNameNotStringError, schemaNameIsString } from "../../utils"
-import { flattenResourcesIntoRecords } from "../../utils/records"
+import { flattenResourcesIntoRecords } from "../../utils"
 
 /**
  * Fetches a single resource from a data source, inserts it into the store,

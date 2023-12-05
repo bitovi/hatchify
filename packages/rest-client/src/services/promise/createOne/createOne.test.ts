@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest"
 import { createStore } from "../../store"
 import { createOne } from "./createOne"
-import { flattenResourcesIntoRecords } from "../../utils/records"
+import { flattenResourcesIntoRecords } from "../../utils"
 import {
   fakeDataSource,
   testDataRecords,

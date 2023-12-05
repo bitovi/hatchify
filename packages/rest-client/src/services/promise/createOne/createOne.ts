@@ -14,7 +14,7 @@ import {
   schemaNameIsString,
   serializeClientPropertyValuesForRequest,
 } from "../../utils"
-import { flattenResourcesIntoRecords, unflattenData } from "../../utils/records"
+import { flattenResourcesIntoRecords, unflattenData } from "../../utils"
 
 /**
  * Creates a new resource in the data source, notifies subscribers,
