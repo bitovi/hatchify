@@ -26,39 +26,38 @@ export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
 
 ## General Guidelines
 
-Hatchify attempts to adhere to the most common naming pattern conventions. The following are the casing and pluralization guidelines that Hatchify uses.  
+Hatchify attempts to adhere to the most common naming pattern conventions. The following are the casing and pluralization guidelines that Hatchify uses.
 
 ### Casing
 
 By default, Hatchify uses `PascalCase` (Ex: `SalesPerson`) for type names and use `camelCase` names for member names (Ex: `firstName`). The following are the exceptions:
 
 - Tables and table column names use `snake_case` (Ex: `sales_person` table, and `first_name` field).
-- Service URL path names are `kebab-case`.  (Ex: `/sales-people`) _Note: Query parameters are `camelCase`._
+- Service URL path names are `kebab-case`. (Ex: `/sales-people`) _Note: Query parameters are `camelCase`._
 
 ### Singular vs Plural
 
 Hatchify simply adds an "s" to make values names plural. We will show how to customize this below.
 
-The following are __singular__:
+The following are **singular**:
 
 - Schema model names (Ex: `SalesPerson`)
 - Table names (Ex: `sales_person`)
 - BelongsTo relationship names (Ex: `{ as: "manager" }`)
 
-The following are __plural__:
+The following are **plural**:
 
 - Service URL path names (Ex: `/sales-persons`)
 - HasMany relationship names (Ex: `{ as: "managers" }`)
 
 ## Schema Naming
 
-This section shows how each part of the schema relates to the Database or service API design.  
+This section shows how each part of the schema relates to the Database or service API design.
 
-### Terms 
+### Terms
 
 - Source schema - The schema the definition is written in.
 - Target schema - The schema the Source schema is establishing a relationship with.
-
 
 ### Schema.name
 
@@ -68,8 +67,8 @@ The schema name should be `Singular PascalCase` as follows:
 const SalesPerson = {
   name: "SalesPerson", //👀
   attributes: {
-    firstName: "STRING" 
-  }
+    firstName: "STRING",
+  },
 }
 ```
 
@@ -80,20 +79,20 @@ const SalesPerson = {
 **API Implications:**
 
 - This will create a `/sales-persons` API.
-- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /sales-persons?fields[SalesPerson]=name`
+- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /sales-persons?fields[]=name`
 - `SalesPerson` will be used as the response `type`: `{data: {type: "SalesPerson"}}`
 
 ### Schema.pluralName
 
-Set `pluralName` to configure plural naming for that type.  
+Set `pluralName` to configure plural naming for that type.
 
 ```js
 const SalesPerson = {
   name: "SalesPerson",
   pluralName: "SalesPeople", //👀
   attributes: {
-    firstName: "STRING"
-  }
+    firstName: "STRING",
+  },
 }
 ```
 
@@ -102,6 +101,7 @@ const SalesPerson = {
 - Create a `/sales-people` API.
 
 ### Schema.namespace `postgres-only`
+
 Set namespace when using Postgres to set use [Postgres Schema](https://www.postgresql.org/docs/current/ddl-schemas.html) which are like a namespace for tables. The namespace must be written as Singular PascalCase as follows:
 
 ```
@@ -119,7 +119,7 @@ const AcmeCorp_SalesPerson = {
 **API Impliciations**
 
 - This will create an acme-corp/sales-persons API
-- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: GET /acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
+- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: GET /acme-corp/sales-persons?fields[]=name
 - Data will be returned like:
   ```
   {
@@ -135,7 +135,6 @@ const AcmeCorp_SalesPerson = {
 
 hatchifyKoa({AcmeCorp_SalesPerson}) returns models.AcmeCorp_SalesPerson
 
-
 ### Schema.attributes.ATTRIBUTE_NAME
 
 An attribute name should be `Singular camelCase`.
@@ -144,8 +143,8 @@ An attribute name should be `Singular camelCase`.
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING" //👀
-  }
+    firstName: "STRING", //👀
+  },
 }
 ```
 
@@ -156,7 +155,7 @@ const SalesPerson = {
 **API Implications**
 
 - `firstName` will be used in query parameters like
-  `GET /sales-persons?filter[firstName]=Mary&fields[SalePerson]=firstName`
+  `GET /sales-persons?filter[firstName]=Mary&fields[]=firstName`
 - `firstName` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -180,7 +179,7 @@ const Account = {
   attributes: {
     name: "STRING",
   },
-  belongsTo: [{ target: "SalesPerson"}], //👀
+  belongsTo: [{ target: "SalesPerson" }], //👀
 }
 ```
 
@@ -201,15 +200,14 @@ const Account = {
       attributes: { firstName: "Acme" },
       relationships: {
         salesPerson: {
-          data: [ 
-            { type: "SalesPerson", id: "322" } //👀 
+          data: [
+            { type: "SalesPerson", id: "322" } //👀
           ]
-        }          
+        }
       }
     }
   }
   ```
-
 
 ### relationships.belongsTo.as
 
@@ -242,10 +240,10 @@ const Account = {
       attributes: { firstName: "Acme" },
       relationships: {
         closerPerson: {
-          data: [ 
-            { type: "SalesPerson", id: "322" } //👀 
+          data: [
+            { type: "SalesPerson", id: "322" } //👀
           ]
-        }          
+        }
       }
     }
   }
@@ -255,8 +253,7 @@ const Account = {
 
 `foreignKey` sets the name of the relationship column. `foreignKey` should be _snake_case_.
 
-> NOTE: `foreignKey` could reference a _camelCase_ attribute in the source schema.  
-
+> NOTE: `foreignKey` could reference a _camelCase_ attribute in the source schema.
 
 ```js
 const Account = {
@@ -264,10 +261,12 @@ const Account = {
   attributes: {
     name: "STRING",
   },
-  belongsTo: [{
-    target: "SalesPerson",
-    options: { as: "closerPerson", foreignKey: "finisher_id" } //👀
-  }],
+  belongsTo: [
+    {
+      target: "SalesPerson",
+      options: { as: "closerPerson", foreignKey: "finisher_id" }, //👀
+    },
+  ],
 }
 ```
 
@@ -279,11 +278,9 @@ const Account = {
 
 There are no changes to the API.
 
-
 ### relationships.hasMany
 
 `target`is required. `target` must match a `Schema.name` and be _Singular PascalCase_.
-
 
 ```js
 const SalesPerson = {
@@ -292,7 +289,7 @@ const SalesPerson = {
     firstName: "STRING",
   },
   hasMany: [
-    { target: "Account" } //👀
+    { target: "Account" }, //👀
   ],
 }
 ```
@@ -325,8 +322,6 @@ const SalesPerson = {
 
 `as` should be _Plural camelCase_.
 
-
-
 ```js
 const SalesPerson = {
   name: "SalesPerson",
@@ -334,7 +329,7 @@ const SalesPerson = {
     firstName: "STRING",
   },
   hasMany: [
-    { target: "Account", options: { as: "managingAccounts" } } //👀
+    { target: "Account", options: { as: "managingAccounts" } }, //👀
   ],
 }
 ```
@@ -357,7 +352,7 @@ const SalesPerson = {
       relationships: {
         managingAccounts: {
           data: [{type: "Account", id: "456"}] //👀
-        } 
+        }
       }
     }
   }
@@ -368,7 +363,6 @@ const SalesPerson = {
 `foreignKey` specifies the column used in the target schema that references:
 
 - a _snake_case_ column name in the target table
-
 
 > A _camelCase_ attribute name in the target schema can also be specified.
 
@@ -381,9 +375,13 @@ const SalesPerson = {
     firstName: "STRING",
   },
   hasMany: [
-    { target: "Account",
+    {
+      target: "Account",
       options: {
-        as: "openedAccounts", foreignKey: "opening_sales_person_id" } } //👀
+        as: "openedAccounts",
+        foreignKey: "opening_sales_person_id",
+      },
+    }, //👀
   ],
 }
 ```
@@ -395,7 +393,6 @@ const SalesPerson = {
 **API Implications**
 
 This has no effect on the API.
-
 
 ### relationships.belongsToMany
 
@@ -413,14 +410,14 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account", //👀
-    }
+    },
   ],
 }
 ```
 
 **Database Implications**
 
-- Assumes a table `account_sales_person` exists with `sales_person_id` and `account_id` columns.  The table is `account_sales_person` because account is first alphabetically.
+- Assumes a table `account_sales_person` exists with `sales_person_id` and `account_id` columns. The table is `account_sales_person` because account is first alphabetically.
 
 **API Implications**
 
@@ -434,14 +431,13 @@ const SalesPerson = {
       id: "1",
       attributes: { firstName: "Mary" },
       relationships: {
-        accounts: { 
+        accounts: {
           data: [{type: "Account", id: "456"}] //👀
-        } 
+        }
       }
     }
   }
   ```
-
 
 ### relationships.belongsToMany.options.through
 
@@ -464,7 +460,7 @@ const SalesPerson = {
 
 **Database Implications**
 
-- Assumes a `sales_account` table exists with `sales_person_id` and `account_id` columns.  
+- Assumes a `sales_account` table exists with `sales_person_id` and `account_id` columns.
 
 **API Implications**
 
@@ -483,8 +479,8 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {as: "salesAccounts"}
-    }
+      options: { as: "salesAccounts" },
+    },
   ],
 }
 ```
@@ -507,7 +503,7 @@ This does not change the Database behavior.
       relationships: {
         salesAccounts: {
           data: [{type: "Account", id: "456"}] //👀
-        } 
+        }
       }
     }
   }
@@ -530,7 +526,7 @@ const SalesPerson = {
       target: "Account",
       options: {
         foreignKey: "seller_id",
-      }
+      },
     },
   ],
 }
@@ -538,7 +534,7 @@ const SalesPerson = {
 
 **Database Implications**
 
-- Assumes a table `account_sales_person` exists with `seller_id` and `account_id` columns.  
+- Assumes a table `account_sales_person` exists with `seller_id` and `account_id` columns.
 
 **API Implications**
 
@@ -557,20 +553,20 @@ const SalesPerson = {
   belongsToMany: [
     {
       target: "Account",
-      options: {otherKey: "sold_account_id"}
-    }
+      options: { otherKey: "sold_account_id" },
+    },
   ],
 }
 ```
 
 **Database Implications**
 
-- Assumes a table `account_sales_person` exists with `sales_person_id` and `sold_account_id` columns.  
+- Assumes a table `account_sales_person` exists with `sales_person_id` and `sold_account_id` columns.
 
 **API Implications**
 
 This does not change the API behavior.
 
-## To Be Defined 
+## To Be Defined
 
 - How to load through tables

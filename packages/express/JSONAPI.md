@@ -144,7 +144,7 @@ If a client requests a restricted set of fields for a given resource type, an en
 If a client does not specify the set of fields for a given resource type, the server MAY send all fields, a subset of fields, or no fields for that resource type.
 
 ```
-GET /articles?include=author&fields[articles]=title,body&fields[people]=name HTTP/1.1
+GET /articles?include=author&fields[]=title,body&fields[author]=name HTTP/1.1
 Accept: application/vnd.api+json
 ```
 
