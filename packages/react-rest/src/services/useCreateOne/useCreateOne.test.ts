@@ -52,8 +52,8 @@ describe("react-rest/services/useCreateOne", () => {
           status: "success",
           meta: undefined,
           error: undefined,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: false,
           isRevalidating: false,
           isStale: false,
@@ -64,7 +64,8 @@ describe("react-rest/services/useCreateOne", () => {
     })
 
     await result.current[0]({
-      attributes: { title: "baz", body: "baz-body" },
+      title: "baz",
+      body: "baz-body",
     })
 
     await waitFor(() =>
@@ -74,8 +75,8 @@ describe("react-rest/services/useCreateOne", () => {
           status: "success",
           meta: undefined,
           error: undefined,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: false,
           isRevalidating: false,
           isStale: false,
@@ -109,8 +110,8 @@ describe("react-rest/services/useCreateOne", () => {
           status: "success",
           meta: undefined,
           error: undefined,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: false,
           isRevalidating: false,
           isStale: false,
@@ -131,7 +132,7 @@ describe("react-rest/services/useCreateOne", () => {
 
     fakeDataSource.createOne = () => Promise.reject(errors)
 
-    await result.current[0]({ attributes: { title: "baz", body: "baz-body" } })
+    await result.current[0]({ title: "baz", body: "baz-body" })
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -140,8 +141,8 @@ describe("react-rest/services/useCreateOne", () => {
           status: "error",
           meta: undefined,
           error: errors,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: true,
           isRevalidating: false,
           isStale: false,
@@ -161,7 +162,7 @@ describe("react-rest/services/useCreateOne", () => {
         related: [],
       })
 
-    await result.current[0]({ attributes: { title: "baz", body: "baz-body" } })
+    await result.current[0]({ title: "baz", body: "baz-body" })
 
     await waitFor(() =>
       expect(result.current).toEqual([
@@ -170,8 +171,8 @@ describe("react-rest/services/useCreateOne", () => {
           status: "success",
           meta: undefined,
           error: undefined,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: false,
           isRevalidating: false,
           isStale: false,

@@ -19,7 +19,7 @@ const MuiPagination: React.FC<XCollectionProps> = ({ meta, page, setPage }) => {
 
   return (
     <Pagination
-      disabled={meta?.isLoading}
+      disabled={meta?.isPending}
       css={styles.pagination}
       count={count}
       page={page.number}

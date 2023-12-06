@@ -51,7 +51,7 @@ function Todos() {
     // console.log("todosState has changed", todosState)
   }, [todosState])
 
-  if (todosState.isLoading) return <div>fetching todos...</div>
+  if (todosState.isPending) return <div>fetching todos...</div>
   if (todosState.isRejected) return <div>failed to fetch todos</div>
 
   return (
@@ -63,7 +63,7 @@ function Todos() {
         onChange={(e) => setTodoName(e.target.value)}
       />
       <select
-        disabled={usersState.isLoading}
+        disabled={usersState.isPending}
         value={selectedUser}
         onChange={(e) => setSelectedUser(e.target.value)}
       >
@@ -75,7 +75,7 @@ function Todos() {
         ))}
       </select>
       <button
-        disabled={createState.isLoading}
+        disabled={createState.isPending}
         type="button"
         onClick={() => {
           createTodo({
@@ -90,7 +90,7 @@ function Todos() {
           setSelectedUser("")
         }}
       >
-        {createState.isLoading ? "creating..." : "create todo"}
+        {createState.isPending ? "creating..." : "create todo"}
       </button>
       <table>
         <thead>
@@ -107,7 +107,7 @@ function Todos() {
               <td>{todo.user?.name}</td>
               <td>
                 <button
-                  disabled={deleteState.isLoading}
+                  disabled={deleteState.isPending}
                   type="button"
                   onClick={() => deleteTodo(todo.id)}
                 >
@@ -132,7 +132,7 @@ function Users() {
   const [userName, setUserName] = useState("")
   const [userIdToEdit, setUserIdToEdit] = useState<string | null>(null)
 
-  if (usersState.isLoading) return <div>fetching users...</div>
+  if (usersState.isPending) return <div>fetching users...</div>
   if (usersState.isRejected) return <div>failed to fetch users</div>
 
   return (
@@ -144,7 +144,7 @@ function Users() {
         onChange={(e) => setUserName(e.target.value)}
       />
       <button
-        disabled={createState.isLoading}
+        disabled={createState.isPending}
         type="button"
         onClick={() => {
           createUser({ attributes: { name: userName } })
@@ -167,7 +167,7 @@ function Users() {
               <td>{user.name}</td>
               <td>
                 <button
-                  disabled={deleteState.isLoading}
+                  disabled={deleteState.isPending}
                   type="button"
                   onClick={() => deleteUser(user.id)}
                 >
@@ -176,7 +176,7 @@ function Users() {
               </td>
               <td>
                 <button
-                  disabled={deleteState.isLoading}
+                  disabled={deleteState.isPending}
                   type="button"
                   onClick={() => setUserIdToEdit(user.id)}
                 >
@@ -207,7 +207,7 @@ function EditUser({ id, setUserIdToEdit }: any) {
     }
   }, [user?.name])
 
-  if (userState.isLoading) return <div>fetching user...</div>
+  if (userState.isPending) return <div>fetching user...</div>
   if (!user || userState.isRejected) return <div>failed to fetch user</div>
 
   return (
@@ -218,7 +218,7 @@ function EditUser({ id, setUserIdToEdit }: any) {
         onChange={(e) => setName(e.target.value)}
       />
       <button
-        disabled={updateState.isLoading}
+        disabled={updateState.isPending}
         type="button"
         onClick={() => {
           updateUser({ id, attributes: { name } })

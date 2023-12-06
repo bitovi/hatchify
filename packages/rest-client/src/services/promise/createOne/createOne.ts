@@ -6,15 +6,16 @@ import type {
   CreateType,
   GetSchemaFromName,
   RecordType,
+  FlatCreateType,
 } from "../../types"
 import { notifySubscribers } from "../../store"
 import {
   SchemaNameNotStringError,
-  // flattenResourcesIntoRecords,
   schemaNameIsString,
   serializeClientPropertyValuesForRequest,
+  flattenResourcesIntoRecords,
+  unflattenData,
 } from "../../utils"
-import { flattenResourcesIntoRecords } from "../../utils/records"
 
 /**
  * Creates a new resource in the data source, notifies subscribers,
@@ -27,22 +28,32 @@ export const createOne = async <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  data: Omit<CreateType<GetSchemaFromName<TSchemas, TSchemaName>>, "__schema">,
+  data: Omit<
+    FlatCreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
+    "__schema"
+  >,
 ): Promise<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
   }
 
+  const { attributes, relationships } = unflattenData(
+    allSchemas,
+    schemaName,
+    data,
+  )
+
+  const serializedAttributes = serializeClientPropertyValuesForRequest(
+    allSchemas,
+    schemaName,
+    attributes,
+  ) as CreateType<GetSchemaFromName<TSchemas, TSchemaName>>["attributes"]
+
   // todo: HATCH-417; return from `findAll` needs to be a typed `Resource` using generics
   const resources = await dataSource.createOne(allSchemas, schemaName, {
     __schema: schemaName,
-    attributes: serializeClientPropertyValuesForRequest(
-      allSchemas,
-      schemaName,
-      data.attributes,
-    ) as CreateType<GetSchemaFromName<TSchemas, TSchemaName>>["attributes"],
-    // does not need to be serialized! only ids, does not contain attribute values
-    relationships: data.relationships,
+    attributes: serializedAttributes,
+    relationships: relationships, // does not need to be serialized! only ids, does not contain attribute values
   })
 
   notifySubscribers()

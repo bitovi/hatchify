@@ -52,8 +52,8 @@ describe("react-rest/services/useUpdateOne", () => {
           status: "success",
           meta: undefined,
           error: undefined,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: false,
           isRevalidating: false,
           isStale: false,
@@ -65,7 +65,8 @@ describe("react-rest/services/useUpdateOne", () => {
 
     await result.current[0]({
       id: "1",
-      attributes: { title: "updated-title", body: "baz-body" },
+      title: "updated-title",
+      body: "baz-body",
     })
 
     await waitFor(() =>
@@ -75,8 +76,8 @@ describe("react-rest/services/useUpdateOne", () => {
           status: "success",
           meta: undefined,
           error: undefined,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: false,
           isRevalidating: false,
           isStale: false,
@@ -110,8 +111,8 @@ describe("react-rest/services/useUpdateOne", () => {
           status: "success",
           meta: undefined,
           error: undefined,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: false,
           isRevalidating: false,
           isStale: false,
@@ -134,7 +135,8 @@ describe("react-rest/services/useUpdateOne", () => {
 
     await result.current[0]({
       id: "1",
-      attributes: { title: "updated-title", body: "baz-body" },
+      title: "updated-title",
+      body: "baz-body",
     })
 
     await waitFor(() =>
@@ -144,8 +146,8 @@ describe("react-rest/services/useUpdateOne", () => {
           status: "error",
           meta: undefined,
           error: errors,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: true,
           isRevalidating: false,
           isStale: false,
@@ -167,7 +169,8 @@ describe("react-rest/services/useUpdateOne", () => {
 
     await result.current[0]({
       id: "1",
-      attributes: { title: "updated-title", body: "baz-body" },
+      title: "updated-title",
+      body: "baz-body",
     })
 
     await waitFor(() =>
@@ -177,8 +180,8 @@ describe("react-rest/services/useUpdateOne", () => {
           status: "success",
           meta: undefined,
           error: undefined,
-          isDone: true,
-          isLoading: false,
+          isResolved: true,
+          isPending: false,
           isRejected: false,
           isRevalidating: false,
           isStale: false,

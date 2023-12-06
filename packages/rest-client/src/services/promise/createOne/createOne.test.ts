@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest"
 import { createStore } from "../../store"
 import { createOne } from "./createOne"
-import { flattenResourcesIntoRecords } from "../../utils/records"
+import { flattenResourcesIntoRecords } from "../../utils"
 import {
   fakeDataSource,
   testDataRecords,
@@ -10,7 +10,7 @@ import {
 import type { testPartialSchemas } from "../../mocks/testData"
 
 describe("rest-client/services/promise/createOne", () => {
-  const createData = { attributes: { title: "Code Review", important: true } }
+  const createData = { title: "Code Review", important: true }
 
   it("should return the new record", async () => {
     createStore(["Article"])

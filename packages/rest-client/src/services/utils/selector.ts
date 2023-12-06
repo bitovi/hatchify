@@ -1,5 +1,5 @@
 import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
-import type { Include, Fields, QueryList, QueryOne } from "../../types"
+import type { Include, Fields, QueryList, QueryOne } from "../types"
 
 /**
  * Get attributes from a schema or a relationship.

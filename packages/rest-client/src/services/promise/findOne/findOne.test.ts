@@ -1,7 +1,7 @@
 import { afterEach, describe, it, expect } from "vitest"
 import { createStore } from "../../store"
 import { findOne } from "./findOne"
-import { flattenResourcesIntoRecords } from "../../utils/records"
+import { flattenResourcesIntoRecords } from "../../utils"
 import {
   fakeDataSource,
   testDataRecords,

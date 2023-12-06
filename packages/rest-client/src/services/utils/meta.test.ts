@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import type { MetaError, MetaLoading, MetaSuccess } from "../../types"
+import type { MetaError, MetaLoading, MetaSuccess } from "../types"
 import { getMeta } from "./meta"
 
 describe("rest-client/services/utils/meta", () => {
@@ -8,8 +8,8 @@ describe("rest-client/services/utils/meta", () => {
       const expected: MetaLoading = {
         status: "loading",
         error: undefined,
-        isDone: false,
-        isLoading: true,
+        isResolved: false,
+        isPending: true,
         isRejected: false,
         isRevalidating: false,
         isStale: false,
@@ -22,8 +22,8 @@ describe("rest-client/services/utils/meta", () => {
       const expected: MetaSuccess = {
         status: "success",
         error: undefined,
-        isDone: true,
-        isLoading: false,
+        isResolved: true,
+        isPending: false,
         isRejected: false,
         isRevalidating: false,
         isStale: false,
@@ -37,8 +37,8 @@ describe("rest-client/services/utils/meta", () => {
       const expected = {
         status: "error",
         error,
-        isDone: true,
-        isLoading: false,
+        isResolved: true,
+        isPending: false,
         isRejected: true,
         isRevalidating: false,
         isStale: false,

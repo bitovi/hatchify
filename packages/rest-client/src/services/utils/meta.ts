@@ -1,4 +1,4 @@
-import type { Meta, MetaError } from "../../types"
+import type { Meta, MetaError } from "../types"
 
 export function getMeta(
   error: MetaError | undefined,
@@ -13,8 +13,8 @@ export function getMeta(
       status,
       meta,
       error: undefined,
-      isDone: true,
-      isLoading: false,
+      isResolved: true,
+      isPending: false,
       isRejected: false,
       isRevalidating: false,
       isStale: false,
@@ -25,8 +25,8 @@ export function getMeta(
       status,
       meta,
       error: undefined,
-      isDone: false,
-      isLoading: true,
+      isResolved: false,
+      isPending: true,
       isRejected: false,
       isRevalidating: isStale,
       isStale,
@@ -37,8 +37,8 @@ export function getMeta(
       status,
       meta,
       error,
-      isDone: true,
-      isLoading: false,
+      isResolved: true,
+      isPending: false,
       isRejected: true,
       isRevalidating: false,
       isStale,

@@ -68,10 +68,8 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     const hatchedReactRest = hatchifyReactRest(jsonApi)
 
     await hatchedReactRest.Article.createOne({
-      attributes: {
-        author: "John Doe",
-        tag: "Hatchify",
-      },
+      author: "John Doe",
+      tag: "Hatchify",
     })
 
     const [articles] = await hatchedReactRest.Article.findAll({})
@@ -89,10 +87,9 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     await hatchedReactRest.Article.updateOne({
       id,
-      attributes: {
-        author: "John Doe Updated",
-        tag: "Hatchify Updated",
-      },
+
+      author: "John Doe Updated",
+      tag: "Hatchify Updated",
     })
 
     const updatedArticleQuery = await hatchedReactRest.Article.findOne(id)
@@ -142,10 +139,8 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     const hatchedReactRest = hatchifyReactRest(jsonApi)
 
     await hatchedReactRest.Feature_Article.createOne({
-      attributes: {
-        author: "John Doe",
-        tag: "Hatchify",
-      },
+      author: "John Doe",
+      tag: "Hatchify",
     })
 
     const [featureArticles] = await hatchedReactRest.Feature_Article.findAll({})
@@ -162,10 +157,8 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     })
     await hatchedReactRest.Feature_Article.updateOne({
       id,
-      attributes: {
-        author: "John Doe Updated",
-        tag: "Hatchify Updated",
-      },
+      author: "John Doe Updated",
+      tag: "Hatchify Updated",
     })
     const updatedFeatureArticleQuery =
       await hatchedReactRest.Feature_Article.findOne(id)
@@ -218,16 +211,12 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
     const hatchedReactRest = hatchifyReactRest(jsonApi)
 
     await hatchedReactRest.Admin_User.createOne({
-      attributes: {
-        name: "Juno",
-      },
+      name: "Juno",
     })
 
     await hatchedReactRest.Feature_Article.createOne({
-      attributes: {
-        author: "John Doe",
-        tag: "Hatchify",
-      },
+      author: "John Doe",
+      tag: "Hatchify",
     })
 
     const [adminUsers] = await hatchedReactRest.Admin_User.findAll({})
@@ -257,16 +246,8 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     await hatchedReactRest.Admin_User.updateOne({
       id: userId,
-      attributes: {
-        name: "Juno Updated",
-      },
-      relationships: {
-        articles: [
-          {
-            id: articleId,
-          },
-        ],
-      },
+      name: "Juno Updated",
+      articles: [{ id: articleId }],
     })
     const updatedAdminUserQuery = await hatchedReactRest.Admin_User.findOne({
       id: userId,
@@ -292,14 +273,10 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
 
     await hatchedReactRest.Feature_Article.updateOne({
       id: articleId,
-      attributes: {
-        author: "John Doe Updated",
-        tag: "Hatchify Updated",
-      },
-      relationships: {
-        admin_user: {
-          id: userId,
-        },
+      author: "John Doe Updated",
+      tag: "Hatchify Updated",
+      admin_user: {
+        id: userId,
       },
     })
 
