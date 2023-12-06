@@ -15,7 +15,7 @@ const hatchedExpress = hatchifyExpress(Schemas, {
 })
 
 ;(async () => {
-  await hatchedExpress.createDatabase()
+  await hatchedExpress.modelSync()
 
   const vite = await createViteServer({
     root: `${__dirname}/../`,

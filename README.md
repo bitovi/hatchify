@@ -27,6 +27,7 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Rendering a List](#rendering-a-list)
 - [Next Steps](#next-steps)
   - [Schema, database, and service API naming](./doc/naming.md)
+  - [Model Sync](./doc/next-steps/model-sync.md)
   - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
   - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
@@ -342,8 +343,8 @@ curl 'http://localhost:3000/api/users' \
 
 # Frontend with React and MUI
 
-Now that our server is up and running we can review the contents of 
-`frontend/App.tsx` to see how the schemas that we defined earlier convientenly 
+Now that our server is up and running we can review the contents of
+`frontend/App.tsx` to see how the schemas that we defined earlier convientenly
 "hatch" our frontend.
 
 The first thing we do is import `hatchifyReact`, `HatchifyProvider`, and
@@ -362,7 +363,7 @@ overview of what each of these does:
   This returned object represents our entire frontend HatchifyJS app.
 
 With that HatchifyJS app created, we can pull the `Everything` "splash screen"
-from the returned components and render it. 
+from the returned components and render it.
 
 ## Rendering an index of schemas & data
 

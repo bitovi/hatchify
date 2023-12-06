@@ -1,4 +1,4 @@
-import { integer } from "@hatchifyjs/core"
+import { assembler, integer } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import JSONAPISerializer from "json-api-serializer"
 
@@ -17,11 +17,14 @@ describe("convertHatchifyModels", () => {
   }
 
   it("works", () => {
-    const models = convertHatchifyModels(sequelize, serializer, { User })
+    const models = convertHatchifyModels(
+      sequelize,
+      serializer,
+      assembler({ User }),
+    )
 
     expect(models).toEqual({
       associationsLookup: { User: {} },
-      finalSchemas: expect.any(Object),
       models: {
         User: expect.any(Function),
       },

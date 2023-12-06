@@ -11,7 +11,7 @@ const hatchedKoa = hatchifyKoa({ Todo, User }, { prefix: "/api" })
 app.use(cors())
 app.use(hatchedKoa.middleware.allModels.all)
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
     console.log("Started on port 3000")

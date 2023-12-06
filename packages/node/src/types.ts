@@ -13,7 +13,7 @@ import type {
   Sequelize,
 } from "sequelize"
 
-import type { Hatchify } from "../node"
+import type { Hatchify } from "./node"
 
 export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"
@@ -65,13 +65,12 @@ export type SequelizeModelInstance = ModelStatic<any> & {
   [HatchifySymbolModel]: FinalSchema
 }
 
-export type SequelizeModelsCollection = {
-  [key: string]: SequelizeModelInstance
-}
+export type SequelizeModelsCollection = Record<string, SequelizeModelInstance>
+
+export type SyncOptions = { alter: true } | { force: true }
 
 export interface ICreateHatchifyModel {
   associationsLookup: Record<string, Record<string, IAssociation> | undefined>
-  finalSchemas: Record<string, FinalSchema>
   models: SequelizeModelsCollection
 }
 
