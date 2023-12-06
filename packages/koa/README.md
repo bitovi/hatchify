@@ -404,7 +404,7 @@ const hatchedKoa = hatchifyKoa({ Player, Team, User }, { prefix: "/api" })
 router.get("/generate-report", async (ctx) => {
   const requestedStartDate = ctx.params.startDate
 
-  const users = await hatchedKoa.models.Player.findAndCountAll({
+  const users = await hatchedKoa.model.Player.findAndCountAll({
     where: {
       startDate: {
         [Op.gt]: requestedStartDate,
@@ -412,7 +412,7 @@ router.get("/generate-report", async (ctx) => {
     },
   })
 
-  const teams = await hatchedKoa.models.Team.findAndCountAll()
+  const teams = await hatchedKoa.model.Team.findAndCountAll()
 
   const usersResult = await hatchedKoa.serialize.User.findAndCountAll(users, ["lastName"])
   const teamsResult = await hatchedKoa.serialize.Team.findAndCountAll(teams, ["name"])
@@ -541,14 +541,14 @@ router.post("/Assignment", async (ctx, next) => {
   // Get a transaction
   const check_overlap = await hatchedKoa.orm.transaction()
 
-  let assignmentsForEmployee = await hatchedKoa.models.Assignment.findAll({
+  let assignmentsForEmployee = await hatchedKoa.model.Assignment.findAll({
     where: {
       employee_id: employee_id,
     },
     transaction: check_overlap,
   })
 
-  assignmentsForEmployee = await hatchedKoa.models.Assignment.findAll({
+  assignmentsForEmployee = await hatchedKoa.model.Assignment.findAll({
     where: {
       employee_id: employee_id,
       [Op.and]: {
@@ -568,7 +568,7 @@ router.post("/Assignment", async (ctx, next) => {
     ctx.throw(409, "EMPLOYEE_ALREADY_ASSIGNED")
   }
 
-  const assignment = await hatchedKoa.models.Assignment.create(createOptions.body, { ...createOptions.ops, transaction: check_overlap })
+  const assignment = await hatchedKoa.model.Assignment.create(createOptions.body, { ...createOptions.ops, transaction: check_overlap })
   const result = await hatchedKoa.serialize.Assignment.create(assignment)
   await check_overlap.commit()
 
