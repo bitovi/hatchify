@@ -47,7 +47,7 @@ app.use(async (ctx) => {
   ctx.body = "Hello From Koa"
 })
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
     console.log("Started on port 3000")
@@ -125,7 +125,7 @@ app.use(async (ctx) => {
   ctx.body = "Hello From Koa"
 })
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
     console.log("Started on port 3000")
@@ -193,7 +193,7 @@ app.use(async (ctx) => {
   ctx.body = "Hello From Koa"
 })
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
     console.log("Started on port 3000")
@@ -309,7 +309,7 @@ app.use(async (ctx) => {
   ctx.body = "Hello From Koa"
 })
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
     console.log("Started on port 3000")
@@ -424,7 +424,7 @@ app.use(router.routes())
 app.use(router.allowedMethods())
 app.use(hatchedKoa.middleware.allModels.all)
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
     console.log("Started on port 3000")
@@ -465,7 +465,7 @@ app.use(router.routes())
 app.use(router.allowedMethods())
 app.use(hatchedKoa.middleware.allModels.all)
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
     console.log("Started on port 3000")
@@ -580,7 +580,7 @@ app.use(router.routes())
 app.use(router.allowedMethods())
 app.use(hatchedKoa.middleware.allModels.all)
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
     console.log("Started on port 3000")

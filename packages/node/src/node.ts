@@ -1,8 +1,13 @@
-import { getEndpoint, pascalCaseToKebabCase, pluralize } from "@hatchifyjs/core"
+import {
+  assembler,
+  getEndpoint,
+  pascalCaseToKebabCase,
+  pluralize,
+} from "@hatchifyjs/core"
 import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import JSONAPISerializer from "json-api-serializer"
-import { snakeCase } from "lodash"
+import { noCase } from "no-case"
 import { match } from "path-to-regexp"
 import type { MatchFunction } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
@@ -15,11 +20,7 @@ import { buildEverythingForModel } from "./everything"
 import { buildParserForModel } from "./parse"
 import type { ParseFunctions } from "./parse"
 import { buildSchemaForModel } from "./schema"
-import {
-  buildHatchifyModelObject,
-  convertHatchifyModels,
-  createSequelizeInstance,
-} from "./sequelize"
+import { convertHatchifyModels, createSequelizeInstance } from "./sequelize"
 import { buildSerializerForModel } from "./serialize"
 import type { SerializeFunctions } from "./serialize"
 import type {
@@ -28,6 +29,7 @@ import type {
   ModelFunctionsCollection,
   SequelizeModelsCollection,
   SequelizeWithHatchify,
+  SyncOptions,
   Virtuals,
 } from "./types"
 
@@ -59,13 +61,13 @@ export class Hatchify {
   /**
    * Creates a new Hatchify instance
    *
-   * @param {Record<string, PartialSchema>} schemas A record of Hatchify schemas
+   * @param {Record<string, PartialSchema>} partialSchemas A record of Hatchify schemas
    * @param {HatchifyOptions} options Configuration options for Hatchify
    *
    * @return {Hatchify}
    */
   constructor(
-    schemas: Record<string, PartialSchema>,
+    partialSchemas: Record<string, PartialSchema>,
     options: HatchifyOptions = {},
   ) {
     this._prefix = options.prefix
@@ -88,10 +90,12 @@ export class Hatchify {
     }
     this._serializer = new JSONAPISerializer()
 
-    const { associationsLookup, finalSchemas, models } = convertHatchifyModels(
+    const finalSchemas = assembler(partialSchemas)
+
+    const { associationsLookup, models } = convertHatchifyModels(
       this._sequelize,
       this._serializer,
-      schemas,
+      finalSchemas,
     )
 
     this.associationsLookup = associationsLookup
@@ -161,7 +165,7 @@ export class Hatchify {
    * @hidden
    */
   get models(): SequelizeModelsCollection {
-    return buildHatchifyModelObject(this._sequelizeModels)
+    return this._sequelizeModels
   }
 
   /**
@@ -312,7 +316,7 @@ export class Hatchify {
   /**
    * Note: This function should primarily be used for test cases.
    *
-   * The `createDatabase` function is a destructive operation that will
+   * The `modelSync` function is a destructive operation that will
    * sync your defined models to the configured database.
    *
    * This means that your database will be dropped and its schema
@@ -321,29 +325,44 @@ export class Hatchify {
    * @returns {Promise<Sequelize>} Sequelize Instance
    * @category Testing Use
    */
-  async createDatabase(): Promise<Sequelize> {
-    if (this._sequelize.getDialect() === "postgres") {
-      const existingNamespaces = (await this._sequelize.showAllSchemas(
-        {},
-      )) as unknown as string[]
+  async modelSync(options?: SyncOptions): Promise<Sequelize> {
+    const force = options && "force" in options && options.force
+    const alter = options && "alter" in options && options.alter
 
-      const uniqueNamespaces = Object.values(this.schema).reduce(
-        (acc, model) =>
-          model?.namespace && !existingNamespaces.includes(model.namespace)
-            ? acc.add(model.namespace)
-            : acc,
+    if (this._sequelize.getDialect() === "postgres") {
+      let existingPostgresSchemas: string[] = []
+
+      if (force) {
+        await this._sequelize.dropAllSchemas({})
+        existingPostgresSchemas = []
+      } else if (alter) {
+        existingPostgresSchemas = (await this._sequelize.showAllSchemas(
+          {},
+        )) as unknown as string[]
+      }
+
+      const missingPostgresSchemas = Object.values(this.schema).reduce(
+        (acc, model) => {
+          const schemaName =
+            model?.namespace && noCase(model.namespace, { delimiter: "_" })
+          return schemaName &&
+            !existingPostgresSchemas.includes(schemaName) &&
+            (alter || force)
+            ? acc.add(schemaName)
+            : acc
+        },
         new Set<string>(),
       )
 
       await Promise.all(
-        [...uniqueNamespaces].map((namespace) =>
-          this._sequelize.createSchema(snakeCase(namespace), {}),
+        [...missingPostgresSchemas].map((postgresSchema) =>
+          this._sequelize.createSchema(postgresSchema, {}),
         ),
       )
     }
 
     try {
-      return await this._sequelize.sync({ alter: true })
+      return await this._sequelize.sync(options)
     } catch (ex) {
       console.error("Sync Failed:", ex)
       throw ex

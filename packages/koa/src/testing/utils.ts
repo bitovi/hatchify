@@ -42,7 +42,7 @@ export async function startServerWith(
   app.use(hatchify.middleware.allModels.all)
 
   const server = http.createServer(app.callback())
-  await hatchify.createDatabase()
+  await hatchify.modelSync({ alter: true })
 
   async function fetch(
     path: string,

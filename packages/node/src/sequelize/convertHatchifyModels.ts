@@ -1,11 +1,10 @@
 import {
-  assembler,
   getSchemaKey,
   pascalCaseToCamelCase,
   pluralize,
   singularize,
 } from "@hatchifyjs/core"
-import type { PartialSchema } from "@hatchifyjs/core"
+import type { FinalSchema } from "@hatchifyjs/core"
 import type JSONAPISerializer from "json-api-serializer"
 
 import { toSequelize } from "./toSequelize"
@@ -20,13 +19,11 @@ import type {
 export function convertHatchifyModels(
   sequelize: SequelizeWithHatchify,
   serializer: JSONAPISerializer,
-  partialSchemas: { [schemaName: string]: PartialSchema },
+  schemas: { [schemaName: string]: FinalSchema },
 ): ICreateHatchifyModel {
-  const finalSchemas = assembler(partialSchemas)
+  toSequelize(schemas, sequelize)
 
-  toSequelize(finalSchemas, sequelize)
-
-  const hatchifyModels = Object.values(finalSchemas)
+  const hatchifyModels = Object.values(schemas)
   hatchifyModels.forEach((schema) => {
     sequelize.models[getSchemaKey(schema)][HatchifySymbolModel] = schema
   })
@@ -36,7 +33,7 @@ export function convertHatchifyModels(
     const fullModelName = getSchemaKey(model)
 
     const associations = Object.entries(
-      finalSchemas[fullModelName].relationships ?? {},
+      schemas[fullModelName].relationships ?? {},
     ).reduce((relationshipAcc, [relationshipName, relationship]) => {
       const { type, targetSchema } = relationship
 
@@ -117,7 +114,6 @@ export function convertHatchifyModels(
 
   return {
     associationsLookup,
-    finalSchemas,
     models: sequelize.models as SequelizeModelsCollection,
   }
 }

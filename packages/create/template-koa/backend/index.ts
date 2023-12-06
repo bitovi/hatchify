@@ -16,7 +16,7 @@ const hatchedKoa = hatchifyKoa(Schemas, {
 })
 
 ;(async () => {
-  await hatchedKoa.createDatabase()
+  await hatchedKoa.modelSync({ alter: true })
 
   const vite = await createViteServer({
     root: `${__dirname}/../`,

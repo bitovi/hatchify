@@ -5,7 +5,7 @@ import type JSONAPISerializer from "json-api-serializer"
 import type { JSONAPIDocument } from "json-api-serializer"
 import type { Model } from "sequelize"
 
-import type { Hatchify } from "../node"
+import type { Hatchify } from "./node"
 
 /**
  * Provides a set of exported functions, per Model, that
