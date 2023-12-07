@@ -42,7 +42,7 @@ export function MuiEverything<
         </Grid>
       )}
       <Grid item xs={partialSchemas ? 9 : 12}>
-        {!partialSchemas ? (
+        {!finalSchemas ? (
           <Grid container rowSpacing={4}>
             <Grid item xs={12}>
               <Typography
