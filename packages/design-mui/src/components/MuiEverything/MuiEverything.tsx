@@ -15,16 +15,17 @@ export function MuiEverything<
 >({
   children,
   finalSchemas,
+  partialSchemas,
   schemaName,
   setSelectedSchema,
   ...props
 }: XEverythingProps<TSchemas, TSchemaName>): JSX.Element {
   return (
     <Grid container>
-      {finalSchemas && (
+      {partialSchemas && (
         <Grid item xs={3} sx={{ backgroundColor: "white" }} height="auto">
           <Tabs orientation="vertical" value={schemaName}>
-            {Object.keys(finalSchemas).map((schemaName) => {
+            {Object.keys(partialSchemas).map((schemaName) => {
               return (
                 <Tab
                   value={schemaName}
@@ -34,13 +35,14 @@ export function MuiEverything<
                     setSelectedSchema &&
                     setSelectedSchema(schemaName as TSchemaName)
                   }
+                  style={{ textTransform: "none" }}
                 />
               )
             })}
           </Tabs>
         </Grid>
       )}
-      <Grid item xs={finalSchemas ? 9 : 12}>
+      <Grid item xs={partialSchemas ? 9 : 12}>
         {!finalSchemas ? (
           <Grid container rowSpacing={4}>
             <Grid item xs={12}>
