@@ -1,6 +1,14 @@
 export type { PartialSchema } from "@hatchifyjs/core"
 export { default as hatchifyReact } from "@hatchifyjs/react-ui"
-export type { HatchifyApp, CollectionState } from "@hatchifyjs/react-ui"
+export type {
+  CreateType,
+  CollectionState,
+  FlatCreateType,
+  FlatUpdateType,
+  HatchifyApp,
+  UpdateType,
+  RecordType,
+} from "@hatchifyjs/react-ui"
 export {
   default as HatchifyProvider,
   List,
