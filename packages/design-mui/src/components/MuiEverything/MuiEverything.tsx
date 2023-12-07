@@ -35,6 +35,7 @@ export function MuiEverything<
                     setSelectedSchema &&
                     setSelectedSchema(schemaName as TSchemaName)
                   }
+                  style={{ textTransform: "none" }}
                 />
               )
             })}
