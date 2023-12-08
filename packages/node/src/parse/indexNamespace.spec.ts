@@ -69,7 +69,7 @@ describe("indexNamespace", () => {
     describe("findAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAll(
-          "include=lipitorUser&filter[name]=laundry&fields[]=id,name,dueDate&fields[lipitorUser]=name&page[number]=3&page[size]=5",
+          "include=lipitorUser&filter[name]=laundry&fields[Pfizer_Todo]=id,name,dueDate&fields[Lipitor_User]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
@@ -85,7 +85,7 @@ describe("indexNamespace", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findAll("fields[]=name,dueDate")
+        const results = await findAll("fields[Pfizer_Todo]=name,dueDate")
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
@@ -123,7 +123,7 @@ describe("indexNamespace", () => {
     describe("findAndCountAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAndCountAll(
-          "include=xanaxUser&filter[name]=laundry&fields[]=id,name,dueDate&fields[xanaxUser]=name&page[number]=3&page[size]=5",
+          "include=xanaxUser&filter[name]=laundry&fields[Pfizer_Todo]=id,name,dueDate&fields[Xanax_User]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
@@ -139,7 +139,9 @@ describe("indexNamespace", () => {
       })
 
       it("adds attribute if not specified", async () => {
-        const results = await findAndCountAll("fields[]=name,dueDate")
+        const results = await findAndCountAll(
+          "fields[Pfizer_Todo]=name,dueDate",
+        )
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
@@ -181,7 +183,7 @@ describe("indexNamespace", () => {
     describe("findOne", () => {
       it("works with ID attribute provided", async () => {
         const results = await findOne(
-          "include=xanaxUser&filter[name]=laundry&fields[]=id,name,dueDate&fields[xanaxUser]=name&page[number]=3&page[size]=5",
+          "include=xanaxUser&filter[name]=laundry&fields[Pfizer_Todo]=id,name,dueDate&fields[Xanax_User]=name&page[number]=3&page[size]=5",
           1,
         )
 
@@ -198,7 +200,7 @@ describe("indexNamespace", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findOne("fields[]=name,dueDate", 1)
+        const results = await findOne("fields[Pfizer_Todo]=name,dueDate", 1)
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
@@ -297,12 +299,14 @@ describe("indexNamespace", () => {
     describe("destroy", () => {
       it("works with ID attribute provided", async () => {
         const results = await destroy(
-          "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+          "include=xanaxUser&filter[name]=laundry&fields[Pfizer_Todo]=id,name,dueDate&fields[Xanax_User]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [], attributes: ["name"] }],
+          include: [
+            { association: "xanaxUser", include: [], attributes: ["name"] },
+          ],
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -311,7 +315,7 @@ describe("indexNamespace", () => {
       })
 
       it("does not add ID attribute if not specified", async () => {
-        const results = await destroy("fields[]=name,dueDate")
+        const results = await destroy("fields[Pfizer_Todo]=name,dueDate")
 
         expect(results).toEqual({
           attributes: ["name", "dueDate"],
@@ -339,7 +343,7 @@ describe("indexNamespace", () => {
       })
 
       it("does not error on unknown attributes", async () => {
-        const results = await destroy("fields[]=invalid")
+        const results = await destroy("fields[Pfizer_Todo]=invalid")
 
         expect(results).toEqual({
           attributes: ["invalid"],
@@ -397,7 +401,7 @@ describe("indexNamespace", () => {
       expect(parser.destroy).toEqual(expect.any(Function))
 
       const results = await parser.findAll(
-        "include=xanaxUser&filter[name]=laundry&fields[]=id,name,dueDate&fields[xanaxUser]=name&page[number]=3&page[size]=5",
+        "include=xanaxUser&filter[name]=laundry&fields[Pfizer_Todo]=id,name,dueDate&fields[Xanax_User]=name&page[number]=3&page[size]=5",
       )
 
       expect(results).toEqual({

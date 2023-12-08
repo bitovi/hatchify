@@ -91,12 +91,12 @@ describe("JSON:API Tests", () => {
     expect(r1.status).toBe(200)
 
     const namespaceless = await fetch(
-      "/api/test-schema/models?fields[]=firstName",
+      "/api/test-schema/models?fields[Model]=firstName",
     )
     expect(namespaceless).toBeTruthy()
     expect(namespaceless.status).toBe(200)
     const hasNamespace = await fetch(
-      "/api/test-schema/models?fields[]=firstName",
+      "/api/test-schema/models?fields[TestSchema_Model]=firstName",
     )
     expect(hasNamespace).toBeTruthy()
     expect(hasNamespace.status).toBe(200)
