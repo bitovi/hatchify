@@ -613,6 +613,10 @@ npm publish
 
    1. For each dependent package, update the version of the dependency in the `package.json` file before running the publish command.
 
+#### Dependent Releases of peer dependencies
+
+Peer dependencies like `@hatchifyjs/core` are pinned to the latest minor version. When publishing a new minor version of `@hatchifyjs/core`, pay attention to increment the version under the `peerDependencies` section in _all_ other `package.json` files.
+
 ### Updating the Grid Demo
 
 The grid demo is in a separate [repository](https://github.com/bitovi/hatchify-grid-demo) from Hatchify.
