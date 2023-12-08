@@ -50,7 +50,7 @@ app.use(async (ctx) => {
   await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
-    console.log("Started on port 3000")
+    console.log("Started on http://localhost:3000")
   })
 })()
 ```
@@ -128,7 +128,7 @@ app.use(async (ctx) => {
   await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
-    console.log("Started on port 3000")
+    console.log("Started on http://localhost:3000")
   })
 })()
 ```
@@ -196,7 +196,7 @@ app.use(async (ctx) => {
   await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
-    console.log("Started on port 3000")
+    console.log("Started on http://localhost:3000")
   })
 })()
 ```
@@ -312,7 +312,7 @@ app.use(async (ctx) => {
   await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
-    console.log("Started on port 3000")
+    console.log("Started on http://localhost:3000")
   })
 })()
 ```
@@ -427,7 +427,7 @@ app.use(hatchedKoa.middleware.allModels.all)
   await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
-    console.log("Started on port 3000")
+    console.log("Started on http://localhost:3000")
   })
 })()
 ```
@@ -468,7 +468,7 @@ app.use(hatchedKoa.middleware.allModels.all)
   await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
-    console.log("Started on port 3000")
+    console.log("Started on http://localhost:3000")
   })
 })()
 ```
@@ -583,7 +583,7 @@ app.use(hatchedKoa.middleware.allModels.all)
   await hatchedKoa.modelSync({ alter: true })
 
   app.listen(3000, () => {
-    console.log("Started on port 3000")
+    console.log("Started on http://localhost:3000")
   })
 })()
 ```
