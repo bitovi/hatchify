@@ -2,7 +2,7 @@
 import Koa from "koa"
 import c2k from "koa-connect"
 // @ts-expect-error @todo make TS happy here
-import { createServer as createViteServer } from "vite.mts"
+import { createServer as createViteServer } from "vite"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import * as schemas from "../schemas"
 
