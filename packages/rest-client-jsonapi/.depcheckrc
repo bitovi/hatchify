@@ -1,1 +1,1 @@
-ignores: ["@vitest/coverage-c8","@hatchifyjs/koa","@hatchifyjs/react-rest","@koa/cors","@types/koa__cors","koa"]
+ignores: ["@vitest/coverage-c8","@hatchifyjs/koa","@hatchifyjs/react-rest","koa"]

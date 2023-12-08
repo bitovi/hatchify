@@ -27,6 +27,6 @@ const hatchedKoa = hatchifyKoa(Schemas, {
   app.use(c2k(vite.middlewares))
 
   app.listen(3000, () => {
-    console.log("Started on port 3000")
+    console.log("Started on http://localhost:3000")
   })
 })()

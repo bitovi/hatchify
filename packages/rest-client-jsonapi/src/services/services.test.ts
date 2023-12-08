@@ -1,4 +1,3 @@
-import cors from "@koa/cors"
 import Koa from "koa"
 import { describe, expect, it } from "vitest"
 import type { PartialSchema } from "@hatchifyjs/core"
@@ -50,7 +49,6 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
       { Article },
       { prefix: `/${testBackendEndpointConfig.api}` },
     )
-    app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.modelSync({ alter: true })
     const server = app.listen(3010) // TODO determine why unique port numbers are needed across tests in this file (otherwise, tests are liable to fail): https://bitovi.atlassian.net/browse/HATCH-415
@@ -119,7 +117,6 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         },
       },
     )
-    app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.modelSync({ alter: true })
     const server = app.listen(3011) // TODO determine why unique port numbers are needed across tests in this file (otherwise, tests are liable to fail): https://bitovi.atlassian.net/browse/HATCH-415
@@ -191,7 +188,6 @@ describe("Testing CRUD operations against Hatchify backend", async () => {
         },
       },
     )
-    app.use(cors())
     app.use(hatchedKoa.middleware.allModels.all)
     await hatchedKoa.modelSync({ alter: true })
     const server = app.listen(3012) // TODO determine why unique port numbers are needed across tests in this file (otherwise, tests are liable to fail): https://bitovi.atlassian.net/browse/HATCH-415

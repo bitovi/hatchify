@@ -33,6 +33,6 @@ const hatchedExpress = hatchifyExpress(Schemas, {
   app.use(hatchedExpress.middleware.allModels.all)
 
   app.listen(3000, () => {
-    console.log("Started on port 3000")
+    console.log("Started on http://localhost:3000")
   })
 })()
