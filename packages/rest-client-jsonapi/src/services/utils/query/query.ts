@@ -69,7 +69,7 @@ export function encodeValue(
   value: string | string[] | number | number[] | boolean | boolean[],
 ): string | null {
   if (operator === "empty" || operator === "nempty") {
-    return null
+    return "%00"
   }
 
   if (["istarts", "iends", "icontains"].includes(operator)) {
