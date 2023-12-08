@@ -9,7 +9,7 @@ import { testBackendEndpointConfig } from "../setupTests"
 
 const Article = {
   name: "Article",
-  displayAttribute: "name",
+  displayAttribute: "author",
   attributes: {
     author: string({ required: true }),
     tag: string({ required: true }),
@@ -20,7 +20,7 @@ const Feature_Article = {
   name: "Article",
   type: "Feature_Article",
   namespace: "Feature",
-  displayAttribute: "name",
+  displayAttribute: "author",
   attributes: {
     author: string({ required: true }),
     tag: string({ required: true }),

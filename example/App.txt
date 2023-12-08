@@ -45,7 +45,7 @@ const App: React.FC = () => {
           <TodoColumn
             type="append"
             label="Action"
-            renderValue={({ record }) => {
+            renderDataValue={({ record }) => {
               return (
                 <>
                   <button onClick={() => console.log(record)}>Download</button>

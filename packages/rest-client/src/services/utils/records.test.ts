@@ -3,6 +3,7 @@ import {
   assembler,
   belongsTo,
   boolean,
+  dateonly,
   hasMany,
   string,
 } from "@hatchifyjs/core"
@@ -17,7 +18,8 @@ import {
 const partialSchemas = {
   Todo: {
     name: "Todo",
-    attributes: { title: string(), important: boolean() },
+    displayAttribute: "title",
+    attributes: { created: dateonly(), title: string(), important: boolean() },
     relationships: { user: belongsTo("Person") },
   },
   Person: {
