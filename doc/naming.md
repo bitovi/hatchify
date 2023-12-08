@@ -77,7 +77,7 @@ const SalesPerson = {
 **API Implications:**
 
 - This will create a `/sales-persons` API.
-- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /sales-persons?fields[]=name`
+- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /sales-persons?fields[SalesPerson]=name`
 - `SalesPerson` will be used as the response `type`: `{data: {type: "SalesPerson"}}`
 
 ### Schema.pluralName
@@ -117,7 +117,7 @@ const AcmeCorp_SalesPerson = {
 **API Impliciations**
 
 - This will create an acme-corp/sales-persons API
-- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: GET /acme-corp/sales-persons?fields[]=name
+- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: GET /acme-corp/sales-persons?fields[SalesPerson]=name
 - Data will be returned like:
   ```
   {
@@ -153,7 +153,7 @@ const SalesPerson = {
 **API Implications**
 
 - `firstName` will be used in query parameters like
-  `GET /sales-persons?filter[firstName]=Mary&fields[]=firstName`
+  `GET /sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName`
 - `firstName` will be used in mutation payloads and response payloads like:
   ```js
   {

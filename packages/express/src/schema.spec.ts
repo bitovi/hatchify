@@ -1100,7 +1100,7 @@ describe.each(dbDialects)("schema", (dialect) => {
         describe("supports fields", () => {
           it("integer", async () => {
             const { status: getStatus, body: getUsers } = await fetch(
-              "/api/users?fields[]=age",
+              "/api/users?fields[User]=age",
             )
 
             expect(getStatus).toBe(200)
@@ -1132,7 +1132,7 @@ describe.each(dbDialects)("schema", (dialect) => {
 
           it("text", async () => {
             const { status: getStatus, body: getUsers } = await fetch(
-              "/api/users?fields[]=bio",
+              "/api/users?fields[User]=bio",
             )
 
             expect(getStatus).toBe(200)
@@ -1164,7 +1164,7 @@ describe.each(dbDialects)("schema", (dialect) => {
 
           it("boolean", async () => {
             const { status: getStatus, body: getUsers } = await fetch(
-              "/api/users?fields[]=isDeleted",
+              "/api/users?fields[User]=isDeleted",
             )
 
             expect(getStatus).toBe(200)
@@ -1196,7 +1196,7 @@ describe.each(dbDialects)("schema", (dialect) => {
 
           it("dateonly", async () => {
             const { status: getStatus, body: getUsers } = await fetch(
-              "/api/users?fields[]=birthday",
+              "/api/users?fields[User]=birthday",
             )
 
             expect(getStatus).toBe(200)
@@ -1228,7 +1228,7 @@ describe.each(dbDialects)("schema", (dialect) => {
 
           it("uuid", async () => {
             const { status: getStatus, body: getUsers } = await fetch(
-              "/api/users?fields[]=uuid",
+              "/api/users?fields[User]=uuid",
             )
 
             expect(getStatus).toBe(200)

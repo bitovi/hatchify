@@ -55,7 +55,7 @@ describe("index", () => {
     describe("findAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAll(
-          "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
@@ -69,7 +69,7 @@ describe("index", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findAll("fields[]=name,dueDate")
+        const results = await findAll("fields[Todo]=name,dueDate")
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
@@ -86,11 +86,11 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findAll("fields[]=invalid")).rejects.toEqualErrors([
+        await expect(findAll("fields[Todo]=invalid")).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
-            parameter: "fields[]",
+              "URL must have 'fields[Todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
+            parameter: "fields[Todo]",
           }),
         ])
       })
@@ -117,7 +117,7 @@ describe("index", () => {
     describe("findAndCountAll", () => {
       it("works with ID attribute provided", async () => {
         const results = await findAndCountAll(
-          "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
@@ -131,7 +131,7 @@ describe("index", () => {
       })
 
       it("adds attribute if not specified", async () => {
-        const results = await findAndCountAll("fields[]=name,dueDate")
+        const results = await findAndCountAll("fields[Todo]=name,dueDate")
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
@@ -148,15 +148,15 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findAndCountAll("fields[]=invalid")).rejects.toEqualErrors(
-          [
-            new UnexpectedValueError({
-              detail:
-                "URL must have 'fields[]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
-              parameter: "fields[]",
-            }),
-          ],
-        )
+        await expect(
+          findAndCountAll("fields[Todo]=invalid"),
+        ).rejects.toEqualErrors([
+          new UnexpectedValueError({
+            detail:
+              "URL must have 'fields[Todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
+            parameter: "fields[Todo]",
+          }),
+        ])
       })
 
       it("handles invalid query string", async () => {
@@ -185,7 +185,7 @@ describe("index", () => {
     describe("findOne", () => {
       it("works with ID attribute provided", async () => {
         const results = await findOne(
-          "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
           1,
         )
 
@@ -200,7 +200,7 @@ describe("index", () => {
       })
 
       it("adds ID attribute if not specified", async () => {
-        const results = await findOne("fields[]=name,dueDate", 1)
+        const results = await findOne("fields[Todo]=name,dueDate", 1)
 
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
@@ -217,11 +217,11 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findOne("fields[]=invalid", 1)).rejects.toEqualErrors([
+        await expect(findOne("fields[Todo]=invalid", 1)).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
-              "URL must have 'fields[]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
-            parameter: "fields[]",
+              "URL must have 'fields[Todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
+            parameter: "fields[Todo]",
           }),
         ])
       })
@@ -309,7 +309,7 @@ describe("index", () => {
     describe("destroy", () => {
       it("works with ID attribute provided", async () => {
         const results = await destroy(
-          "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+          "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
         )
 
         expect(results).toEqual({
@@ -323,7 +323,7 @@ describe("index", () => {
       })
 
       it("does not add ID attribute if not specified", async () => {
-        const results = await destroy("fields[]=name,dueDate")
+        const results = await destroy("fields[Todo]=name,dueDate")
 
         expect(results).toEqual({
           attributes: ["name", "dueDate"],
@@ -351,7 +351,7 @@ describe("index", () => {
       })
 
       it("does not error on unknown attributes", async () => {
-        const results = await destroy("fields[]=invalid")
+        const results = await destroy("fields[Todo]=invalid")
 
         expect(results).toEqual({
           attributes: ["invalid"],
@@ -409,7 +409,7 @@ describe("index", () => {
       expect(parser.destroy).toEqual(expect.any(Function))
 
       const results = await parser.findAll(
-        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
       )
 
       expect(results).toEqual({

@@ -154,8 +154,12 @@ async function updateImpl(
   }
 }
 
-async function destroyImpl(querystring: string, id?: Identifier) {
-  const { data, errors } = buildDestroyOptions(querystring, id)
+async function destroyImpl<T extends FinalSchema = FinalSchema>(
+  querystring: string,
+  schema: T,
+  id?: Identifier,
+) {
+  const { data, errors } = buildDestroyOptions(querystring, schema, id)
   if (errors.length) {
     throw errors
   }
@@ -173,7 +177,7 @@ export function buildParserForModelStandalone(
     findAndCountAll: async (querystring) =>
       findAndCountAllImpl(hatchify, schema, querystring),
     create: async (body) => createImpl(hatchify, schema, body),
-    destroy: async (querystring, id) => destroyImpl(querystring, id),
+    destroy: async (querystring, id) => destroyImpl(querystring, schema, id),
     update: async (body, id) => updateImpl(hatchify, schema, body, id),
   }
 }

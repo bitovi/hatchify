@@ -131,7 +131,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       })
 
       const { body: todosWithFields } = await fetch(
-        "/api/todos?include=user&fields[]=name,dueDate&fields[user]=name",
+        "/api/todos?include=user&fields[Todo]=name,dueDate&fields[User]=name",
       )
 
       expect(todosWithFields).toEqual({
@@ -159,7 +159,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       })
 
       const { body: todosWithIdField } = await fetch(
-        "/api/todos?include=user&fields[]=id,name,dueDate&fields[user]=name",
+        "/api/todos?include=user&fields[Todo]=id,name,dueDate&fields[User]=name",
       )
 
       expect(todosWithIdField).toEqual({

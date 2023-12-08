@@ -1,4 +1,11 @@
-import { belongsTo, datetime, hasMany, integer, string } from "@hatchifyjs/core"
+import {
+  assembler,
+  belongsTo,
+  datetime,
+  hasMany,
+  integer,
+  string,
+} from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import { Op } from "sequelize"
 
@@ -7,6 +14,7 @@ import {
   buildDestroyOptions,
   buildFindOptions,
   buildUpdateOptions,
+  replaceIdentifiers,
 } from "./builder"
 import { UnexpectedValueError } from "../error"
 import { Hatchify } from "../node"
@@ -51,12 +59,90 @@ describe("builder", () => {
 
   const { User, Todo, DisconnectedSchema } = hatchify.schema
 
+  describe("replaceIdentifiers", () => {
+    it("replaces schema names with relationship names", () => {
+      const { Employee } = assembler({
+        Employee: {
+          name: "Employee",
+          attributes: {},
+          relationships: {
+            todos: hasMany("Todo"),
+          },
+        },
+        Todo: {
+          name: "Todo",
+          attributes: {},
+          relationships: {
+            employee: belongsTo("Employee"),
+          },
+        },
+      })
+
+      expect(
+        replaceIdentifiers(
+          "fields[Employee]=id,name&fields[Todo]=id,name,dueDate&fields[User]=invalid",
+          Employee,
+        ),
+      ).toBe(
+        "fields[]=id,name&fields[todos]=id,name,dueDate&fields[User]=invalid",
+      )
+    })
+
+    it("handles fields on main table", () => {
+      const { Employee } = assembler({
+        Employee: {
+          name: "Employee",
+          attributes: {},
+          relationships: {
+            manager: belongsTo("Employee"),
+            colleagues: hasMany("Employee"),
+          },
+        },
+      })
+
+      expect(
+        replaceIdentifiers(
+          "fields[Employee]=id,name,dueDate&fields[User]=invalid",
+          Employee,
+        ),
+      ).toBe(
+        "fields[]=id,name,dueDate&fields[manager]=id,name,dueDate&fields[colleagues]=id,name,dueDate&fields[User]=invalid",
+      )
+    })
+
+    it("handles no fields on main table", () => {
+      const { Employee } = assembler({
+        Employee: {
+          name: "Employee",
+          attributes: {},
+          relationships: {
+            todos: hasMany("Todo"),
+          },
+        },
+        Todo: {
+          name: "Todo",
+          attributes: {},
+          relationships: {
+            employee: belongsTo("Employee"),
+          },
+        },
+      })
+
+      expect(
+        replaceIdentifiers(
+          "fields[Todo]=id,name,dueDate&fields[User]=invalid",
+          Employee,
+        ),
+      ).toBe("fields[todos]=id,name,dueDate&fields[User]=invalid")
+    })
+  })
+
   describe("buildFindOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildFindOptions(
         hatchify,
         Todo,
-        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5&sort=-dueDate,name",
+        "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5&sort=-dueDate,name",
       )
 
       expect(options).toEqual({
@@ -78,7 +164,11 @@ describe("builder", () => {
     })
 
     it("adds ID attribute if not specified", () => {
-      const options = buildFindOptions(hatchify, Todo, "fields[]=name,dueDate")
+      const options = buildFindOptions(
+        hatchify,
+        Todo,
+        "fields[Todo]=name,dueDate",
+      )
 
       expect(options).toEqual({
         data: {
@@ -200,11 +290,11 @@ describe("builder", () => {
 
     it("handles unknown attributes", async () => {
       await expect(async () =>
-        buildFindOptions(hatchify, Todo, "fields[]=invalid"),
+        buildFindOptions(hatchify, Todo, "fields[Todo]=invalid"),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
-          detail: `URL must have 'fields[]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.`,
-          parameter: `fields[]`,
+          detail: `URL must have 'fields[Todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.`,
+          parameter: `fields[Todo]`,
         }),
       ])
     })
@@ -281,7 +371,8 @@ describe("builder", () => {
   describe("buildCreateOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildCreateOptions(
-        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
+        Todo,
       )
 
       expect(options).toEqual({
@@ -299,7 +390,7 @@ describe("builder", () => {
     })
 
     it("handles invalid query string", () => {
-      const options = buildCreateOptions("fields=name,dueDate")
+      const options = buildCreateOptions("fields=name,dueDate", Todo)
 
       expect(options).toEqual({
         data: {},
@@ -316,7 +407,8 @@ describe("builder", () => {
   describe("buildUpdateOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildUpdateOptions(
-        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
+        Todo,
       )
 
       expect(options).toEqual({
@@ -334,7 +426,7 @@ describe("builder", () => {
     })
 
     it("does not add ID attribute if not specified", () => {
-      const options = buildUpdateOptions("fields[]=name,dueDate")
+      const options = buildUpdateOptions("fields[Todo]=name,dueDate", Todo)
 
       expect(options).toEqual({
         data: {
@@ -347,7 +439,11 @@ describe("builder", () => {
     })
 
     it("ignores ID if any filter provided", () => {
-      const options = buildUpdateOptions("page[number]=1&page[size]=10", 1)
+      const options = buildUpdateOptions(
+        "page[number]=1&page[size]=10",
+        Todo,
+        1,
+      )
 
       expect(options).toEqual({
         data: {
@@ -362,7 +458,7 @@ describe("builder", () => {
     })
 
     it("handles no attributes", () => {
-      const options = buildUpdateOptions("")
+      const options = buildUpdateOptions("", Todo)
 
       expect(options).toEqual({
         data: { where: {} },
@@ -372,7 +468,7 @@ describe("builder", () => {
     })
 
     it("does not error on unknown attributes", () => {
-      const options = buildUpdateOptions("fields[]=invalid")
+      const options = buildUpdateOptions("fields[Todo]=invalid", Todo)
 
       expect(options).toEqual({
         data: { attributes: ["invalid"], where: {} },
@@ -383,7 +479,7 @@ describe("builder", () => {
 
     it("handles invalid query string", async () => {
       await expect(async () =>
-        buildUpdateOptions("fields=name,dueDate"),
+        buildUpdateOptions("fields=name,dueDate", Todo),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: "Incorrect format was provided for fields.",
@@ -396,7 +492,8 @@ describe("builder", () => {
   describe("buildDestroyOptions", () => {
     it("works with ID attribute provided", () => {
       const options = buildDestroyOptions(
-        "include=user&filter[name]=laundry&fields[]=id,name,dueDate&fields[user]=name&page[number]=3&page[size]=5",
+        "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
+        Todo,
       )
 
       expect(options).toEqual({
@@ -414,7 +511,7 @@ describe("builder", () => {
     })
 
     it("does not add ID attribute if not specified", () => {
-      const options = buildDestroyOptions("fields[]=name,dueDate")
+      const options = buildDestroyOptions("fields[Todo]=name,dueDate", Todo)
 
       expect(options).toEqual({
         data: {
@@ -427,7 +524,11 @@ describe("builder", () => {
     })
 
     it("ignores ID if any filter provided", () => {
-      const options = buildDestroyOptions("page[number]=1&page[size]=10", 1)
+      const options = buildDestroyOptions(
+        "page[number]=1&page[size]=10",
+        Todo,
+        1,
+      )
 
       expect(options).toEqual({
         data: {
@@ -442,7 +543,7 @@ describe("builder", () => {
     })
 
     it("handles no attributes", () => {
-      const options = buildDestroyOptions("")
+      const options = buildDestroyOptions("", Todo)
 
       expect(options).toEqual({
         data: { where: {} },
@@ -452,7 +553,7 @@ describe("builder", () => {
     })
 
     it("does not error on unknown attributes", () => {
-      const options = buildDestroyOptions("fields[]=invalid")
+      const options = buildDestroyOptions("fields[Todo]=invalid", Todo)
 
       expect(options).toEqual({
         data: { attributes: ["invalid"], where: {} },
@@ -463,7 +564,7 @@ describe("builder", () => {
 
     it("handles invalid query string", async () => {
       await expect(async () =>
-        buildDestroyOptions("fields=name,dueDate"),
+        buildDestroyOptions("fields=name,dueDate", Todo),
       ).rejects.toEqualErrors([
         new UnexpectedValueError({
           detail: "Incorrect format was provided for fields.",

@@ -1,5 +1,6 @@
 // @ts-ignore TS7016
 import querystringParser from "@bitovi/sequelize-querystring-parser"
+import { getSchemaKey } from "@hatchifyjs/core"
 import type { FinalSchema } from "@hatchifyjs/core"
 import type {
   CreateOptions,
@@ -34,6 +35,27 @@ export interface QueryStringParsingError extends Error {
   name: "QuerystringParsingError"
 }
 
+export function replaceIdentifiers(
+  querystring: string,
+  schema: FinalSchema,
+): string {
+  const mapping = Object.entries(schema.relationships ?? {}).reduce(
+    (acc, [relationshipName, { targetSchema }]) => ({
+      ...acc,
+      [targetSchema]: [...(acc[targetSchema] ?? []), relationshipName],
+    }),
+    { [getSchemaKey(schema)]: [""], [schema.name]: [""] },
+  )
+
+  return querystring.replace(
+    /fields\[(.*?)\]=([^&]*)/g,
+    (match, identifier, value) =>
+      mapping[identifier]
+        ?.map((relationshipName) => `fields[${relationshipName}]=${value}`)
+        .join("&") ?? match,
+  )
+}
+
 export function buildFindOptions(
   hatchify: Hatchify,
   schema: FinalSchema,
@@ -43,7 +65,7 @@ export function buildFindOptions(
   const dialect = hatchify.orm.getDialect() as Dialect
   const qspOps: QueryStringParser<FindOptions, QueryStringParsingError> = (
     querystringParser as SequelizeQueryStringParserLib
-  ).parse<FindOptions>(querystring)
+  ).parse<FindOptions>(replaceIdentifiers(querystring, schema))
 
   if (qspOps.errors.length) {
     throw qspOps.errors.map(
@@ -76,12 +98,14 @@ export function buildFindOptions(
       if (stringAttribute !== "id" && !schema.attributes[stringAttribute]) {
         ops.errors.push(
           new UnexpectedValueError({
-            detail: `URL must have 'fields[]' as comma separated values containing one or more of ${Object.keys(
+            detail: `URL must have 'fields[${
+              schema.name
+            }]' as comma separated values containing one or more of ${Object.keys(
               schema.attributes,
             )
               .map((attribute) => `'${attribute}'`)
               .join(", ")}.`,
-            parameter: `fields[]`,
+            parameter: `fields[${schema.name}]`,
           }),
         )
       }
@@ -179,16 +203,18 @@ export function buildFindOptions(
 
 export function buildCreateOptions(
   querystring: string,
+  schema: FinalSchema,
 ): QueryStringParser<CreateOptions> {
-  return querystringParser.parse(querystring)
+  return querystringParser.parse(replaceIdentifiers(querystring, schema))
 }
 
 export function buildUpdateOptions(
   querystring: string,
+  schema: FinalSchema,
   id?: Identifier,
 ): QueryStringParser<UpdateOptions> {
   const ops: QueryStringParser<UpdateOptions, QueryStringParsingError> =
-    querystringParser.parse(querystring)
+    querystringParser.parse(replaceIdentifiers(querystring, schema))
 
   if (ops.errors.length) {
     throw ops.errors.map(
@@ -212,10 +238,11 @@ export function buildUpdateOptions(
 
 export function buildDestroyOptions(
   querystring: string,
+  schema: FinalSchema,
   id?: Identifier,
 ): QueryStringParser<DestroyOptions> {
   const ops: QueryStringParser<DestroyOptions, QueryStringParsingError> =
-    querystringParser.parse(querystring)
+    querystringParser.parse(replaceIdentifiers(querystring, schema))
 
   if (ops.errors.length) {
     throw ops.errors.map(

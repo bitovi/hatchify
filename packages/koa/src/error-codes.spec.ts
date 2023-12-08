@@ -662,12 +662,12 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
         code: "unexpected-value",
         title: "Unexpected value.",
         detail:
-          "URL must have 'fields[]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.",
+          "URL must have 'fields[Todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'userId'.",
         source: {
-          parameter: "fields[]",
+          parameter: "fields[Todo]",
         },
       }
-      const { status, body } = await fetch("/api/todos?fields[]=nam")
+      const { status, body } = await fetch("/api/todos?fields[Todo]=nam")
 
       expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
       expect(body).toEqual({
