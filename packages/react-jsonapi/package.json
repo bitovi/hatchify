@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react-jsonapi",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "main": "./dist/react-jsonapi.js",
   "module": "./dist/react-jsonapi.mjs",
   "types": "./dist/react-jsonapi.d.ts",
@@ -26,7 +26,7 @@
   "dependencies": {
     "@hatchifyjs/react-rest": "^0.1.15",
     "@hatchifyjs/rest-client": "^0.1.12",
-    "@hatchifyjs/rest-client-jsonapi": "^0.1.14"
+    "@hatchifyjs/rest-client-jsonapi": "^0.1.15"
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.3.x"
