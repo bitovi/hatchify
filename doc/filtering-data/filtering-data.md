@@ -88,6 +88,6 @@ If no operator is present, then `$eq` is used.
 | string     | `filter[name]=lisa`                   | `$eq`               |
 | number     | `filter[age]=25`                      | `$eq`               |
 | date       | `filter[born]=2020-01-01`             | `$eq`               |
-| null       | `filter[score]=null`                  | `$eq`               |
+| null       | `filter[score]=%00`                   | `$eq`               |
 | boolean    | `filter[completed]=false`             | `$eq`               |
 | array      | `filter[name]=mike&filter[name]=brad` | `$in (with $eq)`    |
