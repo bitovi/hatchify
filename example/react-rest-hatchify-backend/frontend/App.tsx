@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import createJsonapiClient from "@hatchifyjs/rest-client-jsonapi"
-import { Todo } from "../schemas/todo"
-import { User } from "../schemas/user"
+import * as schemas from "../schemas"
 // import WithoutHooks from "./WithoutHooks"
 
 export const hatchedReactRest = hatchifyReactRest(
-  createJsonapiClient("http://localhost:3000/api", { Todo, User }),
+  createJsonapiClient("http://localhost:3000/api", schemas),
 )
 
 const App: React.FC = () => {

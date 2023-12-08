@@ -4,11 +4,10 @@ import c2k from "koa-connect"
 // @ts-expect-error @todo make TS happy here
 import { createServer as createViteServer } from "vite.mts"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import { Todo } from "../schemas/todo"
-import { User } from "../schemas/user"
+import * as schemas from "../schemas"
 
 const app = new Koa()
-const hatchedKoa = hatchifyKoa({ Todo, User }, { prefix: "/api" })
+const hatchedKoa = hatchifyKoa(schemas, { prefix: "/api" })
 
 ;(async () => {
   await hatchedKoa.modelSync({ alter: true })
