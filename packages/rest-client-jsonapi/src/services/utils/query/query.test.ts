@@ -349,11 +349,11 @@ describe("rest-client-jsonapi/services/utils/query", () => {
 
       expect(
         filterToQueryParam([{ field: "name", value: "", operator: "empty" }]),
-      ).toEqual("filter[name][$eq]=null")
+      ).toEqual("filter[name][$eq]=%00")
 
       expect(
         filterToQueryParam([{ field: "name", value: "", operator: "nempty" }]),
-      ).toEqual("filter[name][$ne]=null")
+      ).toEqual("filter[name][$ne]=%00")
 
       expect(
         filterToQueryParam([
@@ -456,7 +456,7 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           },
         }),
       ).toEqual(
-        "filter[name][$eq]=null&filter[count][$ne]=null&filter[count][$ilike][]=3&filter[count][$ilike][]=4&filter[count][$ilike][]=5",
+        "filter[name][$eq]=%00&filter[count][$ne]=%00&filter[count][$ilike][]=3&filter[count][$ilike][]=4&filter[count][$ilike][]=5",
       )
     })
   })
