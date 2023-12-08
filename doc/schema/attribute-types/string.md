@@ -34,6 +34,7 @@ If `required` is `false`, filtering `null` values is handled like the following:
 ```
 GET /todos?name=foo  // all todos with name foo
 GET /todos?name=%00  // all todos with null as the name value
+GET /todos?name=null  // all todos with "null" as the name value
 GET /todos?name=  // all todos with "" as the name value
 GET /todos?name=undefined  // all todos with "undefined" as the name value
 ```
