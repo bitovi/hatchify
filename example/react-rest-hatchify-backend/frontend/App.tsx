@@ -9,15 +9,6 @@ export const hatchedReactRest = hatchifyReactRest(
   createJsonapiClient("http://localhost:3000/api", { Todo, User }),
 )
 
-// hatchedReactRest.Todo.createOne({
-//   attributes: {
-//     name: "",
-//   },
-//   relationships: {
-//     user: { id: "123" },
-//   }
-// })
-
 const App: React.FC = () => {
   return (
     <div>
@@ -39,7 +30,6 @@ function Todos() {
   const [todos, todosState] = hatchedReactRest.Todo.useAll({
     include: ["user"],
     fields: { Todo: ["name"] },
-    // filter: enableFilter ? { name: ["Workout", "other"] } : undefined,
   })
   const [users, usersState] = hatchedReactRest.User.useAll()
   const [createTodo, createState] = hatchedReactRest.Todo.useCreateOne()
@@ -79,12 +69,8 @@ function Todos() {
         type="button"
         onClick={() => {
           createTodo({
-            attributes: { name: todoName },
-            relationships: selectedUser
-              ? {
-                  user: { id: selectedUser },
-                }
-              : undefined,
+            name: todoName,
+            ...(selectedUser && { user: { id: selectedUser } }),
           })
           setTodoName("")
           setSelectedUser("")
@@ -147,7 +133,7 @@ function Users() {
         disabled={createState.isPending}
         type="button"
         onClick={() => {
-          createUser({ attributes: { name: userName } })
+          createUser({ name: userName })
           setUserName("")
         }}
       >
@@ -221,7 +207,7 @@ function EditUser({ id, setUserIdToEdit }: any) {
         disabled={updateState.isPending}
         type="button"
         onClick={() => {
-          updateUser({ id, attributes: { name } })
+          updateUser({ id, name })
           setUserIdToEdit(null)
         }}
       >
