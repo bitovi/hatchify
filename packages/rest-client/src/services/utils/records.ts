@@ -62,10 +62,21 @@ export function resourceToRecordRelationship(
 
   const attributes = resourcesById[resource.id].attributes
   const relationships = resourcesById[resource.id].relationships
-  // use first attribute as displayAttribute until displayAttribute is implemented
-  const displayAttribute = Object.keys(
+
+  const displayAttributeFromSchema =
+    allSchemas[resource.__schema].displayAttribute
+  let displayAttribute = Object.keys(
     allSchemas[resource.__schema].attributes,
   )[0]
+
+  // check if displayAttribute exists in schema's attributes, if not, fallback to first attribute
+  if (displayAttributeFromSchema) {
+    displayAttribute = allSchemas[resource.__schema].attributes?.[
+      displayAttribute
+    ]
+      ? displayAttributeFromSchema
+      : displayAttribute
+  }
 
   const coercedAttributes = setClientPropertyValuesFromResponse(
     allSchemas,
