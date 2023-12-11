@@ -65,29 +65,30 @@ The following operators are supported for filtering. Click on each one to see co
 
 Operators will only work on specific value types (string, number, boolean, date).
 
-| Operator    | String | Date | Boolean | Numeric | Arrays |
-| ----------- | :----: | :--: | :-----: | :-----: | :----: |
-| `$eq`       |   ✅   |  ✅  |   ✅    |   ✅    |   ❌   |
-| `$ne`       |   ✅   |  ✅  |   ✅    |   ✅    |   ❌   |
-| `$gt`       |   ✅   |  ✅  |   ❌    |   ✅    |   ❌   |
-| `$gte`      |   ✅   |  ✅  |   ❌    |   ✅    |   ❌   |
-| `$lt`       |   ✅   |  ✅  |   ❌    |   ✅    |   ❌   |
-| `$lte`      |   ✅   |  ✅  |   ❌    |   ✅    |   ❌   |
-| `$in`       |   ✅   |  ✅  |   ✅    |   ✅    |   ✅   |
-| `$nin`      |   ✅   |  ✅  |   ✅    |   ✅    |   ✅   |
-| `$like`     |   ✅   |  ❌  |   ❌    |   ❌    |   ❌   |
-| `$ilike`    |   ✅   |  ❌  |   ❌    |   ❌    |   ❌   |
-| no operator |   ✅   |  ✅  |   ✅    |   ✅    |   ✅   |
+| Operator    | String | Date | Boolean | Numeric | UUID | Arrays |
+| ----------- | :----: | :--: | :-----: | :-----: | :--: | :----: |
+| `$eq`       |   ✅   |  ✅  |   ✅    |   ✅    |  ✅  |   ❌   |
+| `$ne`       |   ✅   |  ✅  |   ✅    |   ✅    |  ✅  |   ❌   |
+| `$gt`       |   ✅   |  ✅  |   ❌    |   ✅    |  ❌  |   ❌   |
+| `$gte`      |   ✅   |  ✅  |   ❌    |   ✅    |  ❌  |   ❌   |
+| `$lt`       |   ✅   |  ✅  |   ❌    |   ✅    |  ❌  |   ❌   |
+| `$lte`      |   ✅   |  ✅  |   ❌    |   ✅    |  ❌  |   ❌   |
+| `$in`       |   ✅   |  ✅  |   ✅    |   ✅    |  ✅  |   ✅   |
+| `$nin`      |   ✅   |  ✅  |   ✅    |   ✅    |  ✅  |   ✅   |
+| `$like`     |   ✅   |  ❌  |   ❌    |   ❌    |  ✅  |   ❌   |
+| `$ilike`    |   ✅   |  ❌  |   ❌    |   ❌    |  ✅  |   ❌   |
+| no operator |   ✅   |  ✅  |   ✅    |   ✅    |  ✅  |   ✅   |
 
 ## Omitted Operators
 
 If no operator is present, then `$eq` is used.
 
-| Value Type | Example                               | Operator Equates to |
-| ---------- | ------------------------------------- | ------------------- |
-| string     | `filter[name]=lisa`                   | `$eq`               |
-| number     | `filter[age]=25`                      | `$eq`               |
-| date       | `filter[born]=2020-01-01`             | `$eq`               |
-| null       | `filter[score]=%00`                   | `$eq`               |
-| boolean    | `filter[completed]=false`             | `$eq`               |
-| array      | `filter[name]=mike&filter[name]=brad` | `$in (with $eq)`    |
+| Value Type | Example                                             | Operator Equates to |
+| ---------- | --------------------------------------------------- | ------------------- |
+| string     | `filter[name]=lisa`                                 | `$eq`               |
+| number     | `filter[age]=25`                                    | `$eq`               |
+| date       | `filter[born]=2020-01-01`                           | `$eq`               |
+| null       | `filter[score]=%00`                                 | `$eq`               |
+| boolean    | `filter[completed]=false`                           | `$eq`               |
+| uuid       | `filter[uuid]=e33a8fbd-bf2f-4348-9091-8e1b6b659b69` | `$eq`               |
+| array      | `filter[name]=mike&filter[name]=brad`               | `$in (with $eq)`    |
