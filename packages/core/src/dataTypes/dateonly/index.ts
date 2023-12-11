@@ -12,6 +12,7 @@ import type { PartialAttribute } from "../../types"
 export * from "./getFinalize"
 export * from "./getPartialControl"
 export * from "./getPartialOrm"
+export * from "./isISO8601DateString"
 export * from "./types"
 
 export function dateonly<TRequired extends boolean = false>(
