@@ -1,5 +1,5 @@
 export { boolean } from "./boolean"
-export { dateonly } from "./dateonly"
+export { dateonly, isISO8601DateString } from "./dateonly"
 export { datetime, isISO8601DatetimeString } from "./datetime"
 export { enumerate } from "./enumerate"
 export { integer } from "./integer"

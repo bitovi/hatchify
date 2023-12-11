@@ -12,6 +12,7 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
+import { handlePostgresUuid } from "./handlePostgresUuid"
 import { handleSqliteDateNestedColumns } from "./handleSqliteDateNestedColumns"
 import { handleSqliteLike } from "./handleSqliteLike"
 import { handleWhere } from "./handleWhere"
@@ -83,10 +84,9 @@ export function buildFindOptions(
 
   let ops: QueryStringParser<FindOptions> = handleWhere(qspOps, schema)
 
-  if (dialect === "sqlite") {
-    ops = handleSqliteDateNestedColumns(ops, dialect)
-    ops = handleSqliteLike(ops, dialect)
-  }
+  ops = handlePostgresUuid(ops, dialect)
+  ops = handleSqliteDateNestedColumns(ops, dialect)
+  ops = handleSqliteLike(ops, dialect)
 
   if (Array.isArray(ops.data.attributes)) {
     if (!ops.data.attributes.includes("id")) {

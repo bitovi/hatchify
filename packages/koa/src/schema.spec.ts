@@ -1031,20 +1031,39 @@ describe.each(dbDialects)("schema", (dialect) => {
               })
             })
 
-            it("$eq", async () => {
-              const { status: getStatus, body: getUsers } = await fetch(
-                "/api/users?filter[uuid][$eq]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
-              )
+            describe("$eq", () => {
+              it("valid uuid", async () => {
+                const { status: getStatus, body: getUsers } = await fetch(
+                  "/api/users?filter[uuid][$eq]=6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+                )
 
-              expect(getStatus).toBe(200)
-              expect(getUsers).toEqual({
-                jsonapi: {
-                  version: "1.0",
-                },
-                data: [postUser2.data],
-                meta: {
-                  unpaginatedCount: 1,
-                },
+                expect(getStatus).toBe(200)
+                expect(getUsers).toEqual({
+                  jsonapi: {
+                    version: "1.0",
+                  },
+                  data: [postUser2.data],
+                  meta: {
+                    unpaginatedCount: 1,
+                  },
+                })
+              })
+
+              it("invalid uuid", async () => {
+                const { status: getStatus, body: getUsers } = await fetch(
+                  "/api/users?filter[uuid][$eq]=invalid",
+                )
+
+                expect(getStatus).toBe(200)
+                expect(getUsers).toEqual({
+                  jsonapi: {
+                    version: "1.0",
+                  },
+                  data: [],
+                  meta: {
+                    unpaginatedCount: 0,
+                  },
+                })
               })
             })
 
@@ -1093,6 +1112,40 @@ describe.each(dbDialects)("schema", (dialect) => {
                   version: "1.0",
                 },
                 data: [postUser1.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$like", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$like]=6ca2929f%25",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
+                meta: {
+                  unpaginatedCount: 1,
+                },
+              })
+            })
+
+            it("$ilike", async () => {
+              const { status: getStatus, body: getUsers } = await fetch(
+                "/api/users?filter[uuid][$ilike]=6ca2929f%25",
+              )
+
+              expect(getStatus).toBe(200)
+              expect(getUsers).toEqual({
+                jsonapi: {
+                  version: "1.0",
+                },
+                data: [postUser2.data],
                 meta: {
                   unpaginatedCount: 1,
                 },
