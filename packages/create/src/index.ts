@@ -250,7 +250,7 @@ async function init() {
           type: undefined,
           scripts: {
             lint: "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-            dev: "nodemon --esm backend/index.ts --watch backend --watch schemas.ts",
+            dev: "nodemon backend/index.ts --watch backend --watch schemas.ts",
             "build:frontend": "tsc && vite build --outDir dist/frontend",
             "build:backend":
               "tsc --outDir dist/backend --project tsconfig.backend.json",
@@ -308,7 +308,7 @@ async function init() {
         {
           extends: "./tsconfig.json",
           compilerOptions: {},
-          include: ["backend", "schemas"],
+          include: ["backend", "schemas.ts"],
         },
         null,
         2,

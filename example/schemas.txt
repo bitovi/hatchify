@@ -12,7 +12,6 @@ import {
 
 export const Todo = {
   name: "Todo",
-  // namespace: "Admin",
   attributes: {
     name: string(),
     dueDate: datetime(),
@@ -28,7 +27,6 @@ export const Todo = {
 
 export const User = {
   name: "User",
-  // namespace: "Admin",
   attributes: {
     name: string(),
   },
