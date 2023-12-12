@@ -21,7 +21,7 @@ import {
 
 describe.each(dbDialects)("schema", (dialect) => {
   describe(`${dialect}`, () => {
-    describe("v2", () => {
+    describe("1:n", () => {
       const Todo: PartialSchema = {
         name: "Todo",
         attributes: {
@@ -1596,6 +1596,140 @@ describe.each(dbDialects)("schema", (dialect) => {
               },
             ],
           })
+        })
+      })
+    })
+
+    describe("m:n", () => {
+      const Todo = {
+        name: "Todo",
+        attributes: {
+          name: string({ required: true }),
+          dueDate: datetime(),
+          importance: integer(),
+          complete: boolean({ default: false }),
+        },
+        relationships: {
+          assignee: belongsTo("User"),
+          approvedBy: hasMany("User").through("TodoApprover", {
+            throughSourceAttribute: "todoId",
+            throughTargetAttribute: "userId",
+          }),
+        },
+      } satisfies PartialSchema
+
+      const User = {
+        name: "User",
+        attributes: {
+          firstName: string({ required: true }),
+          lastName: string({ required: true }),
+          age: integer(),
+        },
+        relationships: {
+          todos: hasMany("Todo", { targetAttribute: "assigneeId" }),
+          approvedTodos: hasMany("Todo").through("TodoApprover", {
+            throughSourceAttribute: "userId",
+            throughTargetAttribute: "todoId",
+          }),
+        },
+      } satisfies PartialSchema
+
+      const userIds = [
+        "bbbbbbbb-bbbb-bbbb-bbbb-000000000001",
+        "bbbbbbbb-bbbb-bbbb-bbbb-000000000002",
+        "bbbbbbbb-bbbb-bbbb-bbbb-000000000003",
+      ]
+      let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+      let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+      beforeAll(async () => {
+        ;({ fetch, teardown } = await startServerWith({ Todo, User }, dialect))
+
+        await Promise.all(
+          userIds.map((userId) =>
+            fetch("/api/users", {
+              method: "post",
+              body: {
+                data: {
+                  type: "User",
+                  attributes: {
+                    id: userId,
+                    firstName: "Test",
+                    lastName: "User",
+                  },
+                },
+              },
+            }),
+          ),
+        )
+      })
+
+      afterAll(async () => {
+        await Promise.all(
+          userIds.map((userId) =>
+            fetch(`/api/todos/${userId}`, {
+              method: "delete",
+            }),
+          ),
+        )
+
+        await teardown()
+      })
+
+      it("assigning should work (HATCH-472)", async () => {
+        const { status, body } = await fetch(`/api/todos`, {
+          method: "post",
+          body: {
+            data: {
+              type: "Todo",
+              id: "aaaaaaaa-aaaa-aaaa-aaaa-000000000001",
+              attributes: {
+                name: "Walk the dog",
+                dueDate: "2024-12-12",
+                importance: 6,
+              },
+              relationships: {
+                assignee: {
+                  data: {
+                    type: "User",
+                    id: "bbbbbbbb-bbbb-bbbb-bbbb-000000000001",
+                  },
+                },
+                approvedBy: {
+                  data: [
+                    {
+                      type: "User",
+                      id: "bbbbbbbb-bbbb-bbbb-bbbb-000000000002",
+                    },
+                    {
+                      type: "User",
+                      id: "bbbbbbbb-bbbb-bbbb-bbbb-000000000003",
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        })
+
+        expect(status).toBe(200)
+        expect(body).toEqual({
+          jsonapi: {
+            version: "1.0",
+          },
+          data: {
+            id: "aaaaaaaa-aaaa-aaaa-aaaa-000000000001",
+            type: "Todo",
+            attributes: {
+              name: "Walk the dog",
+              dueDate: "2024-12-12T00:00:00.000Z",
+              importance: 6,
+              complete: false,
+              ...(dialect === "postgres" && {
+                assigneeId: null,
+              }),
+            },
+          },
         })
       })
     })
