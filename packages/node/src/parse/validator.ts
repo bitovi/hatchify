@@ -183,10 +183,7 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
         }),
       )
     } else {
-      const modelName = modelAssociation.model
-      const targetRelationship = Object.values(schema.relationships || {}).find(
-        ({ targetSchema }) => targetSchema === modelName,
-      )
+      const targetRelationship = schema.relationships?.[modelAssociation.as]
       const expectObject =
         targetRelationship &&
         ["hasOne", "belongsTo"].includes(targetRelationship.type)

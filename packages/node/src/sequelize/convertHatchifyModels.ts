@@ -94,6 +94,7 @@ export function convertHatchifyModels(
           type,
           model: targetSchema,
           key: `${singularize(relationshipName)}_id`,
+          as: relationshipName,
         },
         ...("through" in relationship
           ? {
@@ -101,6 +102,7 @@ export function convertHatchifyModels(
                 type: "hasMany",
                 model: relationship.through,
                 key: `${singularize(relationshipName)}_id`,
+                as: relationshipName,
               },
             }
           : {}),
