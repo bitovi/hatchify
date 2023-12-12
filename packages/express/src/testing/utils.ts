@@ -1,5 +1,4 @@
 import type { PartialSchema } from "@hatchifyjs/node"
-import * as dotenv from "dotenv"
 import Express from "express"
 import type { Dialect } from "sequelize"
 import request from "supertest"
@@ -22,9 +21,6 @@ export async function startServerWith(
   teardown: () => Promise<void>
   hatchify: Hatchify
 }> {
-  dotenv.config({
-    path: ".env",
-  })
   const app = Express()
   const hatchify = new Hatchify(models, {
     prefix: "/api",

@@ -1,7 +1,6 @@
 import http from "node:http"
 
 import type { PartialSchema } from "@hatchifyjs/node"
-import * as dotenv from "dotenv"
 import Koa from "koa"
 import type { Dialect } from "sequelize"
 import request from "supertest"
@@ -24,9 +23,6 @@ export async function startServerWith(
   teardown: () => Promise<void>
   hatchify: Hatchify
 }> {
-  dotenv.config({
-    path: ".env",
-  })
   const app = new Koa()
   const hatchify = new Hatchify(models, {
     prefix: "/api",

@@ -7,7 +7,6 @@ import {
   string,
 } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
-import * as dotenv from "dotenv"
 
 import { dbDialects, startServerWith } from "./testing/utils"
 
@@ -300,10 +299,6 @@ const SQLiteOnlyTestCases = [
     expectedResult: [john],
   },
 ]
-
-dotenv.config({
-  path: ".env",
-})
 
 describe.each(dbDialects)("queryStringFilters", (dialect) => {
   const UserTodo: PartialSchema = {
