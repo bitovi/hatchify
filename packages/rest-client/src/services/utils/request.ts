@@ -20,21 +20,24 @@ export const serializeClientPropertyValuesForRequest = <
     "__schema"
   >["attributes"],
 ): globalThis.Record<string, SerializedValue> => {
-  return Object.entries(attributes).reduce((acc, [key, value]) => {
-    const attribute = allSchemas[schemaName].attributes[key]
+  return Object.entries(attributes).reduce(
+    (acc, [key, value]) => {
+      const attribute = allSchemas[schemaName].attributes[key]
 
-    if (
-      attribute != null &&
-      attribute.setClientPropertyValue &&
-      attribute.serializeClientPropertyValue
-    ) {
-      const coerced = attribute.setClientPropertyValue(value as any) // todo HATCH-417 remove any
-      acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-417 remove any
-    } else {
-      acc[key] = value as SerializedValue
-    }
-    return acc
-  }, {} as globalThis.Record<string, SerializedValue>)
+      if (
+        attribute != null &&
+        attribute.setClientPropertyValue &&
+        attribute.serializeClientPropertyValue
+      ) {
+        const coerced = attribute.setClientPropertyValue(value as any) // todo HATCH-417 remove any
+        acc[key] = attribute.serializeClientPropertyValue(coerced as any) // todo HATCH-417 remove any
+      } else {
+        acc[key] = value as SerializedValue
+      }
+      return acc
+    },
+    {} as globalThis.Record<string, SerializedValue>,
+  )
 }
 
 /**
@@ -45,17 +48,20 @@ export const serializeClientQueryFilterValuesForRequest = (
   schemaName: string,
   filters: globalThis.Record<string, any>,
 ): globalThis.Record<string, unknown> => {
-  return Object.entries(filters).reduce((acc, [key, value]) => {
-    const attribute = allSchemas[schemaName].attributes[key]
-    if (
-      attribute != null &&
-      attribute.setClientQueryFilterValue &&
-      attribute.serializeClientQueryFilterValue
-    ) {
-      const coerced = attribute.setClientQueryFilterValue(value)
-      acc[key] = attribute.serializeClientQueryFilterValue(coerced as any) // todo: HATCH-417 remove any
-      acc[key] = value
-    }
-    return acc
-  }, {} as globalThis.Record<string, unknown>)
+  return Object.entries(filters).reduce(
+    (acc, [key, value]) => {
+      const attribute = allSchemas[schemaName].attributes[key]
+      if (
+        attribute != null &&
+        attribute.setClientQueryFilterValue &&
+        attribute.serializeClientQueryFilterValue
+      ) {
+        const coerced = attribute.setClientQueryFilterValue(value)
+        acc[key] = attribute.serializeClientQueryFilterValue(coerced as any) // todo: HATCH-417 remove any
+        acc[key] = value
+      }
+      return acc
+    },
+    {} as globalThis.Record<string, unknown>,
+  )
 }

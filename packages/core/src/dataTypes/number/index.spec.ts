@@ -49,8 +49,8 @@ describe("number", () => {
       expect(setClientPropertyValue?.(1.1)).toBe(1.1)
       expect(setClientPropertyValue?.(1.11)).toBe(1.11)
       expect(setClientPropertyValue?.(null)).toBeNull()
-      expect(() =>
-        setClientPropertyValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -78,8 +78,8 @@ describe("number", () => {
       expect(setClientQueryFilterValue?.(1.1)).toBe(1.1)
       expect(setClientQueryFilterValue?.(1.11)).toBe(1.11)
       expect(setClientQueryFilterValue?.(null)).toBeNull()
-      expect(() =>
-        setClientQueryFilterValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -109,8 +109,9 @@ describe("number", () => {
       expect(setClientPropertyValueFromResponse?.("1.1")).toBe(1.1)
       expect(setClientPropertyValueFromResponse?.("1.11")).toBe(1.11)
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
-      expect(() =>
-        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      expect(
+        () =>
+          setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -252,8 +253,8 @@ describe("number", () => {
       expect(() => setClientPropertyValue?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
-      expect(() =>
-        setClientPropertyValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -283,8 +284,8 @@ describe("number", () => {
       expect(() => setClientQueryFilterValue?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
-      expect(() =>
-        setClientQueryFilterValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -316,8 +317,9 @@ describe("number", () => {
       expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
-      expect(() =>
-        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      expect(
+        () =>
+          setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -465,8 +467,8 @@ describe("number", () => {
       expect(setClientPropertyValue?.(1.1)).toBe(1.1)
       expect(setClientPropertyValue?.(1.11)).toBe(1.11)
       expect(setClientPropertyValue?.(null)).toBeNull()
-      expect(() =>
-        setClientPropertyValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -494,8 +496,8 @@ describe("number", () => {
       expect(setClientQueryFilterValue?.(1.1)).toBe(1.1)
       expect(setClientQueryFilterValue?.(1.11)).toBe(1.11)
       expect(setClientQueryFilterValue?.(null)).toBeNull()
-      expect(() =>
-        setClientQueryFilterValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -525,8 +527,9 @@ describe("number", () => {
       expect(setClientPropertyValueFromResponse?.("1.1")).toBe(1.1)
       expect(setClientPropertyValueFromResponse?.("1.11")).toBe(1.11)
       expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
-      expect(() =>
-        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      expect(
+        () =>
+          setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -666,8 +669,8 @@ describe("number", () => {
       expect(() => setClientPropertyValue?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
-      expect(() =>
-        setClientPropertyValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -697,8 +700,8 @@ describe("number", () => {
       expect(() => setClientQueryFilterValue?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
-      expect(() =>
-        setClientQueryFilterValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -730,8 +733,9 @@ describe("number", () => {
       expect(() => setClientPropertyValueFromResponse?.(null)).toThrow(
         new HatchifyCoerceError("as a non-null value"),
       )
-      expect(() =>
-        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      expect(
+        () =>
+          setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -881,8 +885,8 @@ describe("number", () => {
       expect(() => setClientPropertyValue?.(1.11)).toThrow(
         new HatchifyCoerceError("as multiples of 0.1"),
       )
-      expect(() =>
-        setClientPropertyValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -912,8 +916,8 @@ describe("number", () => {
       expect(() => setClientQueryFilterValue?.(1.11)).toThrow(
         new HatchifyCoerceError("as multiples of 0.1"),
       )
-      expect(() =>
-        setClientQueryFilterValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientQueryFilterValue?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -945,8 +949,9 @@ describe("number", () => {
       expect(() => setClientPropertyValueFromResponse?.(1.11)).toThrow(
         new HatchifyCoerceError("as multiples of 0.1"),
       )
-      expect(() =>
-        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      expect(
+        () =>
+          setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
       expect(() => setClientPropertyValueFromResponse?.(-Infinity)).toThrow(
         new HatchifyCoerceError("different than Infinity"),
@@ -1099,8 +1104,8 @@ describe("number", () => {
       expect(() => setClientPropertyValue?.(10.1)).toThrow(
         new HatchifyCoerceError("less than or equal to 10"),
       )
-      expect(() =>
-        setClientPropertyValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientPropertyValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
 
       // serializeClientPropertyValue
@@ -1133,8 +1138,8 @@ describe("number", () => {
       expect(() => setClientQueryFilterValue?.(10.1)).toThrow(
         new HatchifyCoerceError("less than or equal to 10"),
       )
-      expect(() =>
-        setClientQueryFilterValue?.("invalid" as unknown as number),
+      expect(
+        () => setClientQueryFilterValue?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
 
       // serializeClientQueryFilterValue
@@ -1169,8 +1174,9 @@ describe("number", () => {
       expect(() => setClientPropertyValueFromResponse?.(10.1)).toThrow(
         new HatchifyCoerceError("less than or equal to 10"),
       )
-      expect(() =>
-        setClientPropertyValueFromResponse?.("invalid" as unknown as number),
+      expect(
+        () =>
+          setClientPropertyValueFromResponse?.("invalid" as unknown as number),
       ).toThrow(new HatchifyCoerceError("as a number"))
 
       // serializeORMPropertyValue

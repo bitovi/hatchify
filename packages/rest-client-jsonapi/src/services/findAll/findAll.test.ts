@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest"
 import { rest } from "msw"
-import { baseUrl } from "../../mocks/handlers"
 import {
+  baseUrl,
   testData,
   finalSchemas,
   partialSchemas,

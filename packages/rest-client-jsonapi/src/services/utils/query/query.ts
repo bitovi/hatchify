@@ -77,8 +77,8 @@ export function encodeValue(
       operator === "istarts"
         ? `${value}%`
         : operator === "iends"
-        ? `%${value}`
-        : `%${value}%`,
+          ? `%${value}`
+          : `%${value}%`,
     )
   }
 

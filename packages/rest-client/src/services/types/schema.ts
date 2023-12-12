@@ -72,16 +72,16 @@ type UnionToObject<
     ? Type extends "Number" | "number" | "NUMBER"
       ? number
       : Type extends "Boolean" | "boolean" | "BOOLEAN"
-      ? boolean
-      : Type extends "Enum" | "enum" | "ENUM"
-      ? EnumValues[any]
-      : Type extends "String" | "string" | "STRING"
-      ? string
-      : Type extends "Datetime" | "datetime" | "DATETIME"
-      ? TMutate extends true
-        ? Date | string
-        : Date
-      : never
+        ? boolean
+        : Type extends "Enum" | "enum" | "ENUM"
+          ? EnumValues[any]
+          : Type extends "String" | "string" | "STRING"
+            ? string
+            : Type extends "Datetime" | "datetime" | "DATETIME"
+              ? TMutate extends true
+                ? Date | string
+                : Date
+              : never
     : never
 }
 
