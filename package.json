@@ -39,22 +39,20 @@
   },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",
-    "@playwright/test": "^1.35.1",
-    "depcheck": "^1.4.3",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "nx": "15.9.2",
-    "prettier": "^2.7.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.3"
+    "@playwright/test": "^1.40.1",
+    "depcheck": "^1.4.7",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "nx": "^17.2.1",
+    "prettier": "^3.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "workspaces": [
     "packages/*"
   ],
   "dependencies": {
-    "@bitovi/sequelize-querystring-parser": "^0.2.16",
-    "pg": "^8.11.3",
     "semver": "^7.5.0"
   }
 }
