@@ -249,7 +249,7 @@ async function init() {
           name: packageName || getProjectName(),
           type: undefined,
           scripts: {
-            lint: "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+            lint: "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
             dev: "nodemon backend/index.ts --watch backend --watch schemas.ts",
             "build:frontend": "tsc && vite build --outDir dist/frontend",
             "build:backend":
