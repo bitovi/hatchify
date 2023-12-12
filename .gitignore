@@ -15,6 +15,7 @@ Thumbs.db
 *.tsbuildinfo
 npm-debug.log*
 .obsidian
+.nx
 
 /test-results/
 /playwright-report/

@@ -87,7 +87,7 @@ Most operating systems provide all the needed tools (including Windows, Linux an
 
 - Mandatory:
 
-  - [Node.js](http://nodejs.org). **Currently only version 18 is working**
+  - [Node.js](http://nodejs.org)
   - [Git](https://git-scm.com/)
 
 - Optional (recommended):

@@ -8,21 +8,24 @@ export const setClientPropertyValuesFromResponse = (
   schemaName: string,
   attributes: globalThis.Record<string, any>,
 ): globalThis.Record<string, unknown> => {
-  return Object.entries(attributes).reduce((acc, [key, value]) => {
-    const attribute = allSchemas[schemaName].attributes[key]
-    if (attribute != null && attribute.setClientPropertyValueFromResponse) {
-      try {
-        acc[key] = attribute?.setClientPropertyValueFromResponse(value)
-        return acc
-      } catch (e: any) {
-        console.error(
-          `Setting value \`${value}\` on attribute \`${key}\`:`,
-          e?.message,
-        )
+  return Object.entries(attributes).reduce(
+    (acc, [key, value]) => {
+      const attribute = allSchemas[schemaName].attributes[key]
+      if (attribute != null && attribute.setClientPropertyValueFromResponse) {
+        try {
+          acc[key] = attribute?.setClientPropertyValueFromResponse(value)
+          return acc
+        } catch (e: any) {
+          console.error(
+            `Setting value \`${value}\` on attribute \`${key}\`:`,
+            e?.message,
+          )
+        }
       }
-    }
 
-    acc[key] = value
-    return acc
-  }, {} as globalThis.Record<string, unknown>)
+      acc[key] = value
+      return acc
+    },
+    {} as globalThis.Record<string, unknown>,
+  )
 }

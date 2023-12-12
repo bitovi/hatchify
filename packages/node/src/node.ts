@@ -7,7 +7,7 @@ import {
 import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import JSONAPISerializer from "json-api-serializer"
-import { noCase } from "no-case"
+import { snakeCase } from "lodash"
 import { match } from "path-to-regexp"
 import type { MatchFunction } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
@@ -343,8 +343,7 @@ export class Hatchify {
 
       const missingPostgresSchemas = Object.values(this.schema).reduce(
         (acc, model) => {
-          const schemaName =
-            model?.namespace && noCase(model.namespace, { delimiter: "_" })
+          const schemaName = snakeCase(model?.namespace)
           return schemaName &&
             !existingPostgresSchemas.includes(schemaName) &&
             (alter || force)

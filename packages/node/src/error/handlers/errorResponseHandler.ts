@@ -99,9 +99,10 @@ export function errorResponseHandler(
 
         if (validationError.validatorKey === "isIn") {
           return new UnexpectedValueError({
-            detail: `${
-              instance?.constructor.name
-            } must have '${path}' as one of ${(validatorArgs[0] as string[])
+            detail: `${instance?.constructor
+              .name} must have '${path}' as one of ${(
+              validatorArgs[0] as string[]
+            )
               .map((a) => `'${a}'`)
               .join(", ")}.`,
             pointer: `/data/attributes/${path}`,

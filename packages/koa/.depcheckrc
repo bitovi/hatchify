@@ -2,4 +2,5 @@ ignore-dirs:
   - /dist
 ignores:
   - "@types/*"
+  - pg
   - ts-jest

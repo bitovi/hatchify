@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/create",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "MIT",
   "bin": {
@@ -25,7 +25,7 @@
     "test": "echo 'TBD'"
   },
   "engines": {
-    "node": "^18.0.0"
+    "node": ">=18.0.0"
   },
   "repository": {
     "type": "git",
@@ -37,9 +37,9 @@
   },
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "devDependencies": {
-    "@types/cross-spawn": "^6.0.4",
-    "@types/minimist": "^1.2.4",
-    "@types/prompts": "^2.4.7",
+    "@types/cross-spawn": "^6.0.6",
+    "@types/minimist": "^1.2.5",
+    "@types/prompts": "^2.4.9",
     "cross-spawn": "^7.0.3",
     "kolorist": "^1.8.0",
     "minimist": "^1.2.8",

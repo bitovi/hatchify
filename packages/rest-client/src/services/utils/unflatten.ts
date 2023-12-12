@@ -54,17 +54,23 @@ export function unflattenData<
 
   const attributes = Object.entries(data)
     .filter(([key]) => attributeKeys.includes(key))
-    .reduce((acc, [key, value]) => {
-      acc[key] = value
-      return acc
-    }, {} as Record<string, unknown>)
+    .reduce(
+      (acc, [key, value]) => {
+        acc[key] = value
+        return acc
+      },
+      {} as Record<string, unknown>,
+    )
 
   const relationships = Object.entries(data)
     .filter(([key]) => relationshipKeys.includes(key))
-    .reduce((acc, [key, value]) => {
-      acc[key] = value
-      return acc
-    }, {} as Record<string, unknown>)
+    .reduce(
+      (acc, [key, value]) => {
+        acc[key] = value
+        return acc
+      },
+      {} as Record<string, unknown>,
+    )
 
   return {
     attributes,

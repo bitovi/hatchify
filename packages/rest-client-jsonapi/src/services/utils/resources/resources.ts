@@ -31,10 +31,13 @@ type Relationship = Record<
 export const getTypeToSchema = (
   schemaMap: RestClientSchemaMap, // todo: HATCH-417
 ): Record<string, string> => {
-  return Object.entries(schemaMap).reduce((acc, [key, value]) => {
-    acc[value.type] = key
-    return acc
-  }, {} as Record<string, string>)
+  return Object.entries(schemaMap).reduce(
+    (acc, [key, value]) => {
+      acc[value.type] = key
+      return acc
+    },
+    {} as Record<string, string>,
+  )
 }
 
 /**

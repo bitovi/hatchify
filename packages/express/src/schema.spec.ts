@@ -390,9 +390,8 @@ describe.each(dbDialects)("schema", (dialect) => {
         })
 
         it("supports listing all users", async () => {
-          const { status: getStatus, body: getUsers } = await fetch(
-            "/api/users",
-          )
+          const { status: getStatus, body: getUsers } =
+            await fetch("/api/users")
 
           expect(getStatus).toBe(200)
           expect(getUsers).toEqual({

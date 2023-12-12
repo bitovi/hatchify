@@ -83,8 +83,8 @@ describe("dateonly", () => {
       expect(() => setClientPropertyValueFromResponse?.(1)).toThrow(
         new HatchifyCoerceError("as an ISO 8601 date string"),
       )
-      expect(() =>
-        setClientPropertyValueFromResponse?.("2023-01-01T00:00:00.000Z"),
+      expect(
+        () => setClientPropertyValueFromResponse?.("2023-01-01T00:00:00.000Z"),
       ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
 
       // serializeORMPropertyValue
@@ -346,8 +346,8 @@ describe("dateonly", () => {
       expect(() => setClientPropertyValueFromResponse?.(1)).toThrow(
         new HatchifyCoerceError("as an ISO 8601 date string"),
       )
-      expect(() =>
-        setClientPropertyValueFromResponse?.("2023-01-01T00:00:00.000Z"),
+      expect(
+        () => setClientPropertyValueFromResponse?.("2023-01-01T00:00:00.000Z"),
       ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
 
       // serializeORMPropertyValue

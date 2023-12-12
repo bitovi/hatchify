@@ -49,7 +49,7 @@ much of the React configuration for us.
 following steps:
 
 1. Ensure you’re using [node 18 and npm
-   9](https://nodejs.org/en/download)
+   9 or above](https://nodejs.org/en/download)
 
    ```bash
    node -v
@@ -384,14 +384,6 @@ well-defined schemas to create a database, a running backend with REST endpoints
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
 - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
 - [Using virtual fields](./doc/next-steps/virtual-fields.md)
-
-# Troubleshooting / Known issues
-
-```bash
-TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts" for .../hatchify-app/backend/index.ts
-```
-
-You might be on Node 20. If so, please use Node 18.
 
 # Need help or have questions?
 

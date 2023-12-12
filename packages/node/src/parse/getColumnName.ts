@@ -1,4 +1,4 @@
-import { noCase } from "no-case"
+import { snakeCase } from "lodash"
 import type { Dialect } from "sequelize"
 
 export function getColumnName(
@@ -6,14 +6,14 @@ export function getColumnName(
   escapeStyle?: Dialect,
 ): string {
   if (!attributeName.includes(".")) {
-    return noCase(attributeName, { delimiter: "_" })
+    return snakeCase(attributeName)
   }
 
   const columnName = attributeName
     .replaceAll("$", "")
     .split(".")
     .map((part, index, { length }) =>
-      index === length - 1 ? noCase(part, { delimiter: "_" }) : part,
+      index === length - 1 ? snakeCase(part) : part,
     )
     .join(".")
 
