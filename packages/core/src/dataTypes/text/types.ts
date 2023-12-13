@@ -1,10 +1,10 @@
 import type { PartialDataTypeProps } from "../../types"
 import type { PartialStringControlType } from "../string"
 
-export type PartialTextProps<TRequired extends boolean> = PartialDataTypeProps<
-  string,
-  TRequired
->
+export interface PartialTextProps<TRequired extends boolean>
+  extends PartialDataTypeProps<string, TRequired> {
+  maxDisplayLength?: number
+}
 
 export type PartialTextControlType<TRequired extends boolean> =
   PartialStringControlType<TRequired>
