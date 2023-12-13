@@ -11,7 +11,8 @@ runs:
   steps:
     - name: Setup
       uses: ./.github/actions/setup
-      with: ${{ inputs.node-version }}
+      with:
+        node-version: ${{ inputs.node-version }}
 
     - name: Check
       uses: ./.github/actions/check
