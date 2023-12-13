@@ -1,13 +1,13 @@
 # datetime({min, max, default, required, step})
 
-Defines an attribute as being a date type that includes the __time__.
+Defines an attribute as being a date type that includes the **time**.
 
 ```ts
 export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
     dueDate: datetime({ required: true }),
-  }
+  },
 }
 ```
 
@@ -15,15 +15,15 @@ Use [dateonly] for a date type without time.
 
 ## Parameters
 
-|      key      | description                                                                                                       | type            | optional  | default    |
-| ------------- | ----------------------------------------------------------------------------------------------------------------- | :-------------: | :-------: | :--------: |
-| `default`     | The default value of the attribute. <br/> Example: `datetime({default: 2023-10-02T21:16:15.349Z})`                | `Date`          | Yes       | `undefined`|
-| `required`    | If the attribute must be provided.  <br/> Example: `datetime({required: true})`                                   | `Boolean`       | Yes       | `false`    |
-| `primary`     | If the attribute is a primary key.  <br/> Example: `datetime({primary: true})`                                    | `Boolean`       | Yes       | `false`    |
-| `unique`      | If the attribute must be unique.    <br/> Example: `datetime({unique: true})`                                     | `Boolean`       | Yes       | `false`    |
-| `max`         | The max date allowed.               <br/> Example: `datetime({max: new Date()})`, `datetime({max: 1696283660000})`| `Date, number`  | Yes       | `undefined`|
-| `min`         | The min date allowed.               <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})`| `Date, number`  | Yes       | `undefined`|
-| `step`        | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`, `datetime({step: 7})`| `"day", number`| Yes | `undefined`|
+| key        | description                                                                                                               |      type       | optional |   default   |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------- | :-------------: | :------: | :---------: |
+| `default`  | The default value of the attribute. <br/> Example: `datetime({default: 2023-10-02T21:16:15.349Z})`                        |     `Date`      |   Yes    | `undefined` |
+| `required` | If the attribute must be provided. <br/> Example: `datetime({required: true})`                                            |    `Boolean`    |   Yes    |   `false`   |
+| `primary`  | If the attribute is a primary key. <br/> Example: `datetime({primary: true})`                                             |    `Boolean`    |   Yes    |   `false`   |
+| `unique`   | If the attribute must be unique. <br/> Example: `datetime({unique: true})`                                                |    `Boolean`    |   Yes    |   `false`   |
+| `max`      | The max date allowed. <br/> Example: `datetime({max: new Date()})`, `datetime({max: 1696283660000})`                      | `Date, number`  |   Yes    | `undefined` |
+| `min`      | The min date allowed. <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})`                      | `Date, number`  |   Yes    | `undefined` |
+| `step`     | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`, `datetime({step: 7})` | `"day", number` |   Yes    | `undefined` |
 
 ## Database and Sequelize Behavior
 

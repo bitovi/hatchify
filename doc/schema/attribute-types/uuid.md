@@ -7,7 +7,7 @@ export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
     ownerId: uuid({ required: true }),
-  }
+  },
 }
 ```
 
@@ -19,9 +19,8 @@ export const Todo: PartialSchema = {
 
 ## Form Controls
 
-`uuid()` will produce a `<button>` that when clicked, will genereate a UUID in a `<input type='text'/>` control. Users can also provide their 
-own UUID.  
-
+`uuid()` will produce a `<button>` that when clicked, will genereate a UUID in a `<input type='text'/>` control. Users can also provide their
+own UUID.
 
 <details>
 <summary>
@@ -35,10 +34,9 @@ own UUID.
 ```js
 {
   type: "UUID4",
-  allowNull: Boolean, 
+  allowNull: Boolean,
 }
 ```
-
 
 ### Sequelize Type
 
@@ -49,7 +47,5 @@ own UUID.
   allowNull: true,
 }
 ```
-  
+
 </details>
-
-

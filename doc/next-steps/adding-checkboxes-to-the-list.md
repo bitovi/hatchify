@@ -17,18 +17,12 @@ Update `/src/App.tsx` to the following:
 
 ```tsx
 // hatchify-app/frontend/App.tsx
-import {
-  hatchifyReact,
-  HatchifyProvider,
-  createJsonapiClient,
-} from "@hatchifyjs/react"
+import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
 import * as schemas from "../schemas"
 import { useState } from "react" // 👀
 
-export const hatchedReact = hatchifyReact(
-  createJsonapiClient("http://localhost:3000/api", schemas),
-)
+export const hatchedReact = hatchifyReact(createJsonapiClient("http://localhost:3000/api", schemas))
 
 const TodoList = hatchedReact.components.Todo.Collection
 
@@ -38,7 +32,7 @@ const App: React.FC = () => {
     all: false,
     ids: [],
   })
-  
+
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
@@ -46,7 +40,7 @@ const App: React.FC = () => {
         <TodoList defaultSelected={selected} onSelectedChange={(selected) => setSelected(selected)}></TodoList>
       </HatchifyProvider>
     </ThemeProvider>
-    )
+  )
 }
 
 export default App

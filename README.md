@@ -81,14 +81,14 @@ under the hood to talk to your database.
 
 ```ts
 // hatchify-app/schemas.ts
-import { belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
+import { belongsTo, boolean, dateonly, integer, hasMany, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
 export const Todo = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
-    dueDate: datetime(),
+    dueDate: dateonly(),
     importance: integer(),
     complete: boolean({ default: false }),
   },
