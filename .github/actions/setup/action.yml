@@ -9,7 +9,7 @@ runs:
   using: "composite"
 
   steps:
-    - name: Setup Node.js ${{ matrix.node-version }} environment
+    - name: Setup Node.js ${{ inputs.node-version }} environment
       uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.node-version }}
