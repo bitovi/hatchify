@@ -52,7 +52,11 @@ export function getDefaultDataRender<
     }
 
     if (type === "string" || type === "enum") {
-      return <String value={value} />
+      const { maxDisplayLength } = control
+      const newValue = maxDisplayLength
+        ? `${value.substr(0, maxDisplayLength).trim()}...`
+        : value
+      return <String value={newValue} />
     }
 
     if (type === "boolean") {
