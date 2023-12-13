@@ -1,17 +1,18 @@
 name: monorepo-setup
 
+inputs:
+  node-version:
+    description: "The Node version."
+    required: true
+
 runs:
   using: "composite"
-
-  strategy:
-    matrix:
-      node-version: [18.x, 20.x]
 
   steps:
     - name: Setup Node.js ${{ matrix.node-version }} environment
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ inputs.node-version }}
         registry-url: "https://registry.npmjs.org/"
 
     - name: Install dependencies
