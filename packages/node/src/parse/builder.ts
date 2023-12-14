@@ -68,7 +68,7 @@ export function replaceIdentifiers(
       }
 
       return mapping[identifier]
-        ?.map((relationshipName) => `fields[${relationshipName}]=${value}`)
+        .map((relationshipName) => `fields[${relationshipName}]=${value}`)
         .join("&")
     },
   )
