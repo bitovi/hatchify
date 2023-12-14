@@ -51,12 +51,28 @@ export function getDefaultDataRender<
       return <Date value={value} dateOnly={type === "dateonly"} />
     }
 
-    if (type === "string" || type === "enum") {
+    if (type === "enum") {
+      return <String value={value} />
+    }
+
+    if (type === "string") {
       const { maxDisplayLength } = control
-      const formattedValue = maxDisplayLength
-        ? `${value.substr(0, maxDisplayLength).trim()}...`
+      const maxDisplayLengthExceeded =
+        maxDisplayLength && value.trim().length > maxDisplayLength
+
+      if (!maxDisplayLengthExceeded) {
+        return <String value={value} />
+      }
+
+      const truncatedValue = maxDisplayLengthExceeded
+        ? `${value.substr(0, maxDisplayLength).trim()}\u2026`
         : value
-      return <String value={formattedValue} />
+
+      return (
+        <span aria-label={value}>
+          <String value={truncatedValue} />
+        </span>
+      )
     }
 
     if (type === "boolean") {
