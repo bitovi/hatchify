@@ -42,9 +42,9 @@ const router = new KoaRouter() // 👀
 router.get("/api/cases", async function getCases(ctx): Promise<void> {
   const { query } = ctx
 
-  // Here is a good opportunity to manipulate the query.
-  // For ex. when the UI shows one column for name it sends `{ sort: "name" }`
-  // we might want to change it to `{ sort: "lastName,firstName,middleInitial" }`
+  // Here is a good opportunity to manipulate the query or add input validation.
+  // For ex. when the UI shows one column for name, sorting it sends `{ sort: "name" }`
+  // which we might want to change to `{ sort: "lastName,firstName,middleInitial" }`
 
   const findOptions = await hatchedKoa.parse.Case.findAndCountAll(querystring.stringify(query))
 
