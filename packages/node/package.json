@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/bitovi/hatchify#readme",
   "dependencies": {
-    "@bitovi/sequelize-querystring-parser": "^0.3.1",
+    "@bitovi/sequelize-querystring-parser": "^0.3.2",
     "@hatchifyjs/sequelize-create-with-associations": "^0.6.6",
     "co-body": "^6.1.0",
     "json-api-serializer": "^2.6.6",
