@@ -97,7 +97,6 @@ describe("text", () => {
             primaryKey: false,
             unique: false,
             defaultValue: null,
-            maxDisplayLength: null,
           },
         },
         control: {
@@ -108,7 +107,6 @@ describe("text", () => {
           primary: false,
           default: null,
           regex: /(.*?)/,
-          maxDisplayLength: null,
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -233,7 +231,6 @@ describe("text", () => {
             primaryKey: false,
             unique: false,
             defaultValue: null,
-            maxDisplayLength: null,
           },
         },
         control: {
@@ -244,7 +241,6 @@ describe("text", () => {
           primary: false,
           default: null,
           regex: /(.*?)/,
-          maxDisplayLength: null,
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -368,7 +364,6 @@ describe("text", () => {
             primaryKey: true,
             unique: true,
             defaultValue: null,
-            maxDisplayLength: null,
           },
         },
         control: {
@@ -379,7 +374,6 @@ describe("text", () => {
           primary: true,
           default: null,
           regex: /(.*?)/,
-          maxDisplayLength: null,
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
