@@ -16,12 +16,9 @@ export interface PartialTextORM {
     primaryKey?: boolean
     defaultValue?: string | (() => string) | null
     unique?: boolean
-    maxDisplayLength?: number | null
   }
 }
 
 export interface FinalTextORM {
-  sequelize: Required<PartialTextORM["sequelize"]> & {
-    maxDisplayLength: number | null
-  }
+  sequelize: Required<PartialTextORM["sequelize"]>
 }
