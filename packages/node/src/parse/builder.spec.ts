@@ -60,7 +60,7 @@ describe("builder", () => {
   const { User, Todo, DisconnectedSchema } = hatchify.schema
 
   describe("replaceIdentifiers", () => {
-    it("replaces schema names with relationship names", () => {
+    it("replaces schema names with relationship names", async () => {
       const { Employee } = assembler({
         Employee: {
           name: "Employee",
@@ -78,17 +78,21 @@ describe("builder", () => {
         },
       })
 
-      expect(
+      await expect(async () =>
         replaceIdentifiers(
           "fields[Employee]=id,name&fields[Todo]=id,name,dueDate&fields[User]=invalid",
           Employee,
         ),
-      ).toBe(
-        "fields[]=id,name&fields[todos]=id,name,dueDate&fields[User]=invalid",
-      )
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail:
+            "URL must have 'fields[x]' where 'x' is one of 'Employee', 'Todo'.",
+          parameter: "fields[User]",
+        }),
+      ])
     })
 
-    it("handles fields on main table", () => {
+    it("handles fields on main table", async () => {
       const { Employee } = assembler({
         Employee: {
           name: "Employee",
@@ -100,14 +104,17 @@ describe("builder", () => {
         },
       })
 
-      expect(
+      await expect(async () =>
         replaceIdentifiers(
           "fields[Employee]=id,name,dueDate&fields[User]=invalid",
           Employee,
         ),
-      ).toBe(
-        "fields[]=id,name,dueDate&fields[manager]=id,name,dueDate&fields[colleagues]=id,name,dueDate&fields[User]=invalid",
-      )
+      ).rejects.toEqualErrors([
+        new UnexpectedValueError({
+          detail: "URL must have 'fields[x]' where 'x' is one of 'Employee'.",
+          parameter: "fields[User]",
+        }),
+      ])
     })
 
     it("handles no fields on main table", () => {
@@ -130,10 +137,10 @@ describe("builder", () => {
 
       expect(
         replaceIdentifiers(
-          "fields[Todo]=id,name,dueDate&fields[User]=invalid",
+          "fields[Todo]=id,name,dueDate&fields[Employee]=invalid",
           Employee,
         ),
-      ).toBe("fields[todos]=id,name,dueDate&fields[User]=invalid")
+      ).toBe("fields[todos]=id,name,dueDate&fields[]=invalid")
     })
   })
 

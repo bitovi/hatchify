@@ -823,5 +823,24 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
         errors: [ERROR_CODE_UNEXPECTED_VALUE],
       })
     })
+
+    it("should return error UNEXPECTED_VALUE error code when receiving non-existing schema (HATCH-389)", async () => {
+      const ERROR_CODE_UNEXPECTED_VALUE = {
+        status: 422,
+        code: "unexpected-value",
+        title: "Unexpected value.",
+        detail: "URL must have 'fields[x]' where 'x' is one of 'Todo', 'User'.",
+        source: {
+          parameter: "fields[]",
+        },
+      }
+      const { status, body } = await fetch("/api/todos?fields[]=name")
+
+      expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [ERROR_CODE_UNEXPECTED_VALUE],
+      })
+    })
   })
 })
