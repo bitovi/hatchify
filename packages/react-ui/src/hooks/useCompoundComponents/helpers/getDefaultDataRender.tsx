@@ -53,10 +53,10 @@ export function getDefaultDataRender<
 
     if (type === "string" || type === "enum") {
       const { maxDisplayLength } = control
-      const newValue = maxDisplayLength
+      const formattedValue = maxDisplayLength
         ? `${value.substr(0, maxDisplayLength).trim()}...`
         : value
-      return <String value={newValue} />
+      return <String value={formattedValue} />
     }
 
     if (type === "boolean") {
