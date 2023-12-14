@@ -28,7 +28,7 @@ GET /api/todos?page[offset]=5&page[limit]=10
 
 Page-based pagination involves using a `page[number]` parameter to specify the desired page number. The API consumer requests a specific page of data, and the API responds with the corresponding page, typically along with metadata such as the total number of pages or total record count.
 
-This technique simplifies navigation and is often combined with other parameters like `size` to determine the number of records per page.
+This technique simplifies navigation and is often combined with other parameters like `page[size]` to determine the number of records per page.
 
 For example, the following url asks for the second page of todos where each page has 20 results:
 
