@@ -18,7 +18,7 @@ export interface PartialStringControlType<TRequired extends boolean>
   min?: number
   max?: number
   regex?: RegExp
-  maxDisplayLength?: number
+  maxDisplayLength?: number | null
 }
 
 export interface PartialStringORM {

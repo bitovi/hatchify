@@ -16,7 +16,7 @@ export interface PartialTextORM {
     primaryKey?: boolean
     defaultValue?: string | (() => string) | null
     unique?: boolean
-    maxDisplayLength?: number
+    maxDisplayLength?: number | null
   }
 }
 

@@ -11,7 +11,7 @@ export function getPartialOrm(
       primaryKey: props?.primary,
       defaultValue: props?.default,
       unique: props?.unique,
-      maxDisplayLength: props?.maxDisplayLength ?? 255,
+      maxDisplayLength: props?.maxDisplayLength,
     },
   }
 }

@@ -14,6 +14,6 @@ export function getPartialControl<TRequired extends boolean>(
     primary: props?.primary,
     default: props?.default,
     regex: props?.regex,
-    maxDisplayLength: props?.maxDisplayLength ?? 255,
+    maxDisplayLength: props?.maxDisplayLength,
   }
 }
