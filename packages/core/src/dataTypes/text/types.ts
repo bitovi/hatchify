@@ -21,5 +21,7 @@ export interface PartialTextORM {
 }
 
 export interface FinalTextORM {
-  sequelize: Required<PartialTextORM["sequelize"]>
+  sequelize: Required<PartialTextORM["sequelize"]> & {
+    maxDisplayLength: number | null
+  }
 }

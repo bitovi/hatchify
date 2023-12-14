@@ -51,7 +51,6 @@ export interface PartialSequelizeDataType<ArgsType, PrimitiveType> {
   primaryKey?: boolean
   defaultValue?: PrimitiveType | (() => PrimitiveType) | null
   unique?: boolean
-  maxDisplayLength?: number | null
 }
 
 export interface PartialAttribute<

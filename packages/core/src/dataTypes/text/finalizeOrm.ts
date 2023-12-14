@@ -8,6 +8,7 @@ export function finalizeOrm({ sequelize }: PartialTextORM): FinalTextORM {
       primaryKey: !!sequelize.primaryKey,
       defaultValue: sequelize.defaultValue ?? null,
       unique: !!sequelize.unique || !!sequelize.primaryKey,
+      maxDisplayLength: sequelize.maxDisplayLength ?? null,
     },
   }
 }

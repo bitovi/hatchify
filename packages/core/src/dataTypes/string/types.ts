@@ -22,9 +22,13 @@ export interface PartialStringControlType<TRequired extends boolean>
 }
 
 export interface PartialStringORM {
-  sequelize: PartialSequelizeDataType<number[] | string[], string>
+  sequelize: PartialSequelizeDataType<number[] | string[], string> & {
+    maxDisplayLength?: number
+  }
 }
 
 export interface FinalStringORM {
-  sequelize: Required<PartialSequelizeDataType<number[] | string[], string>>
+  sequelize: Required<PartialSequelizeDataType<number[] | string[], string>> & {
+    maxDisplayLength: number | null
+  }
 }

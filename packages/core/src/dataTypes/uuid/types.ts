@@ -12,7 +12,7 @@ export type PartialUuidProps<TRequired extends boolean> = PartialDataTypeProps<
 }
 
 export interface PartialUuidControlType<TRequired extends boolean>
-  extends PartialStringControlType<TRequired> {
+  extends Omit<PartialStringControlType<TRequired>, "maxDisplayLength"> {
   hidden: boolean | null
 }
 
