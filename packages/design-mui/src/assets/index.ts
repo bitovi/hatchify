@@ -1,1 +1,1 @@
-export { Eggbert } from "./Eggbert"
+export { Robochicken } from "./Robochicken"
