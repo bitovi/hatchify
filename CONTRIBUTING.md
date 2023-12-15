@@ -538,19 +538,13 @@ All Hatchify packages have the same structure which allows making releases throu
 cd packages/<packagename>
 ```
 
-4. Rebuild the package to make sure it is up to date
-
-```
-nx run @hatchifyjs/<packagename>:build
-```
-
-5. Increment the version. For example, to make a `PATCH` release:
+4. Increment the version. For example, to make a `PATCH` release:
 
 ```
 npm version patch
 ```
 
-6. Publish the package
+5. Publish the package
 
 ```
 npm publish
