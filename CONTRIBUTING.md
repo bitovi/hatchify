@@ -550,7 +550,7 @@ npm version patch
 npm publish
 ```
 
-7. Follow the prompts to log in to npm and publish the package
+6. Follow the prompts to log in to npm and publish the package
 
 #### Making pre-releases
 
