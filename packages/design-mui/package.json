@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/design-mui",
-  "version": "0.1.35",
+  "version": "0.1.36",
   "main": "./dist/design-mui.js",
   "module": "./dist/design-mui.mjs",
   "types": "./dist/design-mui.d.ts",
@@ -13,6 +13,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
+    "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
     "eslint": "eslint vite.config.ts src",
     "depcheck": "depcheck .",
