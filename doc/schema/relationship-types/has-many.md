@@ -1,7 +1,7 @@
 # hasMany( [schemaName][,{targetAttribute}] )
 
-Creates a "has many" relationship from the source schema to the target schema. For each instance of the source schema, it will relate to multiple 
-records of the target schema. 
+Creates a "has many" relationship from the source schema to the target schema. For each instance of the source schema, it will relate to multiple
+records of the target schema.
 
 ## hasMany()
 
@@ -15,26 +15,23 @@ const SalesPerson = {
     firstName: "STRING",
   },
   relationships: {
-    accounts: hasMany()
-  }
+    accounts: hasMany(),
+  },
 }
 ```
 
 ### Assembly Implications
 
-This creates an `Account.salesPersonId` that  references `SalesPerson` as if it were defined below:
+This creates an `Account.salesPersonId` that references `SalesPerson` as if it were defined below:
 
 ```js
 const Account = {
   name: "Account",
   attributes: {
-    salesPersonId: uuid({references: "SalesPerson"})
-  }
+    salesPersonId: uuid({ references: "SalesPerson" }),
+  },
 }
 ```
-
-
-
 
 <details>
 <summary>Advanced Details</summary>
@@ -62,9 +59,7 @@ const SalesPerson = {
   }
 }
 ```
-  
+
 </details>
-
-
 
 ## hasMany(schemaName, {targetAttribute})

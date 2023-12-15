@@ -40,6 +40,7 @@ export function replaceIdentifiers(
   querystring: string,
   schema: FinalSchema,
 ): string {
+  const errors: Error[] = []
   const mapping = Object.entries(schema.relationships ?? {}).reduce(
     (acc, [relationshipName, { targetSchema }]) => ({
       ...acc,
@@ -48,13 +49,35 @@ export function replaceIdentifiers(
     { [getSchemaKey(schema)]: [""], [schema.name]: [""] },
   )
 
-  return querystring.replace(
+  const queryStringWithRelationshipNames = querystring.replace(
     /fields\[(.*?)\]=([^&]*)/g,
-    (match, identifier, value) =>
-      mapping[identifier]
-        ?.map((relationshipName) => `fields[${relationshipName}]=${value}`)
-        .join("&") ?? match,
+    (match, identifier, value) => {
+      if (!mapping[identifier]) {
+        errors.push(
+          new UnexpectedValueError({
+            detail: `URL must have 'fields[x]' where 'x' is one of ${Object.keys(
+              mapping,
+            )
+              .map((key) => `'${key}'`)
+              .join(", ")}.`,
+            parameter: `fields[${identifier}]`,
+          }),
+        )
+
+        return match
+      }
+
+      return mapping[identifier]
+        .map((relationshipName) => `fields[${relationshipName}]=${value}`)
+        .join("&")
+    },
   )
+
+  if (errors.length) {
+    throw errors
+  }
+
+  return queryStringWithRelationshipNames
 }
 
 export function buildFindOptions(

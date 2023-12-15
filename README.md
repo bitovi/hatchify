@@ -29,9 +29,11 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Schema, database, and service API naming](./doc/naming.md)
   - [Model Sync](./doc/next-steps/model-sync.md)
   - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
+  - [Adding custom endpoints](./doc/next-steps//adding-custom-endpoints.md)
   - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
   - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
+  - [Learn how to paginate data](./doc/paginating-data/paginating-data.md)
   - [Using virtual fields](./doc/next-steps/virtual-fields.md)
 - [Troubleshooting / Known issues](#troubleshooting--known-issues)
 - [Need help or have questions?](#need-help-or-have-questions)
@@ -45,7 +47,7 @@ much of the React configuration for us.
 
 > **Note:** The ✏️ icon indicates when to follow along!
 
-[✏️](https://emojipedia.org/pencil/) Perform all the
+✏️ Perform all the
 following steps:
 
 1. Ensure you’re using [node 18 and npm
@@ -81,14 +83,14 @@ under the hood to talk to your database.
 
 ```ts
 // hatchify-app/schemas.ts
-import { belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
+import { belongsTo, boolean, dateonly, integer, hasMany, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
 export const Todo = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
-    dueDate: datetime(),
+    dueDate: dateonly(),
     importance: integer(),
     complete: boolean({ default: false }),
   },

@@ -578,6 +578,154 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
       })
     })
 
+    describe("should return error UNEXPECTED_VALUE error code when receiving unsupported page values (HATCH-331)", () => {
+      it("multiple unsupported page values", async () => {
+        const { status, body } = await fetch("/api/todos?page[x]=1&page[y]=2")
+
+        expect(status).toBe(422)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 422,
+              code: "unexpected-value",
+              title: "Unexpected value.",
+              detail: "Page x is not supported.",
+              source: {
+                parameter: "page[x]",
+              },
+            },
+            {
+              status: 422,
+              code: "unexpected-value",
+              title: "Unexpected value.",
+              detail: "Page y is not supported.",
+              source: {
+                parameter: "page[y]",
+              },
+            },
+          ],
+        })
+      })
+    })
+
+    describe("should return error UNEXPECTED_VALUE error code when receiving zeros for pagination (HATCH-332)", () => {
+      it("valid page offset and valid page limit", async () => {
+        const { status } = await fetch(
+          "/api/todos?page[offset]=1&page[limit]=1",
+        )
+
+        expect(status).toBe(200)
+      })
+
+      it("valid page offset and missing page limit", async () => {
+        const ERROR_CODE_UNEXPECTED_VALUE = {
+          status: 422,
+          code: "unexpected-value",
+          title: "Unexpected value.",
+          detail: "Page offset was provided but page limit was not provided.",
+          source: {
+            parameter: "page[limit]",
+          },
+        }
+        const { status, body } = await fetch("/api/todos?page[offset]=1")
+
+        expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [ERROR_CODE_UNEXPECTED_VALUE],
+        })
+      })
+
+      it("valid page offset and page limit of zero", async () => {
+        const ERROR_CODE_UNEXPECTED_VALUE = {
+          status: 422,
+          code: "unexpected-value",
+          title: "Unexpected value.",
+          detail: "Page limit should be a positive integer.",
+          source: {
+            parameter: "page[limit]",
+          },
+        }
+        const { status, body } = await fetch(
+          "/api/todos?page[offset]=1&page[limit]=0",
+        )
+
+        expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [ERROR_CODE_UNEXPECTED_VALUE],
+        })
+      })
+
+      it("missing page offset and missing page limit", async () => {
+        const { status } = await fetch("/api/todos")
+
+        expect(status).toBe(200)
+      })
+
+      it("missing page offset and page limit of zero", async () => {
+        const { status, body } = await fetch("/api/todos?page[limit]=0")
+
+        expect(status).toBe(422)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 422,
+              code: "unexpected-value",
+              title: "Unexpected value.",
+              detail: "Page limit should be a positive integer.",
+              source: {
+                parameter: "page[limit]",
+              },
+            },
+          ],
+        })
+      })
+
+      it("page offset of zero and missing page limit", async () => {
+        const { status, body } = await fetch("/api/todos?page[offset]=0")
+
+        expect(status).toBe(422)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 422,
+              code: "unexpected-value",
+              title: "Unexpected value.",
+              detail:
+                "Page offset was provided but page limit was not provided.",
+              source: {
+                parameter: "page[limit]",
+              },
+            },
+          ],
+        })
+      })
+
+      it("page offset of zero and page limit of zero", async () => {
+        const { status, body } = await fetch(
+          "/api/todos?page[offset]=0&page[limit]=0",
+        )
+
+        expect(status).toBe(422)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 422,
+              code: "unexpected-value",
+              title: "Unexpected value.",
+              detail: "Page limit should be a positive integer.",
+              source: { parameter: "page[limit]" },
+            },
+          ],
+        })
+      })
+    })
+
     it("should return error VALUE_REQUIRED error code when receiving no data for relationships (HATCH-215)", async () => {
       const ERROR_CODE_VALUE_REQUIRED = {
         status: 422,
@@ -668,6 +816,25 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
         },
       }
       const { status, body } = await fetch("/api/todos?fields[Todo]=nam")
+
+      expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        errors: [ERROR_CODE_UNEXPECTED_VALUE],
+      })
+    })
+
+    it("should return error UNEXPECTED_VALUE error code when receiving non-existing schema (HATCH-389)", async () => {
+      const ERROR_CODE_UNEXPECTED_VALUE = {
+        status: 422,
+        code: "unexpected-value",
+        title: "Unexpected value.",
+        detail: "URL must have 'fields[x]' where 'x' is one of 'Todo', 'User'.",
+        source: {
+          parameter: "fields[]",
+        },
+      }
+      const { status, body } = await fetch("/api/todos?fields[]=name")
 
       expect(status).toBe(ERROR_CODE_UNEXPECTED_VALUE.status)
       expect(body).toEqual({

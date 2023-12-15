@@ -7,7 +7,7 @@ import type { XEverythingProps } from "@hatchifyjs/react-ui"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { GetSchemaNames } from "@hatchifyjs/rest-client"
 import { MuiDataGrid } from "../MuiDataGrid"
-import { Eggbert } from "../../assets"
+import { Robochicken } from "../../assets"
 
 export function MuiEverything<
   const TSchemas extends Record<string, PartialSchema>,
@@ -56,7 +56,7 @@ export function MuiEverything<
               </Typography>
             </Grid>
             <Grid item xs={12} justifyContent="center" display="flex">
-              <Eggbert />
+              <Robochicken />
             </Grid>
             <Grid item xs={12}>
               <Typography
@@ -88,7 +88,7 @@ export function MuiEverything<
                   </Typography>
                 </Grid>
                 <Grid item xs={12} justifyContent="center" display="flex">
-                  <Eggbert />
+                  <Robochicken />
                 </Grid>
               </Grid>
             </HatchifyEmpty>

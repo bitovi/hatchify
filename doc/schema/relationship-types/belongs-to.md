@@ -1,21 +1,20 @@
 # belongsTo( [schemaName, options] )
 
-`belongsTo()` creates a relationship from the current _source_ schema to the _target_ schema. The following makes each account 
+`belongsTo()` creates a relationship from the current _source_ schema to the _target_ schema. The following makes each account
 belong to a sales person:
-
 
 ```ts
 const Account: PartialSchema = {
   name: "SalesPerson",
-  attributes: {}
+  attributes: {},
 }
 
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
   relationships: {
-    salesPerson: belongsTo()    // 👀
-  }
+    salesPerson: belongsTo(), // 👀
+  },
 }
 ```
 
@@ -30,15 +29,15 @@ For example, `salesPerson` below matches `SalesPerson`:
 ```ts
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
-  attributes: {}
+  attributes: {},
 }
 
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
   relationships: {
-    salesPerson: belongsTo()    // 👀
-  }
+    salesPerson: belongsTo(), // 👀
+  },
 }
 ```
 
@@ -50,11 +49,11 @@ An attribute named `salesPersonId` will be created as if it were defined as foll
 const Account: PartialSchema = {
   name: "Account",
   attributes: {
-    salesPersonId: uuid({references: "SalesPerson"})  // 👀
+    salesPersonId: uuid({ references: "SalesPerson" }), // 👀
   },
   relationships: {
-    salesPerson: belongsTo()    
-  }
+    salesPerson: belongsTo(),
+  },
 }
 ```
 
@@ -86,15 +85,15 @@ Pass a `schemaName` to specify the related schema.
 ```ts
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
-  attributes: {}
+  attributes: {},
 }
 
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
   relationships: {
-    closingSalesPerson: belongsTo("SalesPerson")    // 👀
-  }
+    closingSalesPerson: belongsTo("SalesPerson"), // 👀
+  },
 }
 ```
 
@@ -106,11 +105,11 @@ An attribute named `closingSalesPersonId` will be created as if it were defined 
 const Account: PartialSchema = {
   name: "Account",
   attributes: {
-    closingSalesPersonId: uuid({references: "SalesPerson"})  // 👀
+    closingSalesPersonId: uuid({ references: "SalesPerson" }), // 👀
   },
   relationships: {
-    closingSalesPerson: belongsTo("SalesPerson")
-  }
+    closingSalesPerson: belongsTo("SalesPerson"),
+  },
 }
 ```
 
@@ -142,14 +141,14 @@ Pass a `sourceAttribute` to specify which attribute defines the relationship.
 ```ts
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
-  attributes: {}
+  attributes: {},
 }
 
 const Account: PartialSchema = {
   name: "Account",
   relationships: {
-    closingSalesPerson: belongsTo("SalesPerson", {sourceAttribute: "closerId"})    // 👀
-  }
+    closingSalesPerson: belongsTo("SalesPerson", { sourceAttribute: "closerId" }), // 👀
+  },
 }
 ```
 
