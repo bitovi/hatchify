@@ -12,8 +12,8 @@ describe("components/MuiList", () => {
       displayAttribute: "firstName",
       attributes: {
         firstName: string(),
-        lastName: string({ maxDisplayLength: 5 }),
-        role: text({ maxDisplayLength: 10 }),
+        lastName: string({ maxRenderLength: 5 }),
+        role: text({ maxRenderLength: 10 }),
         status: text(),
       },
     },

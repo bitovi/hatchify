@@ -3,7 +3,7 @@ import type { PartialStringControlType } from "../string"
 
 export interface PartialTextProps<TRequired extends boolean>
   extends PartialDataTypeProps<string, TRequired> {
-  maxDisplayLength?: number
+  maxRenderLength?: number
 }
 
 export type PartialTextControlType<TRequired extends boolean> =

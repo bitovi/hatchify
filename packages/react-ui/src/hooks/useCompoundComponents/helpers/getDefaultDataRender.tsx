@@ -56,18 +56,15 @@ export function getDefaultDataRender<
     }
 
     if (type === "string") {
-      const { maxDisplayLength } = control
-      const maxDisplayLengthExceeded =
-        maxDisplayLength && value.trim().length > maxDisplayLength
+      const { maxRenderLength } = control
+      const maxRenderLengthExceeded =
+        maxRenderLength && value.length > maxRenderLength
 
-      if (!maxDisplayLengthExceeded) {
+      if (!maxRenderLengthExceeded) {
         return <String value={value} />
       }
 
-      const truncatedValue = maxDisplayLengthExceeded
-        ? `${value.substr(0, maxDisplayLength).trim()}\u2026`
-        : value
-
+      const truncatedValue = `${value.substr(0, maxRenderLength)}\u2026`
       return (
         <span aria-label={value}>
           <String value={truncatedValue} />
