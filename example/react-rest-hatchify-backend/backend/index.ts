@@ -1,10 +1,12 @@
-// hatchify-app/backend/index.ts
+import { dirname } from "path"
+import { fileURLToPath } from "url"
 import Koa from "koa"
 import c2k from "koa-connect"
-// @ts-expect-error @todo make TS happy here
 import { createServer as createViteServer } from "vite"
 import { hatchifyKoa } from "@hatchifyjs/koa"
-import * as schemas from "../schemas"
+import * as schemas from "../schemas.js"
+
+const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const app = new Koa()
 const hatchedKoa = hatchifyKoa(schemas, { prefix: "/api" })
@@ -13,7 +15,7 @@ const hatchedKoa = hatchifyKoa(schemas, { prefix: "/api" })
   await hatchedKoa.modelSync({ alter: true })
 
   const vite = await createViteServer({
-    root: `${__dirname}/../`,
+    root: `${currentDir}/../`,
     server: { middlewareMode: true },
   })
 
