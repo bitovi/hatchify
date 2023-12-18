@@ -1,9 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import createJsonapiClient from "@hatchifyjs/rest-client-jsonapi"
 import * as schemas from "../schemas.js"
 // import WithoutHooks from "./WithoutHooks"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Todo = any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type User = any
 
 // @ts-expect-error @todo make TS happy
 export const hatchedReactRest = hatchifyReactRest(
@@ -60,7 +64,7 @@ function Todos() {
         onChange={(e) => setSelectedUser(e.target.value)}
       >
         <option value="">select user</option>
-        {users.map((user: any) => (
+        {users.map((user: User) => (
           <option key={user.id} value={user.id}>
             {user.name}
           </option>
@@ -89,7 +93,7 @@ function Todos() {
           </tr>
         </thead>
         <tbody>
-          {todos.map((todo: any) => (
+          {todos.map((todo: Todo) => (
             <tr key={todo.id}>
               <td>{todo.name}</td>
               <td>{todo.user?.name}</td>
@@ -150,7 +154,7 @@ function Users() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user: any) => (
+          {users.map((user: User) => (
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>
@@ -184,6 +188,7 @@ function Users() {
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function EditUser({ id, setUserIdToEdit }: any) {
   const [updateUser, updateState] = hatchedReactRest.User.useUpdateOne()
   const [user, userState] = hatchedReactRest.User.useOne(id)
