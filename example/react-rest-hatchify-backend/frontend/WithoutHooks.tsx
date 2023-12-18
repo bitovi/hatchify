@@ -1,6 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react"
 import { hatchedReactRest } from "./App.jsx"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Todo = any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type User = any
 
 const WithoutHooks: React.FC = () => {
   return (
@@ -16,11 +20,11 @@ export default WithoutHooks
 function Todos() {
   const [enableFilter, setEnableFilter] = useState(false)
 
-  const [todos, setTodos] = useState<any[]>([])
+  const [todos, setTodos] = useState<Todo[]>([])
   const [loadingTodos, setLoadingTodos] = useState(true)
   const [errorTodo, setErrorTodo] = useState<Error | undefined>(undefined)
 
-  const [users, setUsers] = useState<any[]>([])
+  const [users, setUsers] = useState<User[]>([])
   const [loadingUsers, setLoadingUsers] = useState(true)
   const [errorUser, setErrorUser] = useState<Error | undefined>(undefined)
 
@@ -31,7 +35,7 @@ function Todos() {
       fields: { Todo: ["name"] },
       filter: enableFilter ? { name: ["Workout", "other"] } : undefined,
     })
-      .then(([todos]: [any]) => {
+      .then(([todos]: [Todo[]]) => {
         setTodos(todos)
         setErrorTodo(undefined)
       })
@@ -46,7 +50,7 @@ function Todos() {
   const fetchUsers = () => {
     setLoadingUsers(true)
     hatchedReactRest.User.findAll({})
-      .then(([users]: [any]) => {
+      .then(([users]: [User[]]) => {
         setUsers(users)
         setErrorUser(undefined)
       })
@@ -163,7 +167,7 @@ function Todos() {
 }
 
 function Users() {
-  const [users, setUsers] = useState<any[]>([])
+  const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -172,7 +176,7 @@ function Users() {
   const fetchUsers = () => {
     setLoading(true)
     hatchedReactRest.User.findAll({})
-      .then(([users]: [any]) => {
+      .then(([users]: [User[]]) => {
         setUsers(users)
         setError(undefined)
       })
@@ -271,6 +275,7 @@ function Users() {
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function EditUser({ id, setUserIdToEdit }: any) {
   const [updating, setUpdating] = useState(false)
   const [user, userState] = hatchedReactRest.User.useOne(id)
