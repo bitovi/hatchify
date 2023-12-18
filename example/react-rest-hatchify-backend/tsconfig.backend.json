@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {},
-  "include": ["backend", "schemas"]
+  "include": ["backend", "schemas.ts"]
 }

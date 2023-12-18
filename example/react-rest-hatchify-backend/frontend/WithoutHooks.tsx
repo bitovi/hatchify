@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react"
-import { hatchedReactRest } from "./App"
+import { hatchedReactRest } from "./App.jsx"
 
 const WithoutHooks: React.FC = () => {
   return (
@@ -30,11 +31,11 @@ function Todos() {
       fields: { Todo: ["name"] },
       filter: enableFilter ? { name: ["Workout", "other"] } : undefined,
     })
-      .then(([todos, meta]) => {
+      .then(([todos]: [any]) => {
         setTodos(todos)
         setErrorTodo(undefined)
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         setErrorTodo(error)
       })
       .finally(() => {
@@ -45,11 +46,11 @@ function Todos() {
   const fetchUsers = () => {
     setLoadingUsers(true)
     hatchedReactRest.User.findAll({})
-      .then(([users, meta]) => {
+      .then(([users]: [any]) => {
         setUsers(users)
         setErrorUser(undefined)
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         setErrorUser(error)
       })
       .finally(() => {
@@ -171,11 +172,11 @@ function Users() {
   const fetchUsers = () => {
     setLoading(true)
     hatchedReactRest.User.findAll({})
-      .then(([users, meta]) => {
+      .then(([users]: [any]) => {
         setUsers(users)
         setError(undefined)
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         setError(error)
       })
       .finally(() => {
