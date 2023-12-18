@@ -242,12 +242,24 @@ async function init() {
 
   await Promise.all([
     fs.promises.writeFile(
+      path.join(root, "nodemon.json"),
+      JSON.stringify(
+        {
+          ext: "ts",
+          execMap: { ts: "node --loader ts-node/esm" },
+        },
+        null,
+        2,
+      ),
+      "utf8",
+    ),
+    fs.promises.writeFile(
       path.join(root, "package.json"),
       JSON.stringify(
         {
           ...JSON.parse(templatePackage),
           name: packageName || getProjectName(),
-          type: undefined,
+          type: "module",
           scripts: {
             lint: "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
             dev: "nodemon backend/index.ts --watch backend --watch schemas.ts",
@@ -272,7 +284,7 @@ async function init() {
           experimentalResolver: true,
           compilerOptions: {
             module: "NodeNext",
-            moduleResolution: "Node",
+            moduleResolution: "NodeNext",
             target: "ESNext",
             lib: ["DOM", "DOM.Iterable", "ESNext"],
             jsx: "react-jsx",
