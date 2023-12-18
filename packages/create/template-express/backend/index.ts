@@ -1,10 +1,14 @@
+import { dirname } from "path"
+import { fileURLToPath } from "url"
 import dotenv from "dotenv"
 import Express from "express"
 import { createServer as createViteServer } from "vite"
 import { hatchifyExpress } from "@hatchifyjs/express"
-import * as Schemas from "../schemas"
+import * as Schemas from "../schemas.js"
 
 dotenv.config()
+
+const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const app = Express()
 const hatchedExpress = hatchifyExpress(Schemas, {
@@ -18,7 +22,7 @@ const hatchedExpress = hatchifyExpress(Schemas, {
   await hatchedExpress.modelSync({ alter: true })
 
   const vite = await createViteServer({
-    root: `${__dirname}/../`,
+    root: `${currentDir}/../`,
     server: { middlewareMode: true },
   })
 

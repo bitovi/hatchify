@@ -1,7 +1,7 @@
 import { belongsTo, hasMany, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-export const Todo = {
+export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
     name: string({ required: false }),
@@ -9,9 +9,9 @@ export const Todo = {
   relationships: {
     user: belongsTo("User"),
   },
-} satisfies PartialSchema
+}
 
-export const User = {
+export const User: PartialSchema = {
   name: "User",
   attributes: {
     name: string(),
@@ -19,4 +19,4 @@ export const User = {
   relationships: {
     todos: hasMany("Todo"),
   },
-} satisfies PartialSchema
+}

@@ -4,11 +4,9 @@ import {
   createJsonapiClient,
 } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
-import * as Schemas from "../schemas"
+import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(
-  createJsonapiClient("http://localhost:3000/api", Schemas),
-)
+export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const { Everything } = hatchedReact
 
