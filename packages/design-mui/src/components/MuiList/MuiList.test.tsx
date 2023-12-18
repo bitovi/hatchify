@@ -2,7 +2,7 @@ import "@testing-library/jest-dom"
 import { createElement } from "react"
 import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
-import { assembler, string } from "@hatchifyjs/core"
+import { assembler, string, text } from "@hatchifyjs/core"
 import { MuiList } from "./MuiList"
 
 describe("components/MuiList", () => {
@@ -12,7 +12,9 @@ describe("components/MuiList", () => {
       displayAttribute: "firstName",
       attributes: {
         firstName: string(),
-        lastName: string(),
+        lastName: string({ maxRenderLength: 5 }),
+        role: text({ maxRenderLength: 10 }),
+        status: text(),
       },
     },
   }
@@ -20,8 +22,20 @@ describe("components/MuiList", () => {
   const finalSchemas = assembler(partialSchemas)
 
   const data = [
-    { id: "uuid1", firstName: "John", lastName: "Smith" },
-    { id: "uuid2", firstName: "Jane", lastName: "Doe" },
+    {
+      id: "uuid1",
+      firstName: "John",
+      lastName: "Smith",
+      role: "Accountant",
+      status: "AFK",
+    },
+    {
+      id: "uuid2",
+      firstName: "George",
+      lastName: "Washington",
+      role: "Software Engineer",
+      status: "In a meeting",
+    },
   ]
 
   const meta = {
@@ -66,8 +80,12 @@ describe("components/MuiList", () => {
     expect(await screen.findByText("LastName")).toBeInTheDocument()
     expect(await screen.findByText("John")).toBeInTheDocument()
     expect(await screen.findByText("Smith")).toBeInTheDocument()
-    expect(await screen.findByText("Jane")).toBeInTheDocument()
-    expect(await screen.findByText("Doe")).toBeInTheDocument()
+    expect(await screen.findByText("Accountant")).toBeInTheDocument()
+    expect(await screen.findByText("AFK")).toBeInTheDocument()
+    expect(await screen.findByText("George")).toBeInTheDocument()
+    expect(await screen.findByText("Washi\u2026")).toBeInTheDocument()
+    expect(await screen.findByText("Software E\u2026")).toBeInTheDocument()
+    expect(await screen.findByText("In a meeting")).toBeInTheDocument()
   })
 
   it("fires sort callback", async () => {
