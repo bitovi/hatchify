@@ -3,7 +3,7 @@
 ## Scaffolding Your First HatchifyJS Project
 
 > **Compatibility Note:**
-> HatchifyJS requires [Node.js](https://nodejs.org/en/) version 18.
+> HatchifyJS requires [Node.js](https://nodejs.org/en/) version 18 or above.
 
 With NPM:
 
