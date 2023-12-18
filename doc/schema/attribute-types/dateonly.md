@@ -10,7 +10,7 @@ export const Todo: PartialSchema = {
   },
 }
 ```
-Use [datetime] for a date type with time.
+Use [datetime](./datetime.md) for a date type with time.
 
 ## Parameters
 
@@ -25,7 +25,7 @@ Use [datetime] for a date type with time.
 
 ## Database and Sequelize Behavior
 
-The  `dateonly` type will create sequelize [DataTypes.DATEONLY](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) columns, respectively.
+The  `dateonly` type will create sequelize [DataTypes.DATEONLY](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) column.
 
 ## Middleware Behavior
 
@@ -43,7 +43,7 @@ Checkout the [compatibility table](../../filtering-data/filtering-data.md#compat
 
 ### Data Response
 
-Dateonly and datetime data will be returned as `1990-12-31`, `1990-12-31`, or `null` as follows:
+Dateonly data will be returned as `1990-12-31`, or `null` as follows:
 
 ```js
 {
@@ -72,7 +72,7 @@ Similar to the middleware, you MUST provide react rest models a valid date in th
 Todo.createOne({ attributes: { dueDate: "1990-12-31" } })
 
 const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
-todo.dueDate //-> "1990-12-31", "1990-12-31", null, or undefined
+todo.dueDate //-> "1990-12-31", null, or undefined
 ```
 
 ## Grid Behavior

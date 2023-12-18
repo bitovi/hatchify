@@ -11,7 +11,7 @@ export const Todo: PartialSchema = {
 }
 ```
 
-Use [dateonly] for a date type without time.
+Use [dateonly](./dateonly.md) for a date type without time.
 
 ## Parameters
 
@@ -27,7 +27,7 @@ Use [dateonly] for a date type without time.
 
 ## Database and Sequelize Behavior
 
-The `datetime` type will create sequelize [DataTypes.DATE](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) columns, respectively.
+The `datetime` type will create sequelize [DataTypes.DATE](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) column.
 
 ## Middleware Behavior
 
