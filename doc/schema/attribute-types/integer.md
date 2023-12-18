@@ -32,11 +32,11 @@ The `integer` type will create a sequelize [DataTypes.INTEGER](https://sequelize
 
 ### Querying Data
 
-For integers, use any whole number value and `%00` 🛑 in your queries as follows:
+For integers, use any whole number value and `%00` in your queries as follows:
 
 ```js
 GET /todos?filter[importance][$gte]=5  // all todos with importance >= 5
-GET /todos?filter[importance][$eq]=%00 // all todos with importance = null 🛑
+GET /todos?filter[importance][$eq]=%00 // all todos with importance = null
 GET /todos?filter[importance][$in][]=1&filter[importance][$in][]=2 // all todos with importance = 1 or 2
 ```
 
@@ -80,6 +80,6 @@ The integer value will be presented in the grid. If the value is `null`, no valu
 
 ![Grid Example](../../attachments/integer-column.png)
 
-## Form Behavior
+## Form Behavior 🛑
 
 `integer()` will produce a [`<input type="number" step="1">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number) control. Empty values will be treated as `null`.

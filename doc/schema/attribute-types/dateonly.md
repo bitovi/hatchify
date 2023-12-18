@@ -10,6 +10,7 @@ export const Todo: PartialSchema = {
   },
 }
 ```
+
 Use [datetime](./datetime.md) for a date type with time.
 
 ## Parameters
@@ -61,7 +62,6 @@ Dateonly data will be returned as `1990-12-31`, or `null` as follows:
 
 When creating or updating a dateonly attribute, a valid date in the form of `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` must be provided. Any other value type will return a service error.
 
-
 Note: Any time portion used in creating/updating the attribute will be truncated.
 
 ## React Rest Behavior
@@ -83,6 +83,6 @@ The text date values will be presented in the grid. If the value is `null` or `u
 
 Note: The displayed values will be formatted to your locale.
 
-## Form Behavior
+## Form Behavior 🛑
 
 `dateonly()` in a [`<input type="date">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date) control with day resolution.

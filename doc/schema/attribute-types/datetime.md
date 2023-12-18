@@ -23,7 +23,7 @@ Use [dateonly](./dateonly.md) for a date type without time.
 | `unique`   | If the attribute must be unique. <br/> Example: `datetime({unique: true})`                                                |    `Boolean`    |   Yes    |   `false`   |
 | `max`      | The max date allowed. <br/> Example: `datetime({max: new Date()})`, `datetime({max: 1696283660000})`                      | `Date, number`  |   Yes    | `undefined` |
 | `min`      | The min date allowed. <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})`                      | `Date, number`  |   Yes    | `undefined` |
-| `step`     | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`, `datetime({step: 7})` | `"day", number` |   Yes    | `undefined` |
+| `step`     | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`                        |     `"day"`     |   Yes    | `undefined` |
 
 ## Database and Sequelize Behavior
 
@@ -86,12 +86,10 @@ The text date values will be presented in the grid. If the value is `null` or `u
 
 Note: The displayed values will be formatted to your locale.
 
-## Form Behavior
+## Form Behavior 🛑
 
 `datetime()` will result in a [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) control
 with minute resolution.
 
 `datetime({ step: "day" })` will result in a [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) control
-with minute resolution.
-
-Currently, any other step value will result in a [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) control which will be validated after the value is set.
+with day resolution.
