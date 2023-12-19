@@ -8,7 +8,7 @@
     ".": {
       "require": "./dist/rest-client-jsonapi.js",
       "import": "./dist/rest-client-jsonapi.mjs",
-      "types": "./src/rest-client-jsonapi.ts"
+      "types": "./dist/rest-client-jsonapi.d.ts"
     },
     "./package.json": "./package.json"
   },
