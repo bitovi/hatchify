@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "build:all": "npx nx run-many -t build",
+    "build:all": "nx run-many -t build",
     "check-packages": "ts-node ./scripts/check-packages",
     "e2e": "playwright test",
     "pree2e": "./scripts/pree2e.sh",
