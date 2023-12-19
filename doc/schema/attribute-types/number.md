@@ -32,13 +32,13 @@ The `number` type will create a sequelize [DataTypes.DECIMAL](https://sequelize.
 
 ### Querying Data
 
-For numbers, use any number value and `%00` 🛑 in your queries as follows:
+For numbers, use any number value and `%00` in your queries as follows:
 
 ```js
 // all todos with confidence >= 5.3
 GET /todos?filter[confidence][$gte]=5.3
 
-// all todos with confidence = null 🛑
+// all todos with confidence = null
 GET /todos?filter[confidence][$eq]=%00
 
  // all todos with confidence = 1 or =1.5
@@ -85,6 +85,6 @@ The number value will be presented in the grid. If the value is `null`, no value
 
 ![Grid Example](../../attachments/number-column.png)
 
-## Form Behavior
+## Form Behavior 🛑
 
 `number()` will produce a [`<input type="number">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number) control. Empty values will be treated as `null`.
