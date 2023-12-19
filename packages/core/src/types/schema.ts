@@ -41,6 +41,7 @@ export type PartialControlType<PrimitiveType, TRequired extends boolean> = {
   allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
   primary?: boolean
+  displayName?: string
   default?: PrimitiveType | (() => PrimitiveType) | null
 }
 
