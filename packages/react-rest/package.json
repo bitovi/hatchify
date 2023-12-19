@@ -8,7 +8,7 @@
     ".": {
       "require": "./dist/react-rest.js",
       "import": "./dist/react-rest.mjs",
-      "types": "./src/react-rest.ts"
+      "types": "./dist/react-rest.d.ts"
     },
     "./package.json": "./package.json"
   },

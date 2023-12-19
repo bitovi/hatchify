@@ -8,7 +8,7 @@
     ".": {
       "require": "./dist/design-mui.js",
       "import": "./dist/design-mui.mjs",
-      "types": "./src/design-mui.d.ts"
+      "types": "./dist/design-mui.d.ts"
     },
     "./package.json": "./package.json"
   },

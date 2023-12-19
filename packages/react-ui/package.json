@@ -8,7 +8,7 @@
     ".": {
       "require": "./dist/react-ui.js",
       "import": "./dist/react-ui.mjs",
-      "types": "./src/react-ui.d.ts"
+      "types": "./dist/react-ui.d.ts"
     },
     "./package.json": "./package.json"
   },
