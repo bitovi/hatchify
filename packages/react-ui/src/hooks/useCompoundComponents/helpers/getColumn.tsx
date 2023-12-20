@@ -1,4 +1,3 @@
-import { uuidv4 } from "@hatchifyjs/core"
 import type { PartialSchema, FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FinalSchemas, GetSchemaNames } from "@hatchifyjs/rest-client"
 import type { DefaultValueComponentsTypes } from "../../../components"
@@ -17,7 +16,7 @@ export function getColumn<
   isRelationship,
   defaultValueComponents,
   sortable,
-  key
+  key,
 }: {
   finalSchemas: FinalSchemas
   schemaName: TSchemaName
