@@ -17,6 +17,7 @@ export function getColumn<
   isRelationship,
   defaultValueComponents,
   sortable,
+  key
 }: {
   finalSchemas: FinalSchemas
   schemaName: TSchemaName
@@ -26,6 +27,7 @@ export function getColumn<
   isRelationship?: boolean
   defaultValueComponents: DefaultValueComponentsTypes
   sortable?: boolean
+  key: string
 }): HatchifyColumn {
   const {
     label: labelProp,
@@ -42,7 +44,7 @@ export function getColumn<
   const column: HatchifyColumn = {
     sortable:
       sortable !== undefined ? sortable : !isAdditional && !isRelationship, // reference sortable prop; otherwise sortable if an attribute
-    key: field || uuidv4(), // if no field, then it's an additional column, but needs a key?
+    key,
     label,
     renderData: () => null, // default render so TS doesn't complain
     renderHeader: () => null, // default render so TS doesn't complain

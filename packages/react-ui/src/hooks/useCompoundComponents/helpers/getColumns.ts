@@ -36,11 +36,13 @@ export function getColumns<
 
   for (let i = 0; i < prepend.length; i++) {
     const { props } = prepend[i]
+
     hatchifyColumns.push(
       getColumn({
         ...getHatchifyColumnCommon,
         control: null,
         field: "",
+        key: `prepend-${i}`,
         compoundComponentProps: props,
         isRelationship: false,
       }),
@@ -61,6 +63,7 @@ export function getColumns<
             ? null
             : schema.attributes?.[props.field]?.control || null,
           field: validField ? props.field : "",
+          key: validField ? props.field : `overwrite-${i}`,
           compoundComponentProps: props,
           isRelationship: relationship !== undefined,
           sortable: props.sortable,
@@ -92,6 +95,7 @@ export function getColumns<
               ? null
               : schema.attributes?.[props.field]?.control || null,
             field: props.field,
+            key: props.field,
             compoundComponentProps: props,
             isRelationship: relationship !== undefined,
             sortable: props.sortable,
@@ -105,11 +109,13 @@ export function getColumns<
 
   for (let i = 0; i < append.length; i++) {
     const { props } = append[i]
+
     hatchifyColumns.push(
       getColumn({
         ...getHatchifyColumnCommon,
         control: null,
         field: "",
+        key: `append-${i}`,
         compoundComponentProps: props,
         isRelationship: false,
       }),
