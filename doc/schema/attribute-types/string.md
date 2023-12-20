@@ -73,13 +73,13 @@ DATA:
 }
 ```
 
-# Grid Behavior
+## Grid Behavior
 
 The string value in its entirety is shown. Null values and empty string values are shown as an empty table cell.
 
 ![stringNullFilter](https://github.com/bitovi/hatchify/assets/109013/9e67c44d-11c2-434e-9bcc-68cefbfc3f95)
 
-## Form Controls
+## Form Controls 🛑
 
 `string()` with `max` of 255 and less will produce a standard text input like: `<input type=text>`.
 

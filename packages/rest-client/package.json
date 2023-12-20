@@ -8,7 +8,7 @@
     ".": {
       "require": "./dist/rest-client.js",
       "import": "./dist/rest-client.mjs",
-      "types": "./src/rest-client.ts"
+      "types": "./dist/rest-client.d.ts"
     },
     "./package.json": "./package.json"
   },
