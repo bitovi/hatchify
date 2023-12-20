@@ -1,11 +1,11 @@
-# $eq
+# $in
 
-Records that exactly match the given value will be returned. This is case-sensitive.
+Records that are an exact match to any of the given values will be returned.
 
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`, `date`, `boolean`, `number`
+`string`, `date`, `boolean`, `number`, `arrays`, `UUID`
 
 ## Examples
 
@@ -46,48 +46,31 @@ All examples use this example data:
     ]
 ```
 
-The `name` attribute equals "Workout"<br>
-`filter[name][$eq]=Workout`<br>
-
-This filter will match the following record:<br>
-
-```json
-{
-    "type": "Todo",
-    "id": "1",
-    "attributes": {
-        "name": "Workout",
-        "dueDate": "2024-12-12T06:00:00.000Z",
-        "importance": 6,
-        "completed": false
-    },
-},
-```
-
-The `importance` attribute equals 9.<br>
-`filter[importance][$eq]=9`<br>
+The `name` attribute is equal to either "Workout" or "take out trash"<br>
+`filter[name][$in]=Workout&filter[name][$in]=take%20out%20trash`<br>
 
 This filter will match the following records:<br>
 
 ```json
-{
-    "type": "Todo",
-    "id": "2",
-    "attributes": {
-        "name": "take out trash",
-        "dueDate": "2023-05-09T05:00:00.000Z",
-        "importance": 9,
-        "completed": false
-    },
-},
-{
-    "type": "Todo",
-    "id": "3",
-    "attributes": {
-        "name": "buy more icecream",
-        "dueDate": "2023-07-20T05:00:00.000Z",
-        "importance": 9,
-        "completed": true
-    },
-}
+
+        {
+            "type": "Todo",
+            "id": "1",
+            "attributes": {
+                "name": "Workout",
+                "dueDate": "2024-12-12T06:00:00.000Z",
+                "importance": 6,
+                "completed": false
+            },
+        },
+        {
+            "type": "Todo",
+            "id": "2",
+            "attributes": {
+                "name": "take out trash",
+                "dueDate": "2023-05-09T05:00:00.000Z",
+                "importance": 9,
+                "completed": false
+            },
+        },
 ```

@@ -113,7 +113,7 @@ The `name` attribute is greater than or equal to "workout"<br>
 This filter will match no records:<br>
 
 The `name` attribute is greater than or equal to "buy more icecream"<br>
-`filter[name][$gte]=buy more icecream`<br>
+`filter[name][$gte]=buy%20more%20icecream`<br>
 
 This filter will match the following records:<br>
 

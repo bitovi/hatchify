@@ -1,16 +1,11 @@
-# $like
+# $ne
 
-Records that contain the specified values. Using the `%` wildcard will determine how this filter operater functions.<br>
-
-`%value` <-- value exists at the end of the record attribute<br>
-`value%` <-- value exists at the beginning of the record attribute<br>
-`%value%` <-- value exists anywhere in the record attribute<br>
-`value` <-- record attribute matches the exact value. Functionally the same as `%eq`<br>
+Records that do not exactly match the given value will be returned. This is case-sensitive.
 
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`
+`string`, `date`, `boolean`, `number`, `UUID`
 
 ## Examples
 
@@ -51,18 +46,12 @@ All examples use this example data:
     ]
 ```
 
-The `name` attribute is equal to "trash"<br>
-`filter[name][$like]=trash`<br>
-
-This filter will match none of the records.
-
-The `name` attribute contains "out"<br>
-`filter[name][$like]=%out%`<br>
+The `dueDate` attribute does not equal `2023-07-20T05:00:00.000Z`<br>
+`filter[dueDate][$ne]=2023-07-20T05:00:00.000Z`<br>
 
 This filter will match the following records:<br>
 
 ```json
-
         {
             "type": "Todo",
             "id": "1",

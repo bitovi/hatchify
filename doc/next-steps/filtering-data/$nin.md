@@ -5,7 +5,7 @@ Records that are not an exact match to any of the given values will be returned.
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`, `date`, `boolean`, `number`, `arrays`
+`string`, `date`, `boolean`, `number`, `arrays`, `UUID`
 
 ## Examples
 

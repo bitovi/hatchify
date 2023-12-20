@@ -1,6 +1,6 @@
-# $lte
+# $lt
 
-Records that are less than or equal to the given value will be returned.
+Records that are less than the given value will be returned.
 
 ## Compatibility
 
@@ -51,8 +51,8 @@ All examples use this example data:
     ]
 ```
 
-The `importance` attribute is less than or equal to `9`<br>
-`filter[importance][$lte]=9`<br>
+The `importance` attribute is less than `9`<br>
+`filter[importance][$lt]=9`<br>
 
 This filter will match the following records:<br>
 
@@ -68,30 +68,10 @@ This filter will match the following records:<br>
                 "completed": false
             },
         },
-        {
-            "type": "Todo",
-            "id": "2",
-            "attributes": {
-                "name": "take out trash",
-                "dueDate": "2023-05-09T05:00:00.000Z",
-                "importance": 9,
-                "completed": false
-            },
-        },
-        {
-            "type": "Todo",
-            "id": "3",
-            "attributes": {
-                "name": "buy more icecream",
-                "dueDate": "2023-07-20T05:00:00.000Z",
-                "importance": 9,
-                "completed": true
-            },
-        }
 ```
 
-The `name` attribute is less than or equal to "take out trash"<br>
-`filter[name][$lt]=take out trash`<br>
+The `name` attribute is less than "take"<br>
+`filter[name][$lt]=take`<br>
 
 This filter will match the following records:<br>
 
@@ -103,16 +83,6 @@ This filter will match the following records:<br>
                 "name": "Workout",
                 "dueDate": "2024-12-12T06:00:00.000Z",
                 "importance": 6,
-                "completed": false
-            },
-        },
-        {
-            "type": "Todo",
-            "id": "2",
-            "attributes": {
-                "name": "take out trash",
-                "dueDate": "2023-05-09T05:00:00.000Z",
-                "importance": 9,
                 "completed": false
             },
         },
@@ -129,12 +99,12 @@ This filter will match the following records:<br>
 ```
 
 The `name` attribute is less than "Take out trash"<br>
-`filter[name][$lte]=Take out trash`<br>
+`filter[name][$lt]=Take%20out%20trash`<br>
 
 This filter will match no records:<br>
 
-The `name` attribute is less than or equal to "Workout"<br>
-`filter[name][$lte]=Workout`<br>
+The `name` attribute is less than "take out trash"<br>
+`filter[name][$lt]=take`<br>
 
 This filter will match the following records:<br>
 
@@ -146,34 +116,6 @@ This filter will match the following records:<br>
                 "name": "Workout",
                 "dueDate": "2024-12-12T06:00:00.000Z",
                 "importance": 6,
-                "completed": false
-            },
-        },
-```
-
-The `name` attribute is less than or equal to "workout"<br>
-`filter[name][$lte]=workout`<br>
-
-This filter will match the following records:<br>
-
-```json
-        {
-            "type": "Todo",
-            "id": "1",
-            "attributes": {
-                "name": "Workout",
-                "dueDate": "2024-12-12T06:00:00.000Z",
-                "importance": 6,
-                "completed": false
-            },
-        },
-        {
-            "type": "Todo",
-            "id": "2",
-            "attributes": {
-                "name": "take out trash",
-                "dueDate": "2023-05-09T05:00:00.000Z",
-                "importance": 9,
                 "completed": false
             },
         },

@@ -98,6 +98,6 @@ This filter will match the following records:<br>
 ```
 
 The `name` attribute is greater than "take out trash"<br>
-`filter[name][$gt]=take out trash`<br>
+`filter[name][$gt]=take%20out%20trash`<br>
 
 This filter will match no records.
