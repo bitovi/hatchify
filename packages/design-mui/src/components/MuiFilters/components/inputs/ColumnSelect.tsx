@@ -1,4 +1,5 @@
 import { InputLabel, MenuItem, Select } from "@mui/material"
+import { camelCaseToStartCase } from "../../../../../../core/dist/core"
 
 const ColumnSelect: React.FC<{
   fields: string[]
@@ -19,7 +20,7 @@ const ColumnSelect: React.FC<{
       >
         {fields.map((field) => (
           <MenuItem key={field} value={field}>
-            {field}
+            {camelCaseToStartCase(field)}
           </MenuItem>
         ))}
       </Select>

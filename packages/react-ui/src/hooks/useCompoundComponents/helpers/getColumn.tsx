@@ -1,4 +1,4 @@
-import { uuidv4 } from "@hatchifyjs/core"
+import { camelCaseToStartCase, uuidv4 } from "@hatchifyjs/core"
 import type { PartialSchema, FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FinalSchemas, GetSchemaNames } from "@hatchifyjs/rest-client"
 import type { DefaultValueComponentsTypes } from "../../../components"
@@ -37,13 +37,16 @@ export function getColumn<
   } = compoundComponentProps
 
   const isAdditional = control == null
-  const label = labelProp || formatFieldAsLabel(field || "")
+  const label: string = labelProp || formatFieldAsLabel(field)
+  const displayName: string =
+    control?.displayName || camelCaseToStartCase(label)
 
   const column: HatchifyColumn = {
     sortable:
       sortable !== undefined ? sortable : !isAdditional && !isRelationship, // reference sortable prop; otherwise sortable if an attribute
     key: field || uuidv4(), // if no field, then it's an additional column, but needs a key?
     label,
+    displayName,
     renderData: () => null, // default render so TS doesn't complain
     renderHeader: () => null, // default render so TS doesn't complain
     headerOverride: !!(renderHeaderValue ?? HeaderValueComponent),
@@ -95,7 +98,7 @@ export function getColumn<
       <HeaderValueComponent {...headerProps} />
     )
   } else {
-    column.renderHeader = () => label
+    column.renderHeader = () => displayName
   }
 
   return column

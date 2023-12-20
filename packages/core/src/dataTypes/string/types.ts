@@ -9,7 +9,6 @@ export interface PartialStringProps<TRequired extends boolean>
   min?: number
   max?: number
   regex?: RegExp
-  displayName?: string
   maxRenderLength?: number
 }
 

@@ -9,7 +9,6 @@ export interface PartialDatetimeProps<TRequired extends boolean>
   min?: Date | typeof Infinity
   max?: Date | typeof Infinity
   step?: "day" | number
-  displayName?: string
 }
 
 export interface PartialDatetimeControlType<TRequired extends boolean>

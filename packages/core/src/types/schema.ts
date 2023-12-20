@@ -34,6 +34,7 @@ export interface PartialDataTypeProps<
   required?: TRequired // @todo HATCH-417
   default?: PrimitiveType | (() => PrimitiveType) | null
   unique?: boolean
+  displayName?: string | undefined
 }
 
 export type PartialControlType<PrimitiveType, TRequired extends boolean> = {
@@ -41,7 +42,7 @@ export type PartialControlType<PrimitiveType, TRequired extends boolean> = {
   allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
   primary?: boolean
-  displayName?: string
+  displayName?: string | undefined
   default?: PrimitiveType | (() => PrimitiveType) | null
 }
 
