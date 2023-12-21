@@ -30,7 +30,7 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Model Sync](./doc/next-steps/model-sync.md)
   - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
   - [Adding custom endpoints](./doc/next-steps//adding-custom-endpoints.md)
-  - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
+  - [Customizing your list](./doc/next-steps/customizing-your-list.md)
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
   - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
   - [Learn how to paginate data](./doc/paginating-data/paginating-data.md)
@@ -382,7 +382,7 @@ well-defined schemas to create a database, a running backend with REST endpoints
 
 - [Schema, database, and service API naming](./doc/naming.md)
 - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
-- [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
+- [Rendering an empty list](./doc/next-steps/customizing-your-list.md)
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
 - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
 - [Using virtual fields](./doc/next-steps/virtual-fields.md)
