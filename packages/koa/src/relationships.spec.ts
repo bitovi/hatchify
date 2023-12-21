@@ -809,7 +809,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
                 data: {
                   type: "Todo",
                   attributes: {
-                    name: "Walk the dog",
+                    name: "Jogging",
                     dueDate,
                     importance: 1,
                   },
@@ -828,7 +828,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           data: {
             type: "User",
             attributes: {
-              name: "John",
+              name: "Mosh",
               age: 18,
             },
             relationships: {
@@ -843,7 +843,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         },
       })
       const { body } = await fetch(
-        "/api/users?include=todos&sort=-todos.dueDate",
+        "/api/users?include=todos&filter[name]=Mosh&sort=-todos.dueDate",
       )
 
       expect(body).toEqual({
@@ -853,7 +853,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           {
             type: "User",
             id: user.data.id,
-            attributes: { name: "John", age: 18 },
+            attributes: { name: "Mosh", age: 18 },
             relationships: {
               todos: {
                 data: [
