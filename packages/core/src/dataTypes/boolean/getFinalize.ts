@@ -22,7 +22,7 @@ export function getFinalize(
   >,
 ): FinalAttribute<
   PartialBooleanORM,
-  Omit<PartialBooleanControlType<boolean>, "allowNullInfer">,
+  Omit<PartialBooleanControlType<boolean>, "allowNullInfer" | "displayName">,
   boolean,
   FinalBooleanORM
 > {

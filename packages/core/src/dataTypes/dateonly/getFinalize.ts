@@ -24,7 +24,7 @@ export function getFinalize(
   >,
 ): FinalAttribute<
   PartialDateonlyORM,
-  Omit<PartialDateonlyControlType<boolean>, "allowNullInfer">,
+  Omit<PartialDateonlyControlType<boolean>, "allowNullInfer" | "displayName">,
   string,
   FinalDateonlyORM
 > {

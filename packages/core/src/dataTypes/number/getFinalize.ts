@@ -23,7 +23,7 @@ export function getFinalize(
   >,
 ): FinalAttribute<
   PartialNumberORM,
-  Omit<PartialNumberControlType<boolean>, "allowNullInfer">,
+  Omit<PartialNumberControlType<boolean>, "allowNullInfer" | "displayName">,
   number,
   FinalNumberORM
 > {

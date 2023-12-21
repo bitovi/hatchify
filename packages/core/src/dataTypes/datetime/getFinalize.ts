@@ -24,7 +24,7 @@ export function getFinalize(
   >,
 ): FinalAttribute<
   PartialDatetimeORM,
-  Omit<PartialDatetimeControlType<boolean>, "allowNullInfer">,
+  Omit<PartialDatetimeControlType<boolean>, "allowNullInfer" | "displayName">,
   Date,
   FinalDatetimeORM
 > {
