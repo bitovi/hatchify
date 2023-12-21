@@ -74,6 +74,6 @@ The text `true` or `false` will be presented in the grid. If the value is `null`
 
 ![Grid Example](https://github.com/bitovi/hatchify/assets/78602/ddbf26a1-180b-4fc7-a483-fde52dc4fce9)
 
-## Form Behavior
+## Form Behavior 🛑
 
 `boolean()` will produce a [`<input type=checkbox>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) control. `null` will be treated as unchecked.
