@@ -798,6 +798,90 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         meta: { unpaginatedCount: 1 },
       })
     })
+
+    it("should allow relationship sorting (HATCH-491)", async () => {
+      const todos = await Promise.all(
+        ["2024-01-01T00:00:00.000Z", "2024-01-02T00:00:00.000Z"].map(
+          async (dueDate) => {
+            const { body } = await fetch("/api/todos", {
+              method: "post",
+              body: {
+                data: {
+                  type: "Todo",
+                  attributes: {
+                    name: "Jogging",
+                    dueDate,
+                    importance: 1,
+                  },
+                },
+              },
+            })
+
+            return body
+          },
+        ),
+      )
+
+      const { body: user } = await fetch("/api/users", {
+        method: "post",
+        body: {
+          data: {
+            type: "User",
+            attributes: {
+              name: "Mosh",
+              age: 18,
+            },
+            relationships: {
+              todos: {
+                data: todos.map(({ data: { id } }) => ({
+                  type: "Todo",
+                  id,
+                })),
+              },
+            },
+          },
+        },
+      })
+      const { body } = await fetch(
+        "/api/users?include=todos&filter[name]=Mosh&sort=-todos.dueDate",
+      )
+
+      expect(body).toEqual({
+        jsonapi: { version: "1.0" },
+        meta: { unpaginatedCount: 2 },
+        data: [
+          {
+            type: "User",
+            id: user.data.id,
+            attributes: { name: "Mosh", age: 18 },
+            relationships: {
+              todos: {
+                data: [
+                  { type: "Todo", id: todos[1].data.id },
+                  { type: "Todo", id: todos[0].data.id },
+                ],
+              },
+            },
+          },
+        ],
+        included: [
+          {
+            ...todos[1].data,
+            attributes: {
+              ...todos[1].data.attributes,
+              userId: user.data.id,
+            },
+          },
+          {
+            ...todos[0].data,
+            attributes: {
+              ...todos[0].data.attributes,
+              userId: user.data.id,
+            },
+          },
+        ],
+      })
+    })
   })
 
   describe(`${dialect} - No Relationships`, () => {
