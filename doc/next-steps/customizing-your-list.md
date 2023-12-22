@@ -166,7 +166,7 @@ export default App
   sortable={true}
   ```
 
-It defaults to `true` as long as your `field` prop specifies a valid attribute on your schema, so in our case it's redundant to include it--we just did so for demonstration purposes. An example use case for setting `sortable` to `false` would be if you wanted to handle the sorting UI yourself through the `renderHeaderValue` prop.
+  It defaults to `true` as long as your `field` prop specifies a valid attribute on your schema, so in our case it's redundant to include it--we just did so for demonstration purposes. An example use case for setting `sortable` to `false` would be if you wanted to handle the sorting UI yourself through the `renderHeaderValue` prop.
 
 Okay! We just learned how to selectively modify an existing column--now let's try adding brand new columns to our list.
 
@@ -196,7 +196,7 @@ const App: React.FC = () => {
           <TodoEmpty>
             <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
-          <TodoColumn type="replace" field="name" label="Task name" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ label }) => <strong>{label}</strong>} sortable={true} />
+          <TodoColumn type="replace" field="name" label="ToDo" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>} sortable={true} />
           <TodoColumn type="append" label="Actions" renderDataValue={({ record }) => <button onClick={() => alert(`${record.id}`)}>View id</button>} />
         </TodoList>
       </HatchifyProvider>
