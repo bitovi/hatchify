@@ -65,7 +65,7 @@ Notice how the content we've placed inside `TodoEmpty` now displays in our empty
   </TodoList>
   ```
 
-And that's all there is to it. Next, lets explore `Column`, which offers a lot more customization.
+And that's all there is to it! Next, lets explore `Column`, which offers a lot more customization.
 
 ✏️ Before you proceed, post some seed data to your database. You can use the snippet from the [Seeding Data section in the Hatchify getting started guide](../../README.md#seeding-data) to do this.
 
@@ -84,6 +84,7 @@ Let's start with the `replace` type. We'll use it to make selective changes and 
 ✏️ Update `/src/App.tsx` to the following:
 
 ```tsx
+// hatchify-app/frontend/App.tsx
 import { useState } from "react"
 import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
@@ -138,7 +139,7 @@ Notice how the column for the `name` field has been replaced with our custom col
 - The `label` prop allows us to overwrite the column's default header with a custom string.
 
   ```tsx
-  Label = "To Do"
+  label = "ToDo"
   ```
 
 - The `renderDataValue` prop allows us to pass in a callback that returns JSX. That JSX will fully overwrite the contents of each data cell.
@@ -167,25 +168,25 @@ Notice how the column for the `name` field has been replaced with our custom col
   renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>}
   ```
 
+  This example is a little contrived because the `label` we're destructuring will always be equal to the `label` prop we set on our `Column`, so we could have simply omitted the `label` prop entirely and hard-coded the value in the return of our callback.
+
   Just like `renderDataValue`, `renderHeaderValue` accepts a single object as its argument, but its shape is more complex. Let's look at it in detail:
 
-  - ```tsx
-      {
-        column: {
-          sortable, // Boolean that reflects whether or not sorting has been applied to your column
-          key, // Unique key for your column
-          label, // The column's label
-        },
-        meta, // Contains metadata, including sort request pending status
-        sortBy, // The field that your list is sorted by. This will always equal the field that your column corresponds to, if applicable
-        direction, // The direction that your list is currently sorted by
-        setSort, // A function for updating the list's sort
-      }
-    ```
+  ```tsx
+    {
+      column: {
+        sortable, // Boolean that reflects whether or not sorting has been applied to the column
+        key, // Unique key for the column
+        label, // The column's label
+      },
+      meta, // Contains metadata, including sort request pending status
+      sortBy, // The field that the list is sorted by. This will always equal the field that the column corresponds to, if applicable
+      direction, // The direction that the list is currently sorted by
+      setSort, // A function for updating the list's sort
+    }
+  ```
 
-This example is a little contrived because the `label` we're destructuring will always be equal to the `label` prop we set on our `Column`, so we could have simply omitted the `label` prop entirely and hard-coded the value in the return of our callback. If you _don't_ set a `label` prop on your `Column`, `label` will equal the column's default label.
-
-- Just like `renderDataValue`, `renderHeaderValue` can be replaced with `HeaderValueComponent`, which works similarly to `DataValueComponent`.
+  - Just like `renderDataValue`, `renderHeaderValue` can be replaced with `HeaderValueComponent`, which works similarly to `DataValueComponent`.
 
 - The `sortable` prop tells Hatchify whether or not to render the default column sorting UI in the column's header cell.
 
@@ -194,6 +195,8 @@ This example is a little contrived because the `label` we're destructuring will 
   ```
 
   It defaults to `true` as long as your `field` prop specifies a valid field on your record, so in this case it's redundant to include it--we just did so for demonstration purposes. An example use case for setting `sortable` to `false` would be if you wanted to handle the sorting UI yourself through the `renderHeaderValue` prop.
+
+**Note**: You may have noticed that the column for the `id` field is missing. Hatchify hides it by default, but you can change this behavior by updating your schema to `id: uuid({ primary: true })`.
 
 Okay! We just learned how to selectively modify an existing column--now let's try adding brand new columns to our list.
 
@@ -204,6 +207,7 @@ Okay! We just learned how to selectively modify an existing column--now let's tr
 ✏️ Update `/src/App.tsx` to the following:
 
 ```tsx
+// hatchify-app/frontend/App.tsx
 import { useState } from "react"
 import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
@@ -223,9 +227,9 @@ const App: React.FC = () => {
           <TodoEmpty>
             <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
-          <TodoColumn type="replace" field="name" label="ToDo" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>} sortable={true} />
           {/* 👀 */}
-          <TodoColumn type="append" label="Actions" renderDataValue={({ record }) => <button onClick={() => alert(`${record.id}`)}>View id</button>} />
+          <TodoColumn type="append" label="Actions" renderDataValue={({ record }) => <button onClick={() => alert(`${record.id}`)}>View ID</button>} />
+          <TodoColumn type="replace" field="name" label="ToDo" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>} sortable={true} />
         </TodoList>
       </HatchifyProvider>
     </ThemeProvider>
@@ -281,7 +285,7 @@ const App: React.FC = () => {
           <TodoEmpty>
             <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
-          <TodoColumn type="append" label="Actions" renderDataValue={({ record }) => <button onClick={() => alert(`${record.id}`)}>View id</button>} />
+          <TodoColumn type="append" label="Actions" renderDataValue={({ record }) => <button onClick={() => alert(`${record.id}`)}>View ID</button>} />
           <TodoColumn type="replace" field="name" label="Task name" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ label }) => <strong>{label}</strong>} sortable={true} />
           {/* 👀 */}
           <TodoColumn label="Override column" renderDataValue={({ record }) => <strong>{record.name}</strong>} renderHeaderValue={({ column: { label } }) => <strong>{label}</strong>} />
