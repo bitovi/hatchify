@@ -161,15 +161,31 @@ Notice how the column for the `name` field has been replaced with our custom col
     DataValueComponent = { CustomComponent }
     ```
 
-- The `renderHeaderValue` prop works just like `renderDataValue`, only the JSX returned by the callback will fully overwrite the contents of the header cell. 👉[explain the API here]👈
+- The `renderHeaderValue` prop works just like `renderDataValue`, only the JSX returned by the callback will fully overwrite the contents of the header cell.
 
   ```tsx
   renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>}
   ```
 
-  This example is a little contrived because the `label` we're destructuring will always be equal to the `label` prop we set on our `Column`, so we could have simply omitted the `label` prop entirely and hard-coded the value in the return of our callback. If you _don't_ set a `label` prop on your `Column`, `label` will equal the column's default label.
+  Just like `renderDataValue`, `renderHeaderValue` accepts a single object as its argument, but its shape is more complex. Let's look at it in detail:
 
-  - Just like `renderDataValue`, `renderHeaderValue` can be replaced with `HeaderValueComponent`, which works similarly to `DataValueComponent`.
+  - ```tsx
+      {
+        column: {
+          sortable, // Boolean that reflects whether or not sorting has been applied to your column
+          key, // Unique key for your column
+          label, // The column's label
+        },
+        meta, // Contains metadata, including sort request pending status
+        sortBy, // The field that your list is sorted by. This will always equal the field that your column corresponds to, if applicable
+        direction, // The direction that your list is currently sorted by
+        setSort, // A function for updating the list's sort
+      }
+    ```
+
+This example is a little contrived because the `label` we're destructuring will always be equal to the `label` prop we set on our `Column`, so we could have simply omitted the `label` prop entirely and hard-coded the value in the return of our callback. If you _don't_ set a `label` prop on your `Column`, `label` will equal the column's default label.
+
+- Just like `renderDataValue`, `renderHeaderValue` can be replaced with `HeaderValueComponent`, which works similarly to `DataValueComponent`.
 
 - The `sortable` prop tells Hatchify whether or not to render the default column sorting UI in the column's header cell.
 
