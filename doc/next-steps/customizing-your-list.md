@@ -39,6 +39,9 @@ const App: React.FC = () => {
 export default App
 ```
 
+![localhost_3000_ (1)](https://github.com/bitovi/hatchify/assets/60432429/427a1511-d187-4cc4-8a92-3ce8cb70b422)
+
+
 ### How it works
 
 - We need a reference to the `Todo.Empty` component. The following aliases it to make it easier to reference:
@@ -102,6 +105,9 @@ const App: React.FC = () => {
 
 export default App
 ```
+
+![localhost_3000_ (2)](https://github.com/bitovi/hatchify/assets/60432429/72a0c73e-fc68-4fc2-b4a8-1f5ebc9fe44c)
+
 
 #### How it works
 
@@ -201,6 +207,8 @@ const App: React.FC = () => {
 export default App
 ```
 
+![localhost_3000_ (5)](https://github.com/bitovi/hatchify/assets/60432429/3e796c7b-9b6a-4244-971f-0a48df905438)
+
 #### How it works
 
 - Columns with a `type` of `append` will always appear at the end of your list (even if you include them before non-`append` columns)
@@ -254,6 +262,8 @@ const App: React.FC = () => {
 
 export default App
 ```
+
+![localhost_3000_ (4)](https://github.com/bitovi/hatchify/assets/60432429/22dc5035-b48b-4c62-9477-6a9155553b64)
 
 What happened to the rest of our columns!? They're gone! Don't worry--this is by design:
 
