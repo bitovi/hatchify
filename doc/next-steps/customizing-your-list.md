@@ -55,7 +55,7 @@ Notice how the content we've placed inside `TodoEmpty` now displays in our empty
   const TodoEmpty = hatchedReact.components.Todo.Empty
   ```
 
-- The `<TodoEmpty>` component specifies the content that should be displayed when the list is empty. Put the empty list content within `<TodoEmpty>` and put `<TodoEmpty>` within the `<TodoList>` component:
+- The `<TodoEmpty>` component specifies the content that should be displayed when the list is empty. To use it, simply put the empty list content within `<TodoEmpty>` and put `<TodoEmpty>` within the `<TodoList>` component:
 
   ```tsx
   <TodoList>
@@ -129,20 +129,20 @@ Notice how the column for the `name` field has been replaced with our custom col
   const TodoColumn = hatchedReact.components.Todo.Column
   ```
 
-- Setting the `type` prop to `replace` instructs Hatchify to render all the usual columns in our list, while _only_ applying our customizations to the column that corresponds to the value of the `field` prop on `TodoColumn`.
+- Setting the `type` prop to `replace` instructs Hatchify to render all the usual columns in your list, while _only_ applying your customizations to the column that corresponds to the value of the `field` prop on `TodoColumn`.
 
   ```tsx
   type = "replace"
   field = "name"
   ```
 
-- The `label` prop allows us to overwrite the column's default header with a custom string.
+- The `label` prop allows you to overwrite the column's default header with a custom string.
 
   ```tsx
   label = "ToDo"
   ```
 
-- The `renderDataValue` prop allows us to pass in a callback that returns JSX. That JSX will fully overwrite the contents of each data cell.
+- The `renderDataValue` prop allows you to pass in a callback that returns JSX. That JSX will fully overwrite the contents of each data cell.
 
   ```tsx
   renderDataValue={({ value }) => <strong>{value}</strong>}
@@ -168,7 +168,7 @@ Notice how the column for the `name` field has been replaced with our custom col
   renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>}
   ```
 
-  This example is a little contrived because the `label` we're destructuring will always be equal to the `label` prop we set on our `Column`, so we could have simply omitted the `label` prop entirely and hard-coded the value in the return of our callback.
+  This example is a little contrived because the `label` we're destructuring in our app code above will always be equal to the `label` prop that we set on our `Column`, so we could have simply omitted the `label` prop entirely and hard-coded the value in the return of our callback.
 
   Just like `renderDataValue`, `renderHeaderValue` accepts a single object as its argument, but its shape is more complex. Let's look at it in detail:
 
@@ -194,7 +194,9 @@ Notice how the column for the `name` field has been replaced with our custom col
   sortable={true}
   ```
 
-  It defaults to `true` as long as your `field` prop specifies a valid field on your record, so in this case it's redundant to include it--we just did so for demonstration purposes. An example use case for setting `sortable` to `false` would be if you wanted to handle the sorting UI yourself through the `renderHeaderValue` prop.
+  It defaults to `true` as long as your `field` prop specifies a valid field on your record, so in this case it's redundant to include it--we just did so for demonstration purposes.
+
+  Note that if you set `sortable` to `true` on a column with an invalid `field` prop, the default column sorting UI will display but using it will send an invalid network request (because the request won't contain a valid field to sort by).
 
 **Note**: You may have noticed that the column for the `id` field is missing. Hatchify hides it by default, but you can change this behavior by updating your schema to `id: uuid({ primary: true })`.
 
@@ -253,10 +255,10 @@ Notice the new "Actions" column at the end of our list.
   type = "append"
   ```
 
-- We removed the `field` prop because `append` columns represent brand new columns that inherently don't map directly to a field in our list. Despite this, we still have access to the entire row's `record` object via `renderDataCell`, so we can still access any fields from our record that we need.
-- If we want our column to appear at the beginning of our list, we can set our `type` to `prepend` instead.
+- In our app code above, we removed the `field` prop because `append` columns represent brand new columns that inherently don't map directly to a field in our list. Despite this, we still have access to the entire row's `record` object via `renderDataCell`, so we can still access any fields from our record that we need.
+- If you want your column to appear at the beginning of your list, you can set the `type` to `prepend` instead.
 
-With all three of the `type` values we just covered -- `replace`, `append`, and `prepend` -- you'll notice that as we made changes to our list, Hatchify continued to render all the other columns that we _didn't_ modify just as it normally would. So now let's take a look at how we can override Hatchify's column-rendering behavior completely.
+With all three of the `type` values we just covered--`replace`, `append`, and `prepend`--you'll notice that as we made changes to our list, Hatchify continued to render all the other columns that we _didn't_ modify as it normally would. So now let's take a look at how we can fully override Hatchify's column-rendering behavior.
 
 ### Fully overriding your list's columns
 
@@ -308,7 +310,7 @@ Notice that most of our columns are no longer rendering. Don't worry--this is by
 
 - As soon as you add a column without a `type` prop, Hatchify has no way of knowing where that column is supposed to fit in with the rest of the columns it would normally render. So instead it renders none of them, and will only render columns that you add without a `type` prop, or with a `type` prop equal to `append` or `prepend`.
 - An example use case for this feature is a list that needs to be heavily customized; you might need all the fields on your records in order to populate your list, but each column requires computed values or needs to be in a custom order, etc.
-- We didn't include the `field` prop in our example, but `type`-less columns will still accept it. If, for example, you wanted a list that only renders columns for _some_ of its fields, you could simply add a `type`-less column for each and set the `field` prop to the corresponding attribute. Those columns will then render as normal (unless you customize them further), but none of the columns that you _didn't_ specify will render.
+- We didn't include the `field` prop in our example, but `type`-less columns will still accept it. If, for example, you wanted a list that only renders columns for _some_ of its fields, you could simply add a `type`-less column for each and set the `field` prop to the corresponding field. Those columns will then render as normal (unless you customize them further), but none of the columns that you _didn't_ specify will render.
 
   ```tsx
   // This will render the `name` column like normal, but columns you don't specify won't render
