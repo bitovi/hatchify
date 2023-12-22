@@ -241,7 +241,7 @@ export default App
 
 Your app should now look like this:
 
-![localhost_3000_ (5)](https://github.com/bitovi/hatchify/assets/60432429/3e796c7b-9b6a-4244-971f-0a48df905438)
+![localhost_3000_](https://github.com/bitovi/hatchify/assets/60432429/58aaf34e-a7c2-4346-8d8d-1f4eaa31a49f)
 
 Notice the new "Actions" column at the end of our list.
 
@@ -300,7 +300,7 @@ export default App
 
 Your app should now look like this:
 
-![localhost_3000_ (4)](https://github.com/bitovi/hatchify/assets/60432429/22dc5035-b48b-4c62-9477-6a9155553b64)
+![localhost_3000_ (1)](https://github.com/bitovi/hatchify/assets/60432429/3066a8e3-efa2-4b7a-b199-98323df869cd)
 
 Notice that most of our columns are no longer rendering. Don't worry--this is by design:
 
