@@ -1,7 +1,3 @@
-# [UPDATE IMAGES ]
-
-<!-- ![image](https://github.com/bitovi/hatchify/assets/2623867/f4444c37-e77d-44f8-bda0-0356efe6600d) -->
-
 # Customizing your list
 
 Hatchify gives you the option to customize your list with two compound components that can be nested within your `Collection` component: `Column`, and `Empty`.
@@ -16,11 +12,12 @@ Update `/src/App.tsx` to the following:
 
 ```tsx
 // hatchify-app/frontend/App.tsx
+import { useState } from "react"
 import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
-import * as schemas from "../schemas"
+import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("http://localhost:3000/api", schemas))
+export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const TodoList = hatchedReact.components.Todo.Collection // 👀
 const TodoEmpty = hatchedReact.components.Todo.Empty // 👀
@@ -30,12 +27,8 @@ const App: React.FC = () => {
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
         <TodoList>
-          {" "}
-          {/*👀*/}
           <TodoEmpty>
-            {" "}
-            {/*👀*/}
-            <strong>There are no todos. Time to take a break!</strong> {/*👀*/}
+            <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
         </TodoList>
       </HatchifyProvider>
@@ -80,13 +73,13 @@ Let's start with the `replace` type. We'll use it to make selective changes and 
 
 Update `/src/App.tsx` to the following:
 
-```jsx
-// hatchify-app/frontend/App.tsx
+```tsx
+import { useState } from "react"
 import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
-import * as schemas from "../schemas"
+import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("http://localhost:3000/api", schemas))
+export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const TodoList = hatchedReact.components.Todo.Collection
 const TodoEmpty = hatchedReact.components.Todo.Empty
@@ -100,14 +93,7 @@ const App: React.FC = () => {
           <TodoEmpty>
             <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
-          <TodoColumn
-            type="replace"
-            field="name"
-            label="To Do"
-            renderDataValue={({ value }) => <strong>{value}</strong>}
-            renderHeaderValue={({ label }) => <>Things I need {label}</>}
-            sortable={true}
-          />
+          <TodoColumn type="replace" field="name" label="ToDo" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>} sortable={true} />
         </TodoList>
       </HatchifyProvider>
     </ThemeProvider>
@@ -184,13 +170,13 @@ Okay! We just learned how to selectively modify an existing column--now let's tr
 
 Update `/src/App.tsx` to the following:
 
-```jsx
-// hatchify-app/frontend/App.tsx
+```tsx
+import { useState } from "react"
 import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
-import * as schemas from "../schemas"
+import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("http://localhost:3000/api", schemas))
+export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const TodoList = hatchedReact.components.Todo.Collection
 const TodoEmpty = hatchedReact.components.Todo.Empty
@@ -204,19 +190,8 @@ const App: React.FC = () => {
           <TodoEmpty>
             <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
-          <TodoColumn
-            type="replace"
-            field="name"
-            label="Task name"
-            renderDataValue={({ value }) => <strong>{value}</strong>}
-            renderHeaderValue={({ label }) => <strong>{label}</strong>}
-            sortable={true}
-          />
-          <TodoColumn
-            type="append"
-            label="Actions"
-            renderDataValue={({record}) => <button onClick={alert(`${record.id}`)}>View id</button>}
-          />
+          <TodoColumn type="replace" field="name" label="Task name" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ label }) => <strong>{label}</strong>} sortable={true} />
+          <TodoColumn type="append" label="Actions" renderDataValue={({ record }) => <button onClick={() => alert(`${record.id}`)}>View id</button>} />
         </TodoList>
       </HatchifyProvider>
     </ThemeProvider>
@@ -247,13 +222,14 @@ With all three of the `type` values we just covered -- `replace`, `append`, and 
 
 Update `/src/App.tsx` to the following:
 
-```jsx
+```tsx
 // hatchify-app/frontend/App.tsx
+import { useState } from "react"
 import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
-import * as schemas from "../schemas"
+import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("http://localhost:3000/api", schemas))
+export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const TodoList = hatchedReact.components.Todo.Collection
 const TodoEmpty = hatchedReact.components.Todo.Empty
@@ -267,24 +243,9 @@ const App: React.FC = () => {
           <TodoEmpty>
             <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
-          <TodoColumn
-            type="append"
-            label="Actions"
-            renderDataValue={({record}) => <button onClick={alert(`${record.id}`)}>View id</button>}
-          />
-          <TodoColumn
-            type="replace"
-            field="name"
-            label="Task name"
-            renderDataValue={({ value }) => <strong>{value}</strong>}
-            renderHeaderValue={({ label }) => <strong>{label}</strong>}
-            sortable={true}
-          />
-          <TodoColumn
-            label="Override column"
-            renderDataValue={({ record }) => <strong>{record.name}</strong>}
-            renderHeaderValue={({ label }) => <strong>{label}</strong>}
-          />
+          <TodoColumn type="append" label="Actions" renderDataValue={({ record }) => <button onClick={() => alert(`${record.id}`)}>View id</button>} />
+          <TodoColumn type="replace" field="name" label="Task name" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ label }) => <strong>{label}</strong>} sortable={true} />
+          <TodoColumn label="Override column" renderDataValue={({ record }) => <strong>{record.name}</strong>} renderHeaderValue={({ column: { label } }) => <strong>{label}</strong>} />
         </TodoList>
       </HatchifyProvider>
     </ThemeProvider>
