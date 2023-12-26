@@ -69,14 +69,18 @@ export function convertHatchifyModels(
           },
         )
       } else if (type === "belongsTo") {
-        sequelize.models[getSchemaKey(model)][type](
-          sequelize.models[targetSchema],
-          {
-            as: relationshipName,
-            foreignKey: relationship.sourceAttribute,
-            targetKey: relationship.targetAttribute,
-          },
-        )
+        if (
+          !sequelize.models[getSchemaKey(model)].associations[relationshipName]
+        ) {
+          sequelize.models[getSchemaKey(model)][type](
+            sequelize.models[targetSchema],
+            {
+              as: relationshipName,
+              foreignKey: relationship.sourceAttribute,
+              targetKey: relationship.targetAttribute,
+            },
+          )
+        }
       } else {
         sequelize.models[getSchemaKey(model)][type](
           sequelize.models[targetSchema],
