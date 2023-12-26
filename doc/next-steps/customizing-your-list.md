@@ -105,7 +105,18 @@ const App: React.FC = () => {
             <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
           {/* 👀 */}
-          <TodoColumn type="replace" field="name" label="ToDo" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>} sortable={true} />
+          <TodoColumn
+            type="replace"
+            field="name"
+            label="ToDo"
+            renderDataValue={({ value }) => {
+              return <strong>{value}</strong>
+            }}
+            renderHeaderValue={({ column: { label } }) => {
+              return <strong>{label} Items</strong>
+            }}
+            sortable={true}
+          />
         </TodoList>
       </HatchifyProvider>
     </ThemeProvider>
@@ -152,7 +163,9 @@ Notice how the column for the `name` field has been replaced with our custom col
 
   ```tsx
   <TodoColumn
-    renderDataValue={({ value }) => <strong>{value}</strong>}
+    renderDataValue={({ value }) => {
+      return <strong>{value}</strong>
+    }}
     //...Remaining props...
   />
   ```
@@ -163,7 +176,9 @@ Notice how the column for the `name` field has been replaced with our custom col
 
     ```tsx
     // Define your component:
-    const CustomComponent = ({ value }: { value: string }) => <strong>{value}</strong>
+    const CustomComponent = ({ value }: { value: string }) => {
+      return <strong>{value}</strong>
+    }
     ```
 
     ```tsx
@@ -177,7 +192,9 @@ Notice how the column for the `name` field has been replaced with our custom col
 - The `renderHeaderValue` prop works just like `renderDataValue`, only the JSX returned by the callback will fully overwrite the contents of the header cell.
 
   ```tsx
-  renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>}
+  renderHeaderValue={({ column: { label } }) => {
+    return <strong>{label} Items</strong>
+  }}
   ```
 
   This example is a little contrived because the `label` we're destructuring in our app code above will always be equal to the `label` prop that we set on our `Column`, so we could have simply omitted the `label` prop entirely and hard-coded the value in the return of our callback.
@@ -245,8 +262,25 @@ const App: React.FC = () => {
             <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
           {/* 👀 */}
-          <TodoColumn type="append" label="Actions" renderDataValue={({ record }) => <button onClick={() => alert(`${record.id}`)}>View ID</button>} />
-          <TodoColumn type="replace" field="name" label="ToDo" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ column: { label } }) => <strong>{label} Items</strong>} sortable={true} />
+          <TodoColumn
+            type="append"
+            label="Actions"
+            renderDataValue={({ record }) => {
+              return <button onClick={() => alert(`${record.id}`)}>View ID</button>
+            }}
+          />
+          <TodoColumn
+            type="replace"
+            field="name"
+            label="ToDo"
+            renderDataValue={({ value }) => {
+              return <strong>{value}</strong>
+            }}
+            renderHeaderValue={({ column: { label } }) => {
+              return <strong>{label} Items</strong>
+            }}
+            sortable={true}
+          />
         </TodoList>
       </HatchifyProvider>
     </ThemeProvider>
@@ -305,10 +339,35 @@ const App: React.FC = () => {
           <TodoEmpty>
             <strong>There are no todos. Time to take a break!</strong>
           </TodoEmpty>
-          <TodoColumn type="append" label="Actions" renderDataValue={({ record }) => <button onClick={() => alert(`${record.id}`)}>View ID</button>} />
-          <TodoColumn type="replace" field="name" label="Task name" renderDataValue={({ value }) => <strong>{value}</strong>} renderHeaderValue={({ label }) => <strong>{label}</strong>} sortable={true} />
+          <TodoColumn
+            type="append"
+            label="Actions"
+            renderDataValue={({ record }) => {
+              return <button onClick={() => alert(`${record.id}`)}>View ID</button>
+            }}
+          />
+          <TodoColumn
+            type="replace"
+            field="name"
+            label="Task name"
+            renderDataValue={({ value }) => {
+              return <strong>{value}</strong>
+            }}
+            renderHeaderValue={({ label }) => {
+              return <strong>{label}</strong>
+            }}
+            sortable={true}
+          />
           {/* 👀 */}
-          <TodoColumn label="Override column" renderDataValue={({ record }) => <strong>{record.name}</strong>} renderHeaderValue={({ column: { label } }) => <strong>{label}</strong>} />
+          <TodoColumn
+            label="Override column"
+            renderDataValue={({ record }) => {
+              return <strong>{record.name}</strong>
+            }}
+            renderHeaderValue={({ column: { label } }) => {
+              return <strong>{label}</strong>
+            }}
+          />
         </TodoList>
       </HatchifyProvider>
     </ThemeProvider>
