@@ -132,20 +132,29 @@ Notice how the column for the `name` field has been replaced with our custom col
 - Setting the `type` prop to `replace` instructs Hatchify to render all the usual columns in your list, while _only_ applying your customizations to the column that corresponds to the value of the `field` prop on `TodoColumn`.
 
   ```tsx
-  type = "replace"
-  field = "name"
+  <TodoColumn
+    type="replace"
+    field="name"
+    //...Remaining props...
+  />
   ```
 
 - The `label` prop allows you to overwrite the column's default header with a custom string.
 
   ```tsx
-  label = "ToDo"
+  <TodoColumn
+    label="ToDo"
+    //...Remaining props...
+  />
   ```
 
 - The `renderDataValue` prop allows you to pass in a callback that returns JSX. That JSX will fully overwrite the contents of each data cell.
 
   ```tsx
-  renderDataValue={({ value }) => <strong>{value}</strong>}
+  <TodoColumn
+    renderDataValue={({ value }) => <strong>{value}</strong>}
+    //...Remaining props...
+  />
   ```
 
   The callback accepts one argument: an object with a `value` property and a `record` property. `value` is equal to the value that would have otherwise been rendered in each data cell. `record` is equal to the full record represented by a given data cell's row.
@@ -158,8 +167,11 @@ Notice how the column for the `name` field has been replaced with our custom col
     ```
 
     ```tsx
-    // Inside your TodoColumn, replace the `renderHeaderValue` prop with:
-    DataValueComponent = { CustomComponent }
+    // Replace `renderDataValue` with `DataValueComponent` and pass in your `CustomComponent`:
+    <TodoColumn
+      DataValueComponent={CustomComponent}
+      //...Remaining props...
+    />
     ```
 
 - The `renderHeaderValue` prop works just like `renderDataValue`, only the JSX returned by the callback will fully overwrite the contents of the header cell.
@@ -191,7 +203,10 @@ Notice how the column for the `name` field has been replaced with our custom col
 - The `sortable` prop tells Hatchify whether or not to render the default column sorting UI in the column's header cell.
 
   ```tsx
-  sortable={true}
+  <TodoColumn
+    sortable={true}
+    //...Remaining props...
+  />
   ```
 
   It defaults to `true` as long as your `field` prop specifies a valid field on your record, so in this case it's redundant to include it--we just did so for demonstration purposes.
@@ -252,7 +267,10 @@ Notice the new "Actions" column at the end of our list.
 - Columns with a `type` of `append` will always appear at the end of your list, even if you include them before non-`append` columns (The order in which you include `append` columns only matters relative to _each other_).
 
   ```tsx
-  type = "append"
+  <TodoColumn/
+    type="append"
+    //...Remaining props...
+  >
   ```
 
 - In our app code above, we removed the `field` prop because `append` columns represent brand new columns that inherently don't map directly to a field in our list. Despite this, we still have access to the entire row's `record` object via `renderDataCell`, so we can still access any fields from our record that we need.
