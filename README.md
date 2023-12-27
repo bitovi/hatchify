@@ -112,8 +112,7 @@ export const User = {
 
 > **Note:** It is important to use _satisfies PartialSchema_ when typing our schemas. By using the satisfies keyword, we can make sure our schema objects are typed correctly and also get the benefit of type inference when passing our schemas into our hatchify functions.
 
-You can find all of the possible data types for a schema's `attributes`
-[here](https://sequelize.org/docs/v6/other-topics/other-data-types/).
+You can find all of the possible data types for a schema's `attributes` [here](./doc/schema/attribute-types/README.md).
 
 ## Model Relationships
 
@@ -122,13 +121,12 @@ different models within your application. In the previous code snippets,
 you may have noticed we added a `belongsTo` and `hasMany` to our
 schemas. A model can have a relationship, linking it to another model.
 These relationships can be defined using `hasMany`, `hasOne`,
-`belongsTo`, and `belongsToMany`. The way we have defined the schemas
+`belongsTo`, and `hasManyThrough`. The way we have defined the schemas
 above, we are telling HatchifyJS that a `User` can be associated with
 many different todos and that a `Todo` can only have 1 user associated
 with it.
 
-For more information on these relationships and the options available
-check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/associations/).
+More information on these relationships and the options available can be found [here](./doc/schema//relationship-types/README.md).
 
 # Backend - The Hatchify Middleware
 
