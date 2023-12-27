@@ -329,7 +329,9 @@ npx nx eslint @hatchifyjs/koa
       C --> K
       D --> K
       J --> K
-
+      L[sequelize-create-with-associations] --> B
+      M[sequelize-querystring-parser] --> B
+      N[querystring-parser] --> M
 ```
 
 ## Folder structure
