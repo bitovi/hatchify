@@ -11,7 +11,7 @@ Records that contain the specified values. Using the `%` wildcard will determine
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`, `UUID`
+`string`, `uuid`
 
 ## Examples
 
