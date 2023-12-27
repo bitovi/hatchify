@@ -309,6 +309,26 @@ We use ESLint and Prettier to enforce coding guidelines. You can run it like thi
 npx nx eslint @hatchifyjs/koa
 ```
 
+## Package Dependencies
+
+```mermaid
+  flowchart TD
+      A[core] --> B[node]
+      B --> C[koa]
+      B --> D[express]
+      A --> E[rest-client]
+      E --> F[rest-client-jsonapi]
+      E --> G[react-rest]
+      G --> H[react-ui]
+      E --> H
+      H --> I[design-mui]
+      I --> J[react]
+      F --> J
+      H --> J
+```
+
+## Folder structure
+
 ```bash
 .
 ├── CONTRIBUTING.md                             # This file
