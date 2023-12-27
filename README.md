@@ -381,6 +381,7 @@ well-defined schemas to create a database, a running backend with REST endpoints
 - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
 - [Learn how to filter data](./doc/filtering-data/README.md)
+- [Learn how to paginate data](./doc/paginating-data/README.md)
 
 # Need help or have questions?
 
