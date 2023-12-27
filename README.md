@@ -34,6 +34,9 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
   - [Learn how to filter data](./doc/filtering-data/README.md)
   - [Learn how to paginate data](./doc/paginating-data/README.md)
+  - [Learn how to include data](./doc/including-data/README.md)
+  - [Learn how to sort data](./doc/sorting-data/README.md)
+  - [Learn how to sparse fieldsets](./doc/sparse-fieldsets/README.md)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -382,6 +385,9 @@ well-defined schemas to create a database, a running backend with REST endpoints
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
 - [Learn how to filter data](./doc/filtering-data/README.md)
 - [Learn how to paginate data](./doc/paginating-data/README.md)
+- [Learn how to include data](./doc/including-data/README.md)
+- [Learn how to sort data](./doc/sorting-data/README.md)
+- [Learn how to sparse fieldsets](./doc/sparse-fieldsets/README.md)
 
 # Need help or have questions?
 
