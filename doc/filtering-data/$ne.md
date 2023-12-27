@@ -5,7 +5,7 @@ Records that do not exactly match the given value will be returned. This is case
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`, `date`, `number`
+`string`, `date`, `boolean`, `number`, `uuid`
 
 ## Examples
 
