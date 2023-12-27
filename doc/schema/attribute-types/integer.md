@@ -42,7 +42,7 @@ GET /todos?filter[importance][$in][]=1&filter[importance][$in][]=2 // all todos 
 
 Any other value will return a service error.
 
-Checkout the [compatibility table](../../filtering-data/filtering-data.md#compatibility) for what operators can be used with integers.
+Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with integers.
 
 ### Data Response
 
