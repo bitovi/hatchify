@@ -314,8 +314,8 @@ npx nx eslint @hatchifyjs/koa
 ```mermaid
   flowchart TD
       A[core] --> B[node]
-      B --> C[koa]
-      B --> D[express]
+      B --> C[express]
+      B --> D[koa]
       A --> E[rest-client]
       E --> F[rest-client-jsonapi]
       E --> G[react-rest]
@@ -325,6 +325,11 @@ npx nx eslint @hatchifyjs/koa
       I --> J[react]
       F --> J
       H --> J
+      A --> K[create]
+      C --> K
+      D --> K
+      J --> K
+
 ```
 
 ## Folder structure
