@@ -32,11 +32,10 @@ The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.o
 If `required` is `false`, filtering `null` values is handled like the following:
 
 ```
-GET /todos?name=foo  // all todos with name foo
-GET /todos?name=%00  // all todos with null as the name value
-GET /todos?name=null  // all todos with "null" as the name value
-GET /todos?name=  // all todos with "" as the name value
-GET /todos?name=undefined  // all todos with "undefined" as the name value
+GET /todos?filter[name]=foo  // all todos with name foo
+GET /todos?filter[name]=%00  // all todos with null as the name value
+GET /todos?filter[name]=null  // all todos with "null" as the name value
+GET /todos?filter[name]=undefined  // all todos with "undefined" as the name value
 ```
 
 ### Data Response
