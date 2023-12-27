@@ -24,12 +24,12 @@ Unlike code generation tools—which allow you to write your schema and then gen
     - [Deleting a resource](#deleting-a-resource)
   - [Seeding data](#seeding-data)
 - [Frontend with React & MUI](#frontend-with-react-and-mui)
-  - [Rendering a List](#rendering-a-list)
+  - [Rendering an index of schemas and data](#rendering-an-index-of-schemas--data)
 - [Next Steps](#next-steps)
-  - [Schema, database, and service API naming](./doc/naming.md)
+  - [Schema, database, and service API naming](./doc/next-steps/naming.md)
   - [Model Sync](./doc/next-steps/model-sync.md)
   - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
-  - [Adding custom endpoints](./doc/next-steps//adding-custom-endpoints.md)
+  - [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
   - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
   - [Learn how to filter data](./doc/filtering-data/README.md)
@@ -379,8 +379,10 @@ well-defined schemas to create a database, a running backend with REST endpoints
 
 # Next Steps
 
-- [Schema, database, and service API naming](./doc/naming.md)
+- [Schema, database, and service API naming](./doc/next-steps/naming.md)
+- [Model Sync](./doc/next-steps/model-sync.md)
 - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
+- [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
 - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
 - [Learn how to filter data](./doc/filtering-data/README.md)
