@@ -15,18 +15,18 @@ Use [datetime](./datetime.md) for a date type with time.
 
 ## Parameters
 
-| key        | description                                                                                                               |      type       | optional |   default   |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------- | :-------------: | :------: | :---------: |
-| `default`  | The default value of the attribute. <br/> Example: `dateonly({default: 2023-10-02})`                        |     `Date`      |   Yes    | `undefined` |
-| `required` | If the attribute must be provided. <br/> Example: `dateonly({required: true})`                                            |    `Boolean`    |   Yes    |   `false`   |
-| `primary`  | If the attribute is a primary key. <br/> Example: `dateonly({primary: true})`                                             |    `Boolean`    |   Yes    |   `false`   |
-| `unique`   | If the attribute must be unique. <br/> Example: `dateonly({unique: true})`                                                |    `Boolean`    |   Yes    |   `false`   |
-| `max`      | The max date allowed. <br/> Example: `dateonly({max: new Date()})`, `dateonly({max: 1696283660000})`                      | `Date, number`  |   Yes    | `undefined` |
-| `min`      | The min date allowed. <br/> Example: `dateonly({min: new Date()})`, `dateonly({min: 1696283660000})`                      | `Date, number`  |   Yes    | `undefined` |
+| key        | description                                                                                          |      type      | optional |   default   |
+| ---------- | ---------------------------------------------------------------------------------------------------- | :------------: | :------: | :---------: |
+| `default`  | The default value of the attribute. <br/> Example: `dateonly({default: 2023-10-02})`                 |     `Date`     |   Yes    | `undefined` |
+| `required` | If the attribute must be provided. <br/> Example: `dateonly({required: true})`                       |   `Boolean`    |   Yes    |   `false`   |
+| `primary`  | If the attribute is a primary key. <br/> Example: `dateonly({primary: true})`                        |   `Boolean`    |   Yes    |   `false`   |
+| `unique`   | If the attribute must be unique. <br/> Example: `dateonly({unique: true})`                           |   `Boolean`    |   Yes    |   `false`   |
+| `max`      | The max date allowed. <br/> Example: `dateonly({max: new Date()})`, `dateonly({max: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
+| `min`      | The min date allowed. <br/> Example: `dateonly({min: new Date()})`, `dateonly({min: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
 
 ## Database and Sequelize Behavior
 
-The  `dateonly` type will create sequelize [DataTypes.DATEONLY](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) column.
+The `dateonly` type will create sequelize [DataTypes.DATEONLY](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) column.
 
 ## Middleware Behavior
 
@@ -40,7 +40,7 @@ GET /todos?filter[dueDate][$gte]=2023-12-01 //all todos that are on or after 202
 
 Any other value type will return a service error.
 
-Checkout the [compatibility table](../../filtering-data/filtering-data.md#compatibility) for what operators can be used with dates
+Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with dates
 
 ### Data Response
 

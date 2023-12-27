@@ -24,7 +24,7 @@ Unlike code generation tools—which allow you to write your schema and then gen
     - [Deleting a resource](#deleting-a-resource)
   - [Seeding data](#seeding-data)
 - [Frontend with React & MUI](#frontend-with-react-and-mui)
-  - [Rendering a List](#rendering-a-list)
+  - [Rendering an index of schemas and data](#rendering-an-index-of-schemas--data)
 - [Next Steps](#next-steps)
   - [Schema, database, and service API naming](./doc/next-steps/naming.md)
   - [Model Sync](./doc/next-steps/model-sync.md)
@@ -32,8 +32,8 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
   - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-  - [Learn how to filter data](./doc/next-steps/filtering-data.md)
-  - [Learn how to paginate data](./doc/next-steps/paginating-data.md)
+  - [Learn how to filter data](./doc/filtering-data/README.md)
+  - [Learn how to paginate data](./doc/paginating-data/README.md)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -110,8 +110,7 @@ export const User = {
 
 > **Note:** It is important to use _satisfies PartialSchema_ when typing our schemas. By using the satisfies keyword, we can make sure our schema objects are typed correctly and also get the benefit of type inference when passing our schemas into our hatchify functions.
 
-You can find all of the possible data types for a schema's `attributes`
-[here](https://sequelize.org/docs/v6/other-topics/other-data-types/).
+You can find all of the possible data types for a schema's `attributes` [here](./doc/schema/attribute-types/README.md).
 
 ## Model Relationships
 
@@ -120,13 +119,12 @@ different models within your application. In the previous code snippets,
 you may have noticed we added a `belongsTo` and `hasMany` to our
 schemas. A model can have a relationship, linking it to another model.
 These relationships can be defined using `hasMany`, `hasOne`,
-`belongsTo`, and `belongsToMany`. The way we have defined the schemas
+`belongsTo`, and `hasManyThrough`. The way we have defined the schemas
 above, we are telling HatchifyJS that a `User` can be associated with
 many different todos and that a `Todo` can only have 1 user associated
 with it.
 
-For more information on these relationships and the options available
-check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/associations/).
+More information on these relationships and the options available can be found [here](./doc/schema//relationship-types/README.md).
 
 # Backend - The Hatchify Middleware
 
@@ -384,8 +382,8 @@ well-defined schemas to create a database, a running backend with REST endpoints
 - [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
 - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-- [Learn how to filter data](./doc/next-steps/filtering-data.md)
-- [Learn how to paginate data](./doc/next-steps/paginating-data.md)
+- [Learn how to filter data](./doc/filtering-data/README.md)
+- [Learn how to paginate data](./doc/paginating-data/README.md)
 
 # Need help or have questions?
 

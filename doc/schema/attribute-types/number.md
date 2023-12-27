@@ -47,7 +47,7 @@ GET /todos?filter[confidence][$in][]=1&filter[confidence][$in][]=-1.5
 
 Any other value will return a service error.
 
-Checkout the [compatibility table](../../filtering-data/filtering-data.md#compatibility) for what operators can be used with numbers.
+Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with numbers.
 
 ### Data Response
 

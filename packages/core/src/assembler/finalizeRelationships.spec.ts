@@ -191,8 +191,22 @@ describe("finalizeRelationships", () => {
           name: "TodoUser",
           id: getDefaultPrimaryAttribute().finalize(),
           attributes: {
-            userId: uuid({ required: true, hidden: true }).finalize(),
             todoId: uuid({ required: true, hidden: true }).finalize(),
+            userId: uuid({ required: true, hidden: true }).finalize(),
+          },
+          relationships: {
+            todo: {
+              type: "belongsTo",
+              targetSchema: "Todo",
+              sourceAttribute: "todoId",
+              targetAttribute: "id",
+            },
+            user: {
+              type: "belongsTo",
+              targetSchema: "User",
+              sourceAttribute: "userId",
+              targetAttribute: "id",
+            },
           },
         },
       }),
