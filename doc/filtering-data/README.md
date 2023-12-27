@@ -92,3 +92,7 @@ If no operator is present, then `$eq` is used.
 | boolean    | `filter[completed]=false`                           | `$eq`               |
 | uuid       | `filter[uuid]=e33a8fbd-bf2f-4348-9091-8e1b6b659b69` | `$eq`               |
 | array      | `filter[name]=mike&filter[name]=brad`               | `$in (with $eq)`    |
+
+## Further information
+
+Hatchify is using `@bitovi/querystring-parser` to parse querystrings. More information on query styles and other options is available [here](https://github.com/bitovi/querystring-parser/tree/main/packages/querystring-parser#filter-parameters).
