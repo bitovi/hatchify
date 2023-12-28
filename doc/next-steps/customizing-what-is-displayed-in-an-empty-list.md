@@ -13,7 +13,7 @@ Update `/src/App.tsx` to the following:
 // hatchify-app/frontend/App.tsx
 import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
-import * as schemas from "../schemas"
+import * as schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("http://localhost:3000/api", schemas))
 

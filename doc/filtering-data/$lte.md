@@ -91,7 +91,7 @@ This filter will match the following records:<br>
 ```
 
 The `name` attribute is less than or equal to "take out trash"<br>
-`filter[name][$lt]=take out trash`<br>
+`filter[name][$lt]=take%20out%20trash`<br>
 
 This filter will match the following records:<br>
 
@@ -129,7 +129,7 @@ This filter will match the following records:<br>
 ```
 
 The `name` attribute is less than "Take out trash"<br>
-`filter[name][$lte]=Take out trash`<br>
+`filter[name][$lte]=Take%20out%20trash`<br>
 
 This filter will match no records:<br>
 
