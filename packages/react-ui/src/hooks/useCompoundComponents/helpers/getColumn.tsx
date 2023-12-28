@@ -46,7 +46,6 @@ export function getColumn<
       sortable !== undefined ? sortable : !isAdditional && !isRelationship, // reference sortable prop; otherwise sortable if an attribute
     key: field || uuidv4(), // if no field, then it's an additional column, but needs a key?
     label,
-    displayName,
     renderData: () => null, // default render so TS doesn't complain
     renderHeader: () => null, // default render so TS doesn't complain
     headerOverride: !!(renderHeaderValue ?? HeaderValueComponent),
@@ -87,7 +86,7 @@ export function getColumn<
   // render priority:
   // 1. prop: renderHeaderValue (render function)
   // 2. prop: HeaderValueComponent (component)
-  // 3. render label
+  // 3. render displayName
 
   if (renderHeaderValue) {
     column.renderHeader = (headerArgs) => {

@@ -2,9 +2,7 @@ import type { PartialNumberControlType } from "./types"
 
 export function finalizeControl(
   props: Omit<PartialNumberControlType<boolean>, "allowNullInfer">,
-): Required<
-  Omit<PartialNumberControlType<boolean>, "allowNullInfer" | "displayName">
-> & { displayName: PartialNumberControlType<boolean>["displayName"] } {
+): Required<Omit<PartialNumberControlType<boolean>, "allowNullInfer">> {
   // @ts-expect-error @todo HATCH-417
   delete props.allowNullInfer
   return {
@@ -15,6 +13,6 @@ export function finalizeControl(
     primary: !!props.primary,
     step: props.step || 0,
     default: props.default ?? null,
-    displayName: props.displayName ?? undefined,
+    displayName: props.displayName ?? null,
   }
 }

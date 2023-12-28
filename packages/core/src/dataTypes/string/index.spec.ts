@@ -19,6 +19,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -102,6 +103,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: true,
           min: 0,
           max: 255,
@@ -138,6 +140,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: false,
           allowNullInfer: false,
           min: undefined,
@@ -238,6 +241,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: false,
           min: 0,
           max: 255,
@@ -274,6 +278,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -373,6 +378,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: false,
           min: 0,
           max: 255,
@@ -409,6 +415,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: undefined,
           min: 1,
           max: 10,
@@ -510,6 +517,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: true,
           min: 1,
           max: 10,
@@ -546,6 +554,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -610,6 +619,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: true,
           min: 0,
           max: 255,

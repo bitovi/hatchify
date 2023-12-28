@@ -2,9 +2,7 @@ import type { PartialDatetimeControlType } from "./types"
 
 export function finalizeControl(
   props: Omit<PartialDatetimeControlType<boolean>, "allowNullInfer">,
-): Required<
-  Omit<PartialDatetimeControlType<boolean>, "allowNullInfer" | "displayName">
-> & { displayName: PartialDatetimeControlType<boolean>["displayName"] } {
+): Required<Omit<PartialDatetimeControlType<boolean>, "allowNullInfer">> {
   // @ts-expect-error @todo HATCH-417
   delete props.allowNullInfer
   return {
@@ -15,6 +13,6 @@ export function finalizeControl(
     primary: !!props.primary,
     default: props.default ?? null,
     step: props.step || 0,
-    displayName: props.displayName ?? undefined,
+    displayName: props.displayName ?? null,
   }
 }

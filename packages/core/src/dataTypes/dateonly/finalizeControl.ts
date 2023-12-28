@@ -2,12 +2,7 @@ import type { PartialDateonlyControlType } from "./types"
 
 export function finalizeControl(
   props: Omit<PartialDateonlyControlType<boolean>, "allowNullInfer">,
-): Required<
-  Omit<
-    PartialDateonlyControlType<boolean>,
-    "allowNullInfer" | "displayName"
-  > & { displayName: PartialDateonlyControlType<boolean>["displayName"] }
-> {
+): Required<Omit<PartialDateonlyControlType<boolean>, "allowNullInfer">> {
   // @ts-expect-error @todo HATCH-417
   delete props.allowNullInfer
   return {
@@ -17,6 +12,6 @@ export function finalizeControl(
     max: props.max ?? Infinity,
     primary: !!props.primary,
     default: props.default ?? null,
-    displayName: props.displayName ?? undefined,
+    displayName: props.displayName ?? null,
   }
 }

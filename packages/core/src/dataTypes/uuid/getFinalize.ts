@@ -23,7 +23,7 @@ export function getFinalize(
   >,
 ): FinalAttribute<
   PartialUuidORM,
-  Omit<PartialUuidControlType<boolean>, "allowNullInfer" | "displayName">,
+  Omit<PartialUuidControlType<boolean>, "allowNullInfer">,
   string,
   FinalUuidORM
 > {

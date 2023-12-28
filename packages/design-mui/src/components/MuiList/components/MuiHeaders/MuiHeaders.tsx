@@ -55,7 +55,6 @@ export const MuiHeaders: React.FC<
                   sortable: column.sortable,
                   key: column.key,
                   label: column.label,
-                  displayName: column.displayName,
                 },
                 meta,
                 sortBy,

@@ -23,7 +23,7 @@ export function getFinalize(
   >,
 ): FinalAttribute<
   PartialTextORM,
-  Omit<PartialTextControlType<boolean>, "allowNullInfer" | "displayName">,
+  Omit<PartialTextControlType<boolean>, "allowNullInfer">,
   string,
   FinalTextORM
 > {

@@ -23,10 +23,7 @@ export function getFinalize<TValues extends readonly string[]>(
   >,
 ): FinalAttribute<
   PartialEnumORM,
-  Omit<
-    PartialEnumControlType<boolean, TValues>,
-    "allowNullInfer" | "displayName"
-  >,
+  Omit<PartialEnumControlType<boolean, TValues>, "allowNullInfer">,
   string,
   FinalEnumORM
 > {

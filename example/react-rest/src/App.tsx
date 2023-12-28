@@ -7,7 +7,6 @@ const Todo = {
   attributes: {
     name: string(),
     importance: integer(),
-    displayName: string(),
   },
 }
 
@@ -33,7 +32,6 @@ function App() {
             <tr key={todo.id}>
               <td>{todo.name}</td>
               <td>{todo.importance}</td>
-              <td>{todo.displayName}</td>
             </tr>
           ))}
         </thead>

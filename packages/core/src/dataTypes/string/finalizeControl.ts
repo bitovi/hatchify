@@ -2,11 +2,7 @@ import type { PartialStringControlType } from "./types"
 
 export function finalizeControl(
   props: Omit<PartialStringControlType<boolean>, "allowNullInfer">,
-): Required<
-  Omit<PartialStringControlType<boolean>, "allowNullInfer" | "displayName">
-> & {
-  displayName: PartialStringControlType<boolean>["displayName"]
-} {
+): Required<Omit<PartialStringControlType<boolean>, "allowNullInfer">> {
   // @ts-expect-error @todo HATCH-417
   delete props.allowNullInfer
   return {
@@ -18,6 +14,6 @@ export function finalizeControl(
     default: props.default ?? null,
     regex: props.regex ?? /(.*?)/,
     maxRenderLength: props?.maxRenderLength ?? null,
-    displayName: props.displayName ?? undefined,
+    displayName: props.displayName ?? null,
   }
 }

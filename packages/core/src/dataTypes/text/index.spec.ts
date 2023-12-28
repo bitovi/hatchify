@@ -19,6 +19,7 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: undefined,
+          displayName: null,
           min: 0,
           max: Infinity,
           primary: undefined,
@@ -101,6 +102,7 @@ describe("text", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: true,
           min: 0,
           max: Infinity,
@@ -136,6 +138,7 @@ describe("text", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: false,
           allowNullInfer: false,
           min: 0,
@@ -236,6 +239,7 @@ describe("text", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: false,
           min: 0,
           max: Infinity,
@@ -272,6 +276,7 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: undefined,
+          displayName: null,
           min: 0,
           max: Infinity,
           primary: true,
@@ -370,6 +375,7 @@ describe("text", () => {
         },
         control: {
           type: "String",
+          displayName: null,
           allowNull: false,
           min: 0,
           max: Infinity,

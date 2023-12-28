@@ -6,6 +6,7 @@ describe("getFinalize", () => {
       name: "dateonly()",
       control: {
         allowNull: undefined,
+        displayName: null,
         max: undefined,
         min: undefined,
         primary: undefined,

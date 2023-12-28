@@ -6,6 +6,7 @@ describe("getFinalize", () => {
       name: "text()",
       control: {
         allowNull: undefined,
+        displayName: null,
         max: Infinity,
         min: 0,
         primary: undefined,
