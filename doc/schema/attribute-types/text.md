@@ -28,18 +28,18 @@ The `text` type will create a sequelize [DataTypes.TEXT](https://sequelize.org/d
 
 ### Querying Data
 
-For text, use any string value, or `%00` 🛑 in your queries as follows:
+For text, use any string value, or `%00` in your queries as follows:
 
 ```
-GET /todos?filter[notes][$eq]=this%20is%20super%20important //all todos with notes that equal "this is super important"
+GET /api/todos?filter[notes][$eq]=this%20is%20super%20important //all todos with notes that equal "this is super important"
 
-GET /todos?filter[notes][$eq]=%00 //all todos with notes that are null 🛑
+GET /api/todos?filter[notes][$eq]=%00 //all todos with notes that are null
 
-GET /todos?filter[notes][$ilike]=%25important //all todos with notes that end in "important"
+GET /api/todos?filter[notes][$ilike]=%25important //all todos with notes that end in "important"
 
-GET /todos?filter[notes][$ilike]=this%25 //all todos with notes that start with "this"
+GET /api/todos?filter[notes][$ilike]=this%25 //all todos with notes that start with "this"
 
-GET /todos?filter[notes][$ilike]=%25is%20super%25 //all todos with notes that contain "is super"
+GET /api/todos?filter[notes][$ilike]=%25is%20super%25 //all todos with notes that contain "is super"
 ```
 
 Note:
@@ -79,7 +79,9 @@ todo.notes //-> string or null
 
 ## Grid Behavior
 
-The text will be presented in the grid. If the value is `null`, no value will be presented in the grid. For large amounts of text: the column will stretch to a max width, an ellipsis will be displayed, and the overflow will be hidden. When hovering over that cell, the full text will be displayed 🛑
+The text will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+
+To provide better table behavior for columns with large amounts of text the `maxDisplayLength` property can also be provided. This will truncate oversized text, appending it with an ellipsis. The unabridged text will be available in a pop over. 🛑
 
 ![Grid Example](../../attachments/text-grid.png)
 

@@ -24,18 +24,21 @@ Unlike code generation tools—which allow you to write your schema and then gen
     - [Deleting a resource](#deleting-a-resource)
   - [Seeding data](#seeding-data)
 - [Frontend with React & MUI](#frontend-with-react-and-mui)
-  - [Rendering a List](#rendering-a-list)
+  - [Rendering an index of schemas and data](#rendering-an-index-of-schemas--data)
 - [Next Steps](#next-steps)
-  - [Schema, database, and service API naming](./doc/naming.md)
+  - [Schema, database, and service API naming](./doc/next-steps/naming.md)
   - [Model Sync](./doc/next-steps/model-sync.md)
   - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
-  - [Adding custom endpoints](./doc/next-steps//adding-custom-endpoints.md)
+  - [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
+  - [Adding request authorization](./doc/next-steps/adding-request-authorization.md)
   - [Customizing your list](./doc/next-steps/customizing-your-list.md)
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-  - [Learn how to filter data](./doc/filtering-data/filtering-data.md)
-  - [Learn how to paginate data](./doc/paginating-data/paginating-data.md)
-  - [Using virtual fields](./doc/next-steps/virtual-fields.md)
-- [Troubleshooting / Known issues](#troubleshooting--known-issues)
+  - [Application data validation](./doc/next-steps/application-data-validation.md)
+  - [Learn how to filter data](./doc/filtering-data/README.md)
+  - [Learn how to paginate data](./doc/paginating-data/README.md)
+  - [Learn how to include data](./doc/including-data/README.md)
+  - [Learn how to sort data](./doc/sorting-data/README.md)
+  - [Learn how to sparse fieldsets](./doc/sparse-fieldsets/README.md)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -86,7 +89,7 @@ under the hood to talk to your database.
 import { belongsTo, boolean, dateonly, integer, hasMany, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-export const Todo = {
+export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
@@ -99,7 +102,7 @@ export const Todo = {
   },
 } satisfies PartialSchema
 
-export const User = {
+export const User: PartialSchema = {
   name: "User",
   attributes: {
     name: string({ required: true }),
@@ -112,8 +115,7 @@ export const User = {
 
 > **Note:** It is important to use _satisfies PartialSchema_ when typing our schemas. By using the satisfies keyword, we can make sure our schema objects are typed correctly and also get the benefit of type inference when passing our schemas into our hatchify functions.
 
-You can find all of the possible data types for a schema's `attributes`
-[here](https://sequelize.org/docs/v6/other-topics/other-data-types/).
+You can find all of the possible data types for a schema's `attributes` [here](./doc/schema/attribute-types/README.md).
 
 ## Model Relationships
 
@@ -122,13 +124,12 @@ different models within your application. In the previous code snippets,
 you may have noticed we added a `belongsTo` and `hasMany` to our
 schemas. A model can have a relationship, linking it to another model.
 These relationships can be defined using `hasMany`, `hasOne`,
-`belongsTo`, and `belongsToMany`. The way we have defined the schemas
+`belongsTo`, and `hasManyThrough`. The way we have defined the schemas
 above, we are telling HatchifyJS that a `User` can be associated with
 many different todos and that a `Todo` can only have 1 user associated
 with it.
 
-For more information on these relationships and the options available
-check the [documentation for Sequelize](https://sequelize.org/docs/v7/category/associations/).
+More information on these relationships and the options available can be found [here](./doc/schema//relationship-types/README.md).
 
 # Backend - The Hatchify Middleware
 
@@ -346,7 +347,7 @@ curl 'http://localhost:3000/api/users' \
 # Frontend with React and MUI
 
 Now that our server is up and running we can review the contents of
-`frontend/App.tsx` to see how the schemas that we defined earlier convientenly
+`frontend/App.tsx` to see how the schemas that we defined earlier conveniently
 "hatch" our frontend.
 
 The first thing we do is import `hatchifyReact`, `HatchifyProvider`, and
@@ -380,12 +381,19 @@ well-defined schemas to create a database, a running backend with REST endpoints
 
 # Next Steps
 
-- [Schema, database, and service API naming](./doc/naming.md)
+- [Schema, database, and service API naming](./doc/next-steps/naming.md)
+- [Model Sync](./doc/next-steps/model-sync.md)
 - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
+- [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
+- [Adding request authorization](./doc/next-steps/adding-request-authorization.md)
 - [Customizing your list](./doc/next-steps/customizing-your-list.md)
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-- [Learn how to filter data](./doc/filtering-data/filtering-data.md)
-- [Using virtual fields](./doc/next-steps/virtual-fields.md)
+- [Application data validation](./doc/next-steps/application-data-validation.md)
+- [Learn how to filter data](./doc/filtering-data/README.md)
+- [Learn how to paginate data](./doc/paginating-data/README.md)
+- [Learn how to include data](./doc/including-data/README.md)
+- [Learn how to sort data](./doc/sorting-data/README.md)
+- [Learn how to sparse fieldsets](./doc/sparse-fieldsets/README.md)
 
 # Need help or have questions?
 

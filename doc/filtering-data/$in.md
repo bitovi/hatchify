@@ -5,7 +5,7 @@ Records that are an exact match to any of the given values will be returned.
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`, `date`, `boolean`, `number`, `arrays`
+`string`, `date`, `boolean`, `number`, `arrays`, `uuid`
 
 ## Examples
 
@@ -47,7 +47,7 @@ All examples use this example data:
 ```
 
 The `name` attribute is equal to either "Workout" or "take out trash"<br>
-`filter[name][$in]=Workout&filter[name][$in]=take out trash`<br>
+`filter[name][$in]=Workout&filter[name][$in]=take%20out%20trash`<br>
 
 This filter will match the following records:<br>
 

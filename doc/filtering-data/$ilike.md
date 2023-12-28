@@ -11,7 +11,7 @@ Records that contain the specified values. Using the `%` wildcard will determine
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`
+`string`, `uuid`
 
 ## Examples
 
@@ -53,7 +53,7 @@ All examples use this example data:
 ```
 
 The `name` attribute starts with "worko"<br>
-`filter[name][$ilike]=worko%`<br>
+`filter[name][$ilike]=worko%25`<br>
 
 This filter will match the following records:<br>
 

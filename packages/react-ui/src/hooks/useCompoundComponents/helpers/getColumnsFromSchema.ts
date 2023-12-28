@@ -30,6 +30,7 @@ export function getColumnsFromSchema<
         control,
         field: attributeName,
         isRelationship: false,
+        key: attributeName,
         compoundComponentProps: {},
       })
     })
@@ -52,6 +53,7 @@ export function getColumnsFromSchema<
         defaultValueComponents,
         control: null,
         field: key,
+        key,
         isRelationship: true,
         compoundComponentProps: {},
       })

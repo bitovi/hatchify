@@ -99,7 +99,7 @@ This filter will match the following records:<br>
 ```
 
 The `name` attribute is less than "Take out trash"<br>
-`filter[name][$lt]=Take out trash`<br>
+`filter[name][$lt]=Take%20out%20trash`<br>
 
 This filter will match no records:<br>
 

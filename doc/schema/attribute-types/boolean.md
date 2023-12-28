@@ -29,14 +29,14 @@ The `boolean` type will create a sequelize [DataTypes.BOOLEAN](https://sequelize
 For booleans, use `true`, `false`, and `%00` in your queries as follows:
 
 ```js
-GET /todos?complete=true  // all complete todos
-GET /todos?complete=%00  // all todos with null as the complete value 🛑
-GET /todos?complete=false // all false todos
+GET /api/todos?complete=true  // all complete todos
+GET /api/todos?complete=%00  // all todos with null as the complete value 🛑
+GET /api/todos?complete=false // all false todos
 ```
 
 Any other value will return a service error.
 
-Checkout the [compatibility table](../../filtering-data/filtering-data.md#compatibility) for what operators can be used with booleans.
+Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with booleans.
 
 ### Data Response
 
@@ -74,6 +74,6 @@ The text `true` or `false` will be presented in the grid. If the value is `null`
 
 ![Grid Example](https://github.com/bitovi/hatchify/assets/78602/ddbf26a1-180b-4fc7-a483-fde52dc4fce9)
 
-## Form Behavior
+## Form Behavior 🛑
 
 `boolean()` will produce a [`<input type=checkbox>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) control. `null` will be treated as unchecked.

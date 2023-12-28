@@ -1,4 +1,11 @@
-import { belongsTo, hasMany, string, uuid, uuidv4 } from "@hatchifyjs/core"
+import {
+  belongsTo,
+  hasMany,
+  integer,
+  string,
+  uuid,
+  uuidv4,
+} from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
 import {
@@ -1354,6 +1361,220 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           },
         ],
 
+        meta: { unpaginatedCount: 1 },
+      })
+    })
+  })
+
+  describe(`${dialect} - hasMany().through(existingSchema)`, () => {
+    const AccountSalesPerson: PartialSchema = {
+      name: "AccountSalesPerson",
+      attributes: {
+        accountId: uuid({ required: true }),
+        salesPersonId: uuid({ required: true }),
+        score: integer(),
+      },
+    }
+    const Account: PartialSchema = {
+      name: "Account",
+      attributes: {
+        name: string(),
+      },
+    }
+    const SalesPerson: PartialSchema = {
+      name: "SalesPerson",
+      attributes: {
+        firstName: string(),
+      },
+      relationships: {
+        accounts: hasMany().through(),
+      },
+    }
+
+    let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+    let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
+    let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+    beforeAll(async () => {
+      ;({ fetch, hatchify, teardown } = await startServerWith(
+        { SalesPerson, Account, AccountSalesPerson },
+        dialect,
+      ))
+    })
+
+    afterAll(async () => {
+      await teardown()
+    })
+
+    it("creates account_sales_person with account_id and sales_person_id", async () => {
+      const [account, salesPerson, accountSalesPerson] = await Promise.all([
+        getDatabaseColumns(hatchify, "account"),
+        getDatabaseColumns(hatchify, "sales_person"),
+        getDatabaseColumns(hatchify, "account_sales_person"),
+      ])
+
+      expect(account).toEqual(
+        expect.arrayContaining([
+          {
+            name: "id",
+            allowNull: false,
+            primary: true,
+            default: null,
+            type: dialect === "postgres" ? "uuid" : "UUID",
+          },
+        ]),
+      )
+
+      expect(salesPerson).toEqual(
+        expect.arrayContaining([
+          {
+            name: "id",
+            allowNull: false,
+            primary: true,
+            default: null,
+            type: dialect === "postgres" ? "uuid" : "UUID",
+          },
+        ]),
+      )
+
+      expect(accountSalesPerson).toEqual(
+        expect.arrayContaining([
+          {
+            name: "account_id",
+            allowNull: false,
+            primary: false,
+            default: null,
+            type: dialect === "postgres" ? "uuid" : "UUID",
+            foreignKeys: [
+              {
+                ...(dialect === "postgres" ? { schemaName: "public" } : {}),
+                tableName: "account",
+                columnName: "id",
+              },
+            ],
+          },
+          {
+            name: "id",
+            allowNull: false,
+            primary: true,
+            default: null,
+            type: dialect === "postgres" ? "uuid" : "UUID",
+          },
+          {
+            name: "sales_person_id",
+            allowNull: false,
+            primary: false,
+            default: null,
+            type: dialect === "postgres" ? "uuid" : "UUID",
+            foreignKeys: [
+              {
+                ...(dialect === "postgres" ? { schemaName: "public" } : {}),
+                tableName: "sales_person",
+                columnName: "id",
+              },
+            ],
+          },
+          {
+            name: "score",
+            allowNull: true,
+            default: null,
+            primary: false,
+            type: dialect === "postgres" ? "integer" : "INTEGER",
+          },
+        ]),
+      )
+    })
+
+    it("accounts will be used in the include query parameter, mutation payloads and response payloads", async () => {
+      const { body: account } = await fetch("/api/accounts", {
+        method: "post",
+        body: {
+          data: {
+            type: "Account",
+            attributes: {
+              name: "Acme",
+            },
+          },
+        },
+      })
+      const { body: salesPerson } = await fetch("/api/sales-persons", {
+        method: "post",
+        body: {
+          data: {
+            type: "SalesPerson",
+            attributes: {
+              firstName: "John",
+            },
+          },
+        },
+      })
+      const { body: accountSalesPerson } = await fetch(
+        "/api/account-sales-persons",
+        {
+          method: "post",
+          body: {
+            data: {
+              type: "AccountSalesPerson",
+              attributes: {
+                accountId: account.data.id,
+                salesPersonId: salesPerson.data.id,
+                score: 90,
+              },
+            },
+          },
+        },
+      )
+
+      const { body: salesPersons } = await fetch(
+        "/api/sales-persons?include=accounts,accountSalesPersons",
+      )
+      expect(salesPersons).toEqual({
+        jsonapi: { version: "1.0" },
+        data: [
+          {
+            type: "SalesPerson",
+            id: salesPerson.data.id,
+            attributes: {
+              firstName: "John",
+            },
+            relationships: {
+              accounts: {
+                data: [
+                  {
+                    type: "Account",
+                    id: account.data.id,
+                  },
+                ],
+              },
+              accountSalesPersons: {
+                data: [
+                  {
+                    type: "AccountSalesPerson",
+                    id: accountSalesPerson.data.id,
+                  },
+                ],
+              },
+            },
+          },
+        ],
+        included: [
+          {
+            type: "Account",
+            id: account.data.id,
+            attributes: {
+              name: "Acme",
+            },
+          },
+          {
+            type: "AccountSalesPerson",
+            id: accountSalesPerson.data.id,
+            attributes: {
+              salesPersonId: salesPerson.data.id,
+              accountId: account.data.id,
+              score: 90,
+            },
+          },
+        ],
         meta: { unpaginatedCount: 1 },
       })
     })

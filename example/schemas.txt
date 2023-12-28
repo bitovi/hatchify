@@ -23,7 +23,7 @@ export const Todo: PartialSchema = {
   relationships: {
     user: belongsTo("User"),
   },
-}
+} satisfies PartialSchema
 
 export const User: PartialSchema = {
   name: "User",
@@ -33,4 +33,4 @@ export const User: PartialSchema = {
   relationships: {
     todos: hasMany(),
   },
-}
+} satisfies PartialSchema

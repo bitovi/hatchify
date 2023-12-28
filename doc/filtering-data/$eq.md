@@ -5,7 +5,7 @@ Records that exactly match the given value will be returned. This is case-sensit
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`, `date`, `boolean`, `number`
+`string`, `date`, `boolean`, `number`, `uuid`
 
 ## Examples
 

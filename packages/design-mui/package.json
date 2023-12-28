@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/design-mui",
-  "version": "0.1.36",
+  "version": "0.1.38",
   "main": "./dist/design-mui.js",
   "module": "./dist/design-mui.mjs",
   "types": "./dist/design-mui.d.ts",
@@ -8,7 +8,7 @@
     ".": {
       "require": "./dist/design-mui.js",
       "import": "./dist/design-mui.mjs",
-      "types": "./src/design-mui.ts"
+      "types": "./dist/design-mui.d.ts"
     },
     "./package.json": "./package.json"
   },
@@ -37,7 +37,7 @@
     "vitest": "^0.30.1"
   },
   "dependencies": {
-    "@hatchifyjs/react-ui": "^0.1.26",
+    "@hatchifyjs/react-ui": "0.1.28",
     "@mui/icons-material": "^5.14.1",
     "@mui/utils": "^5.13.1",
     "lodash": "^4.17.21"

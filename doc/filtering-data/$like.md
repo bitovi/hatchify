@@ -10,7 +10,7 @@ Records that contain the specified values. Using the `%` wildcard will determine
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`
+`string`, `uuid`
 
 ## Examples
 
@@ -57,7 +57,7 @@ The `name` attribute is equal to "trash"<br>
 This filter will match none of the records.
 
 The `name` attribute contains "out"<br>
-`filter[name][$like]=%out%`<br>
+`filter[name][$like]=%25out%25`<br>
 
 This filter will match the following records:<br>
 

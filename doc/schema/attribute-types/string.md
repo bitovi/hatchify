@@ -32,11 +32,9 @@ The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.o
 If `required` is `false`, filtering `null` values is handled like the following:
 
 ```
-GET /todos?name=foo  // all todos with name foo
-GET /todos?name=%00  // all todos with null as the name value
-GET /todos?name=null  // all todos with "null" as the name value
-GET /todos?name=  // all todos with "" as the name value
-GET /todos?name=undefined  // all todos with "undefined" as the name value
+GET /api/todos?filter[name]=foo  // all todos with name foo
+GET /api/todos?filter[name]=%00  // all todos with null as the name value
+GET /api/todos?filter[name]=null  // all todos with "null" as the name value
 ```
 
 ### Data Response
@@ -59,7 +57,7 @@ String data will be returned as a string value or `null` as follows:
 When creating or updating a string attribute, string value or `null` must be provided. Any other value will return a service error.
 
 ```js
-POST /todos
+POST /api/todos
 
 DATA:
 
@@ -73,13 +71,13 @@ DATA:
 }
 ```
 
-# Grid Behavior
+## Grid Behavior
 
 The string value in its entirety is shown. Null values and empty string values are shown as an empty table cell.
 
 ![stringNullFilter](https://github.com/bitovi/hatchify/assets/109013/9e67c44d-11c2-434e-9bcc-68cefbfc3f95)
 
-## Form Controls
+## Form Controls 🛑
 
 `string()` with `max` of 255 and less will produce a standard text input like: `<input type=text>`.
 

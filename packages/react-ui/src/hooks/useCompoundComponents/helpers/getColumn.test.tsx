@@ -39,6 +39,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
       finalSchemas: finalSchemas,
       schemaName: "Todo",
       field: "title",
+      key: "title",
       control: finalSchemas.Todo.attributes.title.control,
       compoundComponentProps: {},
       defaultValueComponents: HatchifyPresentationDefaultValueComponents,
@@ -59,6 +60,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
       finalSchemas: finalSchemas,
       schemaName: "Todo",
       field: "created",
+      key: "created",
       control: finalSchemas.Todo.attributes.created.control,
       compoundComponentProps: {
         label: "CREATED",
@@ -81,6 +83,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
       finalSchemas: finalSchemas,
       schemaName: "Todo",
       field: "title",
+      key: "title",
       control: finalSchemas.Todo.attributes.created.control,
       compoundComponentProps: {
         renderHeaderValue: () => null,
@@ -103,6 +106,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
       finalSchemas: finalSchemas,
       schemaName: "Todo",
       field: "",
+      key: "additional-0",
       control: null,
       compoundComponentProps: { label: "Additional Column" },
       defaultValueComponents: HatchifyPresentationDefaultValueComponents,
@@ -111,7 +115,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     expect(column).toEqual({
       headerOverride: false,
       sortable: false,
-      key: column.key,
+      key: "additional-0",
       label: "Additional Column",
       renderData: expect.any(Function),
       renderHeader: expect.any(Function),
@@ -122,6 +126,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     const column = getColumn({
       finalSchemas: finalSchemas,
       schemaName: "Todo",
+      key: "user",
       field: "user",
       control: null,
       compoundComponentProps: {},
