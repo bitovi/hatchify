@@ -44,14 +44,14 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Components](./doc/react/components.md) 🛑
   - [REST Client](./doc/react/rest-client.md) 🛑
 - [Guides](#guides)
-  - [Schema, database, and service API naming](./doc/next-steps/naming.md)
-  - [Model Sync](./doc/next-steps/model-sync.md)
-  - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
-  - [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
-  - [Adding request authorization](./doc/next-steps/adding-request-authorization.md)
-  - [Customizing your list](./doc/next-steps/customizing-your-list.md)
-  - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-  - [Application data validation](./doc/next-steps/application-data-validation.md)
+  - [Schema, database, and service API naming](./doc/guides/naming.md)
+  - [Model Sync](./doc/guides/model-sync.md)
+  - [Using PostgreSQL DB](./doc/guides/using-postgres-db.md)
+  - [Adding custom endpoints](./doc/guides/adding-custom-endpoints.md)
+  - [Adding request authorization](./doc/guides/adding-request-authorization.md)
+  - [Customizing your list](./doc/guides/customizing-your-list.md)
+  - [Adding checkboxes to the list](./doc/guides/adding-checkboxes-to-the-list.md)
+  - [Application data validation](./doc/guides/application-data-validation.md)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -394,14 +394,14 @@ well-defined schemas to create a database, a running backend with REST endpoints
 
 # Guides
 
-- [Schema, database, and service API naming](./doc/next-steps/naming.md)
-- [Model Sync](./doc/next-steps/model-sync.md)
-- [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
-- [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
-- [Adding request authorization](./doc/next-steps/adding-request-authorization.md)
-- [Customizing your list](./doc/next-steps/customizing-your-list.md)
-- [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-- [Application data validation](./doc/next-steps/application-data-validation.md)
+- [Schema, database, and service API naming](./doc/guides/naming.md)
+- [Model Sync](./doc/guides/model-sync.md)
+- [Using PostgreSQL DB](./doc/guides/using-postgres-db.md)
+- [Adding custom endpoints](./doc/guides/adding-custom-endpoints.md)
+- [Adding request authorization](./doc/guides/adding-request-authorization.md)
+- [Customizing your list](./doc/guides/customizing-your-list.md)
+- [Adding checkboxes to the list](./doc/guides/adding-checkboxes-to-the-list.md)
+- [Application data validation](./doc/guides/application-data-validation.md)
 
 # Need help or have questions?
 
