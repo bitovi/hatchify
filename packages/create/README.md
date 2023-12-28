@@ -8,25 +8,25 @@
 With NPM:
 
 ```bash
-$ npm init @hatchifyjs
+$ npm init @hatchifyjs@latest
 ```
 
 With Yarn:
 
 ```bash
-$ yarn create @hatchifyjs
+$ yarn create @hatchifyjs@latest
 ```
 
 With PNPM:
 
 ```bash
-$ pnpm create @hatchifyjs
+$ pnpm create @hatchifyjs@latest
 ```
 
 With Bun:
 
 ```bash
-$ bunx @hatchifyjs/create
+$ bunx @hatchifyjs/create@latest
 ```
 
 Then follow the prompts!
@@ -35,21 +35,16 @@ You can also directly specify the project name and the template you want to use 
 
 ```bash
 # npm 7+, extra double-dash is needed:
-npm create @hatchifyjs/create hatchify-app -- --framework koa --dialect sqlite
+npm create @hatchifyjs/create hatchify-app -- --frontend=react --backend=koa --database=sqlite://localhost/:memory
 
 # yarn
-yarn create @hatchifyjs/create hatchify-app --framework koa --dialect sqlite
+yarn create @hatchifyjs/create hatchify-app --frontend=react --backend=koa --database=sqlite://localhost/:memory
 
 # pnpm
-pnpm create @hatchifyjs/create hatchify-app --framework koa --dialect sqlite
+pnpm create @hatchifyjs/create hatchify-app --frontend=react --backend=koa --database=sqlite://localhost/:memory
 
 # Bun
-bunx @hatchifyjs/create hatchify-app --framework koa --dialect sqlite
+bunx @hatchifyjs/create hatchify-app --frontend=react --backend=koa --database=sqlite://localhost/:memory
 ```
-
-Currently supported template presets include:
-
-- `koa-postgres`
-- `koa-sqlite`
 
 You can use `.` for the project name to scaffold in the current directory.
