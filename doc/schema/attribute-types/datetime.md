@@ -15,15 +15,15 @@ Use [dateonly](./dateonly.md) for a date type without time.
 
 ## Parameters
 
-| key        | description                                                                                                               |      type       | optional |   default   |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------- | :-------------: | :------: | :---------: |
-| `default`  | The default value of the attribute. <br/> Example: `datetime({default: 2023-10-02T21:16:15.349Z})`                        |     `Date`      |   Yes    | `undefined` |
-| `required` | If the attribute must be provided. <br/> Example: `datetime({required: true})`                                            |    `Boolean`    |   Yes    |   `false`   |
-| `primary`  | If the attribute is a primary key. <br/> Example: `datetime({primary: true})`                                             |    `Boolean`    |   Yes    |   `false`   |
-| `unique`   | If the attribute must be unique. <br/> Example: `datetime({unique: true})`                                                |    `Boolean`    |   Yes    |   `false`   |
-| `max`      | The max date allowed. <br/> Example: `datetime({max: new Date()})`, `datetime({max: 1696283660000})`                      | `Date, number`  |   Yes    | `undefined` |
-| `min`      | The min date allowed. <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})`                      | `Date, number`  |   Yes    | `undefined` |
-| `step`     | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`                        |     `"day"`     |   Yes    | `undefined` |
+| key        | description                                                                                          |      type      | optional |   default   |
+| ---------- | ---------------------------------------------------------------------------------------------------- | :------------: | :------: | :---------: |
+| `default`  | The default value of the attribute. <br/> Example: `datetime({default: 2023-10-02T21:16:15.349Z})`   |     `Date`     |   Yes    | `undefined` |
+| `required` | If the attribute must be provided. <br/> Example: `datetime({required: true})`                       |   `Boolean`    |   Yes    |   `false`   |
+| `primary`  | If the attribute is a primary key. <br/> Example: `datetime({primary: true})`                        |   `Boolean`    |   Yes    |   `false`   |
+| `unique`   | If the attribute must be unique. <br/> Example: `datetime({unique: true})`                           |   `Boolean`    |   Yes    |   `false`   |
+| `max`      | The max date allowed. <br/> Example: `datetime({max: new Date()})`, `datetime({max: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
+| `min`      | The min date allowed. <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
+| `step`     | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`   |    `"day"`     |   Yes    | `undefined` |
 
 ## Database and Sequelize Behavior
 
@@ -35,13 +35,13 @@ The `datetime` type will create sequelize [DataTypes.DATE](https://sequelize.org
 
 For dates, use a `1990-12-31T06:00:00.000Z` value, in your queries as follows:
 
-GET /todos?filter[dueDate][$eq]=2023-12-01T20%3A00%3A00.000Z //all todos with a due date that matches 2023-12-01T20%3A00%3A00.000Z
+GET /api/todos?filter[dueDate][$eq]=2023-12-01T20%3A00%3A00.000Z //all todos with a due date that matches 2023-12-01T20%3A00%3A00.000Z
 
-GET /todos?filter[dueDate][$gte]=2023-12-01T20%3A03%3A00.000Z //all todos that are on or after 2023-12-01T20%3A00%3A00.000Z
+GET /api/todos?filter[dueDate][$gte]=2023-12-01T20%3A03%3A00.000Z //all todos that are on or after 2023-12-01T20%3A00%3A00.000Z
 
 Any other value type will return a service error.
 
-Checkout the [compatibility table](../../filtering-data/filtering-data.md#compatibility) for what operators can be used with dates
+Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with dates
 
 ### Data Response
 

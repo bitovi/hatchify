@@ -79,7 +79,7 @@ const SalesPerson = {
 **API Implications:**
 
 - This will create a `/sales-persons` API.
-- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /sales-persons?fields[SalesPerson]=name`
+- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /api/sales-persons?fields[SalesPerson]=name`
 - `SalesPerson` will be used as the response `type`: `{data: {type: "SalesPerson"}}`
 
 ### Schema.pluralName
@@ -119,7 +119,7 @@ const AcmeCorp_SalesPerson = {
 **API Impliciations**
 
 - This will create an acme-corp/sales-persons API
-- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: GET /acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
+- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 - Data will be returned like:
   ```
   {
@@ -155,7 +155,7 @@ const SalesPerson = {
 **API Implications**
 
 - `firstName` will be used in query parameters like
-  `GET /sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName`
+  `GET /api/sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName`
 - `firstName` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -190,7 +190,7 @@ const Account = {
 **API Implications**
 
 - `salesPerson` will be used in the include query parameter like
-  `GET /accounts?include=salesPerson`
+  `GET /api/accounts?include=salesPerson`
 - `salesPerson` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -230,7 +230,7 @@ const Account = {
 **API Implications**
 
 - `closerPerson` will be used in the include query parameter like
-  `GET /accounts?include=closerPerson`
+  `GET /api/accounts?include=closerPerson`
 - `closerPerson` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -301,7 +301,7 @@ const SalesPerson = {
 **API Implications**
 
 - `accounts` will be used in the include query parameter like
-  `GET /sales-persons?include=accounts`
+  `GET /api/sales-persons?include=accounts`
 - `accounts` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -341,7 +341,7 @@ const SalesPerson = {
 **API Implications**
 
 - `managingAccounts` will be used in the include query parameter like
-  `GET /sales-persons?include=managingAccounts`
+  `GET /api/sales-persons?include=managingAccounts`
 - `managingAccounts` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -422,7 +422,7 @@ const SalesPerson = {
 **API Implications**
 
 - `accounts` will be available in the include query parameter like
-  `GET /sales-persons?include=accounts`
+  `GET /api/sales-persons?include=accounts`
 - `accounts` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -492,7 +492,7 @@ This does not change the Database behavior.
 **API Implications**
 
 - `salesAccounts` will be available in the include query parameter like
-  `GET /sales-persons?include=salesAccounts`
+  `GET /api/sales-persons?include=salesAccounts`
 - `salesAccounts` will be used in mutation payloads and response payloads like:
   ```js
   {

@@ -240,6 +240,21 @@ describe("builder", () => {
       })
     })
 
+    it("handles zero offset with positive limit", async () => {
+      expect(
+        buildFindOptions(hatchify, Todo, "page[offset]=0&page[limit]=10"),
+      ).toEqual({
+        data: {
+          where: {},
+          limit: 10,
+          offset: 0,
+          subQuery: false,
+        },
+        errors: [],
+        orm: "sequelize",
+      })
+    })
+
     it("handles zero pagination parameters", async () => {
       await expect(async () =>
         buildFindOptions(hatchify, Todo, "page[number]=0&page[size]=0"),
@@ -339,7 +354,7 @@ describe("builder", () => {
       ])
     })
 
-    it("handles unknown sort assocations", async () => {
+    it("handles unknown sort associations", async () => {
       await expect(async () =>
         buildFindOptions(hatchify, Todo, "sort=invalid.alsoinvalid"),
       ).rejects.toEqualErrors([

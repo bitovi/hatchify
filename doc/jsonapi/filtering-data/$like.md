@@ -1,11 +1,16 @@
-# $nin
+# $like
 
-Records that are not an exact match to any of the given values will be returned.
+Records that contain the specified values. Using the `%` wildcard will determine how this filter operater functions.<br>
+
+`%value` <-- value exists at the end of the record attribute<br>
+`value%` <-- value exists at the beginning of the record attribute<br>
+`%value%` <-- value exists anywhere in the record attribute<br>
+`value` <-- record attribute matches the exact value. Functionally the same as `%eq`<br>
 
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`, `date`, `boolean`, `number`, `arrays`
+`string`, `uuid`
 
 ## Examples
 
@@ -46,8 +51,13 @@ All examples use this example data:
     ]
 ```
 
-The `dueDate` attribute is not equal to `2023-07-20T05:00:00.000Z` or `2023-05-09T05:00:00.000Z`<br>
-`filter[dueDate][$nin]=2023-07-20T05:00:00.000Z&filter[dueDate][$nin]=2023-05-09T05:00:00.000Z`<br>
+The `name` attribute is equal to "trash"<br>
+`filter[name][$like]=trash`<br>
+
+This filter will match none of the records.
+
+The `name` attribute contains "out"<br>
+`filter[name][$like]=%25out%25`<br>
 
 This filter will match the following records:<br>
 
@@ -60,6 +70,16 @@ This filter will match the following records:<br>
                 "name": "Workout",
                 "dueDate": "2024-12-12T06:00:00.000Z",
                 "importance": 6,
+                "completed": false
+            },
+        },
+        {
+            "type": "Todo",
+            "id": "2",
+            "attributes": {
+                "name": "take out trash",
+                "dueDate": "2023-05-09T05:00:00.000Z",
+                "importance": 9,
                 "completed": false
             },
         },

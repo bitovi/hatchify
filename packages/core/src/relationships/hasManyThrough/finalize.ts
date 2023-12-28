@@ -53,20 +53,37 @@ export function finalize(
         },
       },
     },
-    [through]: {
-      ...schemas[through],
-      name: through,
-      id: getDefaultPrimaryAttribute().finalize(),
-      attributes: {
-        [throughSourceAttribute]: uuid({
-          required: true,
-          hidden: true,
-        }).finalize(),
-        [throughTargetAttribute]: uuid({
-          required: true,
-          hidden: true,
-        }).finalize(),
-      },
-    },
+    ...(schemas[through]
+      ? {}
+      : {
+          [through]: {
+            name: through,
+            id: getDefaultPrimaryAttribute().finalize(),
+            attributes: {
+              [throughSourceAttribute]: uuid({
+                required: true,
+                hidden: true,
+              }).finalize(),
+              [throughTargetAttribute]: uuid({
+                required: true,
+                hidden: true,
+              }).finalize(),
+            },
+            relationships: {
+              [pascalCaseToCamelCase(sourceSchema)]: {
+                type: "belongsTo",
+                targetSchema: sourceSchema,
+                sourceAttribute: throughSourceAttribute,
+                targetAttribute: sourceKey,
+              },
+              [pascalCaseToCamelCase(targetSchema)]: {
+                type: "belongsTo",
+                targetSchema,
+                sourceAttribute: throughTargetAttribute,
+                targetAttribute: targetKey,
+              },
+            },
+          },
+        }),
   }
 }

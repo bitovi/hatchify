@@ -1,16 +1,11 @@
-# $like
+# $in
 
-Records that contain the specified values. Using the `%` wildcard will determine how this filter operater functions.<br>
-
-`%value` <-- value exists at the end of the record attribute<br>
-`value%` <-- value exists at the beginning of the record attribute<br>
-`%value%` <-- value exists anywhere in the record attribute<br>
-`value` <-- record attribute matches the exact value. Functionally the same as `%eq`<br>
+Records that are an exact match to any of the given values will be returned.
 
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`
+`string`, `date`, `boolean`, `number`, `arrays`, `uuid`
 
 ## Examples
 
@@ -51,13 +46,8 @@ All examples use this example data:
     ]
 ```
 
-The `name` attribute is equal to "trash"<br>
-`filter[name][$like]=trash`<br>
-
-This filter will match none of the records.
-
-The `name` attribute contains "out"<br>
-`filter[name][$like]=%out%`<br>
+The `name` attribute is equal to either "Workout" or "take out trash"<br>
+`filter[name][$in]=Workout&filter[name][$in]=take%20out%20trash`<br>
 
 This filter will match the following records:<br>
 

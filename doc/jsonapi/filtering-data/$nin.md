@@ -1,11 +1,11 @@
-# $ne
+# $nin
 
-Records that do not exactly match the given value will be returned. This is case-sensitive.
+Records that are not an exact match to any of the given values will be returned.
 
 ## Compatibility
 
 This operator is compatible with the following types:
-`string`, `date`, `number`
+`string`, `date`, `boolean`, `number`, `arrays`, `uuid`
 
 ## Examples
 
@@ -46,12 +46,13 @@ All examples use this example data:
     ]
 ```
 
-The `dueDate` attribute does not equal `2023-07-20T05:00:00.000Z`<br>
-`filter[dueDate][$ne]=2023-07-20T05:00:00.000Z`<br>
+The `dueDate` attribute is not equal to `2023-07-20T05:00:00.000Z` or `2023-05-09T05:00:00.000Z`<br>
+`filter[dueDate][$nin]=2023-07-20T05:00:00.000Z&filter[dueDate][$nin]=2023-05-09T05:00:00.000Z`<br>
 
 This filter will match the following records:<br>
 
 ```json
+
         {
             "type": "Todo",
             "id": "1",
@@ -59,16 +60,6 @@ This filter will match the following records:<br>
                 "name": "Workout",
                 "dueDate": "2024-12-12T06:00:00.000Z",
                 "importance": 6,
-                "completed": false
-            },
-        },
-        {
-            "type": "Todo",
-            "id": "2",
-            "attributes": {
-                "name": "take out trash",
-                "dueDate": "2023-05-09T05:00:00.000Z",
-                "importance": 9,
                 "completed": false
             },
         },
