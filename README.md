@@ -87,7 +87,7 @@ under the hood to talk to your database.
 import { belongsTo, boolean, dateonly, integer, hasMany, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-export const Todo = {
+export const Todo: PartialSchema = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
@@ -100,7 +100,7 @@ export const Todo = {
   },
 } satisfies PartialSchema
 
-export const User = {
+export const User: PartialSchema = {
   name: "User",
   attributes: {
     name: string({ required: true }),
