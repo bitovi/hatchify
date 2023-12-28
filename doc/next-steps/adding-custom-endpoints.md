@@ -89,7 +89,7 @@ router.get("/api/cases", async function getCases(ctx): Promise<void> {
   // Another example could be when the UI shows one column for `name` and sorting it sends `{ sort: "name" }`
   // which we might want to change to `{ sort: "lastName,firstName,middleInitial" }`
 
-  // Here we force deleted cases out of the query:
+  // Here we rewrite the query string to force deleted cases out of the query:
   const findOptions = await parseQuery(querystring.stringify({ ...query, "filter[status][$ne]": "deleted" }))
 
   // `findOptions` is the query object we pass to `Sequelize`.
