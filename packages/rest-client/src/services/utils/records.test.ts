@@ -13,6 +13,7 @@ import {
   isMissingSchema,
   resourceToRecordRelationship,
   flattenResourcesIntoRecords,
+  getDisplayAttribute,
 } from "./records"
 
 const partialSchemas = {
@@ -288,6 +289,14 @@ describe("rest-client/utils/records", () => {
       expect(
         flattenResourcesIntoRecords(finalSchemas, record, related),
       ).toEqual(expected)
+    })
+  })
+
+  describe("getDisplayAttribute", () => {
+    it("works", () => {
+      expect(getDisplayAttribute(finalSchemas.Todo)).toBe("title")
+      expect(getDisplayAttribute(finalSchemas.Person)).toBe("name")
+      expect(getDisplayAttribute(finalSchemas.Company)).toBe("name")
     })
   })
 })
