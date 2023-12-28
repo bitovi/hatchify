@@ -30,7 +30,6 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Model Sync](./doc/next-steps/model-sync.md)
   - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
   - [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
-  - [Adding Request Authorization](./doc/next-steps/adding-request-authorization.md)
   - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
   - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
   - [Learn how to filter data](./doc/filtering-data/README.md)
@@ -88,7 +87,7 @@ under the hood to talk to your database.
 import { belongsTo, boolean, dateonly, integer, hasMany, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
@@ -101,7 +100,7 @@ export const Todo: PartialSchema = {
   },
 } satisfies PartialSchema
 
-export const User: PartialSchema = {
+export const User = {
   name: "User",
   attributes: {
     name: string({ required: true }),
@@ -346,7 +345,7 @@ curl 'http://localhost:3000/api/users' \
 # Frontend with React and MUI
 
 Now that our server is up and running we can review the contents of
-`frontend/App.tsx` to see how the schemas that we defined earlier convientenly
+`frontend/App.tsx` to see how the schemas that we defined earlier conveniently
 "hatch" our frontend.
 
 The first thing we do is import `hatchifyReact`, `HatchifyProvider`, and
@@ -384,7 +383,6 @@ well-defined schemas to create a database, a running backend with REST endpoints
 - [Model Sync](./doc/next-steps/model-sync.md)
 - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
 - [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
-- [Adding Request Authorization](./doc/next-steps/adding-request-authorization.md)
 - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
 - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
 - [Learn how to filter data](./doc/filtering-data/README.md)

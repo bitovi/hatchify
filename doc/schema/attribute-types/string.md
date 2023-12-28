@@ -35,7 +35,6 @@ If `required` is `false`, filtering `null` values is handled like the following:
 GET /todos?filter[name]=foo  // all todos with name foo
 GET /todos?filter[name]=%00  // all todos with null as the name value
 GET /todos?filter[name]=null  // all todos with "null" as the name value
-GET /todos?filter[name]=undefined  // all todos with "undefined" as the name value
 ```
 
 ### Data Response
