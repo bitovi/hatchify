@@ -1,3 +1,4 @@
+import type { FinalSchema } from "@hatchifyjs/core"
 import type {
   Record,
   Resource,
@@ -7,7 +8,6 @@ import type {
   ResourceRelationshipObject,
 } from "../types"
 import { setClientPropertyValuesFromResponse } from "."
-import { FinalSchema } from "@hatchifyjs/core"
 
 type Relationships = globalThis.Record<
   string,

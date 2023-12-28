@@ -47,8 +47,8 @@ export function getColumnsFromSchema<
       )
     })
     .map(([key, relationship]) => {
-      // related schema = schema[relationship.schema]
-      const displayAttribute = getDisplayAttribute(schema)
+      const relatedSchema = finalSchemas[relationship.targetSchema]
+      const displayAttribute = getDisplayAttribute(relatedSchema)
 
       return getColumn<TSchemas, TSchemaName>({
         finalSchemas,
