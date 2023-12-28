@@ -7,6 +7,7 @@ For an example, if we created an Employee model that describes someone working a
 An important validation here would be to verify that we don't create (or update) a user to have an end_date that is before their start date!
 
 ```typescript
+// hatchify-app/schemas.ts
 import { datetime, string } from "@hatchify/core"
 import type { PartialSchema } from "@hatchify/core"
 import { UnexpectedValueError } from "@hatchifyjs/koa"
@@ -53,6 +54,7 @@ In order to achieve this we can start by creating an override for the Assignment
 The following example code shows one way of tackling this problem:
 
 ```typescript
+// hatchify-app/backend/index.ts
 import Koa from "koa"
 import KoaRouter from "@koa/router"
 import { hatchifyKoa, Op, UnexpectedValueError } from "@hatchifyjs/koa"
