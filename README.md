@@ -347,7 +347,7 @@ curl 'http://localhost:3000/api/users' \
 # Frontend with React and MUI
 
 Now that our server is up and running we can review the contents of
-`frontend/App.tsx` to see how the schemas that we defined earlier convientenly
+`frontend/App.tsx` to see how the schemas that we defined earlier conveniently
 "hatch" our frontend.
 
 The first thing we do is import `hatchifyReact`, `HatchifyProvider`, and
