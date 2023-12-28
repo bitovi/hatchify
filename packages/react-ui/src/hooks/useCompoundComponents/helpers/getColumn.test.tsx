@@ -126,8 +126,9 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     const column = getColumn({
       finalSchemas: finalSchemas,
       schemaName: "Todo",
-      key: "user",
+      key: "user.name",
       field: "user",
+      sortable: true,
       control: null,
       compoundComponentProps: {},
       defaultValueComponents: HatchifyPresentationDefaultValueComponents,
@@ -135,8 +136,8 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
 
     expect(column).toEqual({
       headerOverride: false,
-      sortable: false,
-      key: "user",
+      sortable: true,
+      key: "user.name",
       label: "User",
       renderData: expect.any(Function),
       renderHeader: expect.any(Function),

@@ -105,11 +105,11 @@ describe("hooks/useCompoundComponents/helpers/getColumns", () => {
       },
       {
         headerOverride: false,
-        key: "user",
+        key: "user.name",
         label: "User",
         renderData: expect.any(Function),
         renderHeader: expect.any(Function),
-        sortable: false,
+        sortable: true,
       },
     ])
   })
