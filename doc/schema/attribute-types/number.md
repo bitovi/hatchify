@@ -36,13 +36,13 @@ For numbers, use any number value and `%00` in your queries as follows:
 
 ```js
 // all todos with confidence >= 5.3
-GET /todos?filter[confidence][$gte]=5.3
+GET /api/todos?filter[confidence][$gte]=5.3
 
 // all todos with confidence = null
-GET /todos?filter[confidence][$eq]=%00
+GET /api/todos?filter[confidence][$eq]=%00
 
  // all todos with confidence = 1 or =1.5
-GET /todos?filter[confidence][$in][]=1&filter[confidence][$in][]=-1.5
+GET /api/todos?filter[confidence][$in][]=1&filter[confidence][$in][]=-1.5
 ```
 
 Any other value will return a service error.

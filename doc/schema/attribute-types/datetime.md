@@ -35,9 +35,9 @@ The `datetime` type will create sequelize [DataTypes.DATE](https://sequelize.org
 
 For dates, use a `1990-12-31T06:00:00.000Z` value, in your queries as follows:
 
-GET /todos?filter[dueDate][$eq]=2023-12-01T20%3A00%3A00.000Z //all todos with a due date that matches 2023-12-01T20%3A00%3A00.000Z
+GET /api/todos?filter[dueDate][$eq]=2023-12-01T20%3A00%3A00.000Z //all todos with a due date that matches 2023-12-01T20%3A00%3A00.000Z
 
-GET /todos?filter[dueDate][$gte]=2023-12-01T20%3A03%3A00.000Z //all todos that are on or after 2023-12-01T20%3A00%3A00.000Z
+GET /api/todos?filter[dueDate][$gte]=2023-12-01T20%3A03%3A00.000Z //all todos that are on or after 2023-12-01T20%3A00%3A00.000Z
 
 Any other value type will return a service error.
 

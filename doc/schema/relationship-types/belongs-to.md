@@ -63,7 +63,7 @@ Creates a column `sales_person_id` in the `account` table.
 
 **API Implications**
 
-- `salesPerson` will be used in the include query parameter like `GET /accounts?include=salesPerson`
+- `salesPerson` will be used in the include query parameter like `GET /api/accounts?include=salesPerson`
 - `salesPerson` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -119,7 +119,7 @@ Creates a column `closing_sales_person_id` in the `account` table.
 
 **API Implications**
 
-- `closingSalesPerson` will be used in the include query parameter like `GET /accounts?include=closingSalesPerson`
+- `closingSalesPerson` will be used in the include query parameter like `GET /api/accounts?include=closingSalesPerson`
 - `closingSalesPerson` will be used in mutation payloads and response payloads like:
   ```js
   {
@@ -158,7 +158,7 @@ Creates a column `closer_id` in the `account` table.
 
 **API Implications**
 
-- `closingSalesPerson` will be used in the include query parameter like `GET /accounts?include=closingSalesPerson`
+- `closingSalesPerson` will be used in the include query parameter like `GET /api/accounts?include=closingSalesPerson`
 - `closingSalesPerson` will be used in mutation payloads and response payloads like:
   ```js
   {
