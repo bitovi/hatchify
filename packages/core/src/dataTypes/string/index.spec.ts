@@ -19,7 +19,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
+          displayName: undefined,
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -135,17 +135,15 @@ describe("string", () => {
             type: "STRING",
             typeArgs: [],
             allowNull: false,
-            primaryKey: undefined,
           },
         },
         control: {
           type: "String",
-          displayName: null,
+          displayName: undefined,
           allowNull: false,
           allowNullInfer: false,
           min: undefined,
           max: undefined,
-          primary: undefined,
         },
         finalize: expect.any(Function),
       })
@@ -278,7 +276,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
+          displayName: undefined,
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -415,7 +413,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
+          displayName: undefined,
           allowNull: undefined,
           min: 1,
           max: 10,
@@ -554,7 +552,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
+          displayName: undefined,
           allowNull: undefined,
           min: undefined,
           max: undefined,

@@ -1,4 +1,4 @@
-import { camelCaseToStartCase, uuidv4 } from "@hatchifyjs/core"
+import { camelCaseToTitleCase, uuidv4 } from "@hatchifyjs/core"
 import type { PartialSchema, FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FinalSchemas, GetSchemaNames } from "@hatchifyjs/rest-client"
 import type { DefaultValueComponentsTypes } from "../../../components"
@@ -41,7 +41,7 @@ export function getColumn<
   const isAdditional = control == null
   const label: string = labelProp || formatFieldAsLabel(field)
   const displayName: string =
-    control?.displayName || camelCaseToStartCase(label)
+    control?.displayName || camelCaseToTitleCase(label)
 
   const column: HatchifyColumn = {
     sortable:

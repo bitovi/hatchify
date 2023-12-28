@@ -19,7 +19,7 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: undefined,
-          displayName: null,
+          displayName: undefined,
           min: 0,
           max: Infinity,
           primary: undefined,
@@ -138,7 +138,7 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          displayName: null,
+          displayName: undefined,
           allowNull: false,
           allowNullInfer: false,
           min: 0,
@@ -276,7 +276,7 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: undefined,
-          displayName: null,
+          displayName: undefined,
           min: 0,
           max: Infinity,
           primary: true,
