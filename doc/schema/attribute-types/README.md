@@ -25,6 +25,7 @@ Each of these types renders differently on the UI and have different customizati
 - [Boolean](./boolean.md)
 - [Date Only](./dateonly.md)
 - [Date Time](./datetime.md)
+- [Enumerate](./enum.md)
 - [Integer](./integer.md)
 - [Number](./number.md)
 - [String](./string.md)

@@ -1,0 +1,19 @@
+# Koa
+
+- `.middleware`
+  - `.allModels`
+    - `.all`
+    - `.crud`
+    - `.findAndCountAll`
+    - `.findOne`
+    - `.create`
+    - `.update`
+    - `.destroy`
+- `.[MODEL_NAME]
+  - `.all`
+  - `.crud`
+  - `.findAndCountAll`
+  - `.findOne`
+  - `.create`
+  - `.update`
+  - `.destroy`

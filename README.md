@@ -13,8 +13,6 @@ Unlike code generation tools—which allow you to write your schema and then gen
 
 - [HatchifyJS](#hatchifyjs)
 - [Project Setup](#project-setup)
-- [Schemas](#schemas)
-  - [Model Relationships](#model-relationships)
 - [Backend - The Hatchify Middleware](#backend---the-hatchify-middleware)
   - [Using the server endpoints](#using-the-server-endpoints)
     - [Creating a resource](#creating-a-resource)
@@ -25,20 +23,35 @@ Unlike code generation tools—which allow you to write your schema and then gen
   - [Seeding data](#seeding-data)
 - [Frontend with React & MUI](#frontend-with-react-and-mui)
   - [Rendering an index of schemas and data](#rendering-an-index-of-schemas--data)
-- [Next Steps](#next-steps)
-  - [Schema, database, and service API naming](./doc/next-steps/naming.md)
-  - [Model Sync](./doc/next-steps/model-sync.md)
-  - [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
-  - [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
-  - [Adding request authorization](./doc/next-steps/adding-request-authorization.md)
-  - [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
-  - [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-  - [Application data validation](./doc/next-steps/application-data-validation.md)
-  - [Learn how to filter data](./doc/filtering-data/README.md)
-  - [Learn how to paginate data](./doc/paginating-data/README.md)
-  - [Learn how to include data](./doc/including-data/README.md)
-  - [Learn how to sort data](./doc/sorting-data/README.md)
-  - [Learn how to sparse fieldsets](./doc/sparse-fieldsets/README.md)
+- [Schema](#schemas)
+  - [Attributes](./doc/schema//attribute-types/README.md)
+  - [Relationships](./doc/schema/relationship-types/README.md)
+- JSON:API
+  - [Listing](#listing-resources)
+    - [Filtering](./doc/jsonapi/filtering-data/README.md)
+    - [Pagination](./doc/jsonapi/paginating-data/README.md)
+    - [Include](./doc/jsonapi/including-data/README.md)
+    - [Sorting](./doc/jsonapi/sorting-data/README.md)
+    - [Sparse fieldsets](./doc/jsonapi/sparse-fieldsets/README.md)
+  - [Submitting](#creating-a-resource)
+  - [Updating](#updating-a-resource)
+  - [Deleting](#deleting-a-resource)
+- Koa
+  - [API Docs](./doc/koa/README.md) 🛑
+- Express
+  - [API Docs](./doc/express/README.md) 🛑
+- React
+  - [Components](./doc/react/components.md) 🛑
+  - [REST Client](./doc/react/rest-client.md) 🛑
+- [Guides](#guides)
+  - [Schema, database, and service API naming](./doc/guides/naming.md)
+  - [Model Sync](./doc/guides/model-sync.md)
+  - [Using PostgreSQL DB](./doc/guides/using-postgres-db.md)
+  - [Adding custom endpoints](./doc/guides/adding-custom-endpoints.md)
+  - [Adding request authorization](./doc/guides/adding-request-authorization.md)
+  - [Customizing your list](./doc/guides/customizing-your-list.md)
+  - [Adding checkboxes to the list](./doc/guides/adding-checkboxes-to-the-list.md)
+  - [Application data validation](./doc/guides/application-data-validation.md)
 - [Need help or have questions?](#need-help-or-have-questions)
 
 # Project Setup
@@ -379,21 +392,16 @@ should see:
 And that’s it! With minimal code and some HatchifyJS magic, we've used our
 well-defined schemas to create a database, a running backend with REST endpoints, and a frontend that handles the JSX and data-fetching for us.
 
-# Next Steps
+# Guides
 
-- [Schema, database, and service API naming](./doc/next-steps/naming.md)
-- [Model Sync](./doc/next-steps/model-sync.md)
-- [Using PostgreSQL DB](./doc/next-steps/using-postgres-db.md)
-- [Adding custom endpoints](./doc/next-steps/adding-custom-endpoints.md)
-- [Adding request authorization](./doc/next-steps/adding-request-authorization.md)
-- [Rendering an empty list](./doc/next-steps/customizing-what-is-displayed-in-an-empty-list.md)
-- [Adding checkboxes to the list](./doc/next-steps/adding-checkboxes-to-the-list.md)
-- [Application data validation](./doc/next-steps/application-data-validation.md)
-- [Learn how to filter data](./doc/filtering-data/README.md)
-- [Learn how to paginate data](./doc/paginating-data/README.md)
-- [Learn how to include data](./doc/including-data/README.md)
-- [Learn how to sort data](./doc/sorting-data/README.md)
-- [Learn how to sparse fieldsets](./doc/sparse-fieldsets/README.md)
+- [Schema, database, and service API naming](./doc/guides/naming.md)
+- [Model Sync](./doc/guides/model-sync.md)
+- [Using PostgreSQL DB](./doc/guides/using-postgres-db.md)
+- [Adding custom endpoints](./doc/guides/adding-custom-endpoints.md)
+- [Adding request authorization](./doc/guides/adding-request-authorization.md)
+- [Customizing your list](./doc/guides/customizing-your-list.md)
+- [Adding checkboxes to the list](./doc/guides/adding-checkboxes-to-the-list.md)
+- [Application data validation](./doc/guides/application-data-validation.md)
 
 # Need help or have questions?
 

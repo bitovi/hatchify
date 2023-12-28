@@ -13,7 +13,7 @@ In Postgres:
 
 Sometimes, you want to have multiple tables named the same thing in different domains. Hatchify namespaces can solve this.
 
-The following extends from the [Using Postgres](next-steps/using-postgres-db.md) guide to have `Todo`’s reference a `User`, who created the todo, and a `Engineering_User` who is someone who can actually get stuff done.
+The following extends from the [Using Postgres](guides/using-postgres-db.md) guide to have `Todo`’s reference a `User`, who created the todo, and a `Engineering_User` who is someone who can actually get stuff done.
 
 - Update schemas/schemas.ts as follows:
 
