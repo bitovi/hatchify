@@ -13,13 +13,13 @@ export const Todo: PartialSchema = {
 
 ## Parameters
 
-| key          | description                                                                                      |     type     | optional |  default  |
-| ------------ | ------------------------------------------------------------------------------------------------ | :----------: | :------: | :-------: |
-| `default`    | The default value of the attribute. <br/> Example: `enumerate({default: "Pending", values:[...])`| `String`     |   Yes    |`undefined`|
-| `primary`    | If the attribute is a primary key. <br/> Example: `enumerate({primary: true, values:[...])`      | `Boolean`    |   Yes    |  `false`  |
-| `values`     | The options of the enum <br/> Example: `enumerate({values: ["Pending", "Failed", "Completed"]})` |`String Array`|   No     |           |
-| `required`   | If the attribute must be provided. <br/> Example: `enumerate({required: true, values:[...])`     | `Boolean`    |   Yes    |  `false`  |
-| `unique`     | If the attribute must be unique. <br/> Example: `enumerate({unique: true, values:[...]})`        | `Boolean`    |   Yes    |  `false`  |
+| key        | description                                                                                       |      type      | optional |   default   |
+| ---------- | ------------------------------------------------------------------------------------------------- | :------------: | :------: | :---------: |
+| `default`  | The default value of the attribute. <br/> Example: `enumerate({default: "Pending", values:[...])` |    `String`    |   Yes    | `undefined` |
+| `primary`  | If the attribute is a primary key. <br/> Example: `enumerate({primary: true, values:[...])`       |   `Boolean`    |   Yes    |   `false`   |
+| `values`   | The options of the enum <br/> Example: `enumerate({values: ["Pending", "Failed", "Completed"]})`  | `String Array` |    No    |             |
+| `required` | If the attribute must be provided. <br/> Example: `enumerate({required: true, values:[...])`      |   `Boolean`    |   Yes    |   `false`   |
+| `unique`   | If the attribute must be unique. <br/> Example: `enumerate({unique: true, values:[...]})`         |   `Boolean`    |   Yes    |   `false`   |
 
 ## Database and Sequelize Behavior
 
@@ -30,9 +30,9 @@ The `enumerate` type will create a sequelize [DataTypes.ENUM](https://sequelize.
 ### Querying Data
 
 ```
-GET /todos?filter[status][$eq]=Pending  // all todos with status of Pending
-GET /todos?filter[status][$eq]=%00  // all todos with no status
-GET /todos?filter[status][$in][]=Pending&[status][$in][]=Failed  // all todos with status of either Pending or Failed.
+GET /api/todos?filter[status][$eq]=Pending  // all todos with status of Pending
+GET /api/todos?filter[status][$eq]=%00  // all todos with no status
+GET /api/todos?filter[status][$in][]=Pending&[status][$in][]=Failed  // all todos with status of either Pending or Failed.
 ```
 
 ### Data Response
@@ -55,7 +55,7 @@ String data will be returned as a string value or `null` as follows:
 When creating or updating an enumerate attribute, one of the defined values or `null` (if not required) must be provided. Any other value will return a service error.
 
 ```js
-POST /todos
+POST /api/todos
 
 DATA:
 
