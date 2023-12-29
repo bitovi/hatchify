@@ -1,4 +1,4 @@
-import { camelCaseToTitleCase, uuidv4 } from "@hatchifyjs/core"
+import { camelCaseToTitleCase } from "@hatchifyjs/core"
 import type { PartialSchema, FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FinalSchemas, GetSchemaNames } from "@hatchifyjs/rest-client"
 import type { DefaultValueComponentsTypes } from "../../../components"
