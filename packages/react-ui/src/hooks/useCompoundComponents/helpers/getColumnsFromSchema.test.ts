@@ -36,13 +36,6 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
   const finalSchemas = assembler(partialSchemas)
 
   it("works", () => {
-    console.log(
-      getColumnsFromSchema(
-        finalSchemas,
-        "Todo",
-        HatchifyPresentationDefaultValueComponents,
-      ),
-    )
     expect(
       getColumnsFromSchema(
         finalSchemas,
