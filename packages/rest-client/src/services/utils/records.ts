@@ -1,3 +1,4 @@
+import type { FinalSchema } from "@hatchifyjs/core"
 import type {
   Record,
   Resource,
@@ -62,21 +63,7 @@ export function resourceToRecordRelationship(
 
   const attributes = resourcesById[resource.id].attributes
   const relationships = resourcesById[resource.id].relationships
-
-  const displayAttributeFromSchema =
-    allSchemas[resource.__schema].displayAttribute
-  let displayAttribute = Object.keys(
-    allSchemas[resource.__schema].attributes,
-  )[0]
-
-  // check if displayAttribute exists in schema's attributes, if not, fallback to first attribute
-  if (displayAttributeFromSchema) {
-    displayAttribute = allSchemas[resource.__schema].attributes?.[
-      displayAttribute
-    ]
-      ? displayAttributeFromSchema
-      : displayAttribute
-  }
+  const displayAttribute = getDisplayAttribute(allSchemas[resource.__schema])
 
   const coercedAttributes = setClientPropertyValuesFromResponse(
     allSchemas,
@@ -164,4 +151,16 @@ export function flattenResourcesIntoRecords(
   }
 
   return flattened.length ? flattened[0] : undefined
+}
+
+// if the schema has a displayAttribute, use it
+// otherwise, use the first attribute
+export function getDisplayAttribute(finalSchema: FinalSchema): string {
+  const fromSchema = finalSchema.displayAttribute
+
+  if (fromSchema) {
+    return fromSchema
+  }
+
+  return Object.keys(finalSchema.attributes)[0]
 }
