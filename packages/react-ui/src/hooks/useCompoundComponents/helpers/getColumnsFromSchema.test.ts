@@ -26,7 +26,7 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
     User: {
       name: "User",
       attributes: {
-        name: string(),
+        name: string({ displayName: "Name" }),
       },
       relationships: {
         todos: hasMany("Todo"),
@@ -36,6 +36,13 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
   const finalSchemas = assembler(partialSchemas)
 
   it("works", () => {
+    console.log(
+      getColumnsFromSchema(
+        finalSchemas,
+        "Todo",
+        HatchifyPresentationDefaultValueComponents,
+      ),
+    )
     expect(
       getColumnsFromSchema(
         finalSchemas,
@@ -47,7 +54,6 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
         headerOverride: false,
         key: "title",
         label: "Title",
-        displayName: "Title",
         renderData: expect.any(Function),
         renderHeader: expect.any(Function),
         sortable: true,
@@ -56,7 +62,6 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
         headerOverride: false,
         key: "created",
         label: "Created",
-        displayName: "Created",
         renderData: expect.any(Function),
         renderHeader: expect.any(Function),
         sortable: true,
@@ -65,7 +70,6 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
         headerOverride: false,
         key: "important",
         label: "Important",
-        displayName: "Important",
         renderData: expect.any(Function),
         renderHeader: expect.any(Function),
         sortable: true,
@@ -84,7 +88,6 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
         headerOverride: false,
         key: "title",
         label: "Title",
-        displayName: "Title",
         renderData: expect.any(Function),
         renderHeader: expect.any(Function),
         sortable: true,
@@ -93,7 +96,6 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
         headerOverride: false,
         key: "created",
         label: "Created",
-        displayName: "Created",
         renderData: expect.any(Function),
         renderHeader: expect.any(Function),
         sortable: true,
@@ -102,7 +104,6 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
         headerOverride: false,
         key: "important",
         label: "Important",
-        displayName: "Important",
         renderData: expect.any(Function),
         renderHeader: expect.any(Function),
         sortable: true,
@@ -111,7 +112,6 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
         headerOverride: false,
         key: "user.name",
         label: "User",
-        displayName: "User",
         renderData: expect.any(Function),
         renderHeader: expect.any(Function),
         sortable: true,
