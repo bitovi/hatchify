@@ -1,9 +1,9 @@
 # @hatchifyjs/react types
 
-- CreateType
+- CreateType <- remove this
 - CollectionState
 - FlatCreateType
 - FlatUpdateType
 - HatchifyApp
-- UpdateType
+- UpdateType <- remove this
 - RecordType
