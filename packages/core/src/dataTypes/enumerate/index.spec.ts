@@ -132,6 +132,7 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
+          displayName: null,
           allowNull: true,
           primary: false,
           default: null,
@@ -293,6 +294,7 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
+          displayName: null,
           allowNull: false,
           primary: false,
           default: null,
@@ -453,6 +455,7 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
+          displayName: null,
           allowNull: false,
           primary: true,
           default: null,

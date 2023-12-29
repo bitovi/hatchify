@@ -35,6 +35,7 @@ export const MuiHeaders: React.FC<
             />
           </TableCell>
         )}
+
         {columns.map((column) => (
           <TableCell
             key={column.key}

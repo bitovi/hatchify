@@ -76,8 +76,8 @@ describe("components/MuiList", () => {
       />,
     )
 
-    expect(await screen.findByText("FirstName")).toBeInTheDocument()
-    expect(await screen.findByText("LastName")).toBeInTheDocument()
+    expect(await screen.findByText("First Name")).toBeInTheDocument()
+    expect(await screen.findByText("Last Name")).toBeInTheDocument()
     expect(await screen.findByText("John")).toBeInTheDocument()
     expect(await screen.findByText("Smith")).toBeInTheDocument()
     expect(await screen.findByText("Accountant")).toBeInTheDocument()
@@ -114,8 +114,8 @@ describe("components/MuiList", () => {
       />,
     )
 
-    await screen.findByText("FirstName").then((el) => el.click())
-    await screen.findByText("LastName").then((el) => el.click())
+    await screen.findByText("First Name").then((el) => el.click())
+    await screen.findByText("Last Name").then((el) => el.click())
 
     expect(setSort.mock.calls).toEqual([["firstName"], ["lastName"]])
   })

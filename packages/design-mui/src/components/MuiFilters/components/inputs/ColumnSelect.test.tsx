@@ -23,7 +23,7 @@ describe("components/MuiFilters/inputs/ColumnSelect", () => {
     expect(dropdown?.className.includes("MuiAutocomplete-input")).toEqual(false)
 
     await userEvent.click(dropdown as any)
-    const option = screen.getByText("status")
+    const option = screen.getByText("Status")
 
     await userEvent.click(option)
     expect(onChange).toHaveBeenCalledWith("status")
