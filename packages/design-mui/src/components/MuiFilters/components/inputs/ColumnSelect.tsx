@@ -1,5 +1,5 @@
 import { InputLabel, MenuItem, Select } from "@mui/material"
-import { camelCaseToTitleCase } from "../../../../../../core/dist/core"
+import { camelCaseToTitleCase } from "@hatchifyjs/core"
 
 const ColumnSelect: React.FC<{
   fields: string[]

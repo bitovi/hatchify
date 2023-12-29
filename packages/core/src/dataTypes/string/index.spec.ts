@@ -135,6 +135,7 @@ describe("string", () => {
             type: "STRING",
             typeArgs: [],
             allowNull: false,
+            primaryKey: undefined,
           },
         },
         control: {
@@ -144,6 +145,7 @@ describe("string", () => {
           allowNullInfer: false,
           min: undefined,
           max: undefined,
+          primary: undefined,
         },
         finalize: expect.any(Function),
       })

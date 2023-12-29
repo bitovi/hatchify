@@ -10,12 +10,14 @@ describe("getFinalize", () => {
         max: undefined,
         min: undefined,
         type: "Dateonly",
+        primary: undefined,
       },
       orm: {
         sequelize: {
           allowNull: undefined,
           type: "DATEONLY",
           typeArgs: [],
+          primaryKey: undefined,
         },
       },
       finalize: expect.any(Function),
