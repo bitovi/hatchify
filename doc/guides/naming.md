@@ -46,7 +46,7 @@ The following are **plural**:
 
 ## Schema
 
-This section shows how each part of the schema relates to the database, service API, or frontend.
+This section shows how each part of the schema relates to the database, service API, or UI.
 
 ### name
 
@@ -98,7 +98,7 @@ const SalesPerson = {
 
 - Creates a `/sales-people` API.
 - `name` will still be used in the `fields` query parameter: `GET /api/sales-persons?fields[SalesPerson]=name`
-- `name` will be used as the response `type`:
+- `name` will still be used as the response `type`:
 
 ```js
 {
@@ -130,13 +130,13 @@ const AcmeCorp_SalesPerson = {
 **API Implications:**
 
 - Creates an `acme-corp/sales-persons` API.
-- `${namespace}_${name}`, will be used in the `fields` query parameter: `GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name`
-- `${namespace}_${name}` will be used as the response `type`:
+- `namespace_name`, will be used in the `fields` query parameter: `GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name`
+- `namespace_name` will be used as the response `type`:
   ```js
   {
     data: {
-      type: "AcmeCorp_SalesPerson",
-      id: "f06f81f2-4bea-4a60-99ad-8da8ecf79473", //👀
+      type: "AcmeCorp_SalesPerson", //👀
+      id: "f06f81f2-4bea-4a60-99ad-8da8ecf79473",
       ...
     }
   }
@@ -152,8 +152,6 @@ const AcmeCorp_SalesPerson = {
 JSON:API requires that the `id` attribute be named `id`, therefore this attribute cannot be renamed.
 
 For more information on customizing the `id` attribute: [id](../schema/schema.md). 🛑
-
-````ts
 
 ### displayAttribute
 
@@ -181,7 +179,7 @@ const Account = {
     salesPerson: belongsTo("SalesPerson"),
   },
 } satisfies PartialSchema
-````
+```
 
 **UI Implications:**
 
@@ -232,6 +230,14 @@ const SalesPerson = {
   },
 } satisfies PartialSchema
 ```
+
+**Database Implications:**
+
+- This has no effect on the database.
+
+**API Implications:**
+
+- This has no effect on the API.
 
 **UI Implications:**
 
