@@ -1,6 +1,6 @@
-# Schema, Database, and Service API Naming
+# Schema Naming: Database, Service API, and UI
 
-This guide explains the relationship between names in the schema and the resulting names used in the database, service APIs, and frontend. We will first go over the general guidelines and then how specific parts in the schema relate to names in the database and service API.
+This guide explains the relationship between names in the schema and the resulting names used in the database, service APIs, and UI. We will first go over the general guidelines and then how specific parts in the schema relate to names in the database, service API, and UI.
 
 - [General Guidelines](#general-guidelines)
   - [Casing](#casing)
@@ -9,6 +9,7 @@ This guide explains the relationship between names in the schema and the resulti
   - [name](#name)
   - [pluralName](#pluralname)
   - [namespace](#namespace-postgres-only)
+  - [id](#id)
   - [displayAttribute](#displayattribute)
   - [attributes](#attributes)
     - [displayName](#displayname)
@@ -146,6 +147,14 @@ const AcmeCorp_SalesPerson = {
 - `hatchifyKoa({AcmeCorp_SalesPerson})` returns `models.AcmeCorp_SalesPerson`
 - `hatchifyReact({AcmeCorp_SalesPerson})` returns `[components|model|state].AcmeCorp_SalesPerson`
 
+### id
+
+JSON:API requires that the `id` attribute be named `id`, therefore this attribute cannot be renamed.
+
+For more information on customizing the `id` attribute: [id](../schema/schema.md). 🛑
+
+````ts
+
 ### displayAttribute
 
 Optionally set the `displayAttribute` to configure which attribute is used to display a relationship in the UI. If the `displayAttribute` is not set, then the first attribute will be used.
@@ -172,7 +181,7 @@ const Account = {
     salesPerson: belongsTo("SalesPerson"),
   },
 } satisfies PartialSchema
-```
+````
 
 **UI Implications:**
 
@@ -369,9 +378,5 @@ const Account = {
     }
   }
   ```
-
-**API Implications:**
-
-This does not change the API behavior.
 
 For more information on this relationhip type: [hasOne](../schema/relationship-types/has-one.md). 🛑
