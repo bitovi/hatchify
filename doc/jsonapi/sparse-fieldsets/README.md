@@ -1,6 +1,6 @@
 # Learn how to sparse fieldsets
 
-This guide shows how to sparse fieldset with Hatchify.
+This guide review how to use "sparse fieldsets" with Hatchify.
 
 - [Why do we need to sparse Fieldsets](#why-do-we-need-to-sparse-fieldsets)
 - [A simple example](#a-simple-example)
@@ -8,7 +8,7 @@ This guide shows how to sparse fieldset with Hatchify.
 
 ## Why do we need to sparse Fieldsets
 
-It is pretty common that a schema has more attributes than what we wish to show on the UI. By default, Hatchify pulls all attributes of included schemas. Sparse fieldsets allows us to specify which attributes we care about for a specific query, so we can keep response size smaller and faster.
+It is common that a schema has more attributes than what we wish to show on the UI. By default, Hatchify fetches and displays all attributes of included schemas. Sparse fieldsets allows us to specify which attributes we care about for a specific query, so we can keep response size smaller and faster.
 
 The parsed results of the `fields[TYPE]` query parameters are stored in the `fields` property. The value of the `fields` property is an object. For each key-value pair in that object, the key is the name of a type and the value is an array of attributes for that type.
 
