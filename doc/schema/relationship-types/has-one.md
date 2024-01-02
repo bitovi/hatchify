@@ -42,7 +42,7 @@ const SalesPerson: PartialSchema = {
 
 **Schema Implications**
 
-An attribute named `salesPersonId` will be created as if it were defined as follows:
+An attribute named `salesPersonId` will be created as if it was defined as follows:
 
 ```ts
 const Account: PartialSchema = {
@@ -102,7 +102,7 @@ const SalesPerson: PartialSchema = {
 
 **Schema Implications**
 
-An attribute named `salesPersonId` will be created as if it were defined as follows:
+An attribute named `salesPersonId` will be created as if it was defined as follows:
 
 ```ts
 const Account: PartialSchema = {

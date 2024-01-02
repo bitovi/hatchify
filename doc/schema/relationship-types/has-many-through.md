@@ -42,7 +42,7 @@ const SalesPerson: PartialSchema = {
 
 **Schema Implications**
 
-A schema named `AccountSalesPerson` will be created as if it were defined as follows:
+A schema named `AccountSalesPerson` will be created as if it was defined as follows:
 
 ```ts
 const AccountSalesPerson: PartialSchema = {
@@ -114,7 +114,7 @@ const SalesPerson: PartialSchema = {
 
 **Schema Implications**
 
-A schema named `AccountSalesPerson` will be created as if it were defined as follows:
+A schema named `AccountSalesPerson` will be created as if it was defined as follows:
 
 ```ts
 const AccountSalesPerson: PartialSchema = {
@@ -186,7 +186,7 @@ const SalesPerson: PartialSchema = {
 
 **Schema Implications**
 
-A schema named `Assignments` will be created as if it were defined as follows:
+A schema named `Assignments` will be created as if it was defined as follows:
 
 ```ts
 const Assignments: PartialSchema = {
@@ -258,7 +258,7 @@ const SalesPerson: PartialSchema = {
 
 **Schema Implications**
 
-A schema named `Assignments` will be created as if it were defined as follows:
+A schema named `Assignments` will be created as if it was defined as follows:
 
 ```ts
 const Assignments: PartialSchema = {
