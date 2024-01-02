@@ -8,7 +8,7 @@ This guide reviews how to use "sparse fieldsets" with Hatchify.
 
 ## Why do we need Sparse Fieldsets
 
-It is common that a schema has more attributes than what we wish to show on the UI. By default, Hatchify fetches and displays all attributes of included schemas. Sparse fieldsets allows us to specify which attributes we care about for a specific query, so we can keep response size smaller and faster.
+It's common that a schema has more attributes than we wish to display on the UI. By default, Hatchify fetches and displays all attributes of included schemas. Sparse fieldsets allows us to specify which attributes we care about for a specific query, so we can keep response size smaller and faster.
 
 # Specification
 
