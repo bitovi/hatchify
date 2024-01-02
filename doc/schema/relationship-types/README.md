@@ -63,7 +63,7 @@ In this scenario, both models have a many-to-many relationship using the `hasMan
 
 For more information on these relationships and the options available check these out:
 
-- [Belongs To](./belongs-to.md) 🛑
-- [Has Many](./has-many.md) 🛑
-- [Has Many Through](./has-many-through.md) 🛑
-- [Has One](./has-one.md) 🛑
+- [Belongs To](./belongs-to.md)
+- [Has Many](./has-many.md)
+- [Has Many Through](./has-many-through.md)
+- [Has One](./has-one.md)

@@ -1,10 +1,10 @@
-# belongsTo( [schemaName, options] )
+# belongsTo(schemaName?, options?)
 
 `belongsTo()` creates a relationship from the current _source_ schema to the _target_ schema. The following makes each account
 belong to a sales person:
 
 ```ts
-const Account: PartialSchema = {
+const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
 }
@@ -49,7 +49,7 @@ An attribute named `salesPersonId` will be created as if it were defined as foll
 const Account: PartialSchema = {
   name: "Account",
   attributes: {
-    salesPersonId: uuid({ references: "SalesPerson" }), // 👀
+    salesPersonId: uuid(), // References SalesPerson.id
   },
   relationships: {
     salesPerson: belongsTo(),
@@ -65,14 +65,24 @@ Creates a column `sales_person_id` in the `account` table.
 
 - `salesPerson` will be used in the include query parameter like `GET /api/accounts?include=salesPerson`
 - `salesPerson` will be used in mutation payloads and response payloads like:
-  ```js
+
+  ```json
   {
-    data: {
-      type: "Account",
-      id: "1",
-      attributes: { firstName: "Acme" },
-      relationships: {
-        salesPerson: {type: "SalesPerson", id: "uuid-123"} //👀
+    "data": {
+      "type": "Account",
+      "id": "75f706ee-ac71-483a-ae16-45254b66f7e1",
+      "attributes": {
+        "firstName": "Acme",
+        "salesPersonId": "9bc9b6e4-0328-4874-b687-25f817d92434"
+      },
+      "relationships": {
+        // 👀
+        "salesPerson": {
+          "data": {
+            "type": "SalesPerson",
+            "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+          }
+        }
       }
     }
   }
@@ -105,7 +115,7 @@ An attribute named `closingSalesPersonId` will be created as if it were defined 
 const Account: PartialSchema = {
   name: "Account",
   attributes: {
-    closingSalesPersonId: uuid({ references: "SalesPerson" }), // 👀
+    closingSalesPersonId: uuid(), // References SalesPerson.id
   },
   relationships: {
     closingSalesPerson: belongsTo("SalesPerson"),
@@ -121,14 +131,24 @@ Creates a column `closing_sales_person_id` in the `account` table.
 
 - `closingSalesPerson` will be used in the include query parameter like `GET /api/accounts?include=closingSalesPerson`
 - `closingSalesPerson` will be used in mutation payloads and response payloads like:
-  ```js
+
+  ```json
   {
-    data: {
-      type: "Account",
-      id: "1",
-      attributes: { firstName: "Acme" },
-      relationships: {
-        closingSalesPerson: {type: "SalesPerson", id: "uuid-123"} //👀
+    "data": {
+      "type": "Account",
+      "id": "75f706ee-ac71-483a-ae16-45254b66f7e1",
+      "attributes": {
+        "firstName": "Acme",
+        "closingSalesPersonId": "9bc9b6e4-0328-4874-b687-25f817d92434"
+      },
+      "relationships": {
+        // 👀
+        "closingSalesPerson": {
+          "data": {
+            "type": "SalesPerson",
+            "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+          }
+        }
       }
     }
   }
@@ -147,7 +167,9 @@ const SalesPerson: PartialSchema = {
 const Account: PartialSchema = {
   name: "Account",
   relationships: {
-    closingSalesPerson: belongsTo("SalesPerson", { sourceAttribute: "closerId" }), // 👀
+    closingSalesPerson: belongsTo("SalesPerson", {
+      sourceAttribute: "closerId", // 👀
+    }),
   },
 }
 ```
@@ -160,14 +182,24 @@ Creates a column `closer_id` in the `account` table.
 
 - `closingSalesPerson` will be used in the include query parameter like `GET /api/accounts?include=closingSalesPerson`
 - `closingSalesPerson` will be used in mutation payloads and response payloads like:
-  ```js
+
+  ```json
   {
-    data: {
-      type: "Account",
-      id: "1",
-      attributes: { firstName: "Acme", closerId: "uuid-123" },
-      relationships: {
-        closingSalesPerson: {type: "SalesPerson", id: "uuid-123"} //👀
+    "data": {
+      "type": "Account",
+      "id": "75f706ee-ac71-483a-ae16-45254b66f7e1",
+      "attributes": {
+        "firstName": "Acme",
+        "closerId": "9bc9b6e4-0328-4874-b687-25f817d92434" // 👀
+      },
+      "relationships": {
+        // 👀
+        "closingSalesPerson": {
+          "data": {
+            "type": "SalesPerson",
+            "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+          }
+        }
       }
     }
   }

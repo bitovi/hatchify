@@ -1,6 +1,6 @@
-# hasMany(schemaName?, options?)
+# hasOne(schemaName?, options?)
 
-`hasMany()` creates a relationship from the current _source_ schema to the _target_ schema. The following makes each sales person has many accounts:
+`hasOne()` creates a relationship from the current _source_ schema to the _target_ schema. The following makes each sales person has one account:
 
 ```ts
 const Account: PartialSchema = {
@@ -12,18 +12,18 @@ const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
-    accounts: hasMany(), // 👀
+    account: hasOne(), // 👀
   },
 }
 ```
 
-The following walks through different signatures of `hasMany()` and how they work.
+The following walks through different signatures of `hasOne()` and how they work.
 
-## hasMany()
+## hasOne()
 
-The relationship key for `hasMany()` called without any arguments MUST match the _camelCase_ plural name of another schema.
+The relationship key for `hasOne()` called without any arguments MUST match the _camelCase_ plural name of another schema.
 
-For example, `accounts` below matches `Account`:
+For example, `account` below matches `Account`:
 
 ```ts
 const Account: PartialSchema = {
@@ -35,7 +35,7 @@ const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
-    accounts: hasMany(), // 👀
+    account: hasOne(), // 👀
   },
 }
 ```
@@ -59,8 +59,8 @@ Creates a column `sales_person_id` in the `account` table.
 
 **API Implications**
 
-- `accounts` will be used in the include query parameter like `GET /api/sales-persons?include=accounts` 🛑
-- `accounts` will be used in mutation payloads and response payloads like:
+- `account` will be used in the include query parameter like `GET /api/sales-persons?include=account` 🛑
+- `account` will be used in mutation payloads and response payloads like:
 
   ```json
   {
@@ -70,20 +70,18 @@ Creates a column `sales_person_id` in the `account` table.
       "attributes": {},
       "relationships": {
         // 👀
-        "accounts": {
-          "data": [
-            {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
-            }
-          ]
+        "account": {
+          "data": {
+            "type": "SalesPerson",
+            "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+          }
         }
       }
     }
   }
   ```
 
-## hasMany(schemaName)
+## hasOne(schemaName)
 
 Pass a `schemaName` to specify the related schema.
 
@@ -97,7 +95,7 @@ const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
-    salesAccounts: hasMany("Account"), // 👀
+    salesAccount: hasOne("Account"), // 👀
   },
 }
 ```
@@ -121,8 +119,8 @@ Creates a column `sales_person_id` in the `account` table.
 
 **API Implications**
 
-- `salesAccounts` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccounts`
-- `salesAccounts` will be used in mutation payloads and response payloads like:
+- `salesAccount` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccount`
+- `salesAccount` will be used in mutation payloads and response payloads like:
 
   ```json
   {
@@ -132,20 +130,18 @@ Creates a column `sales_person_id` in the `account` table.
       "attributes": {},
       "relationships": {
         // 👀
-        "salesAccounts": {
-          "data": [
-            {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
-            }
-          ]
+        "salesAccount": {
+          "data": {
+            "type": "SalesPerson",
+            "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+          }
         }
       }
     }
   }
   ```
 
-## hasMany(schemaName,{targetAttribute})
+## hasOne(schemaName,{targetAttribute})
 
 Pass a `targetAttribute` to specify which attribute defines the relationship.
 
@@ -159,7 +155,7 @@ const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
-    salesAccounts: hasMany("Account", {
+    salesAccount: hasOne("Account", {
       targetAttribute: "accountId", // 👀
     }),
   },
@@ -172,8 +168,8 @@ Creates a column `account_id` in the `account` table.
 
 **API Implications**
 
-- `salesAccounts` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccounts`
-- `salesAccounts` will be used in mutation payloads and response payloads like:
+- `salesAccount` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccount`
+- `salesAccount` will be used in mutation payloads and response payloads like:
 
   ```json
   {
@@ -183,13 +179,11 @@ Creates a column `account_id` in the `account` table.
       "attributes": {},
       "relationships": {
         // 👀
-        "salesAccounts": {
-          "data": [
-            {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
-            }
-          ]
+        "salesAccount": {
+          "data": {
+            "type": "SalesPerson",
+            "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+          }
         }
       }
     }
