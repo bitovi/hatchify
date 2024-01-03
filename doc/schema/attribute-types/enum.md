@@ -3,12 +3,12 @@
 Defines an attribute as being an enum type.
 
 ```ts
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
   },
-}
+} satisfies PartialSchema
 ```
 
 ## Parameters
