@@ -1,5 +1,5 @@
-export type { HatchifyCollectionProps } from "./HatchifyCollection"
+export type { HatchifyDataGridProps } from "./HatchifyDataGrid"
 export {
-  default as HatchifyCollection,
+  default as HatchifyDataGrid,
   getDefaultInclude,
-} from "./HatchifyCollection"
+} from "./HatchifyDataGrid"
