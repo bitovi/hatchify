@@ -44,7 +44,7 @@ export const Actor = {
     name: string(),
   },
   relationships: {
-    movies: belongsTo().through(),
+    movies: belongsTo("Movie").through(),
   },
 } satisfies PartialSchema
 
@@ -54,7 +54,7 @@ export const Movie = {
     name: string(),
   },
   relationships: {
-    actors: belongsTo().through(),
+    actors: belongsTo("Actor").through(),
   },
 } satisfies PartialSchema
 ```

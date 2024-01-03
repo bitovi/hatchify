@@ -27,7 +27,7 @@ export const Todo = {
     complete: boolean({ default: false }),
   },
   relationships: {
-    user: belongsTo(),
+    user: belongsTo("User"),
     assignee: belongsTo("Engineering_User")
   },
 } satisfies PartialSchema
@@ -38,7 +38,7 @@ export const User = {
     name: string({ required: true }),
   },
   relationships: {
-    todos: hasMany(),
+    todos: hasMany("Todo"),
   },
 } satisfies PartialSchema
 
