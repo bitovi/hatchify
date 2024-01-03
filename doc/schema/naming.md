@@ -1,6 +1,6 @@
 # Schema Naming: Database, Service API, and UI
 
-This guide explains the relationship between names in the schema and the resulting names used in the database, service APIs, and UI. We will first go over the general guidelines and then how specific parts in the schema relate to names in the database, service API, and UI.
+This document describes the relationship between names in the schema and the resulting names used in the database, service APIs, and UI. We will first go over the general guidelines and then how specific parts in the schema relate to names in the database, service API, and UI.
 
 - [General Guidelines](#general-guidelines)
   - [Casing](#casing)
@@ -16,6 +16,7 @@ This guide explains the relationship between names in the schema and the resulti
   - [relationships](#relationships)
     - [belongsTo](#belongsto)
     - [hasMany](#hasmany)
+    - [hasMany.through](#hasmanythrough)
     - [hasOne](#hasone)
 
 ## General Guidelines
@@ -341,6 +342,22 @@ const SalesPerson = {
 
 For more information on this relationhip type: [hasMany](../schema/relationship-types/has-many.md).
 
+#### hasMany.through
+
+There is no strict naming convention for `hasMany.through` relationships. If you would like to customize the name of the join table or the join table columns, then you can use the `through` method as follows:
+
+```ts
+const SalesPerson = {
+  name: "SalesPerson",
+  attributes: {},
+  relationships: {
+    accounts: hasMany("Account").through("Assignments", { targetKey: "accountId", sourceKey: "salesPersonId" }), // 👀
+  },
+} satisfies PartialSchema
+```
+
+For more information on this relationhip type: [hasMany.through](../schema/relationship-types/has-many-through.md).
+
 #### hasOne
 
 `hasOne` relationship fields should be singular camelCase.
@@ -385,4 +402,4 @@ const Account = {
   }
   ```
 
-For more information on this relationhip type: [hasOne](../schema/relationship-types/has-one.md). 🛑
+For more information on this relationhip type: [hasOne](../schema/relationship-types/has-one.md).

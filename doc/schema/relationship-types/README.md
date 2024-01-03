@@ -6,7 +6,7 @@ Hatchify can help you define and build complex relationships between different m
 import { belongsTo, datetime, hasMany, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-export const Player: PartialSchema = {
+export const Player = {
   name: "Player",
   attributes: {
     firstName: string(),
@@ -15,17 +15,17 @@ export const Player: PartialSchema = {
     endDate: datetime(),
   },
   relationships: {
-    team: belongsTo(),
+    team: belongsTo("Team"),
   },
 } satisfies PartialSchema
 
-export const Team: PartialSchema = {
+export const Team = {
   name: "Team",
   attributes: {
     name: string(),
   },
   relationships: {
-    players: hasMany(),
+    players: hasMany("Player"),
   },
 } satisfies PartialSchema
 ```
@@ -38,23 +38,23 @@ For another example lets look at `Movies` and `Actors`. Unlike `Players` and `Te
 import { belongsTo, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-export const Actor: PartialSchema = {
+export const Actor = {
   name: "Actor",
   attributes: {
     name: string(),
   },
   relationships: {
-    movies: belongsTo().through(),
+    movies: belongsTo("Movie").through(),
   },
 } satisfies PartialSchema
 
-export const Movie: PartialSchema = {
+export const Movie = {
   name: "Movie",
   attributes: {
     name: string(),
   },
   relationships: {
-    actors: belongsTo().through(),
+    actors: belongsTo("Actor").through(),
   },
 } satisfies PartialSchema
 ```
@@ -63,7 +63,7 @@ In this scenario, both models have a many-to-many relationship using the `hasMan
 
 For more information on these relationships and the options available check these out:
 
-- [Belongs To](./belongs-to.md) 🛑
-- [Has Many](./has-many.md) 🛑
-- [Has Many Through](./has-many-through.md) 🛑
-- [Has One](./has-one.md) 🛑
+- [Belongs To](./belongs-to.md)
+- [Has Many](./has-many.md)
+- [Has Many Through](./has-many-through.md)
+- [Has One](./has-one.md)

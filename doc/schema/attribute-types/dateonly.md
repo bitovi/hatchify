@@ -3,12 +3,12 @@
 Defines an attribute as being a date type that does not include the **time**.
 
 ```ts
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     dueDate: dateonly({ required: true }),
   },
-}
+} satisfies PartialSchema
 ```
 
 Use [datetime](./datetime.md) for a date type with time.
