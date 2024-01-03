@@ -12,7 +12,7 @@ const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
-    accounts: hasMany(), // 👀
+    accounts: hasMany("Account"), // 👀
   },
 } satisfies PartialSchema
 ```

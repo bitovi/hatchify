@@ -15,7 +15,7 @@ export const Player: PartialSchema = {
     endDate: datetime(),
   },
   relationships: {
-    team: belongsTo(),
+    team: belongsTo("Team"),
   },
 } satisfies PartialSchema
 
@@ -25,7 +25,7 @@ export const Team: PartialSchema = {
     name: string(),
   },
   relationships: {
-    players: hasMany(),
+    players: hasMany("Player"),
   },
 } satisfies PartialSchema
 ```

@@ -13,7 +13,7 @@ const Account: PartialSchema = {
   name: "Account",
   attributes: {},
   relationships: {
-    salesPerson: belongsTo(), // 👀
+    salesPerson: belongsTo("SalesPerson"), // 👀
   },
 } satisfies PartialSchema
 ```
