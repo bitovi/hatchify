@@ -25,7 +25,7 @@ test("works", async ({ page, request }) => {
   // validate frontend is running
   await page.goto(frontend)
   await expect(page.getByText("Name")).toBeVisible()
-  await expect(page.getByText("DueDate")).toBeVisible()
+  await expect(page.getByText("Due Date")).toBeVisible()
   await expect(page.getByText("Importance")).toBeVisible()
   await expect(page.getByText("User", { exact: true })).toBeVisible()
 

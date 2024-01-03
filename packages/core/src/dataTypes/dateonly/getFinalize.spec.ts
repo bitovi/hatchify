@@ -6,17 +6,18 @@ describe("getFinalize", () => {
       name: "dateonly()",
       control: {
         allowNull: undefined,
+        displayName: undefined,
         max: undefined,
         min: undefined,
-        primary: undefined,
         type: "Dateonly",
+        primary: undefined,
       },
       orm: {
         sequelize: {
           allowNull: undefined,
-          primaryKey: undefined,
           type: "DATEONLY",
           typeArgs: [],
+          primaryKey: undefined,
         },
       },
       finalize: expect.any(Function),

@@ -3,12 +3,12 @@
 Defines an attribute as being a string type.
 
 ```ts
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
   },
-}
+} satisfies PartialSchema
 ```
 
 ## Parameters

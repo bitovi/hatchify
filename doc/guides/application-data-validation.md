@@ -12,7 +12,7 @@ import { datetime, string } from "@hatchify/core"
 import type { PartialSchema } from "@hatchify/core"
 import { UnexpectedValueError } from "@hatchifyjs/koa"
 
-export const Employee: PartialSchema = {
+export const Employee = {
   name: "Employee",
   attributes: {
     firstName: string(),

@@ -34,14 +34,16 @@ export interface PartialDataTypeProps<
   required?: TRequired // @todo HATCH-417
   default?: PrimitiveType | (() => PrimitiveType) | null
   unique?: boolean
+  displayName?: string
 }
 
-export type PartialControlType<PrimitiveType, TRequired extends boolean> = {
+export interface PartialControlType<PrimitiveType, TRequired extends boolean> {
   type: "Boolean" | "Number" | "String" | "Datetime" | "Dateonly" | "enum"
   allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
   primary?: boolean
   default?: PrimitiveType | (() => PrimitiveType) | null
+  displayName?: string | null
 }
 
 export interface PartialSequelizeDataType<ArgsType, PrimitiveType> {

@@ -63,8 +63,8 @@ describe("components/MuiList", () => {
       />,
     )
 
-    expect(await screen.findByText("FirstName")).toBeInTheDocument()
-    expect(await screen.findByText("LastName")).toBeInTheDocument()
+    expect(await screen.findByText("First Name")).toBeInTheDocument()
+    expect(await screen.findByText("Last Name")).toBeInTheDocument()
     expect(await screen.findByText("John")).toBeInTheDocument()
     expect(await screen.findByText("Smith")).toBeInTheDocument()
     expect(await screen.findByText("Jane")).toBeInTheDocument()
