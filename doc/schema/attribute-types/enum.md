@@ -1,6 +1,6 @@
 # enumerate({default, primary, values, required, unique})
 
-Defines an attribute as being an enum type.
+Defines an attribute as belonging to a set of constant string values. The attribute can only equal one of the values passed into the `values` array.
 
 ```ts
 export const Todo = {
