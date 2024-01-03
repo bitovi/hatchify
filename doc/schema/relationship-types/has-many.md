@@ -71,8 +71,8 @@ Creates a column `sales_person_id` in the `account` table.
         "salesAccounts": {
           "data": [
             {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+              "type": "Account",
+              "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
             }
           ]
         }
@@ -122,8 +122,8 @@ Creates a column `account_id` in the `account` table.
         "salesAccounts": {
           "data": [
             {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+              "type": "Account",
+              "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
             }
           ]
         }

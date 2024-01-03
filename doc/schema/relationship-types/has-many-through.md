@@ -72,8 +72,8 @@ Creates a table `account_sales_person` with `account_id` and `sales_person_id` c
         "salesAccounts": {
           "data": [
             {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+              "type": "Account",
+              "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
             }
           ]
         },
@@ -144,8 +144,8 @@ Creates a table `assignment` with `account_id` and `sales_person_id` columns.
         "accounts": {
           "data": [
             {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+              "type": "Account",
+              "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
             }
           ]
         },
@@ -216,8 +216,8 @@ Creates a table `assignment` with `the_account_id` and `the_sales_person_id` col
         "accounts": {
           "data": [
             {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+              "type": "Account",
+              "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
             }
           ]
         },
@@ -307,8 +307,8 @@ Creates a column `sales_person_id` in the `sales_person` table.
         "accounts": {
           "data": [
             {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
+              "type": "Account",
+              "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
             }
           ]
         },
