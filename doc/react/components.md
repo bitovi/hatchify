@@ -22,19 +22,76 @@ The Material UI components are intended for use in instances when customization 
 
 Similar to the MUI DataGrid, this displays the records of a specific schema, but the state does not have to be passed in.
 
-//todo add example.
+```tsx
+//in App.tsx
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
+
+const App: React.FC = () => {
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <TodoDataGrid/>
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+
+```
 
 ### Hatchify Column
 
 The Column component is used anytime there is a need to customize the output of a specific column. This can be used as a child of both the Hatchify `DataGrid` and the MUI `DataGrid`.
 
-//todo add example.
+```tsx
+//in App.tsx
+const TodoColumn = hatchedReact.components.Todo.Column
+
+const App: React.FC = () => {
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <TodoDataGrid>
+          <TodoColumn
+            label="Action"
+            renderDataValue={({ record }) => {
+              return (
+                <>
+                  <button onClick={() => console.log(record)}>
+                    More Actions
+                  </button>
+                </>
+              )
+            }}
+          />
+        </TodoDataGrid>
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+
+```
 
 ### Hatchify Empty
 
 This component is used to customize what is displayed when the Hatchify `DataGrid` has no records to display.
 
-//todo add example.
+```tsx
+//in App.tsx
+const TodoEmptyList = hatchedReact.components.Todo.Empty
+
+const App: React.FC = () => {
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <TodoDataGrid>
+          <TodoEmptyList>No records to display</TodoEmptyList>
+        </TodoDataGrid>
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+
+```
 
 ## Material UI Components
 
@@ -44,22 +101,104 @@ This component is used to customize what is displayed when the Hatchify `DataGri
 
 Used for displaying rows of records.
 
-//todo add example of List component.
+```tsx
+//in App.tsx
+
+const App: React.FC = () => {
+  const todoState = hatchedReact.state.Todo.useDataGridState({
+  include: ["user"]
+})
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <List {...state}>
+          <TodoEmptyList>No records to display</TodoEmptyList>
+        </List>
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+
+```
+
+![Example List Component](../../doc/attachments/List.png)
 
 ### Pagination
 
 Used for paginating data in the table.
 
-//todo add example.
+```tsx
+//in App.tsx
+
+const App: React.FC = () => {
+  const todoState = hatchedReact.state.Todo.useDataGridState({
+  include: ["user"]
+})
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <List {...state}>
+          <TodoEmptyList>No records to display</TodoEmptyList>
+        </List>
+        <Pagination {...state} />
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+
+```
+
+![Example List with Pagination](../../doc/attachments/ListWithPagination.png)
 
 ### Filters
 
 Used for filtering data in the table.
 
-//todo add example.
+```tsx
+//in App.tsx
+
+const App: React.FC = () => {
+  const todoState = hatchedReact.state.Todo.useDataGridState({
+  include: ["user"]
+})
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <Filters {...state} />
+        <List {...state}>
+          <TodoEmptyList>No records to display</TodoEmptyList>
+        </List>
+        <Pagination {...state} />
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+
+```
+
+![Example Closed Filter](../../doc/attachments/FiltersClosed.png)
+![Example Open Filter](../../doc/attachments/FiltersOpen.png)
 
 ### DataGrid
 
 Used for displaying records. This component is comprised of `Filters`, `List`, and `Pagination`
 
-//todo add example.
+```tsx
+//in App.tsx
+
+const App: React.FC = () => {
+  const todoState = hatchedReact.state.Todo.useDataGridState({
+  include: ["user"]
+})
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <DataGrid {...state}>
+          <TodoEmptyList>No records to display</TodoEmptyList>
+        </DataGrid>
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+
+```
