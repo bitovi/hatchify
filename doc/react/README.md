@@ -4,13 +4,13 @@
   - [TypeScript](#typescript)
   - [Types](#types)
   - [createJsonapiClient](#createjsonapiclient)
+  - [HatchifyProvider](#hatchifyprovider)
   - [hatchifyReact](#hatchifyreact)
     - [Everything](#everything)
     - [components](#components)
     - [model](#model)
     - [state](#state)
-      - [useCollectionState](#usecollectionstate)
-  - [HatchifyProvider](#hatchifyprovider)
+      - [useDataGridState](#usedatagridstate)
   - [MUI Components](#mui-components)
 
 ## What is hatchifyjs/react?
@@ -19,7 +19,7 @@
 
 ### TypeScript
 
-hatchifyjs/react provides TypeScript support. Here's an example of how two schemas (`Todo` and `User`) provide auto-completion for an instantiated hatchifyjs/react app (`hatchedReact`):![react TypeScript](doc/attachments/ts.gif)
+hatchifyjs/react provides TypeScript support. Here's an example of how two schemas (`Todo` and `User`) provide auto-completion for an instantiated hatchifyjs/react app (`hatchedReact`):![react TypeScript](doc/attachments/reactTs.gif)
 
 todo - add correct gif
 
@@ -39,7 +39,27 @@ Learn more about the available types [here](types.md).
 
 ## createJsonapiClient
 
-//todo add example
+Creates a new JSON:API rest client from the defined schemas. `createJsonapiClient` accepts a base url, and schema set.
+
+```ts
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+```
+
+## HatchifyProvider
+
+This is the provider for Hatchify. It gives the Hatchify components access to the Hatchify state. This must be a parent to the components used in the app.
+
+```tsx
+const App: React.FC = () => {
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <Everything />
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+```
 
 ## hatchifyReact
 
@@ -49,7 +69,17 @@ The `hatchifyReact` function creates the `HatchifyApp` object. Inside of the obj
 
 `Everything` is a default component comprised of a set of tabs (one for each schema) and `DataGrid`s. This is used when the app is generated to quickly see the defined schemas and records.
 
-//todo add example
+```tsx
+const App: React.FC = () => {
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <Everything />
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+```
 
 ### components
 
@@ -59,7 +89,7 @@ Included components:
  `Column`
  `Empty`
 
-Learn more about the available components here. //todo add link
+Learn more about the available components [here](./components.md).
 
 ### model
 
@@ -80,9 +110,9 @@ Learn more about the available hooks and promises [here](model.md).
 
 ### state
 
-#### useCollectionState
+#### useDataGridState
 
-A hook, `useCollectionState` for each of the defined schemas to be used in the app. This is used under the hood in Hatchify, but is available for use in situations where customization is needed.<br>
+A hook, `useDataGridState` for each of the defined schemas to be used in the app. This is used under the hood in Hatchify, but is available for use in situations where customization is needed.<br>
 Parameters:<br>
   `defaultSelected`: optional, used for checkboxes<br>
   `onSelectedChange`: optional, used for checkboxes<br>
@@ -120,13 +150,14 @@ Returned state:<br>
   `partialSchemas`: All schemas in their partial state<br>
   `schemaName`: The name of the selected schema<br>
 
-//todo add example
+```tsx
 
-## HatchifyProvider
+const todoState = hatchedReact.state.Todo.useDataGridState({
+  include: ["approvedBy"],
+  fields: ["name"]
+})
 
-This is the provider for Hatchify. It gives the Hatchify components access to the Hatchify state. This must be a parent to the components used in the app.
-
-//todo add example.
+```
 
 ## MUI Components
 
