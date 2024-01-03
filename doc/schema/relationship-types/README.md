@@ -6,7 +6,7 @@ Hatchify can help you define and build complex relationships between different m
 import { belongsTo, datetime, hasMany, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-export const Player: PartialSchema = {
+export const Player = {
   name: "Player",
   attributes: {
     firstName: string(),
@@ -19,7 +19,7 @@ export const Player: PartialSchema = {
   },
 } satisfies PartialSchema
 
-export const Team: PartialSchema = {
+export const Team = {
   name: "Team",
   attributes: {
     name: string(),
@@ -38,7 +38,7 @@ For another example lets look at `Movies` and `Actors`. Unlike `Players` and `Te
 import { belongsTo, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-export const Actor: PartialSchema = {
+export const Actor = {
   name: "Actor",
   attributes: {
     name: string(),
@@ -48,7 +48,7 @@ export const Actor: PartialSchema = {
   },
 } satisfies PartialSchema
 
-export const Movie: PartialSchema = {
+export const Movie = {
   name: "Movie",
   attributes: {
     name: string(),

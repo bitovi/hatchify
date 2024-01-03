@@ -3,12 +3,12 @@
 `hasMany()` creates a relationship from the current _source_ schema to the _target_ schema. The following makes each sales person has many accounts:
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
 } satisfies PartialSchema
 
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
@@ -24,12 +24,12 @@ The following walks through different signatures of `hasMany()` and how they wor
 Pass a `schemaName` to specify the related schema.
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
 } satisfies PartialSchema
 
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
@@ -43,7 +43,7 @@ const SalesPerson: PartialSchema = {
 An attribute named `salesPersonId` will be created as if it was defined as follows:
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {
     salesPersonId: uuid(), // References SalesPerson.id
@@ -86,12 +86,12 @@ Creates a column `sales_person_id` in the `account` table.
 Pass a `targetAttribute` to specify which attribute defines the relationship.
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
 } satisfies PartialSchema
 
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
   relationships: {

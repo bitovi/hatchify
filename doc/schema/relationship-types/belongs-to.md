@@ -4,12 +4,12 @@
 belong to a sales person:
 
 ```ts
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
 } satisfies PartialSchema
 
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
   relationships: {
@@ -25,12 +25,12 @@ The following walks through different signatures of `belongsTo()` and how they w
 Pass a `schemaName` to specify the related schema.
 
 ```ts
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
 } satisfies PartialSchema
 
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
   relationships: {
@@ -44,7 +44,7 @@ const Account: PartialSchema = {
 An attribute named `closingSalesPersonId` will be created as if it was defined as follows:
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {
     closingSalesPersonId: uuid(), // References SalesPerson.id
@@ -91,12 +91,12 @@ Creates a column `closing_sales_person_id` in the `account` table.
 Pass a `sourceAttribute` to specify which attribute defines the relationship.
 
 ```ts
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
 } satisfies PartialSchema
 
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   relationships: {
     closingSalesPerson: belongsTo("SalesPerson", {

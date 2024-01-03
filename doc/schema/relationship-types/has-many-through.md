@@ -3,12 +3,12 @@
 `hasMany().through()` creates a relationship from the current _source_ schema to the _target_ schema through a _through_ schema. The following makes each sales person has many accounts:
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
 } satisfies PartialSchema
 
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
@@ -24,12 +24,12 @@ The following walks through different signatures of `hasMany().through()` and ho
 Pass a `schemaName` to specify the target schema.
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
 } satisfies PartialSchema
 
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
@@ -43,7 +43,7 @@ const SalesPerson: PartialSchema = {
 A schema named `AccountSalesPerson` will be created as if it was defined as follows:
 
 ```ts
-const AccountSalesPerson: PartialSchema = {
+const AccountSalesPerson = {
   name: "AccountSalesPerson",
   attributes: {
     accountId: uuid(), // References Account.id
@@ -96,12 +96,12 @@ Creates a table `account_sales_person` with `account_id` and `sales_person_id` c
 Pass a `schemaName` to specify the join schema.
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
 } satisfies PartialSchema
 
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
@@ -115,7 +115,7 @@ const SalesPerson: PartialSchema = {
 A schema named `Assignments` will be created as if it was defined as follows:
 
 ```ts
-const Assignments: PartialSchema = {
+const Assignments = {
   name: "Assignments",
   attributes: {
     accountId: uuid(), // References Account.id
@@ -168,12 +168,12 @@ Creates a table `assignment` with `account_id` and `sales_person_id` columns.
 Pass attribute names to describe the join schema.
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
 } satisfies PartialSchema
 
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
@@ -187,7 +187,7 @@ const SalesPerson: PartialSchema = {
 A schema named `Assignments` will be created as if it was defined as follows:
 
 ```ts
-const Assignments: PartialSchema = {
+const Assignments = {
   name: "Assignments",
   attributes: {
     theAccountId: uuid(), // References Account.id
@@ -240,12 +240,12 @@ Creates a table `assignment` with `the_account_id` and `the_sales_person_id` col
 Pass a `targetKey` and `sourceKey` to specify which attributes define the relationship.
 
 ```ts
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {},
 } satisfies PartialSchema
 
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
@@ -259,7 +259,7 @@ const SalesPerson: PartialSchema = {
 A schema named `Assignments` will be created and schemas will be updated as if they were defined as follows:
 
 ```ts
-const Assignments: PartialSchema = {
+const Assignments = {
   name: "Assignments",
   attributes: {
     accountId: uuid(), // References Account.id
@@ -267,14 +267,14 @@ const Assignments: PartialSchema = {
   },
 } satisfies PartialSchema
 
-const Account: PartialSchema = {
+const Account = {
   name: "Account",
   attributes: {
     accountId: uuid(), // References Assignments.accountId
   },
 } satisfies PartialSchema
 
-const SalesPerson: PartialSchema = {
+const SalesPerson = {
   name: "SalesPerson",
   attributes: {
     salesPersonId: uuid(), // References Assignments.salesPersonId
