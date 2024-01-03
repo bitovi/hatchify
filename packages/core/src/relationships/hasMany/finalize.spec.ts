@@ -1,8 +1,8 @@
-import { finalize } from "./finalize"
-import { integer, string, uuid } from "../../dataTypes"
-import { HatchifyInvalidSchemaError } from "../../types"
-import type { SemiFinalSchema } from "../../types"
-import { uuidv4 } from "../../util/uuidv4"
+import { finalize } from "./finalize.js"
+import { integer, string, uuid } from "../../dataTypes/index.js"
+import { HatchifyInvalidSchemaError } from "../../types/index.js"
+import type { SemiFinalSchema } from "../../types/index.js"
+import { uuidv4 } from "../../util/uuidv4.js"
 
 describe("finalize", () => {
   const schemas: Record<string, SemiFinalSchema> = {

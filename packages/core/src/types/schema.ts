@@ -11,8 +11,8 @@ export type UserValue = ValueInRequest
 
 export type SerializedValue = number | string | object | null
 
-export * from "../assembler/types"
-export * from "../relationships/types"
+export * from "../assembler/types.js"
+export * from "../relationships/types.js"
 
 export class HatchifyCoerceError extends Error {
   constructor(message: string) {

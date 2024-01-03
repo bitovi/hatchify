@@ -7,14 +7,14 @@ import {
 import type { FinalSchema } from "@hatchifyjs/core"
 import type JSONAPISerializer from "json-api-serializer"
 
-import { toSequelize } from "./toSequelize"
-import { registerSchema } from "../serialize"
-import { HatchifySymbolModel } from "../types"
+import { toSequelize } from "./toSequelize.js"
+import { registerSchema } from "../serialize.js"
+import { HatchifySymbolModel } from "../types.js"
 import type {
   ICreateHatchifyModel,
   SequelizeModelsCollection,
   SequelizeWithHatchify,
-} from "../types"
+} from "../types.js"
 
 export function convertHatchifyModels(
   sequelize: SequelizeWithHatchify,

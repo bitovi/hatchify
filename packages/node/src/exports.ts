@@ -1,5 +1,5 @@
-export * from "./node"
-export { DataTypes } from "./types"
+export * from "./node.js"
+export { DataTypes } from "./types.js"
 export type {
   BelongsToManyResult,
   BelongsToResult,
@@ -11,23 +11,23 @@ export type {
   ModelAttributes,
   ModelFunctionsCollection,
   ModelValidateOptions,
-} from "./types"
+} from "./types.js"
 
-export { errorResponseHandler } from "./error"
+export { errorResponseHandler } from "./error/index.js"
 
-export { codes, statusCodes } from "./error/constants"
+export { codes, statusCodes } from "./error/constants.js"
 
-export * from "./error/types"
+export * from "./error/types/index.js"
 
-export type { EverythingFunctions } from "./everything"
+export type { EverythingFunctions } from "./everything.js"
 
-export { getMiddlewareFunctions } from "./middleware/node"
+export { getMiddlewareFunctions } from "./middleware/node.js"
 
-export type { ParseFunctions } from "./parse"
+export type { ParseFunctions } from "./parse/index.js"
 
-export { parseHatchifyBody } from "./parse/body"
+export { parseHatchifyBody } from "./parse/body.js"
 
-export type { SerializeFunctions } from "./serialize"
+export type { SerializeFunctions } from "./serialize.js"
 
 export { Op } from "sequelize"
 

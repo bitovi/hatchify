@@ -1,4 +1,4 @@
-import { finalizeControl } from "./finalizeControl"
+import { finalizeControl } from "./finalizeControl.js"
 
 describe("finalizeControl", () => {
   const values = ["foo", "bar"]

@@ -9,10 +9,10 @@ import {
 import type { PartialSchema } from "@hatchifyjs/core"
 import { Op } from "sequelize"
 
-import { RelationshipPathError, UnexpectedValueError } from "../error"
-import { Hatchify } from "../node"
+import { RelationshipPathError, UnexpectedValueError } from "../error/index.js"
+import { Hatchify } from "../node.js"
 
-import { buildParserForModel, buildParserForModelStandalone } from "."
+import { buildParserForModel, buildParserForModelStandalone } from "./index.js"
 
 const RelationshipPathDetail =
   "URL must have 'include' as one or more of 'lipitorUser', 'xanaxUser'."

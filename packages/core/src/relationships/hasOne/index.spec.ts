@@ -1,4 +1,4 @@
-import { hasOne } from "."
+import { hasOne } from "./index.js"
 
 describe("hasOne", () => {
   it("hasOne()", () => {

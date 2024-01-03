@@ -1,4 +1,4 @@
-import { validateValues } from "./validateValues"
+import { validateValues } from "./validateValues.js"
 
 describe("validateValues", () => {
   it("validates an array of strings", () => {

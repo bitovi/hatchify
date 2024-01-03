@@ -1,7 +1,7 @@
 import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
-import { startServerWith } from "./testing/utils"
+import { startServerWith } from "./testing/utils.js"
 
 describe("Attribute Tests", () => {
   const Model: PartialSchema = {

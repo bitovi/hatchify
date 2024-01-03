@@ -8,7 +8,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/design-mui.ts",
-      formats: ["es", "cjs"],
+      formats: ["es"],
     },
     rollupOptions: {
       external: [

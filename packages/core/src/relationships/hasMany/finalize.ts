@@ -1,11 +1,11 @@
-import type { PartialHasManyRelationship } from "./types"
-import { uuid } from "../../dataTypes"
-import { HatchifyInvalidSchemaError } from "../../types"
-import type { FinalAttributeRecord, SemiFinalSchema } from "../../types"
-import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase"
-import { pascalCaseToCamelCase } from "../../util/pascalCaseToCamelCase"
-import { singularize } from "../../util/singularize"
-import type { FinalRelationship, PartialRelationship } from "../types"
+import type { PartialHasManyRelationship } from "./types.js"
+import { uuid } from "../../dataTypes/index.js"
+import { HatchifyInvalidSchemaError } from "../../types/index.js"
+import type { FinalAttributeRecord, SemiFinalSchema } from "../../types/index.js"
+import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase.js"
+import { pascalCaseToCamelCase } from "../../util/pascalCaseToCamelCase.js"
+import { singularize } from "../../util/singularize.js"
+import type { FinalRelationship, PartialRelationship } from "../types.js"
 
 // @todo HATCH-417
 export function finalize(

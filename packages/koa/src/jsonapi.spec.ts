@@ -2,7 +2,7 @@ import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 import { Serializer } from "jsonapi-serializer"
 
-import { startServerWith } from "./testing/utils"
+import { startServerWith } from "./testing/utils.js"
 
 describe("JSON:API Tests", () => {
   const Model: PartialSchema = {

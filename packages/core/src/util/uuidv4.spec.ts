@@ -1,4 +1,4 @@
-import { getCrypto, uuidv4 } from "./uuidv4"
+import { getCrypto, uuidv4 } from "./uuidv4.js"
 
 describe("uuidv4", () => {
   it("generates a uuid", () => {

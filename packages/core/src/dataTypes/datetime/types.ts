@@ -2,7 +2,7 @@ import type {
   PartialControlType,
   PartialDataTypeProps,
   PartialSequelizeDataType,
-} from "../../types"
+} from "../../types/index.js"
 
 export interface PartialDatetimeProps<TRequired extends boolean>
   extends PartialDataTypeProps<Date, TRequired> {

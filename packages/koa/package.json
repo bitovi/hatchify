@@ -2,6 +2,7 @@
   "name": "@hatchifyjs/koa",
   "version": "1.3.8",
   "description": "Fullstack CRUD Application Solution",
+  "type": "module",
   "main": "./dist/exports.js",
   "types": "./dist/exports.d.ts",
   "scripts": {

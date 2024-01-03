@@ -17,7 +17,7 @@ import {
   dbDialects,
   getDatabaseColumns,
   startServerWith,
-} from "./testing/utils"
+} from "./testing/utils.js"
 
 describe.each(dbDialects)("schema", (dialect) => {
   describe(`${dialect}`, () => {

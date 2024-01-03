@@ -1,17 +1,9 @@
 {
   "name": "@hatchifyjs/design-mui",
   "version": "0.1.40",
-  "main": "./dist/design-mui.js",
+  "type": "module",
   "module": "./dist/design-mui.mjs",
   "types": "./dist/design-mui.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/design-mui.js",
-      "import": "./dist/design-mui.mjs",
-      "types": "./dist/design-mui.d.ts"
-    },
-    "./package.json": "./package.json"
-  },
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",

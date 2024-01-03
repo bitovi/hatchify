@@ -1,6 +1,6 @@
-import type { PartialEnumORM, PartialEnumProps } from "./types"
-import { validateValues } from "./validateValues"
-import { HatchifyInvalidSchemaError } from "../../types"
+import type { PartialEnumORM, PartialEnumProps } from "./types.js"
+import { validateValues } from "./validateValues.js"
+import { HatchifyInvalidSchemaError } from "../../types/index.js"
 
 export function getPartialOrm(
   // @todo HATCH-417

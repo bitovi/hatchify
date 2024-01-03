@@ -1,6 +1,6 @@
-import { HatchifyError } from "./HatchifyError"
-import { codes } from "../constants"
-import type { statusCodes } from "../constants"
+import { HatchifyError } from "./HatchifyError.js"
+import { codes } from "../constants.js"
+import type { statusCodes } from "../constants.js"
 
 export class ValidationError extends HatchifyError {
   constructor({

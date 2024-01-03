@@ -1,4 +1,4 @@
-import { codes, statusCodes } from "../constants"
+import { codes, statusCodes } from "../constants.js"
 
 interface Source {
   pointer?: string

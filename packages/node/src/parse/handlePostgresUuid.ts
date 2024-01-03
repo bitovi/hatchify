@@ -2,9 +2,9 @@ import { isISO8601DateString, isISO8601DatetimeString } from "@hatchifyjs/core"
 import type { Dialect, FindOptions } from "sequelize"
 import { Op, Sequelize } from "sequelize"
 
-import type { QueryStringParser } from "./builder"
-import { getColumnName } from "./getColumnName"
-import { walk } from "./walk"
+import type { QueryStringParser } from "./builder.js"
+import { getColumnName } from "./getColumnName.js"
+import { walk } from "./walk.js"
 
 function isString(string: string): boolean {
   return (

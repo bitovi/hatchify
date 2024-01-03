@@ -10,7 +10,7 @@ import type {
   Sequelize,
 } from "sequelize"
 
-import { getSequelizeSchemaName } from "./getSequelizeSchemaName"
+import { getSequelizeSchemaName } from "./getSequelizeSchemaName.js"
 
 export function toSequelize(
   schemas: { [schemaName: string]: FinalSchema },

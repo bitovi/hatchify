@@ -2,7 +2,7 @@ import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 import KoaRouter from "@koa/router"
 
-import { startServerWith } from "./testing/utils"
+import { startServerWith } from "./testing/utils.js"
 
 describe("Custom Tests", () => {
   const Model: PartialSchema = {

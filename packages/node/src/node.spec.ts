@@ -1,10 +1,10 @@
 import { integer } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-import { Hatchify } from "./node"
-import * as Sequelize from "./sequelize"
-import { HatchifySymbolModel } from "./types"
-import type { SequelizeWithHatchify } from "./types"
+import { Hatchify } from "./node.js"
+import * as Sequelize from "./sequelize/index.js"
+import { HatchifySymbolModel } from "./types.js"
+import type { SequelizeWithHatchify } from "./types.js"
 
 jest.mock("./sequelize", () => ({
   ...jest.requireActual("./sequelize"),

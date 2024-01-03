@@ -2,43 +2,43 @@ import type {
   FinalBooleanORM,
   PartialBooleanControlType,
   PartialBooleanORM,
-} from "../dataTypes/boolean"
+} from "../dataTypes/boolean/index.js"
 import type {
   FinalDateonlyORM,
   PartialDateonlyControlType,
   PartialDateonlyORM,
-} from "../dataTypes/dateonly"
+} from "../dataTypes/dateonly/index.js"
 import type {
   FinalDatetimeORM,
   PartialDatetimeControlType,
   PartialDatetimeORM,
-} from "../dataTypes/datetime"
+} from "../dataTypes/datetime/index.js"
 import type {
   FinalEnumORM,
   PartialEnumControlType,
   PartialEnumORM,
-} from "../dataTypes/enumerate/types"
+} from "../dataTypes/enumerate/types.js"
 import type {
   FinalNumberORM,
   PartialNumberControlType,
   PartialNumberORM,
-} from "../dataTypes/number"
+} from "../dataTypes/number/index.js"
 import type {
   FinalStringORM,
   PartialStringControlType,
   PartialStringORM,
-} from "../dataTypes/string"
+} from "../dataTypes/string/index.js"
 import type {
   FinalTextORM,
   PartialTextControlType,
   PartialTextORM,
-} from "../dataTypes/text/types"
-import type { FinalUuidORM, PartialUuidORM } from "../dataTypes/uuid/types"
+} from "../dataTypes/text/types.js"
+import type { FinalUuidORM, PartialUuidORM } from "../dataTypes/uuid/types.js"
 import type {
   FinalRelationship,
   PartialRelationship,
-} from "../relationships/types"
-import type { FinalAttribute, PartialAttribute } from "../types"
+} from "../relationships/types.js"
+import type { FinalAttribute, PartialAttribute } from "../types/index.js"
 
 export type PartialAttributeRecord = Record<
   string,

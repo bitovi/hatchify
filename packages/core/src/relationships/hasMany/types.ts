@@ -1,7 +1,7 @@
 import type {
   PartialHasManyThroughRelationship,
   ThroughOptions,
-} from "../hasManyThrough/types"
+} from "../hasManyThrough/types.js"
 
 // @todo HATCH-417
 export interface PartialHasManyRelationship<

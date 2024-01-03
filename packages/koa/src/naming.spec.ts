@@ -1,7 +1,7 @@
 import { belongsTo, hasMany, hasOne, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
-import { startServerWith } from "./testing/utils"
+import { startServerWith } from "./testing/utils.js"
 
 type Method = "get" | "post" | "patch" | "delete"
 

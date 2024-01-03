@@ -1,8 +1,8 @@
 import type { JSONAPIDocument } from "json-api-serializer"
 import type { Identifier } from "sequelize"
 
-import { NotFoundError } from "./error"
-import type { Hatchify } from "./node"
+import { NotFoundError } from "./error/index.js"
+import type { Hatchify } from "./node.js"
 
 export interface EverythingFunctions {
   findAll: (querystring: string) => Promise<JSONAPIDocument>

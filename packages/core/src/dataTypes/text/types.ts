@@ -1,5 +1,5 @@
-import type { PartialDataTypeProps } from "../../types"
-import type { PartialStringControlType } from "../string"
+import type { PartialDataTypeProps } from "../../types/index.js"
+import type { PartialStringControlType } from "../string/index.js"
 
 export interface PartialTextProps<TRequired extends boolean>
   extends PartialDataTypeProps<string, TRequired> {

@@ -1,18 +1,18 @@
-import { coerce } from "./coerce"
-import { finalizeControl } from "./finalizeControl"
-import { finalizeOrm } from "./finalizeOrm"
+import { coerce } from "./coerce.js"
+import { finalizeControl } from "./finalizeControl.js"
+import { finalizeOrm } from "./finalizeOrm.js"
 import type {
   FinalEnumORM,
   PartialEnumControlType,
   PartialEnumORM,
-} from "./types"
-import { HatchifyCoerceError } from "../../types"
+} from "./types.js"
+import { HatchifyCoerceError } from "../../types/index.js"
 import type {
   FinalAttribute,
   PartialAttribute,
   UserValue,
   ValueInRequest,
-} from "../../types"
+} from "../../types/index.js"
 
 export function getFinalize<TValues extends readonly string[]>(
   props: PartialAttribute<

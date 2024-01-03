@@ -1,7 +1,7 @@
-import { ensureDefaultPrimaryAttribute } from "./ensureDefaultPrimaryAttribute"
-import { uuid } from "../dataTypes"
-import { UUID_REGEX } from "../dataTypes/uuid/constants"
-import { uuidv4 } from "../util/uuidv4"
+import { ensureDefaultPrimaryAttribute } from "./ensureDefaultPrimaryAttribute.js"
+import { uuid } from "../dataTypes/index.js"
+import { UUID_REGEX } from "../dataTypes/uuid/constants.js"
+import { uuidv4 } from "../util/uuidv4.js"
 
 describe("ensureDefaultPrimaryAttribute", () => {
   it("handles existing primary attribute", () => {

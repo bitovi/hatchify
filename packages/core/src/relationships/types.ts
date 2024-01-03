@@ -1,19 +1,19 @@
 import type {
   FinalBelongsToRelationship,
   PartialBelongsToRelationship,
-} from "./belongsTo/types"
+} from "./belongsTo/types.js"
 import type {
   FinalHasManyRelationship,
   PartialHasManyRelationship,
-} from "./hasMany/types"
+} from "./hasMany/types.js"
 import type {
   FinalHasManyThroughRelationship,
   PartialHasManyThroughRelationship,
-} from "./hasManyThrough/types"
+} from "./hasManyThrough/types.js"
 import type {
   FinalHasOneRelationship,
   PartialHasOneRelationship,
-} from "./hasOne/types"
+} from "./hasOne/types.js"
 
 // @todo HATCH-417
 export type PartialRelationship =

@@ -13,16 +13,16 @@ import type { MatchFunction } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
 import type { Database } from "sqlite3"
 
-import type { HatchifyErrorOptions } from "./error"
-import { HatchifyError } from "./error"
-import type { EverythingFunctions } from "./everything"
-import { buildEverythingForModel } from "./everything"
-import { buildParserForModel } from "./parse"
-import type { ParseFunctions } from "./parse"
-import { buildSchemaForModel } from "./schema"
-import { convertHatchifyModels, createSequelizeInstance } from "./sequelize"
-import { buildSerializerForModel } from "./serialize"
-import type { SerializeFunctions } from "./serialize"
+import type { HatchifyErrorOptions } from "./error/index.js"
+import { HatchifyError } from "./error/index.js"
+import type { EverythingFunctions } from "./everything.js"
+import { buildEverythingForModel } from "./everything.js"
+import { buildParserForModel } from "./parse/index.js"
+import type { ParseFunctions } from "./parse/index.js"
+import { buildSchemaForModel } from "./schema.js"
+import { convertHatchifyModels, createSequelizeInstance } from "./sequelize/index.js"
+import { buildSerializerForModel } from "./serialize.js"
+import type { SerializeFunctions } from "./serialize.js"
 import type {
   FunctionsHandler,
   HatchifyOptions,
@@ -31,7 +31,7 @@ import type {
   SequelizeWithHatchify,
   SyncOptions,
   Virtuals,
-} from "./types"
+} from "./types.js"
 
 /**
  * Hatchify can be imported from the `@hatchifyjs/koa` package

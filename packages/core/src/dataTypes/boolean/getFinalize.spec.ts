@@ -1,4 +1,4 @@
-import { boolean } from "./index"
+import { boolean } from "./index.js"
 
 describe("getFinalize", () => {
   it("finalizes a partial attribute", () => {

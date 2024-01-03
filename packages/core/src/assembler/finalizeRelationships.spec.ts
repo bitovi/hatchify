@@ -1,9 +1,9 @@
-import { finalizeRelationships } from "./finalizeRelationships"
-import { getDefaultPrimaryAttribute } from "./getDefaultPrimaryAttribute"
-import type { SemiFinalSchema } from "./types"
-import { integer, string, uuid } from "../dataTypes"
-import { belongsTo, hasMany, hasOne } from "../relationships"
-import { uuidv4 } from "../util/uuidv4"
+import { finalizeRelationships } from "./finalizeRelationships.js"
+import { getDefaultPrimaryAttribute } from "./getDefaultPrimaryAttribute.js"
+import type { SemiFinalSchema } from "./types.js"
+import { integer, string, uuid } from "../dataTypes/index.js"
+import { belongsTo, hasMany, hasOne } from "../relationships/index.js"
+import { uuidv4 } from "../util/uuidv4.js"
 
 describe("finalizeRelationships", () => {
   it("adds missing attributes and populates nulls - hasMany", () => {

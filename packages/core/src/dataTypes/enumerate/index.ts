@@ -1,13 +1,13 @@
-import { getFinalize } from "./getFinalize"
-import { getPartialControl } from "./getPartialControl"
-import { getPartialOrm } from "./getPartialOrm"
+import { getFinalize } from "./getFinalize.js"
+import { getPartialControl } from "./getPartialControl.js"
+import { getPartialOrm } from "./getPartialOrm.js"
 import type {
   FinalEnumORM,
   PartialEnumControlType,
   PartialEnumORM,
   PartialEnumProps,
-} from "./types"
-import type { PartialAttribute } from "../../types"
+} from "./types.js"
+import type { PartialAttribute } from "../../types/index.js"
 
 export function enumerate<
   // @todo HATCH-417

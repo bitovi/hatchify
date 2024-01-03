@@ -1,6 +1,6 @@
-import type { PartialStringControlType } from "./types"
-import { HatchifyCoerceError } from "../../types"
-import type { ValueInRequest } from "../../types"
+import type { PartialStringControlType } from "./types.js"
+import { HatchifyCoerceError } from "../../types/index.js"
+import type { ValueInRequest } from "../../types/index.js"
 
 export function coerce(
   value: ValueInRequest,

@@ -1,8 +1,8 @@
 import { Hatchify as HatchifyNode, buildExportWrapper } from "@hatchifyjs/node"
 import type { HatchifyOptions, PartialSchema } from "@hatchifyjs/node"
 
-import { buildMiddlewareForModel, errorMiddleware } from "./middleware/koa"
-import type { MiddlewareFunctionsKoa } from "./middleware/koa"
+import { buildMiddlewareForModel, errorMiddleware } from "./middleware/koa.js"
+import type { MiddlewareFunctionsKoa } from "./middleware/koa.js"
 
 /**
  * Hatchify can be imported from the `@hatchifyjs/koa` package

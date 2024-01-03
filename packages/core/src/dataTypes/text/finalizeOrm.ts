@@ -1,4 +1,4 @@
-import type { FinalTextORM, PartialTextORM } from "./types"
+import type { FinalTextORM, PartialTextORM } from "./types.js"
 
 export function finalizeOrm({ sequelize }: PartialTextORM): FinalTextORM {
   return {

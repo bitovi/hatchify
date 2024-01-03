@@ -1,4 +1,4 @@
-import type { FinalNumberORM, PartialNumberORM } from "./types"
+import type { FinalNumberORM, PartialNumberORM } from "./types.js"
 
 export function finalizeOrm({ sequelize }: PartialNumberORM): FinalNumberORM {
   return {
