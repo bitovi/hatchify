@@ -47,31 +47,7 @@ export type RenderDataValue<
   >
 }) => JSX.Element
 
-// type RenderDataProps<
-//   TSchemas extends Record<string, PartialSchema>,
-//   TSchemaName extends GetSchemaNames<TSchemas>,
-// > =
-//   | {
-//       renderDataValue?: RenderData<TSchemas, TSchemaName>
-//       DataValueComponent?: never
-//     }
-//   | {
-//       renderDataValue?: never
-//       DataValueComponent?: DataValueComponent
-//     }
-
-// type RenderHeaderProps =
-//   | {
-//       renderHeaderValue?: RenderHeader
-//       HeaderValueComponent?: never
-//     }
-//   | {
-//       renderHeaderValue?: never
-//       HeaderValueComponent?: HeaderValueComponent
-//     }
-
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be required, but only one can be provided
-// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue and HeaderValueComponent should be required, but only one can be provided
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
 export type ExtraColumnProps<
   TSchemas extends Record<string, PartialSchema>,
@@ -89,8 +65,6 @@ export type ExtraColumnProps<
   renderHeaderValue?: RenderHeader
   HeaderValueComponent?: HeaderValueComponent
 }
-// } & RenderDataProps<TSchemas, TSchemaName> &
-// RenderHeaderProps
 
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be optional, but only one can be provided
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
@@ -114,11 +88,7 @@ export type CustomColumnProps<
   renderHeaderValue?: RenderHeader
   HeaderValueComponent?: HeaderValueComponent
 }
-// } & RenderDataProps<TSchemas, TSchemaName> &
-// RenderHeaderProps
 
-// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be optional, but only one can be provided
-// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
 export function HatchifyColumn<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
