@@ -1,6 +1,6 @@
 # Customizing your list
 
-Hatchify gives you the option to customize your list with two compound components that can be nested within your `Collection` component: `Column`, and `Empty`.
+Hatchify gives you the option to customize your list with two compound components that can be nested within your `DataGrid` component: `Column`, and `Empty`.
 
 Let's start with `Empty`.
 
@@ -19,7 +19,7 @@ import * as Schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection // 👀
+const TodoList = hatchedReact.components.Todo.DataGrid // 👀
 const TodoEmpty = hatchedReact.components.Todo.Empty // 👀
 
 const App: React.FC = () => {
@@ -73,7 +73,7 @@ And that's all there is to it! Next, lets explore `Column`, which offers a lot m
 
 `Column` is a powerful compound component that allows you to make fine-grained customizations to your list. It can be used to make selective changes and additions, or it can be used to override your list entirely.
 
-The behaviour of your `Column` customizations is determined by the `field` prop, as well as the `overwrite` prop on the parent `Collection` component. Let's start by looking at the difference between Extra and Custom columns.
+The behaviour of your `Column` customizations is determined by the `field` prop, as well as the `overwrite` prop on the parent `DataGrid` component. Let's start by looking at the difference between Extra and Custom columns.
 
 ### Custom `Column`
 
@@ -90,7 +90,7 @@ import * as Schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection
+const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoEmpty = hatchedReact.components.Todo.Empty
 const TodoColumn = hatchedReact.components.Todo.Column // 👀
 
@@ -245,7 +245,7 @@ import * as Schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection
+const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoEmpty = hatchedReact.components.Todo.Empty
 const TodoColumn = hatchedReact.components.Todo.Column
 
@@ -308,7 +308,7 @@ Notice the new "Actions" column at the end of our list.
 - In our app code above, we removed the `field` prop because extra columns represent brand new columns that inherently don't map directly to a field in our list. Despite this, we still have access to the entire row's `record` object via `renderDataCell`, so we can still access any fields from our record that we need.
 - If you want your column to appear at the beginning of your list, you can set the `prepend` prop to true.
 
-With the two types of columns we just covered - extra and custom - you'll notice that was we made changes to our list, Hatchify continued to render all the other columns that we _didn't_ modify as it normally would. So now let's take a look at how we can fully override Hatchify's column-rendering behavior.
+With the two types of columns we just covered - extra and custom - you'll notice that when we made changes to our list, Hatchify continued to render all the other columns that we _didn't_ modify as it normally would. So now let's take a look at how we can fully override Hatchify's column-rendering behavior.
 
 ### Fully overriding your list's columns
 
@@ -325,7 +325,7 @@ import * as Schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection
+const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoEmpty = hatchedReact.components.Todo.Empty
 const TodoColumn = hatchedReact.components.Todo.Column
 
@@ -374,6 +374,6 @@ Notice that most of our columns are no longer rendering. Don't worry--this is by
 
 #### How it works
 
-- As soon as you add the `ovewrite` prop to the `Collection` component, Hatchify will no longer render any columns that you don't specify. This means that you'll need to add a `Column` component for each field that you want to render.
+- As soon as you add the `ovewrite` prop to the `DataGrid` component, Hatchify will no longer render any columns that you don't specify. This means that you'll need to add a `Column` component for each field that you want to render.
 - An example use case for this feature is a list that needs to be heavily customized; you might need all the fields on your records in order to populate your list, but each column requires computed values or needs to be in a custom order, etc.
 - When in `overwrite` mode, the order will be determined by the order of your `Column` components, so if you want your columns to appear in a specific order, you'll need to specify them in that order. The `prepend` prop, or absence of it, has no effect when in `overwrite` mode.
