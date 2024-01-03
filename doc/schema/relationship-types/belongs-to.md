@@ -1,4 +1,4 @@
-# belongsTo(schemaName?, options?)
+# belongsTo(schemaName, options?)
 
 `belongsTo()` creates a relationship from the current _source_ schema to the _target_ schema. The following makes each account
 belong to a sales person:

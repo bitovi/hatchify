@@ -1,4 +1,4 @@
-# hasMany(schemaName?, options?)
+# hasMany(schemaName, options?)
 
 `hasMany()` creates a relationship from the current _source_ schema to the _target_ schema. The following makes each sales person has many accounts:
 
