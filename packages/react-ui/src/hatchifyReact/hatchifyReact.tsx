@@ -204,10 +204,9 @@ export function hatchifyReact<
 
 // todo: leaving for testing, remove before merge to main
 // const schemas = {
-//   Admin_Todo: {
+//   Todo: {
 //     name: "Todo",
 //     displayAttribute: "title",
-//     namespace: "Admin",
 //     attributes: {
 //       title: string(),
 //       reqTitle: string({ required: true }),
@@ -219,18 +218,18 @@ export function hatchifyReact<
 //       optCreated: datetime(),
 //     },
 //     relationships: {
-//       user: belongsTo("Admin_User"),
+//       user: belongsTo("User"),
 //     },
 //   },
-//   Admin_User: {
-//     name: "Admin_User",
+//   User: {
+//     name: "User",
 //     attributes: {
 //       name: string({ required: true }),
 //       age: integer({ required: true }),
 //       employed: boolean(),
 //     },
 //     relationships: {
-//       todos: hasMany("Admin_Todo"),
+//       todos: hasMany("Todo").through(),
 //     },
 //   },
 // } satisfies Record<string, PartialSchema>
@@ -239,18 +238,12 @@ export function hatchifyReact<
 //   completeSchemaMap: schemas,
 // } as RestClient<typeof schemas, any>)
 
-// type App = {
-//   app: HatchifyApp<typeof schemas>
-// }
-
 // app.model.Todo.createOne({
-//   attributes: {
-//     reqTitle: "",
-//     age: 1,
-//     important: true,
-//     created: new Date(),
-//     shouldError: false,
-//   },
+//   reqTitle: "",
+//   age: 1,
+//   important: true,
+//   created: new Date(),
+//   shouldError: false,
 // })
 
 // app.model.User.findAll({}).then(([records]) => {
@@ -260,12 +253,12 @@ export function hatchifyReact<
 //   records[0].shouldError
 // })
 
-// const state = app.state.Admin_Todo.useCollectionState({
+// const state = app.state.Todo.useCollectionState({
 //   include: ["user"],
 //   baseFilter: [{ field: "age", operator: ">", value: 1 }],
 // })
 // state.data.map((_todo) => {
-//   _todo.
+//   _todo.user.
 // })
 // state.data[0].id
 // state.data[0].age
@@ -283,11 +276,9 @@ export function hatchifyReact<
 //   return (
 //     <TodoList>
 //       <TodoColumn
-//         // field="age"
+//         field="age"
 //         label="Age"
-//         type="append"
-//         renderValue={({ record }) => <div>{record.asdfa}</div>}
-//         // ValueComponent={AgeComponent}
+//         renderDataValue={({ record }) => <div>{record.asdfa}</div>}
 //       />
 //     </TodoList>
 //   )
