@@ -27,12 +27,10 @@ todo - add correct gif
 
 There are a number of types available to assist with app customization.
 
+- DataGridState
 - CreateType
-- CollectionState
-- FlatCreateType
-- FlatUpdateType
-- HatchifyApp
 - UpdateType
+- HatchifyApp
 - RecordType
 
 Learn more about the available types [here](types.md).
