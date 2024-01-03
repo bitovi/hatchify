@@ -70,6 +70,7 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
+          displayName: null,
           allowNull: true,
           default: null,
         },
@@ -158,6 +159,7 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
+          displayName: null,
           allowNull: false,
           default: null,
         },

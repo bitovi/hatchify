@@ -3,12 +3,12 @@
 Defines an attribute as being a date type that does not include the **time**.
 
 ```ts
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     dueDate: dateonly({ required: true }),
   },
-}
+} satisfies PartialSchema
 ```
 
 Use [datetime](./datetime.md) for a date type with time.
@@ -34,9 +34,9 @@ The `dateonly` type will create sequelize [DataTypes.DATEONLY](https://sequelize
 
 For dates, use a `1990-12-31` value, in your queries as follows:
 
-GET /todos?filter[dueDate][$eq]=2023-12-01 //all todos with a due date that matches 2023-12-01
+GET /api/todos?filter[dueDate][$eq]=2023-12-01 //all todos with a due date that matches 2023-12-01
 
-GET /todos?filter[dueDate][$gte]=2023-12-01 //all todos that are on or after 2023-12-01
+GET /api/todos?filter[dueDate][$gte]=2023-12-01 //all todos that are on or after 2023-12-01
 
 Any other value type will return a service error.
 

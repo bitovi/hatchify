@@ -1,3 +1,4 @@
+import { camelCaseToTitleCase } from "@hatchifyjs/core"
 import type { PartialSchema, FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FinalSchemas, GetSchemaNames } from "@hatchifyjs/rest-client"
 import type { DefaultValueComponentsTypes } from "../../../components"
@@ -38,7 +39,9 @@ export function getColumn<
   } = compoundComponentProps
 
   const isAdditional = control == null
-  const label = labelProp || formatFieldAsLabel(field || "")
+  const label: string = labelProp || formatFieldAsLabel(field)
+  const displayName: string =
+    control?.displayName || camelCaseToTitleCase(label)
 
   const column: HatchifyColumn = {
     sortable:
@@ -85,7 +88,7 @@ export function getColumn<
   // render priority:
   // 1. prop: renderHeaderValue (render function)
   // 2. prop: HeaderValueComponent (component)
-  // 3. render label
+  // 3. render displayName
 
   if (renderHeaderValue) {
     column.renderHeader = (headerArgs) => {
@@ -96,7 +99,7 @@ export function getColumn<
       <HeaderValueComponent {...headerProps} />
     )
   } else {
-    column.renderHeader = () => label
+    column.renderHeader = () => displayName
   }
 
   return column

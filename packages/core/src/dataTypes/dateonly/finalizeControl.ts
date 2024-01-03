@@ -12,5 +12,6 @@ export function finalizeControl(
     max: props.max ?? Infinity,
     primary: !!props.primary,
     default: props.default ?? null,
+    displayName: props.displayName ?? null,
   }
 }

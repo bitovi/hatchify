@@ -4,7 +4,7 @@ A single scheme could use different attribute types to describe the different da
 
 ```typescript
 // hatchify-app/schemas.ts
-export const User: PartialSchema = {
+export const User = {
   name: "User",
   attributes: {
     name: string(),
@@ -25,6 +25,7 @@ Each of these types renders differently on the UI and have different customizati
 - [Boolean](./boolean.md)
 - [Date Only](./dateonly.md)
 - [Date Time](./datetime.md)
+- [Enumerate](./enum.md)
 - [Integer](./integer.md)
 - [Number](./number.md)
 - [String](./string.md)

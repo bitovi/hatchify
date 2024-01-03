@@ -41,6 +41,7 @@ export {
   findAll,
   findOne,
   flattenResourcesIntoRecords,
+  getDisplayAttribute,
   getMeta,
   getRecords,
   getStore,

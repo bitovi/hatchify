@@ -96,7 +96,7 @@ describe("components/MuiFilterRows", () => {
     const dropdown = dropdownContainer.querySelector("div") // eslint-disable-line testing-library/no-node-access
     await userEvent.click(dropdown as any)
 
-    const dateSelection = screen.getByText("date")
+    const dateSelection = screen.getByText("Date")
     await userEvent.click(dateSelection)
 
     expect(setFilters).toHaveBeenCalledWith([

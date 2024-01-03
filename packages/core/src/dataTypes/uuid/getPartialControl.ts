@@ -16,5 +16,6 @@ export function getPartialControl<TRequired extends boolean>(
     primary: props?.primary,
     default: props?.default,
     regex: UUID_REGEX,
+    displayName: props?.displayName,
   }
 }

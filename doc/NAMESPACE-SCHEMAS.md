@@ -13,12 +13,12 @@ In Postgres:
 
 Sometimes, you want to have multiple tables named the same thing in different domains. Hatchify namespaces can solve this.
 
-The following extends from the [Using Postgres](next-steps/using-postgres-db.md) guide to have `Todo`’s reference a `User`, who created the todo, and a `Engineering_User` who is someone who can actually get stuff done.
+The following extends from the [Using Postgres](guides/using-postgres-db.md) guide to have `Todo`’s reference a `User`, who created the todo, and a `Engineering_User` who is someone who can actually get stuff done.
 
 - Update schemas/schemas.ts as follows:
 
 ```
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
@@ -27,22 +27,22 @@ export const Todo: PartialSchema = {
     complete: boolean({ default: false }),
   },
   relationships: {
-    user: belongsTo(),
+    user: belongsTo("User"),
     assignee: belongsTo("Engineering_User")
   },
-}
+} satisfies PartialSchema
 
-export const User: PartialSchema = {
+export const User = {
   name: "User",
   attributes: {
     name: string({ required: true }),
   },
   relationships: {
-    todos: hasMany(),
+    todos: hasMany("Todo"),
   },
-}
+} satisfies PartialSchema
 
-export const Engineering_User: PartialSchema = {
+export const Engineering_User = {
   name: "User",
   namespace: "Engineering",
   attributes: {
@@ -51,7 +51,7 @@ export const Engineering_User: PartialSchema = {
   relationships: {
     todos: hasMany("Todo",{targetAttribute: "assigneeId"}),
   },
-}
+} satisfies PartialSchema
 ```
 
 - Import and pass all schemas to hatchifyKoa

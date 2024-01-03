@@ -3,12 +3,12 @@
 Defines an attribute as being a string type.
 
 ```ts
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
   },
-}
+} satisfies PartialSchema
 ```
 
 ## Parameters
@@ -32,9 +32,9 @@ The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.o
 If `required` is `false`, filtering `null` values is handled like the following:
 
 ```
-GET /todos?filter[name]=foo  // all todos with name foo
-GET /todos?filter[name]=%00  // all todos with null as the name value
-GET /todos?filter[name]=null  // all todos with "null" as the name value
+GET /api/todos?filter[name]=foo  // all todos with name foo
+GET /api/todos?filter[name]=%00  // all todos with null as the name value
+GET /api/todos?filter[name]=null  // all todos with "null" as the name value
 ```
 
 ### Data Response
@@ -57,7 +57,7 @@ String data will be returned as a string value or `null` as follows:
 When creating or updating a string attribute, string value or `null` must be provided. Any other value will return a service error.
 
 ```js
-POST /todos
+POST /api/todos
 
 DATA:
 

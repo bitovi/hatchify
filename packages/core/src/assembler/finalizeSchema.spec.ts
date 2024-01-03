@@ -18,6 +18,7 @@ describe("finalizeSchema", () => {
       id: {
         name: 'uuid({"required":true})',
         control: {
+          displayName: null,
           hidden: null,
           allowNull: false,
           max: 36,
@@ -49,6 +50,7 @@ describe("finalizeSchema", () => {
         importance: {
           name: 'integer({"min":0})',
           control: {
+            displayName: null,
             allowNull: true,
             max: Infinity,
             min: 0,

@@ -8,6 +8,7 @@ import type {
 import type { DefaultValueComponentsTypes } from "../../../components"
 import type { HatchifyColumn } from "../useCompoundComponents"
 import { getColumn } from "."
+import { getDisplayAttribute } from "@hatchifyjs/rest-client"
 
 export function getColumnsFromSchema<
   const TSchemas extends globalThis.Record<string, PartialSchema>,
@@ -46,16 +47,19 @@ export function getColumnsFromSchema<
       )
     })
     .map(([key, relationship]) => {
-      // related schema = schema[relationship.schema]
+      const relatedSchema = finalSchemas[relationship.targetSchema]
+      const displayAttribute = getDisplayAttribute(relatedSchema)
+
       return getColumn<TSchemas, TSchemaName>({
         finalSchemas,
         schemaName,
         defaultValueComponents,
         control: null,
         field: key,
-        key,
+        key: `${key}.${displayAttribute}`,
         isRelationship: true,
         compoundComponentProps: {},
+        sortable: true,
       })
     })
 
