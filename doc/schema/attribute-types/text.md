@@ -3,12 +3,12 @@
 Defines an attribute as having unlimited text length.
 
 ```ts
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     description: text({ required: true }),
   },
-}
+} satisfies PartialSchema
 ```
 
 ## Parameters

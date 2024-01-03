@@ -3,12 +3,12 @@
 Defines an attribute as being an string UUID4 value.
 
 ```ts
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     ownerId: uuid({ required: true }),
   },
-}
+} satisfies PartialSchema
 ```
 
 ## Parameters
