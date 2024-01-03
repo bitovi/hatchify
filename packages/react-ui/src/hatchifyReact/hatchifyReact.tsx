@@ -23,9 +23,8 @@ import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from 
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
 import type { CollectionState } from "../hooks/useCollectionState"
 import type {
-  AdditionalColumnProps,
-  ReplaceColumnProps,
-  OverwriteColumnProps,
+  CustomColumnProps,
+  ExtraColumnProps,
 } from "../components/HatchifyColumn"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { HatchifyCollection } from "../components/HatchifyCollection"
@@ -53,15 +52,8 @@ type HatchifyColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > =
-  | Omit<
-      AdditionalColumnProps<TSchemas, TSchemaName>,
-      "allSchemas" | "schemaName"
-    >
-  | Omit<ReplaceColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
-  | Omit<
-      OverwriteColumnProps<TSchemas, TSchemaName>,
-      "allSchemas" | "schemaName"
-    >
+  | Omit<ExtraColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
+  | Omit<CustomColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
 
 type Components<TSchemas extends Record<string, PartialSchema>> = {
   [SchemaName in keyof TSchemas]: {
@@ -204,10 +196,9 @@ export function hatchifyReact<
 
 // todo: leaving for testing, remove before merge to main
 // const schemas = {
-//   Admin_Todo: {
+//   Todo: {
 //     name: "Todo",
 //     displayAttribute: "title",
-//     namespace: "Admin",
 //     attributes: {
 //       title: string(),
 //       reqTitle: string({ required: true }),
@@ -222,8 +213,8 @@ export function hatchifyReact<
 //       user: belongsTo("Admin_User"),
 //     },
 //   },
-//   Admin_User: {
-//     name: "Admin_User",
+//   User: {
+//     name: "User",
 //     attributes: {
 //       name: string({ required: true }),
 //       age: integer({ required: true }),
@@ -244,13 +235,11 @@ export function hatchifyReact<
 // }
 
 // app.model.Todo.createOne({
-//   attributes: {
-//     reqTitle: "",
-//     age: 1,
-//     important: true,
-//     created: new Date(),
-//     shouldError: false,
-//   },
+//   reqTitle: "",
+//   age: 1,
+//   important: true,
+//   created: new Date(),
+//   // shouldError: false,
 // })
 
 // app.model.User.findAll({}).then(([records]) => {
@@ -260,12 +249,12 @@ export function hatchifyReact<
 //   records[0].shouldError
 // })
 
-// const state = app.state.Admin_Todo.useCollectionState({
+// const state = app.state.Todo.useCollectionState({
 //   include: ["user"],
 //   baseFilter: [{ field: "age", operator: ">", value: 1 }],
 // })
 // state.data.map((_todo) => {
-//   _todo.
+//   _todo
 // })
 // state.data[0].id
 // state.data[0].age
@@ -285,8 +274,14 @@ export function hatchifyReact<
 //       <TodoColumn
 //         // field="age"
 //         label="Age"
-//         type="append"
-//         renderValue={({ record }) => <div>{record.asdfa}</div>}
+//         sortable={true}
+//         // prepend={false}
+//         renderDataValue={({ record }) => <div>{record.age}</div>}
+//         DataValueComponent={AgeComponent}
+//         // field="age"
+//         // label="Age"
+//         // type=""
+//         // renderDataValue={({ record }) => <div>{record.asdfa}</div>}
 //         // ValueComponent={AgeComponent}
 //       />
 //     </TodoList>

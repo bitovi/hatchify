@@ -47,17 +47,41 @@ export type RenderDataValue<
   >
 }) => JSX.Element
 
+// type RenderDataProps<
+//   TSchemas extends Record<string, PartialSchema>,
+//   TSchemaName extends GetSchemaNames<TSchemas>,
+// > =
+//   | {
+//       renderDataValue?: RenderData<TSchemas, TSchemaName>
+//       DataValueComponent?: never
+//     }
+//   | {
+//       renderDataValue?: never
+//       DataValueComponent?: DataValueComponent
+//     }
+
+// type RenderHeaderProps =
+//   | {
+//       renderHeaderValue?: RenderHeader
+//       HeaderValueComponent?: never
+//     }
+//   | {
+//       renderHeaderValue?: never
+//       HeaderValueComponent?: HeaderValueComponent
+//     }
+
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be required, but only one can be provided
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue and HeaderValueComponent should be required, but only one can be provided
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
-export type AdditionalColumnProps<
+export type ExtraColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
   allSchemas: FinalSchemas
   schemaName: string
-  type: "append" | "prepend"
-  label: string
+  sortable?: boolean
+  prepend?: boolean
+  label?: string
   field?: never
 } & {
   renderDataValue?: RenderData<TSchemas, TSchemaName>
@@ -65,63 +89,43 @@ export type AdditionalColumnProps<
   renderHeaderValue?: RenderHeader
   HeaderValueComponent?: HeaderValueComponent
 }
+// } & RenderDataProps<TSchemas, TSchemaName> &
+// RenderHeaderProps
 
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be optional, but only one can be provided
-// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue and HeaderValueComponent should be optional, but only one can be provided
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
-export type ReplaceColumnProps<
+export type CustomColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
-  sortable?: boolean
   allSchemas: FinalSchemas
   schemaName: TSchemaName
-  type: "replace"
+  sortable?: boolean
+  prepend?: never
   label?: string
   field:
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["relationships"]
     | "id"
-    | ""
+    | "" // is this needed still?
 } & {
   renderDataValue?: RenderDataValue<TSchemas, TSchemaName>
   DataValueComponent?: DataValueComponent
   renderHeaderValue?: RenderHeader
   HeaderValueComponent?: HeaderValueComponent
 }
+// } & RenderDataProps<TSchemas, TSchemaName> &
+// RenderHeaderProps
 
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be optional, but only one can be provided
-// @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue and HeaderValueComponent should be optional, but only one can be provided
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
-export type OverwriteColumnProps<
-  TSchemas extends Record<string, PartialSchema>,
-  TSchemaName extends GetSchemaNames<TSchemas>,
-> = {
-  sortable?: boolean
-  allSchemas: FinalSchemas
-  schemaName: TSchemaName
-  type?: never
-  label?: string
-  field?:
-    | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
-    | keyof GetSchemaFromName<TSchemas, TSchemaName>["relationships"]
-    | "id"
-    | ""
-} & {
-  renderDataValue?: RenderDataValue<TSchemas, TSchemaName>
-  DataValueComponent?: DataValueComponent // @TODO HATCH-417 - not sure if this is possible to strictly type
-  renderHeaderValue?: RenderHeader
-  HeaderValueComponent?: HeaderValueComponent // @TODO HATCH-417 - not sure if this is possible to strictly type
-}
-
 export function HatchifyColumn<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
   props:
-    | AdditionalColumnProps<TSchemas, TSchemaName>
-    | ReplaceColumnProps<TSchemas, TSchemaName>
-    | OverwriteColumnProps<TSchemas, TSchemaName>,
+    | ExtraColumnProps<TSchemas, TSchemaName>
+    | CustomColumnProps<TSchemas, TSchemaName>,
 ): null {
   return null
 }

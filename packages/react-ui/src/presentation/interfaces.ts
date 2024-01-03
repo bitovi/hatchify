@@ -49,7 +49,9 @@ export interface XCollectionProps<
   TSchemaName extends GetSchemaNames<TSchemas> = any,
 > extends CollectionState<TSchemas, TSchemaName> {
   children?: React.ReactNode
+  overwrite?: boolean
 }
+
 export interface XEverythingProps<
   TSchemas extends Record<string, PartialSchema> = any,
   TSchemaName extends GetSchemaNames<TSchemas> = any,

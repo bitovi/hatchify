@@ -16,6 +16,7 @@ export function getColumns<
   finalSchemas: FinalSchemas,
   schemaName: TSchemaName,
   defaultValueComponents: DefaultValueComponentsTypes,
+  overwrite: boolean,
   childArray: JSX.Element[],
   include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): HatchifyColumn[] {
@@ -23,10 +24,10 @@ export function getColumns<
   const schema = finalSchemas[schemaName as string]
 
   const columns = childArray.filter((c) => c.type.name === "Column")
-  const prepend = columns.filter((c) => c.props.type === "prepend")
-  const append = columns.filter((c) => c.props.type === "append")
-  const replace = columns.filter((c) => c.props.type === "replace")
-  const overwrite = columns.filter((c) => !c.props.type)
+  const extra = childArray.filter((c) => c.props.field === undefined)
+  const replace = columns.filter((c) => c.props.field !== undefined)
+  const prepend = extra.filter((c) => c.props.prepend === true)
+  const append = extra.filter((c) => c.props.prepend !== true)
 
   const getHatchifyColumnCommon = {
     finalSchemas,
@@ -34,6 +35,48 @@ export function getColumns<
     defaultValueComponents,
   }
 
+  // use JSX order
+  if (overwrite) {
+    for (let i = 0; i < columns.length; i++) {
+      const { props } = columns[i]
+      const isExtraColumn = props.field === undefined // not tied to a schema field
+
+      if (isExtraColumn) {
+        hatchifyColumns.push(
+          getColumn({
+            ...getHatchifyColumnCommon,
+            control: null,
+            field: "",
+            key: `extra-${i}`,
+            compoundComponentProps: props,
+            isRelationship: false,
+          }),
+        )
+      } else {
+        const validField = schema?.attributes?.[props.field]
+        const relationship = schema?.relationships?.[props.field]
+
+        hatchifyColumns.push(
+          getColumn({
+            ...getHatchifyColumnCommon,
+            // once displayAttribute is implemented, it should be used for the control
+            control: relationship
+              ? null
+              : schema.attributes?.[props.field]?.control || null,
+            field: validField ? props.field : "",
+            key: validField ? props.field : `overwrite-${i}`,
+            compoundComponentProps: props,
+            isRelationship: relationship !== undefined,
+            sortable: props.sortable,
+          }),
+        )
+      }
+    }
+
+    return hatchifyColumns
+  }
+
+  // otherwise order is: prepend, schema attributes, schema relationships, append
   for (let i = 0; i < prepend.length; i++) {
     const { props } = prepend[i]
 
@@ -49,10 +92,20 @@ export function getColumns<
     )
   }
 
-  if (overwrite.length > 0) {
-    for (let i = 0; i < overwrite.length; i++) {
-      const { props } = overwrite[i]
-      const validField = schema?.attributes?.[props.field]
+  const schemaColumns = getColumnsFromSchema(
+    finalSchemas,
+    schemaName,
+    defaultValueComponents,
+    include,
+  )
+
+  for (let i = 0; i < schemaColumns.length; i++) {
+    const replaceWith = replace.find(
+      (c) => c.props.field === schemaColumns[i].key,
+    )
+
+    if (replaceWith) {
+      const { props } = replaceWith
       const relationship = schema?.relationships?.[props.field]
 
       hatchifyColumns.push(
@@ -62,48 +115,15 @@ export function getColumns<
           control: relationship
             ? null
             : schema.attributes?.[props.field]?.control || null,
-          field: validField ? props.field : "",
-          key: validField ? props.field : `overwrite-${i}`,
+          field: props.field,
+          key: props.field,
           compoundComponentProps: props,
           isRelationship: relationship !== undefined,
           sortable: props.sortable,
         }),
       )
-    }
-  } else {
-    const schemaColumns = getColumnsFromSchema(
-      finalSchemas,
-      schemaName,
-      defaultValueComponents,
-      include,
-    )
-
-    for (let i = 0; i < schemaColumns.length; i++) {
-      const replaceWith = replace.find(
-        (c) => c.props.field === schemaColumns[i].key,
-      )
-
-      if (replaceWith) {
-        const { props } = replaceWith
-        const relationship = schema?.relationships?.[props.field]
-
-        hatchifyColumns.push(
-          getColumn({
-            ...getHatchifyColumnCommon,
-            // once displayAttribute is implemented, it should be used for the control
-            control: relationship
-              ? null
-              : schema.attributes?.[props.field]?.control || null,
-            field: props.field,
-            key: props.field,
-            compoundComponentProps: props,
-            isRelationship: relationship !== undefined,
-            sortable: props.sortable,
-          }),
-        )
-      } else {
-        hatchifyColumns.push(schemaColumns[i])
-      }
+    } else {
+      hatchifyColumns.push(schemaColumns[i])
     }
   }
 

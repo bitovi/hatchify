@@ -27,6 +27,7 @@ export interface HatchifyCollectionProps<
   defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters
+  overwrite?: boolean
 }
 
 function HatchifyCollection<
@@ -43,6 +44,7 @@ function HatchifyCollection<
   defaultPage,
   defaultSort,
   baseFilter,
+  overwrite,
 }: HatchifyCollectionProps<TSchemas, TSchemaName>): JSX.Element {
   const { Collection } = useHatchifyPresentation()
   const defaultInclude = useMemo(
@@ -69,7 +71,11 @@ function HatchifyCollection<
     },
   )
 
-  return <Collection {...collectionState}>{children}</Collection>
+  return (
+    <Collection overwrite={overwrite} {...collectionState}>
+      {children}
+    </Collection>
+  )
 }
 
 export default HatchifyCollection
