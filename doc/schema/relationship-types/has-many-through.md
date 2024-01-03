@@ -6,92 +6,18 @@
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
-    accounts: hasMany().through(), // 👀
+    accounts: hasMany("Account").through(), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 The following walks through different signatures of `hasMany().through()` and how they work.
-
-## hasMany().through()
-
-The relationship key for `hasMany().through()` called without any arguments MUST match the _camelCase_ plural name of another schema.
-
-For example, `accounts` below matches `Account`:
-
-```ts
-const Account: PartialSchema = {
-  name: "Account",
-  attributes: {},
-}
-
-const SalesPerson: PartialSchema = {
-  name: "SalesPerson",
-  attributes: {},
-  relationships: {
-    accounts: hasMany().through(), // 👀
-  },
-}
-```
-
-**Schema Implications**
-
-A schema named `AccountSalesPerson` will be created as if it was defined as follows:
-
-```ts
-const AccountSalesPerson: PartialSchema = {
-  name: "AccountSalesPerson",
-  attributes: {
-    accountId: uuid(), // References Account.id
-    salesPersonId: uuid(), // References SalesPerson.id
-  },
-}
-```
-
-**Database Implications**
-
-Creates a table `account_sales_person` with `account_id` and `sales_person_id` columns.
-
-**API Implications**
-
-- `accounts` and `accountSalesPersons` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,accountSalesPersons` 🛑
-- `accounts` and `accountSalesPersons` will be used in mutation payloads and response payloads like:
-
-  ```json
-  {
-    "data": {
-      "type": "SalesPerson",
-      "id": "9bc9b6e4-0328-4874-b687-25f817d92434",
-      "attributes": {},
-      "relationships": {
-        // 👀
-        "accounts": {
-          "data": [
-            {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
-            }
-          ]
-        },
-        // 👀
-        "accountSalesPersons": {
-          "data": [
-            {
-              "type": "AccountSalesPerson",
-              "id": "dd5f522c-f912-4224-89be-977b7fac113c"
-            }
-          ]
-        }
-      }
-    }
-  }
-  ```
 
 ## hasMany(schemaName)
 
@@ -101,7 +27,7 @@ Pass a `schemaName` to specify the target schema.
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
@@ -109,7 +35,7 @@ const SalesPerson: PartialSchema = {
   relationships: {
     salesAccounts: hasMany("Account").through(), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 **Schema Implications**
@@ -123,7 +49,7 @@ const AccountSalesPerson: PartialSchema = {
     accountId: uuid(), // References Account.id
     salesPersonId: uuid(), // References SalesPerson.id
   },
-}
+} satisfies PartialSchema
 ```
 
 **Database Implications**
@@ -165,7 +91,7 @@ Creates a table `account_sales_person` with `account_id` and `sales_person_id` c
   }
   ```
 
-## hasMany().through(schemaName)
+## hasMany(schemaName).through(schemaName)
 
 Pass a `schemaName` to specify the join schema.
 
@@ -173,15 +99,15 @@ Pass a `schemaName` to specify the join schema.
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
-    accounts: hasMany().through("Assignments"), // 👀
+    accounts: hasMany("Account").through("Assignments"), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 **Schema Implications**
@@ -195,7 +121,7 @@ const Assignments: PartialSchema = {
     accountId: uuid(), // References Account.id
     salesPersonId: uuid(), // References SalesPerson.id
   },
-}
+} satisfies PartialSchema
 ```
 
 **Database Implications**
@@ -237,7 +163,7 @@ Creates a table `assignment` with `account_id` and `sales_person_id` columns.
   }
   ```
 
-## hasMany().through(schemaName, {throughTargetAttribute, throughSourceAttribute})
+## hasMany(schemaName).through(schemaName, {throughTargetAttribute, throughSourceAttribute})
 
 Pass attribute names to describe the join schema.
 
@@ -245,15 +171,15 @@ Pass attribute names to describe the join schema.
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
-    accounts: hasMany().through("Assignments", { throughTargetAttribute: "theAccountId", throughSourceAttribute: "theSalesPersonId" }), // 👀
+    accounts: hasMany("Account").through("Assignments", { throughTargetAttribute: "theAccountId", throughSourceAttribute: "theSalesPersonId" }), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 **Schema Implications**
@@ -267,7 +193,7 @@ const Assignments: PartialSchema = {
     theAccountId: uuid(), // References Account.id
     theSalesPersonId: uuid(), // References SalesPerson.id
   },
-}
+} satisfies PartialSchema
 ```
 
 **Database Implications**
@@ -309,7 +235,7 @@ Creates a table `assignment` with `the_account_id` and `the_sales_person_id` col
   }
   ```
 
-## hasMany().through(schemaName, {targetKey, sourceKey})
+## hasMany(schemaName).through(schemaName, {targetKey, sourceKey})
 
 Pass a `targetKey` and `sourceKey` to specify which attributes define the relationship.
 
@@ -317,15 +243,15 @@ Pass a `targetKey` and `sourceKey` to specify which attributes define the relati
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
   relationships: {
-    accounts: hasMany().through("Assignments", { targetKey: "accountId", sourceKey: "salesPersonId" }), // 👀
+    accounts: hasMany("Account").through("Assignments", { targetKey: "accountId", sourceKey: "salesPersonId" }), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 **Schema Implications**
@@ -339,14 +265,14 @@ const Assignments: PartialSchema = {
     accountId: uuid(), // References Account.id
     salesPersonId: uuid(), // References SalesPerson.id
   },
-}
+} satisfies PartialSchema
 
 const Account: PartialSchema = {
   name: "Account",
   attributes: {
     accountId: uuid(), // References Assignments.accountId
   },
-}
+} satisfies PartialSchema
 
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
@@ -354,9 +280,9 @@ const SalesPerson: PartialSchema = {
     salesPersonId: uuid(), // References Assignments.salesPersonId
   },
   relationships: {
-    accounts: hasMany().through("Assignments", { targetKey: "accountId", sourceKey: "salesPersonId" }), // 👀
+    accounts: hasMany("Account").through("Assignments", { targetKey: "accountId", sourceKey: "salesPersonId" }), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 **Database Implications**

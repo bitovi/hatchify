@@ -6,7 +6,7 @@
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
@@ -14,74 +14,10 @@ const SalesPerson: PartialSchema = {
   relationships: {
     accounts: hasMany(), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 The following walks through different signatures of `hasMany()` and how they work.
-
-## hasMany()
-
-The relationship key for `hasMany()` called without any arguments MUST match the _camelCase_ plural name of another schema.
-
-For example, `accounts` below matches `Account`:
-
-```ts
-const Account: PartialSchema = {
-  name: "Account",
-  attributes: {},
-}
-
-const SalesPerson: PartialSchema = {
-  name: "SalesPerson",
-  attributes: {},
-  relationships: {
-    accounts: hasMany(), // 👀
-  },
-}
-```
-
-**Schema Implications**
-
-An attribute named `salesPersonId` will be created as if it was defined as follows:
-
-```ts
-const Account: PartialSchema = {
-  name: "Account",
-  attributes: {
-    salesPersonId: uuid(), // References SalesPerson.id
-  },
-}
-```
-
-**Database Implications**
-
-Creates a column `sales_person_id` in the `account` table.
-
-**API Implications**
-
-- `accounts` will be used in the include query parameter like `GET /api/sales-persons?include=accounts` 🛑
-- `accounts` will be used in mutation payloads and response payloads like:
-
-  ```json
-  {
-    "data": {
-      "type": "SalesPerson",
-      "id": "9bc9b6e4-0328-4874-b687-25f817d92434",
-      "attributes": {},
-      "relationships": {
-        // 👀
-        "accounts": {
-          "data": [
-            {
-              "type": "SalesPerson",
-              "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
-            }
-          ]
-        }
-      }
-    }
-  }
-  ```
 
 ## hasMany(schemaName)
 
@@ -91,7 +27,7 @@ Pass a `schemaName` to specify the related schema.
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
@@ -99,7 +35,7 @@ const SalesPerson: PartialSchema = {
   relationships: {
     salesAccounts: hasMany("Account"), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 **Schema Implications**
@@ -112,7 +48,7 @@ const Account: PartialSchema = {
   attributes: {
     salesPersonId: uuid(), // References SalesPerson.id
   },
-}
+} satisfies PartialSchema
 ```
 
 **Database Implications**
@@ -153,7 +89,7 @@ Pass a `targetAttribute` to specify which attribute defines the relationship.
 const Account: PartialSchema = {
   name: "Account",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
@@ -163,7 +99,7 @@ const SalesPerson: PartialSchema = {
       targetAttribute: "accountId", // 👀
     }),
   },
-}
+} satisfies PartialSchema
 ```
 
 **Database Implications**

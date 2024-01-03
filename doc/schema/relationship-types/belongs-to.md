@@ -7,7 +7,7 @@ belong to a sales person:
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const Account: PartialSchema = {
   name: "Account",
@@ -15,78 +15,10 @@ const Account: PartialSchema = {
   relationships: {
     salesPerson: belongsTo(), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 The following walks through different signatures of `belongsTo()` and how they work.
-
-## belongsTo()
-
-The relationship key for `belongsTo()` called without any arguments MUST match the _camelCase_ name of another schema.
-
-For example, `salesPerson` below matches `SalesPerson`:
-
-```ts
-const SalesPerson: PartialSchema = {
-  name: "SalesPerson",
-  attributes: {},
-}
-
-const Account: PartialSchema = {
-  name: "Account",
-  attributes: {},
-  relationships: {
-    salesPerson: belongsTo(), // 👀
-  },
-}
-```
-
-**Schema Implications**
-
-An attribute named `salesPersonId` will be created as if it was defined as follows:
-
-```ts
-const Account: PartialSchema = {
-  name: "Account",
-  attributes: {
-    salesPersonId: uuid(), // References SalesPerson.id
-  },
-  relationships: {
-    salesPerson: belongsTo(),
-  },
-}
-```
-
-**Database Implications**
-
-Creates a column `sales_person_id` in the `account` table.
-
-**API Implications**
-
-- `salesPerson` will be used in the include query parameter like `GET /api/accounts?include=salesPerson`
-- `salesPerson` will be used in mutation payloads and response payloads like:
-
-  ```json
-  {
-    "data": {
-      "type": "Account",
-      "id": "75f706ee-ac71-483a-ae16-45254b66f7e1",
-      "attributes": {
-        "firstName": "Acme",
-        "salesPersonId": "9bc9b6e4-0328-4874-b687-25f817d92434"
-      },
-      "relationships": {
-        // 👀
-        "salesPerson": {
-          "data": {
-            "type": "SalesPerson",
-            "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
-          }
-        }
-      }
-    }
-  }
-  ```
 
 ## belongsTo(schemaName)
 
@@ -96,7 +28,7 @@ Pass a `schemaName` to specify the related schema.
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const Account: PartialSchema = {
   name: "Account",
@@ -104,7 +36,7 @@ const Account: PartialSchema = {
   relationships: {
     closingSalesPerson: belongsTo("SalesPerson"), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 **Schema Implications**
@@ -120,7 +52,7 @@ const Account: PartialSchema = {
   relationships: {
     closingSalesPerson: belongsTo("SalesPerson"),
   },
-}
+} satisfies PartialSchema
 ```
 
 **Database Implications**
@@ -162,7 +94,7 @@ Pass a `sourceAttribute` to specify which attribute defines the relationship.
 const SalesPerson: PartialSchema = {
   name: "SalesPerson",
   attributes: {},
-}
+} satisfies PartialSchema
 
 const Account: PartialSchema = {
   name: "Account",
@@ -171,7 +103,7 @@ const Account: PartialSchema = {
       sourceAttribute: "closerId", // 👀
     }),
   },
-}
+} satisfies PartialSchema
 ```
 
 **Database Implications**
