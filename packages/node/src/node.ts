@@ -20,7 +20,10 @@ import { buildEverythingForModel } from "./everything.js"
 import { buildParserForModel } from "./parse/index.js"
 import type { ParseFunctions } from "./parse/index.js"
 import { buildSchemaForModel } from "./schema.js"
-import { convertHatchifyModels, createSequelizeInstance } from "./sequelize/index.js"
+import {
+  convertHatchifyModels,
+  createSequelizeInstance,
+} from "./sequelize/index.js"
 import { buildSerializerForModel } from "./serialize.js"
 import type { SerializeFunctions } from "./serialize.js"
 import type {

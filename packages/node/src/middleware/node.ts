@@ -1,7 +1,7 @@
 import type { ErrorObject } from "json-api-serializer"
 
-import { ValidationError, errorResponseHandler } from "../error/index.js"
 import { codes, statusCodes } from "../error/constants.js"
+import { ValidationError, errorResponseHandler } from "../error/index.js"
 import type { Hatchify } from "../node.js"
 import type {
   MiddlewareRequest,

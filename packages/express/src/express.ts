@@ -1,7 +1,10 @@
 import { Hatchify as HatchifyNode, buildExportWrapper } from "@hatchifyjs/node"
 import type { HatchifyOptions, PartialSchema } from "@hatchifyjs/node"
 
-import { buildMiddlewareForModel, errorMiddleware } from "./middleware/express.js"
+import {
+  buildMiddlewareForModel,
+  errorMiddleware,
+} from "./middleware/express.js"
 import type { MiddlewareFunctionsExpress } from "./middleware/express.js"
 
 /**

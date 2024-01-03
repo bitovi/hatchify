@@ -1,4 +1,7 @@
-import type { PartialHasManyThroughRelationship, ThroughOptions } from "./types.js"
+import type {
+  PartialHasManyThroughRelationship,
+  ThroughOptions,
+} from "./types.js"
 
 export function buildThrough(targetSchema: string | null) {
   return function through(

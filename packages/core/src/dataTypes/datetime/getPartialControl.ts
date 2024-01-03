@@ -1,4 +1,7 @@
-import type { PartialDatetimeControlType, PartialDatetimeProps } from "./types.js"
+import type {
+  PartialDatetimeControlType,
+  PartialDatetimeProps,
+} from "./types.js"
 
 export function getPartialControl<TRequired extends boolean>(
   props?: PartialDatetimeProps<TRequired>,

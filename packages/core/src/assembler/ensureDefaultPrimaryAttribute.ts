@@ -1,5 +1,8 @@
 import { getDefaultPrimaryAttribute } from "./getDefaultPrimaryAttribute.js"
-import type { PartialSchema, PartialSchemaWithPrimaryAttribute } from "./types.js"
+import type {
+  PartialSchema,
+  PartialSchemaWithPrimaryAttribute,
+} from "./types.js"
 
 export function ensureDefaultPrimaryAttribute(
   schema: PartialSchema,
