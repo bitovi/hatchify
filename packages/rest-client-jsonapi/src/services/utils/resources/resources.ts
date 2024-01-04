@@ -17,7 +17,7 @@ import type {
   JsonApiResourceRelationship,
   Relationship as JsonApiRelationship,
   CreateJsonApiResource,
-} from "../../jsonapi"
+} from "../../jsonapi/index.js"
 
 type Relationship = Record<
   string,

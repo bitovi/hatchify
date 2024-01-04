@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
-import { baseUrl, testData } from "../../../mocks/handlers"
-import { fetchJsonApi } from "./fetch"
-import { server } from "../../../mocks/server"
-import { rest } from "msw"
+import { baseUrl, testData } from "../../../mocks/handlers.js"
+import { fetchJsonApi } from "./fetch.js"
+import { server } from "../../../mocks/server.js"
+import { http } from "msw"
 
 const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 
@@ -31,13 +31,13 @@ describe("rest-client-jsonapi/services/utils/fetch", () => {
     ]
 
     server.use(
-      rest.get(`${baseUrl}/${schemaMap.Article.endpoint}`, (_, res, ctx) =>
-        res.once(
-          ctx.status(500),
-          ctx.json({
-            errors,
+      http.get(
+        `${baseUrl}/${schemaMap.Article.endpoint}`,
+        () =>
+          new Response(JSON.stringify({ errors }), {
+            status: 500,
           }),
-        ),
+        { once: true },
       ),
     )
 
@@ -48,8 +48,13 @@ describe("rest-client-jsonapi/services/utils/fetch", () => {
 
   it("throws a generic error if no error is returned", async () => {
     server.use(
-      rest.get(`${baseUrl}/${schemaMap.Article.endpoint}`, (_, res, ctx) =>
-        res.once(ctx.status(500), ctx.json({})),
+      http.get(
+        `${baseUrl}/${schemaMap.Article.endpoint}`,
+        () =>
+          new Response(JSON.stringify({}), {
+            status: 500,
+          }),
+        { once: true },
       ),
     )
 

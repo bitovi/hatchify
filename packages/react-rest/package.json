@@ -1,17 +1,9 @@
 {
   "name": "@hatchifyjs/react-rest",
   "version": "0.1.17",
-  "main": "./dist/react-rest.js",
-  "module": "./dist/react-rest.mjs",
+  "type": "module",
+  "module": "./dist/react-rest.js",
   "types": "./dist/react-rest.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/react-rest.js",
-      "import": "./dist/react-rest.mjs",
-      "types": "./dist/react-rest.d.ts"
-    },
-    "./package.json": "./package.json"
-  },
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",

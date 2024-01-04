@@ -1,17 +1,17 @@
 import { describe, expect, it, vi } from "vitest"
-import { rest } from "msw"
+import { http } from "msw"
 import {
   baseUrl,
   finalSchemas,
   partialSchemas,
   restClientConfig,
   testData,
-} from "../../mocks/handlers"
-import { server } from "../../mocks/server"
-import jsonapi from "../../rest-client-jsonapi"
-import { updateOne } from "./updateOne"
-import { convertToHatchifyResources } from "../utils"
-import type { JsonApiResource } from "../jsonapi"
+} from "../../mocks/handlers.js"
+import { server } from "../../mocks/server.js"
+import jsonapi from "../../rest-client-jsonapi.js"
+import { updateOne } from "./updateOne.js"
+import { convertToHatchifyResources } from "../utils/index.js"
+import type { JsonApiResource } from "../jsonapi/index.js"
 
 describe("rest-client-jsonapi/services/updateOne", () => {
   it("works", async () => {
@@ -83,8 +83,13 @@ describe("rest-client-jsonapi/services/updateOne", () => {
     ]
 
     server.use(
-      rest.patch(`${baseUrl}/articles/article-id-1`, (_, res, ctx) =>
-        res.once(ctx.status(500), ctx.json({ errors })),
+      http.patch(
+        `${baseUrl}/articles/article-id-1`,
+        () =>
+          new Response(JSON.stringify({ errors }), {
+            status: 500,
+          }),
+        { once: true },
       ),
     )
 

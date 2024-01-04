@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest"
-import { rest } from "msw"
-import { baseUrl } from "../../mocks/handlers"
-import { server } from "../../mocks/server"
-import jsonapi from "../../rest-client-jsonapi"
-import { deleteOne } from "./deleteOne"
+import { http } from "msw"
+import { baseUrl } from "../../mocks/handlers.js"
+import { server } from "../../mocks/server.js"
+import jsonapi from "../../rest-client-jsonapi.js"
+import { deleteOne } from "./deleteOne.js"
 import { assembler } from "@hatchifyjs/core"
 
 const partialSchemaMap = {
@@ -41,8 +41,13 @@ describe("rest-client-jsonapi/services/deleteOne", () => {
     ]
 
     server.use(
-      rest.delete(`${baseUrl}/articles/article-id-1`, (_, res, ctx) =>
-        res.once(ctx.status(500), ctx.json({ errors })),
+      http.delete(
+        `${baseUrl}/articles/article-id-1`,
+        () =>
+          new Response(JSON.stringify({ errors }), {
+            status: 500,
+          }),
+        { once: true },
       ),
     )
 

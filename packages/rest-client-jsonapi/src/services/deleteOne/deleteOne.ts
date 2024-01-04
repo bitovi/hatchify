@@ -8,7 +8,7 @@ import {
   SchemaNameNotStringError,
   schemaNameIsString,
 } from "@hatchifyjs/rest-client"
-import { fetchJsonApi } from "../utils"
+import { fetchJsonApi } from "../utils/index.js"
 
 /**
  * Deletes a resource.

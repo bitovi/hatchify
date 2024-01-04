@@ -8,7 +8,7 @@ import {
   subscribeToAll,
 } from "@hatchifyjs/rest-client"
 import type { RestClient, Subscription } from "@hatchifyjs/rest-client"
-import { useAll } from "./useAll"
+import { useAll } from "./useAll.js"
 
 const fakeData = [
   {

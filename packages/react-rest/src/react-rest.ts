@@ -1,6 +1,6 @@
-import { hatchifyReactRest } from "./services"
+import { hatchifyReactRest } from "./services/index.js"
 
-export type { HatchifyReactRest } from "./services"
+export type { HatchifyReactRest } from "./services/index.js"
 
 export {
   useCreateOne,
@@ -8,6 +8,6 @@ export {
   useAll,
   useOne,
   useUpdateOne,
-} from "./services"
+} from "./services/index.js"
 
 export default hatchifyReactRest
