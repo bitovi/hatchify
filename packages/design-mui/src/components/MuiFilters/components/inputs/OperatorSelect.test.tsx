@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import OperatorSelect from "./OperatorSelect"
+import OperatorSelect from "./OperatorSelect.js"
 
 describe("components/MuiFilters/inputs/OperatorSelect", () => {
   it("works", async () => {

@@ -13,7 +13,7 @@
     "depcheck": "depcheck .",
     "test": "jest --coverage",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
-    "build": "tsc -b -f"
+    "build": "tsc"
   },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",

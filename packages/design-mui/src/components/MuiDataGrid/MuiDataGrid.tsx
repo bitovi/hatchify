@@ -1,8 +1,8 @@
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import { Grid } from "@mui/material"
-import MuiPagination from "../MuiPagination/MuiPagination"
-import MuiList from "../MuiList/MuiList"
-import MuiFilters from "../MuiFilters/MuiFilters"
+import MuiPagination from "../MuiPagination/MuiPagination.js"
+import MuiList from "../MuiList/MuiList.js"
+import MuiFilters from "../MuiFilters/MuiFilters.js"
 
 const MuiDataGrid: React.FC<XCollectionProps> = ({ children, ...props }) => {
   return (

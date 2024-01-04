@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { MuiAutocomplete } from "./MuiAutocomplete"
+import { MuiAutocomplete } from "./MuiAutocomplete.js"
 import { useState } from "react"
 
 describe("components/MuiFilters/components/MuiAutocomplete", () => {

@@ -2,7 +2,7 @@
   "name": "@hatchifyjs/design-mui",
   "version": "0.1.40",
   "type": "module",
-  "module": "./dist/design-mui.mjs",
+  "module": "./dist/design-mui.js",
   "types": "./dist/design-mui.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",

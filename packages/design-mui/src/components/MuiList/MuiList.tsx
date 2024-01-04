@@ -3,7 +3,7 @@ import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import { css } from "@emotion/react"
 import { Table, TableContainer } from "@mui/material"
 import { useCompoundComponents } from "@hatchifyjs/react-ui"
-import { MuiBody, MuiHeaders } from "./components"
+import { MuiBody, MuiHeaders } from "./components/index.js"
 import type { GetSchemaNames } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 

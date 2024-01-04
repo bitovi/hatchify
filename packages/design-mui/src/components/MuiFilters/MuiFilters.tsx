@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Badge, Button, Grid, Popover, debounce } from "@mui/material"
-import FilterListIcon from "@mui/icons-material/FilterList"
-import AddIcon from "@mui/icons-material/Add"
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
+import FilterListIcon from "@mui/icons-material/FilterList.js"
+import AddIcon from "@mui/icons-material/Add.js"
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever.js"
 import type { XCollectionProps } from "@hatchifyjs/react-ui"
 import type { FilterArray } from "@hatchifyjs/rest-client"
-import { MuiFilterRows } from "./components/MuiFilterRows"
-import { getFilterableFields } from "./utils"
+import { MuiFilterRows } from "./components/MuiFilterRows.js"
+import { getFilterableFields } from "./utils/index.js"
 
 export const MuiFilters: React.FC<XCollectionProps> = ({
   finalSchemas,
