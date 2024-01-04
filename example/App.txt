@@ -9,7 +9,7 @@ import * as Schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection
+const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoColumn = hatchedReact.components.Todo.Column
 const TodoEmptyList = hatchedReact.components.Todo.Empty
 

@@ -12,7 +12,7 @@ import { Relationship, RelationshipList } from "./DefaultDisplayComponents"
 export const MuiProvider: React.FC<XProviderProps<Theme>> = ({ children }) => {
   return (
     <HatchifyPresentationProvider
-      Collection={MuiDataGrid}
+      DataGrid={MuiDataGrid}
       Everything={MuiEverything}
       Layout={MuiLayout}
       // future: Details, Form

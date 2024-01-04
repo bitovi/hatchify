@@ -1,5 +1,5 @@
-export * from "./useCollectionState"
-export { default as useCollectionState } from "./useCollectionState"
+export * from "./useDataGridState"
+export { default as useDataGridState } from "./useDataGridState"
 export { default as useCompoundComponents } from "./useCompoundComponents/useCompoundComponents"
 export { default as usePage } from "./usePage"
 export { default as useSelected } from "./useSelected"
