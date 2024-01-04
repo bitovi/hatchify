@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { assembler, integer } from "@hatchifyjs/core"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import useCollectionState from "./useCollectionState"
+import useDataGridState from "./useDataGridState"
 
 const partialSchemas = {
   Todo: {
@@ -40,10 +40,10 @@ const fakeRestClient = hatchifyReactRest({
   deleteOne: () => Promise.resolve(),
 })
 
-describe("useCollectionState", () => {
+describe("useDataGridState", () => {
   it("works", async () => {
     const { result } = renderHook(() =>
-      useCollectionState(finalSchemas, partialSchemas, "Todo", fakeRestClient, {
+      useDataGridState(finalSchemas, partialSchemas, "Todo", fakeRestClient, {
         defaultSelected: { all: false, ids: [] },
         onSelectedChange: vi.fn(),
         defaultPage: { size: 1, number: 2 },

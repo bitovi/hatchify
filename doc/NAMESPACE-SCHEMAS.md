@@ -141,7 +141,7 @@ export const hatchedReact = hatchifyReact(
   }),
 )
 
-const TodoList = hatchedReact.components.Todo.Collection
+const TodoList = hatchedReact.components.Todo.DataGrid
 
 const App: React.FC = () => {
   return (

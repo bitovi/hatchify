@@ -4,7 +4,7 @@ import type {
   XEverythingProps,
   XLayoutProps,
   Relationship as RelationshipType,
-  XCollectionProps,
+  XDataGridProps,
 } from "../../presentation/interfaces"
 
 import {
@@ -71,7 +71,7 @@ export interface DefaultFieldComponentsTypes {
 }
 
 export interface HatchifyPresentationContextProps {
-  Collection: React.FC<XCollectionProps>
+  DataGrid: React.FC<XDataGridProps>
   Layout: React.FC<XLayoutProps>
   Everything: React.FC<XEverythingProps>
   defaultValueComponents: DefaultValueComponentsTypes
@@ -102,7 +102,7 @@ export const HatchifyPresentationDefaultFieldComponents = {
 export const HatchifyPresentationContext =
   createContext<HatchifyPresentationContextProps>({
     // should we have a default (headless) implementation of these?
-    Collection: () => null,
+    DataGrid: () => null,
     Everything: () => null,
     Layout: () => null,
     defaultValueComponents: HatchifyPresentationDefaultValueComponents,
@@ -119,11 +119,11 @@ interface HatchifyPresentationProviderProps
 
 export const HatchifyPresentationProvider: React.FC<
   HatchifyPresentationProviderProps
-> = ({ Collection, Everything, Layout, defaultValueComponents, children }) => {
+> = ({ DataGrid, Everything, Layout, defaultValueComponents, children }) => {
   return (
     <HatchifyPresentationContext.Provider
       value={{
-        Collection,
+        DataGrid,
         Everything,
         Layout,
         defaultValueComponents,
