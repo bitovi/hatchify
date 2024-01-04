@@ -1,5 +1,5 @@
-export type { HatchifyCollectionProps } from "./HatchifyCollection"
+export type { HatchifyCollectionProps } from "./HatchifyCollection.js"
 export {
   default as HatchifyCollection,
   getDefaultInclude,
-} from "./HatchifyCollection"
+} from "./HatchifyCollection.js"

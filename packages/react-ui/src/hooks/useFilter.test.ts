@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import useFilter from "./useFilter"
+import useFilter from "./useFilter.js"
 
 describe("usePage", () => {
   it("works", async () => {

@@ -5,9 +5,9 @@ import type {
   GetSchemaNames,
   Include,
 } from "@hatchifyjs/rest-client"
-import type { HatchifyColumn } from "../useCompoundComponents"
-import type { DefaultValueComponentsTypes } from "../../../components"
-import { getColumn, getColumnsFromSchema } from "."
+import type { HatchifyColumn } from "../useCompoundComponents.js"
+import type { DefaultValueComponentsTypes } from "../../../components/index.js"
+import { getColumn, getColumnsFromSchema } from "./index.js"
 
 export function getColumns<
   const TSchemas extends globalThis.Record<string, PartialSchema>,

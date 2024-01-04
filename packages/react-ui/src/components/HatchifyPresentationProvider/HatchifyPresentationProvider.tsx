@@ -5,7 +5,7 @@ import type {
   XLayoutProps,
   Relationship as RelationshipType,
   XCollectionProps,
-} from "../../presentation/interfaces"
+} from "../../presentation/interfaces.js"
 
 import {
   Boolean,
@@ -18,14 +18,14 @@ import {
   RelationshipList,
   String,
   StringList,
-} from "./DefaultDisplayComponents"
+} from "./DefaultDisplayComponents/index.js"
 import {
   Boolean as BooleanInput,
   Date as DateInput,
   Number as NumberInput,
   String as StringInput,
   Relationship as RelationshipInput,
-} from "./DefaultFieldComponents"
+} from "./DefaultFieldComponents/index.js"
 
 export interface DefaultValueComponentsTypes {
   String: React.FC<{ value: string }>

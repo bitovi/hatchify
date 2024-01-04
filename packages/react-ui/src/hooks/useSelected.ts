@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { HatchifyCollectionSelected } from "../presentation"
+import type { HatchifyCollectionSelected } from "../presentation/index.js"
 
 export default function useSelected(
   defaultSelected?: HatchifyCollectionSelected["selected"],

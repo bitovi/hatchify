@@ -7,8 +7,8 @@ import {
   hasMany,
   string,
 } from "@hatchifyjs/core"
-import { HatchifyPresentationDefaultValueComponents } from "../../../components"
-import { getColumn, formatFieldAsLabel } from "."
+import { HatchifyPresentationDefaultValueComponents } from "../../../components/index.js"
+import { getColumn, formatFieldAsLabel } from "./index.js"
 
 describe("hooks/useCompoundComponents/helpers/getColumn", () => {
   const finalSchemas = assembler({

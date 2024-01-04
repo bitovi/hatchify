@@ -1,3 +1,3 @@
-export * from "./HatchifyCollection"
-export * from "./HatchifyPresentationProvider"
-export * from "./HatchifyEmpty"
+export * from "./HatchifyCollection/index.js"
+export * from "./HatchifyPresentationProvider/index.js"
+export * from "./HatchifyEmpty/index.js"

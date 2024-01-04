@@ -3,8 +3,8 @@ export {
   HatchifyPresentationDefaultValueComponents,
   HatchifyPresentationDefaultFieldComponents,
   HatchifyPresentationProvider,
-} from "./HatchifyPresentationProvider"
+} from "./HatchifyPresentationProvider.js"
 export type {
   DefaultValueComponentsTypes,
   DefaultFieldComponentsTypes,
-} from "./HatchifyPresentationProvider"
+} from "./HatchifyPresentationProvider.js"

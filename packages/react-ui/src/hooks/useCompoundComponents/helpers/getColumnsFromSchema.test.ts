@@ -7,8 +7,8 @@ import {
   hasMany,
   string,
 } from "@hatchifyjs/core"
-import { HatchifyPresentationDefaultValueComponents } from "../../../components"
-import { getColumnsFromSchema } from "."
+import { HatchifyPresentationDefaultValueComponents } from "../../../components/index.js"
+import { getColumnsFromSchema } from "./index.js"
 
 describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
   const partialSchemas = {

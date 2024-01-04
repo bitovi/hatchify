@@ -18,22 +18,22 @@ import type {
   GetSchemaNames,
   GetSchemaFromName,
 } from "@hatchifyjs/rest-client"
-import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection"
-import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from "../components/HatchifyEverything"
-import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
-import type { CollectionState } from "../hooks/useCollectionState"
+import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection/index.js"
+import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from "../components/HatchifyEverything/index.js"
+import type { HatchifyEmptyProps } from "../components/HatchifyEmpty/index.js"
+import type { CollectionState } from "../hooks/useCollectionState.js"
 import type {
   AdditionalColumnProps,
   ReplaceColumnProps,
   OverwriteColumnProps,
-} from "../components/HatchifyColumn"
+} from "../components/HatchifyColumn/index.js"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import { HatchifyCollection } from "../components/HatchifyCollection"
-import { HatchifyColumn } from "../components/HatchifyColumn"
-import { HatchifyEmpty } from "../components/HatchifyEmpty"
-import { HatchifyEverything } from "../components/HatchifyEverything"
-import useCollectionState from "../hooks/useCollectionState"
-import type { SortObject } from "../presentation"
+import { HatchifyCollection } from "../components/HatchifyCollection/index.js"
+import { HatchifyColumn } from "../components/HatchifyColumn/index.js"
+import { HatchifyEmpty } from "../components/HatchifyEmpty/index.js"
+import { HatchifyEverything } from "../components/HatchifyEverything/index.js"
+import useCollectionState from "../hooks/useCollectionState.js"
+import type { SortObject } from "../presentation/index.js"
 
 type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
   Omit<

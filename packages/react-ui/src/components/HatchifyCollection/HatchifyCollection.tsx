@@ -9,9 +9,9 @@ import type {
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
-import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
-import { useHatchifyPresentation } from ".."
-import useCollectionState from "../../hooks/useCollectionState"
+import type { HatchifyCollectionSelected, SortObject } from "../../presentation/index.js"
+import { useHatchifyPresentation } from "../index.js"
+import useCollectionState from "../../hooks/useCollectionState.js"
 
 export interface HatchifyCollectionProps<
   TSchemas extends Record<string, PartialSchema>,
