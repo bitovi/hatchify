@@ -1,6 +1,6 @@
 # Customizing your list
 
-Hatchify gives you the option to customize your list with two compound components that can be nested within your `Collection` component: `Column`, and `Empty`.
+Hatchify gives you the option to customize your list with two compound components that can be nested within your `DataGrid` component: `Column`, and `Empty`.
 
 Let's start with `Empty`.
 
@@ -19,7 +19,7 @@ import * as Schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection // 👀
+const TodoList = hatchedReact.components.Todo.DataGrid // 👀
 const TodoEmpty = hatchedReact.components.Todo.Empty // 👀
 
 const App: React.FC = () => {
@@ -92,7 +92,7 @@ import * as Schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection
+const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoEmpty = hatchedReact.components.Todo.Empty
 const TodoColumn = hatchedReact.components.Todo.Column // 👀
 
@@ -249,7 +249,7 @@ import * as Schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection
+const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoEmpty = hatchedReact.components.Todo.Empty
 const TodoColumn = hatchedReact.components.Todo.Column
 
@@ -327,7 +327,7 @@ import * as Schemas from "../schemas.js"
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection
+const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoEmpty = hatchedReact.components.Todo.Empty
 const TodoColumn = hatchedReact.components.Todo.Column
 

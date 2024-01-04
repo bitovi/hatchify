@@ -43,18 +43,7 @@ async function findAllImpl(
   hatchify: Hatchify,
   schemaName: string,
   array: any[],
-  attributes: any,
 ) {
-  if (hatchify.virtuals[schemaName]) {
-    return serializeWithoutUnsolicitedVirtuals(
-      hatchify,
-      array,
-      schemaName,
-      attributes,
-      Object.keys(hatchify.virtuals[schemaName]),
-    )
-  }
-
   return hatchify.serializer.serialize(schemaName, array)
 }
 
@@ -62,17 +51,7 @@ async function findOneImpl(
   hatchify: Hatchify,
   schemaName: string,
   instance: any,
-  attributes: any,
 ) {
-  if (hatchify.virtuals[schemaName]) {
-    return serializeWithoutUnsolicitedVirtuals(
-      hatchify,
-      instance,
-      schemaName,
-      attributes,
-      Object.keys(hatchify.virtuals[schemaName]),
-    )
-  }
   return hatchify.serializer.serialize(schemaName, instance)
 }
 
@@ -80,18 +59,7 @@ async function findAndCountAllImpl(
   hatchify: Hatchify,
   schemeName: string,
   result: any,
-  attributes: any,
 ) {
-  if (hatchify.virtuals[schemeName]) {
-    return serializeWithoutUnsolicitedVirtuals(
-      hatchify,
-      result.rows,
-      schemeName,
-      attributes,
-      Object.keys(hatchify.virtuals[schemeName]),
-    )
-  }
-
   return hatchify.serializer.serialize(schemeName, result.rows, {
     unpaginatedCount: result.count,
   })
@@ -129,12 +97,10 @@ export function buildSerializerForModel(
   schemaName: string,
 ): SerializeFunctions {
   return {
-    findAll: async (array, attributes) =>
-      findAllImpl(hatchify, schemaName, array, attributes),
-    findOne: async (instance, attributes) =>
-      findOneImpl(hatchify, schemaName, instance, attributes),
-    findAndCountAll: async (result, attributes) =>
-      findAndCountAllImpl(hatchify, schemaName, result, attributes),
+    findAll: async (array) => findAllImpl(hatchify, schemaName, array),
+    findOne: async (instance) => findOneImpl(hatchify, schemaName, instance),
+    findAndCountAll: async (result) =>
+      findAndCountAllImpl(hatchify, schemaName, result),
     create: async (instance) => createImpl(hatchify, schemaName, instance),
     destroy: async (rowCount) => destroyImpl(hatchify, schemaName, rowCount),
     update: async (instance, rowCount) =>
@@ -177,27 +143,4 @@ export function registerSchema(
           }
         : undefined,
   })
-}
-
-const serializeWithoutUnsolicitedVirtuals = (
-  hatchify: Hatchify,
-  array: any[],
-  schemaName: string,
-  attributes: any[],
-  virtualsForModel: any[],
-) => {
-  return hatchify.serializer.serialize(
-    schemaName,
-    array,
-    "default",
-    undefined,
-    undefined,
-    {
-      [schemaName]: {
-        blacklist: attributes
-          ? virtualsForModel.filter((virtual) => !attributes.includes(virtual))
-          : virtualsForModel,
-      },
-    },
-  )
 }

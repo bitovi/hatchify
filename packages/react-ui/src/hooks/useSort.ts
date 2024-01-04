@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react"
-import type { HatchifyCollectionSort, SortObject } from "../presentation"
+import type { HatchifyDataGridSort, SortObject } from "../presentation"
 
 export default function useSort(
   defaultSort?: SortObject,
-): HatchifyCollectionSort {
+): HatchifyDataGridSort {
   const [sort, setSort] = useState<SortObject>(
     defaultSort ?? {
       direction: undefined,

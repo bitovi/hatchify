@@ -13,7 +13,7 @@ type Method = "get" | "post" | "patch" | "delete"
 export const dbDialects: Dialect[] = ["postgres", "sqlite"]
 
 export async function startServerWith(
-  models: Record<string, PartialSchema>,
+  schemas: Record<string, PartialSchema>,
   dialect: Dialect = "sqlite",
 ): Promise<{
   app: Koa<Koa.DefaultState, Koa.DefaultContext>
@@ -28,7 +28,7 @@ export async function startServerWith(
     path: ".env",
   })
   const app = new Koa()
-  const hatchify = new Hatchify(models, {
+  const hatchify = new Hatchify(schemas, {
     prefix: "/api",
     database: {
       ...(dialect === "postgres" && {

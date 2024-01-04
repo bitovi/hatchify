@@ -21,11 +21,29 @@ export type ExpressMiddleware = (
  * provide Express Middleware for each operation
  */
 export interface MiddlewareFunctionsExpress {
+  /**
+   * Search for multiple instances.
+   */
   findAll: ExpressMiddleware
+  /**
+   * Search for a single instance. Returns the first instance found, or null if none can be found.
+   */
   findOne: ExpressMiddleware
+  /**
+   * Find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+   */
   findAndCountAll: ExpressMiddleware
+  /**
+   * Creates a new instance.
+   */
   create: ExpressMiddleware
+  /**
+   * Updates an existing single instance.
+   */
   update: ExpressMiddleware
+  /**
+   * Deletes an existing single instance.
+   */
   destroy: ExpressMiddleware
 
   /**
@@ -87,7 +105,7 @@ export function buildMiddlewareForModel(
   )
 }
 
-export async function errorMiddleware(
+export async function errorHandlerMiddleware(
   _req: Request,
   res: Response,
   next: NextFunction,
