@@ -41,7 +41,7 @@ export function WithSchemas<
   const [selectedSchema, setSelectedSchema] = useState(schemasList[0])
   const { Everything } = useHatchifyPresentation()
 
-  const DataGridState = useDataGridState(
+  const dataGridState = useDataGridState(
     finalSchemas,
     partialSchemas,
     selectedSchema,
@@ -58,7 +58,7 @@ export function WithSchemas<
 
   return (
     <Everything
-      {...DataGridState}
+      {...dataGridState}
       schemaName={selectedSchema as string}
       setSelectedSchema={setSelectedSchema}
     />

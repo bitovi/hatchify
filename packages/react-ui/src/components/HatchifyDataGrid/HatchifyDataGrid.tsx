@@ -54,7 +54,7 @@ function HatchifyDataGrid<
     [finalSchemas, schemaName],
   )
 
-  const DataGridState = useDataGridState(
+  const dataGridState = useDataGridState(
     finalSchemas,
     partialSchemas,
     schemaName,
@@ -69,7 +69,7 @@ function HatchifyDataGrid<
     },
   )
 
-  return <DataGrid {...DataGridState}>{children}</DataGrid>
+  return <DataGrid {...dataGridState}>{children}</DataGrid>
 }
 
 export default HatchifyDataGrid
