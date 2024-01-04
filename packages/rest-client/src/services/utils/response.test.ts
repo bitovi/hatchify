@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, it, vi } from "vitest"
 import { assembler, datetime, integer, string } from "@hatchifyjs/core"
-import { setClientPropertyValuesFromResponse } from "./response"
+import { setClientPropertyValuesFromResponse } from "./response.js"
 
 describe("rest-client/services/utils/response", () => {
   describe("setClientPropertyValuesFromResponse", () => {

@@ -1,1 +1,1 @@
-export * from "./subscribeToAll"
+export * from "./subscribeToAll.js"

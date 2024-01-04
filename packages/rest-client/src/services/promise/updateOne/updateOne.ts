@@ -1,5 +1,5 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import isEmpty from "lodash/isEmpty"
+import isEmpty from "lodash/isEmpty.js"
 import type {
   RestClient,
   GetSchemaNames,
@@ -8,15 +8,15 @@ import type {
   GetSchemaFromName,
   RecordType,
   FlatUpdateType,
-} from "../../types"
-import { notifySubscribers } from "../../store"
+} from "../../types/index.js"
+import { notifySubscribers } from "../../store/index.js"
 import {
   SchemaNameNotStringError,
   schemaNameIsString,
   serializeClientPropertyValuesForRequest,
   flattenResourcesIntoRecords,
   unflattenData,
-} from "../../utils"
+} from "../../utils/index.js"
 
 /**
  * Updates a resource in the data source, notifies subscribers,

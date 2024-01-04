@@ -7,14 +7,14 @@ import {
   hasMany,
   string,
 } from "@hatchifyjs/core"
-import type { Record, Resource } from "../types"
+import type { Record, Resource } from "../types/index.js"
 import {
   keyResourcesById,
   isMissingSchema,
   resourceToRecordRelationship,
   flattenResourcesIntoRecords,
   getDisplayAttribute,
-} from "./records"
+} from "./records.js"
 
 const partialSchemas = {
   Todo: {

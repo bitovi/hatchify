@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest"
-import { createStore } from "../../store"
-import { subscribeToOne } from "./subscribeToOne"
+import { createStore } from "../../store/index.js"
+import { subscribeToOne } from "./subscribeToOne.js"
 
 // todo: individual subscribes not used at the moment
 describe.skip("rest-client/services/subscribesubscribeToOne", () => {

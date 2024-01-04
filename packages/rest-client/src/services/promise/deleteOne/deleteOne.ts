@@ -1,7 +1,7 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { FinalSchemas, GetSchemaNames, RestClient } from "../../types"
-import { notifySubscribers } from "../../store"
-import { SchemaNameNotStringError, schemaNameIsString } from "../../utils"
+import type { FinalSchemas, GetSchemaNames, RestClient } from "../../types/index.js"
+import { notifySubscribers } from "../../store/index.js"
+import { SchemaNameNotStringError, schemaNameIsString } from "../../utils/index.js"
 
 /**
  * Deletes a resource in the data source and notifies subscribers.

@@ -11,7 +11,7 @@ import type {
   Resource,
   UpdateType,
   WithRequiredProperty,
-} from "."
+} from "./index.js"
 
 export type RestClientSchema = PartialSchema & {
   type?: string

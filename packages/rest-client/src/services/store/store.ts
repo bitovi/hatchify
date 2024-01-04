@@ -1,5 +1,5 @@
-import type { FinalSchemas, Record, Resource, Subscription } from "../types"
-import { flattenResourcesIntoRecords, keyResourcesById } from "../utils"
+import type { FinalSchemas, Record, Resource, Subscription } from "../types/index.js"
+import { flattenResourcesIntoRecords, keyResourcesById } from "../utils/index.js"
 
 export interface ResourceStore {
   data: { [id: string]: Resource }
