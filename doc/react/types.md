@@ -15,25 +15,27 @@ Types available for use within your Hatchify App should you need them.
 
 This is the return type of the `useDataGridState` hook. When using the state in an ejected pattern (separated out of `hatchedReact`) it may be necessary to type your data using this type.
 
-This object type includes:<br>
- `data`: An array of records of the schema type.<br>
- `include`: The included relationships<br>
- `meta`: Meta data from the requests
+This object type includes:
 
- Filter, pagination, sort and select variables and functions:<br>
-  `filter`: The current filter<br>
-  `setFilter`: Accepts a filter and updates the `filter` state<br>
-  `page`: Current page<br>
-  `setPage`: Accepts a page number and updates the `page` state<br>
-  `sort`: The current state<br>
-  `setSort`: Accepts a sort direction and updates the `sort` state<br>
-  `selected`: The current selected rows<br>
-  `setSelected`: Accepts an array of id's and updates the `selected` state<br>
+| key              | description                                           |
+| ---------------- | ----------------------------------------------------- |
+| `data`           | An array of records of the schema type.               |
+| `include`        | The included relationships                            |
+| `meta`           | Meta data from the requests                           |
+| `filter`         | The current filter                                    |
+| `setFilter`      | Accepts a filter and updates the `filter` state       |
+| `page`           | Current page                                          |
+| `setPage`        | Accepts a page number and updates the `page` state    |
+| `sort`           | The current state                                     |
+| `setSort`        | Accepts a sort direction and updates the `sort` state |
+| `selected`       | Accepts a filter and updates the `filter` state       |
+| `setSelected`    | The current selected rows                             |
+| `finalSchemas`   | The final shape of the schemas                        |
+| `partialSchemas` | Schemas, in their partial state                       |
+| `schemaName`     | The schema this data is for                           |
+| `fields`         | an object of fields that are included                 |
+| `include`        |an array of strings of the included relationships      |
 
- As well as schema related data://todo
-  `finalSchemas`: The final shape of the schemas<br>
-  `partialSchemas`: Schemas, in their partial state<br>
-  `schemaName`: The schema this data is for<br>
 
 ### CreateType
 

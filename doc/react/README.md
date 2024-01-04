@@ -111,42 +111,18 @@ Learn more about the available hooks and promises [here](model.md).
 #### useDataGridState
 
 A hook, `useDataGridState` for each of the defined schemas to be used in the app. This is used under the hood in Hatchify, but is available for use in situations where customization is needed.<br>
-Parameters:<br>
-  `defaultSelected`: optional, used for checkboxes<br>
-  `onSelectedChange`: optional, used for checkboxes<br>
-  `fields`: optional, fields to be included. If not defined, all fields from the schema and included relationships will be returned<br>
-  `include`: optional, relationships to be included<br>
-  `defaultPage`: optional, default paginated page<br>
-  `defaultSort`: optional, default sort direction<br>
-  `baseFilter`: optional, a pre filter to be used alongside additional <br>filters
 
-Returned state:<br>
-  `data`: records of schema data<br>
-  `meta`: an object containing the status of the request<br>
-  {<br>
-    `error`: error message if in error state<br>
-    `isResolved`: false when loading, true otherwise<br>
-    `isPending`: true when loading, false otherwise<br>
-    `isRejected`: true when error, false otherwise<br>
-    `isRevalidating`: true when loading after initial call<br>
-    `isStale`: true when loading after initial call<br>
-    `isSuccess`: true on success, false otherwise<br>
-    `meta`: any meta data for the request<br>
-    `status`: "loading", "success", or "error"<br>
-  }<br>
-  `fields`: an object of fields that are included<br>
-  `include`: an array of strings of the included relationships<br>
-  `filter`: An array of the applied filters<br>
-  `setFilter`:The function used to set the filter<br>
-  `page`: The current page of data<br>
-  `setPage` The function that sets the current page<br>
-  `sort`: The current sort direction<br>
-  `setSort`: The function that sets the sort<br>
-  `selected`: Current selected rows<br>
-  `setSelected`: Function for setting the selected rows<br>
-  `finalSchemas`: All schemas in their final state<br>
-  `partialSchemas`: All schemas in their partial state<br>
-  `schemaName`: The name of the selected schema<br>
+Parameters:
+
+| key               | description                                       |
+| ----------------- | ------------------------------------------------- |
+| `defaultSelected` | optional, used for checkboxes                     |
+| `onSelectedChange`| optional, used for checkboxes                     |
+| `fields`          | optional, fields to be included. If not <br> defined, all fields from the schema <br> and included relationships will be returned             |
+| `include`         | optional, relationships to be included            |
+| `defaultPage`     | optional, default paginated page                  |
+| `defaultSort`     | optional, default sort direction                  |
+| `baseFilter` | optional, a pre filter to be used alongside additional |
 
 ```tsx
 
@@ -156,6 +132,7 @@ const todoState = hatchedReact.state.Todo.useDataGridState({
 })
 
 ```
+Learn more about the return type [here](types.md).
 
 ## MUI Components
 
