@@ -2,4 +2,6 @@ ignore-dirs:
   - /dist
 ignores:
   - "@types/*"
+  - json-api-serializer
+  - pg
   - ts-jest

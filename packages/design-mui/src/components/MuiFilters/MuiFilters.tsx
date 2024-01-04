@@ -3,12 +3,12 @@ import { Badge, Button, Grid, Popover, debounce } from "@mui/material"
 import FilterListIcon from "@mui/icons-material/FilterList"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
-import type { XCollectionProps } from "@hatchifyjs/react-ui"
+import type { XDataGridProps } from "@hatchifyjs/react-ui"
 import type { FilterArray } from "@hatchifyjs/rest-client"
 import { MuiFilterRows } from "./components/MuiFilterRows"
 import { getFilterableFields } from "./utils"
 
-export const MuiFilters: React.FC<XCollectionProps> = ({
+export const MuiFilters: React.FC<XDataGridProps> = ({
   finalSchemas,
   partialSchemas,
   include,

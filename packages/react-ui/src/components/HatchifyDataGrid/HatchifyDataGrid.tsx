@@ -9,11 +9,11 @@ import type {
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
-import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
+import type { HatchifyDataGridSelected, SortObject } from "../../presentation"
 import { useHatchifyPresentation } from ".."
-import useCollectionState from "../../hooks/useCollectionState"
+import useDataGridState from "../../hooks/useDataGridState"
 
-export interface HatchifyCollectionProps<
+export interface HatchifyDataGridProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > {
@@ -22,15 +22,15 @@ export interface HatchifyCollectionProps<
   schemaName: TSchemaName
   restClient: HatchifyReactRest<TSchemas>
   children?: React.ReactNode | null
-  defaultSelected?: HatchifyCollectionSelected["selected"]
-  onSelectedChange?: HatchifyCollectionSelected["setSelected"]
+  defaultSelected?: HatchifyDataGridSelected["selected"]
+  onSelectedChange?: HatchifyDataGridSelected["setSelected"]
   defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters
   overwrite?: boolean
 }
 
-function HatchifyCollection<
+function HatchifyDataGrid<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >({
@@ -45,8 +45,8 @@ function HatchifyCollection<
   defaultSort,
   baseFilter,
   overwrite,
-}: HatchifyCollectionProps<TSchemas, TSchemaName>): JSX.Element {
-  const { Collection } = useHatchifyPresentation()
+}: HatchifyDataGridProps<TSchemas, TSchemaName>): JSX.Element {
+  const { DataGrid } = useHatchifyPresentation()
   const defaultInclude = useMemo(
     () =>
       getDefaultInclude<GetSchemaFromName<TSchemas, TSchemaName>>(
@@ -56,7 +56,7 @@ function HatchifyCollection<
     [finalSchemas, schemaName],
   )
 
-  const collectionState = useCollectionState(
+  const dataGridState = useDataGridState(
     finalSchemas,
     partialSchemas,
     schemaName,
@@ -72,13 +72,13 @@ function HatchifyCollection<
   )
 
   return (
-    <Collection overwrite={overwrite} {...collectionState}>
+    <DataGrid overwrite={overwrite} {...dataGridState}>
       {children}
-    </Collection>
+    </DataGrid>
   )
 }
 
-export default HatchifyCollection
+export default HatchifyDataGrid
 
 export function getDefaultInclude<TSchema extends PartialSchema>(
   allSchemas: FinalSchemas,

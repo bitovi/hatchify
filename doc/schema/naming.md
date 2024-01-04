@@ -1,6 +1,6 @@
 # Schema, database, and service API naming
 
-This guide explains the relationship between names in the schema and the resulting names used in the database and service APIs. We will first go over the general guidelines and then how specific parts in the schema relate to names in the database and service API.
+This document describes the relationship between names in the schema and the resulting names used in the database and service APIs. We will first go over the general guidelines and then how specific parts in the schema relate to names in the database and service API.
 
 - [General Guidelines](#general-guidelines)
   - [Casing](#casing)

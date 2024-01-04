@@ -5,7 +5,7 @@ import type {
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
-import type { HatchifyCollectionSelected, SortObject } from "../../presentation"
+import type { HatchifyDataGridSelected, SortObject } from "../../presentation"
 import { WithSchemas, NoSchemas } from "./components"
 
 export interface HatchifyEverythingProps<
@@ -15,8 +15,8 @@ export interface HatchifyEverythingProps<
   partialSchemas: TSchemas
   restClient: HatchifyReactRest<TSchemas>
   children?: React.ReactNode | null
-  defaultSelected?: HatchifyCollectionSelected["selected"]
-  onSelectedChange?: HatchifyCollectionSelected["setSelected"]
+  defaultSelected?: HatchifyDataGridSelected["selected"]
+  onSelectedChange?: HatchifyDataGridSelected["setSelected"]
   defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters

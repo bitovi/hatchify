@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import type { XCollectionProps } from "@hatchifyjs/react-ui"
+import type { XDataGridProps } from "@hatchifyjs/react-ui"
 import { css } from "@emotion/react"
 import { Table, TableContainer } from "@mui/material"
 import { useCompoundComponents } from "@hatchifyjs/react-ui"
@@ -16,7 +16,7 @@ const styles = {
 export function MuiList<
   const TSchemas extends Record<string, PartialSchema> = any,
   const TSchemaName extends GetSchemaNames<TSchemas> = any,
->(props: XCollectionProps<TSchemas, TSchemaName>): JSX.Element {
+>(props: XDataGridProps<TSchemas, TSchemaName>): JSX.Element {
   const { columns, Empty } = useCompoundComponents(
     props.finalSchemas,
     props.schemaName,
