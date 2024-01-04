@@ -24,7 +24,7 @@ export function getColumns<
   const schema = finalSchemas[schemaName as string]
 
   const columns = childArray.filter((c) => c.type.name === "Column")
-  const extra = childArray.filter((c) => c.props.field === undefined)
+  const extra = columns.filter((c) => c.props.field === undefined)
   const replace = columns.filter((c) => c.props.field !== undefined)
   const prepend = extra.filter((c) => c.props.prepend === true)
   const append = extra.filter((c) => c.props.prepend !== true)
