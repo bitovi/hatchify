@@ -68,7 +68,7 @@ export type ExtraColumnProps<
 
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderDataValue and DataValueComponent should be optional, but only one can be provided
 // @TODO HATCH-459 - https://bitovi.atlassian.net/browse/HATCH-459 - renderHeaderValue, HeaderValueComponent, and label should all be optional, but only one can be provided
-export type CustomColumnProps<
+export type ReplaceColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = {
@@ -81,7 +81,6 @@ export type CustomColumnProps<
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["attributes"]
     | keyof GetSchemaFromName<TSchemas, TSchemaName>["relationships"]
     | "id"
-    | "" // is this needed still?
 } & {
   renderDataValue?: RenderDataValue<TSchemas, TSchemaName>
   DataValueComponent?: DataValueComponent
@@ -95,7 +94,7 @@ export function HatchifyColumn<
 >(
   props:
     | ExtraColumnProps<TSchemas, TSchemaName>
-    | CustomColumnProps<TSchemas, TSchemaName>,
+    | ReplaceColumnProps<TSchemas, TSchemaName>,
 ): null {
   return null
 }

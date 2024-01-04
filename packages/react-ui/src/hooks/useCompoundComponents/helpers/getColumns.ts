@@ -67,7 +67,7 @@ export function getColumns<
             key: validField ? props.field : `overwrite-${i}`,
             compoundComponentProps: props,
             isRelationship: relationship !== undefined,
-            sortable: props.sortable,
+            sortable: props.sortable ?? validField,
           }),
         )
       }
@@ -76,7 +76,7 @@ export function getColumns<
     return hatchifyColumns
   }
 
-  // otherwise order is: prepend, schema attributes, schema relationships, append
+  // otherwise order is: prepend, schema attributes, schema relationships, no-prepend
   for (let i = 0; i < prepend.length; i++) {
     const { props } = prepend[i]
 

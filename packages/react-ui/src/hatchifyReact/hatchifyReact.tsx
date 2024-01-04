@@ -23,7 +23,7 @@ import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from 
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
 import type { CollectionState } from "../hooks/useCollectionState"
 import type {
-  CustomColumnProps,
+  ReplaceColumnProps,
   ExtraColumnProps,
 } from "../components/HatchifyColumn"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
@@ -53,7 +53,7 @@ type HatchifyColumnProps<
   TSchemaName extends GetSchemaNames<TSchemas>,
 > =
   | Omit<ExtraColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
-  | Omit<CustomColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
+  | Omit<ReplaceColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
 
 type Components<TSchemas extends Record<string, PartialSchema>> = {
   [SchemaName in keyof TSchemas]: {

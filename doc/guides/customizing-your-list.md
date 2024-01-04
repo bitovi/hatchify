@@ -73,7 +73,7 @@ And that's all there is to it! Next, lets explore `Column`, which offers a lot m
 
 `Column` is a powerful compound component that allows you to make fine-grained customizations to your list. It can be used to make selective changes and additions, or it can be used to override your list entirely.
 
-The behaviour of your `Column` customizations is determined by the `field` prop, as well as the `overwrite` prop on the parent `DataGrid` component. Let's start by looking at the difference between Extra and Custom columns.
+The behaviour of your `Column` customizations is determined by the `field` prop, as well as the `overwrite` prop on the parent `DataGrid` component. Depending on how you use the `field` prop, a `Column` is considered either "Extra" or "Custom". Let's start by looking at the difference between the two.
 
 ### Custom `Column`
 
@@ -127,7 +127,7 @@ Your app should now look like this:
 
 ![localhost_3000_ (2)](https://github.com/bitovi/hatchify/assets/60432429/72a0c73e-fc68-4fc2-b4a8-1f5ebc9fe44c)
 
-Notice how the column for the `name` field has been replaced with our custom column.
+Notice how the column for the `name` field has been replaced with our Custom column.
 
 #### How it works
 
@@ -137,7 +137,7 @@ Notice how the column for the `name` field has been replaced with our custom col
   const TodoColumn = hatchedReact.components.Todo.Column
   ```
 
-- By setting the `field` property on our `Column`, we're telling Hatchify to apply our customizations to the column that corresponds to the `name` field on our record.
+- By setting the `field` property on our `Column` to `name`, we're establishing our `Column` as being a Custom column. What this does is tell Hatchify to apply our customizations to the column that corresponds to the `name` field on our record.
 
   ```tsx
   <TodoColumn
@@ -292,7 +292,7 @@ Notice the new "Actions" column at the end of our list.
 
 #### How it works
 
-- Columns without a `field` prop are treated as "extra columns" and will always appear at the end of your list, even if you include them before "custom columns". In the below example, the "Actions" column will appear at the end of our table, even though it's defined before the "name" column:
+- Columns without a `field` prop are treated as Extra columns and will always appear at the end of your list, even if you include them before Custom columns. In the below example, the "Actions" column will appear at the end of our table, even though it's defined before the "name" column:
 
   ```tsx
   <TodoColumn
@@ -305,10 +305,10 @@ Notice the new "Actions" column at the end of our list.
   />
   ```
 
-- In our app code above, we removed the `field` prop because extra columns represent brand new columns that inherently don't map directly to a field in our list. Despite this, we still have access to the entire row's `record` object via `renderDataCell`, so we can still access any fields from our record that we need.
+- In our app code above, we removed the `field` prop because Extra columns represent brand new columns that inherently don't map directly to a field in our list. Despite this, we still have access to the entire row's `record` object via `renderDataCell`, so we can still access any fields from our record that we need.
 - If you want your column to appear at the beginning of your list, you can set the `prepend` prop to true.
 
-With the two types of columns we just covered - extra and custom - you'll notice that when we made changes to our list, Hatchify continued to render all the other columns that we _didn't_ modify as it normally would. So now let's take a look at how we can fully override Hatchify's column-rendering behavior.
+With the two types of columns we just covered - Extra and Custom - you'll notice that when we made changes to our list, Hatchify continued to render all the other columns that we _didn't_ modify as it normally would. So now let's take a look at how we can fully override Hatchify's column-rendering behavior.
 
 ### Fully overriding your list's columns
 
