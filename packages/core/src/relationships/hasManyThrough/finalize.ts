@@ -9,7 +9,7 @@ import { singularize } from "../../util/singularize"
 
 export function finalize(
   sourceSchema: string,
-  relationship: PartialHasManyThroughRelationship,
+  relationship: PartialHasManyThroughRelationship<string | null | undefined>,
   relationshipName: string,
   schemas: Record<string, SemiFinalSchema>,
 ): Record<string, SemiFinalSchema> {
