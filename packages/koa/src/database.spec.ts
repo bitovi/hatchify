@@ -9,7 +9,7 @@ interface Table {
 }
 interface TestCase {
   description: string
-  models: Record<string, PartialSchema>
+  schemas: Record<string, PartialSchema>
   database: Table[]
 }
 
@@ -17,7 +17,7 @@ describe("Naming rules", () => {
   const databaseNamingTestCases: TestCase[] = [
     {
       description: "Ensure database name and columns are in snake case",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -64,8 +64,8 @@ describe("Naming rules", () => {
     await teardown()
   })
 
-  it.each(cases)("$description", async ({ description, models, database }) => {
-    ;({ teardown, hatchify } = await startServerWith(models))
+  it.each(cases)("$description", async ({ schemas, database }) => {
+    ;({ teardown, hatchify } = await startServerWith(schemas))
 
     for (const table of database) {
       const { columns: expectedColumns, tableName } = table
