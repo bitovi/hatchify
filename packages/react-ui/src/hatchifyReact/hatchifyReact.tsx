@@ -202,7 +202,7 @@ export function hatchifyReact<
   }
 }
 
-// todo: leaving for testing, remove before merge to main
+// todo: leaving for testing, remove once core no longer has `ts-expect-error`s
 // const schemas = {
 //   Todo: {
 //     name: "Todo",
