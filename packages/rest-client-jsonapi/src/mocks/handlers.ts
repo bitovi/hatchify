@@ -1,5 +1,5 @@
 /* c8 ignore start */
-import type { HttpHandler } from "msw";
+import type { HttpHandler } from "msw"
 import { http } from "msw"
 import { assembler, hasMany, hasOne, string } from "@hatchifyjs/core"
 import type { RestClientSchema } from "@hatchifyjs/rest-client"

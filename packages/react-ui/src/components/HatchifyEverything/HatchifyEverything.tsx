@@ -5,7 +5,10 @@ import type {
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
-import type { HatchifyCollectionSelected, SortObject } from "../../presentation/index.js"
+import type {
+  HatchifyCollectionSelected,
+  SortObject,
+} from "../../presentation/index.js"
 import { WithSchemas, NoSchemas } from "./components/index.js"
 
 export interface HatchifyEverythingProps<

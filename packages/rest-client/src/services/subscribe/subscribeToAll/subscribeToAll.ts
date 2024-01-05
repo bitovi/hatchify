@@ -7,7 +7,10 @@ import type {
   RecordType,
   Unsubscribe,
 } from "../../types/index.js"
-import { SchemaNameNotStringError, schemaNameIsString } from "../../utils/index.js"
+import {
+  SchemaNameNotStringError,
+  schemaNameIsString,
+} from "../../utils/index.js"
 
 /**
  * Adds a subscriber to the store for a given schema.

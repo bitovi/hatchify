@@ -1,5 +1,8 @@
 import { useState } from "react"
-import type { HatchifyCollectionPage, PageCountObject } from "../presentation/index.js"
+import type {
+  HatchifyCollectionPage,
+  PageCountObject,
+} from "../presentation/index.js"
 import type { PaginationObject } from "@hatchifyjs/rest-client"
 
 // todo (future): customizable pagination.size?
