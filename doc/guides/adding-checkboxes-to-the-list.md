@@ -24,7 +24,7 @@ import { useState } from "react" // 👀
 
 export const hatchedReact = hatchifyReact(createJsonapiClient("http://localhost:3000/api", schemas))
 
-const TodoList = hatchedReact.components.Todo.Collection
+const TodoList = hatchedReact.components.Todo.DataGrid
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({

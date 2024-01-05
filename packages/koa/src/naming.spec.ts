@@ -24,7 +24,7 @@ interface Table {
 interface TestCase {
   skip?: boolean
   description: string
-  models: Record<string, PartialSchema>
+  schemas: Record<string, PartialSchema>
   requests: Request[]
   database: Table[]
 }
@@ -33,7 +33,7 @@ describe("Naming rules", () => {
   const schemaNameTestCases: TestCase[] = [
     {
       description: "Ensure basic schema for SalesPerson works (Schema.name)",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -104,7 +104,7 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure pluralName creates route with correct name (Schema.pluralName)",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           pluralName: "SalesPeople",
@@ -192,7 +192,7 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure attribute's names create correct rows and can be fetched (Schema.attributes.ATTRIBUTE_NAME)",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -241,7 +241,7 @@ describe("Naming rules", () => {
     {
       skip: true,
       description: "Ensure belongsTo creates rows and is returned in include",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -324,7 +324,7 @@ describe("Naming rules", () => {
     {
       skip: true,
       description: "Ensure belongsTo foreign key is correctly created",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -411,7 +411,7 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure belongsToMany attributes are correctly created as rows and can be fetched (relationships.belongsToMany.options.foreignKey)",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -445,7 +445,7 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure belongsToMany through works properly (relationships.belongsToMany.options.through)",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -477,7 +477,7 @@ describe("Naming rules", () => {
     {
       skip: true,
       description: "Ensure belongsToMany alias (as) is correctly returned",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -598,7 +598,7 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure belongsToMany foreignKey is correctly created (relationships.belongsToMany.foreignKey)",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -632,7 +632,7 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure belongsToMany otherKey works properly (relationships.belongsToMany.otherKey)",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -668,7 +668,7 @@ describe("Naming rules", () => {
     {
       description:
         "Ensure hasMany creates rows and is returned in include (relationships.hasMany)",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -808,7 +808,7 @@ describe("Naming rules", () => {
       skip: true,
       description:
         "Ensure hasMany foreignKey row is correctly created (relationships.hasMany.foreignKey)",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -843,7 +843,7 @@ describe("Naming rules", () => {
     {
       skip: true,
       description: "Ensure hasMany alias (as) is correctly addressed",
-      models: {
+      schemas: {
         SalesPerson: {
           name: "SalesPerson",
           attributes: {
@@ -978,33 +978,30 @@ describe("Naming rules", () => {
     await teardown()
   })
 
-  it.each(cases)(
-    "$description",
-    async ({ description, models, database, requests }) => {
-      ;({ fetch, teardown, hatchify } = await startServerWith(models))
+  it.each(cases)("$description", async ({ schemas, database, requests }) => {
+    ;({ fetch, teardown, hatchify } = await startServerWith(schemas))
 
-      for (const request of requests) {
-        const { expected, options, url } = request
-        const { body: expectedBody, status: expectedStatus } = expected
-        const { body, status } = await fetch(url, options)
+    for (const request of requests) {
+      const { expected, options, url } = request
+      const { body: expectedBody, status: expectedStatus } = expected
+      const { body, status } = await fetch(url, options)
 
-        expect(status).toStrictEqual(expectedStatus)
-        expect(body).toStrictEqual(expectedBody)
-      }
+      expect(status).toStrictEqual(expectedStatus)
+      expect(body).toStrictEqual(expectedBody)
+    }
 
-      for (const table of database) {
-        const { columns: expectedColumns, tableName } = table
-        const [dbResult] = await hatchify.orm.query(
-          `SELECT name FROM pragma_table_info("${tableName}")`,
-        )
-        const columns = (dbResult as Array<{ name: string }>).map(
-          (row) => row.name,
-        )
+    for (const table of database) {
+      const { columns: expectedColumns, tableName } = table
+      const [dbResult] = await hatchify.orm.query(
+        `SELECT name FROM pragma_table_info("${tableName}")`,
+      )
+      const columns = (dbResult as Array<{ name: string }>).map(
+        (row) => row.name,
+      )
 
-        expect(columns).toEqual(expect.arrayContaining(expectedColumns))
-      }
-    },
-  )
+      expect(columns).toEqual(expect.arrayContaining(expectedColumns))
+    }
+  })
 
   skippedCases.forEach(({ description }) => {
     it.skip(`${description}`, jest.fn())

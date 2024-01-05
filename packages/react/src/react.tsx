@@ -1,7 +1,7 @@
 export type { PartialSchema } from "@hatchifyjs/core"
 export { default as hatchifyReact } from "@hatchifyjs/react-ui"
 export type {
-  CollectionState,
+  DataGridState,
   FlatCreateType as CreateType,
   FlatUpdateType as UpdateType,
   HatchifyApp,

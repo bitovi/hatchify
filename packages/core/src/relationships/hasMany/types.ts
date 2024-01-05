@@ -14,7 +14,7 @@ export interface PartialHasManyRelationship<
   through: (
     through?: string | null,
     options?: ThroughOptions,
-  ) => PartialHasManyThroughRelationship
+  ) => PartialHasManyThroughRelationship<TTargetSchema>
 }
 
 export interface FinalHasManyRelationship {
