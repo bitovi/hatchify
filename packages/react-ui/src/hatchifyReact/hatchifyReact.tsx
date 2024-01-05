@@ -23,9 +23,8 @@ import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from 
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
 import type { DataGridState } from "../hooks/useDataGridState"
 import type {
-  AdditionalColumnProps,
   ReplaceColumnProps,
-  OverwriteColumnProps,
+  ExtraColumnProps,
 } from "../components/HatchifyColumn"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
 import { HatchifyDataGrid } from "../components/HatchifyDataGrid"
@@ -53,15 +52,8 @@ type HatchifyColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > =
-  | Omit<
-      AdditionalColumnProps<TSchemas, TSchemaName>,
-      "allSchemas" | "schemaName"
-    >
+  | Omit<ExtraColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
   | Omit<ReplaceColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
-  | Omit<
-      OverwriteColumnProps<TSchemas, TSchemaName>,
-      "allSchemas" | "schemaName"
-    >
 
 type Components<TSchemas extends Record<string, PartialSchema>> = {
   [SchemaName in keyof TSchemas]: {
@@ -258,7 +250,7 @@ export function hatchifyReact<
 //   baseFilter: [{ field: "age", operator: ">", value: 1 }],
 // })
 // state.data.map((_todo) => {
-//   _todo.user.
+//   _todo
 // })
 // state.data[0].id
 // state.data[0].age

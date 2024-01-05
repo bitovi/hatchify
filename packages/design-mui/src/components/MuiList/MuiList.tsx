@@ -20,6 +20,7 @@ export function MuiList<
   const { columns, Empty } = useCompoundComponents(
     props.finalSchemas,
     props.schemaName,
+    props.overwrite ?? false,
     props.children,
     props.include,
   )

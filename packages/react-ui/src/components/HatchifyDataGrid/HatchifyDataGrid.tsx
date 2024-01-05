@@ -27,6 +27,7 @@ export interface HatchifyDataGridProps<
   defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters
+  overwrite?: boolean
 }
 
 function HatchifyDataGrid<
@@ -43,6 +44,7 @@ function HatchifyDataGrid<
   defaultPage,
   defaultSort,
   baseFilter,
+  overwrite,
 }: HatchifyDataGridProps<TSchemas, TSchemaName>): JSX.Element {
   const { DataGrid } = useHatchifyPresentation()
   const defaultInclude = useMemo(
@@ -69,7 +71,11 @@ function HatchifyDataGrid<
     },
   )
 
-  return <DataGrid {...dataGridState}>{children}</DataGrid>
+  return (
+    <DataGrid overwrite={overwrite} {...dataGridState}>
+      {children}
+    </DataGrid>
+  )
 }
 
 export default HatchifyDataGrid
