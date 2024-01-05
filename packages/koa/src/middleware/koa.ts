@@ -36,7 +36,7 @@ export interface MiddlewareFunctionsKoa {
    */
   update: KoaMiddleware
   /**
-   * Deletes an existing single instance.
+   * Deletes one or more instances.
    */
   destroy: KoaMiddleware
 

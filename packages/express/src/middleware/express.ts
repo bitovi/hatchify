@@ -42,7 +42,7 @@ export interface MiddlewareFunctionsExpress {
    */
   update: ExpressMiddleware
   /**
-   * Deletes an existing single instance.
+   * Deletes one or more instances.
    */
   destroy: ExpressMiddleware
 

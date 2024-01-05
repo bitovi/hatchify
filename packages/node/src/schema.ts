@@ -7,5 +7,5 @@ export function buildSchemaForModel(
   hatchify: Hatchify,
   modelName: string,
 ): FinalSchema {
-  return hatchify.models[modelName]?.[HatchifySymbolModel]
+  return hatchify.model[modelName]?.[HatchifySymbolModel]
 }
