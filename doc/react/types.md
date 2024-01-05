@@ -17,25 +17,38 @@ This is the return type of the `useDataGridState` hook. When using the state in 
 
 This object type includes:
 
-| key              | description                                           |
-| ---------------- | ----------------------------------------------------- |
-| `data`           | An array of records of the schema type.               |
-| `include`        | The included relationships                            |
-| `meta`           | Meta data from the requests                           |
-| `filter`         | The current filter                                    |
-| `setFilter`      | Accepts a filter and updates the `filter` state       |
-| `page`           | Current page                                          |
-| `setPage`        | Accepts a page number and updates the `page` state    |
-| `sort`           | The current state                                     |
-| `setSort`        | Accepts a sort direction and updates the `sort` state |
-| `selected`       | Accepts a filter and updates the `filter` state       |
-| `setSelected`    | The current selected rows                             |
-| `finalSchemas`   | The final shape of the schemas                        |
-| `partialSchemas` | Schemas, in their partial state                       |
-| `schemaName`     | The schema this data is for                           |
-| `fields`         | an object of fields that are included                 |
-| `include`        |an array of strings of the included relationships      |
+| key              | description                                                             |
+| ---------------- | ----------------------------------------------------------------------- |
+| `data`           | An array of records of the schema type.                                 |
+| `include`        | The included relationships                                              |
+| `meta`           | Meta data from the requests                                             |
+| `filter`         | The current filter                                                      |
+| `setFilter`      | Accepts a filter and updates the `filter` state                         |
+| `page`           | Current page                                                            |
+| `setPage`        | Accepts a page number and updates the `page` state                      |
+| `sort`           | The current state                                                       |
+| `setSort`        | Accepts a sort direction and updates the `sort` state                   |
+| `selected`       | Accepts a filter and updates the `filter` state                         |
+| `setSelected`    | The current selected rows                                               |
+| `finalSchemas`   | Schemas after assembly. These have more details and validator functions |
+| `partialSchemas` | Schemas, as the user defined in the app                                 |
+| `schemaName`     | The schema this data is for                                             |
+| `fields`         | an object of fields that are included                                   |
+| `include`        |an array of strings of the included relationships                        |
 
+Further, the `meta` object includes:
+
+| key              | description                          |
+| ---------------- | ------------------------------------ |
+| `error`          | error message if in error state      |
+| `isResolved`     | false when loading, true otherwise   |
+| `isPending`      | true when loading, false otherwise   |
+| `isRejected`     | true when error, false otherwise     |
+| `isRevalidating` | true when loading after initial call |
+| `isStale`        | true when loading after initial call |
+| `isSuccess`      | true on success, false otherwise     |
+| `meta`           | any meta data for the request        |
+| `status`         | "loading", "success", or "error"     |
 
 ### CreateType
 
