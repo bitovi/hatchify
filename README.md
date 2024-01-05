@@ -41,7 +41,7 @@ Unlike code generation tools—which allow you to write your schema and then gen
 - Express
   - [API Docs](./doc/express/README.md) 🛑
 - React
-  - [Components](./doc/react/components.md) 🛑
+  - [Components](./doc/react/components.md)
   - [REST Client](./doc/react/rest-client.md) 🛑
 - [Guides](#guides)
   - [Schema, database, and service API naming](./doc/guides/naming.md)
