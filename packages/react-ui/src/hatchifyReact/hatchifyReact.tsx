@@ -194,7 +194,7 @@ export function hatchifyReact<
   }
 }
 
-// todo: leaving for testing, remove before merge to main
+// todo: leaving for testing, remove once core no longer has `ts-expect-error`s
 // const schemas = {
 //   Todo: {
 //     name: "Todo",
@@ -210,7 +210,7 @@ export function hatchifyReact<
 //       optCreated: datetime(),
 //     },
 //     relationships: {
-//       user: belongsTo("Admin_User"),
+//       user: belongsTo("User"),
 //     },
 //   },
 //   User: {
@@ -221,7 +221,7 @@ export function hatchifyReact<
 //       employed: boolean(),
 //     },
 //     relationships: {
-//       todos: hasMany("Admin_Todo"),
+//       todos: hasMany("Todo").through(),
 //     },
 //   },
 // } satisfies Record<string, PartialSchema>
@@ -230,16 +230,12 @@ export function hatchifyReact<
 //   completeSchemaMap: schemas,
 // } as RestClient<typeof schemas, any>)
 
-// type App = {
-//   app: HatchifyApp<typeof schemas>
-// }
-
 // app.model.Todo.createOne({
 //   reqTitle: "",
 //   age: 1,
 //   important: true,
 //   created: new Date(),
-//   // shouldError: false,
+//   shouldError: false,
 // })
 
 // app.model.User.findAll({}).then(([records]) => {
@@ -272,17 +268,9 @@ export function hatchifyReact<
 //   return (
 //     <TodoList>
 //       <TodoColumn
-//         // field="age"
+//         field="age"
 //         label="Age"
-//         sortable={true}
-//         // prepend={false}
-//         renderDataValue={({ record }) => <div>{record.age}</div>}
-//         DataValueComponent={AgeComponent}
-//         // field="age"
-//         // label="Age"
-//         // type=""
-//         // renderDataValue={({ record }) => <div>{record.asdfa}</div>}
-//         // ValueComponent={AgeComponent}
+//         renderDataValue={({ record }) => <div>{record.asdfa}</div>}
 //       />
 //     </TodoList>
 //   )

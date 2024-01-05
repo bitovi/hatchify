@@ -23,6 +23,7 @@ export type PartialRelationship =
   | PartialHasManyRelationship
   // @ts-expect-error
   | PartialHasOneRelationship
+  // @ts-expect-error
   | PartialHasManyThroughRelationship
 
 export type FinalRelationship =
