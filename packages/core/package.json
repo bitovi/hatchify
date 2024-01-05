@@ -19,7 +19,8 @@
     "@bitovi/eslint-config": "^1.6.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "ts-jest-resolver": "^2.0.1"
   },
   "eslintConfig": {
     "root": true,
@@ -98,6 +99,7 @@
     ]
   },
   "jest": {
+    "resolver": "ts-jest-resolver",
     "roots": [
       "<rootDir>/src"
     ],
