@@ -49,7 +49,7 @@ export class Hatchify extends HatchifyNode {
   }
 }
 
-export { errorHandlerMiddleware } from "./middleware/express"
+export { errorHandlerMiddleware } from "./middleware/express.js"
 
 /**
  * `hatchifyKoa` Creates middleware functions from provided schemas

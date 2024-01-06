@@ -9,7 +9,10 @@ import type {
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
-import type { HatchifyDataGridSelected, SortObject } from "../../presentation/index.js"
+import type {
+  HatchifyDataGridSelected,
+  SortObject,
+} from "../../presentation/index.js"
 import { useHatchifyPresentation } from "../index.js"
 import useDataGridState from "../../hooks/useDataGridState.js"
 

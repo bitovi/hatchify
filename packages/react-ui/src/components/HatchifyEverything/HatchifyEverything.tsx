@@ -4,7 +4,7 @@ import type {
   FinalSchemas,
 } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { HatchifyReactRest } from "@hatyjs/react-rest"
+import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   HatchifyDataGridSelected,
   SortObject,
