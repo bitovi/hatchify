@@ -1,7 +1,9 @@
+const crypto = globalThis.crypto || (await import("node:crypto")).webcrypto
+
 export function getCrypto() {
-  return globalThis.crypto
+  return crypto
 }
 
 export function uuidv4(): string {
-  return globalThis.crypto.randomUUID()
+  return crypto.randomUUID()
 }
