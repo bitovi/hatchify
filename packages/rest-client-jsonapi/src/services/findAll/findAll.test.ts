@@ -1,4 +1,12 @@
-import { describe, expect, it, vi } from "vitest"
+import {
+  describe,
+  expect,
+  it,
+  vi,
+  beforeAll,
+  afterEach,
+  afterAll,
+} from "vitest"
 import { http } from "msw"
 import {
   baseUrl,
@@ -14,6 +22,16 @@ import { convertToHatchifyResources } from "../utils/index.js"
 import { findAll } from "./findAll.js"
 
 describe("rest-client-jsonapi/services/findAll", () => {
+  beforeAll(() => {
+    server.listen()
+  })
+  afterEach(() => {
+    server.resetHandlers()
+  })
+  afterAll(() => {
+    server.close()
+  })
+
   const query = {
     fields: {},
     include: [],

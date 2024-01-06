@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest"
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest"
 import { baseUrl, testData } from "../../../mocks/handlers.js"
 import { fetchJsonApi } from "./fetch.js"
 import { server } from "../../../mocks/server.js"
@@ -7,6 +7,16 @@ import { http } from "msw"
 const schemaMap = { Article: { type: "article", endpoint: "articles" } }
 
 describe("rest-client-jsonapi/services/utils/fetch", () => {
+  beforeAll(() => {
+    server.listen()
+  })
+  afterEach(() => {
+    server.resetHandlers()
+  })
+  afterAll(() => {
+    server.close()
+  })
+
   it("works", async () => {
     const data = await fetchJsonApi(
       "GET",

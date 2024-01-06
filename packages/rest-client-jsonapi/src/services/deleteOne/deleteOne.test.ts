@@ -1,4 +1,12 @@
-import { describe, expect, it, vi } from "vitest"
+import {
+  describe,
+  expect,
+  it,
+  vi,
+  beforeAll,
+  afterEach,
+  afterAll,
+} from "vitest"
 import { http } from "msw"
 import { baseUrl } from "../../mocks/handlers.js"
 import { server } from "../../mocks/server.js"
@@ -18,6 +26,16 @@ const restClientConfig = { baseUrl, schemaMap: partialSchemaMap }
 const finalSchemaMap = assembler(partialSchemaMap)
 
 describe("rest-client-jsonapi/services/deleteOne", () => {
+  beforeAll(() => {
+    server.listen()
+  })
+  afterEach(() => {
+    server.resetHandlers()
+  })
+  afterAll(() => {
+    server.close()
+  })
+
   it("works", async () => {
     const data = "article-id-1"
     const expected = undefined
