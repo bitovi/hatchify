@@ -1,4 +1,4 @@
-/* c8 ignore next */
+/* istanbul ignore next */
 const crypto = globalThis.crypto || (await import("node:crypto")).webcrypto
 
 export function getCrypto() {
