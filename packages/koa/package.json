@@ -39,6 +39,7 @@
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",
     "@koa/router": "^12.0.0",
+    "@jest/globals": "^29.7.0",
     "@types/jest": "^29.2.1",
     "@types/jsonapi-serializer": "^3.6.8",
     "@types/koa__router": "^12.0.4",
@@ -46,7 +47,6 @@
     "@types/supertest": "^2.0.16",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "jest": "^29.2.2",
     "pg": "^8.11.3",
     "supertest": "^6.3.1",
     "ts-jest": "^29.0.3"
