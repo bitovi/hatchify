@@ -1,4 +1,4 @@
-import { snakeCase } from "lodash"
+import { snakeCase } from "lodash-es"
 import type { Dialect } from "sequelize"
 
 export function getColumnName(

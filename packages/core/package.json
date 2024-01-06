@@ -2,7 +2,7 @@
   "name": "@hatchifyjs/core",
   "version": "0.3.9",
   "type": "module",
-  "module": "./dist/core.js",
+  "exports": "./dist/core.js",
   "types": "./dist/core.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
@@ -11,7 +11,7 @@
     "eslint": "eslint .",
     "eslint:fix": "eslint --fix .",
     "depcheck": "depcheck .",
-    "test": "jest --coverage",
+    "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --coverage",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "tsc"
   },
@@ -19,8 +19,7 @@
     "@bitovi/eslint-config": "^1.6.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "jest": "^29.7.0",
-    "ts-jest-resolver": "^2.0.1"
+    "jest": "^29.7.0"
   },
   "eslintConfig": {
     "root": true,
@@ -99,7 +98,12 @@
     ]
   },
   "jest": {
-    "resolver": "ts-jest-resolver",
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
     "roots": [
       "<rootDir>/src"
     ],
@@ -127,7 +131,7 @@
     },
     "testEnvironment": "node",
     "transform": {
-      ".+\\.ts$": "ts-jest"
+      ".+\\.ts$": ["ts-jest", { "useESM": true }]
     }
   }
 }

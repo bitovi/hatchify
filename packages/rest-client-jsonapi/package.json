@@ -2,7 +2,7 @@
   "name": "@hatchifyjs/rest-client-jsonapi",
   "version": "0.1.17",
   "type": "module",
-  "module": "./dist/rest-client-jsonapi.js",
+  "exports": "./dist/rest-client-jsonapi.js",
   "types": "./dist/rest-client-jsonapi.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
@@ -13,7 +13,7 @@
     "test:dev": "vitest",
     "test:coverage": "vitest run --coverage",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
-    "build": "tsc"
+    "build": "tsc -b -f"
   },
   "dependencies": {
     "@hatchifyjs/rest-client": "0.1.13"

@@ -23,6 +23,11 @@ export default defineConfig({
       ],
     },
   },
+  esbuild: {
+    supported: {
+      "top-level-await": true,
+    },
+  },
   plugins: [dts(), react()],
   test: {
     globals: true,

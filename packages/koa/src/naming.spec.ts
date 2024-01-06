@@ -1,5 +1,6 @@
 import { belongsTo, hasMany, hasOne, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
+import { jest } from "@jest/globals"
 
 import { startServerWith } from "./testing/utils.js"
 
@@ -1007,6 +1008,6 @@ describe("Naming rules", () => {
   )
 
   skippedCases.forEach(({ description }) => {
-    it.skip(`${description}`, jest.fn())
+    it.skip(`${description}`, jest.fn() as any)
   })
 })

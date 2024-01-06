@@ -2,6 +2,7 @@
   "name": "@hatchifyjs/react-rest",
   "version": "0.1.17",
   "type": "module",
+  "main": "./dist/react-rest.js",
   "module": "./dist/react-rest.js",
   "types": "./dist/react-rest.d.ts",
   "scripts": {

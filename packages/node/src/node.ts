@@ -7,7 +7,7 @@ import {
 import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import JSONAPISerializer from "json-api-serializer"
-import { snakeCase } from "lodash"
+import { snakeCase } from "lodash-es"
 import { match } from "path-to-regexp"
 import type { MatchFunction } from "path-to-regexp"
 import type { Identifier, Sequelize } from "sequelize"
