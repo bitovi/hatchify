@@ -1,5 +1,5 @@
 describe("getCrypto", () => {
-  it("returns window.crypto if available", async() => {
+  it("returns window.crypto if available", async () => {
     Object.defineProperty(globalThis, "crypto", {
       value: "window.crypto",
     })

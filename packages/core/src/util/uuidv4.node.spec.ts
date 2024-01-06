@@ -11,7 +11,7 @@ describe("uuidv4", () => {
 })
 
 describe("getCrypto", () => {
-  it("returns node crypto if available", async() => {
+  it("returns node crypto if available", async () => {
     expect(getCrypto()).toBe(crypto.webcrypto)
   })
 })
