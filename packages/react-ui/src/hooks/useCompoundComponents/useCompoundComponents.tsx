@@ -31,6 +31,7 @@ export default function useCompoundComponents<
 >(
   finalSchemas: FinalSchemas,
   schemaName: TSchemaName,
+  overwrite: boolean,
   children: React.ReactNode | null,
   include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): CompoundComponents {
@@ -43,6 +44,7 @@ export default function useCompoundComponents<
       finalSchemas,
       schemaName,
       defaultValueComponents,
+      overwrite,
       childArray,
       include,
     ),

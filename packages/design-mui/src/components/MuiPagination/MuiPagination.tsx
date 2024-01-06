@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react"
 import { Pagination } from "@mui/material"
-import type { XCollectionProps } from "@hatchifyjs/react-ui"
+import type { XDataGridProps } from "@hatchifyjs/react-ui"
 
 const styles = {
   pagination: css`
@@ -12,7 +12,7 @@ const styles = {
   `,
 }
 
-const MuiPagination: React.FC<XCollectionProps> = ({ meta, page, setPage }) => {
+const MuiPagination: React.FC<XDataGridProps> = ({ meta, page, setPage }) => {
   const count = meta?.meta?.unpaginatedCount
     ? Math.ceil(meta.meta.unpaginatedCount / page.size)
     : 1

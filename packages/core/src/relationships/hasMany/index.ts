@@ -1,7 +1,7 @@
 import type { PartialHasManyRelationship } from "./types.js"
 import { buildThrough } from "../hasManyThrough/buildThrough.js"
 
-// @todo HATCH-417
+// HATCH-417
 export function hasMany<TTargetSchema extends string | undefined>(
   schemaName?: TTargetSchema,
   props?: {
@@ -16,6 +16,6 @@ export function hasMany<TTargetSchema extends string | undefined>(
     targetSchema: targetSchema as TTargetSchema,
     targetAttribute: props?.targetAttribute ?? null,
     sourceAttribute: props?.sourceAttribute ?? null,
-    through: buildThrough(targetSchema),
+    through: buildThrough<TTargetSchema>(targetSchema as TTargetSchema),
   }
 }

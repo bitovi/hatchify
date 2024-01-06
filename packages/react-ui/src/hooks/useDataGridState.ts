@@ -13,9 +13,9 @@ import type {
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
-  HatchifyCollectionPage,
-  HatchifyCollectionSelected,
-  HatchifyCollectionSort,
+  HatchifyDataGridPage,
+  HatchifyDataGridSelected,
+  HatchifyDataGridSort,
   SortObject,
 } from "../presentation/index.js"
 import usePage from "./usePage.js"
@@ -23,7 +23,7 @@ import useSort from "./useSort.js"
 import useSelected from "./useSelected.js"
 import useFilter from "./useFilter.js"
 
-export interface CollectionState<
+export interface DataGridState<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > {
@@ -35,18 +35,18 @@ export interface CollectionState<
   include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>
   filter: Filters
   setFilter: (filters: Filters) => void
-  page: HatchifyCollectionPage["page"]
-  setPage: HatchifyCollectionPage["setPage"]
-  sort: HatchifyCollectionSort["sort"]
-  setSort: HatchifyCollectionSort["setSort"]
-  selected: HatchifyCollectionSelected["selected"] | undefined
-  setSelected: HatchifyCollectionSelected["setSelected"] | undefined
+  page: HatchifyDataGridPage["page"]
+  setPage: HatchifyDataGridPage["setPage"]
+  sort: HatchifyDataGridSort["sort"]
+  setSort: HatchifyDataGridSort["setSort"]
+  selected: HatchifyDataGridSelected["selected"] | undefined
+  setSelected: HatchifyDataGridSelected["setSelected"] | undefined
   finalSchemas: FinalSchemas
   partialSchemas: TSchemas
   schemaName: TSchemaName
 }
 
-export default function useCollectionState<
+export default function useDataGridState<
   const TSchemas extends Record<string, PartialSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
 >(
@@ -63,15 +63,15 @@ export default function useCollectionState<
     defaultSort,
     baseFilter,
   }: {
-    defaultSelected?: HatchifyCollectionSelected["selected"]
-    onSelectedChange?: HatchifyCollectionSelected["setSelected"]
+    defaultSelected?: HatchifyDataGridSelected["selected"]
+    onSelectedChange?: HatchifyDataGridSelected["setSelected"]
     fields?: Fields
     include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>
     defaultPage?: PaginationObject
     defaultSort?: SortObject
     baseFilter?: Filters
   } = {},
-): CollectionState<TSchemas, TSchemaName> {
+): DataGridState<TSchemas, TSchemaName> {
   if (typeof schemaName !== "string") {
     throw new Error(
       `Expected schemaName to be a string, received ${typeof schemaName}`,

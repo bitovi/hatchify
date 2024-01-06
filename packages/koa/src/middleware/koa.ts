@@ -15,11 +15,29 @@ import type { Middleware as KoaMiddleware } from "koa"
  * provide Koa Middleware for each operation
  */
 export interface MiddlewareFunctionsKoa {
+  /**
+   * Search for multiple instances.
+   */
   findAll: KoaMiddleware
+  /**
+   * Search for a single instance. Returns the first instance found, or null if none can be found.
+   */
   findOne: KoaMiddleware
+  /**
+   * Find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+   */
   findAndCountAll: KoaMiddleware
+  /**
+   * Creates a new instance.
+   */
   create: KoaMiddleware
+  /**
+   * Updates an existing single instance.
+   */
   update: KoaMiddleware
+  /**
+   * Deletes one or more instances.
+   */
   destroy: KoaMiddleware
 
   /**
@@ -80,7 +98,7 @@ export function buildMiddlewareForModel(
   )
 }
 
-export async function errorMiddleware(
+export async function errorHandlerMiddleware(
   ctx: Koa.Context,
   next: Koa.Next,
 ): Promise<void> {

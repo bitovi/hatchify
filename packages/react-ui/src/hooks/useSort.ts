@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react"
 import type {
-  HatchifyCollectionSort,
+  HatchifyDataGridSort,
   SortObject,
 } from "../presentation/index.js"
 
 export default function useSort(
   defaultSort?: SortObject,
-): HatchifyCollectionSort {
+): HatchifyDataGridSort {
   const [sort, setSort] = useState<SortObject>(
     defaultSort ?? {
       direction: undefined,

@@ -1,5 +1,5 @@
 import type { GetSchemaNames, Filters, Meta } from "@hatchifyjs/rest-client"
-import type { CollectionState } from "../hooks/useCollectionState.js"
+import type { DataGridState } from "../hooks/useDataGridState.js"
 import type { FinalAttributeRecord, PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyColumn } from "../hooks/index.js"
 
@@ -20,18 +20,18 @@ export interface PageCountObject {
   size: number
 }
 
-export interface HatchifyCollectionPage {
+export interface HatchifyDataGridPage {
   page: PageCountObject
   setPage: (page: PageCountObject) => void
 }
 
-export interface HatchifyCollectionSort {
+export interface HatchifyDataGridSort {
   sort: SortObject
   setSort: (sortBy: string) => void
   sortQueryString: string
 }
 
-export interface HatchifyCollectionSelected {
+export interface HatchifyDataGridSelected {
   selected: {
     all: boolean
     ids: string[]
@@ -39,21 +39,23 @@ export interface HatchifyCollectionSelected {
   setSelected: ({ all, ids }: { all: boolean; ids: string[] }) => void
 }
 
-export interface HatchifyCollectionFilters {
+export interface HatchifyDataGridFilters {
   filter: Filters
   setFilter: (filters: Filters) => void
 }
 
-export interface XCollectionProps<
+export interface XDataGridProps<
   TSchemas extends Record<string, PartialSchema> = any,
   TSchemaName extends GetSchemaNames<TSchemas> = any,
-> extends CollectionState<TSchemas, TSchemaName> {
+> extends DataGridState<TSchemas, TSchemaName> {
   children?: React.ReactNode
+  overwrite?: boolean
 }
+
 export interface XEverythingProps<
   TSchemas extends Record<string, PartialSchema> = any,
   TSchemaName extends GetSchemaNames<TSchemas> = any,
-> extends Partial<XCollectionProps> {
+> extends Partial<XDataGridProps> {
   setSelectedSchema?: (schemaName: TSchemaName) => void
 }
 
@@ -101,6 +103,6 @@ export type HeaderProps =
 interface HeaderPropsCommon {
   direction: SortObject["direction"]
   meta: Meta
-  setSort: HatchifyCollectionSort["setSort"]
+  setSort: HatchifyDataGridSort["setSort"]
   sortBy: SortObject["sortBy"]
 }

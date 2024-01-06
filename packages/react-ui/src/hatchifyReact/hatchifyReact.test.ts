@@ -38,12 +38,12 @@ describe("react-ui/hatchifyReact", () => {
       Everything: expect.any(Function),
       components: {
         Article: {
-          Collection: expect.any(Function),
+          DataGrid: expect.any(Function),
           Column: expect.any(Function),
           Empty: expect.any(Function),
         },
         Person: {
-          Collection: expect.any(Function),
+          DataGrid: expect.any(Function),
           Column: expect.any(Function),
           Empty: expect.any(Function),
         },
@@ -75,8 +75,8 @@ describe("react-ui/hatchifyReact", () => {
         },
       },
       state: {
-        Article: { useCollectionState: expect.any(Function) },
-        Person: { useCollectionState: expect.any(Function) },
+        Article: { useDataGridState: expect.any(Function) },
+        Person: { useDataGridState: expect.any(Function) },
       },
     })
   })
@@ -108,7 +108,7 @@ describe("react-ui/hatchifyReact", () => {
       Everything: expect.any(Function),
       components: {
         Feature_Article: {
-          Collection: expect.any(Function),
+          DataGrid: expect.any(Function),
           Column: expect.any(Function),
           Empty: expect.any(Function),
         },
@@ -127,7 +127,7 @@ describe("react-ui/hatchifyReact", () => {
           useUpdateOne: expect.any(Function),
         },
       },
-      state: { Feature_Article: { useCollectionState: expect.any(Function) } },
+      state: { Feature_Article: { useDataGridState: expect.any(Function) } },
     })
   })
 })

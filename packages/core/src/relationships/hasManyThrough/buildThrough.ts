@@ -3,14 +3,16 @@ import type {
   ThroughOptions,
 } from "./types.js"
 
-export function buildThrough(targetSchema: string | null) {
+export function buildThrough<TTargetSchema extends string | undefined | null>(
+  targetSchema: TTargetSchema,
+) {
   return function through(
     through?: string | null,
     options?: ThroughOptions,
-  ): PartialHasManyThroughRelationship {
+  ): PartialHasManyThroughRelationship<TTargetSchema> {
     const baseFields = {
       type: "hasManyThrough" as const,
-      targetSchema,
+      targetSchema: targetSchema as TTargetSchema,
       through: through ?? null,
     }
 

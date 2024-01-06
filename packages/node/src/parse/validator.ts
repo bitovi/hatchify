@@ -44,7 +44,7 @@ export function validateFindOptions<T extends FinalSchema = FinalSchema>(
         modelAssociation = associations[includeName]
       }
 
-      if (!(modelAssociation && modelAssociation.model in hatchify.models)) {
+      if (!(modelAssociation && modelAssociation.model in hatchify.model)) {
         includeErrors.push(
           new RelationshipPathError({
             detail: `URL must have 'include' as one or more of ${Object.keys(

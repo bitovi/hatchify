@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react"
 import { Checkbox, TableCell, TableHead, TableRow } from "@mui/material"
-import type { HatchifyColumn, XCollectionProps } from "@hatchifyjs/react-ui"
+import type { HatchifyColumn, XDataGridProps } from "@hatchifyjs/react-ui"
 import { Sortable } from "./components/index.js"
 
 const styles = {
@@ -11,7 +11,7 @@ const styles = {
 }
 
 export const MuiHeaders: React.FC<
-  XCollectionProps & { columns: HatchifyColumn[] }
+  XDataGridProps & { columns: HatchifyColumn[] }
 > = ({ selected, setSelected, sort, setSort, data, columns, meta }) => {
   const selectable = selected !== undefined && setSelected !== undefined
   const { direction, sortBy } = sort

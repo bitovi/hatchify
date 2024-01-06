@@ -1,6 +1,6 @@
 import { useState } from "react"
 import type {
-  HatchifyCollectionPage,
+  HatchifyDataGridPage,
   PageCountObject,
 } from "../presentation/index.js"
 import type { PaginationObject } from "@hatchifyjs/rest-client"
@@ -9,7 +9,7 @@ import type { PaginationObject } from "@hatchifyjs/rest-client"
 // todo (future): page number can come from query string
 export default function usePage(
   defaultPage?: PaginationObject,
-): HatchifyCollectionPage {
+): HatchifyDataGridPage {
   const [page, setPage] = useState<PageCountObject>(
     defaultPage ?? {
       number: 1,

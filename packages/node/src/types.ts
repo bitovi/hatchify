@@ -2,11 +2,7 @@ import type { FinalSchema } from "@hatchifyjs/core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import type { JSONAPIDocument } from "json-api-serializer"
 import type {
-  BelongsToManyOptions,
-  BelongsToOptions,
   DataType,
-  HasManyOptions,
-  HasOneOptions,
   Model,
   ModelAttributeColumnOptions,
   ModelStatic,
@@ -41,11 +37,14 @@ export interface DatabaseOptions {
 export interface HatchifyOptions {
   /**
    * Setting this prefix will signal to Hatchify that it should
-   * expect this path at the beginning of any incoming requests.
+   * expect this path at the beginning of any incoming backend requests. For ex: `/api`
    *
    * This is used internally for regex path matching
    */
   prefix?: string
+  /**
+   * Various options for connecting to a database
+   */
   database?: DatabaseOptions
 }
 
@@ -67,7 +66,21 @@ export type SequelizeModelInstance = ModelStatic<any> & {
 
 export type SequelizeModelsCollection = Record<string, SequelizeModelInstance>
 
-export type SyncOptions = { alter: true } | { force: true }
+export type SyncOptions =
+  | {
+      /**
+       * - This checks what is the current state of the table in the database (which columns it has, what are their data types, etc), and then performs the necessary changes in the table to make it match the model.
+       * - Postgres: Namespaces (Postgres Schemas) are created
+       */
+      alter: true
+    }
+  | {
+      /**
+       * - This creates the table, dropping it first if it already existed
+       * - Postgres: Namespaces (Postgres Schemas) and their tables are dropped and recreated
+       */
+      force: true
+    }
 
 export interface ICreateHatchifyModel {
   associationsLookup: Record<string, Record<string, IAssociation> | undefined>
@@ -93,50 +106,12 @@ export type JSONAnyObject = Record<string, any>
 
 export interface ModelFunctionsCollection<T> {
   [modelName: string]: T
-  "*": T
   allModels: T
 }
 
 export type FunctionsHandler<T> = (hatchify: Hatchify, name: string) => T
 
 export type HatchifyAttributes = ModelAttributes<Model>
-
-/**
- * Used when defining a Hatchify Model relationship
- * to bridge Hatchify Models and Sequelize Model options
- */
-export interface BelongsToManyResult {
-  target: string
-  options: Omit<BelongsToManyOptions, "through"> &
-    Partial<Pick<BelongsToManyOptions, "through">>
-}
-
-/**
- * Used when defining a Hatchify Model relationship
- * to bridge Hatchify Models and Sequelize Model options
- */
-export interface BelongsToResult {
-  target: string
-  options?: BelongsToOptions
-}
-
-/**
- * Used when defining a Hatchify Model relationship
- * to bridge Hatchify Models and Sequelize Model options
- */
-export interface HasOneResult {
-  target: string
-  options?: HasOneOptions
-}
-
-/**
- * Used when defining a Hatchify Model relationship
- * to bridge Hatchify Models and Sequelize Model options
- */
-export interface HasManyResult {
-  target: string
-  options?: HasManyOptions
-}
 
 /**
  * Extend sequelize ModelAttributeColumnOptions to include 'include'
@@ -157,12 +132,6 @@ type ModelAttributes<M extends Model = Model, TAttributes = unknown> = {
   [name in keyof TAttributes]:
     | DataType
     | ModelAttributeColumnOptionsWithInclude<M>
-}
-
-export interface Virtuals {
-  [model: string]: {
-    [attribute: string]: string
-  }
 }
 
 export interface MiddlewareRequest {

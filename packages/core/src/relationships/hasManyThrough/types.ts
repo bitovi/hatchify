@@ -1,6 +1,8 @@
-export interface PartialHasManyThroughRelationship {
+export interface PartialHasManyThroughRelationship<
+  TTargetSchema extends string | undefined | null,
+> {
   type: "hasManyThrough"
-  targetSchema: string | null
+  targetSchema: TTargetSchema
   // The name of the join table
   through: string | null
   // An attribute on the "join" schema pointing to the Source schema

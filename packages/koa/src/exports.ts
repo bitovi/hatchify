@@ -1,6 +1,20 @@
 import type { Middleware } from "koa"
 
+export type { Context, Next } from "koa"
+export type {
+  ErrorObject,
+  JSONAPIDocument,
+  JsonApiObject,
+  LinksCallback,
+  LinksObject,
+  LinkObject,
+  Meta,
+  ResourceObject,
+} from "json-api-serializer"
+
 export * from "./koa.js"
+
+export type { PartialAttributeRecord, PartialSchema } from "@hatchifyjs/core"
 
 export {
   DataTypes,
@@ -10,18 +24,24 @@ export {
 } from "@hatchifyjs/node"
 
 export type {
+  CreateOptions,
+  DatabaseOptions,
+  DestroyOptions,
+  EverythingFunctions,
+  FindOptions,
   HatchifyError,
+  HatchifyErrorOptions,
   HatchifyOptions,
-  BelongsToManyResult,
-  BelongsToResult,
-  HasOneResult,
-  HasManyResult,
-  ModelValidateOptions,
+  JSONObject,
   ModelAttributes,
   ModelFunctionsCollection,
-  EverythingFunctions,
+  ModelValidateOptions,
   ParseFunctions,
   SerializeFunctions,
+  SyncOptions,
+  Transaction,
+  UpdateOptions,
+  WhereOptions,
 } from "@hatchifyjs/node"
 
 export type KoaMiddleware = Middleware

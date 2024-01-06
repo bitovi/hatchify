@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/rest-client-jsonapi",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "type": "module",
   "exports": "./dist/rest-client-jsonapi.js",
   "types": "./dist/rest-client-jsonapi.d.ts",
@@ -16,11 +16,11 @@
     "build": "tsc -b -f"
   },
   "dependencies": {
-    "@hatchifyjs/rest-client": "0.1.13"
+    "@hatchifyjs/rest-client": "0.1.14"
   },
   "devDependencies": {
     "@hatchifyjs/koa": "^1.0.2",
-    "@hatchifyjs/react-rest": "^0.1.15",
+    "@hatchifyjs/react-rest": "^0.1.18",
     "@vitest/coverage-c8": "^0.32.2",
     "koa": "^2.14.2",
     "msw": "^2.0.11",

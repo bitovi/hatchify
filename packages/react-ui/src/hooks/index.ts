@@ -1,5 +1,5 @@
-export * from "./useCollectionState.js"
-export { default as useCollectionState } from "./useCollectionState.js"
+export * from "./useDataGridState.js"
+export { default as useDataGridState } from "./useDataGridState.js"
 export { default as useCompoundComponents } from "./useCompoundComponents/useCompoundComponents.js"
 export { default as usePage } from "./usePage.js"
 export { default as useSelected } from "./useSelected.js"

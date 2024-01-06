@@ -25,7 +25,7 @@ export function finalizeRelationships(
           if (relationship.type === "hasMany") {
             return finalizeHasMany(
               schemaName,
-              relationship as PartialHasManyRelationship<string>, // @todo HATCH-417
+              relationship as PartialHasManyRelationship<string>, // HATCH-417
               relationshipName,
               relationshipAcc,
             ) as Record<string, FinalSchema>
@@ -34,7 +34,7 @@ export function finalizeRelationships(
           if (relationship.type === "hasManyThrough") {
             return finalizeHasManyThrough(
               schemaName,
-              relationship as PartialHasManyThroughRelationship,
+              relationship as PartialHasManyThroughRelationship<string>, // HATCH-417
               relationshipName,
               relationshipAcc,
             ) as Record<string, FinalSchema>

@@ -1,15 +1,15 @@
 import { useState } from "react"
-import type { HatchifyCollectionSelected } from "../presentation/index.js"
+import type { HatchifyDataGridSelected } from "../presentation/index.js"
 
 export default function useSelected(
-  defaultSelected?: HatchifyCollectionSelected["selected"],
-  onSelectedChange?: HatchifyCollectionSelected["setSelected"],
-): HatchifyCollectionSelected {
+  defaultSelected?: HatchifyDataGridSelected["selected"],
+  onSelectedChange?: HatchifyDataGridSelected["setSelected"],
+): HatchifyDataGridSelected {
   const [selected, setSelected] = useState<
-    HatchifyCollectionSelected["selected"]
+    HatchifyDataGridSelected["selected"]
   >(defaultSelected || { all: false, ids: [] })
 
-  const setSelectedWrapper: HatchifyCollectionSelected["setSelected"] = (
+  const setSelectedWrapper: HatchifyDataGridSelected["setSelected"] = (
     selected,
   ) => {
     setSelected(selected)

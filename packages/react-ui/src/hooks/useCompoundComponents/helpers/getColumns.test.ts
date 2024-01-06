@@ -41,6 +41,7 @@ describe("hooks/useCompoundComponents/helpers/getColumns", () => {
         finalSchemas,
         "Todo",
         HatchifyPresentationDefaultValueComponents,
+        false,
         [],
       ),
     ).toEqual([
@@ -75,6 +76,7 @@ describe("hooks/useCompoundComponents/helpers/getColumns", () => {
         finalSchemas,
         "Todo",
         HatchifyPresentationDefaultValueComponents,
+        false,
         [],
         ["user"],
       ),

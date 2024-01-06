@@ -1,11 +1,11 @@
-import type { XCollectionProps } from "@hatchifyjs/react-ui"
+import type { XDataGridProps } from "@hatchifyjs/react-ui"
 import { filterableControlTypes } from "../constants.js"
 
 type HatchifyMuiFilters = string[]
 
 export function getFilterableFields(
-  allSchemas: XCollectionProps["finalSchemas"],
-  schemaName: XCollectionProps["schemaName"],
+  allSchemas: XDataGridProps["finalSchemas"],
+  schemaName: XDataGridProps["schemaName"],
   include: string[],
 ): HatchifyMuiFilters {
   // get all filterable fields from the base schema

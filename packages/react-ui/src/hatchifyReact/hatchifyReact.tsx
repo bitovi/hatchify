@@ -18,21 +18,20 @@ import type {
   GetSchemaNames,
   GetSchemaFromName,
 } from "@hatchifyjs/rest-client"
-import type { HatchifyCollectionProps as InternalHatchifyCollectionProps } from "../components/HatchifyCollection/index.js"
+import type { HatchifyDataGridProps as InternalHatchifyDataGridProps } from "../components/HatchifyDataGrid/index.js"
 import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from "../components/HatchifyEverything/index.js"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty/index.js"
-import type { CollectionState } from "../hooks/useCollectionState.js"
+import type { DataGridState } from "../hooks/useDataGridState.js"
 import type {
-  AdditionalColumnProps,
   ReplaceColumnProps,
-  OverwriteColumnProps,
+  ExtraColumnProps,
 } from "../components/HatchifyColumn/index.js"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import { HatchifyCollection } from "../components/HatchifyCollection/index.js"
+import { HatchifyDataGrid } from "../components/HatchifyDataGrid/index.js"
 import { HatchifyColumn } from "../components/HatchifyColumn/index.js"
 import { HatchifyEmpty } from "../components/HatchifyEmpty/index.js"
 import { HatchifyEverything } from "../components/HatchifyEverything/index.js"
-import useCollectionState from "../hooks/useCollectionState.js"
+import useDataGridState from "../hooks/useDataGridState.js"
 import type { SortObject } from "../presentation/index.js"
 
 type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
@@ -41,11 +40,11 @@ type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
     "finalSchemas" | "partialSchemas" | "restClient"
   >
 
-type HatchifyCollectionProps<
+type HatchifyDataGridProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > = Omit<
-  InternalHatchifyCollectionProps<TSchemas, TSchemaName>,
+  InternalHatchifyDataGridProps<TSchemas, TSchemaName>,
   "finalSchemas" | "partialSchemas" | "schemaName" | "restClient"
 >
 
@@ -53,21 +52,14 @@ type HatchifyColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
 > =
-  | Omit<
-      AdditionalColumnProps<TSchemas, TSchemaName>,
-      "allSchemas" | "schemaName"
-    >
+  | Omit<ExtraColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
   | Omit<ReplaceColumnProps<TSchemas, TSchemaName>, "allSchemas" | "schemaName">
-  | Omit<
-      OverwriteColumnProps<TSchemas, TSchemaName>,
-      "allSchemas" | "schemaName"
-    >
 
 type Components<TSchemas extends Record<string, PartialSchema>> = {
   [SchemaName in keyof TSchemas]: {
     // core
-    Collection: (
-      props: HatchifyCollectionProps<TSchemas, SchemaName>,
+    DataGrid: (
+      props: HatchifyDataGridProps<TSchemas, SchemaName>,
     ) => React.ReactElement
     // compound
     Column: (
@@ -83,7 +75,7 @@ export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
   model: HatchifyReactRest<TSchemas>
   state: {
     [SchemaName in keyof TSchemas]: {
-      useCollectionState: ({
+      useDataGridState: ({
         defaultSelected,
         onSelectedChange,
         fields,
@@ -92,11 +84,11 @@ export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
         defaultSort,
         baseFilter,
       }?: {
-        defaultSelected?: HatchifyCollectionProps<
+        defaultSelected?: HatchifyDataGridProps<
           TSchemas,
           SchemaName
         >["defaultSelected"]
-        onSelectedChange?: HatchifyCollectionProps<
+        onSelectedChange?: HatchifyDataGridProps<
           TSchemas,
           SchemaName
         >["onSelectedChange"]
@@ -105,7 +97,7 @@ export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
         defaultPage?: PaginationObject
         defaultSort?: SortObject
         baseFilter?: Filters
-      }) => CollectionState<TSchemas, SchemaName>
+      }) => DataGridState<TSchemas, SchemaName>
     }
   }
 }
@@ -126,8 +118,8 @@ export function hatchifyReact<
         : schema.name
 
       acc[key] = {
-        Collection: (props) => (
-          <HatchifyCollection<TSchemas, GetSchemaNames<TSchemas>>
+        DataGrid: (props) => (
+          <HatchifyDataGrid<TSchemas, GetSchemaNames<TSchemas>>
             finalSchemas={finalSchemas}
             partialSchemas={partialSchemas}
             schemaName={finalSchemaName}
@@ -155,7 +147,7 @@ export function hatchifyReact<
     (acc, [schemaName, schema]) => {
       const key = schemaName as keyof typeof acc
       acc[key] = {
-        useCollectionState: ({
+        useDataGridState: ({
           defaultSelected,
           onSelectedChange,
           fields,
@@ -164,7 +156,7 @@ export function hatchifyReact<
           defaultSort,
           baseFilter,
         } = {}) =>
-          useCollectionState<TSchemas, GetSchemaNames<TSchemas>>(
+          useDataGridState<TSchemas, GetSchemaNames<TSchemas>>(
             finalSchemas,
             partialSchemas,
             key,
@@ -202,12 +194,11 @@ export function hatchifyReact<
   }
 }
 
-// todo: leaving for testing, remove before merge to main
+// todo: leaving for testing, remove once core no longer has `ts-expect-error`s
 // const schemas = {
-//   Admin_Todo: {
+//   Todo: {
 //     name: "Todo",
 //     displayAttribute: "title",
-//     namespace: "Admin",
 //     attributes: {
 //       title: string(),
 //       reqTitle: string({ required: true }),
@@ -219,18 +210,18 @@ export function hatchifyReact<
 //       optCreated: datetime(),
 //     },
 //     relationships: {
-//       user: belongsTo("Admin_User"),
+//       user: belongsTo("User"),
 //     },
 //   },
-//   Admin_User: {
-//     name: "Admin_User",
+//   User: {
+//     name: "User",
 //     attributes: {
 //       name: string({ required: true }),
 //       age: integer({ required: true }),
 //       employed: boolean(),
 //     },
 //     relationships: {
-//       todos: hasMany("Admin_Todo"),
+//       todos: hasMany("Todo").through(),
 //     },
 //   },
 // } satisfies Record<string, PartialSchema>
@@ -239,18 +230,12 @@ export function hatchifyReact<
 //   completeSchemaMap: schemas,
 // } as RestClient<typeof schemas, any>)
 
-// type App = {
-//   app: HatchifyApp<typeof schemas>
-// }
-
 // app.model.Todo.createOne({
-//   attributes: {
-//     reqTitle: "",
-//     age: 1,
-//     important: true,
-//     created: new Date(),
-//     shouldError: false,
-//   },
+//   reqTitle: "",
+//   age: 1,
+//   important: true,
+//   created: new Date(),
+//   shouldError: false,
 // })
 
 // app.model.User.findAll({}).then(([records]) => {
@@ -260,19 +245,19 @@ export function hatchifyReact<
 //   records[0].shouldError
 // })
 
-// const state = app.state.Admin_Todo.useCollectionState({
+// const state = app.state.Admin_Todo.useDataGridState({
 //   include: ["user"],
 //   baseFilter: [{ field: "age", operator: ">", value: 1 }],
 // })
 // state.data.map((_todo) => {
-//   _todo.
+//   _todo
 // })
 // state.data[0].id
 // state.data[0].age
 // state.data[0].optAge
 // state.data[0].shouldError
 
-// const TodoList = app.components.Todo.Collection
+// const TodoList = app.components.Todo.DataGrid
 // const TodoColumn = app.components.Todo.Column
 
 // function AgeComponent() {
@@ -283,11 +268,9 @@ export function hatchifyReact<
 //   return (
 //     <TodoList>
 //       <TodoColumn
-//         // field="age"
+//         field="age"
 //         label="Age"
-//         type="append"
-//         renderValue={({ record }) => <div>{record.asdfa}</div>}
-//         // ValueComponent={AgeComponent}
+//         renderDataValue={({ record }) => <div>{record.asdfa}</div>}
 //       />
 //     </TodoList>
 //   )

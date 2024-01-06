@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { GetSchemaNames, Include } from "@hatchifyjs/rest-client"
-import { useCollectionState } from "../../../hooks/index.js"
-import { getDefaultInclude } from "../../HatchifyCollection/index.js"
+import { useDataGridState } from "../../../hooks/index.js"
+import { getDefaultInclude } from "../../HatchifyDataGrid/index.js"
 import { useHatchifyPresentation } from "../../HatchifyPresentationProvider/index.js"
 import type { HatchifyEverythingProps } from "../HatchifyEverything.js"
 
@@ -41,7 +41,7 @@ export function WithSchemas<
   const [selectedSchema, setSelectedSchema] = useState(schemasList[0])
   const { Everything } = useHatchifyPresentation()
 
-  const collectionState = useCollectionState(
+  const dataGridState = useDataGridState(
     finalSchemas,
     partialSchemas,
     selectedSchema,
@@ -58,7 +58,7 @@ export function WithSchemas<
 
   return (
     <Everything
-      {...collectionState}
+      {...dataGridState}
       schemaName={selectedSchema as string}
       setSelectedSchema={setSelectedSchema}
     />
