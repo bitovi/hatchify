@@ -155,7 +155,12 @@
     ],
     "testEnvironment": "node",
     "transform": {
-      ".+\\.ts$": ["ts-jest", { "useESM": true }]
+      ".+\\.ts$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
+      ]
     },
     "modulePathIgnorePatterns": [
       "<rootDir>/src/testing"
