@@ -21,7 +21,7 @@ export const Todo = {
 | `required` | If the attribute must be provided. <br/> Example: `enumerate({required: true, values:[...])`      |   `Boolean`    |   Yes    |   `false`   |
 | `unique`   | If the attribute must be unique. <br/> Example: `enumerate({unique: true, values:[...]})`         |   `Boolean`    |   Yes    |   `false`   |
 
-## Database and Sequelize Behavior
+## Database Implications
 
 The `enumerate` type will create a sequelize [DataTypes.ENUM](https://sequelize.org/docs/v6/other-topics/other-data-types/#enums) column.
 

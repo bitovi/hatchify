@@ -24,7 +24,7 @@ export const Todo = {
 | `min`           | The minimum value allowed. <br/> Example: `integer({min: 1})`                       | `Integer` |   Yes    | `-Number.MIN_SAFE_INTEGER` 🛑 |
 | `autoIncrement` | If the value should be incremented. <br/> Example: `integer({autoIncrement: true})` | `Boolean` |   Yes    |            `false`            |
 
-## Database and Sequelize Behavior
+## Database Implications
 
 The `integer` type will create a sequelize [DataTypes.INTEGER](https://sequelize.org/docs/v6/core-concepts/model-basics/#numbers) column.
 

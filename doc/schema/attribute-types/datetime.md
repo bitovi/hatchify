@@ -25,7 +25,7 @@ Use [dateonly](./dateonly.md) for a date type without time.
 | `min`      | The min date allowed. <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
 | `step`     | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`   |    `"day"`     |   Yes    | `undefined` |
 
-## Database and Sequelize Behavior
+## Database Implications
 
 The `datetime` type will create sequelize [DataTypes.DATE](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) column.
 
