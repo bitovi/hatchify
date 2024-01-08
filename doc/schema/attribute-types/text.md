@@ -43,7 +43,7 @@ GET /api/todos?filter[notes][$ilike]=%25is%20super%25 //all todos with notes tha
 ```
 
 Note:
-`%25` is the ASCII value for `%`, and serves as a wildcard in `ilike` queries
+`%25` is the ASCII value for `%`, and serves as a wildcard in `ilike` queries.
 `%20` is the ASCII value for space.
 
 ### Data Response
@@ -85,6 +85,6 @@ To provide better table behavior for columns with large amounts of text the `max
 
 ![Grid Example](../../attachments/text-grid.png)
 
-## Form Behavior
+## Form Behavior 🛑
 
 `text()` will produce a [`<textarea>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) control.

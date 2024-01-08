@@ -119,7 +119,7 @@ const AcmeCorp_SalesPerson = {
 **API Impliciations**
 
 - This will create an acme-corp/sales-persons API
-- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
+- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: `GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name`
 - Data will be returned like:
   ```
   {
@@ -133,7 +133,7 @@ const AcmeCorp_SalesPerson = {
 
 **Returned Models Implications**
 
-hatchifyKoa({AcmeCorp_SalesPerson}) returns models.AcmeCorp_SalesPerson
+`hatchifyKoa({AcmeCorp_SalesPerson})` returns `models.AcmeCorp_SalesPerson`
 
 ### Schema.attributes.ATTRIBUTE_NAME
 
@@ -280,7 +280,7 @@ There are no changes to the API.
 
 ### relationships.hasMany
 
-`target`is required. `target` must match a `Schema.name` and be _Singular PascalCase_.
+`target` is required. `target` must match a `Schema.name` and be _Singular PascalCase_.
 
 ```js
 const SalesPerson = {
