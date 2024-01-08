@@ -11,14 +11,14 @@ Accept: application/vnd.api+json
 
 {
   "data": {
-    "type": "photos",
+    "type": "Photo",
     "attributes": {
       "title": "Ember Hamster",
       "src": "http://example.com/images/productivity.png"
     },
     "relationships": {
       "photographer": {
-        "data": { "type": "people", "id": "9" }
+        "data": { "type": "Person", "id": "3997586b-b1e6-416c-88cf-1fd9a689b298" }
       }
     }
   }

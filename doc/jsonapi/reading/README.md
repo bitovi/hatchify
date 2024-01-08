@@ -50,22 +50,25 @@ HTTP/1.1 200 OK
 Content-Type: application/vnd.api+json
 
 {
-  "links": {
-    "self": "http://example.com/articles"
-  },
-  "data": [{
-    "type": "articles",
-    "id": "1",
-    "attributes": {
-      "title": "JSON:API paints my bikeshed!"
+  "data": [
+    {
+      "type": "Article",
+      "id": "8b3d26bc-41d4-46dc-9078-62bdce8d8e2e",
+      "attributes": {
+        "title": "JSON:API paints my bikeshed!"
+      }
+    },
+    {
+      "type": "Article",
+      "id": "9cc02fb6-e2fc-45d1-ac0a-6f1f4e0be38c",
+      "attributes": {
+        "title": "Rails is Omakase"
+      }
     }
-  }, {
-    "type": "articles",
-    "id": "2",
-    "attributes": {
-      "title": "Rails is Omakase"
-    }
-  }]
+  ],
+  "meta": {
+    "unpaginatedCount": 2
+  }
 }
 ```
 
@@ -76,10 +79,10 @@ HTTP/1.1 200 OK
 Content-Type: application/vnd.api+json
 
 {
-  "links": {
-    "self": "http://example.com/articles"
-  },
-  "data": []
+  "data": [],
+  "meta": {
+    "unpaginatedCount": 0
+  }
 }
 ```
 
@@ -115,7 +118,7 @@ GET /api/articles/1?include=comments.author HTTP/1.1
 Accept: application/vnd.api+json
 ```
 
-Note: Because compound documents require full linkage (except when relationship linkage is excluded by sparse fieldsets), intermediate resources in a multi-part path must be returned along with the leaf nodes. For example, a response to a request for comments.author should include comments as well as the author of each of those comments.
+Note: Because compound documents require full linkage (except when relationship linkage is excluded by sparse fields), intermediate resources in a multi-part path must be returned along with the leaf nodes. For example, a response to a request for comments.author should include comments as well as the author of each of those comments.
 
 Note: A server may choose to expose a deeply nested relationship such as comments.author as a direct relationship with an alternative name such as commentAuthors. This would allow a client to request /articles/1?include=commentAuthors instead of /articles/1?include=comments.author. By exposing the nested relationship with an alternative name, the server can still provide full linkage in compound documents without including potentially unwanted intermediate resources.
 
@@ -137,7 +140,9 @@ In this case, the primary data would be a collection of resource identifier obje
 
 Note: This section applies to any endpoint that responds with primary data, regardless of the request type. For instance, a server could support the inclusion of related resources along with a POST request to create a resource or relationship.
 
-### Sparse Fieldsets
+[Hatchify additions to relationships](./relationships/README.md)
+
+### Sparse Fields
 
 A client MAY request that an endpoint return only specific fields in the response on a per-type basis by including a fields[TYPE] query parameter.
 
@@ -154,7 +159,9 @@ Accept: application/vnd.api+json
 
 Note: The above example URI shows unencoded [ and ] characters simply for readability. In practice, these characters should be percent-encoded. See “Square Brackets in Parameter Names”.
 
-Note: This section applies to any endpoint that responds with resources as primary or included data, regardless of the request type. For instance, a server could support sparse fieldsets along with a POST request to create a resource.
+Note: This section applies to any endpoint that responds with resources as primary or included data, regardless of the request type. For instance, a server could support sparse fields along with a POST request to create a resource.
+
+[Hatchify additions to sparse fields](./sparse-fields/README.md)
 
 ### Sorting
 
@@ -193,6 +200,8 @@ If sorting is supported by the server and requested by the client via query para
 
 Note: This section applies to any endpoint that responds with a resource collection as primary data, regardless of the request type.
 
+[Hatchify additions to sorting](./sorting/README.md)
+
 ### Pagination
 
 A server MAY choose to limit the number of resources returned in a response to a subset (“page”) of the whole set available.
@@ -221,3 +230,5 @@ Filtering
 The filter query parameter family is reserved for filtering data. Servers and clients SHOULD use these parameters for filtering operations.
 
 `Note`: JSON API is agnostic about the strategies supported by a server.
+
+[Hatchify additions to pagination](./paginating/README.md)

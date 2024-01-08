@@ -20,30 +20,30 @@ All examples use this example data:
     "data": [
         {
             "type": "Todo",
-            "id": "1",
+            "id": "11111111-1111-1111-1111-111111111111",
             "attributes": {
                 "name": "Workout",
-                "dueDate": "2024-12-12T06:00:00.000Z",
+                "dueDate": "2024-12-12",
                 "importance": 6,
                 "completed": false
             },
         },
         {
             "type": "Todo",
-            "id": "2",
+            "id": "22222222-2222-2222-2222-222222222222",
             "attributes": {
                 "name": "take out trash",
-                "dueDate": "2023-05-09T05:00:00.000Z",
+                "dueDate": "2023-05-09",
                 "importance": 9,
                 "completed": false
             },
         },
         {
             "type": "Todo",
-            "id": "3",
+            "id": "33333333-3333-3333-3333-333333333333",
             "attributes": {
                 "name": "buy more icecream",
-                "dueDate": "2023-07-20T05:00:00.000Z",
+                "dueDate": "2023-07-20",
                 "importance": 9,
                 "completed": true
             },
@@ -60,30 +60,30 @@ This filter will match the following records:<br>
 
         {
             "type": "Todo",
-            "id": "1",
+            "id": "11111111-1111-1111-1111-111111111111",
             "attributes": {
                 "name": "Workout",
-                "dueDate": "2024-12-12T06:00:00.000Z",
+                "dueDate": "2024-12-12",
                 "importance": 6,
                 "completed": false
             },
         },
         {
             "type": "Todo",
-            "id": "2",
+            "id": "22222222-2222-2222-2222-222222222222",
             "attributes": {
                 "name": "take out trash",
-                "dueDate": "2023-05-09T05:00:00.000Z",
+                "dueDate": "2023-05-09",
                 "importance": 9,
                 "completed": false
             },
         },
         {
             "type": "Todo",
-            "id": "3",
+            "id": "33333333-3333-3333-3333-333333333333",
             "attributes": {
                 "name": "buy more icecream",
-                "dueDate": "2023-07-20T05:00:00.000Z",
+                "dueDate": "2023-07-20",
                 "importance": 9,
                 "completed": true
             },
@@ -98,30 +98,30 @@ This filter will match the following records:<br>
 ```json
         {
             "type": "Todo",
-            "id": "1",
+            "id": "11111111-1111-1111-1111-111111111111",
             "attributes": {
                 "name": "Workout",
-                "dueDate": "2024-12-12T06:00:00.000Z",
+                "dueDate": "2024-12-12",
                 "importance": 6,
                 "completed": false
             },
         },
         {
             "type": "Todo",
-            "id": "2",
+            "id": "22222222-2222-2222-2222-222222222222",
             "attributes": {
                 "name": "take out trash",
-                "dueDate": "2023-05-09T05:00:00.000Z",
+                "dueDate": "2023-05-09",
                 "importance": 9,
                 "completed": false
             },
         },
         {
             "type": "Todo",
-            "id": "3",
+            "id": "33333333-3333-3333-3333-333333333333",
             "attributes": {
                 "name": "buy more icecream",
-                "dueDate": "2023-07-20T05:00:00.000Z",
+                "dueDate": "2023-07-20",
                 "importance": 9,
                 "completed": true
             },
@@ -141,10 +141,10 @@ This filter will match the following records:<br>
 ```json
         {
             "type": "Todo",
-            "id": "1",
+            "id": "11111111-1111-1111-1111-111111111111",
             "attributes": {
                 "name": "Workout",
-                "dueDate": "2024-12-12T06:00:00.000Z",
+                "dueDate": "2024-12-12",
                 "importance": 6,
                 "completed": false
             },
@@ -159,30 +159,30 @@ This filter will match the following records:<br>
 ```json
         {
             "type": "Todo",
-            "id": "1",
+            "id": "11111111-1111-1111-1111-111111111111",
             "attributes": {
                 "name": "Workout",
-                "dueDate": "2024-12-12T06:00:00.000Z",
+                "dueDate": "2024-12-12",
                 "importance": 6,
                 "completed": false
             },
         },
         {
             "type": "Todo",
-            "id": "2",
+            "id": "22222222-2222-2222-2222-222222222222",
             "attributes": {
                 "name": "take out trash",
-                "dueDate": "2023-05-09T05:00:00.000Z",
+                "dueDate": "2023-05-09",
                 "importance": 9,
                 "completed": false
             },
         },
         {
             "type": "Todo",
-            "id": "3",
+            "id": "33333333-3333-3333-3333-333333333333",
             "attributes": {
                 "name": "buy more icecream",
-                "dueDate": "2023-07-20T05:00:00.000Z",
+                "dueDate": "2023-07-20",
                 "importance": 9,
                 "completed": true
             },

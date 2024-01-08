@@ -15,8 +15,8 @@ Accept: application/vnd.api+json
 
 {
   "data": {
-    "type": "articles",
-    "id": "1",
+    "type": "Article",
+    "id": "8ff0beed-2585-4391-8735-cc560eaf287e",
     "attributes": {
       "title": "To TDD or Not"
     }
@@ -39,8 +39,8 @@ Accept: application/vnd.api+json
 
 {
   "data": {
-    "type": "articles",
-    "id": "1",
+    "type": "Article",
+    "id": "8ff0beed-2585-4391-8735-cc560eaf287e",
     "attributes": {
       "title": "To TDD or Not",
       "text": "TLDR; It's complicated... but check your test coverage regardless."
