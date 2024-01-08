@@ -2,8 +2,8 @@ import { assembler, integer } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import JSONAPISerializer from "json-api-serializer"
 
-import { convertHatchifyModels } from "./convertHatchifyModels"
-import { createSequelizeInstance } from "./createSequelizeInstance"
+import { convertHatchifyModels } from "./convertHatchifyModels.js"
+import { createSequelizeInstance } from "./createSequelizeInstance.js"
 
 describe("convertHatchifyModels", () => {
   const sequelize = createSequelizeInstance()

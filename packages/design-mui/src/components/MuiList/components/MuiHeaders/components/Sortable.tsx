@@ -1,5 +1,5 @@
 import type { Meta } from "@hatchifyjs/rest-client"
-import { Sort } from "./Sort"
+import { Sort } from "./Sort.js"
 import type { HatchifyColumn, HeaderProps } from "@hatchifyjs/react-ui"
 
 export const Sortable: React.FC<

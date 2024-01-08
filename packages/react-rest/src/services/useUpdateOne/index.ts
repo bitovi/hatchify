@@ -1,1 +1,1 @@
-export * from "./useUpdateOne"
+export * from "./useUpdateOne.js"

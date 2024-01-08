@@ -3,7 +3,7 @@ import { createElement } from "react"
 import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import { assembler, string, text } from "@hatchifyjs/core"
-import { MuiList } from "./MuiList"
+import { MuiList } from "./MuiList.js"
 
 describe("components/MuiList", () => {
   const partialSchemas = {

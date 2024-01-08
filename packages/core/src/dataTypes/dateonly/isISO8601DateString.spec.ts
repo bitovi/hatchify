@@ -1,4 +1,4 @@
-import { isISO8601DateString } from "./isISO8601DateString"
+import { isISO8601DateString } from "./isISO8601DateString.js"
 
 describe("isISO8601DateString", () => {
   it("validates date strings correctly", () => {

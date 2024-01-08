@@ -8,12 +8,12 @@ import type {
   RecordType,
   FinalSchemas,
   Filters,
-} from "../../types"
+} from "../../types/index.js"
 import {
   SchemaNameNotStringError,
   schemaNameIsString,
   flattenResourcesIntoRecords,
-} from "../../utils"
+} from "../../utils/index.js"
 
 /**
  * Fetches a list of resources from a data source, inserts them into the store,

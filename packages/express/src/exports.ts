@@ -1,4 +1,4 @@
-export * from "./express"
+export * from "./express.js"
 
 export type { NextFunction, Request, Response } from "express"
 export type {
@@ -42,4 +42,4 @@ export type {
   WhereOptions,
 } from "@hatchifyjs/node"
 
-export type { MiddlewareFunctionsExpress } from "./middleware/express"
+export type { MiddlewareFunctionsExpress } from "./middleware/express.js"

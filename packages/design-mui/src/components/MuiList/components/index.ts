@@ -1,3 +1,3 @@
-export { default as MuiBody } from "./MuiBody"
-export { default as MuiBodySkeleton } from "./MuiBodySkeleton"
-export { default as MuiHeaders } from "./MuiHeaders"
+export { default as MuiBody } from "./MuiBody.js"
+export { default as MuiBodySkeleton } from "./MuiBodySkeleton.js"
+export { default as MuiHeaders } from "./MuiHeaders/index.js"

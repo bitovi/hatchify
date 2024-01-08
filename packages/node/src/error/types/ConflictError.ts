@@ -1,5 +1,5 @@
-import { HatchifyError } from "./HatchifyError"
-import { codes, statusCodes } from "../constants"
+import { HatchifyError } from "./HatchifyError.js"
+import { codes, statusCodes } from "../constants.js"
 
 export class ConflictError extends HatchifyError {
   constructor({ pointer }: { pointer: string }) {

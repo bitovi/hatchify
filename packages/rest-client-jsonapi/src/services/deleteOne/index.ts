@@ -1,1 +1,1 @@
-export * from "./deleteOne"
+export * from "./deleteOne.js"

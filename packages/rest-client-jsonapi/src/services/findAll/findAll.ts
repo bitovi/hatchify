@@ -13,12 +13,12 @@ import {
   SchemaNameNotStringError,
   schemaNameIsString,
 } from "@hatchifyjs/rest-client"
-import type { JsonApiResource } from "../jsonapi"
+import type { JsonApiResource } from "../jsonapi/index.js"
 import {
   convertToHatchifyResources,
   fetchJsonApi,
   getQueryParams,
-} from "../utils"
+} from "../utils/index.js"
 
 /**
  * Fetches a list of resources, adds the __schema to each resource, and

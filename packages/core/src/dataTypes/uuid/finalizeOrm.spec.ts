@@ -1,4 +1,4 @@
-import { finalizeOrm } from "./finalizeOrm"
+import { finalizeOrm } from "./finalizeOrm.js"
 
 describe("finalizeOrm", () => {
   it("handles allowNull", () => {

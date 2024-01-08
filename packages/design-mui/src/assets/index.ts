@@ -1,1 +1,1 @@
-export { Robochicken } from "./Robochicken"
+export { Robochicken } from "./Robochicken.js"

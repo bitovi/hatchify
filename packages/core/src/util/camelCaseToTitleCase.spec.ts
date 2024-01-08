@@ -1,4 +1,4 @@
-import { camelCaseToTitleCase } from "./camelCaseToTitleCase"
+import { camelCaseToTitleCase } from "./camelCaseToTitleCase.js"
 
 describe("camelCaseToTitleCase", () => {
   it("works as expected", () => {

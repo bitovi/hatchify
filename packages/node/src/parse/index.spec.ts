@@ -10,14 +10,14 @@ import {
 import type { PartialSchema } from "@hatchifyjs/core"
 import { Op } from "sequelize"
 
-import { RelationshipPathError, UnexpectedValueError } from "../error"
-import { Hatchify } from "../node"
+import { RelationshipPathError, UnexpectedValueError } from "../error/index.js"
+import { Hatchify } from "../node.js"
 
 import {
   buildParserForModel,
   buildParserForModelStandalone,
   restoreIds,
-} from "."
+} from "./index.js"
 
 const RelationshipPathDetail =
   "URL must have 'include' as one or more of 'user'."

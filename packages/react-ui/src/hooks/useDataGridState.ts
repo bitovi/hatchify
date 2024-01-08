@@ -17,11 +17,11 @@ import type {
   HatchifyDataGridSelected,
   HatchifyDataGridSort,
   SortObject,
-} from "../presentation"
-import usePage from "./usePage"
-import useSort from "./useSort"
-import useSelected from "./useSelected"
-import useFilter from "./useFilter"
+} from "../presentation/index.js"
+import usePage from "./usePage.js"
+import useSort from "./useSort.js"
+import useSelected from "./useSelected.js"
+import useFilter from "./useFilter.js"
 
 export interface DataGridState<
   TSchemas extends Record<string, PartialSchema>,

@@ -1,5 +1,5 @@
 import type { RequestMetaData } from "@hatchifyjs/rest-client"
-import type { JsonApiResource } from "../../jsonapi"
+import type { JsonApiResource } from "../../jsonapi/index.js"
 
 /**
  * Helper function for making fetch requests to a JSON:API backend.

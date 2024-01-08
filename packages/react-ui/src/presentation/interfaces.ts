@@ -1,7 +1,7 @@
 import type { GetSchemaNames, Filters, Meta } from "@hatchifyjs/rest-client"
-import type { DataGridState } from "../hooks/useDataGridState"
+import type { DataGridState } from "../hooks/useDataGridState.js"
 import type { FinalAttributeRecord, PartialSchema } from "@hatchifyjs/core"
-import type { HatchifyColumn } from "../hooks"
+import type { HatchifyColumn } from "../hooks/index.js"
 
 export type Primitive = string | boolean | number
 

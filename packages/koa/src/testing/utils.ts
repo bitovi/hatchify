@@ -6,7 +6,7 @@ import Koa from "koa"
 import type { Dialect } from "sequelize"
 import request from "supertest"
 
-import { Hatchify, errorHandlerMiddleware } from "../koa"
+import { Hatchify, errorHandlerMiddleware } from "../koa.js"
 
 type Method = "get" | "post" | "patch" | "delete"
 

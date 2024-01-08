@@ -7,8 +7,8 @@ import {
   hasMany,
   string,
 } from "@hatchifyjs/core"
-import { getDefaultDataRender } from "."
-import { HatchifyPresentationDefaultValueComponents } from "../../../components"
+import { getDefaultDataRender } from "./index.js"
+import { HatchifyPresentationDefaultValueComponents } from "../../../components/index.js"
 
 /* eslint-disable testing-library/render-result-naming-convention */
 describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {

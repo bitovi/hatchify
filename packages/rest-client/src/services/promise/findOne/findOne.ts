@@ -6,12 +6,12 @@ import type {
   RecordType,
   GetSchemaFromName,
   FinalSchemas,
-} from "../../types"
+} from "../../types/index.js"
 import {
   SchemaNameNotStringError,
   schemaNameIsString,
   flattenResourcesIntoRecords,
-} from "../../utils"
+} from "../../utils/index.js"
 
 /**
  * Fetches a single resource from a data source, inserts it into the store,

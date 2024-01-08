@@ -1,18 +1,36 @@
-import { describe, expect, it, vi } from "vitest"
-import { rest } from "msw"
+import {
+  describe,
+  expect,
+  it,
+  vi,
+  beforeAll,
+  afterEach,
+  afterAll,
+} from "vitest"
+import { http } from "msw"
 import {
   baseUrl,
   finalSchemas,
   partialSchemas,
   restClientConfig,
-} from "../../mocks/handlers"
-import { server } from "../../mocks/server"
-import jsonapi from "../../rest-client-jsonapi"
-import { createOne } from "./createOne"
-import { convertToHatchifyResources } from "../utils"
-import type { JsonApiResource } from "../jsonapi"
+} from "../../mocks/handlers.js"
+import { server } from "../../mocks/server.js"
+import jsonapi from "../../rest-client-jsonapi.js"
+import { createOne } from "./createOne.js"
+import { convertToHatchifyResources } from "../utils/index.js"
+import type { JsonApiResource } from "../jsonapi/index.js"
 
 describe("rest-client-jsonapi/services/createOne", () => {
+  beforeAll(() => {
+    server.listen()
+  })
+  afterEach(() => {
+    server.resetHandlers()
+  })
+  afterAll(() => {
+    server.close()
+  })
+
   it("works", async () => {
     const data = { __schema: "Article", attributes: { title: "Hello, World!" } }
 
@@ -52,13 +70,13 @@ describe("rest-client-jsonapi/services/createOne", () => {
     ]
 
     server.use(
-      rest.post(`${baseUrl}/articles`, (_, res, ctx) =>
-        res.once(
-          ctx.status(500),
-          ctx.json({
-            errors,
+      http.post(
+        `${baseUrl}/articles`,
+        () =>
+          new Response(JSON.stringify({ errors }), {
+            status: 500,
           }),
-        ),
+        { once: true },
       ),
     )
 

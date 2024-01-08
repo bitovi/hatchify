@@ -1,4 +1,4 @@
-import { dateonly } from "."
+import { dateonly } from "./index.js"
 
 describe("getFinalize", () => {
   it("finalizes a partial attribute", () => {

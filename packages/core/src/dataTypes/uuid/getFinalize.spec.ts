@@ -1,6 +1,6 @@
-import { UUID_REGEX } from "./constants"
+import { UUID_REGEX } from "./constants.js"
 
-import { uuid } from "."
+import { uuid } from "./index.js"
 
 describe("getFinalize", () => {
   it("finalizes a partial attribute", () => {

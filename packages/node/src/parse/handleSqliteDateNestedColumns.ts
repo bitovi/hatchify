@@ -1,8 +1,8 @@
 import { isISO8601DatetimeString } from "@hatchifyjs/core"
 import type { Dialect, FindOptions } from "sequelize"
 
-import type { QueryStringParser } from "./builder"
-import { walk } from "./walk"
+import type { QueryStringParser } from "./builder.js"
+import { walk } from "./walk.js"
 
 function iso8601ToRfc3339(iso8601String: string): string {
   return iso8601String.replace("T", " ").replace("Z", " +00:00")

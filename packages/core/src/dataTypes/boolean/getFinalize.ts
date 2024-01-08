@@ -1,17 +1,17 @@
-import { coerce } from "./coerce"
-import { finalizeControl } from "./finalizeControl"
-import { finalizeOrm } from "./finalizeOrm"
+import { coerce } from "./coerce.js"
+import { finalizeControl } from "./finalizeControl.js"
+import { finalizeOrm } from "./finalizeOrm.js"
 import type {
   FinalBooleanORM,
   PartialBooleanControlType,
   PartialBooleanORM,
-} from "./types"
-import { HatchifyCoerceError } from "../../types"
+} from "./types.js"
+import { HatchifyCoerceError } from "../../types/index.js"
 import type {
   FinalAttribute,
   PartialAttribute,
   ValueInRequest,
-} from "../../types"
+} from "../../types/index.js"
 
 export function getFinalize(
   props: PartialAttribute<

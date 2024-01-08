@@ -1,5 +1,8 @@
 import { useState } from "react"
-import type { HatchifyDataGridPage, PageCountObject } from "../presentation"
+import type {
+  HatchifyDataGridPage,
+  PageCountObject,
+} from "../presentation/index.js"
 import type { PaginationObject } from "@hatchifyjs/rest-client"
 
 // todo (future): customizable pagination.size?

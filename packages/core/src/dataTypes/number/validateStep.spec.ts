@@ -1,4 +1,4 @@
-import { validateStep } from "./validateStep"
+import { validateStep } from "./validateStep.js"
 
 describe("validateStep", () => {
   it("without step", () => {

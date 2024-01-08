@@ -8,7 +8,7 @@ import {
 } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
-import { dbDialects, startServerWith } from "./testing/utils"
+import { dbDialects, startServerWith } from "./testing/utils.js"
 
 describe.each(dbDialects)("Error Code Tests", (dialect) => {
   describe(`${dialect}`, () => {

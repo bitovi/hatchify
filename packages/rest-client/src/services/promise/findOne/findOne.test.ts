@@ -1,14 +1,14 @@
 import { afterEach, describe, it, expect } from "vitest"
-import { createStore } from "../../store"
-import { findOne } from "./findOne"
-import { flattenResourcesIntoRecords } from "../../utils"
+import { createStore } from "../../store/index.js"
+import { findOne } from "./findOne.js"
+import { flattenResourcesIntoRecords } from "../../utils/index.js"
 import {
   fakeDataSource,
   testDataRecords,
   testDataRelatedRecords,
   testFinalSchemas,
-} from "../../mocks/testData"
-import type { testPartialSchemas } from "../../mocks/testData"
+} from "../../mocks/testData.js"
+import type { testPartialSchemas } from "../../mocks/testData.js"
 
 describe("rest-client/promise", () => {
   afterEach(() => {

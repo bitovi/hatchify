@@ -1,1 +1,1 @@
-export { default as MuiEverything } from "./MuiEverything"
+export { default as MuiEverything } from "./MuiEverything.js"

@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest"
-import { createStore } from "../../store"
-import { updateOne } from "./updateOne"
-import { flattenResourcesIntoRecords } from "../../utils"
+import { createStore } from "../../store/index.js"
+import { updateOne } from "./updateOne.js"
+import { flattenResourcesIntoRecords } from "../../utils/index.js"
 import {
   fakeDataSource,
   testDataRecords,
   testFinalSchemas,
-} from "../../mocks/testData"
-import type { testPartialSchemas } from "../../mocks/testData"
+} from "../../mocks/testData.js"
+import type { testPartialSchemas } from "../../mocks/testData.js"
 
 describe("rest-client/services/promise/updateOne", () => {
   const updateData = { id: "todo-1", title: "foo" }

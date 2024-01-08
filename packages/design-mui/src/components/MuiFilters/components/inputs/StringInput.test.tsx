@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
-import StringInput from "./StringInput"
+import StringInput from "./StringInput.js"
 
 describe("components/MuiFilters/inputs/StringInput", () => {
   it("works", async () => {

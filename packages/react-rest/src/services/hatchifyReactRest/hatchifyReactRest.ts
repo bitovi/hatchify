@@ -29,7 +29,13 @@ import {
   findAll,
   findOne,
 } from "@hatchifyjs/rest-client"
-import { useAll, useCreateOne, useOne, useUpdateOne, useDeleteOne } from ".."
+import {
+  useAll,
+  useCreateOne,
+  useOne,
+  useUpdateOne,
+  useDeleteOne,
+} from "../index.js"
 
 export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
   {

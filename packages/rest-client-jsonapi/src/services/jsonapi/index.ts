@@ -1,1 +1,1 @@
-export * from "./jsonapi"
+export * from "./jsonapi.js"

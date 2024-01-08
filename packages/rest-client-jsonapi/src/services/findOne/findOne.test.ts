@@ -1,19 +1,37 @@
-import { describe, expect, it, vi } from "vitest"
-import { rest } from "msw"
+import {
+  describe,
+  expect,
+  it,
+  vi,
+  beforeAll,
+  afterEach,
+  afterAll,
+} from "vitest"
+import { http } from "msw"
 import {
   baseUrl,
   finalSchemas,
   partialSchemas,
   restClientConfig,
   testData,
-} from "../../mocks/handlers"
-import { server } from "../../mocks/server"
-import jsonapi from "../../rest-client-jsonapi"
-import { findOne } from "./findOne"
-import { convertToHatchifyResources } from "../utils"
-import type { JsonApiResource } from "../jsonapi"
+} from "../../mocks/handlers.js"
+import { server } from "../../mocks/server.js"
+import jsonapi from "../../rest-client-jsonapi.js"
+import { findOne } from "./findOne.js"
+import { convertToHatchifyResources } from "../utils/index.js"
+import type { JsonApiResource } from "../jsonapi/index.js"
 
 describe("rest-client-jsonapi/services/findOne", () => {
+  beforeAll(() => {
+    server.listen()
+  })
+  afterEach(() => {
+    server.resetHandlers()
+  })
+  afterAll(() => {
+    server.close()
+  })
+
   const query = { id: "article-id-1", fields: {}, include: [] }
 
   it("works", async () => {
@@ -45,8 +63,13 @@ describe("rest-client-jsonapi/services/findOne", () => {
     ]
 
     server.use(
-      rest.get(`${baseUrl}/articles/article-id-1`, (_, res, ctx) =>
-        res.once(ctx.status(500), ctx.json({ errors })),
+      http.get(
+        `${baseUrl}/articles/article-id-1`,
+        () =>
+          new Response(JSON.stringify({ errors }), {
+            status: 500,
+          }),
+        { once: true },
       ),
     )
 

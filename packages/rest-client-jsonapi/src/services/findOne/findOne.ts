@@ -15,8 +15,8 @@ import {
   convertToHatchifyResources,
   fetchJsonApi,
   getQueryParams,
-} from "../utils"
-import type { JsonApiResource } from "../jsonapi"
+} from "../utils/index.js"
+import type { JsonApiResource } from "../jsonapi/index.js"
 
 /**
  * Fetches a single resource, adds the __schema to the request response,

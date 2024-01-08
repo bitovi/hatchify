@@ -7,15 +7,15 @@ import type {
   GetSchemaFromName,
   RecordType,
   FlatCreateType,
-} from "../../types"
-import { notifySubscribers } from "../../store"
+} from "../../types/index.js"
+import { notifySubscribers } from "../../store/index.js"
 import {
   SchemaNameNotStringError,
   schemaNameIsString,
   serializeClientPropertyValuesForRequest,
   flattenResourcesIntoRecords,
   unflattenData,
-} from "../../utils"
+} from "../../utils/index.js"
 
 /**
  * Creates a new resource in the data source, notifies subscribers,

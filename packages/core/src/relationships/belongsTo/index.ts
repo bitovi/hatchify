@@ -1,4 +1,4 @@
-import type { PartialBelongsToRelationship } from "./types"
+import type { PartialBelongsToRelationship } from "./types.js"
 
 // @todo HATCH-417
 export function belongsTo<TTargetSchema extends string | undefined | null>(

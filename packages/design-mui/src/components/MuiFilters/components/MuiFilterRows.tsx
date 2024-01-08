@@ -1,13 +1,13 @@
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
-import CloseIcon from "@mui/icons-material/Close"
+import CloseIcon from "@mui/icons-material/Close.js"
 import type { FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FilterArray, FinalSchemas } from "@hatchifyjs/rest-client"
-import type { FilterableControls, Operators, Option } from "../constants"
-import ColumnSelect from "./inputs/ColumnSelect"
-import OperatorSelect from "./inputs/OperatorSelect"
-import ValueInput from "./inputs/ValueInput"
-import { operatorOptionsByType } from "../constants"
+import type { FilterableControls, Operators, Option } from "../constants.js"
+import ColumnSelect from "./inputs/ColumnSelect.js"
+import OperatorSelect from "./inputs/OperatorSelect.js"
+import ValueInput from "./inputs/ValueInput.js"
+import { operatorOptionsByType } from "../constants.js"
 
 type ChangeParams =
   | {

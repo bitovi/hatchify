@@ -8,7 +8,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/react-ui.ts",
-      formats: ["es", "cjs"],
+      formats: ["es"],
     },
     rollupOptions: {
       external: [

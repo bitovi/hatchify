@@ -1,4 +1,4 @@
-import type { FinalSchemas } from "../types"
+import type { FinalSchemas } from "../types/index.js"
 
 /**
  * Coerces the value from the server into the value expected by the client.

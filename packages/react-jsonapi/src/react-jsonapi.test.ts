@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { reactJsonapi } from "./react-jsonapi"
+import { reactJsonapi } from "./react-jsonapi.js"
 import { hasMany, integer } from "@hatchifyjs/core"
 
 const TestSchema = {

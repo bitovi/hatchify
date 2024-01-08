@@ -1,4 +1,4 @@
-import { buildThrough } from "./buildThrough"
+import { buildThrough } from "./buildThrough.js"
 
 describe("buildThrough", () => {
   it("accepts null targetSchema", () => {

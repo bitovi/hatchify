@@ -1,9 +1,9 @@
-import type { PartialSchema } from "./types"
-import { integer, uuid } from "../dataTypes"
-import { HatchifyInvalidSchemaError } from "../types"
-import { uuidv4 } from "../util/uuidv4"
+import type { PartialSchema } from "./types.js"
+import { integer, uuid } from "../dataTypes/index.js"
+import { HatchifyInvalidSchemaError } from "../types/index.js"
+import { uuidv4 } from "../util/uuidv4.js"
 
-import { assembler } from "."
+import { assembler } from "./index.js"
 
 describe("assembler", () => {
   describe("assembler", () => {

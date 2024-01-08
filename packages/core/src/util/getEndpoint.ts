@@ -1,6 +1,6 @@
-import { pascalCaseToKebabCase } from "./pascalCaseToKebabCase"
-import { pluralize } from "./pluralize"
-import type { FinalSchema } from "../types"
+import { pascalCaseToKebabCase } from "./pascalCaseToKebabCase.js"
+import { pluralize } from "./pluralize.js"
+import type { FinalSchema } from "../types/index.js"
 
 export function getEndpoint(
   schema: Pick<FinalSchema, "name" | "namespace" | "pluralName">,

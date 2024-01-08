@@ -1,33 +1,22 @@
 {
   "name": "@hatchifyjs/rest-client",
   "version": "0.1.14",
-  "main": "./dist/rest-client.js",
-  "module": "./dist/rest-client.mjs",
+  "type": "module",
+  "exports": "./dist/rest-client.js",
   "types": "./dist/rest-client.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/rest-client.js",
-      "import": "./dist/rest-client.mjs",
-      "types": "./dist/rest-client.d.ts"
-    },
-    "./package.json": "./package.json"
-  },
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint vite.config.ts src",
+    "eslint": "eslint src",
     "depcheck": "depcheck .",
-    "dev": "vite",
     "test": "vitest run",
     "test:dev": "vitest",
     "test:coverage": "vitest run --coverage",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
-    "build": "vite build"
+    "build": "tsc"
   },
   "devDependencies": {
     "@vitest/coverage-c8": "^0.32.2",
-    "vite": "^4.3.1",
-    "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
   },
   "peerDependencies": {

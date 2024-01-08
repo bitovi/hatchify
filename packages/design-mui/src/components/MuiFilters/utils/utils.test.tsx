@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom"
 import { describe, it, expect } from "vitest"
-import { getFilterableFields } from "./utils"
+import { getFilterableFields } from "./utils.js"
 import {
   assembler,
   belongsTo,

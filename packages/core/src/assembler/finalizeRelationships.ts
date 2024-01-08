@@ -1,10 +1,10 @@
-import type { FinalSchema, SemiFinalSchema } from "./types"
-import { finalize as finalizeBelongsTo } from "../relationships/belongsTo/finalize"
-import { finalize as finalizeHasMany } from "../relationships/hasMany/finalize"
-import type { PartialHasManyRelationship } from "../relationships/hasMany/types"
-import { finalize as finalizeHasManyThrough } from "../relationships/hasManyThrough/finalize"
-import type { PartialHasManyThroughRelationship } from "../relationships/hasManyThrough/types"
-import { finalize as finalizeHasOne } from "../relationships/hasOne/finalize"
+import type { FinalSchema, SemiFinalSchema } from "./types.js"
+import { finalize as finalizeBelongsTo } from "../relationships/belongsTo/finalize.js"
+import { finalize as finalizeHasMany } from "../relationships/hasMany/finalize.js"
+import type { PartialHasManyRelationship } from "../relationships/hasMany/types.js"
+import { finalize as finalizeHasManyThrough } from "../relationships/hasManyThrough/finalize.js"
+import type { PartialHasManyThroughRelationship } from "../relationships/hasManyThrough/types.js"
+import { finalize as finalizeHasOne } from "../relationships/hasOne/finalize.js"
 
 export function finalizeRelationships(
   semiFinalSchemas: Record<string, SemiFinalSchema>,

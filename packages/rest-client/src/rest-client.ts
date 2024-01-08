@@ -32,7 +32,7 @@ export type {
   Subscription,
   Unsubscribe,
   UpdateType,
-} from "./services"
+} from "./services/index.js"
 
 export {
   createOne,
@@ -51,4 +51,4 @@ export {
   subscribeToAll,
   subscribeToOne,
   updateOne,
-} from "./services"
+} from "./services/index.js"

@@ -1,28 +1,19 @@
 {
   "name": "@hatchifyjs/rest-client-jsonapi",
   "version": "0.1.18",
-  "main": "./dist/rest-client-jsonapi.js",
-  "module": "./dist/rest-client-jsonapi.mjs",
+  "type": "module",
+  "exports": "./dist/rest-client-jsonapi.js",
   "types": "./dist/rest-client-jsonapi.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/rest-client-jsonapi.js",
-      "import": "./dist/rest-client-jsonapi.mjs",
-      "types": "./dist/rest-client-jsonapi.d.ts"
-    },
-    "./package.json": "./package.json"
-  },
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint vite.config.ts src",
+    "eslint": "eslint src",
     "depcheck": "depcheck .",
-    "dev": "vite",
     "test": "TZ=UTC vitest run",
     "test:dev": "vitest",
     "test:coverage": "vitest run --coverage",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
-    "build": "vite build"
+    "build": "tsc -b -f"
   },
   "dependencies": {
     "@hatchifyjs/rest-client": "0.1.14"
@@ -32,9 +23,7 @@
     "@hatchifyjs/react-rest": "^0.1.18",
     "@vitest/coverage-c8": "^0.32.2",
     "koa": "^2.14.2",
-    "msw": "^1.2.1",
-    "vite": "^4.3.1",
-    "vite-plugin-dts": "^2.3.0",
+    "msw": "^2.0.11",
     "vitest": "^0.30.1"
   },
   "peerDependencies": {

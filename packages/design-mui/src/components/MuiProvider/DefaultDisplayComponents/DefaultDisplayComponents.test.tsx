@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest"
 
 import { render, screen } from "@testing-library/react"
-import { Relationship, RelationshipList } from "."
+import { Relationship, RelationshipList } from "./index.js"
 
 describe("hatchifyjs/presentation/mui/MuiProvider/DefaultComponents", () => {
   describe("Relationship", () => {
