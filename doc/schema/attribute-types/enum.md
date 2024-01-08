@@ -29,10 +29,12 @@ The `enumerate` type will create a sequelize [DataTypes.ENUM](https://sequelize.
 
 ### Querying Data
 
-```
-GET /api/todos?filter[status][$eq]=Pending  // all todos with status of Pending
-GET /api/todos?filter[status][$eq]=%00  // all todos with no status
-GET /api/todos?filter[status][$in][]=Pending&[status][$in][]=Failed  // all todos with status of either Pending or Failed.
+```js
+GET /api/todos?filter[status][$eq]=Pen // all todos with status of Pending
+
+GET /api/todos?filter[status][$eq]=%00 // all todos with no statusding
+
+GET /api/todos?filter[status][$in][]=Pending&[status][$in][]=Failed // all todos with status of either Pending or Failed.
 ```
 
 ### Data Response

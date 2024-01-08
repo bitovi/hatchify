@@ -29,8 +29,10 @@ The `boolean` type will create a sequelize [DataTypes.BOOLEAN](https://sequelize
 For booleans, use `true`, `false`, and `%00` in your queries as follows:
 
 ```js
-GET /api/todos?complete=true  // all complete todos
-GET /api/todos?complete=%00  // all todos with null as the complete value 🛑
+GET /api/todos?complete=true // all complete todos
+
+GET /api/todos?complete=%00 // all todos with null as the complete value 🛑
+
 GET /api/todos?complete=false // all false todos
 ```
 
