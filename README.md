@@ -81,6 +81,7 @@ You can find all the possible data types for a schema's `attributes` [here](./do
 
 Now we can run this application, and Hatchify will create CRUD application endpoints for our `User` and `Todo` models automatically. This step will take care of not only setting up your database resources, but also validating your schemas against each other, ensuring all your relationship fields make sense.
 
+To run the server:  ✏️
 ```bash
 npm run dev
 ```
@@ -91,7 +92,101 @@ You can navigate to the following endpoints to get a list of users and todos (bu
 
 [http://localhost:3000/api/todos](http://localhost:3000/api/todos)
 
-With the dev server running we can now further review the project.
+# Seeding Sample Data
+
+**✏️ Run the following commands in your terminal to save some sample data: **
+
+```bash
+curl 'http://localhost:3000/api/todos' \
+--header 'Content-Type: application/vnd.api+json' \
+--data '{
+  "data": {
+    "type": "Todo",
+    "attributes": {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002",
+      "name": "Walk the dog",
+      "dueDate": "2024-12-12",
+      "importance": 6
+    }
+  }
+}'
+
+curl 'http://localhost:3000/api/todos' \
+--header 'Content-Type: application/vnd.api+json' \
+--data '{
+  "data": {
+    "type": "Todo",
+    "attributes": {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003",
+      "name": "Laundry",
+      "dueDate": "2024-12-02",
+      "importance": 1
+    }
+  }
+}'
+
+curl 'http://localhost:3000/api/todos' \
+--header 'Content-Type: application/vnd.api+json' \
+--data '{
+  "data": {
+    "type": "Todo",
+    "attributes": {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004",
+      "name": "Making Calls",
+      "dueDate": "2024-12-31",
+      "importance": 7
+    }
+  }
+}'
+
+curl 'http://localhost:3000/api/users' \
+--header 'Content-Type: application/vnd.api+json' \
+--data '{
+  "data": {
+    "type": "User",
+    "attributes": {
+      "name": "John Doe"
+    },
+    "relationships": {
+      "todos": {
+        "data": [
+          {
+            "type": "Todo",
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002"
+          },
+          {
+            "type": "Todo",
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004"
+          }
+        ]
+      }
+    }
+  }
+}'
+
+curl 'http://localhost:3000/api/users' \
+--header 'Content-Type: application/vnd.api+json' \
+--data '{
+  "data": {
+    "type": "User",
+    "attributes": {
+      "name": "Jane Doe"
+    },
+    "relationships": {
+      "todos": {
+        "data": [
+          {
+            "type": "Todo",
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003"
+          }
+        ]
+      }
+    }
+  }
+}'
+```
+
+With the dev server running and some data in place, we can now further review the project.
 
 # Frontend - React and MUI 
 
