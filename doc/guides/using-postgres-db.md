@@ -65,7 +65,7 @@ For more information on creating a connection, [this tutorial](https://dbeaver.c
 
 4. Enter `hatchify_app` and click "OK".
 
-   ![image](https://github.com/bitovi/hatchify/assets/78602/f1c95ae6-a877-4284-ba40-046bd566fcaa)
+   ![image](../attachments/create-database.png)
 
 ## Update the Getting Started Guide app to use PostgreSQL
 

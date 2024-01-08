@@ -158,7 +158,7 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 2. Configure a postgres connection. The following is what needs to be specified to connect to the Postgres in docker:
 
-![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
+![image](./doc/attachments/add-postgres.png)
 
 **Click** the "Test Connection" button to test the connection. If successful, click **Finish** and go onto the next step.
 
@@ -173,7 +173,7 @@ For more information on creating a connection, [this tutorial](https://dbeaver.c
 
 4. Enter `postgres` and click "OK".
 
-   ![image](https://github.com/bitovi/hatchify/assets/78602/f1c95ae6-a877-4284-ba40-046bd566fcaa)
+   ![image](./doc/attachments/create-database.png)
 
 ##### Create a .env file with your environment variables
 
