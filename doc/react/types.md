@@ -94,6 +94,16 @@ const myServices = {
 
 `RecordType` will match a record's schema, and can be useful for local form state when updating. Another generic type, this type accepts 2-4 parameters.
 
+Parameters:
+
+| type                            | description                                                                  |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| `Record<string, PartialSchema>` | The type of the user defined schema as a `Record` object                     |
+| `PartialSchema`                 | The type of the user defined schema                                          |
+| `boolean`                       | True to allow `Date` to be type `Date or String`, false to only allow `Date` |
+| `boolean`                       | Keep type safety for schema attributes, while allowing custom computed fields|
+
+
 ```ts
  // 👀
   type TodoForm = RecordType<
