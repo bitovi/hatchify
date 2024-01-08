@@ -66,7 +66,8 @@ export function toSequelize(
           updatedAt: false,
           freezeTableName: true,
           schema: getSequelizeSchemaName(dialect, finalizedSchema.namespace),
-          tableName: snakeCase(finalizedSchema.name),
+          tableName:
+            finalizedSchema.tableName ?? snakeCase(finalizedSchema.name),
         },
       ),
     }),
