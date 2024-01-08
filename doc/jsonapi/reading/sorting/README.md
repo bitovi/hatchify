@@ -15,7 +15,7 @@ As data grows, pagination and sorting on the backend becomes more important.
 The parsed results of the `sort` query parameters are stored in the `sort` property.
 The value of the `sort` property is an array of "sort field" objects. Each "sort field" object includes a field name and a sort direction.
 
-Reference: [JSON:API - Sorting](https://jsonapi.org/format/#fetching-sorting)
+Reference: [JSON:API - Sorting](https://jsonapi.org/format/1.1/#fetching-sorting)
 
 ## Ascending order
 

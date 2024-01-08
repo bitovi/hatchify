@@ -12,7 +12,7 @@ Sometimes the data you want to display requires joining of multiple tables.
 
 The parsed results of the `include` query parameter is stored in the `include` property. The value of the `include` property is an array of "relationship paths".
 
-Reference: [JSON:API - Inclusion of Related Resources](https://jsonapi.org/format/#fetching-includes)
+Reference: [JSON:API - Inclusion of Related Resources](https://jsonapi.org/format/1.1/#fetching-includes)
 
 ## A simple example
 

@@ -31,8 +31,8 @@ export function getAttributesFromSchema(
 
 /**
  * Convert a list of fields (JSON:API fieldsets) to a list of includes (JSON:API includes).
- * https://jsonapi.org/format/#fetching-sparse-fieldsets
- * https://jsonapi.org/format/#fetching-includes
+ * https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets
+ * https://jsonapi.org/format/1.1/#fetching-includes
  */
 
 export function getIncludeFromFields<const TSchema extends PartialSchema>(
@@ -58,8 +58,8 @@ export function getIncludeFromFields<const TSchema extends PartialSchema>(
 
 /**
  * Convert a list of include (JSON:API include) to a list of fields (JSON:API fieldset).
- * https://jsonapi.org/format/#fetching-includes
- * https://jsonapi.org/format/#fetching-sparse-fieldsets
+ * https://jsonapi.org/format/1.1/#fetching-includes
+ * https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets
  */
 export function getFieldsFromInclude<const TSchema extends PartialSchema>(
   schemas: Record<string, FinalSchema>,

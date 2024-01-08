@@ -12,7 +12,7 @@ It's common that a schema has more attributes than we wish to display on the UI.
 
 # Specification
 
-The querystring of a request can include multiple parameters of the form `fields[type]=fieldName`. All parameters of that form are collected and parsed into an object like:
+The querystring of a request can include multiple parameters of the form `fields[Type]=fieldName`. All parameters of that form are collected and parsed into an object like:
 
 ```
 fields: {
@@ -24,7 +24,7 @@ fields: {
 
 When these types are queried and serialized into the response, only the corresponding "sparse" set of fields will be retrieved.
 
-Reference: [JSON:API - Sparse Fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
+Reference: [JSON:API - Sparse Fieldsets](https://jsonapi.org/format/1.1/#fetching-sparse-fieldsets)
 
 ## A simple example
 

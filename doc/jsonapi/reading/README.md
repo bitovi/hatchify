@@ -144,9 +144,9 @@ Note: This section applies to any endpoint that responds with primary data, rega
 
 ### Sparse Fields
 
-A client MAY request that an endpoint return only specific fields in the response on a per-type basis by including a fields[TYPE] query parameter.
+A client MAY request that an endpoint return only specific fields in the response on a per-type basis by including a fields[Type] query parameter.
 
-The value of any fields[TYPE] parameter MUST be a comma-separated (U+002C COMMA, “,”) list that refers to the name(s) of the fields to be returned. An empty value indicates that no fields should be returned.
+The value of any fields[Type] parameter MUST be a comma-separated (U+002C COMMA, “,”) list that refers to the name(s) of the fields to be returned. An empty value indicates that no fields should be returned.
 
 If a client requests a restricted set of fields for a given resource type, an endpoint MUST NOT include additional fields in resource objects of that type in its response.
 
