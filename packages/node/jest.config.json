@@ -1,0 +1,20 @@
+{
+  "collectCoverageFrom": ["<rootDir>/src/**/*.ts"],
+  "coverageDirectory": "coverage",
+  "coverageReporters": ["html", "text", "text-summary"],
+  "extensionsToTreatAsEsm": [".ts"],
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  },
+  "roots": ["<rootDir>/src"],
+  "setupFilesAfterEnv": ["./src/jest.setup.ts"],
+  "testEnvironment": "node",
+  "transform": {
+    ".+\\.ts$": [
+      "ts-jest",
+      {
+        "useESM": true
+      }
+    ]
+  }
+}
