@@ -80,7 +80,8 @@ You can find all the possible data types for a schema's `attributes` [here](./do
 
 Now we can run this application, and Hatchify will create CRUD application endpoints for our `User` and `Todo` models automatically. This step will take care of not only setting up your database resources, but also validating your schemas against each other, ensuring all your relationship fields make sense.
 
-To run the server:  ✏️
+To run the server: ✏️
+
 ```bash
 npm run dev
 ```
@@ -234,11 +235,11 @@ Dig deep into how the internals of how Hatchify works in the technical interface
 - [JSON:API](./doc/jsonapi//README.md)
   - [Creating](./doc/jsonapi/creating.md)
   - [Reading](./doc/jsonapi/reading/README.md)
-    - [Filtering](./doc/jsonapi/filtering/README.md)
-    - [Paginating](./doc/jsonapi/paginating/README.md)
-    - [Sorting](./doc/jsonapi/sorting/README.md)
-    - [Relationships](./doc/jsonapi/relationships/README.md)
-    - [Sparse Fields](./doc/jsonapi/sparse-fields/README.md)
+    - [Filtering](./doc/jsonapi/reading/filtering/README.md)
+    - [Paginating](./doc/jsonapi/reading/paginating/README.md)
+    - [Sorting](./doc/jsonapi/reading/sorting/README.md)
+    - [Relationships](./doc/jsonapi/reading/relationships/README.md)
+    - [Sparse Fields](./doc/jsonapi/reading/sparse-fields/README.md)
   - [Updating](./doc/jsonapi/updating.md)
   - [Deleting](./doc/jsonapi/deleting.md)
 - Koa
