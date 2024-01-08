@@ -1,8 +1,12 @@
-# Resource CRUD Operations
+# Reading
 
-From JSON:API Format 1.1: https://jsonapi.org/format/#crud
+- [Filtering](./filtering/README.md)
+- [Paginating](./paginating/README.md)
+- [Sorting](./sorting/README.md)
+- [Relationships](./relationships/README.md)
+- [Sparse Fields](./sparse-fields/README.md)
 
-# Fetching Resources
+## Fetching Resources
 
 Data, including resources and relationships, can be fetched by sending a GET request to an endpoint.
 
@@ -217,96 +221,3 @@ Filtering
 The filter query parameter family is reserved for filtering data. Servers and clients SHOULD use these parameters for filtering operations.
 
 `Note`: JSON API is agnostic about the strategies supported by a server.
-
-# Creating Resources
-
-A resource can be created by sending a POST request to a URL that represents a collection of resources. The request MUST include a single resource object as primary data. The resource object MUST contain at least a type member.
-
-For instance, a new photo might be created with the following request:
-
-```
-POST /api/photos HTTP/1.1
-Content-Type: application/vnd.api+json
-Accept: application/vnd.api+json
-
-{
-  "data": {
-    "type": "photos",
-    "attributes": {
-      "title": "Ember Hamster",
-      "src": "http://example.com/images/productivity.png"
-    },
-    "relationships": {
-      "photographer": {
-        "data": { "type": "people", "id": "9" }
-      }
-    }
-  }
-}
-```
-
-If a relationship is provided in the relationships member of the resource object, its value MUST be a relationship object with a data member. The value of this key represents the linkage the new resource is to have.
-
-# Updating Resources
-
-A resource can be updated by sending a PATCH request to the URL that represents the resource.
-
-The URL for a resource can be obtained in the self link of the resource object. Alternatively, when a GET request returns a single resource object as primary data, the same request URL can be used for updates.
-
-The PATCH request MUST include a single resource object as primary data. The resource object MUST contain type and id members.
-
-For example:
-
-```
-PATCH /api/articles/1 HTTP/1.1
-Content-Type: application/vnd.api+json
-Accept: application/vnd.api+json
-
-{
-  "data": {
-    "type": "articles",
-    "id": "1",
-    "attributes": {
-      "title": "To TDD or Not"
-    }
-  }
-}
-```
-
-### Updating a Resource’s Attributes
-
-Any or all of a resource’s attributes MAY be included in the resource object included in a PATCH request.
-
-If a request does not include all of the attributes for a resource, the server MUST interpret the missing attributes as if they were included with their current values. The server MUST NOT interpret missing attributes as null values.
-
-For example, the following PATCH request is interpreted as a request to update only the title and text attributes of an article:
-
-```
-PATCH /api/articles/1 HTTP/1.1
-Content-Type: application/vnd.api+json
-Accept: application/vnd.api+json
-
-{
-  "data": {
-    "type": "articles",
-    "id": "1",
-    "attributes": {
-      "title": "To TDD or Not",
-      "text": "TLDR; It's complicated... but check your test coverage regardless."
-    }
-  }
-}
-```
-
-# Deleting Resources
-
-A resource can be deleted by sending a DELETE request to the URL that represents the resource:
-
-```
-DELETE /api/photos/1 HTTP/1.1
-Accept: application/vnd.api+json
-```
-
-### Responses
-
-`200 OK`: A server MAY return a 200 OK response with a document that contains no primary data if a deletion request is successful. Other top-level members, such as meta, could be included in the response document.

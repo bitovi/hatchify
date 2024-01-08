@@ -54,7 +54,7 @@ export const Todo = {
     name: string({ required: true }), // 👀
     dueDate: dateonly(),
     importance: integer(),
-    complete: boolean({ default: false }), 
+    complete: boolean({ default: false }),
   },
   relationships: {
     user: belongsTo("User"), // 👀
@@ -75,7 +75,6 @@ export const User = {
 > **Note:** It is important to use _satisfies PartialSchema_ when typing our schemas. By using the satisfies keyword, we can make sure our schema objects are typed correctly and also get the benefit of type inference when passing our schemas into our Hatchify functions.
 
 You can find all the possible data types for a schema's `attributes` [here](./doc/schema/attribute-types/README.md).
-
 
 # Backend - Schema Defined Endpoints
 
@@ -188,7 +187,7 @@ curl 'http://localhost:3000/api/users' \
 
 With the dev server running and some data in place, we can now further review the project.
 
-# Frontend - React and MUI 
+# Frontend - React and MUI
 
 Let's review the contents of `frontend/App.tsx` to see how the schemas that we defined earlier conveniently "hatch" our frontend.
 
@@ -232,16 +231,16 @@ Dig deep into how the internals of how Hatchify works in the technical interface
 - [Schema](./doc/schema/)
   - [Attributes](./doc/schema//attribute-types/README.md)
   - [Relationships](./doc/schema/relationship-types/README.md)
-- JSON:API
-  - [Listing](./doc/jsonapi/)
-    - [Filtering](./doc/jsonapi/filtering-data/README.md)
-    - [Pagination](./doc/jsonapi/paginating-data/README.md)
-    - [Include](./doc/jsonapi/including-data/README.md)
-    - [Sorting](./doc/jsonapi/sorting-data/README.md)
-    - [Sparse fieldsets](./doc/jsonapi/sparse-fieldsets/README.md)
-  - [Submitting](./doc/jsonapi/) 🛑
-  - [Updating](./doc/jsonapi/) 🛑
-  - [Deleting](./doc/jsonapi/) 🛑
+- [JSON:API](./doc/jsonapi//README.md)
+  - [Creating](./doc/jsonapi/creating.md)
+  - [Reading](./doc/jsonapi/reading/README.md)
+    - [Filtering](./doc/jsonapi/filtering/README.md)
+    - [Paginating](./doc/jsonapi/paginating/README.md)
+    - [Sorting](./doc/jsonapi/sorting/README.md)
+    - [Relationships](./doc/jsonapi/relationships/README.md)
+    - [Sparse Fields](./doc/jsonapi/sparse-fields/README.md)
+  - [Updating](./doc/jsonapi/updating.md)
+  - [Deleting](./doc/jsonapi/deleting.md)
 - Koa
   - [API Docs](./doc/koa/README.md)
 - Express
@@ -249,7 +248,6 @@ Dig deep into how the internals of how Hatchify works in the technical interface
 - React
   - [Components](./doc/react/components.md) 🛑
   - [REST Client](./doc/react/rest-client.md) 🛑
-
 
 # Need help or have questions?
 

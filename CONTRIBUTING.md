@@ -411,7 +411,6 @@ npx nx eslint @hatchifyjs/koa
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
 │   ├── express                                 # @hatchifyjs/express; Hatchify for Express, a wrapper around @hatchifyjs/node
-│   │   ├── JSONAPI.md                          # Documentation around JSON:API
 │   │   ├── LICENSE.md
 │   │   ├── package.json
 │   │   ├── src
@@ -435,7 +434,6 @@ npx nx eslint @hatchifyjs/koa
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
 │   ├── koa                                     # @hatchifyjs/koa; Hatchify for Koa, a wrapper around @hatchifyjs/node
-│   │   ├── JSONAPI.md                          # Documentation around JSON:API
 │   │   ├── LICENSE.md
 │   │   ├── README.md
 │   │   ├── package.json
