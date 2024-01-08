@@ -106,6 +106,7 @@ export interface PartialSchema<
   name: string
   namespace?: string
   pluralName?: string
+  tableName?: string
   displayAttribute?: string
   id?: PartialAttribute<
     PartialUuidORM,
@@ -182,6 +183,7 @@ export interface FinalSchema {
   name: string
   namespace?: string
   pluralName?: string
+  tableName?: string
   displayAttribute?: string
   id: FinalAttribute<
     PartialUuidORM,

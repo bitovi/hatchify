@@ -24,6 +24,7 @@ describe.each(dbDialects)("schema", (dialect) => {
     describe("1:n", () => {
       const Todo: PartialSchema = {
         name: "Todo",
+        tableName: "custom_todo",
         attributes: {
           name: string(),
         },
@@ -173,6 +174,41 @@ describe.each(dbDialects)("schema", (dialect) => {
             default: "2",
             primary: false,
             type: dialect === "postgres" ? "integer" : "INTEGER",
+          },
+        ])
+      })
+
+      it("should allow custom table names", async () => {
+        const sortedColumns = await getDatabaseColumns(hatchify, "custom_todo")
+
+        expect(sortedColumns).toEqual([
+          {
+            name: "id",
+            allowNull: false,
+            default: null,
+            primary: true,
+            type: dialect === "postgres" ? "uuid" : "UUID",
+          },
+          {
+            name: "name",
+            allowNull: true,
+            default: null,
+            primary: false,
+            type: dialect === "postgres" ? "character varying" : "VARCHAR(255)",
+          },
+          {
+            name: "user_id",
+            allowNull: true,
+            default: null,
+            primary: false,
+            type: dialect === "postgres" ? "uuid" : "UUID",
+            foreignKeys: [
+              {
+                ...(dialect === "postgres" ? { schemaName: "public" } : {}),
+                tableName: "user",
+                columnName: "id",
+              },
+            ],
           },
         ])
       })
