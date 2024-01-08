@@ -129,13 +129,13 @@ No further configuration is required to test Hatchify against a SQLite database
 2. To create and run Postgres database, run the following command:
 
    ```bash
-   docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
+   docker run --name postgres-container -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
    ```
 
    This installs the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
 
-   - `POSTGRES_PASSWORD=example_password`
-   - `POSTGRES_USER=example_user`
+   - `POSTGRES_USER=postgres`
+   - `POSTGRES_PASSWORD=postgres`
 
    This also runs Postgres on port 5432.
 
@@ -186,7 +186,7 @@ For more information on creating a connection, [this tutorial](https://dbeaver.c
 2. Fill your .env file with the following content:
 
    ```bash
-   DB_URI=postgres://example_user:example_password@localhost:5432/postgres
+   DB_URI=postgres://postgres:postgres@localhost:5432/postgres
    ```
 
 #### 3.3. With a database engine in a Docker container (recommended)
