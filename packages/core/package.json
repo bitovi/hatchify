@@ -96,47 +96,5 @@
         }
       }
     ]
-  },
-  "jest": {
-    "extensionsToTreatAsEsm": [
-      ".ts"
-    ],
-    "moduleNameMapper": {
-      "^(\\.{1,2}/.*)\\.js$": "$1"
-    },
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "<rootDir>/src/**/*.ts",
-      "!<rootDir>/src/**/types.ts",
-      "!<rootDir>/src/dataTypes/index.ts",
-      "!<rootDir>/src/core.ts",
-      "!<rootDir>/src/relationships/index.ts",
-      "!<rootDir>/src/types/**/*.ts"
-    ],
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "html",
-      "text",
-      "text-summary"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    },
-    "testEnvironment": "node",
-    "transform": {
-      ".+\\.ts$": [
-        "ts-jest",
-        {
-          "useESM": true
-        }
-      ]
-    }
   }
 }
