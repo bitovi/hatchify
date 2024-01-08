@@ -77,13 +77,13 @@ const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.notes //-> string or null
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
-The text will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+The text will be presented in the data grid. If the value is `null`, no value will be presented in the data grid.
 
 To provide better table behavior for columns with large amounts of text the `maxDisplayLength` property can also be provided. This will truncate oversized text, appending it with an ellipsis. The unabridged text will be available in a pop over. 🛑
 
-![Grid Example](../../attachments/text-grid.png)
+![Data Grid Example](../../attachments/text-grid.png)
 
 ## Form Behavior 🛑
 

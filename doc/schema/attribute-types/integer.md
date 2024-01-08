@@ -76,11 +76,11 @@ const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.importance //-> number or null
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
-The integer value will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+The integer value will be presented in the data grid. If the value is `null`, no value will be presented in the data grid.
 
-![Grid Example](../../attachments/integer-column.png)
+![Data Grid Example](../../attachments/integer-column.png)
 
 ## Form Behavior 🛑
 

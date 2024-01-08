@@ -79,11 +79,11 @@ const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.confidence //-> number or null
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
-The number value will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+The number value will be presented in the data grid. If the value is `null`, no value will be presented in the data grid.
 
-![Grid Example](../../attachments/number-column.png)
+![Data Grid Example](../../attachments/number-column.png)
 
 ## Form Behavior 🛑
 

@@ -77,11 +77,11 @@ const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.dueDate //-> "1990-12-31", null, or undefined
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
-The text date values will be presented in the grid. If the value is `null` or `undefined`, no value will be presented in the grid.
+The text date values will be presented in the data grid. If the value is `null` or `undefined`, no value will be presented in the data grid.
 
-![Grid Example](../../attachments/dateonly-column.png)
+![Data Grid Example](../../attachments/dateonly-column.png)
 
 Note: The displayed values will be formatted to your locale.
 

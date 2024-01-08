@@ -70,11 +70,11 @@ const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.complete //-> true, false or null
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
-The text `true` or `false` will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+The text `true` or `false` will be presented in the data grid. If the value is `null`, no value will be presented in the data grid.
 
-![Grid Example](https://github.com/bitovi/hatchify/assets/78602/ddbf26a1-180b-4fc7-a483-fde52dc4fce9)
+![Data Grid Example](https://github.com/bitovi/hatchify/assets/78602/ddbf26a1-180b-4fc7-a483-fde52dc4fce9)
 
 ## Form Behavior 🛑
 

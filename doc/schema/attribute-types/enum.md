@@ -71,8 +71,8 @@ DATA:
 }
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
 The enum value in its entirety is shown as a string. Null values are shown as an empty table cell.
 
-![enumColumn](../../attachments/enum-grid.png)
+![Data Grid Example](../../attachments/enum-grid.png) // update alt text or whatever's in brackets?
