@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["Hatchify", "hatchifyjs", "JSONAPI"],
+  "cSpell.words": ["Hatchify", "hatchifyjs"],
   "jestrunner.jestCommand": "node --experimental-vm-modules ../../node_modules/.bin/jest",
   "typescript.tsdk": "node_modules/typescript/lib"
 }
