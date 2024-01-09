@@ -222,6 +222,7 @@ Creates a column `first_name` in the `sales_person` table.
 
 ##### Querying Data
 
+Creates a `/sales-persons` API.
 `firstName` will be used in the query parameters: `GET /api/sales-persons?fields[SalesPerson]=firstName`
 
 ##### Data Response
@@ -292,7 +293,7 @@ Creates a column `sales_person_id` column in the `account` table.
 
 ##### Querying Data
 
-`GET /api/accounts?include=salesPerson`
+`salesPerson` will be used in the `include` query parameter: `GET /api/accounts?include=salesPerson`
 
 ##### Data Response
 
@@ -344,6 +345,7 @@ Assumes a column `sales_person_id` in the `account` table.
 
 ##### Querying Data
 
+`accounts` will be used in the `include` query parameter:
 `GET /api/sales-persons?include=accounts`
 
 ##### Data Response
@@ -409,6 +411,10 @@ const Account = {
 Creates a column `manager_id` column in the `account` table.
 
 #### API Implications
+
+##### Querying Data
+
+`manager` will be used in the `include` query parameter: `GET /api/accounts?include=manager`
 
 ##### Data Response
 

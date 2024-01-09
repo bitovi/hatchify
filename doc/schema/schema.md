@@ -169,8 +169,11 @@ Creates a column `first_name` in the `sales_person` table.
 
 ##### Querying Data
 
-`firstName` will be used in query parameters like
-`GET /api/sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName`
+`firstName` will be used in query parameters like:
+
+```js
+GET /api/sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName
+```
 
 ##### Data Response
 
@@ -210,8 +213,11 @@ Creates a column `sales_person_id` column in the `account` table.
 
 ##### Querying Data
 
-`salesPerson` will be used in the include query parameter like
-`GET /api/accounts?include=salesPerson`
+`salesPerson` will be used in the include query parameter like:
+
+```js
+GET /api/accounts?include=salesPerson
+```
 
 ##### Data Response
 
@@ -256,8 +262,11 @@ Creates a column `closer_person_id` in the `account` table.
 
 ##### Querying Data
 
-`closerPerson` will be used in the include query parameter like
-`GET /api/accounts?include=closerPerson`
+`closerPerson` will be used in the include query parameter like:
+
+```js
+GET /api/accounts?include=closerPerson
+```
 
 ##### Data Response
 
@@ -333,8 +342,11 @@ Assumes a column `sales_person_id` in the `account` table.
 
 ##### Querying Data
 
-`accounts` will be used in the include query parameter like
-`GET /api/sales-persons?include=accounts`
+`accounts` will be used in the include query parameter like:
+
+```js
+GET /api/sales-persons?include=accounts
+```
 
 ##### Data Response
 
@@ -379,8 +391,11 @@ Assumes a column `sales_person_id` in the `account` table.
 
 ##### Querying Data
 
-`managingAccounts` will be used in the include query parameter like
-`GET /api/sales-persons?include=managingAccounts`
+`managingAccounts` will be used in the include query parameter like:
+
+```js
+GET /api/sales-persons?include=managingAccounts
+```
 
 ##### Data Response
 
@@ -466,8 +481,11 @@ Assumes a table `account_sales_person` exists with `sales_person_id` and `accoun
 
 ##### Querying Data
 
-`accounts` will be available in the include query parameter like
-`GET /api/sales-persons?include=accounts`
+`accounts` will be available in the include query parameter like:
+
+```js
+GET /api/sales-persons?include=accounts
+```
 
 ##### Data Response
 
@@ -542,8 +560,11 @@ This does not change the Database behavior.
 
 ##### Querying Data
 
-`salesAccounts` will be available in the include query parameter like
-`GET /api/sales-persons?include=salesAccounts`
+`salesAccounts` will be available in the include query parameter like:
+
+```js
+GET /api/sales-persons?include=salesAccounts
+```
 
 ##### Data Response
 
