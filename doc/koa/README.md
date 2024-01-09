@@ -55,6 +55,8 @@ const hatchedKoa = hatchifyKoa(schemas, {
 })()
 ```
 
+The above usage will start a Koa webserver on port 3000 with an endpoint at `/api/todos` that implements a [JSON:API](../jsonapi/) interface to the Todo data.
+
 ## Exports
 
 ### High Level Export Naming Conventions
