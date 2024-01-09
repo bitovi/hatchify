@@ -438,7 +438,7 @@ Creates a column `manager_id` column in the `account` table.
 
 ##### Querying Data
 
-`manager` will be used in the `include` query parameters:
+`manager` will be used in the `include` query parameter:
 
 ```js
 GET /api/accounts?include=manager
