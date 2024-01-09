@@ -6,7 +6,6 @@ Hatchify is a web application framework designed to accelerate the development o
 
 Hatchify enables you to make changes to your database schema and customize app behavior **independently** of each other, unlike code-generation dependent approaches. It avoids code generation in favor of modular libraries that can be used incrementally, to utilize as much or as little of the framework's abilities as you require.
 
-- [Hatchify](#hatchify)
 - [Getting Started](#getting-started)
 - [Guides](#guides)
 - [API Docs](#api-docs)
