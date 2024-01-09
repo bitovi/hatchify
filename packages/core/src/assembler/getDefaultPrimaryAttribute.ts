@@ -6,7 +6,7 @@ import { uuidv4 } from "../util/uuidv4"
 
 export function getDefaultPrimaryAttribute(): PartialAttribute<
   PartialUuidORM,
-  Omit<PartialStringControlType<boolean>, "allowNullInfer" | "maxRenderLength">,
+  Omit<PartialStringControlType<boolean>, "allowNullInfer" | "ui">,
   string,
   FinalUuidORM
 > {

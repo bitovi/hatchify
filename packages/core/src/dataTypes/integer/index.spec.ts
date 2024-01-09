@@ -26,6 +26,7 @@ describe("integer", () => {
           max: undefined,
           primary: undefined,
           step: 1,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -188,7 +189,7 @@ describe("integer", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -231,6 +232,7 @@ describe("integer", () => {
           max: undefined,
           primary: undefined,
           step: 1,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -409,7 +411,7 @@ describe("integer", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -451,6 +453,7 @@ describe("integer", () => {
           max: undefined,
           primary: undefined,
           step: 1,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -612,7 +615,7 @@ describe("integer", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -654,6 +657,7 @@ describe("integer", () => {
           max: undefined,
           primary: true,
           step: 1,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -831,7 +835,7 @@ describe("integer", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           min: -Infinity,
           max: Infinity,

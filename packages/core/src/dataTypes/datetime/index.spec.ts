@@ -24,6 +24,7 @@ describe("datetime", () => {
           max: undefined,
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -151,7 +152,7 @@ describe("datetime", () => {
         },
         control: {
           type: "Datetime",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -193,6 +194,7 @@ describe("datetime", () => {
           max: undefined,
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -340,7 +342,7 @@ describe("datetime", () => {
         },
         control: {
           type: "Datetime",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -381,6 +383,7 @@ describe("datetime", () => {
           max: undefined,
           primary: true,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -528,7 +531,7 @@ describe("datetime", () => {
         },
         control: {
           type: "Datetime",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -569,6 +572,7 @@ describe("datetime", () => {
           max: undefined,
           primary: undefined,
           step: "day",
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -728,7 +732,7 @@ describe("datetime", () => {
         control: {
           type: "Datetime",
           allowNull: true,
-          displayName: null,
+          ui: { displayName: null },
           min: -Infinity,
           max: Infinity,
           primary: false,
@@ -771,6 +775,7 @@ describe("datetime", () => {
           max: new Date("2023-01-01T00:00:00.000Z"),
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -943,7 +948,7 @@ describe("datetime", () => {
         },
         control: {
           type: "Datetime",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: -Infinity,
           max: new Date("2023-01-01T00:00:00.000Z"),

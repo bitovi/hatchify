@@ -26,7 +26,7 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
     User: {
       name: "User",
       attributes: {
-        name: string({ displayName: "Name" }),
+        name: string({ ui: { displayName: "Name" } }),
       },
       relationships: {
         todos: hasMany("Todo"),

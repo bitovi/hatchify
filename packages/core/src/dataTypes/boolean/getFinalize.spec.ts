@@ -7,6 +7,7 @@ describe("getFinalize", () => {
       control: {
         allowNull: undefined,
         type: "Boolean",
+        ui: {},
       },
       orm: {
         sequelize: {

@@ -13,7 +13,9 @@ export function finalizeControl(
     primary: !!props.primary,
     default: props.default ?? null,
     regex: props.regex ?? /(.*?)/,
-    maxRenderLength: props.maxRenderLength ?? null,
-    displayName: props.displayName ?? null,
+    ui: {
+      displayName: props?.ui?.displayName ?? null,
+      maxDisplayLength: props?.ui?.maxDisplayLength ?? null,
+    },
   }
 }

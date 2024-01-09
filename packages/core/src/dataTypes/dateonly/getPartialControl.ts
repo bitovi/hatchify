@@ -13,6 +13,8 @@ export function getPartialControl<TRequired extends boolean>(
     max: props?.max,
     primary: props?.primary,
     default: props?.default,
-    displayName: props?.displayName,
+    ui: {
+      displayName: props?.ui?.displayName,
+    },
   }
 }

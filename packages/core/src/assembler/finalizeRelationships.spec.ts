@@ -10,6 +10,7 @@ describe("finalizeRelationships", () => {
     const schemas: Record<string, SemiFinalSchema> = {
       Todo: {
         name: "Todo",
+        ui: {},
         id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           importance: integer({ min: 0 }).finalize(),
@@ -20,6 +21,7 @@ describe("finalizeRelationships", () => {
       },
       User: {
         name: "User",
+        ui: {},
         id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           name: string().finalize(),
@@ -71,6 +73,7 @@ describe("finalizeRelationships", () => {
     const schemas: Record<string, SemiFinalSchema> = {
       Todo: {
         name: "Todo",
+        ui: {},
         id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           importance: integer({ min: 0 }).finalize(),
@@ -81,6 +84,7 @@ describe("finalizeRelationships", () => {
       },
       User: {
         name: "User",
+        ui: {},
         id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           name: string().finalize(),
@@ -136,6 +140,7 @@ describe("finalizeRelationships", () => {
       Todo: {
         name: "Todo",
         id: uuid({ required: true, default: uuidv4 }).finalize(),
+        ui: {},
         attributes: {
           importance: integer({ min: 0 }).finalize(),
         },
@@ -146,6 +151,7 @@ describe("finalizeRelationships", () => {
       User: {
         name: "User",
         id: uuid({ required: true, default: uuidv4 }).finalize(),
+        ui: {},
         attributes: {
           name: string().finalize(),
         },
@@ -190,6 +196,7 @@ describe("finalizeRelationships", () => {
         TodoUser: {
           name: "TodoUser",
           id: getDefaultPrimaryAttribute().finalize(),
+          ui: {},
           attributes: {
             todoId: uuid({ required: true, hidden: true }).finalize(),
             userId: uuid({ required: true, hidden: true }).finalize(),
@@ -217,6 +224,7 @@ describe("finalizeRelationships", () => {
     const schemas: Record<string, SemiFinalSchema> = {
       Todo: {
         name: "Todo",
+        ui: {},
         id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           importance: integer({ min: 0 }).finalize(),
@@ -228,6 +236,7 @@ describe("finalizeRelationships", () => {
       },
       User: {
         name: "User",
+        ui: {},
         id: uuid({ required: true, default: uuidv4 }).finalize(),
         attributes: {
           name: string().finalize(),

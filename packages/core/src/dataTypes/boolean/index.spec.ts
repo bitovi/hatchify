@@ -18,6 +18,7 @@ describe("boolean", () => {
         control: {
           type: "Boolean",
           allowNull: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -70,7 +71,7 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           default: null,
         },
@@ -97,6 +98,7 @@ describe("boolean", () => {
           type: "Boolean",
           allowNull: false,
           allowNullInfer: false,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -159,7 +161,7 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           default: null,
         },

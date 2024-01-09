@@ -9,7 +9,7 @@ import { testBackendEndpointConfig } from "../setupTests"
 
 const Article = {
   name: "Article",
-  displayAttribute: "author",
+  ui: { displayAttribute: "author" },
   attributes: {
     author: string({ required: true }),
     tag: string({ required: true }),
@@ -18,9 +18,8 @@ const Article = {
 
 const Feature_Article = {
   name: "Article",
-  type: "Feature_Article",
   namespace: "Feature",
-  displayAttribute: "author",
+  ui: { displayAttribute: "author" },
   attributes: {
     author: string({ required: true }),
     tag: string({ required: true }),
@@ -28,7 +27,7 @@ const Feature_Article = {
   relationships: {
     admin_user: belongsTo("Admin_User"),
   },
-}
+} satisfies PartialSchema
 
 const Admin_User = {
   name: "User",
@@ -39,7 +38,7 @@ const Admin_User = {
   relationships: {
     articles: hasMany("Feature_Article"),
   },
-}
+} satisfies PartialSchema
 
 // todo: arthur fix when more v2 types implemented
 describe("Testing CRUD operations against Hatchify backend", async () => {

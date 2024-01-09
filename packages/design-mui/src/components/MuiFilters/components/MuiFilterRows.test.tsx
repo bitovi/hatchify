@@ -19,7 +19,7 @@ import { string } from "@hatchifyjs/core"
 const partialSchemas = {
   Todo: {
     name: "Todo",
-    displayAttribute: "name",
+    ui: { displayAttribute: "name" },
     attributes: {
       name: string({ required: true }),
       date: datetime(),
@@ -32,7 +32,7 @@ const partialSchemas = {
   },
   User: {
     name: "User",
-    displayAttribute: "name",
+    ui: { displayAttribute: "name" },
     attributes: {
       name: string(),
     },

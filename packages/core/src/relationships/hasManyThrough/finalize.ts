@@ -59,6 +59,7 @@ export function finalize(
           [through]: {
             name: through,
             id: getDefaultPrimaryAttribute().finalize(),
+            ui: {},
             attributes: {
               [throughSourceAttribute]: uuid({
                 required: true,

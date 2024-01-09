@@ -10,7 +10,7 @@ This document describes the relationship between names in the schema and the res
   - [pluralName](#pluralname)
   - [namespace](#namespace-postgres-only)
   - [id](#id)
-  - [displayAttribute](#displayattribute)
+  - [ui](#ui)
   - [attributes](#attributes)
     - [displayName](#displayname)
   - [relationships](#relationships)
@@ -154,14 +154,14 @@ JSON:API requires that the `id` attribute be named `id`, therefore this attribut
 
 For more information on customizing the `id` attribute: [id](../schema/schema.md). 🛑
 
-### displayAttribute
+### ui
 
-Optionally set the `displayAttribute` to configure which attribute is used to display a relationship in the UI. If the `displayAttribute` is not set, then the first attribute will be used.
+Within `ui`, you may optionally set the `displayAttribute` to configure which attribute is used to display a relationship in the UI. If the `displayAttribute` is not set, then the first attribute will be used.
 
 ```ts
 const SalesPerson = {
   name: "SalesPerson",
-  displayAttribute: "email", //👀
+  ui: { displayAttribute: "email" }, //👀
   attributes: {
     name: string(),
     email: string(),
@@ -184,7 +184,7 @@ const Account = {
 
 **UI Implications:**
 
-- When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `displayAttribute` was not set, then the `name` attribute would have been used.
+- When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `ui.displayAttribute` was not set, then the `name` attribute would have been used.
 
 ### attributes
 
@@ -227,7 +227,7 @@ const SalesPerson = {
   name: "SalesPerson",
   attributes: {
     firstName: string(),
-    lastName: string({ displayName: "Surname" }), //👀
+    lastName: string({ ui: { displayName: "Surname" } }), //👀
   },
 } satisfies PartialSchema
 ```

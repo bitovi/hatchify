@@ -25,6 +25,7 @@ describe("number", () => {
           max: undefined,
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -185,7 +186,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -228,6 +229,7 @@ describe("number", () => {
           max: undefined,
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -403,7 +405,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -445,6 +447,7 @@ describe("number", () => {
           max: undefined,
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -604,7 +607,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -646,6 +649,7 @@ describe("number", () => {
           max: undefined,
           primary: true,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -821,7 +825,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -863,6 +867,7 @@ describe("number", () => {
           max: undefined,
           primary: undefined,
           step: 0.1,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -1033,7 +1038,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -1075,6 +1080,7 @@ describe("number", () => {
           max: 10,
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -1278,7 +1284,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: 1,
           max: 10,

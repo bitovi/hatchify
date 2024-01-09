@@ -1,15 +1,20 @@
 import type {
+  HatchifyBaseUIOptions,
   PartialControlType,
   PartialDataTypeProps,
   PartialSequelizeDataType,
 } from "../../types"
+
+export interface HatchifyStringUIOptions extends HatchifyBaseUIOptions {
+  maxDisplayLength?: number | null
+}
 
 export interface PartialStringProps<TRequired extends boolean>
   extends PartialDataTypeProps<string, TRequired> {
   min?: number
   max?: number
   regex?: RegExp
-  maxRenderLength?: number
+  ui?: HatchifyStringUIOptions
 }
 
 export interface PartialStringControlType<TRequired extends boolean>
@@ -18,7 +23,7 @@ export interface PartialStringControlType<TRequired extends boolean>
   min?: number
   max?: number
   regex?: RegExp
-  maxRenderLength?: number | null
+  ui?: HatchifyStringUIOptions
 }
 
 export interface PartialStringORM {

@@ -6,11 +6,11 @@ describe("getFinalize", () => {
       name: "dateonly()",
       control: {
         allowNull: undefined,
-        displayName: undefined,
         max: undefined,
         min: undefined,
         type: "Dateonly",
         primary: undefined,
+        ui: {},
       },
       orm: {
         sequelize: {

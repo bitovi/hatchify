@@ -24,6 +24,7 @@ describe("enumerate", () => {
           allowNull: undefined,
           primary: undefined,
           values,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -132,7 +133,7 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           primary: false,
           default: null,
@@ -170,6 +171,7 @@ describe("enumerate", () => {
           allowNullInfer: false,
           primary: undefined,
           values,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -294,7 +296,7 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           primary: false,
           default: null,
@@ -331,6 +333,7 @@ describe("enumerate", () => {
           allowNull: undefined,
           primary: true,
           values,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -455,7 +458,7 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           primary: true,
           default: null,

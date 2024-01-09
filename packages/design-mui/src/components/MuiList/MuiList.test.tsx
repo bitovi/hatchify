@@ -2,6 +2,7 @@ import "@testing-library/jest-dom"
 import { createElement } from "react"
 import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
+import type { PartialSchema } from "@hatchifyjs/core"
 import { assembler, string, text } from "@hatchifyjs/core"
 import { MuiList } from "./MuiList"
 
@@ -9,15 +10,15 @@ describe("components/MuiList", () => {
   const partialSchemas = {
     User: {
       name: "User",
-      displayAttribute: "firstName",
+      ui: { displayAttribute: "firstName" },
       attributes: {
         firstName: string(),
-        lastName: string({ maxRenderLength: 5 }),
-        role: text({ maxRenderLength: 10 }),
+        lastName: string({ ui: { maxDisplayLength: 5 } }),
+        role: text({ ui: { maxDisplayLength: 10 } }),
         status: text(),
       },
     },
-  }
+  } satisfies Record<string, PartialSchema>
 
   const finalSchemas = assembler(partialSchemas)
 
