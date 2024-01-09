@@ -81,7 +81,11 @@ Creates a table `sales_person`.
 ##### Querying Data
 
 This will create a `/sales-persons` API.
-When referencing this type in the `fields`, `SalesPerson` will be used: `GET /api/sales-persons?fields[SalesPerson]=name`
+When referencing this type in the `fields`, `SalesPerson` will be used:
+
+```js
+GET /api/sales-persons?fields[SalesPerson]=name
+```
 
 ##### Data Response
 
@@ -128,7 +132,11 @@ Creates a table sales_person in the Postgres schema acme_corp
 ##### Querying Data
 
 This will create an `acme-corp/sales-persons` API
-When referencing this in the type fields, AcmeCorp_SalesPerson will be used: `GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name`
+When referencing this in the type fields, AcmeCorp_SalesPerson will be used:
+
+```js
+GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
+```
 
 ##### Data Response
 

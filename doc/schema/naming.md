@@ -71,7 +71,11 @@ Creates a `sales_person` table.
 ##### Querying Data
 
 Creates a `/sales-persons` API.
-`SalesPerson` will be used in the `fields` query parameter: `GET /api/sales-persons?fields[SalesPerson]=name`
+`SalesPerson` will be used in the `fields` query parameter:
+
+```js
+GET /api/sales-persons?fields[SalesPerson]=name
+```
 
 ##### Data Response
 
@@ -105,7 +109,11 @@ const SalesPerson = {
 ##### Querying Data
 
 Creates a `/sales-people` API.
-`name` will still be used in the `fields` query parameter: `GET /api/sales-persons?fields[SalesPerson]=name`
+`name` will still be used in the `fields` query parameter:
+
+```js
+GET /api/sales-persons?fields[SalesPerson]=name
+```
 
 ##### Data Response
 
@@ -142,7 +150,12 @@ Creates a table `sales_person` in the Postgres schema `acme_corp`.
 
 ##### Querying Data
 
-`namespace_name`, will be used in the `fields` query parameter: `GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name`
+Creates an `acme-corp/sales-persons` API.
+`namespace_name`, will be used in the `fields` query parameter:
+
+```js
+GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
+```
 
 ##### Data Response
 
@@ -223,7 +236,11 @@ Creates a column `first_name` in the `sales_person` table.
 ##### Querying Data
 
 Creates a `/sales-persons` API.
-`firstName` will be used in the query parameters: `GET /api/sales-persons?fields[SalesPerson]=firstName`
+`firstName` will be used in the query parameters:
+
+```js
+GET /api/sales-persons?fields[SalesPerson]=firstName
+```
 
 ##### Data Response
 
@@ -293,7 +310,11 @@ Creates a column `sales_person_id` column in the `account` table.
 
 ##### Querying Data
 
-`salesPerson` will be used in the `include` query parameter: `GET /api/accounts?include=salesPerson`
+`salesPerson` will be used in the `include` query parameter:
+
+```js
+GET /api/accounts?include=salesPerson
+```
 
 ##### Data Response
 
@@ -346,7 +367,10 @@ Assumes a column `sales_person_id` in the `account` table.
 ##### Querying Data
 
 `accounts` will be used in the `include` query parameter:
-`GET /api/sales-persons?include=accounts`
+
+```js
+GET /api/sales-persons?include=accounts
+```
 
 ##### Data Response
 
@@ -414,7 +438,11 @@ Creates a column `manager_id` column in the `account` table.
 
 ##### Querying Data
 
-`manager` will be used in the `include` query parameter: `GET /api/accounts?include=manager`
+`manager` will be used in the `include` query parameters:
+
+```js
+GET /api/accounts?include=manager
+```
 
 ##### Data Response
 
