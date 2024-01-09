@@ -36,11 +36,11 @@ In just a few short steps we will set up a project containing a Hatchify fronten
 # Schemas
 
 A schema is a definition of a resource used in our Hatchify system. We use these shared schemas across our backend and frontend to create database tables, generate REST endpoints, and create React components
-and data fetchers. Because these schemas are the backbone of our frontend and backend, we will place them in the empty `schemas.ts`file at the root directory of our project.
+and data fetchers. Because these schemas are the backbone of our frontend and backend, we will place them in the empty `schemas.ts` file at the root directory of our project.
 
 The required fields of the schema are a `name` for your model and the`attributes` that will be held within it. If you have written ORM models before, particularly Sequelize, this will look familiar to you.
 
-> **Note:** Take note of lines commented with the 👀 emoji.
+> ✏️ Copy the following to the `schemas.ts` file. Take note of lines commented with the 👀 emoji.
 
 ```ts
 // hatchify-app/schemas.ts
