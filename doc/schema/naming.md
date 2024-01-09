@@ -68,6 +68,8 @@ const SalesPerson = {
 
 #### API Implications
 
+##### Querying Data
+
 - Creates a `/sales-persons` API.
 - `SalesPerson` will be used in the `fields` query parameter: `GET /api/sales-persons?fields[SalesPerson]=name`
 
@@ -290,7 +292,7 @@ const Account = {
 
 ##### Querying Data
 
-`GET /api/accounts?include=salesPerson`
+- `GET /api/accounts?include=salesPerson`
 
 ##### Data Response
 
@@ -342,7 +344,7 @@ const SalesPerson = {
 
 ##### Querying Data
 
-`GET /api/sales-persons?include=accounts`
+- `GET /api/sales-persons?include=accounts`
 
 ##### Data Response
 
