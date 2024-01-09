@@ -93,7 +93,7 @@ You can navigate to the following endpoints to get a list of users and todos (bu
 
 # Seeding Sample Data
 
-**✏️ Run the following commands in your terminal to save some sample data: **
+> ✏️ Run the following commands in your terminal to save some sample data.
 
 ```bash
 curl 'http://localhost:3000/api/todos' \
@@ -203,13 +203,11 @@ With that those Hatchify elements generated from our schema, we can pull the `Ev
 
 ## Rendering an index of schemas & data
 
-**✏️**Open
-[http://localhost:3000/](http://localhost:3000/). You
-should see:
+✏ Open [http://localhost:3000/](http://localhost:3000/). You should see:
 
 ![image](https://github.com/bitovi/hatchify/assets/2623867/9b5b8f0d-970d-4f86-a893-2f48c74f0474)
 
-And that’s it! With minimal code and some Hatchify magic, we've used our schemas to create a database, a backend with REST endpoints, and a frontend that handles the JSX and data-fetching for us.
+And that’s it! With minimal code and some Hatchify magic, we've used our schemas to create a database, a backend with REST endpoints, and a JSX-enabled frontend that handles the data-fetching for us.
 
 # Guides
 
