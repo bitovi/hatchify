@@ -62,14 +62,17 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
 - Creates a `sales_person` table.
 
-**API Implications:**
+#### API Implications
 
 - Creates a `/sales-persons` API.
 - `SalesPerson` will be used in the `fields` query parameter: `GET /api/sales-persons?fields[SalesPerson]=name`
+
+##### Data Response
+
 - `SalesPerson` will be used as the response `type`:
 
 ```js
@@ -95,10 +98,15 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**API Implications:**
+#### API Implications
+
+##### Querying Data
 
 - Creates a `/sales-people` API.
 - `name` will still be used in the `fields` query parameter: `GET /api/sales-persons?fields[SalesPerson]=name`
+
+##### Data Response
+
 - `name` will still be used as the response `type`:
 
 ```js
@@ -124,15 +132,20 @@ const AcmeCorp_SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
 - Creates a table `sales_person` in the Postgres schema `acme_corp`.
 
-**API Implications:**
+#### API Implications
 
-- Creates an `acme-corp/sales-persons` API.
+##### Querying Data
+
 - `namespace_name`, will be used in the `fields` query parameter: `GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name`
+
+##### Data Response
+
 - `namespace_name` will be used as the response `type`:
+
   ```js
   {
     data: {
@@ -182,7 +195,7 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**UI Implications:**
+#### UI Implications
 
 - When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `displayAttribute` was not set, then the `name` attribute would have been used.
 
@@ -199,15 +212,20 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
 - Creates a column `first_name` in the `sales_person` table.
 
-**API Implications:**
+#### API Implications
 
-- Creates a `/sales-persons` API.
+##### Querying Data
+
 - `firstName` will be used in the query parameters: `GET /api/sales-persons?fields[SalesPerson]=firstName`
+
+##### Data Response
+
 - `firstName` will be used in the mutation and response payloads:
+
   ```js
   {
     data: {
@@ -232,15 +250,15 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
 - This has no effect on the database.
 
-**API Implications:**
+#### API Implications
 
 - This has no effect on the API.
 
-**UI Implications:**
+#### UI Implications
 
 - The `lastName` attribute will be displayed as "Surname" in the table header and filter dropdowns.
 
@@ -264,15 +282,20 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
 - Creates a column `sales_person_id` column in the `account` table.
 
-**API Implications:**
+#### API Implications
 
-- `salesPerson` will be used in the `include` query parameter:
-  `GET /api/accounts?include=salesPerson`
+##### Querying Data
+
+`GET /api/accounts?include=salesPerson`
+
+##### Data Response
+
 - `salesPerson` will be used in the mutation and response payloads:
+
   ```js
   {
     data: {
@@ -311,15 +334,20 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
 - Assumes a column `sales_person_id` in the `account` table.
 
-**API Implications:**
+#### API Implications
 
-- `accounts` will be used in the `include` query parameter:
-  `GET /api/sales-persons?include=accounts`
-- `accounts` will be used inthe mutation and response payloads:
+##### Querying Data
+
+`GET /api/sales-persons?include=accounts`
+
+##### Data Response
+
+- `accounts` will be used in the mutation and response payloads:
+
   ```js
   {
     data: {
@@ -340,7 +368,7 @@ const SalesPerson = {
   }
   ```
 
-For more information on this relationhip type: [hasMany](../schema/relationship-types/has-many.md).
+For more information on this relationship type: [hasMany](../schema/relationship-types/has-many.md).
 
 #### hasMany.through
 
@@ -374,14 +402,16 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
 - Creates a column `manager_id` column in the `account` table.
 
-**API Implications:**
+#### API Implications
 
-- `manager` will be used in the `include` query parameter: `GET /api/accounts?include=manager`
+##### Data Response
+
 - `manager` will be used in the mutation and response payloads:
+
   ```js
   {
     data: {

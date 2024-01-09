@@ -31,15 +31,15 @@ The `text` type will create a sequelize [DataTypes.TEXT](https://sequelize.org/d
 For text, use any string value, or `%00` in your queries as follows:
 
 ```js
-GET /api/todos?filter[notes][$eq]=this%20is%20super%20important //all todos with notes that equal "this is super important"
+GET /api/todos?filter[notes][$eq]=this%20is%20super%20important // all todos with notes that equal "this is super important"
 
-GET /api/todos?filter[notes][$eq]=%00 //all todos with notes that are null
+GET /api/todos?filter[notes][$eq]=%00 // all todos with notes that are null
 
-GET /api/todos?filter[notes][$ilike]=%25important //all todos with notes that end in "important"
+GET /api/todos?filter[notes][$ilike]=%25important // all todos with notes that end in "important"
 
-GET /api/todos?filter[notes][$ilike]=this%25 //all todos with notes that start with "this"
+GET /api/todos?filter[notes][$ilike]=this%25 // all todos with notes that start with "this"
 
-GET /api/todos?filter[notes][$ilike]=%25is%20super%25 //all todos with notes that contain "is super"
+GET /api/todos?filter[notes][$ilike]=%25is%20super%25 // all todos with notes that contain "is super"
 ```
 
 Note:

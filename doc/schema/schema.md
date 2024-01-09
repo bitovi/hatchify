@@ -78,8 +78,13 @@ const SalesPerson = {
 
 #### API Implications
 
+##### Querying Data
+
 - This will create a `/sales-persons` API.
 - When referencing this type in the `fields`, `SalesPerson` will be used: `GET /api/sales-persons?fields[SalesPerson]=name`
+
+##### Data Response
+
 - `SalesPerson` will be used as the response `type`: `{data: {type: "SalesPerson"}}`
 
 ### Schema.pluralName
@@ -97,6 +102,8 @@ const SalesPerson = {
 ```
 
 #### API Implications
+
+##### Querying Data
 
 - Create a `/sales-people` API.
 
@@ -116,13 +123,18 @@ const AcmeCorp_SalesPerson = {
 
 - Creates a table sales_person in the Postgres schema acme_corp
 
-#### API Impliciations
+#### API Implications
 
-- This will create an acme-corp/sales-persons API
+##### Querying Data
+
+- This will create an `acme-corp/sales-persons` API
 - When referencing this in the type fields, AcmeCorp_SalesPerson will be used: `GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name`
+
+##### Data Response
+
 - Data will be returned like:
 
-  ```
+  ```js
   {
     data: {
       type: "AcmeCorp_SalesPerson",  // same as in "included"
@@ -155,8 +167,13 @@ const SalesPerson = {
 
 #### API Implications
 
+##### Querying Data
+
 - `firstName` will be used in query parameters like
   `GET /api/sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName`
+
+##### Data Response
+
 - `firstName` will be used in mutation payloads and response payloads like:
 
   ```js
@@ -191,8 +208,13 @@ const Account = {
 
 #### API Implications
 
+##### Querying Data
+
 - `salesPerson` will be used in the include query parameter like
   `GET /api/accounts?include=salesPerson`
+
+##### Data Response
+
 - `salesPerson` will be used in mutation payloads and response payloads like:
 
   ```js
@@ -232,8 +254,13 @@ const Account = {
 
 #### API Implications
 
+##### Querying Data
+
 - `closerPerson` will be used in the include query parameter like
   `GET /api/accounts?include=closerPerson`
+
+##### Data Response
+
 - `closerPerson` will be used in mutation payloads and response payloads like:
 
   ```js
@@ -304,8 +331,13 @@ const SalesPerson = {
 
 #### API Implications
 
+##### Querying Data
+
 - `accounts` will be used in the include query parameter like
   `GET /api/sales-persons?include=accounts`
+
+##### Data Response
+
 - `accounts` will be used in mutation payloads and response payloads like:
 
   ```js
@@ -345,8 +377,13 @@ const SalesPerson = {
 
 #### API Implications
 
+##### Querying Data
+
 - `managingAccounts` will be used in the include query parameter like
   `GET /api/sales-persons?include=managingAccounts`
+
+##### Data Response
+
 - `managingAccounts` will be used in mutation payloads and response payloads like:
 
   ```js
@@ -427,8 +464,13 @@ const SalesPerson = {
 
 #### API Implications
 
+##### Querying Data
+
 - `accounts` will be available in the include query parameter like
   `GET /api/sales-persons?include=accounts`
+
+##### Data Response
+
 - `accounts` will be used in mutation payloads and response payloads like:
 
   ```js
@@ -498,8 +540,13 @@ This does not change the Database behavior.
 
 #### API Implications
 
+##### Querying Data
+
 - `salesAccounts` will be available in the include query parameter like
   `GET /api/sales-persons?include=salesAccounts`
+
+##### Data Response
+
 - `salesAccounts` will be used in mutation payloads and response payloads like:
 
   ```js
