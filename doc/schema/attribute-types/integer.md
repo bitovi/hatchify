@@ -28,7 +28,7 @@ export const Todo = {
 
 The `integer` type will create a sequelize [DataTypes.INTEGER](https://sequelize.org/docs/v6/core-concepts/model-basics/#numbers) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
@@ -67,7 +67,7 @@ When creating or updating an integer attribute, A whole number or `null` must be
 
 ## React Rest Behavior
 
-Similar to the middleware, you MUST provide react rest models a whole number or `null` value. Likewise, they will always return these values:
+Similar to the API, you MUST provide react rest models a whole number or `null` value. Likewise, they will always return these values:
 
 ```ts
 Todo.createOne({ attributes: { importance: 0 } })

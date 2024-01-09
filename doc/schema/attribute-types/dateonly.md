@@ -28,7 +28,7 @@ Use [datetime](./datetime.md) for a date type with time.
 
 The `dateonly` type will create sequelize [DataTypes.DATEONLY](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
@@ -68,7 +68,7 @@ Note: Any time portion used in creating/updating the attribute will be truncated
 
 ## React Rest Behavior
 
-Similar to the middleware, you MUST provide react rest models a valid date in the form of `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` value. Likewise, they will always return these values:
+Similar to the API, you MUST provide react rest models a valid date in the form of `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` value. Likewise, they will always return these values:
 
 ```ts
 Todo.createOne({ attributes: { dueDate: "1990-12-31" } })

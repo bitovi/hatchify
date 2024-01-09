@@ -22,7 +22,7 @@ export const Todo = {
 
 The `boolean` type will create a sequelize [DataTypes.BOOLEAN](https://sequelize.org/docs/v6/core-concepts/model-basics/#boolean) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
@@ -61,7 +61,7 @@ When creating or updating a boolean attribute, `true`, `false`, or `null` must b
 
 ## React Rest Behavior
 
-Similar to the middleware, you MUST provide react rest models a `true`, `false`, or `null` value. Likewise, they will always return these values:
+Similar to the API, you MUST provide react rest models a `true`, `false`, or `null` value. Likewise, they will always return these values:
 
 ```ts
 Todo.createOne({ attributes: { complete: true } })

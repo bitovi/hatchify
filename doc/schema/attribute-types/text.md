@@ -24,7 +24,7 @@ export const Todo = {
 
 The `text` type will create a sequelize [DataTypes.TEXT](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
@@ -68,7 +68,7 @@ When creating or updating a text attribute, a string value, or `null` must be pr
 
 ## React Rest Behavior
 
-Similar to the middleware, you MUST provide react rest models a string value, or `null`. Likewise, they will always return these values:
+Similar to the API, you MUST provide react rest models a string value, or `null`. Likewise, they will always return these values:
 
 ```ts
 Todo.createOne({ attributes: { notes: "this is super important" } })

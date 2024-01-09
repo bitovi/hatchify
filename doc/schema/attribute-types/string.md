@@ -25,7 +25,7 @@ export const Todo = {
 
 The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 

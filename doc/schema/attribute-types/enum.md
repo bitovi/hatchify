@@ -25,7 +25,7 @@ export const Todo = {
 
 The `enumerate` type will create a sequelize [DataTypes.ENUM](https://sequelize.org/docs/v6/other-topics/other-data-types/#enums) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
