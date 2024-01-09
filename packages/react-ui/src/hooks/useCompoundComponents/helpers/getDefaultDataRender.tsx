@@ -4,7 +4,7 @@ import type {
   GetSchemaNames,
   Record,
 } from "@hatchifyjs/rest-client"
-import type { DefaultValueComponentsTypes } from "../../../components"
+import type { DefaultValueComponentsTypes } from "../../../components/index.js"
 
 export function getDefaultDataRender<
   const TSchemas extends globalThis.Record<string, PartialSchema>,

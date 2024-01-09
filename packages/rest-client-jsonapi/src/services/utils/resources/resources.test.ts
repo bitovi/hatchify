@@ -4,13 +4,13 @@ import type { SchemalessResourceRelationshipObject } from "@hatchifyjs/rest-clie
 import type {
   JsonApiResource,
   JsonApiResourceRelationship,
-} from "../../jsonapi"
+} from "../../jsonapi/index.js"
 import {
   convertToHatchifyResources,
   convertToJsonApiRelationships,
   getTypeToSchema,
   jsonApiResourceToHatchifyResource,
-} from "./resources"
+} from "./resources.js"
 
 describe("rest-client-jsonapi/services/utils/resources", () => {
   const typeToSchema = { article: "Article", person: "Person", tag: "Tag" }

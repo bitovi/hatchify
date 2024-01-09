@@ -1,4 +1,4 @@
-import type { PartialSchema } from "../types"
+import type { PartialSchema } from "../types/index.js"
 
 type UISchemaAttributes<TPartialSchema extends PartialSchema> = {
   [attributeName in keyof TPartialSchema["attributes"]]?: {

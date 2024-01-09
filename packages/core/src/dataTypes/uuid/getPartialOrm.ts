@@ -1,4 +1,4 @@
-import type { PartialUuidORM, PartialUuidProps } from "./types"
+import type { PartialUuidORM, PartialUuidProps } from "./types.js"
 
 export function getPartialOrm(
   props?: PartialUuidProps<boolean>,

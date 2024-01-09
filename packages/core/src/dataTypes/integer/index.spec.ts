@@ -1,6 +1,6 @@
-import { HatchifyCoerceError } from "../../types"
+import { HatchifyCoerceError } from "../../types/index.js"
 
-import { integer } from "."
+import { integer } from "./index.js"
 
 describe("integer", () => {
   describe("integer()", () => {

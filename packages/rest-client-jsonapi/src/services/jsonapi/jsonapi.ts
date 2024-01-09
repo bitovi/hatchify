@@ -5,7 +5,7 @@ import type {
   RestClientSchema,
   GetSchemaNames,
 } from "@hatchifyjs/rest-client"
-import { createOne, deleteOne, findAll, findOne, updateOne } from ".."
+import { createOne, deleteOne, findAll, findOne, updateOne } from "../index.js"
 
 export type Relationship = {
   id: string | number

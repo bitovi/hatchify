@@ -1,4 +1,4 @@
-import { datetime } from "."
+import { datetime } from "./index.js"
 
 describe("getFinalize", () => {
   it("finalizes a partial attribute", () => {

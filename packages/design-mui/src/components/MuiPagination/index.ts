@@ -1,1 +1,1 @@
-export { default as MuiPagination } from "./MuiPagination"
+export { default as MuiPagination } from "./MuiPagination.js"

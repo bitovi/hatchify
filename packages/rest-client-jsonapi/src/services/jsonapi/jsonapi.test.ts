@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
-import { baseUrl } from "../../mocks/handlers"
-import { jsonapi } from "./jsonapi"
+import { baseUrl } from "../../mocks/handlers.js"
+import { jsonapi } from "./jsonapi.js"
 import { string } from "@hatchifyjs/core"
 
 const schemaMap = {

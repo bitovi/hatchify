@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react"
-import type { HatchifyDataGridSort, SortObject } from "../presentation"
+import type { HatchifyDataGridSort, SortObject } from "../presentation/index.js"
 
 export default function useSort(
   defaultSort?: SortObject,

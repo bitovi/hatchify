@@ -1,6 +1,6 @@
 import { getSchemaKey } from "@hatchifyjs/core"
 import type { FinalSchema } from "@hatchifyjs/core"
-import { omit, snakeCase } from "lodash"
+import { omit, snakeCase } from "lodash-es"
 import { DataTypes } from "sequelize"
 import type {
   AbstractDataTypeConstructor,
@@ -10,7 +10,7 @@ import type {
   Sequelize,
 } from "sequelize"
 
-import { getSequelizeSchemaName } from "./getSequelizeSchemaName"
+import { getSequelizeSchemaName } from "./getSequelizeSchemaName.js"
 
 export function toSequelize(
   schemas: { [schemaName: string]: FinalSchema },
@@ -66,7 +66,8 @@ export function toSequelize(
           updatedAt: false,
           freezeTableName: true,
           schema: getSequelizeSchemaName(dialect, finalizedSchema.namespace),
-          tableName: snakeCase(finalizedSchema.name),
+          tableName:
+            finalizedSchema.tableName ?? snakeCase(finalizedSchema.name),
         },
       ),
     }),

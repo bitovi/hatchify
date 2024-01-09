@@ -4,7 +4,7 @@ import { render, screen, within } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import type { PartialSchema } from "@hatchifyjs/core"
 import { assembler, string, text } from "@hatchifyjs/core"
-import { MuiList } from "./MuiList"
+import { MuiList } from "./MuiList.js"
 
 describe("components/MuiList", () => {
   const partialSchemas = {

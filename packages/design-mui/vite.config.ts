@@ -8,7 +8,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/design-mui.ts",
-      formats: ["es", "cjs"],
+      formats: ["es"],
     },
     rollupOptions: {
       external: [
@@ -21,6 +21,11 @@ export default defineConfig({
         "react",
         "react-dom",
       ],
+    },
+  },
+  esbuild: {
+    supported: {
+      "top-level-await": true,
     },
   },
   plugins: [dts(), react()],

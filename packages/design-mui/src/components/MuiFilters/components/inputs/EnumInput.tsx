@@ -1,6 +1,6 @@
 import { MenuItem, Select } from "@mui/material"
-import MuiAutocomplete from "../../../MuiAutocomplete"
-import type { Operators } from "../../constants"
+import MuiAutocomplete from "../../../MuiAutocomplete/index.js"
+import type { Operators } from "../../constants.js"
 
 const EnumInput: React.FC<{
   labelId: string

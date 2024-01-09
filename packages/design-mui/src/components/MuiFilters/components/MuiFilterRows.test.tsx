@@ -13,8 +13,8 @@ import {
   datetime,
   enumerate,
   hasMany,
+  string,
 } from "@hatchifyjs/core"
-import { string } from "@hatchifyjs/core"
 
 const partialSchemas = {
   Todo: {

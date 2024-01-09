@@ -3,7 +3,7 @@ import type {
   PartialControlType,
   PartialDataTypeProps,
   PartialSequelizeDataType,
-} from "../../types"
+} from "../../types/index.js"
 
 export interface HatchifyStringUIOptions extends HatchifyBaseUIOptions {
   maxDisplayLength?: number | null

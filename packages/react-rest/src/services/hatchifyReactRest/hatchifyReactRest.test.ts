@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest"
 import type { RestClient } from "@hatchifyjs/rest-client"
 import { integer, string } from "@hatchifyjs/core"
-import { hatchifyReactRest } from "./hatchifyReactRest"
+import { hatchifyReactRest } from "./hatchifyReactRest.js"
 
 describe("react-rest/services/hatchifyReactRest", () => {
   it("should return functions for each schema", () => {

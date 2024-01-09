@@ -1,4 +1,4 @@
-import type { FinalDatetimeORM, PartialDatetimeORM } from "./types"
+import type { FinalDatetimeORM, PartialDatetimeORM } from "./types.js"
 
 export function finalizeOrm({
   sequelize,

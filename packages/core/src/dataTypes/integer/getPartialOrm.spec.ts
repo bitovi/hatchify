@@ -1,4 +1,4 @@
-import { getPartialOrm } from "./getPartialOrm"
+import { getPartialOrm } from "./getPartialOrm.js"
 
 describe("getPartialOrm", () => {
   it("handles required", () => {

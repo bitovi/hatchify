@@ -1,4 +1,4 @@
-import type { FinalSchema } from "../types"
+import type { FinalSchema } from "../types/index.js"
 
 export function getSchemaKey({
   name,

@@ -4,8 +4,8 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import { belongsTo, hasMany, string } from "@hatchifyjs/core"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import jsonapi from "../rest-client-jsonapi"
-import { testBackendEndpointConfig } from "../setupTests"
+import jsonapi from "../rest-client-jsonapi.js"
+import { testBackendEndpointConfig } from "../setupTests.js"
 
 const Article = {
   name: "Article",

@@ -1,1 +1,1 @@
-export { default } from "./MuiHeaders"
+export { default } from "./MuiHeaders.js"

@@ -1,1 +1,1 @@
-export { MuiLayout } from "./MuiLayout"
+export { MuiLayout } from "./MuiLayout.js"

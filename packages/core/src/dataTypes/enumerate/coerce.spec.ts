@@ -1,5 +1,5 @@
-import { coerce } from "./coerce"
-import { HatchifyCoerceError } from "../../types"
+import { coerce } from "./coerce.js"
+import { HatchifyCoerceError } from "../../types/index.js"
 
 describe("coerce", () => {
   const values = ["foo", "bar"]

@@ -1,6 +1,6 @@
-import type { PartialEnumControlType, PartialEnumProps } from "./types"
-import { validateValues } from "./validateValues"
-import { HatchifyInvalidSchemaError } from "../../types"
+import type { PartialEnumControlType, PartialEnumProps } from "./types.js"
+import { validateValues } from "./validateValues.js"
+import { HatchifyInvalidSchemaError } from "../../types/index.js"
 
 export function getPartialControl<
   // @todo HATCH-417

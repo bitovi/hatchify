@@ -1,6 +1,6 @@
-import { HatchifyCoerceError } from "../../types"
+import { HatchifyCoerceError } from "../../types/index.js"
 
-import { datetime } from "."
+import { datetime } from "./index.js"
 
 describe("datetime", () => {
   describe("datetime()", () => {

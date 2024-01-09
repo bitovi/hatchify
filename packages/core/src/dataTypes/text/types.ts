@@ -1,4 +1,7 @@
-import type { PartialStringControlType, PartialStringProps } from "../string"
+import type {
+  PartialStringControlType,
+  PartialStringProps,
+} from "../string/index.js"
 
 export type PartialTextProps<TRequired extends boolean> =
   PartialStringProps<TRequired>

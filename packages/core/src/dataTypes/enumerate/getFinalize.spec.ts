@@ -1,4 +1,4 @@
-import { enumerate } from "."
+import { enumerate } from "./index.js"
 
 describe("getFinalize", () => {
   const values = ["foo", "bar"]

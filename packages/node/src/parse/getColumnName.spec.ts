@@ -1,4 +1,4 @@
-import { getColumnName } from "./getColumnName"
+import { getColumnName } from "./getColumnName.js"
 
 describe("getColumnName", () => {
   it("escapes the column name without dialect", () => {

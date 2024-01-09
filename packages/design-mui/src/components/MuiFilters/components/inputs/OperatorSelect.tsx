@@ -2,7 +2,7 @@ import { InputLabel, MenuItem, Select } from "@mui/material"
 import type {
   OptionsByFilterableControls,
   FilterableControls,
-} from "../../constants"
+} from "../../constants.js"
 
 const OperatorSelect: React.FC<{
   options: OptionsByFilterableControls[FilterableControls]

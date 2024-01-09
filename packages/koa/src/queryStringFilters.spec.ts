@@ -9,7 +9,7 @@ import {
 import type { PartialSchema } from "@hatchifyjs/node"
 import * as dotenv from "dotenv"
 
-import { dbDialects, startServerWith } from "./testing/utils"
+import { dbDialects, startServerWith } from "./testing/utils.js"
 
 type User = {
   name: string

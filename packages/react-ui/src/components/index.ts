@@ -1,3 +1,3 @@
-export * from "./HatchifyDataGrid"
-export * from "./HatchifyPresentationProvider"
-export * from "./HatchifyEmpty"
+export * from "./HatchifyDataGrid/index.js"
+export * from "./HatchifyPresentationProvider/index.js"
+export * from "./HatchifyEmpty/index.js"

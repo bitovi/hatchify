@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material"
-import type { FilterableControls } from "../../constants"
+import type { FilterableControls } from "../../constants.js"
 
 const DateInput: React.FC<{
   controlType: FilterableControls

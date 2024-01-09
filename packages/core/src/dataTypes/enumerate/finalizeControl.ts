@@ -1,4 +1,4 @@
-import type { PartialEnumControlType } from "./types"
+import type { PartialEnumControlType } from "./types.js"
 
 export function finalizeControl<TValues extends readonly string[]>(
   props: Omit<PartialEnumControlType<boolean, TValues>, "allowNullInfer">,

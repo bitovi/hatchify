@@ -7,7 +7,7 @@ import {
   isFields,
   pageToQueryParam,
   sortToQueryParam,
-} from "./query"
+} from "./query.js"
 import type { PartialSchema } from "@hatchifyjs/core"
 import {
   assembler,

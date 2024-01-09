@@ -1,4 +1,4 @@
-import type { FinalUuidORM, PartialUuidORM } from "./types"
+import type { FinalUuidORM, PartialUuidORM } from "./types.js"
 
 export function finalizeOrm({ sequelize }: PartialUuidORM): FinalUuidORM {
   return {

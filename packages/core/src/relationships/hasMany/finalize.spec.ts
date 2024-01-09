@@ -1,8 +1,10 @@
-import { finalize } from "./finalize"
-import { integer, string, uuid } from "../../dataTypes"
-import { HatchifyInvalidSchemaError } from "../../types"
-import type { SemiFinalSchema } from "../../types"
-import { uuidv4 } from "../../util/uuidv4"
+import { jest } from "@jest/globals"
+
+import { finalize } from "./finalize.js"
+import { integer, string, uuid } from "../../dataTypes/index.js"
+import { HatchifyInvalidSchemaError } from "../../types/index.js"
+import type { SemiFinalSchema } from "../../types/index.js"
+import { uuidv4 } from "../../util/uuidv4.js"
 
 describe("finalize", () => {
   const schemas: Record<string, SemiFinalSchema> = {
@@ -32,7 +34,7 @@ describe("finalize", () => {
         targetSchema: null,
         targetAttribute: null,
         sourceAttribute: null,
-        through: jest.fn(),
+        through: jest.fn() as any,
       },
       "todos",
       schemas,
@@ -55,7 +57,7 @@ describe("finalize", () => {
         targetSchema: "Todo",
         targetAttribute: "assigneeId",
         sourceAttribute: "id",
-        through: jest.fn(),
+        through: jest.fn() as any,
       },
       "todos",
       schemas,
@@ -79,7 +81,7 @@ describe("finalize", () => {
         targetSchema: "User",
         targetAttribute: "managerId",
         sourceAttribute: "id",
-        through: jest.fn(),
+        through: jest.fn() as any,
       },
       "employees",
       schemas,
@@ -105,7 +107,7 @@ describe("finalize", () => {
           targetSchema: "Invalid",
           targetAttribute: null,
           sourceAttribute: null,
-          through: jest.fn(),
+          through: jest.fn() as any,
         },
         "todos",
         schemas,

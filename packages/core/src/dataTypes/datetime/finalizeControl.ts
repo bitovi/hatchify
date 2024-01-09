@@ -1,4 +1,4 @@
-import type { PartialDatetimeControlType } from "./types"
+import type { PartialDatetimeControlType } from "./types.js"
 
 export function finalizeControl(
   props: Omit<PartialDatetimeControlType<boolean>, "allowNullInfer">,

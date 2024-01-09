@@ -1,5 +1,5 @@
-import { HatchifyError } from "../types"
-import type { HatchifyErrorOptions } from "../types"
+import { HatchifyError } from "../types/index.js"
+import type { HatchifyErrorOptions } from "../types/index.js"
 
 export function hatchifyErrorHandler(
   error: HatchifyErrorOptions,

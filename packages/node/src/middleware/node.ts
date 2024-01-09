@@ -1,13 +1,13 @@
 import type { ErrorObject } from "json-api-serializer"
 
-import { ValidationError, errorResponseHandler } from "../error"
-import { codes, statusCodes } from "../error/constants"
-import type { Hatchify } from "../node"
+import { codes, statusCodes } from "../error/constants.js"
+import { ValidationError, errorResponseHandler } from "../error/index.js"
+import type { Hatchify } from "../node.js"
 import type {
   MiddlewareRequest,
   MiddlewareResponse,
   NextFunction,
-} from "../types"
+} from "../types.js"
 
 export function getMiddlewareFunctions(
   hatchify: Hatchify,

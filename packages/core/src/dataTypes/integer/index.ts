@@ -1,13 +1,13 @@
-import { getPartialControl } from "./getPartialControl"
-import { getPartialOrm } from "./getPartialOrm"
-import type { PartialAttribute } from "../../types"
-import { getFinalize } from "../number"
+import { getPartialControl } from "./getPartialControl.js"
+import { getPartialOrm } from "./getPartialOrm.js"
+import type { PartialAttribute } from "../../types/index.js"
+import { getFinalize } from "../number/index.js"
 import type {
   FinalNumberORM,
   PartialNumberControlType,
   PartialNumberORM,
   PartialNumberProps,
-} from "../number"
+} from "../number/index.js"
 
 export function integer<TRequired extends boolean = false>(
   props?: PartialNumberProps<TRequired>,

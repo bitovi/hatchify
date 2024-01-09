@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom"
 import { describe, it, expect } from "vitest"
-import { getFilterableFields } from "./utils"
 import type { PartialSchema } from "@hatchifyjs/core"
+import { getFilterableFields } from "./utils.js"
 import {
   assembler,
   belongsTo,

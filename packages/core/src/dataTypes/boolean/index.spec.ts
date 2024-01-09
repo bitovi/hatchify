@@ -1,6 +1,6 @@
-import { HatchifyCoerceError } from "../../types"
+import { HatchifyCoerceError } from "../../types/index.js"
 
-import { boolean } from "."
+import { boolean } from "./index.js"
 
 describe("boolean", () => {
   describe("boolean()", () => {

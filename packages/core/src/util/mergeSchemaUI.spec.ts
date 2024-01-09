@@ -1,7 +1,7 @@
-import type { PartialUISchemas } from "./mergeSchemaUI"
-import { mergeSchemaUI } from "./mergeSchemaUI"
-import { boolean, string } from "../dataTypes"
-import type { PartialSchema } from "../types"
+import type { PartialUISchemas } from "./mergeSchemaUI.js"
+import { mergeSchemaUI } from "./mergeSchemaUI.js"
+import { boolean, string } from "../dataTypes/index.js"
+import type { PartialSchema } from "../types/index.js"
 
 describe("mergeSchemaUI", () => {
   it("works", () => {

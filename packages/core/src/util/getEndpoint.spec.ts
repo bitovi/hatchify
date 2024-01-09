@@ -1,4 +1,4 @@
-import { getEndpoint } from "./getEndpoint"
+import { getEndpoint } from "./getEndpoint.js"
 
 describe("getEndpoint", () => {
   describe("without namespaces", () => {

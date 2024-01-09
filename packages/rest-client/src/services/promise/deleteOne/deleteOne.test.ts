@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest"
-import { createStore } from "../../store"
-import type { RestClient } from "../../types"
-import { deleteOne } from "./deleteOne"
+import { createStore } from "../../store/index.js"
+import type { RestClient } from "../../types/index.js"
+import { deleteOne } from "./deleteOne.js"
 import { assembler, string } from "@hatchifyjs/core"
 
 const fakeDataSource: RestClient<any, any> = {

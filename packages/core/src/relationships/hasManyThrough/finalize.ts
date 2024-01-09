@@ -1,11 +1,11 @@
-import type { PartialHasManyThroughRelationship } from "./types"
-import { getDefaultPrimaryAttribute } from "../../assembler/getDefaultPrimaryAttribute"
-import { uuid } from "../../dataTypes"
-import { HatchifyInvalidSchemaError } from "../../types"
-import type { SemiFinalSchema } from "../../types"
-import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase"
-import { pascalCaseToCamelCase } from "../../util/pascalCaseToCamelCase"
-import { singularize } from "../../util/singularize"
+import type { PartialHasManyThroughRelationship } from "./types.js"
+import { getDefaultPrimaryAttribute } from "../../assembler/getDefaultPrimaryAttribute.js"
+import { uuid } from "../../dataTypes/index.js"
+import { HatchifyInvalidSchemaError } from "../../types/index.js"
+import type { SemiFinalSchema } from "../../types/index.js"
+import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase.js"
+import { pascalCaseToCamelCase } from "../../util/pascalCaseToCamelCase.js"
+import { singularize } from "../../util/singularize.js"
 
 export function finalize(
   sourceSchema: string,

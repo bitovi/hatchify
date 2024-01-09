@@ -1,0 +1,15 @@
+{
+  "cSpell.words": ["Hatchify", "hatchifyjs"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "jestrunner.jestCommand": "node --experimental-vm-modules ../../node_modules/.bin/jest",
+  "search.exclude": {
+    "**/coverage": true,
+    "**/dist": true,
+    "**/node_modules": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

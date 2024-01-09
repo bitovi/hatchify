@@ -1,4 +1,4 @@
-import { getSchemaKey } from "./getSchemaKey"
+import { getSchemaKey } from "./getSchemaKey.js"
 
 describe("getSchemaKey", () => {
   it("works as expected", () => {

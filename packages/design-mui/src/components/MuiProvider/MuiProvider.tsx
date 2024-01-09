@@ -4,10 +4,13 @@ import {
   HatchifyPresentationProvider,
   HatchifyPresentationDefaultValueComponents,
 } from "@hatchifyjs/react-ui"
-import { MuiLayout } from "../MuiLayout"
-import MuiDataGrid from "../MuiDataGrid/MuiDataGrid"
-import { MuiEverything } from "../MuiEverything"
-import { Relationship, RelationshipList } from "./DefaultDisplayComponents"
+import { MuiLayout } from "../MuiLayout/index.js"
+import MuiDataGrid from "../MuiDataGrid/MuiDataGrid.js"
+import { MuiEverything } from "../MuiEverything/index.js"
+import {
+  Relationship,
+  RelationshipList,
+} from "./DefaultDisplayComponents/index.js"
 
 export const MuiProvider: React.FC<XProviderProps<Theme>> = ({ children }) => {
   return (

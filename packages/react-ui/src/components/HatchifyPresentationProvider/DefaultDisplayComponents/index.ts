@@ -9,4 +9,4 @@ export {
   DateList,
   Relationship,
   RelationshipList,
-} from "./DefaultDisplayComponents"
+} from "./DefaultDisplayComponents.js"

@@ -7,7 +7,7 @@ import {
   string,
 } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
-import type { Resource, RestClient } from "../types"
+import type { Resource, RestClient } from "../types/index.js"
 
 export const testPartialSchemas = {
   Todo: {

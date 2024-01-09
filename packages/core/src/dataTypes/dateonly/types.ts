@@ -2,7 +2,7 @@ import type {
   PartialControlType,
   PartialDataTypeProps,
   PartialSequelizeDataType,
-} from "../../types"
+} from "../../types/index.js"
 
 export interface PartialDateonlyProps<TRequired extends boolean>
   extends PartialDataTypeProps<string, TRequired> {

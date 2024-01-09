@@ -1,2 +1,2 @@
-export * from "./NoSchemas"
-export * from "./WithSchemas"
+export * from "./NoSchemas.js"
+export * from "./WithSchemas.js"

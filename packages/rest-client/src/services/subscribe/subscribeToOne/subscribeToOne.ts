@@ -1,5 +1,5 @@
-import { getStore } from "../../store"
-import type { Record, Unsubscribe } from "../../types"
+import { getStore } from "../../store/index.js"
+import type { Record, Unsubscribe } from "../../types/index.js"
 
 /**
  * Adds a subscriber to the store for a given schema and id. Will only notify

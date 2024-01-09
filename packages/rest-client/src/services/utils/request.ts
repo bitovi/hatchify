@@ -4,7 +4,7 @@ import type {
   FinalSchemas,
   GetSchemaFromName,
   GetSchemaNames,
-} from "../types"
+} from "../types/index.js"
 
 /**
  * Coerces the value from the internal client data into something that can be sent with JSON.

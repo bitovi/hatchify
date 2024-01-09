@@ -1,4 +1,4 @@
-import type { PartialUuidControlType } from "./types"
+import type { PartialUuidControlType } from "./types.js"
 
 export function finalizeControl(
   props: Omit<PartialUuidControlType<boolean>, "allowNullInfer">,

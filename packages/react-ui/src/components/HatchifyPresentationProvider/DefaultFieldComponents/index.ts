@@ -4,4 +4,4 @@ export {
   Boolean,
   Date,
   Relationship,
-} from "./DefaultFieldComponents"
+} from "./DefaultFieldComponents.js"

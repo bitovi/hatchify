@@ -2,7 +2,7 @@ import { assembler, integer, uuid, uuidv4 } from "@hatchifyjs/core"
 import { Sequelize } from "sequelize"
 import type { ModelStatic } from "sequelize"
 
-import { toSequelize } from "./toSequelize"
+import { toSequelize } from "./toSequelize.js"
 
 describe("toSequelize", () => {
   const sequelize = new Sequelize({

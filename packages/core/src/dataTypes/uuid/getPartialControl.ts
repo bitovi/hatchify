@@ -1,5 +1,5 @@
-import { UUID_REGEX } from "./constants"
-import type { PartialUuidControlType, PartialUuidProps } from "./types"
+import { UUID_REGEX } from "./constants.js"
+import type { PartialUuidControlType, PartialUuidProps } from "./types.js"
 
 export function getPartialControl<TRequired extends boolean>(
   props?: PartialUuidProps<TRequired>,

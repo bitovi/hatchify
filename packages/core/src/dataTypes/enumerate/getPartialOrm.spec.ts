@@ -1,6 +1,6 @@
-import { getPartialOrm } from "./getPartialOrm"
-import type { PartialEnumProps } from "./types"
-import { HatchifyInvalidSchemaError } from "../../types"
+import { getPartialOrm } from "./getPartialOrm.js"
+import type { PartialEnumProps } from "./types.js"
+import { HatchifyInvalidSchemaError } from "../../types/index.js"
 
 describe("getPartialOrm", () => {
   const values = ["foo", "bar"]

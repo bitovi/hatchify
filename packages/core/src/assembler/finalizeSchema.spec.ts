@@ -1,7 +1,7 @@
-import { finalizeSchema } from "./finalizeSchema"
-import { integer, uuid } from "../dataTypes"
-import { UUID_REGEX } from "../dataTypes/uuid/constants"
-import { uuidv4 } from "../util/uuidv4"
+import { finalizeSchema } from "./finalizeSchema.js"
+import { integer, uuid } from "../dataTypes/index.js"
+import { UUID_REGEX } from "../dataTypes/uuid/constants.js"
+import { uuidv4 } from "../util/uuidv4.js"
 
 describe("finalizeSchema", () => {
   it("finalizes a partial schema", () => {

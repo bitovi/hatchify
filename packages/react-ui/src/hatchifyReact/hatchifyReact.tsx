@@ -18,21 +18,21 @@ import type {
   GetSchemaNames,
   GetSchemaFromName,
 } from "@hatchifyjs/rest-client"
-import type { HatchifyDataGridProps as InternalHatchifyDataGridProps } from "../components/HatchifyDataGrid"
-import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from "../components/HatchifyEverything"
-import type { HatchifyEmptyProps } from "../components/HatchifyEmpty"
-import type { DataGridState } from "../hooks/useDataGridState"
+import type { HatchifyDataGridProps as InternalHatchifyDataGridProps } from "../components/HatchifyDataGrid/index.js"
+import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from "../components/HatchifyEverything/index.js"
+import type { HatchifyEmptyProps } from "../components/HatchifyEmpty/index.js"
+import type { DataGridState } from "../hooks/useDataGridState.js"
 import type {
   ReplaceColumnProps,
   ExtraColumnProps,
-} from "../components/HatchifyColumn"
+} from "../components/HatchifyColumn/index.js"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import { HatchifyDataGrid } from "../components/HatchifyDataGrid"
-import { HatchifyColumn } from "../components/HatchifyColumn"
-import { HatchifyEmpty } from "../components/HatchifyEmpty"
-import { HatchifyEverything } from "../components/HatchifyEverything"
-import useDataGridState from "../hooks/useDataGridState"
-import type { SortObject } from "../presentation"
+import { HatchifyDataGrid } from "../components/HatchifyDataGrid/index.js"
+import { HatchifyColumn } from "../components/HatchifyColumn/index.js"
+import { HatchifyEmpty } from "../components/HatchifyEmpty/index.js"
+import { HatchifyEverything } from "../components/HatchifyEverything/index.js"
+import useDataGridState from "../hooks/useDataGridState.js"
+import type { SortObject } from "../presentation/index.js"
 
 type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
   Omit<

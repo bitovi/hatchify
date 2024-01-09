@@ -1,4 +1,4 @@
-import { number } from "./index"
+import { number } from "./index.js"
 
 describe("getFinalize", () => {
   it("finalizes a partial attribute", () => {

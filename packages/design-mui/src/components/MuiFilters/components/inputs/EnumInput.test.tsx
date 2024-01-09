@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import EnumInput from "./EnumInput"
+import EnumInput from "./EnumInput.js"
 
 describe("components/MuiFilters/inputs/EnumInput", () => {
   it("works", async () => {
