@@ -3,7 +3,7 @@
 A resource can be deleted by sending a DELETE request to the URL that represents the resource:
 
 ```
-DELETE /api/photos/1 HTTP/1.1
+DELETE /api/photos/8ff0beed-2585-4391-8735-cc560eaf287e HTTP/1.1
 Accept: application/vnd.api+json
 ```
 

@@ -12,6 +12,7 @@ Accept: application/vnd.api+json
 {
   "data": {
     "type": "Photo",
+    "id": "8ff0beed-2585-4391-8735-cc560eaf287e",
     "attributes": {
       "title": "Ember Hamster",
       "src": "http://example.com/images/productivity.png"
