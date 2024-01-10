@@ -15,13 +15,13 @@
 
 ## What is @hatchifyjs/react?
 
-@hatchifyjs/react is a model-driven library of components and methods for your hatchify app. By defining the schemas (AKA models) of your backend resources, @hatchifyjs/react will provide you with a set of components  and methods that you can use across your React app.
+@hatchifyjs/react is a model-driven library of components and methods for your hatchify app. By defining the schemas (AKA models) of your backend resources, @hatchifyjs/react will provide you with a set of components and methods that you can use across your React app.
 
 ### TypeScript
 
 @hatchifyjs/react provides TypeScript support. Here's an example of how two schemas (`Todo` and `User`) provide auto-completion for an instantiated @hatchifyjs/react app (`hatchedReact`):
 
-![react TypeScript](doc/attachments/reactTs.gif)
+![react TypeScript](../../doc/attachments/reactTs.gif)
 
 ## Types
 
@@ -51,7 +51,9 @@ const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
-      <HatchifyProvider>  {/* 👀 */}
+      <HatchifyProvider>
+        {" "}
+        {/* 👀 */}
         <Everything />
       </HatchifyProvider>
     </ThemeProvider>
@@ -83,9 +85,9 @@ const App: React.FC = () => {
 
 A set of `components` for each of the defined schemas to be used in the app.
 Included components:
- `DataGrid`
- `Column`
- `Empty`
+`DataGrid`
+`Column`
+`Empty`
 
 Learn more about the available components [here](./components.md).
 
@@ -114,24 +116,23 @@ Learn more about the available hooks and promises [here](model.md).
 
 `useDataGridState` takes in one parameter, an object, with the following keys:
 
-| key               | description                                                    |
-| ----------------- | -------------------------------------------------------------- |
-| `defaultSelected` | Optional, used for checkboxes                                  |
-| `onSelectedChange`| Optional, used for checkboxes                                  |
-| `fields`          | Optional, fields to be included. If not <br> defined, all fields from the schema <br> and included relationships will be returned                     |
-| `include`         | Optional, relationships to be included                         |
-| `defaultPage`     | Optional, default paginated page                               |
-| `defaultSort`     | Optional, default sort direction                               |
-| `baseFilter`      | Optional, a pre filter to be used alongside additional filters |
+| key                | description                                                                                                                       |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| `defaultSelected`  | Optional, used for checkboxes                                                                                                     |
+| `onSelectedChange` | Optional, used for checkboxes                                                                                                     |
+| `fields`           | Optional, fields to be included. If not <br> defined, all fields from the schema <br> and included relationships will be returned |
+| `include`          | Optional, relationships to be included                                                                                            |
+| `defaultPage`      | Optional, default paginated page                                                                                                  |
+| `defaultSort`      | Optional, default sort direction                                                                                                  |
+| `baseFilter`       | Optional, a pre filter to be used alongside additional filters                                                                    |
 
 ```tsx
-
 const todoState = hatchedReact.state.Todo.useDataGridState({
   include: ["approvedBy"],
-  fields: ["name"]
+  fields: ["name"],
 })
-
 ```
+
 Learn more about the return type [here](types.md).
 
 ## MUI Components
