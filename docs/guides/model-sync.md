@@ -7,7 +7,7 @@ hatchedKoa.modelSync()
 ```
 
 - This creates the table if it does not exist (and does nothing if it already exists)
-- Postgres: Namespaces (Postgres Schemas) are handled manually
+- Postgres: Namespaces (Postgres Schemas) are handled manually // 👀
 
 ```ts
 hatchedKoa.modelSync({ alter: true })

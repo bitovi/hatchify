@@ -43,6 +43,8 @@ export default App
 
 Your app should now look like this:
 
+//👀
+
 ![localhost_3000_ (1)](https://github.com/bitovi/hatchify/assets/60432429/427a1511-d187-4cc4-8a92-3ce8cb70b422)
 
 Notice how the content we've placed inside `TodoEmpty` now displays in our empty list.
@@ -165,7 +167,7 @@ Notice how the column for the `name` field has been replaced with our Custom col
     //...Remaining props...
   />
   ```
-
+//👀
   The callback accepts one argument: an object with a `value` property and a `record` property. `value` is equal to the value that would have otherwise been rendered in each data cell. `record` is equal to the full record represented by a given data cell's row.
 
   - Alternatively, you could use the `DataValueComponent` prop instead of `renderDataValue`. It does the same thing, but instead of accepting a callback it accepts a React component that optionally accepts a `record` prop and a `value` prop. It would look something like this:

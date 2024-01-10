@@ -1,5 +1,7 @@
 # Adding request authorization
 
+// 👀
+
 While Hatchify gives you a lot of power out of the box many applications, especially as they grow in complexity, need to apply custom rules and logic to their CRUD operations. Hatchify is prepared for this as well, allowing you to easily and flexibly override any of the default behavior to fit your needs. Even though you have customized the solution you can still use many of the Hatchify helper functions and features to accelerate development.
 
 This is helpful if you need to:
