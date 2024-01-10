@@ -24,19 +24,21 @@ export const Todo = {
 | `min`           | The minimum value allowed. <br/> Example: `integer({min: 1})`                       | `Integer` |   Yes    | `-Number.MIN_SAFE_INTEGER` 🛑 |
 | `autoIncrement` | If the value should be incremented. <br/> Example: `integer({autoIncrement: true})` | `Boolean` |   Yes    |            `false`            |
 
-## Database and Sequelize Behavior
+## Database Implications
 
 The `integer` type will create a sequelize [DataTypes.INTEGER](https://sequelize.org/docs/v6/core-concepts/model-basics/#numbers) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
 For integers, use any whole number value and `%00` in your queries as follows:
 
 ```js
-GET /api/todos?filter[importance][$gte]=5  // all todos with importance >= 5
+GET /api/todos?filter[importance][$gte]=5 // all todos with importance >= 5
+
 GET /api/todos?filter[importance][$eq]=%00 // all todos with importance = null
+
 GET /api/todos?filter[importance][$in][]=1&filter[importance][$in][]=2 // all todos with importance = 1 or 2
 ```
 
@@ -65,7 +67,7 @@ When creating or updating an integer attribute, A whole number or `null` must be
 
 ## React Rest Behavior
 
-Similar to the middleware, you MUST provide react rest models a whole number or `null` value. Likewise, they will always return these values:
+Similar to the API, you MUST provide react rest models a whole number or `null` value. Likewise, they will always return these values:
 
 ```ts
 Todo.createOne({ attributes: { importance: 0 } })
@@ -74,11 +76,11 @@ const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.importance //-> number or null
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
-The integer value will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+The integer value will be presented in the data grid. If the value is `null`, no value will be presented in the data grid.
 
-![Grid Example](../../attachments/integer-column.png)
+![Data Grid Example](../../attachments/integer-column.png)
 
 ## Form Behavior 🛑
 
