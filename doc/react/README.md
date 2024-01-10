@@ -15,11 +15,11 @@
 
 ## What is @hatchifyjs/react?
 
-@hatchifyjs/react is a model-driven library of components and methods for your hatchify app. By defining the schemas (AKA models) of your backend resources, @hatchifyjs/react will provide you with a set of components and methods that you can use across your React app.
+@hatchifyjs/react is a schema-driven library of components and helper methods for a Hatchify + React frontend. By providing the schemas (AKA models) of your backend resources, @hatchifyjs/react returns a set of components and helper functionality that you can use across your React app.
 
 ### TypeScript
 
-@hatchifyjs/react provides TypeScript support. Here's an example of how two schemas (`Todo` and `User`) provide auto-completion for an instantiated @hatchifyjs/react app (`hatchedReact`):
+@hatchifyjs/react includes TypeScript support. Here's an example of how two schemas (`Todo` and `User`) provide auto-completion for an instantiated @hatchifyjs/react app (`hatchedReact`):
 
 ![react TypeScript](../../doc/attachments/reactTs.gif)
 
@@ -33,11 +33,11 @@ There are a number of types available to assist with app customization.
 - HatchifyApp
 - RecordType
 
-Learn more about the available types [here](types.md).
+Learn more about the available types [here](./types.md).
 
 ## createJsonapiClient
 
-`createJsonapiClient` creates a new JSON:API rest client from the defined schemas. It accepts a base url, and schema set.
+`createJsonapiClient` creates a new JSON:API rest client from the defined schemas. It accepts a base url, and schema set. For more documentation see [here](./rest-client.md) 🛑.
 
 ```ts
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
@@ -45,14 +45,13 @@ const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 ## HatchifyProvider
 
-`HatchifyProvider` is the provider for Hatchify. It gives the Hatchify components access to the Hatchify state. This must be a parent to the components used in the app.
+`HatchifyProvider` is a component that hosts and provides access to Hatchify-related state. Hatchify components in `HatchifyProvider`'s subtree interact with it to access Hatchify internal state. It must be a parent to any Hatchify components.
 
 ```tsx
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
-        {" "}
         {/* 👀 */}
         <Everything />
       </HatchifyProvider>
@@ -63,7 +62,7 @@ const App: React.FC = () => {
 
 ## hatchifyReact
 
-The `hatchifyReact` function creates the `HatchifyApp` object. Inside of the object you will find `components`, `model`, `state`, and `Everything`. `components`, `model`, and `state`, will be broken down further for each defined schema
+`hatchifyReact` is a function that initializes the `HatchifyApp` object. Inside of the object you will find `components`, `model`, `state`, and `Everything`. `components`, `model`, and `state`, will be broken down further for each defined schema
 
 ### Everything
 
