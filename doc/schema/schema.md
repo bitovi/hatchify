@@ -191,7 +191,7 @@ GET /api/sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName
 {
   data: {
     type: "SalesPerson",
-    id: "1",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
     attributes: { firstName: "Mary" } //👀
   }
 }
@@ -235,12 +235,12 @@ GET /api/accounts?include=salesPerson
 {
   data: {
     type: "Account",
-    id: "1",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
     attributes: { firstName: "Acme" },
     relationships: {
       salesPerson: {
         data: [
-          { type: "SalesPerson", id: "322" } //👀
+          { type: "SalesPerson", id: "abcdefgh-ijkl-mnop-qrst-000000000322" } //👀
         ]
       }
     }
@@ -284,12 +284,12 @@ GET /api/accounts?include=closerPerson
 {
   data: {
     type: "Account",
-    id: "1",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
     attributes: { firstName: "Acme" },
     relationships: {
       closerPerson: {
         data: [
-          { type: "SalesPerson", id: "322" } //👀
+          { type: "SalesPerson", id: "abcdefgh-ijkl-mnop-qrst-000000000322" } //👀
         ]
       }
     }
@@ -364,11 +364,11 @@ GET /api/sales-persons?include=accounts
 {
   data: {
     type: "SalesPerson",
-    id: "1",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
     attributes: { firstName: "Mary" },
     relationships: {
       accounts: {
-        data: [{type: "Account", id: "456"}]  //👀
+        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}]  //👀
       }
     }
   }
@@ -413,11 +413,11 @@ GET /api/sales-persons?include=managingAccounts
 {
   data: {
     type: "SalesPerson",
-    id: "1",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
     attributes: { firstName: "Mary" },
     relationships: {
       managingAccounts: {
-        data: [{type: "Account", id: "456"}] //👀
+        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}] //👀
       }
     }
   }
@@ -503,11 +503,11 @@ GET /api/sales-persons?include=accounts
 {
   data: {
     type: "SalesPerson",
-    id: "1",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
     attributes: { firstName: "Mary" },
     relationships: {
       accounts: {
-        data: [{type: "Account", id: "456"}] //👀
+        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}] //👀
       }
     }
   }
@@ -582,11 +582,11 @@ GET /api/sales-persons?include=salesAccounts
 {
   data: {
     type: "SalesPerson",
-    id: "1",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
     attributes: { firstName: "Mary" },
     relationships: {
       salesAccounts: {
-        data: [{type: "Account", id: "456"}] //👀
+        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}] //👀
       }
     }
   }
