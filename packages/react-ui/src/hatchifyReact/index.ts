@@ -1,1 +1,1 @@
-export * from "./hatchifyReact"
+export * from "./hatchifyReact.js"

@@ -1,6 +1,6 @@
-import type { PartialTextProps } from "./types"
-import { getPartialControl as getStringPartialControl } from "../string"
-import type { PartialStringControlType } from "../string/types"
+import type { PartialTextProps } from "./types.js"
+import { getPartialControl as getStringPartialControl } from "../string/index.js"
+import type { PartialStringControlType } from "../string/types.js"
 
 export function getPartialControl<TRequired extends boolean>(
   props?: PartialTextProps<TRequired>,

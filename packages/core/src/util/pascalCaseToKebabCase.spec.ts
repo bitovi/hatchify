@@ -1,4 +1,4 @@
-import { pascalCaseToKebabCase } from "./pascalCaseToKebabCase"
+import { pascalCaseToKebabCase } from "./pascalCaseToKebabCase.js"
 
 describe("pascalCaseToKebabCase", () => {
   it("works as expected", () => {

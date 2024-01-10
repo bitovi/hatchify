@@ -2,7 +2,7 @@
 import { css } from "@emotion/react"
 import { Checkbox, TableCell, TableHead, TableRow } from "@mui/material"
 import type { HatchifyColumn, XDataGridProps } from "@hatchifyjs/react-ui"
-import { Sortable } from "./components"
+import { Sortable } from "./components/index.js"
 
 const styles = {
   th: css`

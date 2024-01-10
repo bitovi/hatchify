@@ -6,9 +6,9 @@ import {
   RelationshipPathError,
   UnexpectedValueError,
   ValueRequiredError,
-} from "../error"
-import type { HatchifyError } from "../error/types"
-import type { Hatchify } from "../node"
+} from "../error/index.js"
+import type { HatchifyError } from "../error/types/index.js"
+import type { Hatchify } from "../node.js"
 
 function isObject(value: any): boolean {
   return value && typeof value === "object" && !Array.isArray(value)
@@ -44,7 +44,7 @@ export function validateFindOptions<T extends FinalSchema = FinalSchema>(
         modelAssociation = associations[includeName]
       }
 
-      if (!(modelAssociation && modelAssociation.model in hatchify.models)) {
+      if (!(modelAssociation && modelAssociation.model in hatchify.model)) {
         includeErrors.push(
           new RelationshipPathError({
             detail: `URL must have 'include' as one or more of ${Object.keys(

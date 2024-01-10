@@ -1,70 +1,23 @@
-# HatchifyJS
+# Hatchify
 
-<img align="left" src="https://github.com/bitovi/hatchify/assets/78602/119af4d1-d9ac-439d-aee5-8b9759cf8915">
+<img style="float:left" src="https://github.com/bitovi/hatchify/assets/78602/119af4d1-d9ac-439d-aee5-8b9759cf8915">
 
-HatchifyJS is a web application framework designed to accelerate the
-development of new, or enhancement of existing, CRUD applications. If
-all you need is a simple CRUD application, HatchifyJS can provide you
-with a fully functional system straight from your database schema. If
-you have more specialized requirements, HatchifyJS makes it easy to
-customize every part of the application to meet your needs.
+Hatchify is a web application framework designed to accelerate the development of CRUD applications. If all you need is basic app, Hatchify can provide you with a fully functional system straight from a datatype schema. If you have more specialized requirements, Hatchify makes it easy to customize every part of the application to meet your needs.
 
-Unlike code generation tools—which allow you to write your schema and then generate your code, but can't preserve any customizations you may have made if you ever need to re-run the generator—HatchifyJS enables you to make changes to your database schema and customize app behavior **independently**. This is because HatchifyJS is **not** code generation. It's a system of modular and hierarchical libraries that can be consumed piecemeal to use as much or as little of HatchifyJS abilities as you require.
+Hatchify enables you to make changes to your database schema and customize app behavior **independently** of each other, unlike code-generation dependent approaches. It avoids code generation in favor of modular libraries that can be used incrementally, to utilize as much or as little of the framework's abilities as you require.
 
-- [HatchifyJS](#hatchifyjs)
-- [Project Setup](#project-setup)
-- [Backend - The Hatchify Middleware](#backend---the-hatchify-middleware)
-  - [Using the server endpoints](#using-the-server-endpoints)
-    - [Creating a resource](#creating-a-resource)
-    - [Listing resources](#listing-resources)
-    - [Fetching a single resource](#fetching-a-single-resource)
-    - [Updating a resource](#updating-a-resource)
-    - [Deleting a resource](#deleting-a-resource)
-  - [Seeding data](#seeding-data)
-- [Frontend with React & MUI](#frontend-with-react-and-mui)
-  - [Rendering an index of schemas and data](#rendering-an-index-of-schemas--data)
-- [Schema](#schemas)
-  - [Attributes](./doc/schema//attribute-types/README.md)
-  - [Relationships](./doc/schema/relationship-types/README.md)
-- JSON:API
-  - [Listing](#listing-resources)
-    - [Filtering](./doc/jsonapi/filtering-data/README.md)
-    - [Pagination](./doc/jsonapi/paginating-data/README.md)
-    - [Include](./doc/jsonapi/including-data/README.md)
-    - [Sorting](./doc/jsonapi/sorting-data/README.md)
-    - [Sparse fieldsets](./doc/jsonapi/sparse-fieldsets/README.md)
-  - [Submitting](#creating-a-resource)
-  - [Updating](#updating-a-resource)
-  - [Deleting](#deleting-a-resource)
-- Koa
-  - [API Docs](./doc/koa/README.md) 🛑
-- Express
-  - [API Docs](./doc/express/README.md) 🛑
-- React
-  - [Components](./doc/react/components.md)
-  - [REST Client](./doc/react/rest-client.md) 🛑
+- [Getting Started](#getting-started)
 - [Guides](#guides)
-  - [Schema, database, and service API naming](./doc/guides/naming.md)
-  - [Model Sync](./doc/guides/model-sync.md)
-  - [Using PostgreSQL DB](./doc/guides/using-postgres-db.md)
-  - [Adding custom endpoints](./doc/guides/adding-custom-endpoints.md)
-  - [Adding request authorization](./doc/guides/adding-request-authorization.md)
-  - [Customizing your list](./doc/guides/customizing-your-list.md)
-  - [Adding checkboxes to the list](./doc/guides/adding-checkboxes-to-the-list.md)
-  - [Application data validation](./doc/guides/application-data-validation.md)
+- [API Docs](#api-docs)
 - [Need help or have questions?](#need-help-or-have-questions)
 
-# Project Setup
+# Getting Started
 
-In this guide, we will be setting up a project containing a HatchifyJS
-frontend and backend. Our frontend will use React and MUI, and our backend
-will be using Koa. The project also uses Vite as a dev server which handles
-much of the React configuration for us.
+In just a few short steps we will set up a project containing a Hatchify frontend and backend. Our frontend will use React and MUI, and our backend will be using Koa. The project also uses Vite as a dev server which handles much of the React configuration for us.
 
 > **Note:** The ✏️ icon indicates when to follow along!
 
-✏️ Perform all the
-following steps:
+✏️ Perform all the following steps:
 
 1. Ensure you’re using [node 18 and npm
    9 or above](https://nodejs.org/en/download)
@@ -82,20 +35,12 @@ following steps:
 
 # Schemas
 
-A schema is a definition of a resource used in our HatchifyJS system. We
-use these shared schemas across our backend and frontend to create
-database tables, generate REST endpoints, and create React components
-and data fetchers. Because these schemas are the backbone of our
-frontend and backend, we will place them in the empty `schemas.ts`
-file at the root directory of our project.
+A schema is a definition of a resource used in our Hatchify system. We use these shared schemas across our backend and frontend to create database tables, generate REST endpoints, and create React components
+and data fetchers. Because these schemas are the backbone of our frontend and backend, we will place them in the empty `schemas.ts` file at the root directory of our project.
 
-The required fields of the schema are a `name` for your model and the
-`attributes` that will be held within it. If you have written ORM models
-before, specifically Sequelize, this should look pretty familiar to you.
-HatchifyJS uses Sequelize, a Node.js- and TypeScript-compatible ORM,
-under the hood to talk to your database.
+The required fields of the schema are a `name` for your model and the`attributes` that will be held within it. If you have written ORM models before, particularly Sequelize, this will look familiar to you.
 
-> **Note:** Take note of lines commented with the 👀 emoji.
+> ✏️ Copy the following to the `schemas.ts` file. Take note of lines commented with the 👀 emoji.
 
 ```ts
 // hatchify-app/schemas.ts
@@ -103,15 +48,15 @@ import { belongsTo, boolean, dateonly, integer, hasMany, string } from "@hatchif
 import type { PartialSchema } from "@hatchifyjs/core"
 
 export const Todo = {
-  name: "Todo",
+  name: "Todo", // 👀
   attributes: {
-    name: string({ required: true }),
+    name: string({ required: true }), // 👀
     dueDate: dateonly(),
     importance: integer(),
     complete: boolean({ default: false }),
   },
   relationships: {
-    user: belongsTo("User"),
+    user: belongsTo("User"), // 👀
   },
 } satisfies PartialSchema
 
@@ -121,151 +66,34 @@ export const User = {
     name: string({ required: true }),
   },
   relationships: {
-    todos: hasMany("Todo"),
+    todos: hasMany("Todo"), // 👀
   },
 } satisfies PartialSchema
 ```
 
-> **Note:** It is important to use _satisfies PartialSchema_ when typing our schemas. By using the satisfies keyword, we can make sure our schema objects are typed correctly and also get the benefit of type inference when passing our schemas into our hatchify functions.
+> **Note:** It is important to use _satisfies PartialSchema_ when typing our schemas. By using the satisfies keyword, we can make sure our schema objects are typed correctly and also get the benefit of type inference when passing our schemas into our Hatchify functions.
 
-You can find all of the possible data types for a schema's `attributes` [here](./doc/schema/attribute-types/README.md).
+You can find all the possible data types for a schema's `attributes` [here](./doc/schema/attribute-types/README.md).
 
-## Model Relationships
+# Backend - Schema Defined Endpoints
 
-HatchifyJS can help you define and build complex relationships between
-different models within your application. In the previous code snippets,
-you may have noticed we added a `belongsTo` and `hasMany` to our
-schemas. A model can have a relationship, linking it to another model.
-These relationships can be defined using `hasMany`, `hasOne`,
-`belongsTo`, and `hasManyThrough`. The way we have defined the schemas
-above, we are telling HatchifyJS that a `User` can be associated with
-many different todos and that a `Todo` can only have 1 user associated
-with it.
+Now we can run this application, and Hatchify will create CRUD application endpoints for our `User` and `Todo` models automatically. This step will take care of not only setting up your database resources, but also validating your schemas against each other, ensuring all your relationship fields make sense.
 
-More information on these relationships and the options available can be found [here](./doc/schema//relationship-types/README.md).
-
-# Backend - The Hatchify Middleware
-
-Now if we run our application, HatchifyJS will create CRUD application
-endpoints for our `User` and `Todo` models automatically.
-
-If you create additional schema files you can simply import them the
-same way, passing them into the array in the HatchifyJS constructor.
-This step will take care of not only adding your schema files, but also
-validating them against each other, and setting up relationships for
-you.
-
-Next, we can start up the dev server to see everything in action. HatchifyJS will create CRUD application endpoints for our `User` and `Todo` models automatically.
-
-If you create additional schemas, export them the same way. This step will take care of not only adding your schema files, but also
-validating them against each other, and setting up relationships for
-you.
+To run the server: ✏️
 
 ```bash
 npm run dev
 ```
 
-You can navigate to the following endpoints to get a list of users and todos
-(but we won't have any just yet):
+You can navigate to the following endpoints to get a list of users and todos (but we won't have any just yet):
 
 [http://localhost:3000/api/users](http://localhost:3000/api/users)
 
 [http://localhost:3000/api/todos](http://localhost:3000/api/todos)
 
-Now that we have our dev server up and running we can start
-looking at how to make changes and further develop our example.
+# Seeding Sample Data
 
-## Using the server endpoints
-
-You can now make requests to your endpoint to test your applications. The following are examples of how to do this with `curl`, but you don't need to follow along just yet—we'll seed the database for our example app later on.
-
-### Creating a resource
-
-```bash
-curl 'http://localhost:3000/api/todos' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "Todo",
-    "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000001",
-    "attributes": {
-      "name": "Walk the dog",
-      "dueDate": "2024-12-12",
-      "importance": 6
-    }
-  }
-}'
-```
-
-With Hatchify, you can make a POST request and assign its related record
-in a single request, per the JSON:API spec.
-
-```bash
-curl --request POST 'http://localhost:3000/api/users' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "User",
-    "id": "bbbbbbbb-bbbb-bbbb-bbbb-000000000001",
-    "attributes": {
-      "name": "John Doe"
-    },
-    "relationships": {
-      "todos": {
-        "data": [
-          { "type": "Todo", "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000001" }
-        ]
-      }
-    }
-  }
-}'
-```
-
-### Listing resources
-
-You can make GET requests with HatchifyJS middleware, and you can make
-your requests even more powerful with query strings. For example:
-
-- [http://localhost:3000/api/users](http://localhost:3000/api/users)
-- [http://localhost:3000/api/users?include=todos](http://localhost:3000/api/users?include=todos)
-- [http://localhost:3000/api/users?include=todos&filter\[name\]=John+Doe](http://localhost:3000/api/users?include=todos&filter%5Bname%5D=John+Doe)
-
-You can check out the [querystring library](https://github.com/bitovi/querystring-parser), which HatchifyJS uses under the hood, for more information.
-
-### Fetching a single resource
-
-Just like fetching a list of resources, we’re able to fetch an
-individual resource with or without its related records. For example:
-
-- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002](http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001)
-- [http://localhost:3000/api/users/66917da6-5ff8-11ee-8c99-0242ac120002?include=todos](http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001?include=todos)
-
-### Updating a resource
-
-```bash
-curl --request PATCH 'http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "User",
-    "id": "bbbbbbbb-bbbb-bbbb-bbbb-000000000001",
-    "attributes": {
-      "name": "New name",
-      "type": "User"
-    }
-  }
-}'
-```
-
-### Deleting a resource
-
-```bash
-curl --request DELETE 'http://localhost:3000/api/users/bbbbbbbb-bbbb-bbbb-bbbb-000000000001'
-```
-
-## Seeding data
-
-**✏️ Run the following commands in your terminal to seed some data**
+> ✏️ Run the following commands in your terminal to save some sample data.
 
 ```bash
 curl 'http://localhost:3000/api/todos' \
@@ -357,42 +185,33 @@ curl 'http://localhost:3000/api/users' \
 }'
 ```
 
-# Frontend with React and MUI
+With the dev server running and some data in place, we can now further review the project.
 
-Now that our server is up and running we can review the contents of
-`frontend/App.tsx` to see how the schemas that we defined earlier conveniently
-"hatch" our frontend.
+# Frontend - React and MUI
 
-The first thing we do is import `hatchifyReact`, `HatchifyProvider`, and
-`createJsonapiClient` from the `@hatchify/react` library. Here’s a quick
-overview of what each of these does:
+Let's review the contents of `frontend/App.tsx` to see how the schemas that we defined earlier conveniently "hatch" our frontend.
 
-- `createJsonapiClient` - This is our rest client for JSON:API. We
-  pass in the `baseUrl` of our backend to it, as well as our schemas.
+The first you'll see is the imports of `hatchifyReact`, `HatchifyProvider`, and `createJsonapiClient` from the `@hatchify/react` library. Here’s a quick overview of what each of these does:
 
-- `HatchifyProvider` - This is a MUI theme provider that we must wrap
-  around our entire app so that our HatchifyJS components will render
-  with the correct style.
+- `createJsonapiClient` - This is our rest client for JSON:API. We pass in the `baseUrl` of our backend to it, as well as our schemas.
 
-- `hatchifyReact` - This function takes in our rest client and returns
-  an object containing React components and data access functions for each schema.
-  This returned object represents our entire frontend HatchifyJS app.
+- `HatchifyProvider` - This is a MUI theme provider that we must wrap around our entire app so that our Hatchify components will render with the correct style.
 
-With that HatchifyJS app created, we can pull the `Everything` "splash screen"
-from the returned components and render it.
+- `hatchifyReact` - This function takes in our rest client and returns an object containing React components and data access functions for each schema. This returned object represents our entire frontend Hatchify app.
+
+With that those Hatchify elements generated from our schema, we can pull the `Everything` "splash screen" component from `hatchifyReact` and render it.
 
 ## Rendering an index of schemas & data
 
-**✏️**Open
-[http://localhost:3000/](http://localhost:3000/). You
-should see:
+✏ Open [http://localhost:3000/](http://localhost:3000/). You should see:
 
 ![image](https://github.com/bitovi/hatchify/assets/2623867/9b5b8f0d-970d-4f86-a893-2f48c74f0474)
 
-And that’s it! With minimal code and some HatchifyJS magic, we've used our
-well-defined schemas to create a database, a running backend with REST endpoints, and a frontend that handles the JSX and data-fetching for us.
+And that’s it! With minimal code and some Hatchify magic, we've used our schemas to create a database, a backend with REST endpoints, and a JSX-enabled frontend that handles the data-fetching for us.
 
 # Guides
+
+Continue learning more about the Hatchify feature set with these guide that continue from the example project above:
 
 - [Schema, database, and service API naming](./doc/guides/naming.md)
 - [Model Sync](./doc/guides/model-sync.md)
@@ -403,14 +222,37 @@ well-defined schemas to create a database, a running backend with REST endpoints
 - [Adding checkboxes to the list](./doc/guides/adding-checkboxes-to-the-list.md)
 - [Application data validation](./doc/guides/application-data-validation.md)
 
+# API Docs
+
+Dig deep into how the internals of how Hatchify works in the technical interface documentation:
+
+- [Schema](./doc/schema/)
+  - [Attributes](./doc/schema//attribute-types/README.md)
+  - [Relationships](./doc/schema/relationship-types/README.md)
+- [JSON:API](./doc/jsonapi//README.md)
+  - [Creating](./doc/jsonapi/creating.md)
+  - [Reading](./doc/jsonapi/reading/README.md)
+    - [Filtering](./doc/jsonapi/reading/filtering/README.md)
+    - [Paginating](./doc/jsonapi/reading/paginating/README.md)
+    - [Sorting](./doc/jsonapi/reading/sorting/README.md)
+    - [Relationships](./doc/jsonapi/reading/relationships/README.md)
+    - [Sparse Fields](./doc/jsonapi/reading/sparse-fields/README.md)
+  - [Updating](./doc/jsonapi/updating.md)
+  - [Deleting](./doc/jsonapi/deleting.md)
+- Koa
+  - [API Docs](./doc/koa/README.md)
+- Express
+  - [API Docs](./doc/express/README.md) 🛑
+- React
+  - [Components](./doc/react/components.md) 🛑
+  - [REST Client](./doc/react/rest-client.md) 🛑
+
 # Need help or have questions?
 
-This project is supported by [Bitovi](https://bitovi.com/), a Javascript
-consultancy. You can get help or ask questions on our:
+This project is supported by [Bitovi](https://bitovi.com/), a web software consultancy. You can get help or ask questions on our:
 
 - [Discord Community](https://discord.com/invite/J7ejFsZnJ4)
 
 - [Twitter](https://twitter.com/bitovi)
 
-Or, you can hire us for training, consulting, or development. [Set up a
-free consultation.](https://www.bitovi.com/digital-consulting-services)
+Or, you can hire us for training, consulting, or development. [Set up a free consultation.](https://www.bitovi.com/digital-consulting-services)

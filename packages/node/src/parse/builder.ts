@@ -12,12 +12,12 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
-import { handlePostgresUuid } from "./handlePostgresUuid"
-import { handleSqliteDateNestedColumns } from "./handleSqliteDateNestedColumns"
-import { handleSqliteLike } from "./handleSqliteLike"
-import { handleWhere } from "./handleWhere"
-import { UnexpectedValueError } from "../error"
-import type { Hatchify } from "../node"
+import { handlePostgresUuid } from "./handlePostgresUuid.js"
+import { handleSqliteDateNestedColumns } from "./handleSqliteDateNestedColumns.js"
+import { handleSqliteLike } from "./handleSqliteLike.js"
+import { handleWhere } from "./handleWhere.js"
+import { UnexpectedValueError } from "../error/index.js"
+import type { Hatchify } from "../node.ts"
 
 export interface QueryStringParser<T, E = UnexpectedValueError> {
   data: T

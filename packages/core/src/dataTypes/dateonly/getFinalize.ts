@@ -1,19 +1,19 @@
-import { coerce } from "./coerce"
-import { finalizeControl } from "./finalizeControl"
-import { finalizeOrm } from "./finalizeOrm"
-import { isISO8601DateString } from "./isISO8601DateString"
+import { coerce } from "./coerce.js"
+import { finalizeControl } from "./finalizeControl.js"
+import { finalizeOrm } from "./finalizeOrm.js"
+import { isISO8601DateString } from "./isISO8601DateString.js"
 import type {
   FinalDateonlyORM,
   PartialDateonlyControlType,
   PartialDateonlyORM,
-} from "./types"
-import { HatchifyCoerceError } from "../../types"
+} from "./types.js"
+import { HatchifyCoerceError } from "../../types/index.js"
 import type {
   FinalAttribute,
   PartialAttribute,
   UserValue,
   ValueInRequest,
-} from "../../types"
+} from "../../types/index.js"
 
 export function getFinalize(
   props: PartialAttribute<

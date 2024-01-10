@@ -1,4 +1,4 @@
-import { hasMany } from "."
+import { hasMany } from "./index.js"
 
 describe("hasMany", () => {
   it("hasMany()", () => {

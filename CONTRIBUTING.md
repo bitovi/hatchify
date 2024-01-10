@@ -129,13 +129,13 @@ No further configuration is required to test Hatchify against a SQLite database
 2. To create and run Postgres database, run the following command:
 
    ```bash
-   docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
+   docker run --name postgres-container -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
    ```
 
    This installs the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
 
-   - `POSTGRES_PASSWORD=example_password`
-   - `POSTGRES_USER=example_user`
+   - `POSTGRES_USER=postgres`
+   - `POSTGRES_PASSWORD=postgres`
 
    This also runs Postgres on port 5432.
 
@@ -158,7 +158,7 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 2. Configure a postgres connection. The following is what needs to be specified to connect to the Postgres in docker:
 
-![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
+![image](./doc/attachments/add-postgres.png)
 
 **Click** the "Test Connection" button to test the connection. If successful, click **Finish** and go onto the next step.
 
@@ -173,7 +173,7 @@ For more information on creating a connection, [this tutorial](https://dbeaver.c
 
 4. Enter `postgres` and click "OK".
 
-   ![image](https://github.com/bitovi/hatchify/assets/78602/f1c95ae6-a877-4284-ba40-046bd566fcaa)
+   ![image](./doc/attachments/create-database.png)
 
 ##### Create a .env file with your environment variables
 
@@ -186,7 +186,7 @@ For more information on creating a connection, [this tutorial](https://dbeaver.c
 2. Fill your .env file with the following content:
 
    ```bash
-   DB_URI=postgres://example_user:example_password@localhost:5432/postgres
+   DB_URI=postgres://postgres:postgres@localhost:5432/postgres
    ```
 
 #### 3.3. With a database engine in a Docker container (recommended)
@@ -411,7 +411,6 @@ npx nx eslint @hatchifyjs/koa
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
 │   ├── express                                 # @hatchifyjs/express; Hatchify for Express, a wrapper around @hatchifyjs/node
-│   │   ├── JSONAPI.md                          # Documentation around JSON:API
 │   │   ├── LICENSE.md
 │   │   ├── package.json
 │   │   ├── src
@@ -435,7 +434,6 @@ npx nx eslint @hatchifyjs/koa
 │   │   ├── tsconfig.json
 │   │   └── vite.config.ts
 │   ├── koa                                     # @hatchifyjs/koa; Hatchify for Koa, a wrapper around @hatchifyjs/node
-│   │   ├── JSONAPI.md                          # Documentation around JSON:API
 │   │   ├── LICENSE.md
 │   │   ├── README.md
 │   │   ├── package.json

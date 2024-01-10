@@ -1,5 +1,5 @@
-import { getDefaultPrimaryAttribute } from "./getDefaultPrimaryAttribute"
-import { UUID_REGEX } from "../dataTypes/uuid/constants"
+import { getDefaultPrimaryAttribute } from "./getDefaultPrimaryAttribute.js"
+import { UUID_REGEX } from "../dataTypes/uuid/constants.js"
 
 describe("getDefaultPrimaryAttribute", () => {
   it("creates an integer attribute", () => {

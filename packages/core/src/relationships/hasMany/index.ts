@@ -1,5 +1,5 @@
-import type { PartialHasManyRelationship } from "./types"
-import { buildThrough } from "../hasManyThrough/buildThrough"
+import type { PartialHasManyRelationship } from "./types.js"
+import { buildThrough } from "../hasManyThrough/buildThrough.js"
 
 // HATCH-417
 export function hasMany<TTargetSchema extends string | undefined>(

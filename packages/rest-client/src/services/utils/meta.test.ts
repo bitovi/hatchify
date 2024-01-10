@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
-import type { MetaError, MetaLoading, MetaSuccess } from "../types"
-import { getMeta } from "./meta"
+import type { MetaError, MetaLoading, MetaSuccess } from "../types/index.js"
+import { getMeta } from "./meta.js"
 
 describe("rest-client/services/utils/meta", () => {
   describe("getMeta", () => {

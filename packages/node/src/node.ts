@@ -7,22 +7,25 @@ import {
 import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 import type { IAssociation } from "@hatchifyjs/sequelize-create-with-associations/dist/sequelize/types"
 import JSONAPISerializer from "json-api-serializer"
-import { snakeCase } from "lodash"
+import { snakeCase } from "lodash-es"
 import { match } from "path-to-regexp"
 import type { MatchFunction } from "path-to-regexp"
-import type { Identifier, Sequelize } from "sequelize"
+import type { Identifier, Model, Sequelize } from "sequelize"
 import type { Database } from "sqlite3"
 
-import type { HatchifyErrorOptions } from "./error"
-import { HatchifyError } from "./error"
-import type { EverythingFunctions } from "./everything"
-import { buildEverythingForModel } from "./everything"
-import { buildParserForModel } from "./parse"
-import type { ParseFunctions } from "./parse"
-import { buildSchemaForModel } from "./schema"
-import { convertHatchifyModels, createSequelizeInstance } from "./sequelize"
-import { buildSerializerForModel } from "./serialize"
-import type { SerializeFunctions } from "./serialize"
+import type { HatchifyErrorOptions } from "./error/index.js"
+import { HatchifyError } from "./error/index.js"
+import type { EverythingFunctions } from "./everything.js"
+import { buildEverythingForModel } from "./everything.js"
+import { buildParserForModel } from "./parse/index.js"
+import type { ParseFunctions } from "./parse/index.js"
+import { buildSchemaForModel } from "./schema.js"
+import {
+  convertHatchifyModels,
+  createSequelizeInstance,
+} from "./sequelize/index.js"
+import { buildSerializerForModel } from "./serialize.js"
+import type { SerializeFunctions } from "./serialize.js"
 import type {
   FunctionsHandler,
   HatchifyOptions,
@@ -30,7 +33,7 @@ import type {
   SequelizeModelsCollection,
   SequelizeWithHatchify,
   SyncOptions,
-} from "./types"
+} from "./types.js"
 
 /**
  * Hatchify can be imported from the `@hatchifyjs/koa` package
@@ -127,6 +130,7 @@ export class Hatchify {
         `DELETE ${endpoint}/:id`,
       ]
     }, [] as string[])
+    // eslint-disable-next-line no-console
     console.info("Hatchify endpoints:\r\n\r\n" + endpoints.join("\r\n"))
   }
 
@@ -162,14 +166,6 @@ export class Hatchify {
   }
 
   /**
-   * Returns an object mapping model names to Hatchify models
-   * @hidden
-   */
-  get models(): SequelizeModelsCollection {
-    return this._sequelizeModels
-  }
-
-  /**
    * The `parse` export is one of the primary tools provided by Hatchify for working
    * with your Models in custom routes.
    *
@@ -182,7 +178,7 @@ export class Hatchify {
    * @returns {ModelFunctionsCollection<ParseFunctions>}
    * @category General Use
    */
-  get parse() {
+  get parse(): ModelFunctionsCollection<ParseFunctions> {
     return buildExportWrapper<ParseFunctions>(this, buildParserForModel)
   }
 
@@ -199,7 +195,10 @@ export class Hatchify {
    * @returns {ModelFunctionsCollection<SerializeFunctions>}
    * @category General Use
    */
-  get serialize() {
+  get serialize(): ModelFunctionsCollection<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    SerializeFunctions<Model<any, any>>
+  > {
     return buildExportWrapper<SerializeFunctions>(this, buildSerializerForModel)
   }
 
@@ -248,7 +247,7 @@ export class Hatchify {
    * @returns {ModelFunctionsCollection<EverythingFunctions>}
    * @category General Use
    */
-  get everything() {
+  get everything(): ModelFunctionsCollection<EverythingFunctions> {
     return buildExportWrapper<EverythingFunctions>(
       this,
       buildEverythingForModel,
@@ -375,10 +374,9 @@ export function buildExportWrapper<T>(
   handlerFunction: FunctionsHandler<T>,
 ): ModelFunctionsCollection<T> {
   const wrapper: ModelFunctionsCollection<T> = {
-    "*": handlerFunction(hatchify, "*"),
     allModels: handlerFunction(hatchify, "*"),
   }
-  Object.keys(hatchify.models).forEach((modelName: string) => {
+  Object.keys(hatchify.model).forEach((modelName: string) => {
     wrapper[modelName] = handlerFunction(hatchify, modelName)
   })
 

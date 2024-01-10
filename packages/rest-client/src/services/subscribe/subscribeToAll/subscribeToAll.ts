@@ -1,13 +1,16 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import { getStore } from "../../store"
+import { getStore } from "../../store/index.js"
 import type {
   GetSchemaFromName,
   GetSchemaNames,
   QueryList,
   RecordType,
   Unsubscribe,
-} from "../../types"
-import { SchemaNameNotStringError, schemaNameIsString } from "../../utils"
+} from "../../types/index.js"
+import {
+  SchemaNameNotStringError,
+  schemaNameIsString,
+} from "../../utils/index.js"
 
 /**
  * Adds a subscriber to the store for a given schema.

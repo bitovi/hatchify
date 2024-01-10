@@ -1,4 +1,4 @@
-import type { FinalEnumORM, PartialEnumORM } from "./types"
+import type { FinalEnumORM, PartialEnumORM } from "./types.js"
 
 export function finalizeOrm({ sequelize }: PartialEnumORM): FinalEnumORM {
   return {

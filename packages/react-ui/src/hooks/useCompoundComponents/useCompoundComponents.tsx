@@ -7,9 +7,9 @@ import type {
   Include,
   Record,
 } from "@hatchifyjs/rest-client"
-import { useHatchifyPresentation } from "../../components"
-import { getColumns, getEmptyList } from "./helpers"
-import type { HeaderProps } from "../../presentation"
+import { useHatchifyPresentation } from "../../components/index.js"
+import { getColumns, getEmptyList } from "./helpers/index.js"
+import type { HeaderProps } from "../../presentation/index.js"
 
 export interface HatchifyColumn {
   sortable: boolean

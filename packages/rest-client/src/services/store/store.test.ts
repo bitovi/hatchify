@@ -5,9 +5,9 @@ import {
   insert,
   notifySubscribers,
   remove,
-} from "./store"
-import { testFinalSchemas } from "../mocks/testData"
-import { subscribeToAll } from "../subscribe"
+} from "./store.js"
+import { testFinalSchemas } from "../mocks/testData.js"
+import { subscribeToAll } from "../subscribe/index.js"
 
 describe("rest-client/store", () => {
   afterEach(() => {

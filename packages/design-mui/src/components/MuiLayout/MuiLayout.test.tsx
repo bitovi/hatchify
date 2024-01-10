@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest"
 import { render, screen } from "@testing-library/react"
 import { string } from "@hatchifyjs/core"
-import { MuiLayout } from "./MuiLayout"
+import { MuiLayout } from "./MuiLayout.js"
 
 const partialSchemas = {
   Todo: {

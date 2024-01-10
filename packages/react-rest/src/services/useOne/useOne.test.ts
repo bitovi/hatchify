@@ -6,7 +6,7 @@ import {
   flattenResourcesIntoRecords,
 } from "@hatchifyjs/rest-client"
 import type { RestClient, Subscription } from "@hatchifyjs/rest-client"
-import { useOne } from "./useOne"
+import { useOne } from "./useOne.js"
 import { assembler, string } from "@hatchifyjs/core"
 
 const fakeData = [

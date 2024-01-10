@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest"
 import type { RestClient } from "@hatchifyjs/rest-client"
-import { hatchifyReact } from "./hatchifyReact"
+import { hatchifyReact } from "./hatchifyReact.js"
 import { integer, string } from "@hatchifyjs/core"
 
 describe("react-ui/hatchifyReact", () => {

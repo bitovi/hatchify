@@ -1,8 +1,8 @@
 import type {
   PartialDataTypeProps,
   PartialSequelizeDataType,
-} from "../../types"
-import type { PartialStringControlType } from "../string"
+} from "../../types/index.js"
+import type { PartialStringControlType } from "../string/index.js"
 
 export type PartialUuidProps<TRequired extends boolean> = PartialDataTypeProps<
   string,

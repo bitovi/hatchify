@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
-import useSelected from "./useSelected"
+import useSelected from "./useSelected.js"
 
 describe("useSelected", () => {
   it("works", async () => {

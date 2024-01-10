@@ -1,6 +1,6 @@
-import { HatchifyCoerceError } from "../../types"
+import { HatchifyCoerceError } from "../../types/index.js"
 
-import { string } from "."
+import { string } from "./index.js"
 
 describe("string", () => {
   describe("string()", () => {

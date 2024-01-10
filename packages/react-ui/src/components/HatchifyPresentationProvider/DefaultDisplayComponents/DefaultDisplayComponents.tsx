@@ -1,5 +1,5 @@
 import { Fragment } from "react"
-import type { Relationship as RelationshipType } from "../../../presentation/interfaces"
+import type { Relationship as RelationshipType } from "../../../presentation/interfaces.js"
 
 export const String: React.FC<{ value: string }> = ({ value }) => {
   return <>{value}</>

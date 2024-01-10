@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest"
-import { createStore } from "../../store"
-import { subscribeToAll } from "./subscribeToAll"
+import { createStore } from "../../store/index.js"
+import { subscribeToAll } from "./subscribeToAll.js"
 
 describe("rest-client/services/subscribe/subscribeToAll", () => {
   it("callback should be called from store subscribers", () => {

@@ -2,7 +2,7 @@ import type {
   PartialControlType,
   PartialDataTypeProps,
   PartialSequelizeDataType,
-} from "../../types"
+} from "../../types/index.js"
 
 export type PartialBooleanProps<TRequired extends boolean> = Omit<
   PartialDataTypeProps<boolean, TRequired>,

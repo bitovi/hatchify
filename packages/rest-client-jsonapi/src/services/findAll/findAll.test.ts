@@ -1,19 +1,37 @@
-import { describe, expect, it, vi } from "vitest"
-import { rest } from "msw"
+import {
+  describe,
+  expect,
+  it,
+  vi,
+  beforeAll,
+  afterEach,
+  afterAll,
+} from "vitest"
+import { http } from "msw"
 import {
   baseUrl,
   testData,
   finalSchemas,
   partialSchemas,
   restClientConfig,
-} from "../../mocks/handlers"
-import { server } from "../../mocks/server"
-import jsonapi from "../../rest-client-jsonapi"
-import type { JsonApiResource } from "../jsonapi"
-import { convertToHatchifyResources } from "../utils"
-import { findAll } from "./findAll"
+} from "../../mocks/handlers.js"
+import { server } from "../../mocks/server.js"
+import jsonapi from "../../rest-client-jsonapi.js"
+import type { JsonApiResource } from "../jsonapi/index.js"
+import { convertToHatchifyResources } from "../utils/index.js"
+import { findAll } from "./findAll.js"
 
 describe("rest-client-jsonapi/services/findAll", () => {
+  beforeAll(() => {
+    server.listen()
+  })
+  afterEach(() => {
+    server.resetHandlers()
+  })
+  afterAll(() => {
+    server.close()
+  })
+
   const query = {
     fields: {},
     include: [],
@@ -56,8 +74,13 @@ describe("rest-client-jsonapi/services/findAll", () => {
     ]
 
     server.use(
-      rest.get(`${baseUrl}/articles`, (_, res, ctx) =>
-        res.once(ctx.status(500), ctx.json({ errors })),
+      http.get(
+        `${baseUrl}/articles`,
+        () =>
+          new Response(JSON.stringify({ errors }), {
+            status: 500,
+          }),
+        { once: true },
       ),
     )
 

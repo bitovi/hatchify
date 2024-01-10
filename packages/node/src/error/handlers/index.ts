@@ -1,1 +1,1 @@
-export * from "./errorResponseHandler"
+export * from "./errorResponseHandler.js"

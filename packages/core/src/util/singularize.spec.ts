@@ -1,4 +1,4 @@
-import { singularize } from "./singularize"
+import { singularize } from "./singularize.js"
 
 describe("singularize", () => {
   it("removes trailing 's'", () => {

@@ -1,4 +1,4 @@
-import { pluralize } from "./pluralize"
+import { pluralize } from "./pluralize.js"
 
 describe("pluralize", () => {
   it("should pluralize a word with an s", () => {

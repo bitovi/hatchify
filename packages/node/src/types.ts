@@ -9,7 +9,7 @@ import type {
   Sequelize,
 } from "sequelize"
 
-import type { Hatchify } from "./node"
+import type { Hatchify } from "./node.js"
 
 export { DataTypes } from "sequelize"
 export type { ModelValidateOptions, ModelAttributes } from "sequelize"
@@ -106,7 +106,6 @@ export type JSONAnyObject = Record<string, any>
 
 export interface ModelFunctionsCollection<T> {
   [modelName: string]: T
-  "*": T
   allModels: T
 }
 

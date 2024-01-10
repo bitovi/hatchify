@@ -1,1 +1,1 @@
-export { Relationship, RelationshipList } from "./DefaultDisplayComponents"
+export { Relationship, RelationshipList } from "./DefaultDisplayComponents.js"

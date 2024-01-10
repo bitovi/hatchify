@@ -1,2 +1,2 @@
-export * from "./MuiList"
-export * from "./components"
+export * from "./MuiList.js"
+export * from "./components/index.js"

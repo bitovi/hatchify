@@ -15,9 +15,9 @@ import {
   buildFindOptions,
   buildUpdateOptions,
   replaceIdentifiers,
-} from "./builder"
-import { UnexpectedValueError } from "../error"
-import { Hatchify } from "../node"
+} from "./builder.js"
+import { UnexpectedValueError } from "../error/index.js"
+import { Hatchify } from "../node.js"
 
 describe("builder", () => {
   const UserSchema: PartialSchema = {

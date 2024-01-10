@@ -5,9 +5,9 @@ import type {
   GetSchemaNames,
   Include,
 } from "@hatchifyjs/rest-client"
-import type { DefaultValueComponentsTypes } from "../../../components"
-import type { HatchifyColumn } from "../useCompoundComponents"
-import { getColumn } from "."
+import type { DefaultValueComponentsTypes } from "../../../components/index.js"
+import type { HatchifyColumn } from "../useCompoundComponents.js"
+import { getColumn } from "./index.js"
 import { getDisplayAttribute } from "@hatchifyjs/rest-client"
 
 export function getColumnsFromSchema<

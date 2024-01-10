@@ -1,19 +1,584 @@
-# Koa
+# `@hatchifyjs/koa`
 
-- `.middleware`
-  - `.allModels`
-    - `.all`
-    - `.crud`
-    - `.findAndCountAll`
-    - `.findOne`
-    - `.create`
-    - `.update`
-    - `.destroy`
-- `.[MODEL_NAME]
-  - `.all`
-  - `.crud`
-  - `.findAndCountAll`
-  - `.findOne`
-  - `.create`
-  - `.update`
-  - `.destroy`
+- [What is `@hatchifyjs/koa`?](#what-is-hatchifyjskoa)
+- [Example Usage](#example-usage)
+- [Exports](#exports)
+  - [High Level Export Naming Conventions](#high-level-export-naming-conventions)
+  - [`@hatchifyjs/koa` Package Exports](#hatchifyjskoa-package-exports)
+  - [`Hatchify` Class Instance](#hatchify-class-instance)
+  - [Naming Conventions](#naming-conventions)
+  - [`hatchedKoa.modelSync`](#hatchedkoamodelsync)
+  - [`hatchedKoa.orm`](#hatchedkoaorm)
+  - [`hatchedKoa.printEndpoints`](#hatchedkoaprintendpoints)
+  - [`hatchedKoa.schema.[schemaName]`](#hatchedkoaschemaschemaname)
+  - [`hatchedKoa.middleware.[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
+  - [`hatchedKoa.parse.[schemaName]`](#hatchedkoaparseschemaname)
+  - [`hatchedKoa.model.[schemaName]`](#hatchedkoamodelschemaname)
+  - [`hatchedKoa.serialize.[schemaName]`](#hatchedkoaserializeschemaname)
+  - [`hatchedKoa.everything.[schemaName]`](#hatchedkoaeverythingschemaname)
+
+## What is `@hatchifyjs/koa`?
+
+`@hatchifyjs/koa` is a schema-driven library of middleware for your Hatchify app. By defining the schemas (AKA models) of your backend resources, `@hatchifyjs/koa` will provide you with a set of functions that you can use across your Koa app.
+
+## Example Usage
+
+```ts
+import { datetime, string, PartialSchema } from "@hatchifyjs/core"
+import { hatchifyKoa } from "@hatchifyjs/koa"
+import Koa from "koa"
+
+const schemas = {
+  Todo: {
+    name: "Todo",
+    attributes: {
+      name: string(),
+      dueDate: datetime(),
+    },
+  },
+} satisfies Record<string, PartialSchema>
+
+const app = new Koa()
+const hatchedKoa = hatchifyKoa(schemas, {
+  prefix: "/api",
+  database: { uri: "sqlite://localhost/:memory" },
+})
+
+;(async () => {
+  await hatchedKoa.modelSync({ alter: true })
+
+  app.use(hatchedKoa.middleware.allModels.all)
+
+  app.listen(3000, () => {
+    console.log("Started on http://localhost:3000")
+  })
+})()
+```
+
+The above usage will start a Koa webserver on port 3000 with an endpoint at `/api/todos` that implements a [JSON:API](../jsonapi/) interface to the Todo data.
+
+## Exports
+
+### High Level Export Naming Conventions
+
+```ts
+const hatchedKoa = hatchifyKoa(schemas, options)
+
+hatchedKoa.[
+  middleware | parse | model | serialize | everything | modelSync | orm | printEndpoints | schema
+].[
+  <MODEL_NAME> | allModels
+].[
+  all
+  findAll
+  findOne
+  findAndCountAll
+  create
+  update
+  destroy
+]
+
+hatchedKoa.model.User.findAll
+
+hatchedKoa.middleware.User.create
+
+hatchedKoa.parse.Todo.update
+
+hatchedKoa.serialize.Todo.update
+```
+
+### `@hatchifyjs/koa` Package Exports
+
+`hatchifyKoa`
+
+- Provides access to the `Hatchify` class constructor
+- See [`Hatchify` Class Instance](#hatchify-class-instance) notes below
+
+### `Hatchify` Class Instance
+
+The Hatchify class exports a number of properties that provide functions, generally per-schema, for different common CRUD and REST API operations. Some of these include
+
+- Parameter parsing
+- Create / update data validation
+- Response formatting / serialization
+- ORM query operations
+- Combinations of the above
+
+### Naming Conventions
+
+The general naming convention is as follows
+
+`hatchedKoa.[accessor].[schemaName|allModels].[operation]`
+
+- `hatchedKoa` is a variable that points to your Hatchify instance with some assumed number of loaded models. This will always be the entry point into Hatchify.
+- `accessor` is a string acting as a namespace to indicate which subset of functions you want to use. This will always be some property exported from Hatchify itself and should have TypeScript support showing the different available options.
+- `schemaName` is a property value that, generally, will correspond to one of your loaded models. These models come from the values passed to Hatchify at creation.
+  - By convention, because this is being used as a class, the name should use `PascalCase`. An exception is namespaces where name would look like `Namespace_ModelName`. Read more on [naming](../schema/naming.md).
+  - In some cases there are special properties like allModels that can signify that the operation should determine the model itself or can otherwise apply to all defined models at once.
+- `operation` is a property that reflects the different ORM/CRUD operations that you would like to perform or prepare data for. Because this is called off a specific model the general properties and attribute validation for that model will apply when running the operation.
+
+### `hatchedKoa.modelSync`
+
+A utility function to make sure your schemas are always synced with the database.
+
+[Read more on Model Sync](../guides/model-sync.md)
+
+### `hatchedKoa.orm`
+
+A reference to the `Sequelize` instance when more control is needed.
+
+### `hatchedKoa.printEndpoints`
+
+Prints a list of endpoints generated by Hatchify. This can be useful for debugging 404 errors.
+
+### `hatchedKoa.schema.[schemaName]`
+
+`hatchedKoa.schema.[schemaName].[attributes|displayAttribute|name|namespace|pluralName|relationships]`
+
+The `schema` export provides access to all the Hatchify final schemas. This can be useful for debugging the schemas you provided.
+
+### `hatchedKoa.middleware.[schemaName|allModels]`
+
+`hatchedKoa.middleware.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy]`
+
+All of the `middleware` functions export a Koa Middleware that can be passed directly to a Koa app.use or a Koa router.[verb] function, mounted to a specific URL/path. The normal [schemaName] export expects to be used with:
+
+- findAll
+- findOne
+- findAndCountAll
+- create
+- update
+- destroy
+
+Usage Examples:
+
+```ts
+router.get("/get-all-skills", hatchedKoa.middleware.Todo.findAll)
+router.get("/count-all-skills", hatchedKoa.middleware.Todo.findAndCountAll)
+router.get("/get-one-skill/:id", hatchedKoa.middleware.Todo.findOne)
+```
+
+`hatchedKoa.middleware.allModels.all`
+
+In certain cases there is an `all` export that can be used in place of a single name. Here is an example of those more general versions:
+
+```ts
+app.use(hatchedKoa.middleware.allModels.all)
+```
+
+### `hatchedKoa.parse.[schemaName]`
+
+`hatchedKoa.parse.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy]`
+
+The `parse` functions take a given model and return options that can be passed to the ORM to make a corresponding model query.
+
+#### `findAll`: (`querystring`: string) => `FindOptions`
+
+Parses a query string for searching multiple instances.
+
+```ts
+const findOptions = await hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
+// findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
+```
+
+#### `findOne`: (`querystring`: string, `id`?: Identifier) => `FindOptions`
+
+Parses a query string for searching a single instance.
+
+```ts
+const findOptions = await hatchedKoa.parse.Todo.findOne("filter[name]=Baking")
+// findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
+
+const findOptions = await hatchedKoa.parse.Todo.findOne("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+// findOptions = { where: { id: "b177b838-61d2-4d4d-b67a-1851289e526a" } }
+```
+
+#### `findAndCountAll`: (`querystring`: string) => `FindOptions`
+
+Parses a query string for searching all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+
+```ts
+const findOptions = await hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Baking&limit=10&offset=0")
+// findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
+```
+
+#### `create`: (`body`: unknown) => `CreateOptions`
+
+Parses a query string for creating a new instance.
+
+```ts
+const createOptions = await hatchedKoa.parse.Todo.create({
+  data: {
+    type: "Todo",
+    attributes: {
+      name: "Baking",
+    },
+  },
+})
+// createOptions = { body: { name: "Baking" }, ops: {} }
+```
+
+#### `update`: (`body`: unknown, `id`?: Identifier) => `UpdateOptions`
+
+Parses a query string for updating an existing single instance.
+
+```ts
+const updateOptions = await hatchedKoa.parse.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+// updateOptions = { body: { name: "Baking" }, ops: {} }
+```
+
+#### `destroy`: (`querystring`: string, `id`?: Identifier) => `DestroyOptions`
+
+Parses a query string for deleting one or more instances.
+
+```ts
+const destroyOptions = await hatchedKoa.parse.Todo.destroy("filter[name]=Baking")
+// destroyOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
+
+const destroyOptions = await hatchedKoa.parse.Todo.destroy("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+// destroyOptions = { where: { id: "b177b838-61d2-4d4d-b67a-1851289e526a" } }
+```
+
+These functions are expected to be used more directly, usually when defining user-created middleware.
+
+For example `hatchedKoa.parse.Todo.findAll` takes the URL query params and returns Sequelize `FindOptions`. For this sort of request the query params are processed to see if there are any filters, sorts, or other restrictions being placed on the findAll query.
+
+```ts
+router.get("/skills", async (ctx: Context) => {
+  const findOptions = await hatchedKoa.parse.Todo.findAll(ctx.querystring)
+  const deserializedTodos = await hatchedKoa.model.Todo.findAll(findOptions)
+  ctx.body = deserializedTodos
+})
+```
+
+The returned `FindOptions` are something that can be directly understood by the ORM and our follow up call to `hatchedKoa.model.Todo.findAll` takes advantage of this to do the actual database lookup for Skills.
+
+### `hatchedKoa.model.[schemaName]`
+
+`hatchedKoa.model.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy]`
+
+The `model` functions take a given model and perform the underlying ORM query option on it.
+
+#### `findAll`: (`ops`: FindOptions) => `Model[]`
+
+Search for multiple instances.
+
+```ts
+const deserializedTodos = await hatchedKoa.model.Todo.findAll({
+  where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
+})
+// deserializedTodos = [
+//   { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
+// ]
+```
+
+#### `findOne`: (`ops`: FindOptions) => `Model`
+
+Search for a single instance. Returns the first instance found, or null if none can be found.
+
+```ts
+const deserializedTodo = await hatchedKoa.model.Todo.findOne({
+  where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
+})
+// deserializedTodo = { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
+```
+
+#### `findAndCountAll`: (`ops`: FindOptions) => `{ count: number, rows: Model[] }`
+
+Find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+
+```ts
+const deserializedTodos = await hatchedKoa.model.Todo.findAll({
+  where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
+  limit: 10,
+  offset: 0,
+})
+// deserializedTodos = [
+//   { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
+// ]
+```
+
+#### `create`: (`body`: unknown, `ops`: CreateOptions) => `data`
+
+Creates a new instance.
+
+```ts
+const deserializedTodo = await hatchedKoa.model.Todo.create({ name: "Baking" })
+// deserializedTodo = { name: "Baking" }
+```
+
+#### `update`: (`body`: unknown, `ops`: UpdateOptions, `id`?: Identifier) => `number`
+
+Updates one or more instances.
+
+```ts
+const [updatedCount, updatedTodos] = await hatchedKoa.model.Todo.update({ name: "Serving" }, { where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" } })
+// updatedCount = 1
+// updatedTodos = [{ name: "Baking" }]
+```
+
+#### `destroy`: (`ops`: DestroyOptions, `id`?: Identifier) => `number`
+
+Deletes one or more instances.
+
+```ts
+const deletedCount = await hatchedKoa.model.Todo.destroy({
+  where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
+})
+// deletedCount = 1
+```
+
+### `hatchedKoa.serialize.[schemaName]`
+
+`hatchedKoa.serialize.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy|error]`
+
+Functions expected to be used to create valid JSONAPIDocument data. Normally these functions will take Model data that was returned from the ORM query. This export also includes a slightly different function for helping create JSON:API compliant Error responses.
+
+#### `findAll`: (`data`: Model[], `ops`: SerializerOptions) => `JSONAPIDocument`
+
+Serializes result of multiple instances.
+
+```ts
+const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
+// serializedTodos = {
+//   jsonapi: { version: "1.0" },
+//   data: [
+//     {
+//       type: "Todo",
+//       id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//       attributes: { name: "Baking" },
+//     }
+//   ],
+// }
+```
+
+#### `findOne`: (`data`: Model, `ops`: SerializerOptions) => `JSONAPIDocument`
+
+Serializes result of a single instance.
+
+```ts
+const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
+// serializedTodo = {
+//   jsonapi: { version: "1.0" },
+//   data: {
+//     type: "Todo",
+//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//     attributes: { name: "Baking" },
+//   },
+// }
+```
+
+#### `findAndCountAll`: (`data`: {count: number; rows: Model[]}, ops: SerializerOptions) => `JSONAPIDocument`
+
+Serializes result of all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+
+```ts
+const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
+  {
+    rows: [{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }],
+    count: 1,
+  },
+  ["id", "name"],
+)
+// serializedTodos = {
+//   jsonapi: { version: "1.0" },
+//   data: [
+//     {
+//       type: "Todo",
+//       id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//       attributes: { name: "Baking" },
+//     }
+//   ],
+//   meta: { unpaginatedCount: 1 }
+// }
+```
+
+#### `create`: (`data`: Model, `ops`: SerializerOptions) => `JSONAPIDocument`
+
+Serializes a result of a new instance creation.
+
+```ts
+const serializedTodo = await hatchedKoa.serialize.Todo.create({
+  id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+  name: "Baking",
+})
+// serializedTodo = {
+//   jsonapi: { version: "1.0" },
+//   data: {
+//     type: "Todo",
+//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//     attributes: { name: "Baking" },
+//   },
+// }
+```
+
+#### `update`: (`count`: number, `ops`: SerializerOptions) => `JSONAPIDocument`
+
+Serializes a result of an update.
+
+```ts
+const serializedTodo = await hatchedKoa.serialize.Todo.update(
+  {
+    id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+    name: "Baking",
+  },
+  1,
+)
+// serializedTodo = {
+//   jsonapi: { version: "1.0" },
+//   data: {
+//     type: "Todo",
+//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//     attributes: { name: "Baking" },
+//   },
+// }
+```
+
+#### `destroy`: (`count`: number, `ops`: SerializerOptions) => `JSONAPIDocument`
+
+Serializes a result of a deletion.
+
+```ts
+const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
+// serializedResult = {
+//   jsonapi: { version: "1.0" },
+//   data: null,
+// }
+```
+
+### `hatchedKoa.everything.[schemaName]`
+
+`hatchedKoa.everything.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy]`
+
+Functions very similar to the `middleware` export but is expected to be used more directly, usually when defining user-created middleware.
+
+The `everything` functions takes the same properties as `parse` but goes further than just building the query options. This function will do a complete operation of parsing the request, performing the ORM query operation and then serializing the resulting data to JSON:API format.
+
+#### `findAll`: (`query`: ParsedUrlQuery) => `FindOptions`
+
+Search for multiple instances.
+
+```ts
+const serializedTodos = await hatchedKoa.everything.Todo.findAll("filter[name]=Baking")
+// serializedTodos = {
+//   jsonapi: { version: "1.0" },
+//   data: [
+//     {
+//       type: "Todo",
+//       id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//       attributes: { name: "Baking" },
+//     }
+//   ],
+// }
+```
+
+#### `findOne`: (`query`: ParsedUrlQuery, `id`: Identifier) => `FindOptions`
+
+Search for a single instance. Returns the first instance found, or null if none can be found.
+
+```ts
+const serializedTodo = await hatchedKoa.everything.Todo.findOne("filter[name]=Baking")
+// serializedTodo = {
+//   jsonapi: { version: "1.0" },
+//   data: {
+//     type: "Todo",
+//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//     attributes: { name: "Baking" },
+//   },
+// }
+
+const serializedTodo = await hatchedKoa.everything.Todo.findOne("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+// serializedTodo = {
+//   jsonapi: { version: "1.0" },
+//   data: {
+//     type: "Todo",
+//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//     attributes: { name: "Baking" },
+//   },
+// }
+```
+
+#### `findAndCountAll`: (`query`: ParsedUrlQuery) => `FindOptions`
+
+Find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+
+```ts
+const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter[name]=Baking&limit=10&offset=0")
+// serializedTodos = {
+//   jsonapi: { version: "1.0" },
+//   data: [
+//     {
+//       type: "Todo",
+//       id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//       attributes: { name: "Baking" },
+//     }
+//   ],
+//   meta: { unpaginatedCount: 1 }
+// }
+```
+
+#### `create`: (`body`: unknown) => `CreateOptions`
+
+Creates a new instance.
+
+```ts
+const serializedTodo = await hatchedKoa.everything.Todo.create({
+  data: {
+    type: "Todo",
+    attributes: {
+      name: "Baking",
+    },
+  },
+})
+// serializedTodo = {
+//   jsonapi: { version: "1.0" },
+//   data: {
+//     type: "Todo",
+//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//     attributes: { name: "Baking" },
+//   },
+// }
+```
+
+#### `update`: (`body`: unknown, `id`?: Identifier) => `UpdateOptions`
+
+Updates one or more instances.
+
+```ts
+const serializedTodo = await hatchedKoa.serialize.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+// serializedTodo = {
+//   jsonapi: { version: "1.0" },
+//   data: {
+//     type: "Todo",
+//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//     attributes: { name: "Baking" },
+//   },
+// }
+```
+
+#### `destroy`: (`query`: ParsedUrlQuery, `id`?: Identifier) => `DestroyOptions`
+
+Deletes one or more instances.
+
+```ts
+const serializedResult = await hatchedKoa.everything.Todo.destroy("filter[name]=Baking")
+// serializedResult = {
+//   jsonapi: { version: "1.0" },
+//   data: null,
+// }
+
+const serializedResult = await hatchedKoa.everything.Todo.destroy("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+// serializedResult = {
+//   jsonapi: { version: "1.0" },
+//   data: null,
+// }
+```
+
+For example `hatchedKoa.everything.Todo.findAll` takes the URL query params and directly returns JSON:API ready response data.
+
+```ts
+router.get("/skills", async (ctx: Context) => {
+  const serializedTodos = await hatchedKoa.everything.Todo.findAll(ctx.query)
+  ctx.body = serializedTodos
+})
+```

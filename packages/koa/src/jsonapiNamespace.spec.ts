@@ -3,7 +3,7 @@ import type { PartialSchema } from "@hatchifyjs/node"
 import dotenv from "dotenv"
 import { Serializer } from "jsonapi-serializer"
 
-import { startServerWith } from "./testing/utils"
+import { startServerWith } from "./testing/utils.js"
 
 dotenv.config({ path: ".env" })
 

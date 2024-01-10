@@ -1,4 +1,4 @@
-import type { PartialBooleanControlType } from "./types"
+import type { PartialBooleanControlType } from "./types.js"
 
 export function finalizeControl(
   props: Omit<PartialBooleanControlType<boolean>, "allowNullInfer">,

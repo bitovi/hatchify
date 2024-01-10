@@ -1,5 +1,5 @@
 import type { XDataGridProps } from "@hatchifyjs/react-ui"
-import { filterableControlTypes } from "../constants"
+import { filterableControlTypes } from "../constants.js"
 
 type HatchifyMuiFilters = string[]
 

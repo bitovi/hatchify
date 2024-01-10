@@ -1,5 +1,5 @@
-import { HatchifyError } from "./HatchifyError"
-import { codes, statusCodes } from "../constants"
+import { HatchifyError } from "./HatchifyError.js"
+import { codes, statusCodes } from "../constants.js"
 
 export class UniqueConstraintError extends HatchifyError {
   constructor({ title, pointer }: { title: string; pointer?: string }) {

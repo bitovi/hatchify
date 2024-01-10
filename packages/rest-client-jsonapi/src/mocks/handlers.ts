@@ -1,5 +1,6 @@
 /* c8 ignore start */
-import { rest } from "msw"
+import type { HttpHandler } from "msw"
+import { http } from "msw"
 import { assembler, hasMany, hasOne, string } from "@hatchifyjs/core"
 import type { RestClientSchema } from "@hatchifyjs/rest-client"
 
@@ -114,40 +115,52 @@ export const testData = {
   },
 }
 
-export const handlers = [
-  rest.get(`${baseUrl}/articles`, (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+export const handlers: HttpHandler[] = [
+  http.get(`${baseUrl}/articles`, () => {
+    return new Response(
+      JSON.stringify({
         data: testData.data,
         included: testData.included,
         meta: testData.meta,
       }),
+      {
+        headers: { "Content-Type": "application/json" },
+        status: 200,
+      },
     )
   }),
 
-  rest.get(`${baseUrl}/articles/:id`, (req, res, ctx) => {
-    const { id } = req.params
+  http.get(`${baseUrl}/articles/:id`, ({ params }) => {
+    const { id } = params
     const article = testData.data.find((article) => article.id === id)
 
     if (!article) {
-      return res(ctx.status(404), ctx.json(null))
+      return new Response("null", {
+        headers: { "Content-Type": "application/json" },
+        status: 404,
+      })
     }
 
-    return res(ctx.status(200), ctx.json({ data: article }))
+    return new Response(JSON.stringify({ data: article }), {
+      headers: { "Content-Type": "application/json" },
+      status: 200,
+    })
   }),
 
-  rest.patch(`${baseUrl}/articles/:id`, async (req, res, ctx) => {
-    const { id } = req.params
+  http.patch(`${baseUrl}/articles/:id`, async ({ request, params }) => {
+    const { id } = params
     const article = testData.data.find((article) => article.id === id)
 
     if (!article) {
-      return res(ctx.status(404), ctx.json(null))
+      return new Response("null", {
+        headers: { "Content-Type": "application/json" },
+        status: 404,
+      })
     }
 
     const {
       data: { attributes },
-    } = await req.json()
+    } = (await request.json()) as any
 
     const updatedArticle = {
       ...article,
@@ -159,26 +172,34 @@ export const handlers = [
 
     testData.data[testData.data.indexOf(article)] = updatedArticle
 
-    return res(ctx.status(200), ctx.json({ data: updatedArticle }))
+    return new Response(JSON.stringify({ data: updatedArticle }), {
+      headers: { "Content-Type": "application/json" },
+      status: 200,
+    })
   }),
 
-  rest.delete(`${baseUrl}/articles/:id`, (req, res, ctx) => {
-    const { id } = req.params
+  http.delete(`${baseUrl}/articles/:id`, ({ params }) => {
+    const { id } = params
     const article = testData.data.find((article) => article.id === id)
 
     if (!article) {
-      return res(ctx.status(404), ctx.json(null))
+      return new Response("null", {
+        headers: { "Content-Type": "application/json" },
+        status: 404,
+      })
     }
 
     testData.data.splice(testData.data.indexOf(article), 1)
 
-    return res(ctx.status(204))
+    return new Response(undefined, {
+      status: 204,
+    })
   }),
 
-  rest.post(`${baseUrl}/articles`, async (req, res, ctx) => {
+  http.post(`${baseUrl}/articles`, async ({ request }) => {
     const {
       data: { attributes },
-    } = await req.json()
+    } = (await request.json()) as any
 
     const article = {
       type: "article",
@@ -188,7 +209,9 @@ export const handlers = [
 
     testData.data.push(article)
 
-    return res(ctx.status(201), ctx.json({ data: article }))
+    return new Response(JSON.stringify({ data: article }), {
+      status: 201,
+    })
   }),
 ]
 /* c8 ignore stop */

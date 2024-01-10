@@ -6,7 +6,7 @@ import {
   integer,
   string,
 } from "@hatchifyjs/core"
-import { serializeClientPropertyValuesForRequest } from "./request"
+import { serializeClientPropertyValuesForRequest } from "./request.js"
 
 describe("rest-client/services/utils/request", () => {
   describe("serializeClientPropertyValuesForRequest", () => {

@@ -1,4 +1,4 @@
-import type { Meta, MetaError } from "../types"
+import type { Meta, MetaError } from "../types/index.js"
 
 export function getMeta(
   error: MetaError | undefined,

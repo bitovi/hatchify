@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import ColumnSelect from "./ColumnSelect"
+import ColumnSelect from "./ColumnSelect.js"
 
 describe("components/MuiFilters/inputs/ColumnSelect", () => {
   it("works", async () => {

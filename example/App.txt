@@ -41,7 +41,6 @@ const App: React.FC = () => {
         >
           <TodoEmptyList>No records to display</TodoEmptyList>
           <TodoColumn
-            type="append"
             label="Action"
             renderDataValue={({ record }) => {
               return (

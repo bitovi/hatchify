@@ -8,10 +8,10 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
-import { buildDestroyOptions, buildFindOptions } from "./builder"
-import { validateFindOptions, validateStructure } from "./validator"
-import type { Hatchify } from "../node"
-import type { JSONObject } from "../types"
+import { buildDestroyOptions, buildFindOptions } from "./builder.js"
+import { validateFindOptions, validateStructure } from "./validator.js"
+import type { Hatchify } from "../node.js"
+import type { JSONObject } from "../types.js"
 
 /**
  * Provides a set of exported functions, per Model, that

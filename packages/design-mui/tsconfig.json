@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler", // uses "bundler" as this library is currently built with vite
     "jsx": "react-jsx",
+    "outDir": "dist"
   },
   "extends": "../../tsconfig.json",
   "include": ["src"]

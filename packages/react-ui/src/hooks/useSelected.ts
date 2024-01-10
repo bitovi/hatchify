@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { HatchifyDataGridSelected } from "../presentation"
+import type { HatchifyDataGridSelected } from "../presentation/index.js"
 
 export default function useSelected(
   defaultSelected?: HatchifyDataGridSelected["selected"],

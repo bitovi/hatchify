@@ -1,13 +1,13 @@
 import { describe, it, expect, vi } from "vitest"
-import { createStore } from "../../store"
-import { createOne } from "./createOne"
-import { flattenResourcesIntoRecords } from "../../utils"
+import { createStore } from "../../store/index.js"
+import { createOne } from "./createOne.js"
+import { flattenResourcesIntoRecords } from "../../utils/index.js"
 import {
   fakeDataSource,
   testDataRecords,
   testFinalSchemas,
-} from "../../mocks/testData"
-import type { testPartialSchemas } from "../../mocks/testData"
+} from "../../mocks/testData.js"
+import type { testPartialSchemas } from "../../mocks/testData.js"
 
 describe("rest-client/services/promise/createOne", () => {
   const createData = { title: "Code Review", important: true }

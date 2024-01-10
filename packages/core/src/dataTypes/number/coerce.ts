@@ -1,7 +1,7 @@
-import type { PartialNumberControlType } from "./types"
-import { validateStep } from "./validateStep"
-import { HatchifyCoerceError } from "../../types"
-import type { ValueInRequest } from "../../types"
+import type { PartialNumberControlType } from "./types.js"
+import { validateStep } from "./validateStep.js"
+import { HatchifyCoerceError } from "../../types/index.js"
+import type { ValueInRequest } from "../../types/index.js"
 
 export function coerce(
   value: ValueInRequest,

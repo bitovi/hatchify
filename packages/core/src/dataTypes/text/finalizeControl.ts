@@ -1,4 +1,4 @@
-import type { PartialTextControlType } from "./types"
+import type { PartialTextControlType } from "./types.js"
 
 export function finalizeControl(
   props: Omit<PartialTextControlType<boolean>, "allowNullInfer">,

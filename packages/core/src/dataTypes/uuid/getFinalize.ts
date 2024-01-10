@@ -1,18 +1,18 @@
-import { finalizeControl } from "./finalizeControl"
-import { finalizeOrm } from "./finalizeOrm"
+import { finalizeControl } from "./finalizeControl.js"
+import { finalizeOrm } from "./finalizeOrm.js"
 import type {
   FinalUuidORM,
   PartialUuidControlType,
   PartialUuidORM,
-} from "./types"
-import { HatchifyCoerceError } from "../../types"
+} from "./types.js"
+import { HatchifyCoerceError } from "../../types/index.js"
 import type {
   FinalAttribute,
   PartialAttribute,
   UserValue,
   ValueInRequest,
-} from "../../types"
-import { coerce } from "../string/coerce"
+} from "../../types/index.js"
+import { coerce } from "../string/coerce.js"
 
 export function getFinalize(
   props: PartialAttribute<

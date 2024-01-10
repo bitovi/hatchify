@@ -1,4 +1,4 @@
-import type { PartialHasOneRelationship } from "./types"
+import type { PartialHasOneRelationship } from "./types.js"
 
 // @todo HATCH-417
 export function hasOne<TTargetSchema extends string | undefined>(

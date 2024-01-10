@@ -1,5 +1,5 @@
 import { beforeAll, afterAll, afterEach } from "vitest"
-import { server } from "./mocks/server"
+import { server } from "./mocks/server.js"
 
 export const testBackendEndpointConfig = {
   api: "api",
@@ -11,14 +11,15 @@ export const testBackendEndpointConfig = {
 beforeAll(() =>
   server.listen({
     onUnhandledRequest: (req, print) => {
+      const reqUrl = new URL(req.url)
       if (
-        req.url.pathname.startsWith(
+        reqUrl.pathname.startsWith(
           `/${testBackendEndpointConfig.api}/${testBackendEndpointConfig.schemaSegment}`,
         ) ||
-        req.url.pathname.startsWith(
+        reqUrl.pathname.startsWith(
           `/${testBackendEndpointConfig.api}/${testBackendEndpointConfig.namespacedSchemaSegment}`,
         ) ||
-        req.url.pathname.startsWith(
+        reqUrl.pathname.startsWith(
           `/${testBackendEndpointConfig.api}/${testBackendEndpointConfig.adminUserNamespaceSegment}`,
         )
       ) {

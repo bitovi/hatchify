@@ -1,4 +1,4 @@
-import type { FinalBooleanORM, PartialBooleanORM } from "./types"
+import type { FinalBooleanORM, PartialBooleanORM } from "./types.js"
 
 export function finalizeOrm({ sequelize }: PartialBooleanORM): FinalBooleanORM {
   return {

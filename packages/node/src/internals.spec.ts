@@ -1,8 +1,9 @@
 import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
+import { jest } from "@jest/globals"
 
-import { Hatchify } from "./node"
-import { HatchifySymbolModel } from "./types"
+import { Hatchify } from "./node.js"
+import { HatchifySymbolModel } from "./types.js"
 
 describe("Internal Tests", () => {
   const Model: PartialSchema = {

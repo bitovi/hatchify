@@ -1,4 +1,7 @@
-import type { PartialHasManyThroughRelationship, ThroughOptions } from "./types"
+import type {
+  PartialHasManyThroughRelationship,
+  ThroughOptions,
+} from "./types.js"
 
 export function buildThrough<TTargetSchema extends string | undefined | null>(
   targetSchema: TTargetSchema,

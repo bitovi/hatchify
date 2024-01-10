@@ -1,4 +1,4 @@
-import type { PartialDatetimeORM, PartialDatetimeProps } from "./types"
+import type { PartialDatetimeORM, PartialDatetimeProps } from "./types.js"
 
 export function getPartialOrm(
   props?: PartialDatetimeProps<boolean>,
