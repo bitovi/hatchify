@@ -129,7 +129,7 @@ GET /api/articles/8b3d26bc-41d4-46dc-9078-62bdce8d8e2e?include=comments.author,r
 Accept: application/vnd.api+json
 ```
 
-Furthermore, related resources can be requested from a relationship endpoint:
+Furthermore, related resources can be requested from a relationship endpoint: 🛑
 
 ```
 GET /api/articles/8b3d26bc-41d4-46dc-9078-62bdce8d8e2e/relationships/comments?include=comments.author
