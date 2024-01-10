@@ -18,19 +18,21 @@ export const Todo = {
 | `default`  | The default value of the attribute. <br/> Example: `boolean({default: true})` | `Boolean` |   Yes    |         |
 | `required` | If the attribute must be provided. <br/> Example: `boolean({required: true})` | `Boolean` |   Yes    | `false` |
 
-## Database and Sequelize Behavior
+## Database Implications
 
 The `boolean` type will create a sequelize [DataTypes.BOOLEAN](https://sequelize.org/docs/v6/core-concepts/model-basics/#boolean) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
 For booleans, use `true`, `false`, and `%00` in your queries as follows:
 
 ```js
-GET /api/todos?complete=true  // all complete todos
-GET /api/todos?complete=%00  // all todos with null as the complete value 🛑
+GET /api/todos?complete=true // all complete todos
+
+GET /api/todos?complete=%00 // all todos with null as the complete value 🛑
+
 GET /api/todos?complete=false // all false todos
 ```
 
@@ -59,7 +61,7 @@ When creating or updating a boolean attribute, `true`, `false`, or `null` must b
 
 ## React Rest Behavior
 
-Similar to the middleware, you MUST provide react rest models a `true`, `false`, or `null` value. Likewise, they will always return these values:
+Similar to the API, you MUST provide react rest models a `true`, `false`, or `null` value. Likewise, they will always return these values:
 
 ```ts
 Todo.createOne({ attributes: { complete: true } })
@@ -68,11 +70,11 @@ const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.complete //-> true, false or null
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
-The text `true` or `false` will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+The text `true` or `false` will be presented in the data grid. If the value is `null`, no value will be presented in the data grid.
 
-![Grid Example](https://github.com/bitovi/hatchify/assets/78602/ddbf26a1-180b-4fc7-a483-fde52dc4fce9)
+![Data Grid Example](https://github.com/bitovi/hatchify/assets/78602/ddbf26a1-180b-4fc7-a483-fde52dc4fce9)
 
 ## Form Behavior 🛑
 

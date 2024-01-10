@@ -39,7 +39,7 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**Schema Implications**
+### Schema Implications
 
 An attribute named `closingSalesPersonId` will be created as if it was defined as follows:
 
@@ -55,36 +55,41 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**Database Implications**
+### Database Implications
 
 Creates a column `closing_sales_person_id` in the `account` table.
 
-**API Implications**
+### API Implications
 
-- `closingSalesPerson` will be used in the include query parameter like `GET /api/accounts?include=closingSalesPerson`
-- `closingSalesPerson` will be used in mutation payloads and response payloads like:
+#### Querying Data
 
-  ```json
-  {
-    "data": {
-      "type": "Account",
-      "id": "75f706ee-ac71-483a-ae16-45254b66f7e1",
-      "attributes": {
-        "firstName": "Acme",
-        "closingSalesPersonId": "9bc9b6e4-0328-4874-b687-25f817d92434"
-      },
-      "relationships": {
-        // 👀
-        "closingSalesPerson": {
-          "data": {
-            "type": "SalesPerson",
-            "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
-          }
+`closingSalesPerson` will be used in the include query parameter like `GET /api/accounts?include=closingSalesPerson`
+
+#### Data Response
+
+`closingSalesPerson` will be used in mutation payloads and response payloads like:
+
+```json
+{
+  "data": {
+    "type": "Account",
+    "id": "75f706ee-ac71-483a-ae16-45254b66f7e1",
+    "attributes": {
+      "firstName": "Acme",
+      "closingSalesPersonId": "9bc9b6e4-0328-4874-b687-25f817d92434"
+    },
+    "relationships": {
+      // 👀
+      "closingSalesPerson": {
+        "data": {
+          "type": "SalesPerson",
+          "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
         }
       }
     }
   }
-  ```
+}
+```
 
 ## belongsTo(schemaName,{sourceAttribute})
 
@@ -106,33 +111,38 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**Database Implications**
+### Database Implications
 
 Creates a column `closer_id` in the `account` table.
 
-**API Implications**
+### API Implications
 
-- `closingSalesPerson` will be used in the include query parameter like `GET /api/accounts?include=closingSalesPerson`
-- `closingSalesPerson` will be used in mutation payloads and response payloads like:
+#### Querying Data
 
-  ```json
-  {
-    "data": {
-      "type": "Account",
-      "id": "75f706ee-ac71-483a-ae16-45254b66f7e1",
-      "attributes": {
-        "firstName": "Acme",
-        "closerId": "9bc9b6e4-0328-4874-b687-25f817d92434" // 👀
-      },
-      "relationships": {
-        // 👀
-        "closingSalesPerson": {
-          "data": {
-            "type": "SalesPerson",
-            "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
-          }
+`closingSalesPerson` will be used in the include query parameter like `GET /api/accounts?include=closingSalesPerson`
+
+#### Data Response
+
+`closingSalesPerson` will be used in mutation payloads and response payloads like:
+
+```json
+{
+  "data": {
+    "type": "Account",
+    "id": "75f706ee-ac71-483a-ae16-45254b66f7e1",
+    "attributes": {
+      "firstName": "Acme",
+      "closerId": "9bc9b6e4-0328-4874-b687-25f817d92434" // 👀
+    },
+    "relationships": {
+      // 👀
+      "closingSalesPerson": {
+        "data": {
+          "type": "SalesPerson",
+          "id": "9bc9b6e4-0328-4874-b687-25f817d92434"
         }
       }
     }
   }
-  ```
+}
+```

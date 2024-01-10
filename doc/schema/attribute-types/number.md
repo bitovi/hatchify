@@ -24,25 +24,23 @@ export const Todo = {
 | `min`           | The minimum value allowed. <br/> Example: `number({min: -100})`                    | `Number`  |   Yes    | `Number.MIN_VALUE` 🛑 |
 | `autoIncrement` | If the value should be incremented. <br/> Example: `number({autoIncrement: true})` | `Boolean` |   Yes    |        `false`        |
 
-## Database and Sequelize Behavior
+## Database Implications
 
 The `number` type will create a sequelize [DataTypes.DECIMAL](https://sequelize.org/docs/v6/core-concepts/model-basics/#numbers) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
 For numbers, use any number value and `%00` in your queries as follows:
 
 ```js
-// all todos with confidence >= 5.3
-GET /api/todos?filter[confidence][$gte]=5.3
+GET /api/todos?filter[confidence][$gte]=5.3 // all todos with confidence >= 5.3
 
-// all todos with confidence = null
-GET /api/todos?filter[confidence][$eq]=%00
+GET /api/todos?filter[confidence][$eq]=%00 // all todos with confidence = null
 
- // all todos with confidence = 1 or =1.5
-GET /api/todos?filter[confidence][$in][]=1&filter[confidence][$in][]=-1.5
+
+GET /api/todos?filter[confidence][$in][]=1&filter[confidence][$in][]=-1.5 // all todos with confidence = 1 or =1.5
 ```
 
 Any other value will return a service error.
@@ -70,7 +68,7 @@ When creating or updating an number attribute, A number or `null` must be provid
 
 ## React Rest Behavior
 
-Similar to the middleware, you MUST provide react rest models a number or `null` value. Likewise, they will always return these values:
+Similar to the API, you MUST provide react rest models a number or `null` value. Likewise, they will always return these values:
 
 ```ts
 Todo.createOne({ attributes: { confidence: 0.0 } })
@@ -79,11 +77,11 @@ const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.confidence //-> number or null
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
-The number value will be presented in the grid. If the value is `null`, no value will be presented in the grid.
+The number value will be presented in the data grid. If the value is `null`, no value will be presented in the data grid.
 
-![Grid Example](../../attachments/number-column.png)
+![Data Grid Example](../../attachments/number-column.png)
 
 ## Form Behavior 🛑
 

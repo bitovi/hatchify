@@ -63,15 +63,24 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
-- Creates a `sales_person` table.
+Creates a `sales_person` table.
 
-**API Implications:**
+#### API Implications
 
-- Creates a `/sales-persons` API.
-- `SalesPerson` will be used in the `fields` query parameter: `GET /api/sales-persons?fields[SalesPerson]=name`
-- `SalesPerson` will be used as the response `type`:
+##### Querying Data
+
+Creates a `/sales-persons` API.
+`SalesPerson` will be used in the `fields` query parameter:
+
+```js
+GET /api/sales-persons?fields[SalesPerson]=name
+```
+
+##### Data Response
+
+`SalesPerson` will be used as the response `type`:
 
 ```js
 {
@@ -96,11 +105,20 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**API Implications:**
+#### API Implications
 
-- Creates a `/sales-people` API.
-- `name` will still be used in the `fields` query parameter: `GET /api/sales-persons?fields[SalesPerson]=name`
-- `name` will still be used as the response `type`:
+##### Querying Data
+
+Creates a `/sales-people` API.
+`name` will still be used in the `fields` query parameter:
+
+```js
+GET /api/sales-persons?fields[SalesPerson]=name
+```
+
+##### Data Response
+
+`name` will still be used as the response `type`:
 
 ```js
 {
@@ -143,29 +161,39 @@ const AcmeCorp_SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
-- Creates a table `sales_person` in the Postgres schema `acme_corp`.
+Creates a table `sales_person` in the Postgres schema `acme_corp`.
 
-**API Implications:**
+#### API Implications
 
-- Creates an `acme-corp/sales-persons` API.
-- `namespace_name`, will be used in the `fields` query parameter: `GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name`
-- `namespace_name` will be used as the response `type`:
-  ```js
-  {
-    data: {
-      type: "AcmeCorp_SalesPerson", // 👀
-      id: "f06f81f2-4bea-4a60-99ad-8da8ecf79473",
-      ...
-    }
+##### Querying Data
+
+Creates an `acme-corp/sales-persons` API.
+`namespace_name`, will be used in the `fields` query parameter:
+
+```js
+GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
+```
+
+##### Data Response
+
+`namespace_name` will be used as the response `type`:
+
+```js
+{
+  data: {
+    type: "AcmeCorp_SalesPerson", //👀
+    id: "f06f81f2-4bea-4a60-99ad-8da8ecf79473",
+    ...
   }
-  ```
+}
+```
 
-**Returned Models Implications:**
+##### Returned Models Implications
 
-- `hatchifyKoa({AcmeCorp_SalesPerson})` returns `models.AcmeCorp_SalesPerson`
-- `hatchifyReact({AcmeCorp_SalesPerson})` returns `[components|model|state].AcmeCorp_SalesPerson`
+`hatchifyKoa({AcmeCorp_SalesPerson})` returns `models.AcmeCorp_SalesPerson`
+`hatchifyReact({AcmeCorp_SalesPerson})` returns `[components|model|state].AcmeCorp_SalesPerson`
 
 ### id
 
@@ -201,9 +229,9 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**UI Implications:**
+#### UI Implications
 
-- When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `displayAttribute` was not set, then the `name` attribute would have been used.
+When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `displayAttribute` was not set, then the `name` attribute would have been used.
 
 ### attributes
 
@@ -218,24 +246,34 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
-- Creates a column `first_name` in the `sales_person` table.
+Creates a column `first_name` in the `sales_person` table.
 
-**API Implications:**
+#### API Implications
 
-- Creates a `/sales-persons` API.
-- `firstName` will be used in the query parameters: `GET /api/sales-persons?fields[SalesPerson]=firstName`
-- `firstName` will be used in the mutation and response payloads:
-  ```js
-  {
-    data: {
-      type: "SalesPerson",
-      id: "c98b2123-78e7-45e4-b57f-f9c1189bfd19",
-      attributes: { firstName: "Mary" } // 👀
-    }
+##### Querying Data
+
+Creates a `/sales-persons` API.
+`firstName` will be used in the query parameters:
+
+```js
+GET /api/sales-persons?fields[SalesPerson]=firstName
+```
+
+##### Data Response
+
+`firstName` will be used in the mutation and response payloads:
+
+```js
+{
+  data: {
+    type: "SalesPerson",
+    id: "c98b2123-78e7-45e4-b57f-f9c1189bfd19",
+    attributes: { firstName: "Mary" } //👀
   }
-  ```
+}
+```
 
 #### displayName
 
@@ -251,17 +289,17 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
-- This has no effect on the database.
+This has no effect on the database.
 
-**API Implications:**
+#### API Implications
 
-- This has no effect on the API.
+This has no effect on the API.
 
-**UI Implications:**
+#### UI Implications
 
-- The `lastName` attribute will be displayed as "Surname" in the table header and filter dropdowns.
+The `lastName` attribute will be displayed as "Surname" in the table header and filter dropdowns.
 
 For more information on attributes: [attributes](../schema/attribute-types/README.md).
 
@@ -283,36 +321,45 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
-- Creates a column `sales_person_id` column in the `account` table.
+Creates a column `sales_person_id` column in the `account` table.
 
-**API Implications:**
+#### API Implications
 
-- `salesPerson` will be used in the `include` query parameter:
-  `GET /api/accounts?include=salesPerson`
-- `salesPerson` will be used in the mutation and response payloads:
-  ```js
-  {
-    data: {
-      type: "Account",
-      id: "2dba27ba-deaa-4656-a256-fb712f286c08",
-      attributes: { firstName: "Acme" },
-      relationships: {
-        salesPerson: { // 👀
-          data: [
-            {
-              type: "SalesPerson",
-              id: "619d107b-0655-4a31-a704-13eb47d3f9c1"
-            }
-          ]
-        }
+##### Querying Data
+
+`salesPerson` will be used in the `include` query parameter:
+
+```js
+GET /api/accounts?include=salesPerson
+```
+
+##### Data Response
+
+`salesPerson` will be used in the mutation and response payloads:
+
+```js
+{
+  data: {
+    type: "Account",
+    id: "2dba27ba-deaa-4656-a256-fb712f286c08",
+    attributes: { firstName: "Acme" },
+    relationships: {
+      salesPerson: { //👀
+        data: [
+          {
+            type: "SalesPerson",
+            id: "619d107b-0655-4a31-a704-13eb47d3f9c1"
+          }
+        ]
       }
     }
   }
-  ```
+}
+```
 
-For more information on this relationhip type: [belongsTo](../schema/relationship-types/belongs-to.md).
+For more information on this relationship type: [belongsTo](../schema/relationship-types/belongs-to.md).
 
 #### hasMany
 
@@ -330,36 +377,45 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
-- Assumes a column `sales_person_id` in the `account` table.
+Assumes a column `sales_person_id` in the `account` table.
 
-**API Implications:**
+#### API Implications
 
-- `accounts` will be used in the `include` query parameter:
-  `GET /api/sales-persons?include=accounts`
-- `accounts` will be used inthe mutation and response payloads:
-  ```js
-  {
-    data: {
-      type: "SalesPerson",
-      id: "172a139c-1b91-4c93-9a0a-27e963e3337f",
-      attributes: { firstName: "Mary" },
-      relationships: {
-        accounts: { // 👀
-          data: [
-            {
-              type: "Account",
-              id: "dc4985ed-1078-4a34-add8-06c92b5ac82b"
-            }
-          ]
-        }
+##### Querying Data
+
+`accounts` will be used in the `include` query parameter:
+
+```js
+GET /api/sales-persons?include=accounts
+```
+
+##### Data Response
+
+`accounts` will be used in the mutation and response payloads:
+
+```js
+{
+  data: {
+    type: "SalesPerson",
+    id: "172a139c-1b91-4c93-9a0a-27e963e3337f",
+    attributes: { firstName: "Mary" },
+    relationships: {
+      accounts: { //👀
+        data: [
+          {
+            type: "Account",
+            id: "dc4985ed-1078-4a34-add8-06c92b5ac82b"
+          }
+        ]
       }
     }
   }
-  ```
+}
+```
 
-For more information on this relationhip type: [hasMany](../schema/relationship-types/has-many.md).
+For more information on this relationship type: [hasMany](../schema/relationship-types/has-many.md).
 
 #### hasMany.through
 
@@ -375,7 +431,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-For more information on this relationhip type: [hasMany.through](../schema/relationship-types/has-many-through.md).
+For more information on this relationship type: [hasMany.through](../schema/relationship-types/has-many-through.md).
 
 #### hasOne
 
@@ -393,32 +449,42 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+#### Database Implications
 
-- Creates a column `manager_id` column in the `account` table.
+Creates a column `manager_id` column in the `account` table.
 
-**API Implications:**
+#### API Implications
 
-- `manager` will be used in the `include` query parameter: `GET /api/accounts?include=manager`
-- `manager` will be used in the mutation and response payloads:
-  ```js
-  {
-    data: {
-      type: "Account",
-      id: "a8f3956a-bea8-4dbc-89c2-8b33c8dfc906",
-      attributes: { firstName: "Acme" },
-      relationships: {
-        manager: { // 👀
-          data: [
-            {
-              type: "Manager",
-              id: "79d44865-0f9f-484a-8788-f8a27b8354b5"
-            }
-          ]
-        }
+##### Querying Data
+
+`manager` will be used in the `include` query parameter:
+
+```js
+GET /api/accounts?include=manager
+```
+
+##### Data Response
+
+`manager` will be used in the mutation and response payloads:
+
+```js
+{
+  data: {
+    type: "Account",
+    id: "a8f3956a-bea8-4dbc-89c2-8b33c8dfc906",
+    attributes: { firstName: "Acme" },
+    relationships: {
+      manager: { //👀
+        data: [
+          {
+            type: "Manager",
+            id: "79d44865-0f9f-484a-8788-f8a27b8354b5"
+          }
+        ]
       }
     }
   }
-  ```
+}
+```
 
-For more information on this relationhip type: [hasOne](../schema/relationship-types/has-one.md).
+For more information on this relationship type: [hasOne](../schema/relationship-types/has-one.md).
