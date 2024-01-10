@@ -1,4 +1,4 @@
-import { belongsTo } from "."
+import { belongsTo } from "./index.js"
 
 describe("belongsTo", () => {
   it("belongsTo()", () => {

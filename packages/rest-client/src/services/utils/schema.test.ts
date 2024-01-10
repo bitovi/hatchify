@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { schemaNameIsString } from "./schema"
+import { schemaNameIsString } from "./schema.js"
 
 describe("rest-client/services/utils/schema", () => {
   describe("scehmaNameIsString", () => {

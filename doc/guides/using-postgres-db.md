@@ -21,13 +21,13 @@ There are many different ways to install PostgreSQL (brew, choco, downloading th
 2. To create and run PostgreSQL database, run the following command:
 
    ```bash
-   docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=example_password -e POSTGRES_USER=example_user -d postgres
+   docker run --name postgres-container -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
    ```
 
    This installs the official PostgreSQL image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
 
-   - `POSTGRES_PASSWORD=example_password`
-   - `POSTGRES_USER=example_user`
+   - `POSTGRES_USER=postgres`
+   - `POSTGRES_PASSWORD=postgres`
 
    This also runs PostgreSQL on port 5432.
 
@@ -50,7 +50,7 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 2. Configure a PostgreSQL connection. The following is what needs to be specified to connect to the PostgreSQL in docker:
 
-![image](https://github.com/bitovi/hatchify/assets/78602/73768ab0-dbd0-4a41-9da3-c373850a2be3)
+![image](../attachments/add-postgres.png)
 
 **Click** the "Test Connection" button to test the connection. If successful, click **Finish** and go onto the next step.
 
@@ -65,7 +65,7 @@ For more information on creating a connection, [this tutorial](https://dbeaver.c
 
 4. Enter `hatchify_app` and click "OK".
 
-   ![image](https://github.com/bitovi/hatchify/assets/78602/f1c95ae6-a877-4284-ba40-046bd566fcaa)
+   ![image](../attachments/create-database.png)
 
 ## Update the Getting Started Guide app to use PostgreSQL
 
@@ -101,7 +101,7 @@ the benefits of storing config in the environment [here](https://12factor.net/co
 4. Update your `.env` file with the following content:
 
    ```bash
-   DB_URI=postgres://example_user:example_password@localhost:5432/hatchify_app
+   DB_URI=postgres://postgres:postgres@localhost:5432/hatchify_app
    ```
 
 5. Your server will restart automatically

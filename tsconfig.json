@@ -4,7 +4,6 @@
     "moduleResolution": "NodeNext",
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-
     "declaration": true,
     "composite": true,
     "incremental": true,
@@ -21,9 +20,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "useDefineForClassFields": true,
+    "baseUrl": ".",
     "paths": {
-      "@hatchifyjs/core": ["./packages/core"],
-      "@hatchifyjs/node": ["./packages/node"]
+      "@hatchifyjs/core": ["./packages/core/dist"],
+      "@hatchifyjs/node": ["./packages/node/dist"]
     }
   },
   "exclude": ["node_modules"]

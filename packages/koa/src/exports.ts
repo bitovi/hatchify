@@ -12,7 +12,7 @@ export type {
   ResourceObject,
 } from "json-api-serializer"
 
-export * from "./koa"
+export * from "./koa.js"
 
 export type { PartialAttributeRecord, PartialSchema } from "@hatchifyjs/core"
 
@@ -46,4 +46,4 @@ export type {
 
 export type KoaMiddleware = Middleware
 
-export type { MiddlewareFunctionsKoa } from "./middleware/koa"
+export type { MiddlewareFunctionsKoa } from "./middleware/koa.js"

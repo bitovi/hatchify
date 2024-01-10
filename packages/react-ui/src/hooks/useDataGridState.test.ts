@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import { assembler, integer } from "@hatchifyjs/core"
 import hatchifyReactRest from "@hatchifyjs/react-rest"
-import useDataGridState from "./useDataGridState"
+import useDataGridState from "./useDataGridState.js"
 
 const partialSchemas = {
   Todo: {

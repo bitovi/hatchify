@@ -1,1 +1,1 @@
-export * from "./HatchifyEmpty"
+export * from "./HatchifyEmpty.js"

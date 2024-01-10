@@ -12,7 +12,7 @@ import {
   dbDialects,
   getDatabaseColumns,
   startServerWith,
-} from "./testing/utils"
+} from "./testing/utils.js"
 
 describe.each(dbDialects)("Relationships v2", (dialect) => {
   describe(`${dialect} - belongsTo()`, () => {

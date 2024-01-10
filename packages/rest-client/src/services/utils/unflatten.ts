@@ -7,7 +7,7 @@ import type {
   GetSchemaFromName,
   GetSchemaNames,
   UpdateType,
-} from "../types"
+} from "../types/index.js"
 
 export function unflattenData<
   const TSchemas extends Record<string, PartialSchema>,

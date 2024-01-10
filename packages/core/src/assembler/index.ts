@@ -1,9 +1,9 @@
-import { ensureDefaultPrimaryAttribute } from "./ensureDefaultPrimaryAttribute"
-import { finalizeRelationships } from "./finalizeRelationships"
-import { finalizeSchema } from "./finalizeSchema"
-import type { FinalSchema, PartialSchema, SemiFinalSchema } from "./types"
-import { HatchifyInvalidSchemaError } from "../types"
-import { getSchemaKey } from "../util/getSchemaKey"
+import { ensureDefaultPrimaryAttribute } from "./ensureDefaultPrimaryAttribute.js"
+import { finalizeRelationships } from "./finalizeRelationships.js"
+import { finalizeSchema } from "./finalizeSchema.js"
+import type { FinalSchema, PartialSchema, SemiFinalSchema } from "./types.js"
+import { HatchifyInvalidSchemaError } from "../types/index.js"
+import { getSchemaKey } from "../util/getSchemaKey.js"
 
 export function assembler(
   schemas: Record<string, PartialSchema>,

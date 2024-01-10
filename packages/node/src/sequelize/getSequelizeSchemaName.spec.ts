@@ -1,4 +1,4 @@
-import { getSequelizeSchemaName } from "./getSequelizeSchemaName"
+import { getSequelizeSchemaName } from "./getSequelizeSchemaName.js"
 
 describe("getSequelizeSchemaName", () => {
   it("is always undefined for sqlite", () => {

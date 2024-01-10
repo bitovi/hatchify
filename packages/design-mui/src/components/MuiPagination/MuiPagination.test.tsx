@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom"
 import { act, render, screen } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
-import MuiPagination from "./MuiPagination"
+import MuiPagination from "./MuiPagination.js"
 
 describe("components/MuiPagination", () => {
   it("works", async () => {

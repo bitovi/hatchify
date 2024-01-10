@@ -2,7 +2,7 @@ import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import { assembler, string } from "@hatchifyjs/core"
-import { default as MuiEverything } from "./MuiEverything"
+import { default as MuiEverything } from "./MuiEverything.js"
 
 describe("components/MuiList", () => {
   const partialSchemas = {

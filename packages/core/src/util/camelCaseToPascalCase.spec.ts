@@ -1,4 +1,4 @@
-import { camelCaseToPascalCase } from "./camelCaseToPascalCase"
+import { camelCaseToPascalCase } from "./camelCaseToPascalCase.js"
 
 describe("camelCaseToPascalCase", () => {
   it("works as expected", () => {

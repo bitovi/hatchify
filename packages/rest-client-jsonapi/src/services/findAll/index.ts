@@ -1,1 +1,1 @@
-export * from "./findAll"
+export * from "./findAll.js"

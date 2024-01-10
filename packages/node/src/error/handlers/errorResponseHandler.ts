@@ -7,13 +7,13 @@ import {
 } from "sequelize"
 import type { ValidationErrorItem } from "sequelize"
 
-import { hatchifyErrorHandler } from "./hatchifyErrorHandler"
-import { codes, statusCodes } from "../constants"
+import { hatchifyErrorHandler } from "./hatchifyErrorHandler.js"
+import { codes, statusCodes } from "../constants.js"
 import {
   HatchifyError,
   UnexpectedValueError,
   ValueRequiredError,
-} from "../types"
+} from "../types/index.js"
 
 interface SequelizeError {
   errors?: Array<{

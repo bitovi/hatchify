@@ -1,7 +1,7 @@
-import { UUID_REGEX } from "./constants"
-import { HatchifyCoerceError } from "../../types"
+import { UUID_REGEX } from "./constants.js"
+import { HatchifyCoerceError } from "../../types/index.js"
 
-import { uuid } from "."
+import { uuid } from "./index.js"
 
 describe("uuid", () => {
   describe("uuid()", () => {

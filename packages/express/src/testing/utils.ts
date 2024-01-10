@@ -4,7 +4,7 @@ import Express from "express"
 import type { Dialect } from "sequelize"
 import request from "supertest"
 
-import { Hatchify, errorHandlerMiddleware } from "../express"
+import { Hatchify, errorHandlerMiddleware } from "../express.js"
 
 type Method = "get" | "post" | "patch" | "delete"
 

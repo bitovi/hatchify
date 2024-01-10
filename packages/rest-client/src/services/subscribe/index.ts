@@ -1,2 +1,2 @@
-export * from "./subscribeToAll"
-export * from "./subscribeToOne"
+export * from "./subscribeToAll/index.js"
+export * from "./subscribeToOne/index.js"

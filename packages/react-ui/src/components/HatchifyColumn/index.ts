@@ -1,1 +1,1 @@
-export * from "./HatchifyColumn"
+export * from "./HatchifyColumn.js"

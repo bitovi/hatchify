@@ -1,4 +1,4 @@
-import { hatchifyReact } from "./hatchifyReact"
+import { hatchifyReact } from "./hatchifyReact/index.js"
 
 export type {
   CreateType,
@@ -8,10 +8,10 @@ export type {
   UpdateType,
 } from "@hatchifyjs/rest-client"
 
-export type { HatchifyApp } from "./hatchifyReact"
+export type { HatchifyApp } from "./hatchifyReact/index.js"
 
-export * from "./components"
-export * from "./presentation"
-export * from "./hooks"
+export * from "./components/index.js"
+export * from "./presentation/index.js"
+export * from "./hooks/index.js"
 
 export default hatchifyReact

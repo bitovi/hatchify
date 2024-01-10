@@ -1,4 +1,4 @@
-import type { PartialBooleanORM, PartialBooleanProps } from "./types"
+import type { PartialBooleanORM, PartialBooleanProps } from "./types.js"
 
 export function getPartialOrm(
   props?: PartialBooleanProps<boolean>,

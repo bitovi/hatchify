@@ -1,7 +1,7 @@
 import type {
   PartialSchemaWithPrimaryAttribute,
   SemiFinalSchema,
-} from "./types"
+} from "./types.js"
 
 export function finalizeSchema(
   schema: PartialSchemaWithPrimaryAttribute,

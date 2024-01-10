@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material"
-import MuiAutocomplete from "../../../MuiAutocomplete/MuiAutocomplete"
-import type { Operators } from "../../constants"
+import MuiAutocomplete from "../../../MuiAutocomplete/MuiAutocomplete.js"
+import type { Operators } from "../../constants.js"
 
 const NumberInput: React.FC<{
   labelId: string

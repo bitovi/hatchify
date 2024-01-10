@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { GetSchemaNames, Include } from "@hatchifyjs/rest-client"
-import { useDataGridState } from "../../../hooks"
-import { getDefaultInclude } from "../../HatchifyDataGrid"
-import { useHatchifyPresentation } from "../../HatchifyPresentationProvider"
-import type { HatchifyEverythingProps } from "../HatchifyEverything"
+import { useDataGridState } from "../../../hooks/index.js"
+import { getDefaultInclude } from "../../HatchifyDataGrid/index.js"
+import { useHatchifyPresentation } from "../../HatchifyPresentationProvider/index.js"
+import type { HatchifyEverythingProps } from "../HatchifyEverything.js"
 
 type DefaultIncludes<TPartialSchemas extends Record<string, PartialSchema>> = {
   [SchemaName in keyof TPartialSchemas]: Include<TPartialSchemas[SchemaName]>

@@ -17,7 +17,7 @@ import {
   getToOneRelationshipsAsFields,
   getToOneRelationshipsAsInclude,
   getInclude,
-} from "./selector"
+} from "./selector.js"
 
 const partialTodoUserSchemas = {
   Todo: {

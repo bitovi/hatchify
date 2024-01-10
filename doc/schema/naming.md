@@ -8,6 +8,7 @@ This document describes the relationship between names in the schema and the res
 - [Schema](#schema)
   - [name](#name)
   - [pluralName](#pluralname)
+  - [tableName](#tablename)
   - [namespace](#namespace-postgres-only)
   - [id](#id)
   - [displayAttribute](#displayattribute)
@@ -55,7 +56,7 @@ The schema `name` should be singular PascalCase as follows:
 
 ```ts
 const SalesPerson = {
-  name: "SalesPerson", //👀
+  name: "SalesPerson", // 👀
   attributes: {
     firstName: string(),
   },
@@ -84,7 +85,7 @@ GET /api/sales-persons?fields[SalesPerson]=name
 ```js
 {
   data: {
-    type: "SalesPerson" //👀
+    type: "SalesPerson" // 👀
     ...
   }
 }
@@ -97,7 +98,7 @@ Optionally set the `pluralName` to configure plural naming for a schema.
 ```ts
 const SalesPerson = {
   name: "SalesPerson",
-  pluralName: "SalesPeople", //👀
+  pluralName: "SalesPeople", // 👀
   attributes: {
     firstName: string(),
   },
@@ -128,6 +129,24 @@ GET /api/sales-persons?fields[SalesPerson]=name
 }
 ```
 
+### tableName
+
+Optionally set `tableName` to control the name of the database table for the schema.
+
+```ts
+const SalesPerson = {
+  name: "SalesPerson",
+  tableName: "acme_sales_people", // 👀
+  attributes: {
+    firstName: string(),
+  },
+} satisfies PartialSchema
+```
+
+**Database Implications:**
+
+- Creates a table `acme_sales_people`.
+
 ### namespace (Postgres only)
 
 Optionally set `namespace` when using Postgres to use [Postgres Schemas](https://www.postgresql.org/docs/current/ddl-schemas.html) which are like namespaces for tables. The `namespace` must be written as singular PascalCase as follows:
@@ -135,7 +154,7 @@ Optionally set `namespace` when using Postgres to use [Postgres Schemas](https:/
 ```ts
 const AcmeCorp_SalesPerson = {
   name: "SalesPerson",
-  namespace: "AcmeCorp", //👀
+  namespace: "AcmeCorp", // 👀
   attributes: {
     firstName: string(),
   },
@@ -189,7 +208,7 @@ Optionally set the `displayAttribute` to configure which attribute is used to di
 ```ts
 const SalesPerson = {
   name: "SalesPerson",
-  displayAttribute: "email", //👀
+  displayAttribute: "email", // 👀
   attributes: {
     name: string(),
     email: string(),
@@ -222,7 +241,7 @@ An attribute name should be singular camelCase.
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: string(), //👀
+    firstName: string(), // 👀
   },
 } satisfies PartialSchema
 ```
@@ -265,7 +284,7 @@ const SalesPerson = {
   name: "SalesPerson",
   attributes: {
     firstName: string(),
-    lastName: string({ displayName: "Surname" }), //👀
+    lastName: string({ displayName: "Surname" }), // 👀
   },
 } satisfies PartialSchema
 ```
@@ -297,7 +316,7 @@ const Account = {
     name: string(),
   },
   relationships: {
-    salesPerson: belongsTo("SalesPerson"), //👀
+    salesPerson: belongsTo("SalesPerson"), // 👀
   },
 } satisfies PartialSchema
 ```
@@ -353,7 +372,7 @@ const SalesPerson = {
     firstName: string(),
   },
   relationships: {
-    accounts: hasMany("Account"), //👀
+    accounts: hasMany("Account"), // 👀
   },
 } satisfies PartialSchema
 ```
@@ -425,7 +444,7 @@ const Account = {
     name: string(),
   },
   relationships: {
-    manager: hasOne("Manager"), //👀
+    manager: hasOne("Manager"), // 👀
   },
 } satisfies PartialSchema
 ```

@@ -1,7 +1,7 @@
 import { belongsTo, datetime, hasMany, integer, string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
-import { dbDialects, startServerWith } from "./testing/utils"
+import { dbDialects, startServerWith } from "./testing/utils.js"
 
 describe.each(dbDialects)("Relationships", (dialect) => {
   describe(`${dialect} - Users and Todos`, () => {

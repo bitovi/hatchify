@@ -1,4 +1,4 @@
-import type { DefaultFieldComponentsTypes } from ".."
+import type { DefaultFieldComponentsTypes } from "../index.js"
 
 export const String: DefaultFieldComponentsTypes["String"] = ({
   value,

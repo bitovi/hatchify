@@ -1,1 +1,1 @@
-export { default as MuiDataGrid } from "./MuiDataGrid"
+export { default as MuiDataGrid } from "./MuiDataGrid.js"

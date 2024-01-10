@@ -1,4 +1,4 @@
-import type { PartialStringORM, PartialStringProps } from "./types"
+import type { PartialStringORM, PartialStringProps } from "./types.js"
 
 export function getPartialOrm(
   props?: PartialStringProps<boolean>,

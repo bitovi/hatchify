@@ -1,4 +1,7 @@
-import type { PartialDateonlyControlType, PartialDateonlyProps } from "./types"
+import type {
+  PartialDateonlyControlType,
+  PartialDateonlyProps,
+} from "./types.js"
 
 export function getPartialControl<TRequired extends boolean>(
   props?: PartialDateonlyProps<TRequired>,

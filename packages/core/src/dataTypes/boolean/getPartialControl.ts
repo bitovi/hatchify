@@ -1,4 +1,4 @@
-import type { PartialBooleanControlType, PartialBooleanProps } from "./types"
+import type { PartialBooleanControlType, PartialBooleanProps } from "./types.js"
 
 export function getPartialControl<TRequired extends boolean>(
   props?: PartialBooleanProps<TRequired>,

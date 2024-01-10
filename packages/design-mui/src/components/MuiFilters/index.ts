@@ -1,1 +1,1 @@
-export { default as MuiFilters } from "./MuiFilters"
+export { default as MuiFilters } from "./MuiFilters.js"

@@ -1,4 +1,4 @@
-import { text } from "."
+import { text } from "./index.js"
 
 describe("getFinalize", () => {
   it("finalizes a partial attribute", () => {

@@ -10,8 +10,8 @@ import type {
   DataValueComponent,
   HeaderProps,
   HeaderValueComponent,
-} from "../../presentation/interfaces"
-import { HatchifyColumn } from "../../hooks"
+} from "../../presentation/interfaces.js"
+import { HatchifyColumn } from "../../hooks/index.js"
 
 export type RenderData<
   TSchemas extends Record<string, PartialSchema>,

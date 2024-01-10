@@ -1,8 +1,8 @@
 import type { FindOptions } from "sequelize"
 import { Op } from "sequelize"
 
-import type { QueryStringParser } from "./builder"
-import { handleSqliteLike } from "./handleSqliteLike"
+import type { QueryStringParser } from "./builder.js"
+import { handleSqliteLike } from "./handleSqliteLike.js"
 
 describe("handleSqliteLike", () => {
   const likeQuery: QueryStringParser<FindOptions> = {

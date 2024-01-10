@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest"
-import { getEmptyList } from "."
+import { getEmptyList } from "./index.js"
 
 describe("hooks/useCompoundComponents/helpers/getEmptyList", () => {
   it.todo("works when valid children are passed", () => {

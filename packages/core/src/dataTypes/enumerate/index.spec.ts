@@ -1,6 +1,6 @@
-import { HatchifyCoerceError } from "../../types"
+import { HatchifyCoerceError } from "../../types/index.js"
 
-import { enumerate } from "."
+import { enumerate } from "./index.js"
 
 describe("enumerate", () => {
   const values = ["valid", "valid2"]

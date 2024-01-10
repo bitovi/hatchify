@@ -1,6 +1,6 @@
-import type { PartialEnumControlType } from "./types"
-import { HatchifyCoerceError } from "../../types"
-import type { ValueInRequest } from "../../types"
+import type { PartialEnumControlType } from "./types.js"
+import { HatchifyCoerceError } from "../../types/index.js"
+import type { ValueInRequest } from "../../types/index.js"
 
 export function coerce(
   value: ValueInRequest,

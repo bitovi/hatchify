@@ -1,6 +1,6 @@
 import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material"
 import type { HatchifyColumn, XDataGridProps } from "@hatchifyjs/react-ui"
-import MuiBodySkeleton from "./MuiBodySkeleton"
+import MuiBodySkeleton from "./MuiBodySkeleton.js"
 
 export const MuiBody: React.FC<
   XDataGridProps & { columns: HatchifyColumn[]; Empty: () => JSX.Element }

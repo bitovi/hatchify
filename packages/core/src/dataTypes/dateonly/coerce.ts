@@ -1,7 +1,7 @@
-import { isISO8601DateString } from "./isISO8601DateString"
-import type { PartialDateonlyControlType } from "./types"
-import { HatchifyCoerceError } from "../../types"
-import type { ValueInRequest } from "../../types"
+import { isISO8601DateString } from "./isISO8601DateString.js"
+import type { PartialDateonlyControlType } from "./types.js"
+import { HatchifyCoerceError } from "../../types/index.js"
+import type { ValueInRequest } from "../../types/index.js"
 
 export function coerce(
   value: ValueInRequest,

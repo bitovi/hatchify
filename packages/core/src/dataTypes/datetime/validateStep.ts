@@ -1,4 +1,4 @@
-import { validateStep as validateNumericStep } from "../number/validateStep"
+import { validateStep as validateNumericStep } from "../number/validateStep.js"
 
 const STEP = {
   day: 86400000,

@@ -1,18 +1,18 @@
-import { getFinalize } from "./getFinalize"
-import { getPartialControl } from "./getPartialControl"
-import { getPartialOrm } from "./getPartialOrm"
+import { getFinalize } from "./getFinalize.js"
+import { getPartialControl } from "./getPartialControl.js"
+import { getPartialOrm } from "./getPartialOrm.js"
 import type {
   FinalStringORM,
   PartialStringControlType,
   PartialStringORM,
   PartialStringProps,
-} from "./types"
-import type { PartialAttribute } from "../../types"
+} from "./types.js"
+import type { PartialAttribute } from "../../types/index.js"
 
-export * from "./getFinalize"
-export * from "./getPartialControl"
-export * from "./getPartialOrm"
-export * from "./types"
+export * from "./getFinalize.js"
+export * from "./getPartialControl.js"
+export * from "./getPartialOrm.js"
+export * from "./types.js"
 
 export function string<TRequired extends boolean = false>(
   props?: PartialStringProps<TRequired>,

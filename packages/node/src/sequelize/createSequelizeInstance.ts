@@ -1,9 +1,9 @@
 import { extendSequelize } from "@hatchifyjs/sequelize-create-with-associations"
 import { Sequelize } from "sequelize"
 
-import { CustomDecimal } from "./customTypes/CustomDecimal"
-import { CustomInteger } from "./customTypes/CustomInteger"
-import type { DatabaseOptions, SequelizeWithHatchify } from "../types"
+import { CustomDecimal } from "./customTypes/CustomDecimal.js"
+import { CustomInteger } from "./customTypes/CustomInteger.js"
+import type { DatabaseOptions, SequelizeWithHatchify } from "../types.js"
 
 export function createSequelizeInstance(
   options?: DatabaseOptions,

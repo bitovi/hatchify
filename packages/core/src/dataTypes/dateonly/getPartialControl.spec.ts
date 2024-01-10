@@ -1,4 +1,4 @@
-import { getPartialControl } from "./getPartialControl"
+import { getPartialControl } from "./getPartialControl.js"
 
 describe("getPartialControl", () => {
   it("handles required", () => {

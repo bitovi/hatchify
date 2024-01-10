@@ -1,8 +1,8 @@
-import type { PartialBelongsToRelationship } from "./types"
-import { uuid } from "../../dataTypes"
-import { HatchifyInvalidSchemaError } from "../../types"
-import type { SemiFinalSchema } from "../../types"
-import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase"
+import type { PartialBelongsToRelationship } from "./types.js"
+import { uuid } from "../../dataTypes/index.js"
+import { HatchifyInvalidSchemaError } from "../../types/index.js"
+import type { SemiFinalSchema } from "../../types/index.js"
+import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase.js"
 
 // @todo HATCH-417
 export function finalize(

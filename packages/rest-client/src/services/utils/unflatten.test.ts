@@ -6,7 +6,7 @@ import {
   hasMany,
   string,
 } from "@hatchifyjs/core"
-import { unflattenData } from "./unflatten"
+import { unflattenData } from "./unflatten.js"
 
 const partialSchemas = {
   Todo: {

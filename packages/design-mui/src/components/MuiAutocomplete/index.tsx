@@ -1,1 +1,1 @@
-export { default } from "./MuiAutocomplete"
+export { default } from "./MuiAutocomplete.js"
