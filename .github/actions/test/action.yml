@@ -13,4 +13,4 @@ runs:
       shell: bash
       run: npx nx test ${{ inputs.package }}
       env:
-        DB_URI: postgres://postgres:postgres@localhost:5432/postgres
+        DB_URI: postgres://postgres:password@localhost:5432/postgres

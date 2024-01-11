@@ -61,4 +61,21 @@ describe("coerce", () => {
       }),
     ).toThrow(new HatchifyCoerceError("before or on 2023-01-01"))
   })
+
+  it("handles steps", () => {
+    expect(() =>
+      coerce("2023-01-02", {
+        type: "Dateonly",
+        step: "week",
+      }),
+    ).toThrow(new HatchifyCoerceError("as multiples of week"))
+
+    expect(() =>
+      coerce("2023-01-02", {
+        type: "Dateonly",
+        step: "week",
+        min: "2023-01-01",
+      }),
+    ).toThrow(new HatchifyCoerceError("as multiples of week"))
+  })
 })

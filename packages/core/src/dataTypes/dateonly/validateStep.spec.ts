@@ -3,7 +3,7 @@ import { HatchifyCoerceError } from "../../types/index.js"
 
 describe("validateStep", () => {
   it("without step", () => {
-    expect(validateStep(new Date())).toBe(true)
+    expect(validateStep(new Date("2023-01-01T00:00:00.000Z"))).toBe(true)
     expect(validateStep(null as unknown as Date)).toBe(false)
     expect(validateStep(undefined as unknown as Date)).toBe(false)
   })
@@ -41,9 +41,7 @@ describe("validateStep", () => {
     expect(() =>
       validateStep(new Date(), "invalid" as unknown as number),
     ).toThrow(
-      new HatchifyCoerceError(
-        'as one of "millisecond", "second", "minute", "hour", "day", "week", "year", "decade"',
-      ),
+      new HatchifyCoerceError('as one of "day", "week", "year", "decade"'),
     )
   })
 })
