@@ -59,7 +59,7 @@ export default function FormInput({
 
 ### `TodoFormModal.tsx`
 
-Now that we have a reusable input component, we can create our modal component. Here's the full code, which we will break down below:
+Now that we have a reusable input component, we can create our modal component. For the purpose of this guide, we will be creating a simplified Todo, only providing the name and importance attributes. With the building blocks provided in these snippets, you will be able to build out a full todo form with inputs for all attributes & relationships. Here's the full code, which we will break down below:
 
 ```tsx
 import { useEffect, useState } from "react"
@@ -69,6 +69,7 @@ import { hatchedReact } from "../App.js"
 import FormInput from "./FormInput.js"
 import * as Schemas from "../../schemas.js"
 
+// 🛑 `RecordType` should be `HatchifyRecord`?
 export default function TodoFormModal({ todo, open, handleClose }: { todo?: RecordType<typeof Schemas, typeof Schemas.Todo>; open: boolean; handleClose: () => void }) {
   const [createTodo] = hatchedReact.model.Todo.useCreateOne()
   const [updateTodo] = hatchedReact.model.Todo.useUpdateOne()
