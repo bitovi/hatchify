@@ -11,7 +11,7 @@ This is helpful if you need to:
 
 ## Prerequisites
 
-If you are using `Koa`, we suggest using the Koa Router to help creating custom routes easily: // 👀
+If you are using `Koa`, we suggest using the Koa Router to help create custom routes easily:
 
 ```bash
 npm install @koa/router
