@@ -60,7 +60,7 @@ Creates a table `account_sales_person` with `account_id` and `sales_person_id` c
 
 #### Querying Data
 
-`salesAccounts` and `accountSalesPersons` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccounts,accountSalesPersons` 🛑
+`salesAccounts` and `accountSalesPersons` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccounts,accountSalesPersons`
 
 #### Data Response
 
@@ -137,7 +137,7 @@ Creates a table `assignment` with `account_id` and `sales_person_id` columns.
 
 #### Querying Data
 
-`accounts` and `assignments` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,assignments` 🛑
+`accounts` and `assignments` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,assignments`
 
 #### Data Response
 
@@ -214,7 +214,7 @@ Creates a table `assignment` with `the_account_id` and `the_sales_person_id` col
 
 #### Querying Data
 
-`accounts` and `assignments` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,assignments` 🛑
+`accounts` and `assignments` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,assignments`
 
 #### Data Response
 
@@ -310,7 +310,7 @@ Creates a column `sales_person_id` in the `sales_person` table.
 
 #### Querying Data
 
-`accounts` and `assignments` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,assignments` 🛑
+`accounts` and `assignments` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,assignments`
 
 #### Data Response
 
