@@ -1,4 +1,11 @@
-import { belongsTo, datetime, hasMany, integer, string } from "@hatchifyjs/core"
+import {
+  belongsTo,
+  datetime,
+  hasMany,
+  integer,
+  string,
+  uuid,
+} from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils.js"
@@ -1130,6 +1137,82 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             },
           },
         ],
+      })
+    })
+  })
+
+  describe(`${dialect} - Accounts and Sales People (HATCH-513)`, () => {
+    const Account: PartialSchema = {
+      name: "Account",
+      attributes: {},
+      relationships: {
+        salesPeople: hasMany("SalesPerson").through("AccountSalesPerson"), // 👀
+      },
+    }
+
+    const SalesPerson: PartialSchema = {
+      name: "SalesPerson",
+      attributes: {},
+      relationships: {
+        salesAccounts: hasMany("Account").through("AccountSalesPerson"), // 👀
+      },
+    }
+
+    const AccountSalesPerson: PartialSchema = {
+      name: "AccountSalesPerson",
+      attributes: {
+        accountId: uuid(),
+        salesPersonId: uuid(),
+      },
+    }
+
+    let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+    let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+    beforeAll(async () => {
+      ;({ fetch, teardown } = await startServerWith(
+        { SalesPerson, Account, AccountSalesPerson },
+        dialect,
+      ))
+    })
+
+    afterAll(async () => {
+      await teardown()
+    })
+
+    it("does not crash", async () => {
+      const { body: salesPerson } = await fetch("/api/sales-persons", {
+        method: "post",
+        body: {
+          data: {
+            type: "SalesPerson",
+            attributes: {},
+          },
+        },
+      })
+
+      const { status, body: salesPeople } = await fetch(
+        "/api/sales-persons?include=salesAccounts,accountSalesPersons",
+      )
+
+      expect(status).toBe(200)
+      expect(salesPeople).toEqual({
+        jsonapi: { version: "1.0" },
+        data: [
+          {
+            type: "SalesPerson",
+            id: salesPerson.data.id,
+            relationships: {
+              salesAccounts: {
+                data: [],
+              },
+              accountSalesPersons: {
+                data: [],
+              },
+            },
+          },
+        ],
+        meta: { unpaginatedCount: 1 },
       })
     })
   })
