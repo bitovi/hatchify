@@ -1146,7 +1146,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       name: "Account",
       attributes: {},
       relationships: {
-        salesPeople: hasMany("SalesPerson").through("AccountSalesPerson"), // 👀
+        salesPeople: hasMany("SalesPerson").through("AccountSalesPerson"),
       },
     }
 
@@ -1154,7 +1154,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       name: "SalesPerson",
       attributes: {},
       relationships: {
-        salesAccounts: hasMany("Account").through("AccountSalesPerson"), // 👀
+        salesAccounts: hasMany("Account").through("AccountSalesPerson"),
       },
     }
 
