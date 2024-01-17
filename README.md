@@ -4,20 +4,20 @@
 
 Hatchify is a web application framework designed to accelerate the development of CRUD applications. If all you need is basic app, Hatchify can provide you with a fully functional system straight from a datatype schema. If you have more specialized requirements, Hatchify makes it easy to customize every part of the application to meet your needs.
 
-Hatchify enables you to make changes to your database schema and customize app behavior **independently** of each other, unlike code-generation dependent approaches. It avoids code generation in favor of modular libraries that can be used incrementally, to utilize as much or as little of the framework's abilities as you require.
+Hatchify is structured as a number of modular libraries that can be consumed individually to use as much, or as little, as you require. Hatchify provides the speed of low-code development and the extensibility of custom code.
 
 - [Getting Started](#getting-started)
 - [Guides](#guides)
 - [API Docs](#api-docs)
 - [Need help or have questions?](#need-help-or-have-questions)
 
-# Getting Started
+## Getting Started
 
-In just a few short steps we will set up a project containing a Hatchify frontend and backend. Our frontend will use React and MUI, and our backend will be using Koa. The project also uses Vite as a dev server which handles much of the React configuration for us.
+In just a few short steps we will set up a project containing a Hatchify frontend and backend. Our frontend will use [React](https://react.dev/) and [MUI](https://mui.com/), and our backend will be using [Koa](https://koajs.com/). The project also uses [Vite](https://vitejs.dev/) as a dev server which handles much of the React configuration for us.
 
+> ✏️ Perform all the following steps:
+> 
 > **Note:** The ✏️ icon indicates when to follow along!
-
-✏️ Perform all the following steps:
 
 1. Ensure you’re using [node 18 and npm
    9 or above](https://nodejs.org/en/download)
@@ -32,15 +32,25 @@ In just a few short steps we will set up a project containing a Hatchify fronten
    ```bash
    npm init @hatchifyjs@latest
    ```
+    - For the backend answer: "Koa" 
+    - For the frontend prompt answer: "SQLite"
+   
+3. Start the server:
+   ```bash
+   npm run dev
+   ```
+   
+4. Navigate to the Hatchify welcome screen:
 
-# Schemas
+IMAGE OF WELCOME SCREEN
 
-A schema is a definition of a resource used in our Hatchify system. We use these shared schemas across our backend and frontend to create database tables, generate REST endpoints, and create React components
-and data fetchers. Because these schemas are the backbone of our frontend and backend, we will place them in the empty `schemas.ts` file at the root directory of our project.
+Congrats, you’ve got a seed of something great started!
 
-The required fields of the schema are a `name` for your model and the`attributes` that will be held within it. If you have written ORM models before, particularly Sequelize, this will look familiar to you.
+### Schemas
 
-> ✏️ Copy the following to the `schemas.ts` file. Take note of lines commented with the 👀 emoji.
+Hatchify’s schemas define your data structure fields and relationships. We share these schemas across our backend and frontend to create database tables, generate REST endpoints, and create React components and data fetchers. Because these schemas are the backbone of our frontend and backend, we will place them in the empty schemas.ts file at the root directory of our project.
+
+> ✏️ Update `schemas.ts` file with the following:
 
 ```ts
 // hatchify-app/schemas.ts
@@ -71,29 +81,17 @@ export const User = {
 } satisfies PartialSchema
 ```
 
-> **Note:** It is important to use _satisfies PartialSchema_ when typing our schemas. By using the satisfies keyword, we can make sure our schema objects are typed correctly and also get the benefit of type inference when passing our schemas into our Hatchify functions.
+This defines a `Todo` and `User` type, each with some attributes. It also creates a  relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
 
-You can find all the possible data types for a schema's `attributes` [here](./doc/schema/attribute-types/README.md).
+You can refer to [our documentation](/doc/schema/README.md) for more information on how to define schemas.
 
-# Backend - Schema Defined Endpoints
+### Seed Data
 
-Now we can run this application, and Hatchify will create CRUD application endpoints for our `User` and `Todo` models automatically. This step will take care of not only setting up your database resources, but also validating your schemas against each other, ensuring all your relationship fields make sense.
-
-To run the server: ✏️
-
-```bash
-npm run dev
-```
-
-You can navigate to the following endpoints to get a list of users and todos (but we won't have any just yet):
-
-[http://localhost:3000/api/users](http://localhost:3000/api/users)
-
-[http://localhost:3000/api/todos](http://localhost:3000/api/todos)
+Hatchify doesn’t currently generate forms (though we are working on it!). To add data, you can use the REST APIs that Hatchify’s middleware provides.
 
 # Seeding Sample Data
 
-> ✏️ Run the following commands in your terminal to save some sample data.
+> ✏️ Run the following commands to create some sample data.
 
 ```bash
 curl 'http://localhost:3000/api/todos' \
@@ -185,51 +183,43 @@ curl 'http://localhost:3000/api/users' \
 }'
 ```
 
-With the dev server running and some data in place, we can now further review the project.
+To learn more about the service layer, read [the docs regarding our JSONAPI implementation](./doc/jsonapi/README.md)
 
-# Frontend - React and MUI
+With some data in place, we can now further review the project.
 
-Let's review the contents of `frontend/App.tsx` to see how the schemas that we defined earlier conveniently "hatch" our frontend.
+### Interact with the UI
 
-The first you'll see is the imports of `hatchifyReact`, `HatchifyProvider`, and `createJsonapiClient` from the `@hatchify/react` library. Here’s a quick overview of what each of these does:
+Now that data has been seeded the UI should look like:
 
-- `createJsonapiClient` - This is our rest client for JSON:API. We pass in the `baseUrl` of our backend to it, as well as our schemas.
+IMAGE OF UI
 
-- `HatchifyProvider` - This is a MUI theme provider that we must wrap around our entire app so that our Hatchify components will render with the correct style.
+You can start using this basic app to sort & filter the data:
 
-- `hatchifyReact` - This function takes in our rest client and returns an object containing React components and data access functions for each schema. This returned object represents our entire frontend Hatchify app.
+IMAGE OF FILTERING
 
-With that those Hatchify elements generated from our schema, we can pull the `Everything` "splash screen" component from `hatchifyReact` and render it.
+What you've built is currently bare bones, but read through our guides in the following section to learn how to enhance it to meet your needs. 
 
-## Rendering an index of schemas & data
+## Next Steps
 
-✏ Open [http://localhost:3000/](http://localhost:3000/). You should see:
+Continue learning more about the Hatchify feature set with these guides that continue from the example above:
 
-![image](https://github.com/bitovi/hatchify/assets/2623867/9b5b8f0d-970d-4f86-a893-2f48c74f0474)
-
-And that’s it! With minimal code and some Hatchify magic, we've used our schemas to create a database, a backend with REST endpoints, and a JSX-enabled frontend that handles the data-fetching for us.
-
-# Guides
-
-Continue learning more about the Hatchify feature set with these guide that continue from the example project above:
-
-- [Schema, database, and service API naming](./doc/guides/naming.md)
-- [Model Sync](./doc/guides/model-sync.md)
 - [Using PostgreSQL DB](./doc/guides/using-postgres-db.md)
+- [Model Sync](./doc/guides/model-sync.md)
 - [Adding custom endpoints](./doc/guides/adding-custom-endpoints.md)
 - [Adding request authorization](./doc/guides/adding-request-authorization.md)
 - [Customizing your list](./doc/guides/customizing-your-list.md)
 - [Adding checkboxes to the list](./doc/guides/adding-checkboxes-to-the-list.md)
 - [Application data validation](./doc/guides/application-data-validation.md)
 
-# API Docs
+## API Docs
 
 Dig deep into how the internals of how Hatchify works in the technical interface documentation:
 
 - [Schema](./doc/schema/)
-  - [Attributes](./doc/schema//attribute-types/README.md)
+  - [Attributes](./doc/schema/attribute-types/README.md)
   - [Relationships](./doc/schema/relationship-types/README.md)
-- [JSON:API](./doc/jsonapi//README.md)
+  - [Schema Naming](./doc/schema/naming.md)
+- [JSON:API](./doc/jsonapi/README.md)
   - [Creating](./doc/jsonapi/creating.md)
   - [Reading](./doc/jsonapi/reading/README.md)
     - [Filtering](./doc/jsonapi/reading/filtering/README.md)
@@ -247,7 +237,7 @@ Dig deep into how the internals of how Hatchify works in the technical interface
   - [Components](./doc/react/components.md) 🛑
   - [REST Client](./doc/react/rest-client.md) 🛑
 
-# Need help or have questions?
+## Need help or have questions?
 
 This project is supported by [Bitovi](https://bitovi.com/), a web software consultancy. You can get help or ask questions on our:
 
