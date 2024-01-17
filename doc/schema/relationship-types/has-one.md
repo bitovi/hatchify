@@ -38,7 +38,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Schema Implications**
+### Schema Implications
 
 An attribute named `salesPersonId` will be created as if it was defined as follows:
 
@@ -51,33 +51,38 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**Database Implications**
+### Database Implications
 
 Creates a column `sales_person_id` in the `account` table.
 
-**API Implications**
+### API Implications
 
-- `salesAccount` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccount`
-- `salesAccount` will be used in mutation payloads and response payloads like:
+#### Querying Data
 
-  ```json
-  {
-    "data": {
-      "type": "SalesPerson",
-      "id": "9bc9b6e4-0328-4874-b687-25f817d92434",
-      "attributes": {},
-      "relationships": {
-        // 👀
-        "salesAccount": {
-          "data": {
-            "type": "Account",
-            "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
-          }
+`salesAccount` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccount`
+
+#### Data Response
+
+`salesAccount` will be used in mutation payloads and response payloads like:
+
+```json
+{
+  "data": {
+    "type": "SalesPerson",
+    "id": "9bc9b6e4-0328-4874-b687-25f817d92434",
+    "attributes": {},
+    "relationships": {
+      // 👀
+      "salesAccount": {
+        "data": {
+          "type": "Account",
+          "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
         }
       }
     }
   }
-  ```
+}
+```
 
 ## hasOne(schemaName,{targetAttribute})
 
@@ -100,30 +105,35 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications**
+### Database Implications
 
 Creates a column `account_id` in the `account` table.
 
-**API Implications**
+### API Implications
 
-- `salesAccount` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccount`
-- `salesAccount` will be used in mutation payloads and response payloads like:
+#### Querying Data
 
-  ```json
-  {
-    "data": {
-      "type": "SalesPerson",
-      "id": "9bc9b6e4-0328-4874-b687-25f817d92434",
-      "attributes": {},
-      "relationships": {
-        // 👀
-        "salesAccount": {
-          "data": {
-            "type": "Account",
-            "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
-          }
+`salesAccount` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccount`
+
+#### Data Response
+
+`salesAccount` will be used in mutation payloads and response payloads like:
+
+```json
+{
+  "data": {
+    "type": "SalesPerson",
+    "id": "9bc9b6e4-0328-4874-b687-25f817d92434",
+    "attributes": {},
+    "relationships": {
+      // 👀
+      "salesAccount": {
+        "data": {
+          "type": "Account",
+          "id": "75f706ee-ac71-483a-ae16-45254b66f7e1"
         }
       }
     }
   }
-  ```
+}
+```

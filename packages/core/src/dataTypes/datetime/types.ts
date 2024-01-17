@@ -3,12 +3,20 @@ import type {
   PartialDataTypeProps,
   PartialSequelizeDataType,
 } from "../../types/index.js"
+import type { StringStep as DateOnlyStringStep } from "../dateonly/types.js"
+
+export type StringStep =
+  | "millisecond"
+  | "second"
+  | "minute"
+  | "hour"
+  | DateOnlyStringStep
 
 export interface PartialDatetimeProps<TRequired extends boolean>
   extends PartialDataTypeProps<Date, TRequired> {
   min?: Date | typeof Infinity
   max?: Date | typeof Infinity
-  step?: "day" | number
+  step?: StringStep | number
 }
 
 export interface PartialDatetimeControlType<TRequired extends boolean>
@@ -16,7 +24,7 @@ export interface PartialDatetimeControlType<TRequired extends boolean>
   type: "Datetime"
   min?: Date | typeof Infinity
   max?: Date | typeof Infinity
-  step?: "day" | number
+  step?: StringStep | number
 }
 
 export interface PartialDatetimeORM {

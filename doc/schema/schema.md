@@ -56,8 +56,8 @@ This section shows how each part of the schema relates to the Database or servic
 
 ### Terms
 
-- Source schema - The schema the definition is written in.
-- Target schema - The schema the Source schema is establishing a relationship with.
+Source schema - The schema the definition is written in.
+Target schema - The schema the Source schema is establishing a relationship with.
 
 ### Schema.name
 
@@ -72,15 +72,24 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications:**
+#### Database Implications
 
-- Creates a table `sales_person`.
+Creates a table `sales_person`.
 
-**API Implications:**
+#### API Implications
 
-- This will create a `/sales-persons` API.
-- When referencing this type in the `fields`, `SalesPerson` will be used: `GET /api/sales-persons?fields[SalesPerson]=name`
-- `SalesPerson` will be used as the response `type`: `{data: {type: "SalesPerson"}}`
+##### Querying Data
+
+This will create a `/sales-persons` API.
+When referencing this type in the `fields`, `SalesPerson` will be used:
+
+```js
+GET /api/sales-persons?fields[SalesPerson]=name
+```
+
+##### Data Response
+
+`SalesPerson` will be used as the response `type`: `{data: {type: "SalesPerson"}}`
 
 ### Schema.pluralName
 
@@ -96,9 +105,11 @@ const SalesPerson = {
 }
 ```
 
-**API Implications**
+#### API Implications
 
-- Create a `/sales-people` API.
+##### Querying Data
+
+Create a `/sales-people` API.
 
 ### Schema.namespace `postgres-only`
 
@@ -112,28 +123,38 @@ const AcmeCorp_SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Creates a table sales_person in the Postgres schema acme_corp
+Creates a table sales_person in the Postgres schema acme_corp
 
-**API Impliciations**
+#### API Implications
 
-- This will create an acme-corp/sales-persons API
-- When referencing this in the type fields, AcmeCorp_SalesPerson will be used: GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
-- Data will be returned like:
-  ```
-  {
-    data: {
-      type: "AcmeCorp_SalesPerson",  // same as in "included"
-      id: "....",
-      attributes: { .... }
-    }
+##### Querying Data
+
+This will create an `acme-corp/sales-persons` API
+When referencing this in the type fields, AcmeCorp_SalesPerson will be used:
+
+```js
+GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
+```
+
+##### Data Response
+
+Data will be returned like:
+
+```js
+{
+  data: {
+    type: "AcmeCorp_SalesPerson",  // same as in "included"
+    id: "....",
+    attributes: { .... }
   }
-  ```
+}
+```
 
-**Returned Models Implications**
+#### Returned Models Implications
 
-hatchifyKoa({AcmeCorp_SalesPerson}) returns models.AcmeCorp_SalesPerson
+`hatchifyKoa({AcmeCorp_SalesPerson})` returns `models.AcmeCorp_SalesPerson`
 
 ### Schema.attributes.ATTRIBUTE_NAME
 
@@ -148,30 +169,39 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Creates a column `first_name` in the `sales_person` table.
+Creates a column `first_name` in the `sales_person` table.
 
-**API Implications**
+#### API Implications
 
-- `firstName` will be used in query parameters like
-  `GET /api/sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName`
-- `firstName` will be used in mutation payloads and response payloads like:
-  ```js
-  {
-    data: {
-      type: "SalesPerson",
-      id: "1",
-      attributes: { firstName: "Mary" } //👀
-    }
+##### Querying Data
+
+`firstName` will be used in query parameters like:
+
+```js
+GET /api/sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName
+```
+
+##### Data Response
+
+`firstName` will be used in mutation payloads and response payloads like:
+
+```js
+{
+  data: {
+    type: "SalesPerson",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
+    attributes: { firstName: "Mary" } //👀
   }
-  ```
+}
+```
 
 ### relationships.belongsTo
 
 A `target` option is required.
 
-- `target` should match a `Schema.name` and be _Singular PascalCase_.
+`target` should match a `Schema.name` and be _Singular PascalCase_.
 
 ```js
 const Account = {
@@ -183,31 +213,40 @@ const Account = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Creates a column `sales_person_id` column in the `account` table.
+Creates a column `sales_person_id` column in the `account` table.
 
-**API Implications**
+#### API Implications
 
-- `salesPerson` will be used in the include query parameter like
-  `GET /api/accounts?include=salesPerson`
-- `salesPerson` will be used in mutation payloads and response payloads like:
-  ```js
-  {
-    data: {
-      type: "Account",
-      id: "1",
-      attributes: { firstName: "Acme" },
-      relationships: {
-        salesPerson: {
-          data: [
-            { type: "SalesPerson", id: "322" } //👀
-          ]
-        }
+##### Querying Data
+
+`salesPerson` will be used in the include query parameter like:
+
+```js
+GET /api/accounts?include=salesPerson
+```
+
+##### Data Response
+
+`salesPerson` will be used in mutation payloads and response payloads like:
+
+```js
+{
+  data: {
+    type: "Account",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
+    attributes: { firstName: "Acme" },
+    relationships: {
+      salesPerson: {
+        data: [
+          { type: "SalesPerson", id: "abcdefgh-ijkl-mnop-qrst-000000000322" } //👀
+        ]
       }
     }
   }
-  ```
+}
+```
 
 ### relationships.belongsTo.as
 
@@ -223,31 +262,40 @@ const Account = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Creates a column `closer_person_id` in the `account` table.
+Creates a column `closer_person_id` in the `account` table.
 
-**API Implications**
+#### API Implications
 
-- `closerPerson` will be used in the include query parameter like
-  `GET /api/accounts?include=closerPerson`
-- `closerPerson` will be used in mutation payloads and response payloads like:
-  ```js
-  {
-    data: {
-      type: "Account",
-      id: "1",
-      attributes: { firstName: "Acme" },
-      relationships: {
-        closerPerson: {
-          data: [
-            { type: "SalesPerson", id: "322" } //👀
-          ]
-        }
+##### Querying Data
+
+`closerPerson` will be used in the include query parameter like:
+
+```js
+GET /api/accounts?include=closerPerson
+```
+
+##### Data Response
+
+`closerPerson` will be used in mutation payloads and response payloads like:
+
+```js
+{
+  data: {
+    type: "Account",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
+    attributes: { firstName: "Acme" },
+    relationships: {
+      closerPerson: {
+        data: [
+          { type: "SalesPerson", id: "abcdefgh-ijkl-mnop-qrst-000000000322" } //👀
+        ]
       }
     }
   }
-  ```
+}
+```
 
 ### relationships.belongsTo.foreignKey
 
@@ -270,17 +318,17 @@ const Account = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Creates a column `finisher_id` in the `account` table.
+Creates a column `finisher_id` in the `account` table.
 
-**API Implications**
+#### API Implications
 
 There are no changes to the API.
 
 ### relationships.hasMany
 
-`target`is required. `target` must match a `Schema.name` and be _Singular PascalCase_.
+`target` is required. `target` must match a `Schema.name` and be _Singular PascalCase_.
 
 ```js
 const SalesPerson = {
@@ -294,29 +342,38 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Assumes a column `sales_person_id` in the `account` table.
+Assumes a column `sales_person_id` in the `account` table.
 
-**API Implications**
+#### API Implications
 
-- `accounts` will be used in the include query parameter like
-  `GET /api/sales-persons?include=accounts`
-- `accounts` will be used in mutation payloads and response payloads like:
-  ```js
-  {
-    data: {
-      type: "SalesPerson",
-      id: "1",
-      attributes: { firstName: "Mary" },
-      relationships: {
-        accounts: {
-          data: [{type: "Account", id: "456"}]  //👀
-        }
+##### Querying Data
+
+`accounts` will be used in the include query parameter like:
+
+```js
+GET /api/sales-persons?include=accounts
+```
+
+##### Data Response
+
+`accounts` will be used in mutation payloads and response payloads like:
+
+```js
+{
+  data: {
+    type: "SalesPerson",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
+    attributes: { firstName: "Mary" },
+    relationships: {
+      accounts: {
+        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}]  //👀
       }
     }
   }
-  ```
+}
+```
 
 ### relationships.hasMany.as
 
@@ -334,29 +391,38 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Assumes a column `sales_person_id` in the `account` table.
+Assumes a column `sales_person_id` in the `account` table.
 
-**API Implications**
+#### API Implications
 
-- `managingAccounts` will be used in the include query parameter like
-  `GET /api/sales-persons?include=managingAccounts`
-- `managingAccounts` will be used in mutation payloads and response payloads like:
-  ```js
-  {
-    data: {
-      type: "SalesPerson",
-      id: "1",
-      attributes: { firstName: "Mary" },
-      relationships: {
-        managingAccounts: {
-          data: [{type: "Account", id: "456"}] //👀
-        }
+##### Querying Data
+
+`managingAccounts` will be used in the include query parameter like:
+
+```js
+GET /api/sales-persons?include=managingAccounts
+```
+
+##### Data Response
+
+`managingAccounts` will be used in mutation payloads and response payloads like:
+
+```js
+{
+  data: {
+    type: "SalesPerson",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
+    attributes: { firstName: "Mary" },
+    relationships: {
+      managingAccounts: {
+        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}] //👀
       }
     }
   }
-  ```
+}
+```
 
 ### relationships.hasMany.foreignKey
 
@@ -386,11 +452,11 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Assumes a column `opening_sales_person_id` in the `account` table.
+Assumes a column `opening_sales_person_id` in the `account` table.
 
-**API Implications**
+#### API Implications
 
 This has no effect on the API.
 
@@ -415,29 +481,38 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Assumes a table `account_sales_person` exists with `sales_person_id` and `account_id` columns. The table is `account_sales_person` because account is first alphabetically.
+Assumes a table `account_sales_person` exists with `sales_person_id` and `account_id` columns. The table is `account_sales_person` because account is first alphabetically.
 
-**API Implications**
+#### API Implications
 
-- `accounts` will be available in the include query parameter like
-  `GET /api/sales-persons?include=accounts`
-- `accounts` will be used in mutation payloads and response payloads like:
-  ```js
-  {
-    data: {
-      type: "SalesPerson",
-      id: "1",
-      attributes: { firstName: "Mary" },
-      relationships: {
-        accounts: {
-          data: [{type: "Account", id: "456"}] //👀
-        }
+##### Querying Data
+
+`accounts` will be available in the include query parameter like:
+
+```js
+GET /api/sales-persons?include=accounts
+```
+
+##### Data Response
+
+`accounts` will be used in mutation payloads and response payloads like:
+
+```js
+{
+  data: {
+    type: "SalesPerson",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
+    attributes: { firstName: "Mary" },
+    relationships: {
+      accounts: {
+        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}] //👀
       }
     }
   }
-  ```
+}
+```
 
 ### relationships.belongsToMany.options.through
 
@@ -458,11 +533,11 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Assumes a `sales_account` table exists with `sales_person_id` and `account_id` columns.
+Assumes a `sales_account` table exists with `sales_person_id` and `account_id` columns.
 
-**API Implications**
+#### API Implications
 
 This does not change the API behavior.
 
@@ -485,29 +560,38 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
 This does not change the Database behavior.
 
-**API Implications**
+#### API Implications
 
-- `salesAccounts` will be available in the include query parameter like
-  `GET /api/sales-persons?include=salesAccounts`
-- `salesAccounts` will be used in mutation payloads and response payloads like:
-  ```js
-  {
-    data: {
-      type: "SalesPerson",
-      id: "1",
-      attributes: { firstName: "Mary" },
-      relationships: {
-        salesAccounts: {
-          data: [{type: "Account", id: "456"}] //👀
-        }
+##### Querying Data
+
+`salesAccounts` will be available in the include query parameter like:
+
+```js
+GET /api/sales-persons?include=salesAccounts
+```
+
+##### Data Response
+
+`salesAccounts` will be used in mutation payloads and response payloads like:
+
+```js
+{
+  data: {
+    type: "SalesPerson",
+    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
+    attributes: { firstName: "Mary" },
+    relationships: {
+      salesAccounts: {
+        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}] //👀
       }
     }
   }
-  ```
+}
+```
 
 ### relationships.belongsToMany.options.foreignKey
 
@@ -532,11 +616,11 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Assumes a table `account_sales_person` exists with `seller_id` and `account_id` columns.
+Assumes a table `account_sales_person` exists with `seller_id` and `account_id` columns.
 
-**API Implications**
+#### API Implications
 
 This does not change the API behavior.
 
@@ -559,14 +643,14 @@ const SalesPerson = {
 }
 ```
 
-**Database Implications**
+#### Database Implications
 
-- Assumes a table `account_sales_person` exists with `sales_person_id` and `sold_account_id` columns.
+Assumes a table `account_sales_person` exists with `sales_person_id` and `sold_account_id` columns.
 
-**API Implications**
+#### API Implications
 
 This does not change the API behavior.
 
 ## To Be Defined
 
-- How to load through tables
+How to load through tables

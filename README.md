@@ -234,7 +234,8 @@ Dig deep into how the internals of how Hatchify works in the technical interface
 - Express
   - [API Docs](./doc/express/README.md) 🛑
 - React
-  - [Components](./doc/react/components.md) 🛑
+  - [API Docs](./doc/react/README.md)
+  - [Components](./doc/react/components.md)
   - [REST Client](./doc/react/rest-client.md) 🛑
 
 ## Need help or have questions?

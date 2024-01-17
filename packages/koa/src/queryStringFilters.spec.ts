@@ -84,14 +84,7 @@ const testCases = [
     queryParam: "filter[name][$nin]=John&filter[name][$nin]=Jane",
     expectedResult: [],
   },
-  {
-    description:
-      "returns correct data using the $ilike operator for end of a string",
-    operator: "$ilike",
-    queryParam: `filter[name][$ilike]=${encodeURIComponent("%Ne")}`,
-    expectedResult: [jane],
-    expectedError: undefined,
-  },
+  // $ilike
   {
     description:
       "returns correct data using the $ilike operator for beginning of a string",
@@ -110,6 +103,29 @@ const testCases = [
   },
   {
     description:
+      "returns correct data using the $ilike operator for end of a string",
+    operator: "$ilike",
+    queryParam: `filter[name][$ilike]=${encodeURIComponent("%Ne")}`,
+    expectedResult: [jane],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "does not error when attempting to use the $like operator for entirety of a string",
+    operator: "$like",
+    queryParam: "filter[name][$like]=John",
+    expectedResult: [john],
+  },
+  {
+    description:
+      "returns correct data using the $ilike operator for entirety of a string (non-case sensitive)",
+    operator: "$ilike",
+    queryParam: "filter[name][$ilike]=jOhN",
+    expectedResult: [john],
+    expectedError: undefined,
+  },
+  {
+    description:
       "returns correct data using the $ilike operator on a relationship",
     operator: "$ilike",
     queryParam: `include=userTodos&filter[userTodos.somethingElse][$ilike]=${encodeURIComponent(
@@ -118,12 +134,88 @@ const testCases = [
     expectedResult: [john],
     expectedError: undefined,
   },
+  // $like
   {
     description:
-      "returns correct data using the $ilike operator for entirety of a string (non-case sensitive)",
-    operator: "$ilike",
-    queryParam: "filter[name][$ilike]=jOhN",
+      "returns correct data using the $like operator for beginning of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
     expectedResult: [john],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $like operator for beginning of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("jO%")}`,
+    expectedResult: [],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $like operator for middle of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%an%")}`,
+    expectedResult: [jane],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $like operator for middle of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%aN%")}`,
+    expectedResult: [],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $like operator for end of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%ne")}`,
+    expectedResult: [jane],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $like operator for end of a string",
+    operator: "$like",
+    queryParam: `filter[name][$like]=${encodeURIComponent("%Ne")}`,
+    expectedResult: [],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "does not error when attempting to use the $like operator for entirety of a string",
+    operator: "$like",
+    queryParam: "filter[name][$like]=John",
+    expectedResult: [john],
+  },
+  {
+    description:
+      "returns correct data using the $like operator for entirety of a string (non-case sensitive)",
+    operator: "$like",
+    queryParam: "filter[name][$like]=jOhN",
+    expectedResult: [],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $like operator on a relationship",
+    operator: "$like",
+    queryParam: `include=userTodos&filter[userTodos.somethingElse][$like]=${encodeURIComponent(
+      "%ne",
+    )}`,
+    expectedResult: [john],
+    expectedError: undefined,
+  },
+  {
+    description:
+      "returns correct data using the $like operator on a relationship",
+    operator: "$like",
+    queryParam: `include=userTodos&filter[userTodos.somethingElse][$like]=${encodeURIComponent(
+      "%Ne",
+    )}`,
+    expectedResult: [],
     expectedError: undefined,
   },
   //number
@@ -269,37 +361,6 @@ const testCases = [
     expectedError: undefined,
   },
 ]
-// LIKE / LIKE ANY now supported by SQLite with some clever query rewriting.  Make sure it's working.
-const SQLiteOnlyTestCases = [
-  {
-    description:
-      "does not error when attempting to use the $like operator for end of a string",
-    operator: "$like",
-    queryParam: `filter[name][$like]=${encodeURIComponent("%ne")}`,
-    expectedResult: [jane],
-  },
-  {
-    description:
-      "does not error when attempting to use the $like operator for beginning of a string",
-    operator: "$like",
-    queryParam: `filter[name][$like]=${encodeURIComponent("Jo%")}`,
-    expectedResult: [john],
-  },
-  {
-    description:
-      "does not error when attempting to use the $like operator for middle of a string",
-    operator: "$like",
-    queryParam: `filter[name][$like]=${encodeURIComponent("%an%")}`,
-    expectedResult: [jane],
-  },
-  {
-    description:
-      "does not error when attempting to use the $like operator for entirety of a string",
-    operator: "$like",
-    queryParam: "filter[name][$like]=John",
-    expectedResult: [john],
-  },
-]
 
 dotenv.config({
   path: ".env",
@@ -429,8 +490,4 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
   }
 
   it.each(testCases)(`${dialect} - $description`, validator)
-
-  if (dialect === "sqlite") {
-    it.each(SQLiteOnlyTestCases)(`${dialect} - $description`, validator)
-  }
 })

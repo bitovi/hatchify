@@ -1,13 +1,13 @@
 {
   "name": "@hatchifyjs/react-jsonapi",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "type": "module",
   "module": "./dist/react-jsonapi.js",
   "types": "./dist/react-jsonapi.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint vite.config.ts src",
+    "eslint": "eslint src",
     "depcheck": "depcheck .",
     "test": "vitest run",
     "test:dev": "vitest",
@@ -16,9 +16,9 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@hatchifyjs/react-rest": "0.1.18",
-    "@hatchifyjs/rest-client": "0.1.14",
-    "@hatchifyjs/rest-client-jsonapi": "0.1.18"
+    "@hatchifyjs/react-rest": "0.1.19",
+    "@hatchifyjs/rest-client": "0.1.15",
+    "@hatchifyjs/rest-client-jsonapi": "0.1.19"
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.3.x"

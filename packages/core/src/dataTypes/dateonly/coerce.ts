@@ -1,5 +1,6 @@
 import { isISO8601DateString } from "./isISO8601DateString.js"
 import type { PartialDateonlyControlType } from "./types.js"
+import { validateStep } from "./validateStep.js"
 import { HatchifyCoerceError } from "../../types/index.js"
 import type { ValueInRequest } from "../../types/index.js"
 
@@ -28,6 +29,14 @@ export function coerce(
 
   if (control.max != null && value > control.max) {
     throw new HatchifyCoerceError(`before or on ${control.max}`)
+  }
+
+  const dateValue = new Date(value)
+  const dateMin =
+    typeof control.min === "string" ? new Date(control.min) : control.min
+
+  if (!validateStep(dateValue, control.step, dateMin)) {
+    throw new HatchifyCoerceError(`as multiples of ${control.step}`)
   }
 
   return value

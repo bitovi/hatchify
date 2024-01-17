@@ -17,7 +17,11 @@ export const Todo = {
 - `references` - [See References]()
 - `required` [{Boolean=false}] - If the attribute must be provided.
 
-## Form Controls
+## Database Implications
+
+The `uuid` type will create a sequelize [DataTypes.UUID](https://sequelize.org/docs/v6/core-concepts/model-basics/#uuids) column.
+
+## Form Behavior 🛑
 
 `uuid()` will produce a `<button>` that when clicked, will genereate a UUID in a `<input type='text'/>` control. Users can also provide their
 own UUID.
