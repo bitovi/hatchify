@@ -19,8 +19,7 @@ In just a few short steps we will set up a project containing a Hatchify fronten
 > 
 > **Note:** The ✏️ icon indicates when to follow along!
 
-1. Ensure you’re using [node 18 and npm
-   9 or above](https://nodejs.org/en/download)
+1. Ensure you’re using [node 18 and npm 9 or above](https://nodejs.org/en/download)
 
    ```bash
    node -v
@@ -32,8 +31,8 @@ In just a few short steps we will set up a project containing a Hatchify fronten
    ```bash
    npm init @hatchifyjs@latest
    ```
-    - For the backend answer: "Koa" 
-    - For the frontend prompt answer: "SQLite"
+    - For the backend prompt answer: "Koa" 
+    - For the database prompt answer: "SQLite"
    
 3. Start the server:
    ```bash
@@ -42,7 +41,7 @@ In just a few short steps we will set up a project containing a Hatchify fronten
    
 4. Navigate to the Hatchify welcome screen:
 
-IMAGE OF WELCOME SCREEN
+![image](https://github.com/bitovi/hatchify/assets/2623867/5ac60386-dc61-4bf7-b254-d806a782638b)
 
 Congrats, you’ve got a seed of something great started!
 
@@ -80,6 +79,9 @@ export const User = {
   },
 } satisfies PartialSchema
 ```
+As soon as you save this change, the app will automatically reload to include the new data types you've added:
+
+![image](https://github.com/bitovi/hatchify/assets/2623867/8c172eda-0cd1-417d-b733-3a063f42d455)
 
 This defines a `Todo` and `User` type, each with some attributes. It also creates a  relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
 
@@ -191,11 +193,11 @@ With some data in place, we can now further review the project.
 
 Now that data has been seeded the UI should look like:
 
-IMAGE OF UI
+![image](https://github.com/bitovi/hatchify/assets/2623867/db06b817-e6de-42d6-97c4-c9ef814cd43e)
 
 You can start using this basic app to sort & filter the data:
 
-IMAGE OF FILTERING
+![image](https://github.com/bitovi/hatchify/assets/2623867/47ac1208-27f4-49be-b648-b05556fb2749)
 
 What you've built is currently bare bones, but read through our guides in the following section to learn how to enhance it to meet your needs. 
 
