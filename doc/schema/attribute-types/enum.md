@@ -1,6 +1,6 @@
 # enumerate({default, primary, values, required, unique})
 
-Defines an attribute belonging to a set of constant string values. The `values` attribute specifies the array of possible string values that each record may choose it's value from.
+Defines an attribute belonging to a set of constant string values. The `values` attribute specifies the array of possible string values that each record may choose its value from.
 
 ```ts
 export const Todo = {

@@ -9,7 +9,7 @@ export const User = {
   attributes: {
     name: string(),
     age: integer(),
-    yearsWorked: integer(),
+    yearsWorked: integer({ displayName: "Years of Experience" }),
     hireDate: datetime(),
     bio: text(),
     status: enumerate({ values: ["active", "inactive"] }),
@@ -19,6 +19,12 @@ export const User = {
   },
 } satisfies PartialSchema
 ```
+
+## displayName
+
+Controls the name of the column on the UI
+
+## Further Customizations
 
 Each of these types renders differently on the UI and have different customization options. For more reading:
 
