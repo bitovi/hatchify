@@ -139,12 +139,12 @@ This does not change the API behavior.
 
 Set namespace when using Postgres to set use [Postgres Schema](https://www.postgresql.org/docs/current/ddl-schemas.html) which are like a namespace for tables. The namespace must be written as Singular PascalCase as follows:
 
-```
+```ts
 const AcmeCorp_SalesPerson = {
   name: "SalesPerson",
   namespace: "AcmeCorp", // 👀
   attributes: { ... }
-}
+} satisfies PartialSchema
 ```
 
 #### Database Implications
