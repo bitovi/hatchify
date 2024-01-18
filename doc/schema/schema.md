@@ -5,22 +5,23 @@ This guide explains the relationship between names in the schema and the resulti
 <pre>
 import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
   
-export const SalesPerson: <a href="./naming.md">PartialSchema</a> = {
+export const SalesPerson = {
   <a href="./naming.md#schemaname">name</a>: "SalesPerson",
   <a href="./naming.md#schemapluralname">pluralName</a>: "SalesPeople",
-  id: <a href="./attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
+  <a href="./naming.md#schemadisplayattribute">displayAttribute</a>: "description",
+  id: <a href="./attribute-types/uuid.md">uuid</a>({ required: true }),
   attributes: {
     <a href="./schema.md#schemaattributesattribute_name">[AttributeName]</a>: AttributeType,
     description: <a href="./attribute-types/text">text</a>(),
-    dueDate:     <a href="./attribute-types/datetime">datetime</a>(),
-    importance:  <a href="./attribute-types/integer.md">integer</a>({min: 0, max: 100, step: 10}),
+    dueDate:     <a href="./attribute-types/datetime">datetime</a>({ displayName: "Due Date" }),
+    importance:  <a href="./attribute-types/integer.md">integer</a>({ min: 0, max: 100, step: 10 }),
     complete:    <a href="./attribute-types/boolean.md">boolean</a>({ default: false }),
   },
   relationships: {
     salesGroup: <a href="./relationship-types/belongs-to.md">belongsTo</a>(),
     accounts:   <a href="./relationship-types/has-many.md">hasMany</a>(),
     todos:      hasMany().<a href="./relationship-types/has-many-through.md">through</a>()
-  },
+  } satisfies <a href="./naming.md">PartialSchema</a>,
 }
 </pre>
 
@@ -63,13 +64,13 @@ Target schema - The schema the Source schema is establishing a relationship with
 
 The schema name should be `Singular PascalCase` as follows:
 
-```js
+```ts
 const SalesPerson = {
-  name: "SalesPerson", //👀
+  name: "SalesPerson", // 👀
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-}
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -83,7 +84,7 @@ Creates a table `sales_person`.
 This will create a `/sales-persons` API.
 When referencing this type in the `fields`, `SalesPerson` will be used:
 
-```js
+```
 GET /api/sales-persons?fields[SalesPerson]=name
 ```
 
@@ -95,14 +96,14 @@ GET /api/sales-persons?fields[SalesPerson]=name
 
 Set `pluralName` to configure plural naming for that type.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
-  pluralName: "SalesPeople", //👀
+  pluralName: "SalesPeople", // 👀
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-}
+} satisfies PartialSchema
 ```
 
 #### API Implications
@@ -111,16 +112,39 @@ const SalesPerson = {
 
 Create a `/sales-people` API.
 
+### Schema.displayAttribute
+
+`displayAttribute` must be _singular camelCase_. It defines which attribute will be used for the schema if presented as a single column. Defaults to the first attribute.
+
+```ts
+const SalesPerson = {
+  name: "SalesPerson",
+  displayAttribute: "lastName",
+  attributes: {
+    firstName: string(),
+    lastName: string(),
+  },
+} satisfies PartialSchema
+```
+
+#### Database Implications
+
+This does not have database implications.
+
+#### API Implications
+
+This does not change the API behavior.
+
 ### Schema.namespace `postgres-only`
 
 Set namespace when using Postgres to set use [Postgres Schema](https://www.postgresql.org/docs/current/ddl-schemas.html) which are like a namespace for tables. The namespace must be written as Singular PascalCase as follows:
 
-```
+```ts
 const AcmeCorp_SalesPerson = {
   name: "SalesPerson",
-  namespace: "AcmeCorp", //👀
+  namespace: "AcmeCorp", // 👀
   attributes: { ... }
-}
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -134,7 +158,7 @@ Creates a table sales_person in the Postgres schema acme_corp
 This will create an `acme-corp/sales-persons` API
 When referencing this in the type fields, AcmeCorp_SalesPerson will be used:
 
-```js
+```
 GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 ```
 
@@ -142,12 +166,12 @@ GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 
 Data will be returned like:
 
-```js
+```json
 {
-  data: {
-    type: "AcmeCorp_SalesPerson",  // same as in "included"
-    id: "....",
-    attributes: { .... }
+  "data": {
+    "type": "AcmeCorp_SalesPerson",  // same as in "included"
+    "id": "....",
+    "attributes": { .... }
   }
 }
 ```
@@ -160,13 +184,13 @@ Data will be returned like:
 
 An attribute name should be `Singular camelCase`.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING", //👀
+    firstName: string(), // 👀
   },
-}
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -179,7 +203,7 @@ Creates a column `first_name` in the `sales_person` table.
 
 `firstName` will be used in query parameters like:
 
-```js
+```
 GET /api/sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName
 ```
 
@@ -187,29 +211,29 @@ GET /api/sales-persons?filter[firstName]=Mary&fields[SalesPerson]=firstName
 
 `firstName` will be used in mutation payloads and response payloads like:
 
-```js
+```json
 {
-  data: {
-    type: "SalesPerson",
-    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
-    attributes: { firstName: "Mary" } //👀
+  "data": {
+    "type": "SalesPerson",
+    "id": "abcdefgh-ijkl-mnop-qrst-000000000001",
+    "attributes": { "firstName": "Mary" } // 👀
   }
 }
 ```
 
 ### relationships.belongsTo
 
-A `target` option is required.
+A schema name is required. It must match a `Schema.name` and be _Singular PascalCase_.
 
-`target` should match a `Schema.name` and be _Singular PascalCase_.
-
-```js
+```ts
 const Account = {
   name: "Account",
   attributes: {
-    name: "STRING",
+    name: string(),
   },
-  belongsTo: [{ target: "SalesPerson" }], //👀
+  relationships: {
+    salesPerson: belongsTo("SalesPerson"), // 👀
+  },
 }
 ```
 
@@ -223,7 +247,7 @@ Creates a column `sales_person_id` column in the `account` table.
 
 `salesPerson` will be used in the include query parameter like:
 
-```js
+```
 GET /api/accounts?include=salesPerson
 ```
 
@@ -231,16 +255,16 @@ GET /api/accounts?include=salesPerson
 
 `salesPerson` will be used in mutation payloads and response payloads like:
 
-```js
+```json
 {
-  data: {
-    type: "Account",
-    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
-    attributes: { firstName: "Acme" },
-    relationships: {
-      salesPerson: {
-        data: [
-          { type: "SalesPerson", id: "abcdefgh-ijkl-mnop-qrst-000000000322" } //👀
+  "data": {
+    "type": "Account",
+    "id": "abcdefgh-ijkl-mnop-qrst-000000000001",
+    "attributes": { "firstName": "Acme" },
+    "relationships": {
+      "salesPerson": {
+        "data": [
+          { "type": "SalesPerson", "id": "abcdefgh-ijkl-mnop-qrst-000000000322" } // 👀
         ]
       }
     }
@@ -248,17 +272,19 @@ GET /api/accounts?include=salesPerson
 }
 ```
 
-### relationships.belongsTo.as
+### Property name of relationships.belongsTo
 
-`as` should be _Singular camelCase_.
+The property name should be _Singular camelCase_.
 
-```js
+```ts
 const Account = {
   name: "Account",
   attributes: {
-    name: "STRING",
+    name: string(),
   },
-  belongsTo: [{ target: "SalesPerson", options: { as: "closerPerson" } }], //👀
+  relationships: {
+    closerPerson: belongsTo("SalesPerson"), // 👀
+  },
 }
 ```
 
@@ -272,7 +298,7 @@ Creates a column `closer_person_id` in the `account` table.
 
 `closerPerson` will be used in the include query parameter like:
 
-```js
+```
 GET /api/accounts?include=closerPerson
 ```
 
@@ -280,16 +306,16 @@ GET /api/accounts?include=closerPerson
 
 `closerPerson` will be used in mutation payloads and response payloads like:
 
-```js
+```json
 {
-  data: {
-    type: "Account",
-    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
-    attributes: { firstName: "Acme" },
-    relationships: {
-      closerPerson: {
-        data: [
-          { type: "SalesPerson", id: "abcdefgh-ijkl-mnop-qrst-000000000322" } //👀
+  "data": {
+    "type": "Account",
+    "id": "abcdefgh-ijkl-mnop-qrst-000000000001",
+    "attributes": { "firstName": "Acme" },
+    "relationships": {
+      "closerPerson": {
+        "data": [
+          { "type": "SalesPerson", "id": "abcdefgh-ijkl-mnop-qrst-000000000322" } // 👀
         ]
       }
     }
@@ -297,24 +323,21 @@ GET /api/accounts?include=closerPerson
 }
 ```
 
-### relationships.belongsTo.foreignKey
+### relationships.belongsTo.sourceAttribute
 
-`foreignKey` sets the name of the relationship column. `foreignKey` should be _snake_case_.
+`sourceAttribute` sets the name of the relationship column. `sourceAttribute` should be _camelCase_.
 
-> NOTE: `foreignKey` could reference a _camelCase_ attribute in the source schema.
+> NOTE: `sourceAttribute` could reference a _camelCase_ attribute in the source schema.
 
-```js
+```ts
 const Account = {
   name: "Account",
   attributes: {
-    name: "STRING",
+    name: string(),
   },
-  belongsTo: [
-    {
-      target: "SalesPerson",
-      options: { as: "closerPerson", foreignKey: "finisher_id" }, //👀
-    },
-  ],
+  relationships: {
+    closerPerson: belongsTo("SalesPerson", { sourceAttribute: "finisherId" }), // 👀
+  },
 }
 ```
 
@@ -328,18 +351,18 @@ There are no changes to the API.
 
 ### relationships.hasMany
 
-`target` is required. `target` must match a `Schema.name` and be _Singular PascalCase_.
+A schema name is required. it must match a `Schema.name` and be _Singular PascalCase_.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-  hasMany: [
-    { target: "Account" }, //👀
-  ],
-}
+  relationships: {
+    accounts: hasMany("Account"), // 👀
+  },
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -352,7 +375,7 @@ Assumes a column `sales_person_id` in the `account` table.
 
 `accounts` will be used in the include query parameter like:
 
-```js
+```
 GET /api/sales-persons?include=accounts
 ```
 
@@ -360,35 +383,35 @@ GET /api/sales-persons?include=accounts
 
 `accounts` will be used in mutation payloads and response payloads like:
 
-```js
+```json
 {
-  data: {
-    type: "SalesPerson",
-    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
-    attributes: { firstName: "Mary" },
-    relationships: {
-      accounts: {
-        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}]  //👀
+  "data": {
+    "type": "SalesPerson",
+    "id": "abcdefgh-ijkl-mnop-qrst-000000000001",
+    "attributes": { "firstName": "Mary" },
+    "relationships": {
+      "accounts": {
+        "data": [{ "type": "Account", "id": "abcdefgh-ijkl-mnop-qrst-000000000456" }] // 👀
       }
     }
   }
 }
 ```
 
-### relationships.hasMany.as
+### Property name of relationships.hasMany
 
-`as` should be _Plural camelCase_.
+The property name should be _Plural camelCase_.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-  hasMany: [
-    { target: "Account", options: { as: "managingAccounts" } }, //👀
-  ],
-}
+  relationships: {
+    managingAccounts: hasMany("Account"), // 👀
+  },
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -401,7 +424,7 @@ Assumes a column `sales_person_id` in the `account` table.
 
 `managingAccounts` will be used in the include query parameter like:
 
-```js
+```
 GET /api/sales-persons?include=managingAccounts
 ```
 
@@ -409,47 +432,37 @@ GET /api/sales-persons?include=managingAccounts
 
 `managingAccounts` will be used in mutation payloads and response payloads like:
 
-```js
+```json
 {
-  data: {
-    type: "SalesPerson",
-    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
-    attributes: { firstName: "Mary" },
-    relationships: {
-      managingAccounts: {
-        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}] //👀
+  "data": {
+    "type": "SalesPerson",
+    "id": "abcdefgh-ijkl-mnop-qrst-000000000001",
+    "attributes": { "firstName": "Mary" },
+    "relationships": {
+      "managingAccounts": {
+        "data": [{ "type": "Account", "id": "abcdefgh-ijkl-mnop-qrst-000000000456" }] // 👀
       }
     }
   }
 }
 ```
 
-### relationships.hasMany.foreignKey
+### relationships.hasMany.targetAttribute
 
-`foreignKey` specifies the column used in the target schema that references:
-
-- a _snake_case_ column name in the target table
-
-> A _camelCase_ attribute name in the target schema can also be specified.
+`targetAttribute` specifies the column used in the target schema that references a _camelCase_ attribute name in the target schema.
 
 The following shows specifying a column name.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-  hasMany: [
-    {
-      target: "Account",
-      options: {
-        as: "openedAccounts",
-        foreignKey: "opening_sales_person_id",
-      },
-    }, //👀
-  ],
-}
+  relationships: {
+    openedAccounts: hasMany("Account", { targetAttribute: "openingSalesPersonId" }), // 👀
+  },
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -460,25 +473,147 @@ Assumes a column `opening_sales_person_id` in the `account` table.
 
 This has no effect on the API.
 
-### relationships.belongsToMany
+### relationships.hasOne
 
-`target` must match a `Schema.name` and be _singular PascalCase_.
+A schema name is required. it must match a `Schema.name` and be _Singular PascalCase_.
+
+```ts
+const SalesPerson = {
+  name: "SalesPerson",
+  attributes: {
+    firstName: string(),
+  },
+  relationships: {
+    accounts: hasOne("Account"), // 👀
+  },
+} satisfies PartialSchema
+```
+
+#### Database Implications
+
+Assumes a column `sales_person_id` in the `account` table.
+
+#### API Implications
+
+##### Querying Data
+
+`account` will be used in the include query parameter like:
+
+```
+GET /api/sales-persons?include=account
+```
+
+##### Data Response
+
+`account` will be used in mutation payloads and response payloads like:
+
+```json
+{
+  "data": {
+    "type": "SalesPerson",
+    "id": "abcdefgh-ijkl-mnop-qrst-000000000001",
+    "attributes": { "firstName": "Mary" },
+    "relationships": {
+      "account": {
+        "data": { "type": "Account", "id": "abcdefgh-ijkl-mnop-qrst-000000000456" } // 👀
+      }
+    }
+  }
+}
+```
+
+### Property name of relationships.hasOne
+
+The property name should be _singular camelCase_.
+
+```ts
+const SalesPerson = {
+  name: "SalesPerson",
+  attributes: {
+    firstName: string(),
+  },
+  relationships: {
+    managingAccount: hasOne("Account"), // 👀
+  },
+} satisfies PartialSchema
+```
+
+#### Database Implications
+
+Assumes a column `sales_person_id` in the `account` table.
+
+#### API Implications
+
+##### Querying Data
+
+`managingAccount` will be used in the include query parameter like:
+
+```
+GET /api/sales-persons?include=managingAccount
+```
+
+##### Data Response
+
+`managingAccount` will be used in mutation payloads and response payloads like:
+
+```json
+{
+  "data": {
+    "type": "SalesPerson",
+    "id": "abcdefgh-ijkl-mnop-qrst-000000000001",
+    "attributes": { "firstName": "Mary" },
+    "relationships": {
+      "managingAccount": {
+        "data": { "type": "Account", "id": "abcdefgh-ijkl-mnop-qrst-000000000456" } // 👀
+      }
+    }
+  }
+}
+```
+
+### relationships.hasOne.targetAttribute
+
+`targetAttribute` specifies the column used in the target schema that references a _camelCase_ attribute name in the target schema.
+
+The following shows specifying a column name.
+
+```ts
+const SalesPerson = {
+  name: "SalesPerson",
+  attributes: {
+    firstName: string(),
+  },
+  relationships: {
+    openedAccount: hasOne("Account", { targetAttribute: "openingSalesPersonId" }), // 👀
+  },
+} satisfies PartialSchema
+```
+
+#### Database Implications
+
+Assumes a column `opening_sales_person_id` in the `account` table.
+
+#### API Implications
+
+This has no effect on the API.
+
+### relationships.belongsTo.through
+
+A schema name is required. it must match a `Schema.name` and be _Singular PascalCase_.
 
 The following creates a belongsToMany relationship
 that acts similar to `hasMany`.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-  belongsToMany: [
-    {
-      target: "Account", //👀
-    },
-  ],
-}
+  relationships: {
+    accounts: belongsTo("Account").through(), // 👀
+  },
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -491,7 +626,7 @@ Assumes a table `account_sales_person` exists with `sales_person_id` and `accoun
 
 `accounts` will be available in the include query parameter like:
 
-```js
+```
 GET /api/sales-persons?include=accounts
 ```
 
@@ -499,38 +634,35 @@ GET /api/sales-persons?include=accounts
 
 `accounts` will be used in mutation payloads and response payloads like:
 
-```js
+```json
 {
-  data: {
-    type: "SalesPerson",
-    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
-    attributes: { firstName: "Mary" },
-    relationships: {
-      accounts: {
-        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}] //👀
+  "data": {
+    "type": "SalesPerson",
+    "id": "abcdefgh-ijkl-mnop-qrst-000000000001",
+    "attributes": { "firstName": "Mary" },
+    "relationships": {
+      "accounts": {
+        "data": [{ "type": "Account", "id": "abcdefgh-ijkl-mnop-qrst-000000000456" }] // 👀
       }
     }
   }
 }
 ```
 
-### relationships.belongsToMany.options.through
+### Schema name for relationships.belongsTo.through
 
-`through` must be _singular PascalCase_.
+Schema name must be _singular PascalCase_.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-  belongsToMany: [
-    {
-      target: "Account",
-      options: { through: "SalesAccount" },
-    },
-  ],
-}
+  relationships: {
+    accounts: belongsTo("Account").through("SalesAccount"), // 👀
+  },
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -541,23 +673,20 @@ Assumes a `sales_account` table exists with `sales_person_id` and `account_id` c
 
 This does not change the API behavior.
 
-### relationships.belongsToMany.options.as
+### Property name of relationships.belongsToMany.options
 
-`as` must be _plural camelCase_.
+The property name must be _plural camelCase_.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-  belongsToMany: [
-    {
-      target: "Account",
-      options: { as: "salesAccounts" },
-    },
-  ],
-}
+  relationships: {
+    salesAccounts: belongsTo("Account").through(), // 👀
+  },
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -570,7 +699,7 @@ This does not change the Database behavior.
 
 `salesAccounts` will be available in the include query parameter like:
 
-```js
+```
 GET /api/sales-persons?include=salesAccounts
 ```
 
@@ -578,42 +707,37 @@ GET /api/sales-persons?include=salesAccounts
 
 `salesAccounts` will be used in mutation payloads and response payloads like:
 
-```js
+```json
 {
-  data: {
-    type: "SalesPerson",
-    id: "abcdefgh-ijkl-mnop-qrst-000000000001",
-    attributes: { firstName: "Mary" },
-    relationships: {
-      salesAccounts: {
-        data: [{type: "Account", id: "abcdefgh-ijkl-mnop-qrst-000000000456"}] //👀
+  "data": {
+    "type": "SalesPerson",
+    "id": "abcdefgh-ijkl-mnop-qrst-000000000001",
+    "attributes": { "firstName": "Mary" },
+    "relationships": {
+      "salesAccounts": {
+        "data": [{ "type": "Account", "id": "abcdefgh-ijkl-mnop-qrst-000000000456" }] // 👀
       }
     }
   }
 }
 ```
 
-### relationships.belongsToMany.options.foreignKey
+### relationships.belongsTo.through.throughSourceAttribute
 
-`foreignKey` must be _singular snake_case_.
+`throughSourceAttribute` must be _singular camelCase_.
 
-> `foreignKey` can also reference an attribute in the "Join" schema.
+> `throughSourceAttribute` can also reference an attribute in the "Join" schema.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-  belongsToMany: [
-    {
-      target: "Account",
-      options: {
-        foreignKey: "seller_id",
-      },
-    },
-  ],
-}
+  relationships: {
+    accounts: belongsTo("Account").through("SalesAccount", { throughSourceAttribute: "sellerId" }), // 👀
+  },
+} satisfies PartialSchema
 ```
 
 #### Database Implications
@@ -624,23 +748,20 @@ Assumes a table `account_sales_person` exists with `seller_id` and `account_id` 
 
 This does not change the API behavior.
 
-### relationships.belongsToMany.options.otherKey
+### relationships.belongsTo.through.throughTargetAttribute
 
-`otherKey` must be _singular snake_case_.
+`throughTargetAttribute` must be _singular camelCase_.
 
-```js
+```ts
 const SalesPerson = {
   name: "SalesPerson",
   attributes: {
-    firstName: "STRING",
+    firstName: string(),
   },
-  belongsToMany: [
-    {
-      target: "Account",
-      options: { otherKey: "sold_account_id" },
-    },
-  ],
-}
+  relationships: {
+    accounts: belongsTo("Account").through("SalesAccount", { throughTargetAttribute: "soldAccountId" }), // 👀
+  },
+} satisfies PartialSchema
 ```
 
 #### Database Implications
