@@ -24,19 +24,21 @@ Use [datetime](./datetime.md) for a date type with time.
 | `max`      | The max date allowed. <br/> Example: `dateonly({max: new Date()})`, `dateonly({max: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
 | `min`      | The min date allowed. <br/> Example: `dateonly({min: new Date()})`, `dateonly({min: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
 
-## Database and Sequelize Behavior
+## Database Implications
 
 The `dateonly` type will create sequelize [DataTypes.DATEONLY](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
 For dates, use a `1990-12-31` value, in your queries as follows:
 
-GET /api/todos?filter[dueDate][$eq]=2023-12-01 //all todos with a due date that matches 2023-12-01
+```js
+GET /api/todos?filter[dueDate][$eq]=2023-12-01 // all todos with a due date that matches 2023-12-01
 
-GET /api/todos?filter[dueDate][$gte]=2023-12-01 //all todos that are on or after 2023-12-01
+GET /api/todos?filter[dueDate][$gte]=2023-12-01 // all todos that are on or after 2023-12-01
+```
 
 Any other value type will return a service error.
 
@@ -66,7 +68,7 @@ Note: Any time portion used in creating/updating the attribute will be truncated
 
 ## React Rest Behavior
 
-Similar to the middleware, you MUST provide react rest models a valid date in the form of `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` value. Likewise, they will always return these values:
+Similar to the API, you MUST provide react rest models a valid date in the form of `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` value. Likewise, they will always return these values:
 
 ```ts
 Todo.createOne({ attributes: { dueDate: "1990-12-31" } })
@@ -75,11 +77,11 @@ const [todo, todoMeta] = hatchedReactRest.Todo.useOne({ id })
 todo.dueDate //-> "1990-12-31", null, or undefined
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
-The text date values will be presented in the grid. If the value is `null` or `undefined`, no value will be presented in the grid.
+The text date values will be presented in the data grid. If the value is `null` or `undefined`, no value will be presented in the data grid.
 
-![Grid Example](../../attachments/dateonly-column.png)
+![Data Grid Example](../../attachments/dateonly-column.png)
 
 Note: The displayed values will be formatted to your locale.
 

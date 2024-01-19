@@ -1,6 +1,6 @@
 # enumerate({default, primary, values, required, unique})
 
-Defines an attribute belonging to a set of constant string values. The `values` attribute specifies the array of possible string values that each record may choose it's value from.
+Defines an attribute belonging to a set of constant string values. The `values` attribute specifies the array of possible string values that each record may choose its value from.
 
 ```ts
 export const Todo = {
@@ -21,18 +21,20 @@ export const Todo = {
 | `required` | If the attribute must be provided. <br/> Example: `enumerate({required: true, values:[...])`      |   `Boolean`    |   Yes    |   `false`   |
 | `unique`   | If the attribute must be unique. <br/> Example: `enumerate({unique: true, values:[...]})`         |   `Boolean`    |   Yes    |   `false`   |
 
-## Database and Sequelize Behavior
+## Database Implications
 
 The `enumerate` type will create a sequelize [DataTypes.ENUM](https://sequelize.org/docs/v6/other-topics/other-data-types/#enums) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
-```
-GET /api/todos?filter[status][$eq]=Pending  // all todos with status of Pending
-GET /api/todos?filter[status][$eq]=%00  // all todos with no status
-GET /api/todos?filter[status][$in][]=Pending&[status][$in][]=Failed  // all todos with status of either Pending or Failed.
+```js
+GET /api/todos?filter[status][$eq]=Pen // all todos with status of Pending
+
+GET /api/todos?filter[status][$eq]=%00 // all todos with no statusding
+
+GET /api/todos?filter[status][$in][]=Pending&[status][$in][]=Failed // all todos with status of either Pending or Failed.
 ```
 
 ### Data Response
@@ -69,8 +71,8 @@ DATA:
 }
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
 The enum value in its entirety is shown as a string. Null values are shown as an empty table cell.
 
-![enumColumn](../../attachments/enum-grid.png)
+![Data Grid Example](../../attachments/enum-grid.png)

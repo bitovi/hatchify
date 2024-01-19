@@ -21,21 +21,21 @@ A server MUST support fetching resource data for every URL provided as:
 For example, the following request fetches a collection of articles:
 
 ```
-GET /api/articles HTTP/1.1
+GET /api/articles
 Accept: application/vnd.api+json
 ```
 
 The following request fetches an article:
 
 ```
-GET /api/articles/1 HTTP/1.1
+GET /api/articles/8ff0beed-2585-4391-8735-cc560eaf287e
 Accept: application/vnd.api+json
 ```
 
-And the following request fetches an article’s author:
+And the following request fetches an article’s author: 🛑
 
 ```
-GET /api/articles/1/author HTTP/1.1
+GET /api/articles/8ff0beed-2585-4391-8735-cc560eaf287e/author
 Accept: application/vnd.api+json
 ```
 
@@ -107,32 +107,32 @@ Note: For example, a relationship path could be comments.author, where comments 
 For instance, comments could be requested with an article:
 
 ```
-GET /api/articles/1?include=comments HTTP/1.1
+GET /api/articles/8b3d26bc-41d4-46dc-9078-62bdce8d8e2e?include=comments
 Accept: application/vnd.api+json
 ```
 
 In order to request resources related to other resources, a dot-separated path for each relationship name can be specified:
 
 ```
-GET /api/articles/1?include=comments.author HTTP/1.1
+GET /api/articles/8b3d26bc-41d4-46dc-9078-62bdce8d8e2e?include=comments.author
 Accept: application/vnd.api+json
 ```
 
 Note: Because compound documents require full linkage (except when relationship linkage is excluded by sparse fields), intermediate resources in a multi-part path must be returned along with the leaf nodes. For example, a response to a request for comments.author should include comments as well as the author of each of those comments.
 
-Note: A server may choose to expose a deeply nested relationship such as comments.author as a direct relationship with an alternative name such as commentAuthors. This would allow a client to request /articles/1?include=commentAuthors instead of /articles/1?include=comments.author. By exposing the nested relationship with an alternative name, the server can still provide full linkage in compound documents without including potentially unwanted intermediate resources.
+Note: A server may choose to expose a deeply nested relationship such as comments.author as a direct relationship with an alternative name such as commentAuthors. This would allow a client to request /articles/8b3d26bc-41d4-46dc-9078-62bdce8d8e2e?include=commentAuthors instead of /articles/8b3d26bc-41d4-46dc-9078-62bdce8d8e2e?include=comments.author. By exposing the nested relationship with an alternative name, the server can still provide full linkage in compound documents without including potentially unwanted intermediate resources.
 
 Multiple related resources can be requested in a comma-separated list:
 
 ```
-GET /api/articles/1?include=comments.author,ratings HTTP/1.1
+GET /api/articles/8b3d26bc-41d4-46dc-9078-62bdce8d8e2e?include=comments.author,ratings
 Accept: application/vnd.api+json
 ```
 
-Furthermore, related resources can be requested from a relationship endpoint:
+Furthermore, related resources can be requested from a relationship endpoint: 🛑
 
 ```
-GET /api/articles/1/relationships/comments?include=comments.author HTTP/1.1
+GET /api/articles/8b3d26bc-41d4-46dc-9078-62bdce8d8e2e/relationships/comments?include=comments.author
 Accept: application/vnd.api+json
 ```
 
@@ -153,7 +153,7 @@ If a client requests a restricted set of fields for a given resource type, an en
 If a client does not specify the set of fields for a given resource type, the server MAY send all fields, a subset of fields, or no fields for that resource type.
 
 ```
-GET /api/articles?include=author&fields[Article]=title,body&fields[Author]=name HTTP/1.1
+GET /api/articles?include=author&fields[Article]=title,body&fields[Author]=name
 Accept: application/vnd.api+json
 ```
 
@@ -174,21 +174,21 @@ A server MAY choose to support requests to sort resource collections according t
 An endpoint MAY support requests to sort the primary data with a sort query parameter. The value for sort MUST represent sort fields.
 
 ```
-GET /api/people?sort=age HTTP/1.1
+GET /api/people?sort=age
 Accept: application/vnd.api+json
 ```
 
 An endpoint MAY support multiple sort fields by allowing comma-separated (U+002C COMMA, “,”) sort fields. Sort fields SHOULD be applied in the order specified.
 
 ```
-GET /api/people?sort=age,name HTTP/1.1
+GET /api/people?sort=age,name
 Accept: application/vnd.api+json
 ```
 
 The sort order for each sort field MUST be ascending unless it is prefixed with a minus (U+002D HYPHEN-MINUS, “-“), in which case it MUST be descending.
 
 ```
-GET /api/articles?sort=-created,title HTTP/1.1
+GET /api/articles?sort=-created,title
 Accept: application/vnd.api+json
 ```
 

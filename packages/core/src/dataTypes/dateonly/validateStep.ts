@@ -12,10 +12,6 @@ const year = 365 * day
 const decade = 10 * year
 
 const Step: Record<StringStep, number> = {
-  millisecond,
-  second,
-  minute,
-  hour,
   day,
   week,
   year,
@@ -48,8 +44,8 @@ function parseStep(step?: StringStep | number) {
   }
 
   if (step == null) {
-    return millisecond
+    return day
   }
 
-  return step * millisecond
+  return step * day
 }

@@ -21,20 +21,22 @@ export const Todo = {
 | `references` | [See References]()                                                             |           |          |         |
 | `required`   | If the attribute must be provided.                                             | `Boolean` |   Yes    | `false` |
 
-## Database and Sequelize Behavior
+## Database Implications
 
 The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
 
-## Middleware Behavior
+## API Implications
 
 ### Querying Data
 
 If `required` is `false`, filtering `null` values is handled like the following:
 
-```
-GET /api/todos?filter[name]=foo  // all todos with name foo
-GET /api/todos?filter[name]=%00  // all todos with null as the name value
-GET /api/todos?filter[name]=null  // all todos with "null" as the name value
+```js
+GET /api/todos?filter[name]=foo // all todos with name foo
+
+GET /api/todos?filter[name]=%00 // all todos with null as the name value
+
+GET /api/todos?filter[name]=null // all todos with "null" as the name value
 ```
 
 ### Data Response
@@ -71,13 +73,13 @@ DATA:
 }
 ```
 
-## Grid Behavior
+## Data Grid Behavior
 
 The string value in its entirety is shown. Null values and empty string values are shown as an empty table cell.
 
-![stringNullFilter](https://github.com/bitovi/hatchify/assets/109013/9e67c44d-11c2-434e-9bcc-68cefbfc3f95)
+![Data Grid Example](https://github.com/bitovi/hatchify/assets/109013/9e67c44d-11c2-434e-9bcc-68cefbfc3f95)
 
-## Form Controls 🛑
+## Form Behavior 🛑
 
 `string()` with `max` of 255 and less will produce a standard text input like: `<input type=text>`.
 

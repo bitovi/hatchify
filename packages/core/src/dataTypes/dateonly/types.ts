@@ -4,10 +4,13 @@ import type {
   PartialSequelizeDataType,
 } from "../../types/index.js"
 
+export type StringStep = "day" | "week" | "year" | "decade"
+
 export interface PartialDateonlyProps<TRequired extends boolean>
   extends PartialDataTypeProps<string, TRequired> {
   min?: string | typeof Infinity
   max?: string | typeof Infinity
+  step?: StringStep | number
 }
 
 export interface PartialDateonlyControlType<TRequired extends boolean>
@@ -15,6 +18,7 @@ export interface PartialDateonlyControlType<TRequired extends boolean>
   type: "Dateonly"
   min?: string | typeof Infinity
   max?: string | typeof Infinity
+  step?: StringStep | number
 }
 
 export interface PartialDateonlyORM {

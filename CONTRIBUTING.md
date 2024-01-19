@@ -129,13 +129,13 @@ No further configuration is required to test Hatchify against a SQLite database
 2. To create and run Postgres database, run the following command:
 
    ```bash
-   docker run --name postgres-container -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
+   docker run --name postgres-container -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres
    ```
 
    This installs the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
 
    - `POSTGRES_USER=postgres`
-   - `POSTGRES_PASSWORD=postgres`
+   - `POSTGRES_PASSWORD=password`
 
    This also runs Postgres on port 5432.
 
@@ -186,7 +186,7 @@ For more information on creating a connection, [this tutorial](https://dbeaver.c
 2. Fill your .env file with the following content:
 
    ```bash
-   DB_URI=postgres://postgres:postgres@localhost:5432/postgres
+   DB_URI=postgres://postgres:password@localhost:5432/postgres
    ```
 
 #### 3.3. With a database engine in a Docker container (recommended)
@@ -258,9 +258,9 @@ You can also run the Playwright E2E tests:
 
 ```bash
 npm run e2e --frontend=react --backend=koa --database=sqlite://localhost/:memory
-npm run e2e --frontend=react --backend=koa --database=postgres://postgres:postgres@localhost:5432/postgres
+npm run e2e --frontend=react --backend=koa --database=postgres://postgres:password@localhost:5432/postgres
 npm run e2e --frontend=react --backend=express --database=sqlite://localhost/:memory
-npm run e2e --frontend=react --backend=express ---database=postgres://postgres:postgres@localhost:5432/postgres
+npm run e2e --frontend=react --backend=express ---database=postgres://postgres:password@localhost:5432/postgres
 ```
 
 #### 4.1. Testing against a Hatchify app

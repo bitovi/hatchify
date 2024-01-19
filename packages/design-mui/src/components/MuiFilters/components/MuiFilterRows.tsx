@@ -151,7 +151,7 @@ export default MuiFilterRows
 
 // Get the first available operator for the field type
 export function getAvailableOperator(
-  // todo: operator should be it's own type used in FilterArray & Option
+  // todo: operator should be its own type used in FilterArray & Option
   operator: string,
   control: FinalAttributeRecord[string]["control"],
 ): Option["operator"] {

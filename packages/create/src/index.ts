@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -277,6 +278,11 @@ async function init() {
     ),
     copyDir(path.join(root, "src"), path.join(root, "frontend")),
     replaceStringInFile(path.join(root, "index.html"), "/src", "/frontend"),
+    replaceStringInFile(
+      path.join(root, "vite.config.ts"),
+      "defineConfig({",
+      'defineConfig({\n  optimizeDeps: {\n    esbuildOptions: {\n      target: "esnext",\n    },\n  },',
+    ),
     fs.promises.writeFile(
       path.join(root, "tsconfig.json"),
       JSON.stringify(

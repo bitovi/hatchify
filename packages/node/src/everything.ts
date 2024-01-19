@@ -36,7 +36,7 @@ export function findAllEverything(hatchify: Hatchify, modelName: string) {
     const params = await hatchify.parse[modelName].findAll(querystring)
     const result = await hatchify.model[modelName].findAll(params)
     const response = await hatchify.serialize[modelName].findAll(
-      result,
+      result.map((row) => row.get({ plain: true })),
       params.attributes,
     )
 
@@ -72,7 +72,7 @@ export function findAndCountAllEverything(
     const result = await hatchify.model[modelName].findAndCountAll(params)
 
     const response = await hatchify.serialize[modelName].findAndCountAll(
-      result,
+      { ...result, rows: result.rows.map((row) => row.get({ plain: true })) },
       params.attributes,
     )
     return response
@@ -83,7 +83,9 @@ export function createEverything(hatchify: Hatchify, modelName: string) {
   return async function createImpl(rawbody: unknown) {
     const { body, ops } = await hatchify.parse[modelName].create(rawbody)
     const result = await hatchify.model[modelName].create(body, ops)
-    const response = await hatchify.serialize[modelName].create(result)
+    const response = await hatchify.serialize[modelName].create(
+      result.get({ plain: true }),
+    )
     return response
   }
 }
@@ -106,7 +108,7 @@ export function updateEverything(hatchify: Hatchify, modelName: string) {
     }
     const updated = await hatchify.model[modelName].findByPk(id)
     const response = await hatchify.serialize[modelName].update(
-      updated,
+      updated.get({ plain: true }),
       affectedCount,
     )
     return response
