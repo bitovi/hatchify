@@ -69,20 +69,34 @@ import { hatchedReact } from "../App.js"
 import FormInput from "./FormInput.js"
 import * as Schemas from "../../schemas.js"
 
-// 🛑 `RecordType` should be `HatchifyRecord`?
-export default function TodoFormModal({ todo, open, handleClose }: { todo?: RecordType<typeof Schemas, typeof Schemas.Todo>; open: boolean; handleClose: () => void }) {
+export default function TodoFormModal({
+  todo, // The todo we are editing. If this is undefined, we are adding a new todo.
+  open, // Whether the modal is open or not.
+  handleClose, // A function to close the modal.
+}: {
+  // 🛑 `RecordType` should be `HatchifyRecord`?
+  todo?: RecordType<typeof Schemas, typeof Schemas.Todo>
+  open: boolean
+  handleClose: () => void
+}) {
+  // This hatchify hook will create a new todo.
   const [createTodo] = hatchedReact.model.Todo.useCreateOne()
+  // This hatchify hook will update an existing todo.
   const [updateTodo] = hatchedReact.model.Todo.useUpdateOne()
+  // This hook will keep track of the values of the form inputs.
   const [values, setValues] = useState({
     name: todo?.name ?? "",
     importance: todo?.importance ?? "0",
   })
 
+  // A function to update the state when the form inputs change.
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setValues((prev) => ({ ...prev, [name]: value }))
   }
 
+  // A function to submit the form. If there is no todo, we will create a new todo.
+  // If there is a todo, we will update the todo.
   const handleSubmit = () => {
     if (!todo) {
       createTodo({
@@ -99,6 +113,9 @@ export default function TodoFormModal({ todo, open, handleClose }: { todo?: Reco
     handleClose()
   }
 
+  // This effect will run when the modal is opened or when the todo changes. If there is
+  // a todo, we will populate the form inputs with the todo's data. If there is no todo,
+  // we will clear the form inputs.
   useEffect(() => {
     setValues({
       name: todo?.name ?? "",
@@ -107,16 +124,22 @@ export default function TodoFormModal({ todo, open, handleClose }: { todo?: Reco
   }, [open, todo])
 
   return (
+    // This is the dialog component from Material UI. It takes a boolean `open` prop and a function `onClose` prop. The `open` prop determines whether the dialog is open or not. The `onClose` prop is a function that will be called when the dialog is closed.
     <Dialog open={open} onClose={handleClose}>
+      {/* This is the title of the dialog. It will display "Add Todo" if there is
+      no todo and "Edit Todo [id]" if there is a todo. */}
       <DialogTitle>
         {todo ? "Edit" : "Add"} Todo {todo ? `[${todo.id}]` : ""}
       </DialogTitle>
+      {/* This is the content of the dialog. It contains the form inputs. */}
       <DialogContent>
         <Grid container spacing={4}>
           <FormInput name="name" label="Name" type="text" value={values.name} onChange={onChange} />
           <FormInput name="importance" label="Importance" type="number" value={values.importance} onChange={onChange} />
         </Grid>
       </DialogContent>
+      {/* This is the actions of the dialog. It contains the cancel and submit
+      buttons. */}
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={handleSubmit}>{todo ? "Edit" : "Add"}</Button>
@@ -126,35 +149,7 @@ export default function TodoFormModal({ todo, open, handleClose }: { todo?: Reco
 }
 ```
 
-That is a lot of code we just added, so let's break it down.
-
-First, our props:
-
-- `todo` - The todo we are editing. If this is undefined, we are adding a new todo.
-- `open` - Whether the modal is open or not.
-- `handleClose` - A function to close the modal.
-
-Second, our hooks:
-
-- `useCreateOne` - This hook will create a new todo.
-- `useUpdateOne` - This hook will update an existing todo.
-- `useState` - This hook will keep track of the values of the form inputs.
-
-Third, our functions:
-
-- `onChange` - A function to update the state when the form inputs change.
-- `handleSubmit` - A function to submit the form. If there is no todo, we will create a new todo. If there is a todo, we will update the todo.
-
-Fourth, our effects:
-
-- `useEffect` - This effect will run when the modal is opened or when the todo changes. If there is a todo, we will populate the form inputs with the todo's data. If there is no todo, we will clear the form inputs.
-
-Finally, our JSX:
-
-- `Dialog` - This is the dialog component from Material UI. It takes a boolean `open` prop and a function `onClose` prop. The `open` prop determines whether the dialog is open or not. The `onClose` prop is a function that will be called when the dialog is closed.
-- `DialogTitle` - This is the title of the dialog. It will display "Add Todo" if there is no todo and "Edit Todo [id]" if there is a todo.
-- `DialogContent` - This is the content of the dialog. It contains the form inputs.
-- `DialogActions` - This is the actions of the dialog. It contains the cancel and submit buttons.
+In this `TodoFormModal` component, we are using the hatchify hooks to create and update todos. For the sake of simplicity, we are not using the full power of the hooks. Their full functionality is described in the [Hatchify Create, Update, and Delete Functionality](#hatchify-create-update-and-delete-functionality) section below.
 
 ### `App.tsx`
 
@@ -172,14 +167,17 @@ export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 const { DataGrid, Column } = hatchedReact.components.Todo
 
 const App: React.FC = () => {
+  // Whether the dialog is open or not.
   const [open, setOpen] = useState(false)
-  // 🛑 **can we simplify this type, or rename it to `HatchifyRecord`?**
-  const [todoToEdit, setTodoToEdit] = useState<RecordType<typeof Schemas, typeof Schemas.Todo> | undefined>(undefined)
+  // The todo we are editing.
+  const [todoToEdit, setTodoToEdit] = useState<RecordType<typeof Schemas, typeof Schemas.Todo> | undefined>(undefined) // 🛑 **can we simplify this type, or rename it to `HatchifyRecord`?**
+  // This hook will delete a todo.
   const [deleteTodo] = hatchedReact.model.Todo.useDeleteOne()
 
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
+        {/* This is the form modal we created above. */}
         <TodoFormModal
           open={open}
           handleClose={() => {
@@ -188,17 +186,22 @@ const App: React.FC = () => {
           }}
           todo={todoToEdit}
         />
+        {/* This button will open the form modal and allow us to add a new todo. */}
         <Button onClick={() => setOpen(true)}>Add Todo</Button>
+        {/* This is the DataGrid component from Hatchify. It will display all of our todos. */}
         <DataGrid>
+          {/* This is a column in the DataGrid. We are using to add an additional column for the edit and delete buttons. */}
           <Column
             label="Action"
+            // This is a function that will be called for each row in the DataGrid. It will render the edit and delete buttons for each row.
             renderDataValue={({ record }) => (
               <>
                 <Button
                   onClick={() => {
                     setOpen(true)
-                    // 🛑 **bug; should not have to cast!**
-                    setTodoToEdit(record as RecordType<typeof Schemas, typeof Schemas.Todo>)
+                    setTodoToEdit(
+                      record as RecordType<typeof Schemas, typeof Schemas.Todo>, // 🛑 **bug; should not have to cast!**
+                    )
                   }}
                 >
                   Edit
@@ -216,24 +219,7 @@ const App: React.FC = () => {
 export default App
 ```
 
-Let's break down the changes we made to our `App` component.
-
-First, our state:
-
-- `open` - Whether the dialog is open or not.
-- `todoToEdit` - The todo we are editing.
-
-Second, our hooks:
-
-- `useDeleteOne` - This hook will delete a todo.
-
-Third, our JSX:
-
-- `TodoFormModal` - This is the form modal we created above.
-- `Button` - This button will open the form modal and allow us to add a new todo.
-- `DataGrid` - This is the DataGrid component from Hatchify. It will display all of our todos.
-- `Column` - This is a column in the DataGrid. We are using to add an additional column for the edit and delete buttons.
-  - `renderDataValue` - This is a function that will be called for each row in the DataGrid. It will render the edit and delete buttons for each row.
+Similar to our `TodoFormModal` component, in the `App` component we are using the hatchify hooks to delete todos. The full functionality of the delete hook is described in the [Hatchify Create, Update, and Delete Functionality](#hatchify-create-update-and-delete-functionality) section below.
 
 ## Hatchify Create, Update, and Delete Functionality
 
