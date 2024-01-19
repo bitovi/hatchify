@@ -135,7 +135,6 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          displayName: null,
           hidden: null,
           allowNull: true,
           min: 36,
@@ -310,7 +309,6 @@ describe("uuid", () => {
           allowNull: false,
           min: 36,
           max: 36,
-          displayName: null,
           primary: false,
           default: null,
           regex: UUID_REGEX,
@@ -478,7 +476,6 @@ describe("uuid", () => {
           type: "String",
           hidden: null,
           allowNull: false,
-          displayName: null,
           min: 36,
           max: 36,
           primary: true,

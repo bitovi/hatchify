@@ -9,6 +9,7 @@ export function finalizeSchema(
   return {
     ...schema,
     id: schema.id.finalize(),
+    ui: schema.ui ?? {},
     attributes: Object.entries(schema.attributes).reduce(
       (acc, [attributeName, attribute]) => ({
         ...acc,

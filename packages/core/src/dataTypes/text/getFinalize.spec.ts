@@ -6,12 +6,12 @@ describe("getFinalize", () => {
       name: "text()",
       control: {
         allowNull: undefined,
-        displayName: undefined,
         max: Infinity,
         min: 0,
         primary: undefined,
         regex: undefined,
         type: "String",
+        ui: {},
       },
       orm: {
         sequelize: {

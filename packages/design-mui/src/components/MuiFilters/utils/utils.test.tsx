@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom"
 import { describe, it, expect } from "vitest"
+import type { PartialSchema } from "@hatchifyjs/core"
 import { getFilterableFields } from "./utils.js"
 import {
   assembler,
@@ -14,7 +15,7 @@ import {
 const partialSchemas = {
   Todo: {
     name: "Todo",
-    displayAttribute: "name",
+    ui: { displayAttribute: "name" },
     attributes: {
       name: string(),
       date: datetime(),
@@ -28,7 +29,7 @@ const partialSchemas = {
   },
   User: {
     name: "User",
-    displayAttribute: "name",
+    ui: { displayAttribute: "name" },
     attributes: {
       name: string(),
       email: string(),
@@ -42,12 +43,12 @@ const partialSchemas = {
   },
   Planner: {
     name: "Planner",
-    displayAttribute: "title",
+    ui: { displayAttribute: "title" },
     attributes: {
       title: string(),
     },
   },
-}
+} satisfies Record<string, PartialSchema>
 
 const finalSchemas = assembler(partialSchemas)
 

@@ -9,6 +9,7 @@ describe("finalize", () => {
     Todo: {
       name: "Todo",
       id: uuid({ required: true, default: uuidv4 }).finalize(),
+      ui: {},
       attributes: {
         importance: integer({ min: 0 }).finalize(),
       },
@@ -16,6 +17,7 @@ describe("finalize", () => {
     User: {
       name: "User",
       id: uuid({ required: true, default: uuidv4 }).finalize(),
+      ui: {},
       attributes: {
         name: string().finalize(),
       },

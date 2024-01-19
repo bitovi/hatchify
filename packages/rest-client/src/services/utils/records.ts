@@ -153,10 +153,10 @@ export function flattenResourcesIntoRecords(
   return flattened.length ? flattened[0] : undefined
 }
 
-// if the schema has a displayAttribute, use it
+// if the schema has a ui.displayAttribute, use it
 // otherwise, use the first attribute
 export function getDisplayAttribute(finalSchema: FinalSchema): string {
-  const fromSchema = finalSchema.displayAttribute
+  const fromSchema = finalSchema.ui?.displayAttribute
 
   if (fromSchema) {
     return fromSchema

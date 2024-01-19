@@ -190,7 +190,7 @@ describe("convertToJsonApiRelationships", () => {
     const schemaMap = {
       Article: {
         name: "Article",
-        displayAttribute: "name",
+        ui: { displayAttribute: "name" },
         type: "Article",
         attributes: {
           title: string(),
@@ -250,7 +250,7 @@ describe("convertToJsonApiRelationships", () => {
     const schemaMap = {
       Article: {
         name: "Article",
-        displayAttribute: "name",
+        ui: { displayAttribute: "name" },
         type: "Article",
         attributes: {
           title: string(),

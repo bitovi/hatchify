@@ -429,6 +429,7 @@ describe("index", () => {
         {
           name: "SalesPerson",
           id: uuid().finalize(),
+          ui: {},
           attributes: {},
           relationships: {
             accounts: {
@@ -465,6 +466,7 @@ describe("index", () => {
         {
           name: "Account",
           id: uuid().finalize(),
+          ui: {},
           attributes: {},
           relationships: {
             aliasedSalesPersons: {

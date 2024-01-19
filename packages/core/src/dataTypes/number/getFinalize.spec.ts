@@ -11,6 +11,7 @@ describe("getFinalize", () => {
         primary: undefined,
         step: undefined,
         type: "Number",
+        ui: {},
       },
       orm: {
         sequelize: {

@@ -1,10 +1,10 @@
-import type { PartialDataTypeProps } from "../../types/index.js"
-import type { PartialStringControlType } from "../string/index.js"
+import type {
+  PartialStringControlType,
+  PartialStringProps,
+} from "../string/index.js"
 
-export interface PartialTextProps<TRequired extends boolean>
-  extends PartialDataTypeProps<string, TRequired> {
-  maxRenderLength?: number
-}
+export type PartialTextProps<TRequired extends boolean> =
+  PartialStringProps<TRequired>
 
 export type PartialTextControlType<TRequired extends boolean> =
   PartialStringControlType<TRequired>

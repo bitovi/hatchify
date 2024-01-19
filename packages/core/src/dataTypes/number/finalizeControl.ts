@@ -13,6 +13,8 @@ export function finalizeControl(
     primary: !!props.primary,
     step: props.step || 0,
     default: props.default ?? null,
-    displayName: props.displayName ?? null,
+    ui: {
+      displayName: props?.ui?.displayName ?? null,
+    },
   }
 }

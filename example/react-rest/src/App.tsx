@@ -49,7 +49,7 @@ export default App
 
 // const Todo: Schema = {
 //   name: "Todo",
-//   displayAttribute: "name",
+//   ui:{displayAttribute: "name"},
 //   attributes: {
 //     name: "string",
 //   },
@@ -63,7 +63,7 @@ export default App
 
 // const User: Schema = {
 //   name: "User",
-//   displayAttribute: "name",
+//   ui:{displayAttribute: "name"},
 //   attributes: {
 //     name: "string",
 //   },

@@ -23,6 +23,7 @@ describe("dateonly", () => {
           min: undefined,
           max: undefined,
           primary: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -132,7 +133,7 @@ describe("dateonly", () => {
         },
         control: {
           type: "Dateonly",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -173,6 +174,7 @@ describe("dateonly", () => {
           min: undefined,
           max: undefined,
           primary: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -240,7 +242,7 @@ describe("dateonly", () => {
         },
         control: {
           type: "Dateonly",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -280,6 +282,7 @@ describe("dateonly", () => {
           min: undefined,
           max: undefined,
           primary: true,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -409,7 +412,7 @@ describe("dateonly", () => {
         },
         control: {
           type: "Dateonly",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -452,6 +455,7 @@ describe("dateonly", () => {
           min: -Infinity,
           max: "2023-01-01",
           primary: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -518,7 +522,7 @@ describe("dateonly", () => {
         },
         control: {
           type: "Dateonly",
-          displayName: null,
+          ui: { displayName: null },
           allowNull: true,
           min: -Infinity,
           max: "2023-01-01",

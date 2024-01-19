@@ -149,7 +149,7 @@ DELETE /api/users/:id
 
 ### `hatchedKoa.schema.[schemaName]`
 
-`hatchedKoa.schema.[schemaName].[attributes|displayAttribute|name|namespace|pluralName|relationships]`
+`hatchedKoa.schema.[schemaName].[attributes|ui|name|namespace|pluralName|relationships]`
 
 The `schema` export provides access to all the Hatchify final schemas. This can be useful for debugging the schemas you provided.
 

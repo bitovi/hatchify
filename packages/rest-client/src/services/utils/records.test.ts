@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest"
+import type { PartialSchema } from "@hatchifyjs/core"
 import {
   assembler,
   belongsTo,
@@ -19,7 +20,7 @@ import {
 const partialSchemas = {
   Todo: {
     name: "Todo",
-    displayAttribute: "title",
+    ui: { displayAttribute: "title" },
     attributes: { created: dateonly(), title: string(), important: boolean() },
     relationships: { user: belongsTo("Person") },
   },
@@ -39,7 +40,7 @@ const partialSchemas = {
       parentCompany: belongsTo("Company"),
     },
   },
-}
+} satisfies globalThis.Record<string, PartialSchema>
 
 const finalSchemas = assembler(partialSchemas)
 

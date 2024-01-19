@@ -26,6 +26,10 @@ export class HatchifyInvalidSchemaError extends Error {
   }
 }
 
+export interface HatchifyBaseUIOptions {
+  displayName?: string | null
+}
+
 export interface PartialDataTypeProps<
   PrimitiveType,
   TRequired extends boolean,
@@ -34,7 +38,7 @@ export interface PartialDataTypeProps<
   required?: TRequired // @todo HATCH-417
   default?: PrimitiveType | (() => PrimitiveType) | null
   unique?: boolean
-  displayName?: string
+  ui?: HatchifyBaseUIOptions
 }
 
 export interface PartialControlType<PrimitiveType, TRequired extends boolean> {
@@ -43,7 +47,7 @@ export interface PartialControlType<PrimitiveType, TRequired extends boolean> {
   allowNull?: boolean
   primary?: boolean
   default?: PrimitiveType | (() => PrimitiveType) | null
-  displayName?: string | null
+  ui?: HatchifyBaseUIOptions
 }
 
 export interface PartialSequelizeDataType<ArgsType, PrimitiveType> {

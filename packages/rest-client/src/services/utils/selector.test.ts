@@ -22,7 +22,7 @@ import {
 const partialTodoUserSchemas = {
   Todo: {
     name: "Todo",
-    displayAttribute: "name",
+    ui: { displayAttribute: "name" },
     attributes: {
       name: string(),
       important: boolean(),
@@ -34,7 +34,7 @@ const partialTodoUserSchemas = {
   },
   User: {
     name: "User",
-    displayAttribute: "name",
+    ui: { displayAttribute: "name" },
     attributes: {
       name: string(),
       email: string(),
@@ -48,7 +48,7 @@ const partialTodoUserSchemas = {
 const partialBookAuthorSchemas = {
   Book: {
     name: "Book",
-    displayAttribute: "title",
+    ui: { displayAttribute: "title" },
     attributes: {
       title: string(),
       year: integer(),
@@ -60,7 +60,7 @@ const partialBookAuthorSchemas = {
   },
   Person: {
     name: "Person",
-    displayAttribute: "name",
+    ui: { displayAttribute: "name" },
     attributes: {
       name: string(),
       rating: integer(),

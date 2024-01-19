@@ -81,7 +81,7 @@ todo.notes //-> string or null
 
 The text will be presented in the data grid. If the value is `null`, no value will be presented in the data grid.
 
-To provide better table behavior for columns with large amounts of text the `maxDisplayLength` property can also be provided. This will truncate oversized text, appending it with an ellipsis. The unabridged text will be available in a pop over. 🛑
+To provide better table behavior for columns with large amounts of text the `ui.maxDisplayLength` property can also be provided. This will truncate oversized text, appending it with an ellipsis. The unabridged text will be available in a pop over. 🛑
 
 ![Data Grid Example](../../attachments/text-grid.png)
 

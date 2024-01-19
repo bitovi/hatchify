@@ -96,7 +96,9 @@ export function getToOneRelationshipsAsFields(
       .map(([key, relationship]) => {
         return {
           [`${key}`]: [
-            `${schemas[relationship.targetSchema].displayAttribute || "id"}`,
+            `${
+              schemas[relationship.targetSchema].ui?.displayAttribute || "id"
+            }`,
           ],
         }
       }),
