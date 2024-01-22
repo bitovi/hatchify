@@ -6,13 +6,13 @@ import { Hatchify } from "./node.js"
 import { HatchifySymbolModel } from "./types.js"
 
 describe("Internal Tests", () => {
-  const Model: PartialSchema = {
+  const Model = {
     name: "Model",
     attributes: {
       firstName: string({ required: true }),
       lastName: string({ required: true }),
     },
-  }
+  } satisfies PartialSchema
 
   let hatchify: Hatchify
 

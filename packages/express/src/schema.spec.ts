@@ -21,7 +21,7 @@ import {
 describe.each(dbDialects)("schema", (dialect) => {
   describe(`${dialect}`, () => {
     describe("v2", () => {
-      const Todo: PartialSchema = {
+      const Todo = {
         name: "Todo",
         attributes: {
           name: string(),
@@ -29,8 +29,8 @@ describe.each(dbDialects)("schema", (dialect) => {
         relationships: {
           user: belongsTo(),
         },
-      }
-      const User: PartialSchema = {
+      } satisfies PartialSchema
+      const User = {
         name: "User",
         attributes: {
           name: string({ min: 1, max: 10, default: "test" }),
@@ -52,7 +52,7 @@ describe.each(dbDialects)("schema", (dialect) => {
         relationships: {
           todos: hasMany(),
         },
-      }
+      } satisfies PartialSchema
 
       let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
       let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]

@@ -31,13 +31,13 @@ jest.unstable_mockModule("./sequelize/index.js", async () => ({
 const { Hatchify } = await import("./node.js")
 
 describe("node", () => {
-  const TestSchema_User: PartialSchema = {
+  const TestSchema_User = {
     name: "User",
     namespace: "TestSchema",
     attributes: {
       age: integer({ min: 0 }),
     },
-  }
+  } satisfies PartialSchema
 
   describe("modelSync", () => {
     describe("sqlite", () => {

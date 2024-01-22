@@ -18,7 +18,7 @@ const RelationshipPathDetail =
   "URL must have 'include' as one or more of 'lipitorUser', 'xanaxUser'."
 
 describe("indexNamespace", () => {
-  const Lipitor_User_Schema: PartialSchema = {
+  const Lipitor_User_Schema = {
     name: "User",
     namespace: "Lipitor",
     attributes: {
@@ -27,8 +27,8 @@ describe("indexNamespace", () => {
     relationships: {
       lipitorTodos: hasMany("Pfizer_Todo"),
     },
-  }
-  const Xanax_User_Schema: PartialSchema = {
+  } satisfies PartialSchema
+  const Xanax_User_Schema = {
     name: "User",
     namespace: "Xanax",
     attributes: {
@@ -37,9 +37,9 @@ describe("indexNamespace", () => {
     relationships: {
       xanaxTodos: hasMany("Pfizer_Todo"),
     },
-  }
+  } satisfies PartialSchema
 
-  const Pfizer_Todo_Schema: PartialSchema = {
+  const Pfizer_Todo_Schema = {
     name: "Todo",
     namespace: "Pfizer",
     attributes: {
@@ -52,7 +52,7 @@ describe("indexNamespace", () => {
       lipitorUser: belongsTo("Lipitor_User"),
       xanaxUser: belongsTo("Xanax_User"),
     },
-  }
+  } satisfies PartialSchema
 
   const hatchedNode = new Hatchify({
     Pfizer_Todo: Pfizer_Todo_Schema,
@@ -363,7 +363,7 @@ describe("indexNamespace", () => {
   })
 
   describe("no relationships case", () => {
-    const Todo: PartialSchema = {
+    const Todo = {
       name: "Todo",
       attributes: {
         name: string(),
@@ -371,7 +371,7 @@ describe("indexNamespace", () => {
         importance: integer(),
         status: enumerate({ values: ["Do Today", "Do Soon", "Done"] }),
       },
-    }
+    } satisfies PartialSchema
 
     const hatchedNode = new Hatchify({ Todo })
     const { findAll } = buildParserForModelStandalone(

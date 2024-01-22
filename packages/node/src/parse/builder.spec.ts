@@ -20,7 +20,7 @@ import { UnexpectedValueError } from "../error/index.js"
 import { Hatchify } from "../node.js"
 
 describe("builder", () => {
-  const UserSchema: PartialSchema = {
+  const UserSchema = {
     name: "User",
     attributes: {
       name: string(),
@@ -29,8 +29,8 @@ describe("builder", () => {
       user: belongsTo(),
       todos: hasMany(),
     },
-  }
-  const TodoSchema: PartialSchema = {
+  } satisfies PartialSchema
+  const TodoSchema = {
     name: "Todo",
     attributes: {
       name: string(),
@@ -40,14 +40,14 @@ describe("builder", () => {
     relationships: {
       user: belongsTo(),
     },
-  }
-  const DisconnectedSchemaSchema: PartialSchema = {
+  } satisfies PartialSchema
+  const DisconnectedSchemaSchema = {
     name: "DisconnectedSchema",
     attributes: {
       name: string(),
       importance: integer(),
     },
-  }
+  } satisfies PartialSchema
   const hatchify = new Hatchify(
     {
       User: UserSchema,
