@@ -21,7 +21,7 @@
 
 @hatchifyjs/react includes TypeScript support. Here's an example of how two schemas (`Todo` and `User`) provide auto-completion for an instantiated @hatchifyjs/react app (`hatchedReact`):
 
-![react TypeScript](../../doc/attachments/reactTs.gif)
+![react TypeScript](../attachments/reactTs.gif)
 
 ## Types
 
