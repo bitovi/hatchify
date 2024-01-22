@@ -12,7 +12,7 @@ import { dbDialects, startServerWith } from "./testing/utils.js"
 
 describe.each(dbDialects)("Error Code Tests", (dialect) => {
   describe(`${dialect}`, () => {
-    const User: PartialSchema = {
+    const User = {
       name: "User",
       attributes: {
         name: string(),
@@ -21,8 +21,8 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
       relationships: {
         todos: hasMany(),
       },
-    }
-    const Todo: PartialSchema = {
+    } satisfies PartialSchema
+    const Todo = {
       name: "Todo",
       attributes: {
         name: string({ required: true }),
@@ -32,7 +32,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
       relationships: {
         user: belongsTo(),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]

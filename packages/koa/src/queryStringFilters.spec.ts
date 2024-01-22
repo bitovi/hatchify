@@ -367,7 +367,7 @@ dotenv.config({
 })
 
 describe.each(dbDialects)("queryStringFilters", (dialect) => {
-  const UserTodo: PartialSchema = {
+  const UserTodo = {
     name: "UserTodo",
     attributes: {
       name: string(),
@@ -376,8 +376,8 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
     relationships: {
       user: belongsTo(),
     },
-  }
-  const User: PartialSchema = {
+  } satisfies PartialSchema
+  const User = {
     name: "User",
     attributes: {
       name: string(),
@@ -389,7 +389,7 @@ describe.each(dbDialects)("queryStringFilters", (dialect) => {
     relationships: {
       userTodos: hasMany(),
     },
-  }
+  } satisfies PartialSchema
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]

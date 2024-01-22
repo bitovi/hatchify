@@ -4,13 +4,13 @@ import type { PartialSchema } from "@hatchifyjs/node"
 import { startServerWith } from "./testing/utils.js"
 
 describe("Attribute Tests", () => {
-  const Model: PartialSchema = {
+  const Model = {
     name: "Model",
     attributes: {
       firstName: string({ required: true }),
       lastName: string({ required: true }),
     },
-  }
+  } satisfies PartialSchema
 
   let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]

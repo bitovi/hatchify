@@ -5,7 +5,7 @@ import { dbDialects, startServerWith } from "./testing/utils.js"
 
 describe.each(dbDialects)("Relationships", (dialect) => {
   describe(`${dialect} - Users and Todos`, () => {
-    const User: PartialSchema = {
+    const User = {
       name: "User",
       attributes: {
         name: string(),
@@ -14,8 +14,8 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       relationships: {
         todos: hasMany(),
       },
-    }
-    const Todo: PartialSchema = {
+    } satisfies PartialSchema
+    const Todo = {
       name: "Todo",
       attributes: {
         name: string(),
@@ -25,7 +25,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       relationships: {
         user: belongsTo(),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
@@ -885,14 +885,14 @@ describe.each(dbDialects)("Relationships", (dialect) => {
   })
 
   describe(`${dialect} - No Relationships`, () => {
-    const Todo: PartialSchema = {
+    const Todo = {
       name: "Todo",
       attributes: {
         name: string(),
         dueDate: datetime(),
         importance: integer(),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
@@ -931,7 +931,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
   })
 
   describe(`${dialect} - Accounts and Sales People`, () => {
-    const SalesPerson: PartialSchema = {
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -939,8 +939,8 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       relationships: {
         accounts: hasMany().through(),
       },
-    }
-    const Account: PartialSchema = {
+    } satisfies PartialSchema
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
@@ -948,7 +948,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       relationships: {
         salesPersons: hasMany().through(),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
@@ -1030,7 +1030,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
   })
 
   describe(`${dialect} - Aliased belongsToMany relationships`, () => {
-    const SalesPerson: PartialSchema = {
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -1041,8 +1041,8 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           throughTargetAttribute: "accountId",
         }),
       },
-    }
-    const Account: PartialSchema = {
+    } satisfies PartialSchema
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
@@ -1053,7 +1053,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           throughTargetAttribute: "salesPersonId",
         }),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
