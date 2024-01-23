@@ -1,6 +1,6 @@
 # Application Data Validation
 
-One of the most important things when building CRUD applications is data integrity. Hatchify can help here as well by providing easy hooks to provide validation logic. These functions are extremely helpful when trying to compare between values within your model when creating or updateing a record.
+One of the most important things when building CRUD applications is data integrity. Hatchify can help here as well by providing easy hooks to provide validation logic. These functions are extremely helpful when trying to compare between values within your model when creating or updating a record.
 
 For an example, if we created an Employee model that describes someone working at a company, we might want to know the first name, last name, as well as their start date, and end date of employment.
 
