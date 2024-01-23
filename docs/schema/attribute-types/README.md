@@ -2,6 +2,10 @@
 
 A single scheme could use different attribute types to describe the different data shapes it needs to store.
 
+- [General Guidelines](#general-guidelines)
+- [displayName](#displayname)
+- [Further Customizations](#further-customizations)
+
 ## General Guidelines
 
 An attribute name should be singular camelCase:
