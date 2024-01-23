@@ -7,7 +7,7 @@ Records that are less than or equal to the given value will be returned.
 This operator is compatible with the following types:
 `string`, `date`, `number`
 
-** A note on string comparison **
+**A note on string comparison**
 
 Strings are compared lexicographically. Capital letters [A-Z] are smaller than lowercase [a-z]. Shorter strings are also smaller. This is similar to dictionary order.
 "Workout" < "workout" > "out".
