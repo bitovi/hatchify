@@ -13,12 +13,7 @@ This document describes the relationship between names in the schema and the res
   - [id](#id)
   - [displayAttribute](#displayattribute)
   - [attributes](#attributes)
-    - [displayName](#displayname)
   - [relationships](#relationships)
-    - [belongsTo](#belongsto)
-    - [hasMany](#hasmany)
-    - [hasMany.through](#hasmanythrough)
-    - [hasOne](#hasone)
 
 ## General Guidelines
 
