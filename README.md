@@ -85,7 +85,7 @@ As soon as you save this change, the app will automatically reload to include th
 
 This defines a `Todo` and `User` type, each with some attributes. It also creates a  relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
 
-You can refer to [our documentation](/doc/schema/README.md) for more information on how to define schemas.
+You can refer to [our documentation](/docs/schema/README.md) for more information on how to define schemas.
 
 ### Seed Data
 
@@ -185,7 +185,7 @@ curl 'http://localhost:3000/api/users' \
 }'
 ```
 
-To learn more about the service layer, read [the docs regarding our JSONAPI implementation](./doc/jsonapi/README.md)
+To learn more about the service layer, read [the docs regarding our JSONAPI implementation](docs/jsonapi/README.md)
 
 With some data in place, we can now further review the project.
 
@@ -205,40 +205,40 @@ What you've built is currently bare bones, but read through our guides in the fo
 
 Continue learning more about the Hatchify feature set with these guides that continue from the example above:
 
-- [Using PostgreSQL DB](./doc/guides/using-postgres-db.md)
-- [Model Sync](./doc/guides/model-sync.md)
-- [Adding custom endpoints](./doc/guides/adding-custom-endpoints.md)
-- [Adding request authorization](./doc/guides/adding-request-authorization.md)
-- [Customizing your list](./doc/guides/customizing-your-list.md)
-- [Adding checkboxes to the list](./doc/guides/adding-checkboxes-to-the-list.md)
-- [Application data validation](./doc/guides/application-data-validation.md)
+- [Using PostgreSQL DB](docs/guides/using-postgres-db.md)
+- [Model Sync](docs/guides/model-sync.md)
+- [Adding custom endpoints](docs/guides/adding-custom-endpoints.md)
+- [Adding request authorization](docs/guides/adding-request-authorization.md)
+- [Customizing your list](docs/guides/customizing-your-list.md)
+- [Adding checkboxes to the list](docs/guides/adding-checkboxes-to-the-list.md)
+- [Application data validation](docs/guides/application-data-validation.md)
 
 ## API Docs
 
 Dig deep into how the internals of how Hatchify works in the technical interface documentation:
 
-- [Schema](./doc/schema/)
-  - [Attributes](./doc/schema/attribute-types/README.md)
-  - [Relationships](./doc/schema/relationship-types/README.md)
-  - [Schema Naming](./doc/schema/naming.md)
-- [JSON:API](./doc/jsonapi/README.md)
-  - [Creating](./doc/jsonapi/creating.md)
-  - [Reading](./doc/jsonapi/reading/README.md)
-    - [Filtering](./doc/jsonapi/reading/filtering/README.md)
-    - [Paginating](./doc/jsonapi/reading/paginating/README.md)
-    - [Sorting](./doc/jsonapi/reading/sorting/README.md)
-    - [Relationships](./doc/jsonapi/reading/relationships/README.md)
-    - [Sparse Fields](./doc/jsonapi/reading/sparse-fields/README.md)
-  - [Updating](./doc/jsonapi/updating.md)
-  - [Deleting](./doc/jsonapi/deleting.md)
+- [Schema](docs/schema/)
+  - [Attributes](docs/schema/attribute-types/README.md)
+  - [Relationships](docs/schema/relationship-types/README.md)
+  - [Schema Naming](docs/schema/naming.md)
+- [JSON:API](docs/jsonapi/README.md)
+  - [Creating](docs/jsonapi/creating.md)
+  - [Reading](docs/jsonapi/reading/README.md)
+    - [Filtering](docs/jsonapi/reading/filtering/README.md)
+    - [Paginating](docs/jsonapi/reading/paginating/README.md)
+    - [Sorting](docs/jsonapi/reading/sorting/README.md)
+    - [Relationships](docs/jsonapi/reading/relationships/README.md)
+    - [Sparse Fields](docs/jsonapi/reading/sparse-fields/README.md)
+  - [Updating](docs/jsonapi/updating.md)
+  - [Deleting](docs/jsonapi/deleting.md)
 - Koa
-  - [API Docs](./doc/koa/README.md)
+  - [API Docs](docs/koa/README.md)
 - Express
-  - [API Docs](./doc/express/README.md) 🛑
+  - [API Docs](docs/express/README.md) 🛑
 - React
-  - [API Docs](./doc/react/README.md)
-  - [Components](./doc/react/components.md)
-  - [REST Client](./doc/react/rest-client.md) 🛑
+  - [API Docs](docs/react/README.md)
+  - [Components](docs/react/components.md)
+  - [REST Client](docs/react/rest-client.md) 🛑
 
 ## Need help or have questions?
 
