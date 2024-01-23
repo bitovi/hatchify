@@ -13,8 +13,8 @@ export const SalesPerson: <a href="schema/naming.md">PartialSchema</a> = {
   id: <a href="schema/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   attributes: {
     <a href="schema/naming.md#schemaattributesattribute_name">name</a>: <a href="./attribute-types/string.md">string</a>({ required: true }),
-    description: <a href="schema/attribute-types/text">text</a>(),
-    dueDate: <a href="schema/attribute-types/datetime">datetime</a>(),
+    description: <a href="schema/attribute-types/text.md">text</a>(),
+    dueDate: <a href="schema/attribute-types/datetime.md">datetime</a>(),
     importance: <a href="schema/attribute-types/integer.md">integer</a>({min: 0, max: 100, step: 10}),
     complete: <a href="schema/attribute-types/boolean.md">boolean</a>({ default: false }),
   },
