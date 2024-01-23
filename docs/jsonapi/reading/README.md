@@ -140,7 +140,7 @@ In this case, the primary data would be a collection of resource identifier obje
 
 Note: This section applies to any endpoint that responds with primary data, regardless of the request type. For instance, a server could support the inclusion of related resources along with a POST request to create a resource or relationship.
 
-[Hatchify additions to relationships](./relationships/README.md)
+[More details on Hatchify API's relationship querying](./relationships/README.md)
 
 ### Sparse Fields
 
@@ -161,7 +161,7 @@ Note: The above example URI shows unencoded [ and ] characters simply for readab
 
 Note: This section applies to any endpoint that responds with resources as primary or included data, regardless of the request type. For instance, a server could support sparse fields along with a POST request to create a resource.
 
-[Hatchify additions to sparse fields](./sparse-fields/README.md)
+[More details on Hatchify API's sparse fields implementation](./sparse-fields/README.md)
 
 ### Sorting
 
@@ -200,7 +200,7 @@ If sorting is supported by the server and requested by the client via query para
 
 Note: This section applies to any endpoint that responds with a resource collection as primary data, regardless of the request type.
 
-[Hatchify additions to sorting](./sorting/README.md)
+[More details on Hatchify API's sorting implementation](./sorting/README.md)
 
 ### Pagination
 
@@ -231,4 +231,4 @@ The filter query parameter family is reserved for filtering data. Servers and cl
 
 `Note`: JSON API is agnostic about the strategies supported by a server.
 
-[Hatchify additions to pagination](./paginating/README.md)
+[More details on Hatchify API's pagination implementation](./paginating/README.md)
