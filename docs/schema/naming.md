@@ -199,7 +199,7 @@ GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 
 JSON:API requires that the `id` attribute be named `id`, therefore this attribute cannot be renamed.
 
-For more information on customizing the `id` attribute: [id](../schema/naming.md). 🛑
+For more information on customizing the `id` attribute: [id](../api-documentation.md). 🛑
 
 ### displayAttribute
 
