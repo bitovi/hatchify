@@ -7,7 +7,7 @@ This page links to all the other API documentation. This is like a big cheat she
 <pre>
 import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
   
-export const SalesPerson: <a href="schema/naming.md">PartialSchema</a> = {
+export const SalesPerson = {
   <a href="schema/naming.md#schemaname">name</a>: "SalesPerson",
   <a href="schema/naming.md#schemapluralname">pluralName</a>: "SalesPeople",
   id: <a href="schema/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
@@ -23,7 +23,7 @@ export const SalesPerson: <a href="schema/naming.md">PartialSchema</a> = {
     accounts:   <a href="schema/relationship-types/has-many.md">hasMany</a>(),
     todos:      hasMany().<a href="schema/relationship-types/has-many-through.md">through</a>()
   },
-}
+} satisfies <a href="schema/naming.md">PartialSchema</a>
 </pre>
 
 ## Backend

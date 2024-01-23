@@ -74,7 +74,7 @@ Creates a `sales_person` table.
 Creates a `/sales-persons` API.
 `SalesPerson` will be used in the `fields` query parameter:
 
-```js
+```
 GET /api/sales-persons?fields[SalesPerson]=name
 ```
 
@@ -82,10 +82,10 @@ GET /api/sales-persons?fields[SalesPerson]=name
 
 `SalesPerson` will be used as the response `type`:
 
-```js
+```json
 {
-  data: {
-    type: "SalesPerson" // 👀
+  "data": {
+    "type": "SalesPerson" // 👀
     ...
   }
 }
@@ -112,7 +112,7 @@ const SalesPerson = {
 Creates a `/sales-people` API.
 `name` will still be used in the `fields` query parameter:
 
-```js
+```
 GET /api/sales-persons?fields[SalesPerson]=name
 ```
 
@@ -120,10 +120,10 @@ GET /api/sales-persons?fields[SalesPerson]=name
 
 `name` will still be used as the response `type`:
 
-```js
+```json
 {
-  data: {
-    type: "SalesPerson"
+  "data": {
+    "type": "SalesPerson"
     ...
   }
 }
@@ -172,7 +172,7 @@ Creates a table `sales_person` in the Postgres schema `acme_corp`.
 Creates an `acme-corp/sales-persons` API.
 `namespace_name`, will be used in the `fields` query parameter:
 
-```js
+```
 GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 ```
 
@@ -180,11 +180,11 @@ GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 
 `namespace_name` will be used as the response `type`:
 
-```js
+```json
 {
-  data: {
-    type: "AcmeCorp_SalesPerson", //👀
-    id: "f06f81f2-4bea-4a60-99ad-8da8ecf79473",
+  "data": {
+    "type": "AcmeCorp_SalesPerson", // 👀
+    "id": "f06f81f2-4bea-4a60-99ad-8da8ecf79473",
     ...
   }
 }
@@ -257,7 +257,7 @@ Creates a column `first_name` in the `sales_person` table.
 Creates a `/sales-persons` API.
 `firstName` will be used in the query parameters:
 
-```js
+```
 GET /api/sales-persons?fields[SalesPerson]=firstName
 ```
 
@@ -265,12 +265,12 @@ GET /api/sales-persons?fields[SalesPerson]=firstName
 
 `firstName` will be used in the mutation and response payloads:
 
-```js
+```json
 {
-  data: {
-    type: "SalesPerson",
-    id: "c98b2123-78e7-45e4-b57f-f9c1189bfd19",
-    attributes: { firstName: "Mary" } //👀
+  "data": {
+    "type": "SalesPerson",
+    "id": "c98b2123-78e7-45e4-b57f-f9c1189bfd19",
+    "attributes": { "firstName": "Mary" } // 👀
   }
 }
 ```
@@ -331,7 +331,7 @@ Creates a column `sales_person_id` column in the `account` table.
 
 `salesPerson` will be used in the `include` query parameter:
 
-```js
+```
 GET /api/accounts?include=salesPerson
 ```
 
@@ -339,18 +339,19 @@ GET /api/accounts?include=salesPerson
 
 `salesPerson` will be used in the mutation and response payloads:
 
-```js
+```json
 {
-  data: {
-    type: "Account",
-    id: "2dba27ba-deaa-4656-a256-fb712f286c08",
-    attributes: { firstName: "Acme" },
-    relationships: {
-      salesPerson: { //👀
-        data: [
+  "data": {
+    "type": "Account",
+    "id": "2dba27ba-deaa-4656-a256-fb712f286c08",
+    "attributes": { "firstName": "Acme" },
+    "relationships": {
+      "salesPerson": {
+        // 👀
+        "data": [
           {
-            type: "SalesPerson",
-            id: "619d107b-0655-4a31-a704-13eb47d3f9c1"
+            "type": "SalesPerson",
+            "id": "619d107b-0655-4a31-a704-13eb47d3f9c1"
           }
         ]
       }
@@ -387,7 +388,7 @@ Assumes a column `sales_person_id` in the `account` table.
 
 `accounts` will be used in the `include` query parameter:
 
-```js
+```
 GET /api/sales-persons?include=accounts
 ```
 
@@ -395,18 +396,19 @@ GET /api/sales-persons?include=accounts
 
 `accounts` will be used in the mutation and response payloads:
 
-```js
+```json
 {
-  data: {
-    type: "SalesPerson",
-    id: "172a139c-1b91-4c93-9a0a-27e963e3337f",
-    attributes: { firstName: "Mary" },
-    relationships: {
-      accounts: { //👀
-        data: [
+  "data": {
+    "type": "SalesPerson",
+    "id": "172a139c-1b91-4c93-9a0a-27e963e3337f",
+    "attributes": { "firstName": "Mary" },
+    "relationships": {
+      "accounts": {
+        // 👀
+        "data": [
           {
-            type: "Account",
-            id: "dc4985ed-1078-4a34-add8-06c92b5ac82b"
+            "type": "Account",
+            "id": "dc4985ed-1078-4a34-add8-06c92b5ac82b"
           }
         ]
       }
@@ -459,7 +461,7 @@ Creates a column `manager_id` column in the `account` table.
 
 `manager` will be used in the `include` query parameter:
 
-```js
+```
 GET /api/accounts?include=manager
 ```
 
@@ -467,18 +469,19 @@ GET /api/accounts?include=manager
 
 `manager` will be used in the mutation and response payloads:
 
-```js
+```json
 {
-  data: {
-    type: "Account",
-    id: "a8f3956a-bea8-4dbc-89c2-8b33c8dfc906",
-    attributes: { firstName: "Acme" },
-    relationships: {
-      manager: { //👀
-        data: [
+  "data": {
+    "type": "Account",
+    "id": "a8f3956a-bea8-4dbc-89c2-8b33c8dfc906",
+    "attributes": { "firstName": "Acme" },
+    "relationships": {
+      "manager": {
+        // 👀
+        "data": [
           {
-            type: "Manager",
-            id: "79d44865-0f9f-484a-8788-f8a27b8354b5"
+            "type": "Manager",
+            "id": "79d44865-0f9f-484a-8788-f8a27b8354b5"
           }
         ]
       }
