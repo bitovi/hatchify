@@ -2,8 +2,12 @@
   "name": "@hatchifyjs/core",
   "version": "0.3.12",
   "type": "module",
-  "exports": "./dist/core.js",
-  "types": "./dist/core.d.ts",
+  "exports": {
+    "import": "./dist/esm/core.js",
+    "require": "./dist/cjs/core.js",
+    "default": "./dist/cjs/core.js"
+  },
+  "types": "./dist/types/core.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "prepublishOnly": "npm run clean && npm run build",
@@ -13,7 +17,9 @@
     "depcheck": "depcheck .",
     "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --coverage",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
-    "build": "tsc"
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:esm": "tsc --project tsconfig.esm.json",
+    "build": "npm run build:cjs && npm run build:esm"
   },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",
