@@ -104,6 +104,7 @@ describe("string", () => {
         control: {
           type: "String",
           displayName: null,
+          hidden: false,
           allowNull: true,
           min: 0,
           max: 255,
@@ -242,6 +243,7 @@ describe("string", () => {
         control: {
           type: "String",
           displayName: null,
+          hidden: false,
           allowNull: false,
           min: 0,
           max: 255,
@@ -379,6 +381,7 @@ describe("string", () => {
         control: {
           type: "String",
           displayName: null,
+          hidden: false,
           allowNull: false,
           min: 0,
           max: 255,
@@ -518,6 +521,7 @@ describe("string", () => {
         control: {
           type: "String",
           displayName: null,
+          hidden: false,
           allowNull: true,
           min: 1,
           max: 10,
@@ -620,6 +624,7 @@ describe("string", () => {
         control: {
           type: "String",
           displayName: null,
+          hidden: false,
           allowNull: true,
           min: 0,
           max: 255,

@@ -7,14 +7,12 @@ import type { PartialStringControlType } from "../string/index.js"
 export type PartialUuidProps<TRequired extends boolean> = PartialDataTypeProps<
   string,
   TRequired
-> & {
-  hidden?: boolean | null
-}
+>
 
-export interface PartialUuidControlType<TRequired extends boolean>
-  extends Omit<PartialStringControlType<TRequired>, "maxRenderLength"> {
-  hidden: boolean | null
-}
+export type PartialUuidControlType<TRequired extends boolean> = Omit<
+  PartialStringControlType<TRequired>,
+  "maxRenderLength"
+>
 
 export interface PartialUuidORM {
   sequelize: Omit<PartialSequelizeDataType<undefined, string>, "typeArgs">

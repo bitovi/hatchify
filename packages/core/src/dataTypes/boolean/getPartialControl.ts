@@ -9,6 +9,7 @@ export function getPartialControl<TRequired extends boolean>(
     allowNullInfer: (props?.required == null
       ? props?.required
       : !props.required) as TRequired extends true ? false : true,
+    primary: props?.primary,
     default: props?.default,
     displayName: props?.displayName,
   }

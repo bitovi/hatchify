@@ -8,7 +8,9 @@ export function finalizeControl(
   return {
     ...props,
     allowNull: props.allowNull !== false,
+    primary: !!props.primary,
     default: props.default ?? null,
     displayName: props.displayName ?? null,
+    hidden: props.hidden ?? false,
   }
 }

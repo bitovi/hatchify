@@ -40,8 +40,7 @@ import type {
 } from "../relationships/types.js"
 import type { FinalAttribute, PartialAttribute } from "../types/index.js"
 
-export type PartialAttributeRecord = Record<
-  string,
+export type PartialAttributeOptions =
   | PartialAttribute<
       PartialBooleanORM,
       // @ts-expect-error @todo HATCH-417
@@ -98,7 +97,8 @@ export type PartialAttributeRecord = Record<
       string,
       FinalUuidORM
     >
->
+
+export type PartialAttributeRecord = Record<string, PartialAttributeOptions>
 
 export interface PartialSchema<
   TAttributes extends PartialAttributeRecord = PartialAttributeRecord,
@@ -108,19 +108,12 @@ export interface PartialSchema<
   pluralName?: string
   tableName?: string
   displayAttribute?: string
-  id?: PartialAttribute<
-    PartialUuidORM,
-    // @ts-expect-error @todo HATCH-417
-    PartialStringControlType,
-    string,
-    FinalUuidORM
-  >
+  id?: PartialAttributeOptions
   attributes: TAttributes
   relationships?: Record<string, PartialRelationship>
 }
 
-export type FinalAttributeRecord = Record<
-  string,
+export type FinalAttributeOptions =
   | FinalAttribute<
       PartialBooleanORM,
       // @ts-expect-error @todo HATCH-417
@@ -177,7 +170,8 @@ export type FinalAttributeRecord = Record<
       string,
       FinalUuidORM
     >
->
+
+export type FinalAttributeRecord = Record<string, FinalAttributeOptions>
 
 export interface FinalSchema {
   name: string
@@ -185,13 +179,7 @@ export interface FinalSchema {
   pluralName?: string
   tableName?: string
   displayAttribute?: string
-  id: FinalAttribute<
-    PartialUuidORM,
-    // @ts-expect-error @todo HATCH-417
-    PartialStringControlType,
-    string,
-    FinalUuidORM
-  >
+  id: FinalAttributeOptions
   attributes: FinalAttributeRecord
   relationships?: Record<string, FinalRelationship>
 }
@@ -204,11 +192,5 @@ export type PartialSchemaWithPrimaryAttribute = Omit<
   PartialSchema<PartialAttributeRecord>,
   "id"
 > & {
-  id: PartialAttribute<
-    PartialUuidORM,
-    // @ts-expect-error @todo HATCH-417
-    PartialStringControlType,
-    string,
-    FinalUuidORM
-  >
+  id: PartialAttributeOptions
 }

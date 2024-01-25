@@ -14,5 +14,6 @@ export function finalizeControl(
     default: props.default ?? null,
     regex: props.regex ?? /(.*?)/,
     displayName: props.displayName ?? null,
+    hidden: props.hidden ?? false,
   }
 }

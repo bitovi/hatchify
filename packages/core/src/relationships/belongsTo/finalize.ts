@@ -1,8 +1,8 @@
 import type { PartialBelongsToRelationship } from "./types.js"
-import { uuid } from "../../dataTypes/index.js"
 import { HatchifyInvalidSchemaError } from "../../types/index.js"
 import type { SemiFinalSchema } from "../../types/index.js"
 import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase.js"
+import { getForeignKeyAttribute } from "../utils/getForeignKeyAttribute.js"
 
 // @todo HATCH-417
 export function finalize(
@@ -24,7 +24,8 @@ export function finalize(
     relationship.sourceAttribute ?? `${relationshipName}Id`
   const targetAttribute = relationship.targetAttribute ?? "id"
   const sourceAttributeValue =
-    schemas[sourceSchema].attributes[sourceAttribute] ?? uuid().finalize()
+    schemas[sourceSchema].attributes[sourceAttribute] ??
+    getForeignKeyAttribute(schemas[targetSchema].id)
 
   return {
     ...schemas,
