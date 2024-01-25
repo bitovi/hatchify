@@ -11,5 +11,6 @@ export function finalizeControl<TValues extends readonly string[]>(
     primary: !!props.primary,
     default: props.default ?? null,
     displayName: props.displayName ?? null,
+    hidden: props.hidden ?? false,
   }
 }

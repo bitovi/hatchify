@@ -15,5 +15,6 @@ export function finalizeControl(
     regex: props.regex ?? /(.*?)/,
     maxRenderLength: props?.maxRenderLength ?? null,
     displayName: props.displayName ?? null,
+    hidden: props.hidden ?? false,
   }
 }

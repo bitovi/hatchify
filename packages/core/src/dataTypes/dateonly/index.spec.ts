@@ -133,6 +133,7 @@ describe("dateonly", () => {
         control: {
           type: "Dateonly",
           displayName: null,
+          hidden: false,
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -241,6 +242,7 @@ describe("dateonly", () => {
         control: {
           type: "Dateonly",
           displayName: null,
+          hidden: false,
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -410,6 +412,7 @@ describe("dateonly", () => {
         control: {
           type: "Dateonly",
           displayName: null,
+          hidden: false,
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -519,6 +522,7 @@ describe("dateonly", () => {
         control: {
           type: "Dateonly",
           displayName: null,
+          hidden: false,
           allowNull: true,
           min: -Infinity,
           max: "2023-01-01",

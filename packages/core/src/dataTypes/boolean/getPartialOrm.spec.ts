@@ -13,6 +13,18 @@ describe("getPartialOrm", () => {
     expect(getPartialOrm({ required: false }).sequelize.allowNull).toBe(true)
   })
 
+  it("handles primaryKey", () => {
+    expect(
+      getPartialOrm({ primary: undefined }).sequelize.primaryKey,
+    ).toBeUndefined()
+    expect(
+      getPartialOrm({ primary: null as unknown as boolean }).sequelize
+        .primaryKey,
+    ).toBeNull()
+    expect(getPartialOrm({ primary: true }).sequelize.primaryKey).toBe(true)
+    expect(getPartialOrm({ primary: false }).sequelize.primaryKey).toBe(false)
+  })
+
   it("handles default", () => {
     expect(
       getPartialOrm({ default: undefined }).sequelize.defaultValue,

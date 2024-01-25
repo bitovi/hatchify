@@ -19,6 +19,24 @@ describe("finalizeControl", () => {
     ).toBe(false)
   })
 
+  it("handles primary", () => {
+    expect(
+      finalizeControl({ type: "Boolean", primary: undefined }).primary,
+    ).toBe(false)
+    expect(
+      finalizeControl({
+        type: "Boolean",
+        primary: null as unknown as boolean,
+      }).primary,
+    ).toBe(false)
+    expect(finalizeControl({ type: "Boolean", primary: true }).primary).toBe(
+      true,
+    )
+    expect(finalizeControl({ type: "Boolean", primary: false }).primary).toBe(
+      false,
+    )
+  })
+
   it("handles default", () => {
     expect(
       finalizeControl({ type: "Boolean", default: undefined }).default,

@@ -19,7 +19,6 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: undefined,
           min: 36,
           max: 36,
@@ -136,7 +135,7 @@ describe("uuid", () => {
         control: {
           type: "String",
           displayName: null,
-          hidden: null,
+          hidden: false,
           allowNull: true,
           min: 36,
           max: 36,
@@ -171,7 +170,6 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: false,
           allowNullInfer: false,
           min: 36,
@@ -306,11 +304,11 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: false,
           min: 36,
           max: 36,
           displayName: null,
+          hidden: false,
           primary: false,
           default: null,
           regex: UUID_REGEX,
@@ -342,7 +340,6 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: undefined,
           min: 36,
           max: 36,
@@ -476,9 +473,9 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: false,
           displayName: null,
+          hidden: false,
           min: 36,
           max: 36,
           primary: true,

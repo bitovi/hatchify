@@ -4,28 +4,20 @@ import type {
   PartialSequelizeDataType,
 } from "../../types/index.js"
 
-export type PartialBooleanProps<TRequired extends boolean> = Omit<
-  PartialDataTypeProps<boolean, TRequired>,
-  "primary"
->
+export type PartialBooleanProps<TRequired extends boolean> =
+  PartialDataTypeProps<boolean, TRequired>
 
 export interface PartialBooleanControlType<TRequired extends boolean>
-  extends Omit<PartialControlType<boolean, TRequired>, "primary"> {
+  extends PartialControlType<boolean, TRequired> {
   type: "Boolean"
 }
 
 export interface PartialBooleanORM {
-  sequelize: Omit<
-    PartialSequelizeDataType<undefined, boolean>,
-    "primaryKey" | "typeArgs"
-  >
+  sequelize: Omit<PartialSequelizeDataType<undefined, boolean>, "typeArgs">
 }
 
 export interface FinalBooleanORM {
   sequelize: Required<
-    Omit<
-      PartialSequelizeDataType<undefined, boolean>,
-      "primaryKey" | "typeArgs"
-    >
+    Omit<PartialSequelizeDataType<undefined, boolean>, "typeArgs">
   >
 }

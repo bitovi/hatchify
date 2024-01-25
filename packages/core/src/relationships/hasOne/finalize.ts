@@ -1,5 +1,4 @@
 import type { PartialHasOneRelationship } from "./types.js"
-import { uuid } from "../../dataTypes/index.js"
 import { HatchifyInvalidSchemaError } from "../../types/index.js"
 import type {
   FinalAttributeRecord,
@@ -8,6 +7,7 @@ import type {
 import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase.js"
 import { pascalCaseToCamelCase } from "../../util/pascalCaseToCamelCase.js"
 import type { FinalRelationship, PartialRelationship } from "../types.js"
+import { getForeignKeyAttribute } from "../utils/getForeignKeyAttribute.js"
 
 // @todo HATCH-417
 export function finalize(
@@ -29,7 +29,8 @@ export function finalize(
     relationship.targetAttribute ?? `${pascalCaseToCamelCase(sourceSchema)}Id`
   const sourceAttribute = relationship.sourceAttribute ?? "id"
   const targetAttributeValue =
-    schemas[targetSchema].attributes[targetAttribute] ?? uuid().finalize()
+    schemas[targetSchema].attributes[targetAttribute] ??
+    getForeignKeyAttribute(schemas[sourceSchema].id)
 
   const relationships: Record<string, PartialRelationship | FinalRelationship> =
     {
