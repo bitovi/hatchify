@@ -2,16 +2,13 @@
   "name": "@hatchifyjs/core",
   "version": "0.3.12",
   "type": "module",
-  "main": "./dist/core.js",
-  "module": "./dist/core.js",
+  "main": "./dist/cjs/core.js",
+  "module": "./dist/esm/core.js",
   "types": "./dist/types/core.d.ts",
   "exports": {
-    ".": {
-      "require": "./dist/cjs/core.js",
-      "import": "./dist/esm/core.js",
-      "types": "./dist/core.ts"
-    },
-    "./package.json": "./package.json"
+    "require": "./dist/cjs/core.js",
+    "import": "./dist/esm/core.js",
+    "types": "./dist/types/core.d.ts"
   },
   "scripts": {
     "prepublish": "npm run clean && npm run build",

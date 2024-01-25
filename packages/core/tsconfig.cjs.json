@@ -1,26 +1,25 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "noImplicitAny": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "allowJs": true,
-    "outDir": "dist/cjs",
     "moduleResolution": "Node",
-    "declaration": true,
-    // "declarationDir": "dist/types",
-    "declarationDir": "dist/cjs",
 
+    "outDir": "dist/cjs",
+    "declarationDir": "dist/types",
+
+    "esModuleInterop": true,
     "strict": true,
-    "esModuleInterop": true
-    // "declaration": true,
+
+    "allowJs": true,
+    "declaration": true,
+    "sourceMap": true,
+    "preserveConstEnums": true,
+    "noImplicitAny": true
+
     // "composite": true,
     // "incremental": true,
-    // "strict": true,
-    // "allowJs": false,
     // "allowSyntheticDefaultImports": true,
     // "downlevelIteration": true,
-    // "esModuleInterop": true,
+    // // "esModuleInterop": true,
     // "forceConsistentCasingInFileNames": true,
     // "isolatedModules": true,
     // "noFallthroughCasesInSwitch": true,
@@ -28,10 +27,9 @@
     // "noUnusedLocals": true,
     // "resolveJsonModule": true,
     // "skipLibCheck": true,
-    // "useDefineForClassFields": true,
+    // "useDefineForClassFields": true
     // "baseUrl": "."
   },
-  //   "files": ["index.js"],
   "include": ["src", "src/core.ts"],
   "exclude": ["node_modules", "**/*.test.js"]
 }

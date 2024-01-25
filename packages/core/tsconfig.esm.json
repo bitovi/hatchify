@@ -1,25 +1,23 @@
 {
   "compilerOptions": {
     "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    "outDir": "dist/esm",
+    "declarationDir": "dist/types",
+
+    "strict": true,
+
+    "allowJs": false,
+    "declaration": true,
     "noImplicitAny": true,
     "preserveConstEnums": true,
-    "sourceMap": true,
-    "allowJs": false,
-    "outDir": "dist/esm",
-    "moduleResolution": "NodeNext",
-    "declaration": true,
-    // "declarationDir": "dist/types",
-    "declarationDir": "dist/esm",
+    "sourceMap": true
 
-    "strict": true
-    // "declaration": true,
     // "composite": true,
     // "incremental": true,
-    // "strict": true,
-    // "allowJs": false,
     // "allowSyntheticDefaultImports": true,
     // "downlevelIteration": true,
-    // "esModuleInterop": true,
     // "forceConsistentCasingInFileNames": true,
     // "isolatedModules": true,
     // "noFallthroughCasesInSwitch": true,
@@ -27,10 +25,9 @@
     // "noUnusedLocals": true,
     // "resolveJsonModule": true,
     // "skipLibCheck": true,
-    // "useDefineForClassFields": true,
+    // "useDefineForClassFields": true
     // "baseUrl": "."
   },
-  //   "files": ["index.js"],
   "include": ["src", "src/core.ts"],
   "exclude": ["node_modules", "**/*.test.js"]
 }
