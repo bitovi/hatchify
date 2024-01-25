@@ -1,6 +1,6 @@
 # JSON:API
 
-Hatchify implements [JSON:API 1.1](https://jsonapi.org/format/1.1/). While some parts of the JSON:API specs were left unspecified, this document goes over the Hatchify implementation:
+Hatchify implements [JSON:API 1.1](https://jsonapi.org/format/1.1/). The JSON:API specification leaves some decisions up to the implementor, so this document reviews Hatchify's implementation specifically:
 
 - [Creating](./creating.md)
 - [Reading](./reading/README.md)

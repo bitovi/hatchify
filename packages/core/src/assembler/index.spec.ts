@@ -7,13 +7,13 @@ import { assembler } from "./index.js"
 
 describe("assembler", () => {
   describe("assembler", () => {
-    const Todo: PartialSchema = {
+    const Todo = {
       name: "Todo",
       id: uuid({ required: true, default: uuidv4 }),
       attributes: {
         importance: integer({ min: 0 }),
       },
-    }
+    } satisfies PartialSchema
 
     describe("key", () => {
       it("enforces key to equal ${name}", () => {
@@ -84,10 +84,10 @@ describe("assembler", () => {
       })
 
       it("creates id if you did not create one", () => {
-        const User: PartialSchema = {
+        const User = {
           name: "User",
           attributes: {},
-        }
+        } satisfies PartialSchema
 
         const { User: assembledUser } = assembler({ User })
 

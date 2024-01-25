@@ -5,13 +5,13 @@ import { Serializer } from "jsonapi-serializer"
 import { startServerWith } from "./testing/utils.js"
 
 describe("JSON:API Tests", () => {
-  const Model: PartialSchema = {
+  const Model = {
     name: "Model",
     attributes: {
       firstName: string({ required: true }),
       lastName: string({ required: true }),
     },
-  }
+  } satisfies PartialSchema
 
   function serialize(data: any) {
     const serializer = new Serializer("Model", {

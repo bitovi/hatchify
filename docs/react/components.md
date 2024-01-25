@@ -128,7 +128,7 @@ const App: React.FC = () => {
 
 ```
 
-![Example List Component](../../doc/attachments/List.png)
+![Example List Component](../attachments/List.png)
 
 ### Pagination
 
@@ -156,7 +156,7 @@ const App: React.FC = () => {
 
 ```
 
-![Example List with Pagination](../../doc/attachments/ListWithPagination.png)
+![Example List with Pagination](../attachments/ListWithPagination.png)
 
 ### Filters
 
@@ -185,8 +185,8 @@ const App: React.FC = () => {
 
 ```
 
-![Example Closed Filter](../../doc/attachments/FiltersClosed.png)
-![Example Open Filter](../../doc/attachments/FiltersOpen.png)
+![Example Closed Filter](../attachments/FiltersClosed.png)
+![Example Open Filter](../attachments/FiltersOpen.png)
 
 ### DataGrid
 

@@ -8,14 +8,14 @@ import { startServerWith } from "./testing/utils.js"
 dotenv.config({ path: ".env" })
 
 describe("JSON:API Tests", () => {
-  const TestSchema_Model: PartialSchema = {
+  const TestSchema_Model = {
     name: "Model",
     namespace: "TestSchema",
     attributes: {
       firstName: string({ required: true }),
       lastName: string({ required: true }),
     },
-  }
+  } satisfies PartialSchema
 
   function serialize(data: any) {
     const serializer = new Serializer("TestSchema_Model", {

@@ -10,7 +10,7 @@ import {
   text,
 } from "@hatchifyjs/core"
 
-export const Todo: PartialSchema = {
+export const Todo = {
   name: "Todo",
   attributes: {
     name: string(),
@@ -25,7 +25,7 @@ export const Todo: PartialSchema = {
   },
 } satisfies PartialSchema
 
-export const User: PartialSchema = {
+export const User = {
   name: "User",
   attributes: {
     name: string(),

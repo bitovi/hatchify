@@ -15,20 +15,20 @@ Sometimes, you want to have multiple tables named the same thing in different do
 
 The following extends from the [Using Postgres](guides/using-postgres-db.md) guide to have `Todo`’s reference a `User`, who created the todo, and a `Engineering_User` who is someone who can actually get stuff done.
 
-- Update schemas/schemas.ts as follows:
+- Update `schemas.ts` as follows:
 
-```
+```ts
 export const Todo = {
   name: "Todo",
   attributes: {
     name: string({ required: true }),
     dueDate: dateonly(),
-    importance: integer({min: 6}),
+    importance: integer({ min: 6 }),
     complete: boolean({ default: false }),
   },
   relationships: {
     user: belongsTo("User"),
-    assignee: belongsTo("Engineering_User")
+    assignee: belongsTo("Engineering_User"),
   },
 } satisfies PartialSchema
 
@@ -49,29 +49,14 @@ export const Engineering_User = {
     name: string({ required: true }),
   },
   relationships: {
-    todos: hasMany("Todo",{targetAttribute: "assigneeId"}),
+    todos: hasMany("Todo", { targetAttribute: "assigneeId" }),
   },
 } satisfies PartialSchema
 ```
 
-- Import and pass all schemas to hatchifyKoa
-
-```
-import { Todo, User, Engineering_User } from "../schemas/schemas"
-
-const app = new Koa()
-const hatchedKoa = hatchifyKoa(
-  { Todo, User, Engineering_User },
-  {
-    prefix: "/api",
-    database: { ... },
-  },
-)
-```
-
 - Make some requests to seed data:
 
-```
+```bash
 curl 'http://localhost:3000/api/engineering/users' \
 --header 'Content-Type: application/vnd.api+json' \
 --data '{
@@ -126,14 +111,13 @@ curl 'http://localhost:3000/api/todos' \
 
 - Update the frontend/App.tsx to view the people assigned to the employee:
 
-```
+```ts
 // hatchify-app/frontend/App.tsx
-import { v2ToV1 } from "@hatchifyjs/core"
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
-import { Todo, User, Engineering_User } from "../schemas"
+import * as Schemas from "../schemas"
 
 export const hatchedReact = hatchifyReact(
-  v2ToV1({ Todo, User, Engineering_User }),
+  Schemas,
   createJsonapiClient("http://localhost:3000/api", {
     Todo: { endpoint: "todos" },
     User: { endpoint: "users" },

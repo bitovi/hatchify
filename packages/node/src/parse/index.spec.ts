@@ -23,7 +23,7 @@ const RelationshipPathDetail =
   "URL must have 'include' as one or more of 'user'."
 
 describe("index", () => {
-  const User: PartialSchema = {
+  const User = {
     name: "User",
     attributes: {
       name: string(),
@@ -31,9 +31,9 @@ describe("index", () => {
     relationships: {
       todos: hasMany(),
     },
-  }
+  } satisfies PartialSchema
 
-  const Todo: PartialSchema = {
+  const Todo = {
     name: "Todo",
     attributes: {
       name: string(),
@@ -44,7 +44,7 @@ describe("index", () => {
     relationships: {
       user: belongsTo(),
     },
-  }
+  } satisfies PartialSchema
 
   const hatchedNode = new Hatchify({ Todo, User })
 
@@ -371,7 +371,7 @@ describe("index", () => {
   })
 
   describe("no relationships case", () => {
-    const Todo: PartialSchema = {
+    const Todo = {
       name: "Todo",
       attributes: {
         name: string(),
@@ -379,7 +379,7 @@ describe("index", () => {
         importance: integer(),
         status: enumerate({ values: ["Do Today", "Do Soon", "Done"] }),
       },
-    }
+    } satisfies PartialSchema
 
     const hatchedNode = new Hatchify({ Todo })
     const { findAll } = buildParserForModelStandalone(

@@ -16,13 +16,13 @@ import {
 
 describe.each(dbDialects)("Relationships v2", (dialect) => {
   describe(`${dialect} - belongsTo()`, () => {
-    const SalesPerson: PartialSchema = {
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
       },
-    }
-    const Account: PartialSchema = {
+    } satisfies PartialSchema
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
@@ -30,7 +30,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         salesPerson: belongsTo(),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -140,7 +140,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - belongsTo() mismatch`, () => {
-    const Account: PartialSchema = {
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
@@ -148,7 +148,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         foob: belongsTo(),
       },
-    }
+    } satisfies PartialSchema
 
     it("throws for unknown schema", async () => {
       await expect(() => startServerWith({ Account }, dialect)).rejects.toThrow(
@@ -158,13 +158,13 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - belongsTo(schemaName)`, () => {
-    const SalesPerson: PartialSchema = {
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
       },
-    }
-    const Account: PartialSchema = {
+    } satisfies PartialSchema
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
@@ -172,7 +172,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         closerPerson: belongsTo("SalesPerson"),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -282,13 +282,13 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - belongsTo(schemaName, { sourceAttribute })`, () => {
-    const SalesPerson: PartialSchema = {
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
       },
-    }
-    const Account: PartialSchema = {
+    } satisfies PartialSchema
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
@@ -298,7 +298,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           sourceAttribute: "finisherId",
         }),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -408,13 +408,13 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - hasMany()`, () => {
-    const Account: PartialSchema = {
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
       },
-    }
-    const SalesPerson: PartialSchema = {
+    } satisfies PartialSchema
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -422,7 +422,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         accounts: hasMany(),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -536,13 +536,13 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - hasMany(schemaName)`, () => {
-    const Account: PartialSchema = {
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
       },
-    }
-    const SalesPerson: PartialSchema = {
+    } satisfies PartialSchema
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -550,7 +550,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         accounts: hasMany("Account"),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -664,13 +664,13 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - hasMany(schemaName, { targetAttribute })`, () => {
-    const Account: PartialSchema = {
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
       },
-    }
-    const SalesPerson: PartialSchema = {
+    } satisfies PartialSchema
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -678,7 +678,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         accounts: hasMany("Account", { targetAttribute: "salesId" }),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -792,13 +792,13 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - hasMany().through()`, () => {
-    const Account: PartialSchema = {
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
       },
-    }
-    const SalesPerson: PartialSchema = {
+    } satisfies PartialSchema
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -806,7 +806,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         accounts: hasMany().through(),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -983,13 +983,13 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - hasMany(schemaName).through()`, () => {
-    const Account: PartialSchema = {
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
       },
-    }
-    const SalesPerson: PartialSchema = {
+    } satisfies PartialSchema
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -997,7 +997,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         accounts: hasMany("Account").through(),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -1175,13 +1175,13 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - hasMany().through(schemaName)`, () => {
-    const Account: PartialSchema = {
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
       },
-    }
-    const SalesPerson: PartialSchema = {
+    } satisfies PartialSchema
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -1189,7 +1189,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         accounts: hasMany().through("Commission"),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -1367,21 +1367,21 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - hasMany().through(existingSchema)`, () => {
-    const AccountSalesPerson: PartialSchema = {
+    const AccountSalesPerson = {
       name: "AccountSalesPerson",
       attributes: {
         accountId: uuid({ required: true }),
         salesPersonId: uuid({ required: true }),
         score: integer(),
       },
-    }
-    const Account: PartialSchema = {
+    } satisfies PartialSchema
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
       },
-    }
-    const SalesPerson: PartialSchema = {
+    } satisfies PartialSchema
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -1389,7 +1389,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
       relationships: {
         accounts: hasMany().through(),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -1581,13 +1581,13 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - hasMany().through(schemaName, { throughTargetAttribute, throughSourceAttribute })`, () => {
-    const Account: PartialSchema = {
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
       },
-    }
-    const SalesPerson: PartialSchema = {
+    } satisfies PartialSchema
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -1598,7 +1598,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           throughSourceAttribute: "sellerId",
         }),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
@@ -1776,14 +1776,14 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
   })
 
   describe(`${dialect} - hasMany().through(schemaName, { targetKey, sourceKey })`, () => {
-    const Account: PartialSchema = {
+    const Account = {
       name: "Account",
       attributes: {
         name: string(),
         accountSaleTypeId: uuid({ unique: true }),
       },
-    }
-    const SalesPerson: PartialSchema = {
+    } satisfies PartialSchema
+    const SalesPerson = {
       name: "SalesPerson",
       attributes: {
         firstName: string(),
@@ -1795,7 +1795,7 @@ describe.each(dbDialects)("Relationships v2", (dialect) => {
           sourceKey: "sellerTypeId",
         }),
       },
-    }
+    } satisfies PartialSchema
 
     let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
     let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
