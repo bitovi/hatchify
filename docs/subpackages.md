@@ -42,7 +42,7 @@ Adds React-specific data fetching (hooks) on top of the [Rest Client](#rest-clie
 
 ### [React UI](../packages/react-ui/README.md) 🛑
 
-React components that tie together `design-*` components with `react-rest` data-fetching.
+React components that tie together `design-*` components with [React Rest](#react-rest) data-fetching.
 
 ### [Rest Client](../packages/rest-client/README.md) 🛑
 
