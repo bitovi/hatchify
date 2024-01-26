@@ -16,8 +16,8 @@ npm-debug.log*
 .obsidian
 .nx
 
-/test-results/
-/playwright-report/
-/playwright/.cache/
 /e2e/hatchify-app
+/e2e/test-results/
+/e2e/playwright-report/
+/playwright/.cache/
 /packages/create/hatchify-app
