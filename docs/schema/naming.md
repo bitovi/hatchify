@@ -194,7 +194,17 @@ GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 
 JSON:API requires that the `id` attribute be named `id`, therefore this attribute cannot be renamed.
 
-Customizing the `id` attribute: 🛑
+Customizing the `id` attribute is as simple as adding an attribute:
+
+```ts
+const SalesPerson = {
+  name: "SalesPerson",
+  id: integer({ autoIncrement: true }), // 👀
+  attributes: {
+    firstName: string(),
+  },
+} satisfies PartialSchema
+```
 
 ### displayAttribute
 
