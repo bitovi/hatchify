@@ -10,6 +10,7 @@ import { defineConfig, devices } from "@playwright/test"
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  outputDir: "./test-results",
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -20,7 +21,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "html",
+  reporter: [["html", { outputFolder: "playwright-report" }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     // headless: false,
@@ -75,12 +76,12 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: "cd example/hatchify-app && npm run dev",
+      command: "cd hatchify-app && npm run dev",
       reuseExistingServer: !process.env.CI,
       port: 3000,
     },
     {
-      command: "cd example/react-rest && npm install && npm run dev",
+      command: "cd ../example/react-rest && npm install && npm run dev",
       reuseExistingServer: !process.env.CI,
       port: 5174,
     },

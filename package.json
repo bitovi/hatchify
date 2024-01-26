@@ -5,9 +5,9 @@
   "scripts": {
     "build:all": "nx run-many -t build",
     "check-packages": "ts-node ./scripts/check-packages",
-    "e2e": "playwright test",
+    "e2e": "playwright test --config e2e/playwright.config.ts",
     "pree2e": "./scripts/pree2e.sh",
-    "poste2e": "cd example && rm -rf hatchify-app",
+    "poste2e": "cd e2e && rm -rf hatchify-app",
     "postinstall": "playwright install --with-deps"
   },
   "eslintConfig": {
