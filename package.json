@@ -8,7 +8,8 @@
     "e2e": "playwright test --config e2e/playwright.config.ts",
     "pree2e": "./scripts/pree2e.sh",
     "poste2e": "cd e2e && rm -rf hatchify-app",
-    "postinstall": "playwright install --with-deps"
+    "postinstall": "playwright install --with-deps",
+    "update-gs": "./scripts/updategs.sh"
   },
   "eslintConfig": {
     "root": true,
