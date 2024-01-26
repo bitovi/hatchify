@@ -1,5 +1,5 @@
 #!/bin/sh
-cd example;
+cd e2e;
 rm -rf hatchify-app;
 node ../packages/create/index.js hatchify-app \
     --frontend ${npm_config_frontend} \

@@ -19,5 +19,5 @@ npm-debug.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
-/example/hatchify-app
+/e2e/hatchify-app
 /packages/create/hatchify-app
