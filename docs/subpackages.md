@@ -18,11 +18,11 @@ Material UI implementation on of Hatcify's React components.
 
 ### [Express](../packages/express/README.md) 🛑
 
-Middleware and helper functions to integrate Hatchify into an [Express](https://expressjs.com/) server. It is implemented as a tiny wrapped around the [Hatchify Node package](#node-🛑).
+Middleware and helper functions to integrate Hatchify into an [Express](https://expressjs.com/) server. It is implemented as a tiny wrapped around the [Hatchify Node package](#node-).
 
 ### [Koa](../packages/koa/README.md)
 
-Middleware and helper functions to integrate Hatchify into a [Koa](https://koajs.com/) server. It is implemented as a tiny wrapped around the [Hatchify Node package](#node-🛑).
+Middleware and helper functions to integrate Hatchify into a [Koa](https://koajs.com/) server. It is implemented as a tiny wrapped around the [Hatchify Node package](#node-).
 
 ### [Node](../packages/node/README.md) 🛑
 
@@ -38,7 +38,7 @@ Entry point for apps wanting Hatchify's data fetching.
 
 ### [React Rest](../packages/react-rest/README.md)
 
-Adds React-specific data fetching (hooks) on top of the [Rest Client](#rest-client-🛑) functions.
+Adds React-specific data fetching (hooks) on top of the [Rest Client](#rest-client-) functions.
 
 ### [React UI](../packages/react-ui/README.md) 🛑
 
