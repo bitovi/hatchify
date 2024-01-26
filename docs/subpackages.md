@@ -28,6 +28,10 @@ Middleware and helper functions to integrate Hatchify into a [Koa](https://koajs
 
 Middleware and helper functions to integrate Hatchify into any Node server.
 
+### [Query String Parser](https://github.com/bitovi/querystring-parser)
+
+Transforms CRUD-related query strings into structured data.
+
 ### [React](../packages/react/README.md) 🛑
 
 Entry point for apps wanting Hatchify's React components and hooks.
@@ -51,6 +55,14 @@ Data-fetching functions that are not framework-specific.
 ### [Rest Client JSON:API](../packages/rest-client-jsonapi/README.md) 🛑
 
 Responsible for making network requests to a JSON:API-compliant backend.
+
+### [Sequelize Create With Associations](https://github.com/bitovi/sequelize-create-with-associations)
+
+A handy package that extends [Sequelize](https://sequelize.org/)'s to simplify the associations.
+
+### [Sequelize Query String Parser](https://github.com/bitovi/querystring-parser)
+
+This library builds on top of [Query String Parser](#query-string-parser) to transform CRUD-related query strings into structured data for the [Sequelize ORM](https://sequelize.org/).
 
 ## Package Dependencies
 
