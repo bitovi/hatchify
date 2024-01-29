@@ -2,7 +2,7 @@ name: Deploy Hatchify Grid-Demo
 
 on:
   push:
-    branches: [461-move-hatchify-grid-demo]
+    branches: [main]
 
 permissions:
   contents: read
@@ -37,6 +37,7 @@ jobs:
           aws_ec2_create_keypair_sm: true
 
           docker_full_cleanup: true
+          docker_repo_app_directory: ../example/hatchify-grid-demo
           docker_repo_app_directory_cleanup: true
 
           #tf_stack_destroy: true
