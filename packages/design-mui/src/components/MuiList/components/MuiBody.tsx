@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material"
 import type { HatchifyColumn, XDataGridProps } from "@hatchifyjs/react-ui"
 import MuiBodySkeleton from "./MuiBodySkeleton.js"
@@ -7,7 +8,24 @@ export const MuiBody: React.FC<
 > = ({ columns, data, meta, selected, setSelected, Empty }) => {
   const selectable = selected !== undefined && setSelected !== undefined
 
-  if (meta.isPending) {
+  const [isLoading, setIsLoading] = useState(false)
+
+  let timeout: ReturnType<typeof setTimeout>
+
+  useEffect(() => {
+    if (!meta.isPending) {
+      timeout = setTimeout(() => {
+        setIsLoading(() => false)
+      }, 500)
+    } else {
+      setIsLoading(() => true)
+      timeout = setTimeout(() => {
+        setIsLoading(() => false)
+      }, 500)
+    }
+  }, [meta.isPending])
+
+  if (isLoading) {
     return (
       <TableBody>
         <MuiBodySkeleton columns={columns} />
