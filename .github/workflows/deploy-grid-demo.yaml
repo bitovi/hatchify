@@ -29,6 +29,7 @@ jobs:
           aws_r53_enable: true
           aws_r53_domain_name: bitovi-sandbox.com
           aws_r53_sub_domain_name: hatchify-grid-demo
+          aws_r53_root_domain_deploy: true
           aws_elb_app_port: 3000,3001
           aws_elb_listen_port: 3000,3001
           aws_elb_healthcheck: "HTTP:3000/"
@@ -38,7 +39,7 @@ jobs:
           aws_ec2_create_keypair_sm: true
 
           docker_full_cleanup: true
-          docker_repo_app_directory: ../example/hatchify-grid-demo/docker-compose.yaml
+          docker_repo_app_directory: ../example/hatchify-grid-demo
           docker_repo_app_directory_cleanup: true
 
           #tf_stack_destroy: true
