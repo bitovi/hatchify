@@ -1,9 +1,9 @@
 describe("getCrypto", () => {
   it("returns window.crypto if available", async () => {
-    Object.defineProperty(globalThis, "crypto", {
+    Object.defineProperty(window, "crypto", {
       value: "window.crypto",
     })
-    const { getCrypto } = await import("./uuidv4.js")
+    const { getCrypto } = await import("@hatchifyjs/core/dist/util/uuidv4.js")
     expect(getCrypto()).toBe("window.crypto")
   })
 })
