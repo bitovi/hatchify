@@ -7,7 +7,12 @@
   "types": "./index.d.ts",
   "browser": "./index.browser.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "typecheck": "exit 0",
+    "eslint": "eslint .",
+    "eslint:fix": "eslint --fix .",
+    "depcheck": "depcheck .",
+    "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --coverage",
+    "build": "exit 0"
   },
   "repository": {
     "type": "git",
@@ -23,5 +28,78 @@
   "bugs": {
     "url": "https://github.com/bitovi/hatchify/issues"
   },
-  "homepage": "https://github.com/bitovi/hatchify#readme"
+  "homepage": "https://github.com/bitovi/hatchify#readme",
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@bitovi/eslint-config/node",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.js"
+        ],
+        "rules": {
+          "@typescript-eslint/explicit-module-boundary-types": "warn",
+          "import/order": [
+            "error",
+            {
+              "groups": [
+                "builtin",
+                "external",
+                "internal",
+                [
+                  "sibling",
+                  "parent"
+                ],
+                "index",
+                "unknown"
+              ],
+              "newlines-between": "always",
+              "alphabetize": {
+                "order": "asc",
+                "caseInsensitive": true
+              }
+            }
+          ],
+          "one-var": [
+            "error",
+            "never"
+          ],
+          "prettier/prettier": [
+            "error",
+            {
+              "bracketSpacing": true,
+              "endOfLine": "lf",
+              "parser": "typescript",
+              "printWidth": 80,
+              "semi": false,
+              "singleQuote": false,
+              "trailingComma": "all",
+              "useTabs": false
+            }
+          ],
+          "sort-imports": [
+            "error",
+            {
+              "ignoreCase": false,
+              "ignoreDeclarationSort": true,
+              "ignoreMemberSort": false,
+              "memberSyntaxSortOrder": [
+                "none",
+                "all",
+                "multiple",
+                "single"
+              ],
+              "allowSeparatedGroups": true
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
