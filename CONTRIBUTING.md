@@ -376,7 +376,7 @@ npx nx eslint @hatchifyjs/koa
 ├── package-lock.json
 ├── package.json
 ├── packages
-│   ├── design-mui                              # @hatchifyjs/design-mui; Material UI implementation on of Hatcify's React components
+│   ├── design-mui                              # @hatchifyjs/design-mui; Material UI implementation on of Hatchify's React components
 │   │   ├── package.json
 │   │   ├── src
 │   │   │   ├── components                      # Material UI components which implement interfaces provided by `react-ui`
