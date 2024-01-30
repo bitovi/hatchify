@@ -4,14 +4,14 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "dev": "nodemon backend/index.ts --watch backend --watch schemas.ts",
-    "build": "tsc && vite build",
-    "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/react-rest-hatchify-backend && npm install",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
+    "build": "npm run build:backend && npm run build:frontend",
     "build:frontend": "vite build --outDir dist/frontend",
     "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
-    "start:backend": "node dist/backend/backend/index.js"
+    "dev": "nodemon backend/index.ts --watch backend --watch schemas.ts",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "start:backend": "node dist/backend/backend/index.js",
+    "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/react-rest-hatchify-backend && npm install"
   },
   "dependencies": {
     "@hatchifyjs/core": "file:../../packages/core",

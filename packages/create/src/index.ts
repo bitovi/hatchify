@@ -262,7 +262,7 @@ async function init() {
           name: packageName || getProjectName(),
           type: "module",
           scripts: {
-            build: "npm run build:backend && npm run build:backend",
+            build: "npm run build:backend && npm run build:frontend",
             "build:backend":
               "tsc --outDir dist/backend --project tsconfig.backend.json",
             "build:frontend": "vite build --outDir dist/frontend",
