@@ -1,8 +1,8 @@
 import crypto from "node:crypto"
 
-import { getCrypto, uuidv4 } from "./uuidv4.js"
+import { getCrypto, uuidv4 } from "./index.js"
 
-describe("uuidv4", () => {
+describe("crypto", () => {
   it("generates a uuid", () => {
     expect(uuidv4()).toMatch(
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,

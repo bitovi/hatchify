@@ -15,6 +15,9 @@
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "tsc"
   },
+  "dependencies": {
+    "@hatchifyjs/crypto": "^1.0.0"
+  },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",
     "@jest/globals": "^29.7.0",

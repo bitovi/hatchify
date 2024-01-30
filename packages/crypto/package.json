@@ -1,0 +1,27 @@
+{
+  "name": "@hatchifyjs/crypto",
+  "version": "1.0.0",
+  "description": "Isomorphic WebCrypto package. Only Isomorphic. No Polyfills.",
+  "type": "module",
+  "exports": "./index.js",
+  "types": "./index.d.ts",
+  "browser": "./index.browser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitovi/hatchify.git"
+  },
+  "keywords": [
+    "isomorphic",
+    "webcrypto",
+    "crypto"
+  ],
+  "author": "Bitovi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bitovi/hatchify/issues"
+  },
+  "homepage": "https://github.com/bitovi/hatchify#readme"
+}
