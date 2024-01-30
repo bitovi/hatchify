@@ -162,7 +162,7 @@ import { Button, createTheme, ThemeProvider } from "@mui/material"
 import * as Schemas from "../schemas.js"
 import TodoFormModal from "./components/TodoFormModal.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const { DataGrid, Column } = hatchedReact.components.Todo
 

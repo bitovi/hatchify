@@ -9,9 +9,7 @@ type Todo = any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type User = any
 
-// @ts-expect-error @todo make TS happy
-export const hatchedReactRest = hatchifyReactRest(
-  // @ts-expect-error @todo make TS happy
+const hatchedReactRest = hatchifyReactRest(
   createJsonapiClient("http://localhost:3000/api", schemas),
 )
 

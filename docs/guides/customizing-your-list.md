@@ -17,7 +17,7 @@ import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyj
 import { createTheme, ThemeProvider } from "@mui/material"
 import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const TodoList = hatchedReact.components.Todo.DataGrid // 👀
 const TodoEmpty = hatchedReact.components.Todo.Empty // 👀
@@ -88,7 +88,7 @@ import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyj
 import { createTheme, ThemeProvider } from "@mui/material"
 import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoEmpty = hatchedReact.components.Todo.Empty
@@ -243,7 +243,7 @@ import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyj
 import { createTheme, ThemeProvider } from "@mui/material"
 import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoEmpty = hatchedReact.components.Todo.Empty
@@ -323,7 +323,7 @@ import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyj
 import { createTheme, ThemeProvider } from "@mui/material"
 import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const TodoList = hatchedReact.components.Todo.DataGrid
 const TodoEmpty = hatchedReact.components.Todo.Empty
