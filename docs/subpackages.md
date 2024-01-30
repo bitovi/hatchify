@@ -87,4 +87,5 @@ This library builds on top of [Query String Parser](#query-string-parser) to tra
     L[sequelize-create-with-associations] --> B
     M[sequelize-querystring-parser] --> B
     N[querystring-parser] --> M
+    O[crypto] --> A
 ```
