@@ -22,13 +22,16 @@ const hatchedKoa = hatchifyKoa(Schemas, {
 ;(async () => {
   await hatchedKoa.modelSync({ alter: true })
 
-  const vite = await createViteServer({
-    root: `${currentDir}/../`,
-    server: { middlewareMode: true },
-  })
-
   app.use(hatchedKoa.middleware.allModels.all)
-  app.use(c2k(vite.middlewares))
+
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      root: `${currentDir}/../`,
+      server: { middlewareMode: true },
+    })
+
+    app.use(c2k(vite.middlewares))
+  }
 
   app.listen(3000, () => {
     console.log("Started on http://localhost:3000")

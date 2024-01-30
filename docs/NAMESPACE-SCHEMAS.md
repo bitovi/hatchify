@@ -116,7 +116,7 @@ curl 'http://localhost:3000/api/todos' \
 import { hatchifyReact, MuiProvider, createJsonapiClient } from "@hatchifyjs/react"
 import * as Schemas from "../schemas"
 
-export const hatchedReact = hatchifyReact(
+const hatchedReact = hatchifyReact(
   Schemas,
   createJsonapiClient("http://localhost:3000/api", {
     Todo: { endpoint: "todos" },

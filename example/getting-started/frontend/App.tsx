@@ -6,7 +6,7 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material"
 import * as Schemas from "../schemas.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const { Everything } = hatchedReact
 

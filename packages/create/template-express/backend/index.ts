@@ -21,18 +21,20 @@ const hatchedExpress = hatchifyExpress(Schemas, {
 ;(async () => {
   await hatchedExpress.modelSync({ alter: true })
 
-  const vite = await createViteServer({
-    root: `${currentDir}/../`,
-    server: { middlewareMode: true },
-  })
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      root: `${currentDir}/../`,
+      server: { middlewareMode: true },
+    })
 
-  app.use((req, res, next) => {
-    if (req.url.startsWith("/api")) {
-      next()
-    } else {
-      vite.middlewares.handle(req, res, next)
-    }
-  })
+    app.use((req, res, next) => {
+      if (req.url.startsWith("/api")) {
+        next()
+      } else {
+        vite.middlewares.handle(req, res, next)
+      }
+    })
+  }
 
   app.use(hatchedExpress.middleware.allModels.all)
 
