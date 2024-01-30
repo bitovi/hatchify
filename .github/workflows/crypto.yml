@@ -46,7 +46,7 @@ jobs:
       - name: Publish
         uses: ./.github/actions/job-publish
         with:
-          directory: core
+          directory: crypto
           npm-token: ${{ secrets.NPM_TOKEN }}
           github-token: ${{ github.token }}
           segment: ${{ github.event.inputs.segment }}
