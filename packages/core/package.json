@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/core",
-  "version": "0.3.15",
+  "version": "0.3.16",
   "type": "module",
   "exports": "./dist/core.js",
   "types": "./dist/core.d.ts",
