@@ -10,7 +10,7 @@ permissions:
 jobs:
   Hatchify-Deploy-Postgres:
     # if the branch name of the PR does not contain 'skip-deploy'
-    if: "!contains(github.head_ref, 'skip-deploy')"
+    if: !contains(github.head_ref, 'skip-deploy')
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name }}
@@ -37,7 +37,7 @@ jobs:
           aws_ec2_create_keypair_sm: true
 
           docker_full_cleanup: true
-          docker_repo_app_directory: ../../example/hatchify-grid-demo
+          docker_repo_app_directory: ../example/hatchify-grid-demo/docker-compose.yaml
           docker_repo_app_directory_cleanup: true
 
           #tf_stack_destroy: true
