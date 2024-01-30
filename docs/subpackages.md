@@ -12,6 +12,10 @@ Hatchify's schemas and shared types.
 
 Create a new Hatchify-based project.
 
+### [Crypto](../packages/crypto/README.md) 🛑
+
+Isomorphic WebCrypto package. Only Isomorphic. No Polyfills.
+
 ### [Design Material UI](../packages/design-mui/README.md) 🛑
 
 Material UI implementation on of Hatcify's React components.
