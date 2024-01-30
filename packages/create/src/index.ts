@@ -264,7 +264,7 @@ async function init() {
           scripts: {
             lint: "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
             dev: "nodemon backend/index.ts --watch backend --watch schemas.ts",
-            "build:frontend": "tsc && vite build --outDir dist/frontend",
+            "build:frontend": "vite build --outDir dist/frontend",
             "build:backend":
               "tsc --outDir dist/backend --project tsconfig.backend.json",
             "start:frontend": "vite preview --outDir dist/frontend",
