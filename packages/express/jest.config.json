@@ -1,6 +1,6 @@
 {
   "collectCoverageFrom": ["<rootDir>/src/**/*.ts"],
-  "coverageDirectory": "coverage",
+  "coverageDirectory": "../../coverage/express",
   "coverageReporters": ["html", "text", "text-summary"],
   "extensionsToTreatAsEsm": [".ts"],
   "moduleNameMapper": {

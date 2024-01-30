@@ -1,8 +1,8 @@
 # artifacts
+coverage
 node_modules
 /**/node_modules
 /packages/*/dist
-/packages/*/coverage
 
 # misc
 .DS_Store

@@ -7,7 +7,7 @@
     "!<rootDir>/src/relationships/index.ts",
     "!<rootDir>/src/types/**/*.ts"
   ],
-  "coverageDirectory": "coverage",
+  "coverageDirectory": "../../coverage/core",
   "coverageReporters": ["html", "text", "text-summary"],
   "coverageThreshold": {
     "global": {

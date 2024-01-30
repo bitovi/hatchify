@@ -5,7 +5,7 @@
     "!<rootDir>/**/*.spec.js",
     "!<rootDir>/**/coverage/**/*.js"
   ],
-  "coverageDirectory": "coverage",
+  "coverageDirectory": "../../coverage/crypto",
   "coverageReporters": ["html", "text", "text-summary"],
   "coverageThreshold": {
     "global": {
