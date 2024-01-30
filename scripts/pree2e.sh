@@ -8,3 +8,4 @@ node ../packages/create/index.js hatchify-app \
     --path ../../packages;
 cp schemas.txt hatchify-app/schemas.ts;
 cp App.txt hatchify-app/frontend/App.tsx;
+cp main.txt hatchify-app/main.tsx;
