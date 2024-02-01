@@ -23,7 +23,7 @@ npm run build:backend
 Great, now we have an optimized JavaScript version under `dist/backend`. To run it without the Vite dev middleware we can run it with the `NODE_ENV` environment variable set to `production`:
 
 ```bash
-NODE_ENV=production npm run start:backend
+NODE_ENV=production node dist/backend/backend/index.js
 ```
 
 ## How to build a docker image for hosting the backend
