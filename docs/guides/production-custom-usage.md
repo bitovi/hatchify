@@ -143,13 +143,13 @@ services:
         condition: service_healthy
     networks:
       - back-tier
+      - front-tier
   proxy:
     build:
       context: .
       dockerfile: frontend.dockerfile
     image: proxy
     networks:
-      - back-tier
       - front-tier
     depends_on:
       - backend
