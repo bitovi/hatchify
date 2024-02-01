@@ -112,7 +112,6 @@ COPY dist/frontend /var/www
 - Setup a Postgres container, can be omitted if we have one outside of Docker
 - Setup the backend container using the Dockerfile above along with environment variables
 - Setup the frontend container using the Dockerfile above and exposing it on port 80
-- Setup networks in a way that the frontend is not on the same network with the database
 
 ```yaml
 # docker-compose.yml
@@ -122,7 +121,7 @@ services:
     container_name: database
     image: postgres:alpine
     networks:
-      - back-tier
+      - hatchify-network
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
@@ -143,8 +142,7 @@ services:
       database:
         condition: service_healthy
     networks:
-      - back-tier
-      - front-tier
+      - hatchify-network
   proxy:
     container_name: proxy
     build:
@@ -152,14 +150,13 @@ services:
       dockerfile: frontend.dockerfile
     image: proxy
     networks:
-      - front-tier
+      - hatchify-network
     depends_on:
       - backend
     ports:
       - 80:80
 networks:
-  back-tier: {}
-  front-tier: {}
+  hatchify-network: {}
 ```
 
 You are all set. You can go ahead and test it out locally using:
