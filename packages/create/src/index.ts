@@ -225,9 +225,8 @@ async function init() {
     true,
   )
 
-  const templatePackage = await fs.promises.readFile(
-    path.join(root, "package.json"),
-    "utf-8",
+  const templatePackage = JSON.parse(
+    await fs.promises.readFile(path.join(root, "package.json"), "utf-8"),
   )
 
   const backendTemplateDir = path.resolve(
@@ -239,6 +238,45 @@ async function init() {
     fileURLToPath(import.meta.url),
     "../..",
     "template-react",
+  )
+
+  const [dependencyDetails, devDependencyDetails] = await Promise.all([
+    Promise.all(
+      [
+        "sequelize",
+        "@hatchifyjs/core",
+        ...backend.dependencies,
+        ...database.dependencies,
+        ...frontend.dependencies,
+      ].map((name) =>
+        fetch(`https://registry.npmjs.org/${name}`).then((response) =>
+          response.json(),
+        ),
+      ),
+    ),
+    Promise.all(
+      [
+        ...backend.devDependencies,
+        ...database.devDependencies,
+        ...frontend.devDependencies,
+        "nodemon",
+        "ts-node",
+      ].map((name) =>
+        fetch(`https://registry.npmjs.org/${name}`).then((response) =>
+          response.json(),
+        ),
+      ),
+    ),
+  ])
+
+  const dependencies = dependencyDetails.reduce(
+    (acc, curr) => ({ ...acc, [curr.name]: `^${curr["dist-tags"].latest}` }),
+    {},
+  )
+
+  const devDependencies = devDependencyDetails.reduce(
+    (acc, curr) => ({ ...acc, [curr.name]: `^${curr["dist-tags"].latest}` }),
+    { ...templatePackage.dependencies, ...templatePackage.devDependencies },
   )
 
   await Promise.all([
@@ -258,7 +296,7 @@ async function init() {
       path.join(root, "package.json"),
       JSON.stringify(
         {
-          ...JSON.parse(templatePackage),
+          ...templatePackage,
           name: packageName || getProjectName(),
           type: "module",
           scripts: {
@@ -270,6 +308,18 @@ async function init() {
             lint: "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
             "start:backend": "node backend/index.js",
           },
+          dependencies: Object.keys(dependencies)
+            .sort()
+            .reduce(
+              (acc, name) => ({ ...acc, [name]: dependencies[name] }),
+              {},
+            ),
+          devDependencies: Object.keys(devDependencies)
+            .sort()
+            .reduce(
+              (acc, name) => ({ ...acc, [name]: devDependencies[name] }),
+              {},
+            ),
         },
         null,
         2,
@@ -347,41 +397,6 @@ async function init() {
     copyDir(frontendTemplateDir, path.join(root, "frontend")),
   ])
 
-  const dependencies = [
-    "sequelize",
-    "@hatchifyjs/core",
-    ...backend.dependencies,
-    ...database.dependencies,
-    ...frontend.dependencies,
-  ]
-  const devDependencies = [
-    ...backend.devDependencies,
-    ...database.devDependencies,
-    ...frontend.devDependencies,
-    "nodemon",
-    "ts-node",
-  ]
-
-  runCommand(
-    `npm install --package-lock-only --no-package-lock ${dependencies
-      .map((dependency) =>
-        argPackagePath && dependency.startsWith("@hatchifyjs/")
-          ? `${argPackagePath}/${dependency.replace("@hatchifyjs/", "")}`
-          : `${dependency}@latest`,
-      )
-      .join(" ")}`,
-    root,
-  )
-  runCommand(
-    `npm install --package-lock-only --no-package-lock ${devDependencies
-      .map((dependency) =>
-        argPackagePath && dependency.startsWith("@hatchifyjs/")
-          ? `${argPackagePath}/${dependency.replace("@hatchifyjs/", "")}`
-          : `${dependency}@latest`,
-      )
-      .join(" ")} --save-dev`,
-    root,
-  )
   runCommand("npm install", root)
 
   const cdProjectName = path.relative(cwd, root)
