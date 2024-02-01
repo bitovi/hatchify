@@ -23,6 +23,7 @@ export interface HatchifyEverythingProps<
   defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters
+  minimumLoadTime?: number
 }
 
 function HatchifyEverything<

@@ -22,6 +22,7 @@ export function WithSchemas<
   defaultPage,
   defaultSort,
   baseFilter,
+  minimumLoadTime,
 }: HatchifyEverythingProps<TSchemas>): JSX.Element {
   const schemasList = Object.keys(finalSchemas) as Array<
     GetSchemaNames<TSchemas>
@@ -52,6 +53,7 @@ export function WithSchemas<
       defaultPage,
       defaultSort,
       baseFilter,
+      minimumLoadTime,
       include: defaultIncludes[selectedSchema],
     },
   )
