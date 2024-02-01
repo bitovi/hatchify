@@ -16,6 +16,7 @@
     "build": "tsc"
   },
   "devDependencies": {
+    "@types/lodash.isempty": "^4.4.9",
     "@vitest/coverage-c8": "^0.32.2",
     "vitest": "^0.30.1"
   },
@@ -23,6 +24,6 @@
     "@hatchifyjs/core": "^0.3.x"
   },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash.isempty": "^4.4.0"
   }
 }
