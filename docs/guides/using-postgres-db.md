@@ -21,7 +21,7 @@ There are many different ways to install PostgreSQL (brew, choco, downloading th
 2. To create and run PostgreSQL database, run the following command:
 
    ```bash
-   docker run --name postgres -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres:alpine
+   docker run --name hatchify-database -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres:alpine
    ```
 
    This installs the official PostgreSQL image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:

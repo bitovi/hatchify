@@ -129,7 +129,7 @@ No further configuration is required to test Hatchify against a SQLite database
 2. To create and run Postgres database, run the following command:
 
    ```bash
-   docker run --name postgres -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres:alpine
+   docker run --name hatchify-database -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres:alpine
    ```
 
    This installs the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
@@ -196,12 +196,12 @@ If you have Docker installed, use any of the following commands to start fresh l
 - For PostgreSQL
 
   ```bash
-  docker run --name postgres -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres:alpine
+  docker run --name hatchify-database -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres:alpine
   ```
 
 - For MySQL
   ```bash
-  docker run --name mysql -e MYSQL_ROOT_PASSWORD=password -d mysql:tag
+  docker run --name hatchify-database -e MYSQL_ROOT_PASSWORD=password -d mysql:tag
   ```
 
 _Note:_ if you're using Windows, make sure you run these from Git Bash (or another MinGW environment), since these commands will execute bash scripts. Recall that [it's very easy to include Git Bash as your default integrated terminal on Visual Studio Code](https://code.visualstudio.com/docs/editor/integrated-terminal).
