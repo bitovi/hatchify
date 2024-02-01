@@ -270,12 +270,24 @@ async function init() {
   ])
 
   const dependencies = dependencyDetails.reduce(
-    (acc, curr) => ({ ...acc, [curr.name]: `^${curr["dist-tags"].latest}` }),
+    (acc, curr) => ({
+      ...acc,
+      [curr.name]:
+        argPackagePath && curr.name.startsWith("@hatchifyjs/")
+          ? `${argPackagePath}/${curr.name.replace("@hatchifyjs/", "")}`
+          : `^${curr["dist-tags"].latest}`,
+    }),
     {},
   )
 
   const devDependencies = devDependencyDetails.reduce(
-    (acc, curr) => ({ ...acc, [curr.name]: `^${curr["dist-tags"].latest}` }),
+    (acc, curr) => ({
+      ...acc,
+      [curr.name]:
+        argPackagePath && curr.name.startsWith("@hatchifyjs/")
+          ? `${argPackagePath}/${curr.name.replace("@hatchifyjs/", "")}`
+          : `^${curr["dist-tags"].latest}`,
+    }),
     { ...templatePackage.dependencies, ...templatePackage.devDependencies },
   )
 
