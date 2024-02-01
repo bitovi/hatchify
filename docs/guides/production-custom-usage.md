@@ -119,8 +119,8 @@ COPY dist/frontend /var/www
 version: "3.4"
 services:
   database:
-    image: postgres:alpine
     container_name: database
+    image: postgres:alpine
     networks:
       - back-tier
     environment:
@@ -132,6 +132,7 @@ services:
       timeout: 5s
       retries: 5
   backend:
+    container_name: backend
     build:
       context: .
       dockerfile: backend.dockerfile
@@ -145,6 +146,7 @@ services:
       - back-tier
       - front-tier
   proxy:
+    container_name: proxy
     build:
       context: .
       dockerfile: frontend.dockerfile
