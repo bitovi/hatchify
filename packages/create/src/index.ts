@@ -268,7 +268,7 @@ async function init() {
             "build:frontend": "vite build --outDir dist/frontend",
             dev: "nodemon backend/index.ts --watch backend --watch schemas.ts",
             lint: "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-            "start:backend": "node dist/backend/backend/index.js",
+            "start:backend": "node backend/index.js",
           },
         },
         null,
@@ -408,7 +408,7 @@ async function init() {
       "Make sure you have Postgres running already start a docker container using:",
     )
     console.log(
-      `docker run --name hatchify-database -p ${databasePort}:5432 -e POSTGRES_PASSWORD=${databasePassword} -e POSTGRES_USER=${databaseUsername} -d ${databaseName}`,
+      `docker run --name hatchify-database -p ${databasePort}:5432 -e POSTGRES_PASSWORD=${databasePassword} -e POSTGRES_USER=${databaseUsername} -d ${databaseName}:alpine`,
     )
   }
 
