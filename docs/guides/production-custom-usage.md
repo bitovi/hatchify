@@ -12,7 +12,7 @@ npm run build:frontend
 
 Well done, now we have all our static assets under `dist/frontend`.
 
-# How to build our backend to run without TypeScript and the Vite dev server middleware?
+## How to build our backend to run without TypeScript and the Vite dev server middleware?
 
 While we want our production to run [Koa](https://koajs.com/) or [Express](https://expressjs.com/) similar to our development server, it is also running on [TypeScript](https://www.typescriptlang.org/) that is not needed in production, and it integrates [Vite](https://vitejs.dev/) middleware to be able to develop with a single executable. Furthermore, A production server signals to our dependencies that we are running in production so performance tweaks can take place. Some logging might not be necessary, caching can be leveraged, etc.
 
@@ -26,7 +26,7 @@ Great, now we have an optimized JavaScript version under `dist/backend`. To run 
 NODE_ENV=production node dist/backend/backend/index.js
 ```
 
-## How to build a docker image for hosting the backend
+## How to build a docker image for hosting the backend and the frontend under a single proxy domain?
 
 There are many ways to skin a cat when it comes to deploying our app to production servers. One of the easier ones is using Docker. What's great about Docker is that you can have a fair simulation of the deployed infrastructure tested locally before it gets deployed. In order to do that, we will create a few files at the root of our project:
 
@@ -169,4 +169,8 @@ and navigating to http://localhost.
 
 ## Next Steps
 
-[Deploy Any Docker Project to AWS with GitHub Actions](https://www.bitovi.com/blog/deploy-any-docker-project-to-aws-with-github-actions)
+`docker compose` is good for testing your containers or managing simple deployments, but more complex scenarios will use something like [Kubernetes](https://kubernetes.io/) to orchestrate, load balance and scale your Nginx gateway and API instances separately.
+
+Also, this is just one example of how to deploy the frontend & backend, and that situations where the frontend is delivered via a CDN or the backend is hosted on a different domain (these require [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) support) are also valid configurations.
+
+However, if you choose to stay with Docker, there is a handy [GitHub Action to deploy Docker projects to AWS ](https://www.bitovi.com/blog/deploy-any-docker-project-to-aws-with-github-actions).
