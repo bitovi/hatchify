@@ -45,6 +45,7 @@ export const useAll = <
   schemaName: TSchemaName,
   query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
   baseFilter?: Filters,
+  minimumLoadTime?: number,
 ): [
   Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>>,
   Meta,
@@ -58,16 +59,25 @@ export const useAll = <
   const [error, setError] = useState<MetaError | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const fetchAll = useCallback(() => {
+  const wait = (minimumLoadTime: number): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, minimumLoadTime)
+    })
+  }
+
+  const fetchAll = useCallback(async () => {
     setLoading(true)
-    findAll<TSchemas, TSchemaName>(
-      dataSource,
-      allSchemas,
-      schemaName,
-      memoizedQuery,
-      memoizedBaseFilter,
-    )
-      .then(([data, requestMeta]) => {
+    Promise.all([
+      findAll<TSchemas, TSchemaName>(
+        dataSource,
+        allSchemas,
+        schemaName,
+        memoizedQuery,
+        memoizedBaseFilter,
+      ),
+      wait(minimumLoadTime ? minimumLoadTime : 250),
+    ])
+      .then(([[data, requestMeta]]) => {
         setError(undefined)
         setData(data)
         setRequestMeta(requestMeta)

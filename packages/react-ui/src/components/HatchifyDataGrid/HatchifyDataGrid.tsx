@@ -31,6 +31,7 @@ export interface HatchifyDataGridProps<
   defaultSort?: SortObject
   baseFilter?: Filters
   overwrite?: boolean
+  minimumLoadTime?: number
 }
 
 function HatchifyDataGrid<
@@ -48,6 +49,7 @@ function HatchifyDataGrid<
   defaultSort,
   baseFilter,
   overwrite,
+  minimumLoadTime,
 }: HatchifyDataGridProps<TSchemas, TSchemaName>): JSX.Element {
   const { DataGrid } = useHatchifyPresentation()
   const defaultInclude = useMemo(
@@ -71,6 +73,7 @@ function HatchifyDataGrid<
       defaultPage,
       defaultSort,
       baseFilter,
+      minimumLoadTime,
     },
   )
 

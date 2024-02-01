@@ -62,6 +62,7 @@ export default function useDataGridState<
     defaultPage,
     defaultSort,
     baseFilter,
+    minimumLoadTime,
   }: {
     defaultSelected?: HatchifyDataGridSelected["selected"]
     onSelectedChange?: HatchifyDataGridSelected["setSelected"]
@@ -70,6 +71,7 @@ export default function useDataGridState<
     defaultPage?: PaginationObject
     defaultSort?: SortObject
     baseFilter?: Filters
+    minimumLoadTime?: number
   } = {},
 ): DataGridState<TSchemas, TSchemaName> {
   if (typeof schemaName !== "string") {
@@ -94,6 +96,7 @@ export default function useDataGridState<
       include,
     },
     baseFilter,
+    minimumLoadTime,
   )
 
   useEffect(() => {
