@@ -33,6 +33,7 @@ jobs:
           aws_r53_enable: true
           # aws_resource_identifier: hatchify-grid
           aws_r53_domain_name: bitovi-sandbox.com
+          aws_r53_sub_domain_name: grid-demo
           aws_elb_app_port: 3000,3001
           aws_elb_listen_port: 3000,3001
           aws_elb_healthcheck: "HTTP:3000/"
