@@ -1,5 +1,5 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import isEmpty from "lodash/isEmpty.js"
+import isEmpty from "lodash.isempty"
 import type {
   RestClient,
   GetSchemaNames,

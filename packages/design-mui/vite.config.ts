@@ -17,7 +17,6 @@ export default defineConfig({
         "@hatchifyjs/react-ui",
         "@mui/icons-material",
         "@mui/utils",
-        "lodash",
         "react",
         "react-dom",
       ],

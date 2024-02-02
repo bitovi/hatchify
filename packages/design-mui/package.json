@@ -31,13 +31,12 @@
   "dependencies": {
     "@hatchifyjs/react-ui": "0.1.32",
     "@mui/icons-material": "^5.14.1",
-    "@mui/utils": "^5.13.1",
-    "lodash": "^4.17.21"
+    "@mui/utils": "^5.13.1"
   },
   "peerDependencies": {
-    "@hatchifyjs/core": "^0.3.x",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@hatchifyjs/core": "^0.3.x",
     "@mui/material": "^5.12.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
