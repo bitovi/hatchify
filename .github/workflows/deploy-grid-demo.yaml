@@ -4,9 +4,9 @@ on:
   push:
     branches: [461-move-hatchify-grid-demo]
 
-    paths: 
-      - 'example/hatchify-grid-demo/**'
-      - '.github/workflows/deploy-grid-demo.yaml'
+    paths:
+      - "example/hatchify-grid-demo/**"
+      - ".github/workflows/deploy-grid-demo.yaml"
 
 permissions:
   contents: read
@@ -46,5 +46,5 @@ jobs:
           docker_repo_app_directory: example/hatchify-grid-demo
           docker_repo_app_directory_cleanup: true
 
-          # tf_stack_destroy: true
-          # tf_state_bucket_destroy: true
+          tf_stack_destroy: true
+          tf_state_bucket_destroy: true
