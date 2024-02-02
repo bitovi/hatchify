@@ -2,8 +2,6 @@ import { dirname } from "path"
 import { fileURLToPath } from "url"
 import dotenv from "dotenv"
 import Koa from "koa"
-import c2k from "koa-connect"
-import { createServer as createViteServer } from "vite"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import * as Schemas from "../schemas.js"
 
@@ -22,13 +20,19 @@ const hatchedKoa = hatchifyKoa(Schemas, {
 ;(async () => {
   await hatchedKoa.modelSync({ alter: true })
 
-  const vite = await createViteServer({
-    root: `${currentDir}/../`,
-    server: { middlewareMode: true },
-  })
-
   app.use(hatchedKoa.middleware.allModels.all)
-  app.use(c2k(vite.middlewares))
+
+  if (process.env.NODE_ENV !== "production") {
+    const { default: c2k } = await import("koa-connect")
+    const { createServer: createViteServer } = await import("vite")
+
+    const vite = await createViteServer({
+      root: `${currentDir}/../`,
+      server: { middlewareMode: true },
+    })
+
+    app.use(c2k(vite.middlewares))
+  }
 
   app.listen(3000, () => {
     console.log("Started on http://localhost:3000")
