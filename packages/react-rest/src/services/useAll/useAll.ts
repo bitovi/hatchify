@@ -75,7 +75,7 @@ export const useAll = <
         memoizedQuery,
         memoizedBaseFilter,
       ),
-      wait(minimumLoadTime ? minimumLoadTime : 250),
+      wait(minimumLoadTime ?? 0),
     ])
       .then(([[data, requestMeta]]) => {
         setError(undefined)
