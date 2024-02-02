@@ -45,5 +45,5 @@ jobs:
           docker_repo_app_directory: example/hatchify-grid-demo
           docker_repo_app_directory_cleanup: true
 
-          tf_stack_destroy: true
-          tf_state_bucket_destroy: true
+          # tf_stack_destroy: true
+          # tf_state_bucket_destroy: true
