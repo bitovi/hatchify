@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  backend_sqlite:
+    # env_file: .env
+    container_name: backend_sqlite
+    build:
+      context: .
+      target: backend
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    environment:
+      - BACKEND=koa
+      - DATABASE=sqlite
+      - DB_URI=sqlite://localhost/:memory
+    networks:
+      - hatch_sqlite
+
+  backend_postgres:
+    #env_file: .postgres.env
+    container_name: backend_postgres
+    build:
+      context: .
+      target: backend
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3001:3000
+    environment:
+      - BACKEND=koa
+      - DATABASE=postgres
+      - DB_URI=postgres://postgres:postgres@postgres_db:5432/postgres
+    networks:
+      - hatch_postgres
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: postgres:15.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    #volumes:
+    #  - ./db:/var/lib/postgresql/data
+    networks:
+      - hatch_postgres
+
+networks:
+  hatch_sqlite:
+    driver: bridge
+  hatch_postgres:
+    driver: bridge
