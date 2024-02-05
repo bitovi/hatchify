@@ -5,8 +5,8 @@ on:
     branches: [461]
 
     paths:
-      - "example/hatchify-grid-demo/**"
-      - ".github/workflows/deploy-grid-demo.yaml"
+      - "example/grid-demo/**"
+      - ".github/workflows/grid-demo.yaml"
 
 permissions:
   contents: read
