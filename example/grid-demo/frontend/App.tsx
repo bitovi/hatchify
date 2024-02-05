@@ -1,30 +1,30 @@
-import { useState } from "react";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { useState } from "react"
+import { createTheme, ThemeProvider } from "@mui/material"
 import {
   hatchifyReact,
   createJsonapiClient,
   HatchifyProvider,
-} from "@hatchifyjs/react";
-import * as schemas from "../schemas";
+} from "@hatchifyjs/react"
+import * as schemas from "../schemas.js"
 import {
   DocumentStatus,
   DocumentActionsData,
   DocumentActionsHeader,
   DocumentDate,
   ActionsRow,
-} from "./components/DocumentTable";
+} from "./components/DocumentTable.js"
 
-export const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas));
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
 
-const DocumentList = hatchedReact.components.Document.Collection;
-const DocumentColumn = hatchedReact.components.Document.Column;
-const DocumentEmptyList = hatchedReact.components.Document.Empty;
+const DocumentList = hatchedReact.components.Document.DataGrid
+const DocumentColumn = hatchedReact.components.Document.Column
+const DocumentEmptyList = hatchedReact.components.Document.Empty
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
     all: false,
     ids: [],
-  });
+  })
 
   return (
     <ThemeProvider theme={theme}>
@@ -35,29 +35,32 @@ const App: React.FC = () => {
           onSelectedChange={(selected) => setSelected(selected)}
         >
           <DocumentColumn
-            type="replace"
             field="dueDate"
-            DataValueComponent={DocumentDate}
+            renderDataValue={({ value }) => (
+              <DocumentDate value={value as string} />
+            )}
           />
           <DocumentColumn
-            type="replace"
             field="status"
-            DataValueComponent={DocumentStatus}
+            renderDataValue={({ value }) => (
+              <DocumentStatus value={value as string} />
+            )}
           />
           <DocumentColumn
-            type="append"
             label="Action"
-            DataValueComponent={DocumentActionsData}
+            renderDataValue={({ record }) => (
+              <DocumentActionsData record={record} />
+            )}
             HeaderValueComponent={DocumentActionsHeader}
           />
           <DocumentEmptyList>No records to display</DocumentEmptyList>
         </DocumentList>
       </HatchifyProvider>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
 
 const theme = createTheme({
   components: {
@@ -85,4 +88,4 @@ const theme = createTheme({
       },
     },
   },
-});
+})
