@@ -6,7 +6,7 @@ on:
 
     paths:
       - "example/grid-demo/**"
-      - ".github/workflows/grid-demo.yaml"
+      - ".github/workflows/grid-demo.yml"
 
 permissions:
   contents: read
