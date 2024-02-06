@@ -25,7 +25,7 @@ export const Document = {
     status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
   },
   relationships: {
-    uploadedBy: belongsTo("User"),
+    uploadedBy: belongsTo("User", { sourceAttribute: "userId" }),
   },
 } satisfies PartialSchema
 

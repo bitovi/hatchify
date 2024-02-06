@@ -23,9 +23,12 @@ const hatchedNode = getHatchFunction(options.framework)(schemas, {
 
 ;(async () => {
   await hatchedNode.modelSync({ alter: true })
-  ;(await setupApp(hatchedNode.middleware.allModels.all)).listen(3000, () => {
+
+  const port = +(process.env.APP_PORT ?? "3000")
+
+  ;(await setupApp(hatchedNode.middleware.allModels.all)).listen(port, () => {
     // eslint-disable-next-line no-console
-    console.log("Started on http://localhost:3000")
+    console.log(`Started on http://localhost:${port}`)
   })
 })()
 
