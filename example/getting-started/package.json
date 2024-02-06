@@ -9,7 +9,7 @@
     "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
     "dev": "nodemon backend/index.ts --watch backend --watch schemas.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "start:backend": "node dist/backend/backend/index.js"
+    "start:backend": "backend/index.js"
   },
   "dependencies": {
     "@hatchifyjs/core": "^0.3.17",

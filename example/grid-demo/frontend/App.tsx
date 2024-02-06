@@ -1,30 +1,30 @@
-import { useState } from "react"
-import { createTheme, ThemeProvider } from "@mui/material"
+import { useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material";
 import {
   hatchifyReact,
   createJsonapiClient,
   HatchifyProvider,
-} from "@hatchifyjs/react"
-import * as schemas from "../schemas.js"
+} from "@hatchifyjs/react";
+import * as schemas from "../schemas.js";
 import {
   DocumentStatus,
   DocumentActionsData,
   DocumentActionsHeader,
   DocumentDate,
   ActionsRow,
-} from "./components/DocumentTable.js"
+} from "./components/DocumentTable.js";
 
-const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas));
 
-const DocumentList = hatchedReact.components.Document.DataGrid
-const DocumentColumn = hatchedReact.components.Document.Column
-const DocumentEmptyList = hatchedReact.components.Document.Empty
+const DocumentList = hatchedReact.components.Document.DataGrid;
+const DocumentColumn = hatchedReact.components.Document.Column;
+const DocumentEmptyList = hatchedReact.components.Document.Empty;
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
     all: false,
     ids: [],
-  })
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -57,10 +57,10 @@ const App: React.FC = () => {
         </DocumentList>
       </HatchifyProvider>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 
 const theme = createTheme({
   components: {
@@ -88,4 +88,4 @@ const theme = createTheme({
       },
     },
   },
-})
+});

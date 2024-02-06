@@ -9,38 +9,15 @@ permissions:
 
 jobs:
   Hatchify-Deploy-Postgres:
+    # if the branch name of the PR does not contain 'skip-deploy'
+    if: ${{!contains(github.head_ref, 'skip-deploy')}}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./example/grid-demo
     environment:
       name: ${{ github.ref_name }}
       url: ${{ steps.deploy.outputs.vm_url }}
-    # services:
-    #   postgres:
-    #     image: postgres:alpine
-    #     env:
-    #       POSTGRES_USER: postgres
-    #       POSTGRES_PASSWORD: password
-    #     options: >-
-    #       --health-cmd pg_isready
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
-    #     ports:
-    #       - 5432:5432
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          registry-url: "https://registry.npmjs.org/"
-      - run: npm ci
-      # - run: npm test
-      - run: npm run lint
-      # - run: npm run build
-      - id: deploy
-        name: Deploy
+      - id: deploy-postgres
+        name: Deploy with postgres
         uses: bitovi/github-actions-deploy-docker-to-ec2@v1.0.0
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID_SANDBOX }}
