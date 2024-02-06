@@ -2,7 +2,7 @@ name: Deploy Hatchify Grid-Demo
 
 on:
   push:
-    branches: [main]
+    branches: [461]
 
 permissions:
   contents: read
