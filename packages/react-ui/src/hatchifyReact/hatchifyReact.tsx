@@ -83,6 +83,7 @@ export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
         defaultPage,
         defaultSort,
         baseFilter,
+        minimumLoadTime,
       }?: {
         defaultSelected?: HatchifyDataGridProps<
           TSchemas,
@@ -97,6 +98,7 @@ export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
         defaultPage?: PaginationObject
         defaultSort?: SortObject
         baseFilter?: Filters
+        minimumLoadTime?: number
       }) => DataGridState<TSchemas, SchemaName>
     }
   }
@@ -155,6 +157,7 @@ export function hatchifyReact<
           defaultPage,
           defaultSort,
           baseFilter,
+          minimumLoadTime,
         } = {}) =>
           useDataGridState<TSchemas, GetSchemaNames<TSchemas>>(
             finalSchemas,
@@ -169,6 +172,7 @@ export function hatchifyReact<
               defaultPage,
               defaultSort,
               baseFilter,
+              minimumLoadTime,
             },
           ),
       }
