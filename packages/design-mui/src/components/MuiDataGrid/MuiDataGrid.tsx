@@ -10,7 +10,7 @@ const MuiDataGrid: React.FC<XDataGridProps> = ({ children, ...props }) => {
       <Grid item xs={12}>
         <MuiFilters {...props} />
       </Grid>
-      <Grid item xs={12} sx={{ minHeight: "80vh" }}>
+      <Grid item xs={12}>
         <MuiList {...props}>{children}</MuiList>
       </Grid>
       <Grid item xs={12}>
