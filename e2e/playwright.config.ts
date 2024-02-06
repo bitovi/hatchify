@@ -19,7 +19,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [["html", { outputFolder: "playwright-report" }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -84,6 +84,12 @@ export default defineConfig({
       command: "cd ../example/react-rest && npm install && npm run dev",
       reuseExistingServer: !process.env.CI,
       port: 5174,
+    },
+    {
+      command:
+        "cd ../example/grid-demo && APP_PORT=3001 npm run dev:koa:sqlite",
+      reuseExistingServer: !process.env.CI,
+      port: 3001,
     },
   ],
 })
