@@ -100,9 +100,9 @@ test("works", async ({ page, request }) => {
   await page.reload()
 
   await expect(page.getByText("Test")).toBeVisible()
-  await expect(page.getByText("2023-07-05")).toBeVisible() // TODO: fix me
+  await expect(page.getByText("7/5/2023")).toBeVisible()
   await expect(page.getByText("6", { exact: true })).toBeVisible()
-  await expect(page.getByText("7/5/2023, 1:30:52 PM")).toBeVisible()
+  await expect(page.getByText("2023-07-05 1:30 pm")).toBeVisible()
   await expect(page.getByText("Bla bla")).toBeVisible()
   await expect(page.getByText("true")).toBeVisible()
   await expect(

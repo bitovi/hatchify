@@ -35,7 +35,7 @@ const App: React.FC = () => {
           onSelectedChange={(selected) => setSelected(selected)}
         >
           <DocumentColumn
-            field="dueDate"
+            field="lastUpdated"
             renderDataValue={({ value }) => (
               <DocumentDate value={value as string} />
             )}
