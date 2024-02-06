@@ -1,15 +1,20 @@
-import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
-import { Button, Icon, IconButton } from "@mui/material";
+import { HomeRepairService } from "@mui/icons-material"
+import { Button, Icon, IconButton } from "@mui/material"
+import type { ReactElement } from "react"
 
 export const ActionsRow: React.FC<{
-  selected: { all: boolean; ids: string[] };
+  selected: { all: boolean; ids: string[] }
 }> = ({ selected }) => {
-  console.log("selected", selected);
+  // eslint-disable-next-line no-console
+  console.log("selected", selected)
   function onClick() {
-    if (!selected.all && !selected.ids.length) alert("action on no items");
-    else if (selected.all)
-      alert(`action on ALL ITEMS or items ${selected.ids.join(",")}`);
-    else alert(`action on items ${selected.ids.join(",")}`);
+    if (!selected.all && !selected.ids.length) {
+      alert("action on no items")
+    } else if (selected.all) {
+      alert(`action on ALL ITEMS or items ${selected.ids.join(",")}`)
+    } else {
+      alert(`action on items ${selected.ids.join(",")}`)
+    }
   }
 
   return (
@@ -37,17 +42,17 @@ export const ActionsRow: React.FC<{
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export function DocumentDate({ value }: { value: string }) {
-  const date = new Date(value);
-  const yyyy = date.getFullYear();
-  const mm = ("0" + (date.getMonth() + 1)).slice(-2);
-  const dd = ("0" + date.getDate()).slice(-2);
-  const hh = (date.getHours() + 24) % 12 || 12;
-  const min = `${date.getMinutes() > 9 ? "" : 0}${date.getMinutes()}`;
-  const ampm = date.getHours() >= 12 ? "pm" : "am";
+export function DocumentDate({ value }: { value: string }): ReactElement {
+  const date = new Date(value)
+  const yyyy = date.getFullYear()
+  const mm = ("0" + (date.getMonth() + 1)).slice(-2)
+  const dd = ("0" + date.getDate()).slice(-2)
+  const hh = (date.getHours() + 24) % 12 || 12
+  const min = `${date.getMinutes() > 9 ? "" : 0}${date.getMinutes()}`
+  const ampm = date.getHours() >= 12 ? "pm" : "am"
   return (
     <>
       {value === null ? (
@@ -58,28 +63,34 @@ export function DocumentDate({ value }: { value: string }) {
         >{`${yyyy}-${mm}-${dd} ${hh}:${min} ${ampm}`}</span>
       )}
     </>
-  );
+  )
 }
 
-export function DocumentStatus({ value }: { value: string }) {
-  return (
-    value && (
-      <div
-        style={{
-          backgroundColor: "#EFF1F1",
-          padding: "5px 10px",
-          borderRadius: 5,
-          display: "inline-flex",
-          alignItems: "center",
-        }}
-      >
-        {value}
-      </div>
-    )
-  );
+export function DocumentStatus({
+  value,
+}: {
+  value: string
+}): ReactElement | null {
+  return value ? (
+    <div
+      style={{
+        backgroundColor: "#EFF1F1",
+        padding: "5px 10px",
+        borderRadius: 5,
+        display: "inline-flex",
+        alignItems: "center",
+      }}
+    >
+      {value}
+    </div>
+  ) : null
 }
 
-export function DocumentActionsData({ record }: { record: { name?: string } }) {
+export function DocumentActionsData({
+  record,
+}: {
+  record: { name?: string }
+}): ReactElement {
   return (
     <>
       <IconButton
@@ -97,14 +108,14 @@ export function DocumentActionsData({ record }: { record: { name?: string } }) {
         visibility
       </IconButton>
     </>
-  );
+  )
 }
 
 export function DocumentActionsHeader({
   column,
 }: {
-  column: { label: string };
-}) {
+  column: { label: string }
+}): ReactElement {
   return (
     <div
       style={{
@@ -114,11 +125,11 @@ export function DocumentActionsHeader({
       }}
     >
       <strong>{column.label}</strong>
-      <HomeRepairServiceIcon
+      <HomeRepairService
         sx={{
           transform: "translateY(-2px)",
         }}
       />
     </div>
-  );
+  )
 }

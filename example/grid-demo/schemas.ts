@@ -1,16 +1,16 @@
+import type { PartialSchema } from "@hatchifyjs/core"
 import {
   string,
   dateonly,
   datetime,
   enumerate,
-  PartialSchema,
   integer,
   text,
   boolean,
   uuid,
   belongsTo,
   hasMany,
-} from "@hatchifyjs/core";
+} from "@hatchifyjs/core"
 
 export const Document = {
   name: "Document",
@@ -27,7 +27,7 @@ export const Document = {
   relationships: {
     uploadedBy: belongsTo("User"),
   },
-} satisfies PartialSchema;
+} satisfies PartialSchema
 
 export const User = {
   name: "User",
@@ -37,4 +37,4 @@ export const User = {
   relationships: {
     documents: hasMany("Document"),
   },
-} satisfies PartialSchema;
+} satisfies PartialSchema
