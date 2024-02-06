@@ -1,15 +1,15 @@
 import type { PartialSchema } from "@hatchifyjs/core"
 import {
-  string,
+  belongsTo,
+  boolean,
   dateonly,
   datetime,
   enumerate,
-  integer,
-  text,
-  boolean,
-  uuid,
-  belongsTo,
   hasMany,
+  integer,
+  string,
+  text,
+  uuid,
 } from "@hatchifyjs/core"
 
 export const Document = {

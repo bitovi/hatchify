@@ -1,13 +1,14 @@
+import type { ExpressMiddleware } from "@hatchifyjs/express"
+import type { KoaMiddleware } from "@hatchifyjs/koa"
 import { Command } from "commander"
-import * as schemas from "../schemas.js"
+
 import {
   getDatabaseConfiguration,
   getHatchFunction,
   setupExpress,
   setupKoa,
 } from "./util.js"
-import type { ExpressMiddleware } from "@hatchifyjs/express"
-import type { KoaMiddleware } from "@hatchifyjs/koa"
+import * as schemas from "../schemas.js"
 
 const options = new Command()
   .requiredOption("-f, --framework <express|koa>", "Node framework")
