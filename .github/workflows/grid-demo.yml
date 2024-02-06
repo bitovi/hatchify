@@ -2,7 +2,7 @@ name: Deploy Hatchify Grid-Demo
 
 on:
   push:
-    branches: [461]
+    branches: [main]
 
 permissions:
   contents: read
@@ -52,7 +52,7 @@ jobs:
           # dot_env: ${{ secrets.DOT_ENV }}
           aws_r53_enable: true
           aws_r53_domain_name: bitovi-sandbox.com
-          # aws_r53_sub_domain_name: hatchify-grid-demo
+          aws_r53_sub_domain_name: hatchify-grid-demo
           aws_elb_app_port: 3000,3001
           aws_elb_listen_port: 3000,3001
           aws_elb_healthcheck: "HTTP:3000/"
@@ -65,5 +65,5 @@ jobs:
           docker_repo_app_directory: example/grid-demo
           docker_repo_app_directory_cleanup: true
 
-          tf_stack_destroy: true
+          # tf_stack_destroy: true
           tf_state_bucket_destroy: true
