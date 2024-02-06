@@ -50,6 +50,7 @@ export interface XDataGridProps<
 > extends DataGridState<TSchemas, TSchemaName> {
   children?: React.ReactNode
   overwrite?: boolean
+  minimumLoadTime?: number
 }
 
 export interface XEverythingProps<

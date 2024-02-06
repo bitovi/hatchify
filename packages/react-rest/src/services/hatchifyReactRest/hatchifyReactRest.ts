@@ -76,6 +76,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
       useAll: (
         query?: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
         baseFilter?: Filters,
+        minimumLoadTime?: number,
       ) => [
         Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>>,
         Meta,
@@ -180,13 +181,14 @@ export const hatchifyReactRest = <
             id,
           ),
         // hooks
-        useAll: (query, baseFilter) =>
+        useAll: (query, baseFilter, minimumLoadTime) =>
           useAll<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
             query ?? {},
             baseFilter,
+            minimumLoadTime,
           ),
         useOne: (query) =>
           useOne<TSchemas, TSchemaName>(
