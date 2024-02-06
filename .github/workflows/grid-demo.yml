@@ -42,5 +42,5 @@ jobs:
           docker_repo_app_directory: example/grid-demo
           docker_repo_app_directory_cleanup: true
 
-          tf_stack_destroy: true
+          #tf_stack_destroy: true
           tf_state_bucket_destroy: true
