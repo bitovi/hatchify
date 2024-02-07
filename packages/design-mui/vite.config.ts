@@ -2,6 +2,7 @@
 import { defineConfig } from "vite"
 import dts from "vite-plugin-dts"
 import react from "@vitejs/plugin-react"
+import nodeExternals from "rollup-plugin-node-externals"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,24 +11,13 @@ export default defineConfig({
       entry: "src/design-mui.ts",
       formats: ["es"],
     },
-    rollupOptions: {
-      external: [
-        "react",
-        "react-dom",
-        "@hatchifyjs/react-ui",
-        "@mui/icons-material",
-        "@mui/utils",
-        "react",
-        "react-dom",
-      ],
-    },
   },
   esbuild: {
     supported: {
       "top-level-await": true,
     },
   },
-  plugins: [dts(), react()],
+  plugins: [{ ...nodeExternals(), enforce: "pre" }, dts(), react()],
   test: {
     globals: true,
     environment: "jsdom",
