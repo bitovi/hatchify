@@ -87,7 +87,7 @@ export default defineConfig({
     },
     {
       command:
-        "cd ../example/grid-demo && APP_PORT=3001 npm run dev:koa:sqlite",
+        "cd ../example/grid-demo && npm install && APP_PORT=3001 npm run dev:koa:sqlite",
       reuseExistingServer: !process.env.CI,
       port: 3001,
     },
