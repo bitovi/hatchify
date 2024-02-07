@@ -3,7 +3,7 @@
 - <https://hatchify-grid-demo.bitovi-sandbox.com:3000> - React Koa SQLite
 - <https://hatchify-grid-demo.bitovi-sandbox.com:3001> - React Koa Postgres
 
-The demo is redeployed on every push to master. To deploy a version with the latest changes:
+The demo is redeployed on every push to `main`. To deploy a version with the latest changes:
 
 1. Create a new branch
 2. Update the dependencies in `package.json`
