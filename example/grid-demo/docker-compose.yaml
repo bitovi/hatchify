@@ -2,7 +2,6 @@ version: "3.9"
 
 services:
   backend_sqlite:
-    # env_file: .env
     container_name: backend_sqlite
     build:
       context: .
@@ -22,7 +21,6 @@ services:
       - hatch_sqlite
 
   backend_postgres:
-    #env_file: .postgres.env
     container_name: backend_postgres
     build:
       context: .
@@ -37,7 +35,7 @@ services:
       - APP_PORT=3001
       - BACKEND=koa
       - DATABASE=postgres
-      - DB_URI=postgres://postgres:postgres@postgres_db:5432/postgres
+      - DB_URI=postgres://postgres:password@postgres_db:5432/postgres
     networks:
       - hatch_postgres
     depends_on:
@@ -48,7 +46,7 @@ services:
     restart: always
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=password
     ports:
       - 5432:5432
     #volumes:
