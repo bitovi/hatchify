@@ -11,9 +11,9 @@
     "rebuild": "nx run-many -t build && npm install"
   },
   "dependencies": {
-    "@hatchifyjs/core": "file:../../packages/core",
-    "@hatchifyjs/react-rest": "file:../../packages/react-rest",
-    "@hatchifyjs/rest-client-jsonapi": "file:../../packages/rest-client-jsonapi",
+    "@hatchifyjs/core": "^0.3.17",
+    "@hatchifyjs/react-rest": "^0.1.20",
+    "@hatchifyjs/rest-client-jsonapi": "^0.1.20",
     "msw": "^1.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
