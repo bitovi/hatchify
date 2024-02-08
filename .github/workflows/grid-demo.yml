@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./example/grid-demo
+        working-directory: ./examples/grid-demo
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -62,7 +62,7 @@ jobs:
           aws_ec2_create_keypair_sm: true
 
           docker_full_cleanup: true
-          docker_repo_app_directory: example/grid-demo
+          docker_repo_app_directory: examples/grid-demo
           docker_repo_app_directory_cleanup: true
 
           # tf_stack_destroy: true

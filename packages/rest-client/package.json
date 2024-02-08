@@ -17,8 +17,8 @@
   },
   "devDependencies": {
     "@types/lodash.isempty": "^4.4.9",
-    "@vitest/coverage-c8": "^0.32.2",
-    "vitest": "^0.30.1"
+    "@vitest/coverage-v8": "^1.2.2",
+    "vitest": "^1.2.2"
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.3.x"

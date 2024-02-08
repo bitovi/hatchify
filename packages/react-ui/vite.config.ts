@@ -12,7 +12,7 @@ export default defineConfig({
       formats: ["es"],
     },
   },
-  plugins: [{ ...nodeExternals(), enforce: "pre" }, dts(), react()],
+  plugins: [{ ...nodeExternals(), enforce: "pre" }, dts({ entryRoot: "src" }), react()],
   test: {
     globals: true,
     environment: "jsdom",

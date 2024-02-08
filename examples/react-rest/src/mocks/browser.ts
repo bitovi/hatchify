@@ -80,7 +80,7 @@ const handlers = [
     todos.splice(index, 1)
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.get("/api/users", (req, res, ctx) => {
+  rest.get("/api/users", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: users }))
   }),
 ]

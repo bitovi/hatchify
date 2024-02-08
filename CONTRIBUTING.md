@@ -315,7 +315,7 @@ npx nx eslint @hatchifyjs/koa
 .
 ├── CONTRIBUTING.md                             # This file
 ├── README.md                                   # Getting started guide, currently in https://bitovi.atlassian.net/l/cp/BAsHxXaC
-├── example                                     # An example app created by following the guide above and used by Playwright
+├── examples                                     # An examples app created by following the guide above and used by Playwright
 │   ├── hatchify-app
 │   │   ├── backend
 │   │   │   └── index.ts

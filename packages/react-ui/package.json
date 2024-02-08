@@ -22,11 +22,11 @@
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.0.28",
     "@vitejs/plugin-react": "^4.0.0",
-    "@vitest/coverage-c8": "^0.32.2",
+    "@vitest/coverage-v8": "^1.2.2",
     "rollup-plugin-node-externals": "^7.0.1",
-    "vite": "^4.3.1",
-    "vite-plugin-dts": "^2.3.0",
-    "vitest": "^0.30.1"
+    "vite": "^5.0.12",
+    "vite-plugin-dts": "^3.7.2",
+    "vitest": "^1.2.2"
   },
   "dependencies": {
     "@hatchifyjs/react-rest": "0.1.21",

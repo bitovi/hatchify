@@ -81,13 +81,13 @@ export default defineConfig({
       port: 3000,
     },
     {
-      command: "cd ../example/react-rest && npm install && npm run dev",
+      command: "cd ../examples/react-rest && npm install && npm run dev",
       reuseExistingServer: !process.env.CI,
       port: 5174,
     },
     {
       command:
-        "cd ../example/grid-demo && npm install && APP_PORT=3001 npm run dev:koa:sqlite",
+        "cd ../examples/grid-demo && npm install && APP_PORT=3001 npm run dev:koa:sqlite",
       reuseExistingServer: !process.env.CI,
       port: 3001,
     },
