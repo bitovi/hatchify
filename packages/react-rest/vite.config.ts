@@ -1,5 +1,6 @@
 import { defineConfig } from "vite"
 import dts from "vite-plugin-dts"
+import nodeExternals from "rollup-plugin-node-externals"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,14 +9,6 @@ export default defineConfig({
       entry: "src/react-rest.ts",
       formats: ["es", "cjs"],
     },
-    rollupOptions: {
-      external: [
-        "@hatchifyjs/core",
-        "@hatchifyjs/rest-client",
-        "react",
-        "react-dom",
-      ],
-    },
   },
-  plugins: [dts()],
+  plugins: [{ ...nodeExternals(), enforce: "pre" }, dts()],
 })
