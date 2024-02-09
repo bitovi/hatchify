@@ -214,6 +214,7 @@ Continue learning more about the Hatchify feature set with these guides that con
 - [Adding checkboxes to the list](docs/guides/adding-checkboxes-to-the-list.md)
 - [Application data validation](docs/guides/application-data-validation.md)
 - [Production / Custom Usage Guide](docs/guides//production-custom-usage.md)
+- [Adding form-like behavior to the DataGrid](docs/guides/adding-form-like-behavior.md)
 
 ## API Docs
 
