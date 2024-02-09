@@ -217,7 +217,7 @@ Continue learning more about the Hatchify feature set with these guides that con
 
 ## API Docs
 
-Dig deep into how the internals of how Hatchify works in the technical interface documentation:
+Learn how to make Hatchify match your needs with its technical interface documentation:
 
 - [Schema](docs/schema/)
   - [Attributes](docs/schema/attribute-types/README.md)
