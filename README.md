@@ -202,7 +202,7 @@ You can start using this basic app to sort & filter the data:
 
 What you've built is currently bare bones, but read through our guides in the following section to learn how to enhance it to meet your needs.
 
-## Next Steps
+## Guides
 
 Continue learning more about the Hatchify feature set with these guides that continue from the example above:
 
