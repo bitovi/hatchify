@@ -28,7 +28,7 @@ const packagesChanged =
     }
 
     const packageName = filePath.split("/")[1] as keyof typeof dependencies
-    const dependentPackages = dependencies[packageName] ?? []
+    const dependentPackages = dependencies[packageName]
     return new Set([...acc, packageName, ...dependentPackages])
   }, new Set()) || new Set()
 
