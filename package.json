@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "scripts": {
     "build:all": "nx run-many -t build",
+    "bump-packages": "ts-node ./scripts/bump-packages",
     "check-packages": "ts-node ./scripts/check-packages",
     "e2e": "playwright test --config e2e/playwright.config.ts",
+    "get-changed-packages": "ts-node ./scripts/get-changed-packages",
     "pree2e": "./scripts/pree2e.sh",
     "poste2e": "cd e2e && rm -rf hatchify-app",
     "postinstall": "playwright install --with-deps",
