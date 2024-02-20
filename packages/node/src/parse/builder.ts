@@ -176,7 +176,7 @@ export function buildFindOptions(
             break
           }
         } else {
-          // No relationships on model.  Generate error expecting attributes of last model.
+          // No relationships on model. Generate error expecting attributes of last model.
           ops.errors.push(
             new UnexpectedValueError({
               detail: `URL must have 'sort' as comma separated values containing one or more attributes of ${currentSchema.name}.`,
