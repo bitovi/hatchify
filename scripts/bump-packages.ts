@@ -15,21 +15,25 @@ async function bumpPackages() {
     }),
   )
 
-  await runCommand(
-    `npm install ${Object.keys(dependencies)
-      .filter((name) => name.startsWith("@hatchifyjs/"))
-      .map((name) => `${name}@latest`)
-      .join(" ")}`,
-    root,
-  )
+  if (dependencies && Object.keys(dependencies).length) {
+    await runCommand(
+      `npm install ${Object.keys(dependencies)
+        .filter((name) => name.startsWith("@hatchifyjs/"))
+        .map((name) => `${name}@latest`)
+        .join(" ")}`,
+      root,
+    )
+  }
 
-  await runCommand(
-    `npm install -D ${Object.keys(devDependencies)
-      .filter((name) => name.startsWith("@hatchifyjs/"))
-      .map((name) => `${name}@latest`)
-      .join(" ")}`,
-    root,
-  )
+  if (devDependencies && Object.keys(devDependencies).length) {
+    await runCommand(
+      `npm install -D ${Object.keys(devDependencies)
+        .filter((name) => name.startsWith("@hatchifyjs/"))
+        .map((name) => `${name}@latest`)
+        .join(" ")}`,
+      root,
+    )
+  }
 }
 
 function runCommand(fullCommand: string, cwd: string, silent = false): void {

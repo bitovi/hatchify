@@ -44,8 +44,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
     "supertest": "^6.3.1",
-    "ts-jest": "^29.0.3",
-    "undefined": "^0.1.0"
+    "ts-jest": "^29.0.3"
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.3.x",
