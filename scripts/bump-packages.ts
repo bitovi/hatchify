@@ -15,20 +15,26 @@ async function bumpPackages() {
     }),
   )
 
-  if (dependencies && Object.keys(dependencies).length) {
+  const hatchifyDependencies = Object.keys(dependencies ?? {}).filter((name) =>
+    name.startsWith("@hatchifyjs/"),
+  )
+
+  const hatchifyDevDependencies = Object.keys(devDependencies ?? {}).filter(
+    (name) => name.startsWith("@hatchifyjs/"),
+  )
+
+  if (hatchifyDependencies.length) {
     await runCommand(
-      `npm install ${Object.keys(dependencies)
-        .filter((name) => name.startsWith("@hatchifyjs/"))
+      `npm install ${hatchifyDependencies
         .map((name) => `${name}@latest`)
         .join(" ")}`,
       root,
     )
   }
 
-  if (devDependencies && Object.keys(devDependencies).length) {
+  if (hatchifyDevDependencies.length) {
     await runCommand(
-      `npm install -D ${Object.keys(devDependencies)
-        .filter((name) => name.startsWith("@hatchifyjs/"))
+      `npm install -D ${hatchifyDevDependencies
         .map((name) => `${name}@latest`)
         .join(" ")}`,
       root,
