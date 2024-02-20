@@ -33,11 +33,6 @@ runs:
           echo "tag=latest" >> $GITHUB_OUTPUT
         fi
 
-    - name: Bump Packages
-      shell: bash
-      run: |
-        npm run bump-packages --package=${{ inputs.directory }}
-
     - name: Increment Version
       shell: bash
       run: |

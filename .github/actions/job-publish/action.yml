@@ -23,6 +23,11 @@ runs:
     - name: Setup
       uses: ./.github/actions/setup
 
+    - name: Bump Packages
+      shell: bash
+      run: |
+        npm run bump-packages --package=${{ inputs.directory }}
+
     - name: Build
       uses: ./.github/actions/build
       with:
