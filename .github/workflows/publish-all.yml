@@ -27,7 +27,7 @@ jobs:
         env:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           TOUCHED_FILES: ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
-        run: npm run get-changed-packages
+        run: npm run --silent get-changed-packages >> $GITHUB_OUTPUT
       - name: Publish crypto
         if: ${{ steps.changed-packages.outputs.crypto == 'publish' }}
         uses: ./.github/workflows/crypto
