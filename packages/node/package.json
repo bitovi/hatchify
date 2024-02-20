@@ -48,8 +48,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
     "sqlite3": "^5.1.6",
-    "ts-jest": "^29.1.1",
-    "undefined": "^0.1.0"
+    "ts-jest": "^29.1.1"
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.3.x",
