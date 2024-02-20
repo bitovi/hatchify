@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const dependencies = {
   core: [],
   create: [],
@@ -21,8 +22,12 @@ const dependencies = {
   "rest-client-jsonapi": ["react-jsonapi", "react"],
 }
 
+const { COMMIT_MESSAGE, TOUCHED_FILES } = process.env
+
+console.log(`segment=${getSegmentFromCommitMessage(COMMIT_MESSAGE)}\n`)
+
 const packagesChanged =
-  process.env.TOUCHED_FILES?.split(" ").reduce((acc, filePath) => {
+  TOUCHED_FILES?.split(" ").reduce((acc, filePath) => {
     if (!filePath.startsWith("packages/")) {
       return acc
     }
@@ -32,9 +37,16 @@ const packagesChanged =
     return new Set([...acc, packageName, ...dependentPackages])
   }, new Set()) || new Set()
 
-// eslint-disable-next-line no-console
 console.log(
   [...packagesChanged]
     .map((packageName) => `${packageName}=publish`)
     .join("\n"),
 )
+
+function getSegmentFromCommitMessage(commitMessage?: string): string {
+  const prefix = commitMessage?.split(":")[0]
+
+  return prefix && ["patch", "minor", "major"].includes(prefix)
+    ? prefix
+    : "patch"
+}
