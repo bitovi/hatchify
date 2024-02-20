@@ -26,12 +26,12 @@ runs:
     - name: Build
       uses: ./.github/actions/build
       with:
-        package: ${{ inputs.directory }}
+        package: @hatchifyjs/${{ inputs.directory }}
 
     - name: Publish to NPM
       uses: ./.github/actions/publish-npm
       with:
-        package: ${{ inputs.directory }}
+        package: @hatchifyjs/${{ inputs.directory }}
         directory: ${{ inputs.directory }}
         npm-token: ${{ inputs.npm-token }}
         github-token: ${{ inputs.github-token }}
