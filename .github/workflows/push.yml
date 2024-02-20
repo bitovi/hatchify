@@ -186,6 +186,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name }}
+      url: ${{ steps.deploy.outputs.vm_url }}
     steps:
       - id: deploy-postgres
         name: Deploy with postgres
