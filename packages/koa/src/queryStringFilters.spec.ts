@@ -267,7 +267,7 @@ const testCases = [
     queryParam: "filter[age][$nin]=25&filter[age][$nin]=35",
     expectedResult: [],
   },
-  //arrays
+  // arrays
   {
     description:
       "returns correct data using the $in operator with multiple strings",
