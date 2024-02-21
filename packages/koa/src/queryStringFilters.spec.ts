@@ -35,7 +35,7 @@ const [john, jane]: User[] = [
   },
 ]
 const testCases = [
-  //string
+  // string
   {
     description: "returns correct data using the $eq operator with a string",
     operator: "$eq",

@@ -56,7 +56,6 @@ runs:
     - name: Push Tag
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ inputs.github-token }}
         branch: ${{ github.ref }}
         tags: true
 
