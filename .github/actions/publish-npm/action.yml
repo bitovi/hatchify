@@ -72,8 +72,8 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       with:
-        fromTag: ${{ steps.version.outputs.previousVersion }}
-        toTag: ${{ steps.version.outputs.nextVersion }}
+        fromTag: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.previousVersion) }}
+        toTag: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.nextVersion) }}
 
     - name: Create Release
       uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
