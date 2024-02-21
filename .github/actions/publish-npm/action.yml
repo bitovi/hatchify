@@ -48,10 +48,13 @@ runs:
           fi
         fi
 
+        VERSION="$(cat $DIRECTORY/package.json | jq -r '.version')"
+        echo "previousVersion=$VERSION" >> $GITHUB_OUTPUT
+
         npm version ${{ inputs.segment }} $PREID_CMD --workspace $DIRECTORY
 
         VERSION="$(cat $DIRECTORY/package.json | jq -r '.version')"
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "nextVersion=$VERSION" >> $GITHUB_OUTPUT
 
         git commit --all --message "Publish ${{ inputs.package }} v$VERSION"
         git tag "${{ inputs.package }}/v$VERSION"
@@ -68,12 +71,15 @@ runs:
       uses: mikepenz/release-changelog-builder-action@v3
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
+      with:
+        fromTag: ${{ steps.version.outputs.previousVersion }}
+        toTag: ${{ steps.version.outputs.nextVersion }}
 
     - name: Create Release
       uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
       with:
-        body: ${{steps.github_release.outputs.changelog}}
-        tag_name: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.version) }}
+        body: ${{ steps.github_release.outputs.changelog }}
+        tag_name: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.nextVersion) }}
 
     - name: Publish to NPM Registry
       uses: JS-DevTools/npm-publish@v2
