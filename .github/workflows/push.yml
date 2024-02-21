@@ -25,7 +25,7 @@ jobs:
           node-version: 20
 
       - name: Install TypeScript
-        run: npm install -g typescript ts-node
+        run: npm install -g typescript ts-node @types/node
 
       - name: Get changed packages
         id: changed-packages
