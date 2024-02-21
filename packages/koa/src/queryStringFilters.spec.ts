@@ -218,7 +218,7 @@ const testCases = [
     expectedResult: [],
     expectedError: undefined,
   },
-  //number
+  // number
   {
     description: "returns correct data using the $eq operator with a number",
     operator: "$eq",
