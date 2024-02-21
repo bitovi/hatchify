@@ -11,7 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
           fetch-depth: 0
 
       - name: Get changed files
@@ -25,8 +24,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install TypeScript
+        run: npm install -g typescript ts-node
 
       - name: Get changed packages
         id: changed-packages

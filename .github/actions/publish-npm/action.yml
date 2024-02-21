@@ -1,4 +1,4 @@
-name: monorepo-publish-npm
+name: publish-npm
 
 inputs:
   package:
@@ -56,8 +56,20 @@ runs:
     - name: Push Tag
       uses: ad-m/github-push-action@master
       with:
+        github_token: ${{ inputs.github-token }}
         branch: ${{ github.ref }}
         tags: true
+
+    - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
+        env:
+          GITHUB_TOKEN: ${{ inputs.github-token }}
+
+      - name: Create Release
+        uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
+        with:
+          body: ${{steps.github_release.outputs.changelog}}
 
     - name: Publish to NPM Registry
       uses: JS-DevTools/npm-publish@v2
