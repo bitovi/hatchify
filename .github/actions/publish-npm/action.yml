@@ -61,15 +61,15 @@ runs:
         tags: true
 
     - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v3
-        env:
-          GITHUB_TOKEN: ${{ inputs.github-token }}
+      id: github_release
+      uses: mikepenz/release-changelog-builder-action@v3
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
 
-      - name: Create Release
-        uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
-        with:
-          body: ${{steps.github_release.outputs.changelog}}
+    - name: Create Release
+      uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
+      with:
+        body: ${{steps.github_release.outputs.changelog}}
 
     - name: Publish to NPM Registry
       uses: JS-DevTools/npm-publish@v2
