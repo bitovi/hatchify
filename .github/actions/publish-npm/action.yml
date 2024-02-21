@@ -73,8 +73,7 @@ runs:
       uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
       with:
         body: ${{steps.github_release.outputs.changelog}}
-        tag_name: ${{ format('{0}/v{1}', inputs.package, ) steps.tag.outputs.tag }} ${{ inputs.package }}/v$VERSION
-        # roye: ${{ format('@hatchifyjs/{0}', inputs.directory) }}
+        tag_name: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.version) }}
 
     - name: Publish to NPM Registry
       uses: JS-DevTools/npm-publish@v2
