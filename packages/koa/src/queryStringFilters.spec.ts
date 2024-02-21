@@ -282,7 +282,7 @@ const testCases = [
     queryParam: "filter[name][$nin]=John&filter[name][$nin]=Jane",
     expectedResult: [],
   },
-  //date
+  // date
   {
     description: "returns correct data using the $eq operator with a date",
     operator: "$eq",
