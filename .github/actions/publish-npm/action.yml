@@ -74,20 +74,81 @@ runs:
       with:
         fromTag: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.previousVersion) }}
         toTag: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.nextVersion) }}
-
-    - name: Debug
-      shell: bash
-      run: |
-        echo "-------- debug:"
-        echo "failed? ${{ steps.build_changelog.outputs.failed }}"
-        echo "pull_requests? ${{ steps.build_changelog.outputs.pull_requests }}"
-        echo "categorized_prs? ${{ steps.build_changelog.outputs.categorized_prs }}"
-        echo "uncategorized_prs? ${{ steps.build_changelog.outputs.uncategorized_prs }}"
-        echo "fromTag? ${{ steps.build_changelog.outputs.fromTag }}"
-        echo "toTag? ${{ steps.build_changelog.outputs.toTag }}"
-        echo "changed_files? ${{ steps.build_changelog.outputs.changed_files }}"
-        echo "${{ steps.build_changelog.outputs.changelog }}"
-        echo "------- end debug"
+        configurationJson: |
+          {
+            "categories": [
+              {
+                "title": "## 🚀 Features",
+                "labels": ["feature"]
+              },
+              {
+                "title": "## 🐛 Fixes",
+                "labels": ["fix"]
+              },
+              {
+                "key": "tests",
+                "title": "## 🧪 Tests",
+                "labels": ["test"]
+              },
+              {
+                "title": "## 💬 Other",
+                "labels": ["other"]
+              },
+              {
+                "title": "## 📦 Dependencies",
+                "labels": ["dependencies"]
+              }
+            ],
+            "ignore_labels": [
+              "ignore"
+            ],
+            "sort": {
+              "order": "ASC",
+              "on_property": "mergedAt"
+            },
+            "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+            "pr_template": "- #{{TITLE}}\n   - PR: ##{{NUMBER}}",
+            "empty_template": "- no changes",
+            "label_extractor": [
+              {
+                "pattern": "(.) (.+)",
+                "target": "$1",
+                "flags": "gu"
+              },
+              {
+                "pattern": "\\[Issue\\]",
+                "on_property": "title",
+                "method": "match"
+              }
+            ],
+            "duplicate_filter": {
+              "pattern": "\\[HATCH-....\\]",
+              "on_property": "title",
+              "method": "match"
+            },
+            "reference": {
+              "pattern": ".*\\ \\#(.).*",
+              "on_property": "body",
+              "method": "replace",
+              "target": "$1"
+            },
+            "transformers": [
+              {
+                "pattern": "[\\-\\*] (\\[(...|TEST|CI|SKIP)\\])( )?(.+?)\n(.+?[\\-\\*] )(.+)",
+                "target": "- $4\n  - $6"
+              }
+            ],
+            "trim_values": true,
+            "max_tags_to_fetch": 200,
+            "max_pull_requests": 200,
+            "max_back_track_time_days": 365,
+            "exclude_merge_branches": [
+              "Owner/qa"
+            ],
+            "base_branches": [
+              "main"
+            ]
+          }
 
     - name: Create Release
       uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
