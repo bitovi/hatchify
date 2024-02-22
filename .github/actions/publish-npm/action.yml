@@ -67,7 +67,7 @@ runs:
         tags: true
 
     - name: Build Changelog
-      id: github_release
+      id: build_changelog
       uses: mikepenz/release-changelog-builder-action@v3
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
@@ -75,10 +75,24 @@ runs:
         fromTag: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.previousVersion) }}
         toTag: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.nextVersion) }}
 
+    - name: Debug
+      shell: bash
+      run: |
+        echo "-------- debug:"
+        echo "failed? ${{ steps.build_changelog.outputs.failed }}"
+        echo "pull_requests? ${{ steps.build_changelog.outputs.pull_requests }}"
+        echo "categorized_prs? ${{ steps.build_changelog.outputs.categorized_prs }}"
+        echo "uncategorized_prs? ${{ steps.build_changelog.outputs.uncategorized_prs }}"
+        echo "fromTag? ${{ steps.build_changelog.outputs.fromTag }}"
+        echo "toTag? ${{ steps.build_changelog.outputs.toTag }}"
+        echo "changed_files? ${{ steps.build_changelog.outputs.changed_files }}"
+        echo "${{ steps.build_changelog.outputs.changelog }}"
+        echo "------- end debug"
+
     - name: Create Release
       uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
       with:
-        body: ${{ steps.github_release.outputs.changelog }}
+        body: ${{ steps.build_changelog.outputs.changelog }}
         tag_name: ${{ format('{0}/v{1}', inputs.package, steps.version.outputs.nextVersion) }}
 
     - name: Publish to NPM Registry

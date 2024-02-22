@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build Changelog
-        id: github_release
+        id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -18,4 +18,4 @@ jobs:
       - name: Create Release
         uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
         with:
-          body: ${{steps.github_release.outputs.changelog}}
+          body: ${{steps.build_changelog.outputs.changelog}}
