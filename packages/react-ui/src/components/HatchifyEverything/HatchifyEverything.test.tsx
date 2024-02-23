@@ -45,7 +45,7 @@ describe("components/HatchifyEverything/components/HatchifyEverything", () => {
     updateOne: () => Promise.resolve({ record: {} as any, related: [] }),
     deleteOne: () => Promise.resolve(),
   })
-  it("Works", async () => {
+  it("'HatchifyEverything' renders", async () => {
     render(
       <HatchifyEverything
         partialSchemas={partialSchemas}
@@ -55,7 +55,7 @@ describe("components/HatchifyEverything/components/HatchifyEverything", () => {
     )
   })
 
-  it("Works with no schemas", async () => {
+  it("'HatchifyEverything' renders with no schemas", async () => {
     render(
       <HatchifyEverything
         partialSchemas={partialSchemas}

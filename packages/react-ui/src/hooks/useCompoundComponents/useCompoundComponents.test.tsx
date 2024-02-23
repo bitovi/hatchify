@@ -14,7 +14,7 @@ describe("hooks/useCompoundComponents", () => {
     },
   })
 
-  it("Works", async () => {
+  it("hook returns compoundComponents", async () => {
     const { result } = renderHook(() =>
       useCompoundComponents(finalSchemas, "Todo", false, null),
     )

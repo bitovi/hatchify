@@ -15,25 +15,25 @@ import {
 } from "./DefaultDisplayComponents.js"
 
 describe("components/HatchifyPresentationProvider/DefaultDisplayComponents/", () => {
-  it("String works", async () => {
+  it("String renders", async () => {
     render(<String value={"Hello"} />)
 
     expect(screen.getByText("Hello"))
   })
 
-  it("StringList works", async () => {
+  it("StringList renders", async () => {
     render(<StringList values={["Hello, Goodbye"]} />)
 
     expect(screen.getByText("Hello, Goodbye"))
   })
 
-  it("Number works", async () => {
+  it("Number renders", async () => {
     render(<Number value={1000} />)
 
     expect(screen.getByText("1,000"))
   })
 
-  it("NumberList works", async () => {
+  it("NumberList renders", async () => {
     render(<NumberList values={[1, 1000, 2]} />)
 
     expect(screen.getByText("1", { exact: false }))
@@ -41,19 +41,19 @@ describe("components/HatchifyPresentationProvider/DefaultDisplayComponents/", ()
     expect(screen.getByText("2", { exact: false }))
   })
 
-  it("Boolean works", async () => {
+  it("Boolean renders", async () => {
     render(<Boolean value={true} />)
 
     expect(screen.getByText("true"))
   })
 
-  it("BooleanList works", async () => {
+  it("BooleanList renders", async () => {
     render(<BooleanList values={[true, true, false]} />)
 
     expect(screen.getByText("true, true, false"))
   })
 
-  describe("Date works", async () => {
+  describe("Date renders", async () => {
     it("dateOnly", async () => {
       render(<Date dateOnly={true} value={"January 17, 2000"} />)
       expect(screen.getByText("1/17/2000"))
@@ -70,7 +70,7 @@ describe("components/HatchifyPresentationProvider/DefaultDisplayComponents/", ()
     })
   })
 
-  describe("DateList works", async () => {
+  describe("DateList renders", async () => {
     it("dateOnly", async () => {
       render(
         <DateList
@@ -96,14 +96,14 @@ describe("components/HatchifyPresentationProvider/DefaultDisplayComponents/", ()
     })
   })
 
-  it("Relationship works", async () => {
+  it("Relationship renders", async () => {
     render(
       <Relationship value={{ id: "1", label: "label", something: true }} />,
     )
     expect(screen.getByText("label"))
   })
 
-  it("RelationshipList works", async () => {
+  it("RelationshipList renders", async () => {
     render(
       <RelationshipList
         values={[

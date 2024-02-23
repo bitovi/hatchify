@@ -35,7 +35,7 @@ describe("hooks/useCompoundComponents/helpers/getColumns", () => {
   }
   const finalSchemas = assembler(partialSchemas)
 
-  it("works with no children", () => {
+  it("returns Columns per given schema, and given no children", () => {
     expect(
       getColumns(
         finalSchemas,
@@ -117,7 +117,7 @@ describe("hooks/useCompoundComponents/helpers/getColumns", () => {
   })
 
   describe("overwrite", () => {
-    it("overwrite extra column works", () => {
+    it("returns extra columns when overwrite is true while given an Array of JSX.elements", () => {
       const childArray = [
         {
           key: "Extra Details",

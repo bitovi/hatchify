@@ -45,7 +45,7 @@ describe("components/HatchifyEverything/components/WithSchemas", () => {
     updateOne: () => Promise.resolve({ record: {} as any, related: [] }),
     deleteOne: () => Promise.resolve(),
   })
-  it("Works", async () => {
+  it("'WithSchemas' renders", async () => {
     render(
       <WithSchemas
         partialSchemas={partialSchemas}

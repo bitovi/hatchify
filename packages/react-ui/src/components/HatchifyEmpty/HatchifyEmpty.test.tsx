@@ -4,7 +4,7 @@ import { describe, it } from "vitest"
 import { HatchifyEmpty } from "./HatchifyEmpty.js"
 
 describe("components/HatchifyEverything/components/HatchifyEmpty", () => {
-  it("Works", async () => {
+  it("'HatchifyEmpty' renders", async () => {
     render(<HatchifyEmpty> </HatchifyEmpty>)
   })
 })

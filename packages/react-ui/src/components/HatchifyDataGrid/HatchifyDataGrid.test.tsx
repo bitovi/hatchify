@@ -46,7 +46,7 @@ describe("components/HatchifyDataGrid", () => {
     deleteOne: () => Promise.resolve(),
   })
 
-  it("Works", async () => {
+  it("HatchifyDataGrid renders", async () => {
     render(
       <HatchifyDataGrid
         finalSchemas={finalSchemas}

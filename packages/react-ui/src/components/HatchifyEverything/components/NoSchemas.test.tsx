@@ -4,7 +4,7 @@ import { describe, it } from "vitest"
 import { NoSchemas } from "./NoSchemas.js"
 
 describe("components/HatchifyEverything/components/NoSchemas", () => {
-  it("Works", async () => {
+  it("'NoSchemas' renders", async () => {
     render(<NoSchemas />)
   })
 })
