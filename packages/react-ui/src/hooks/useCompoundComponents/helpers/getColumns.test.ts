@@ -115,4 +115,35 @@ describe("hooks/useCompoundComponents/helpers/getColumns", () => {
       },
     ])
   })
+
+  describe("overwrite", () => {
+    it("overwrite extra column works", () => {
+      const childArray = [
+        {
+          key: "Extra Details",
+          type: { name: "Column" },
+          props: { extra: "Extra Details" },
+        },
+      ] as JSX.Element[]
+
+      expect(
+        getColumns(
+          finalSchemas,
+          "Todo",
+          HatchifyPresentationDefaultValueComponents,
+          true,
+          childArray,
+        ),
+      ).toEqual([
+        {
+          headerOverride: false,
+          key: "extra-0",
+          label: "",
+          renderData: expect.any(Function),
+          renderHeader: expect.any(Function),
+          sortable: false,
+        },
+      ])
+    })
+  })
 })
