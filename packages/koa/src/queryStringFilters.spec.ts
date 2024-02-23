@@ -35,7 +35,7 @@ const [john, jane]: User[] = [
   },
 ]
 const testCases = [
-  //string
+  // string
   {
     description: "returns correct data using the $eq operator with a string",
     operator: "$eq",
@@ -218,7 +218,7 @@ const testCases = [
     expectedResult: [],
     expectedError: undefined,
   },
-  //number
+  // number
   {
     description: "returns correct data using the $eq operator with a number",
     operator: "$eq",
@@ -267,7 +267,7 @@ const testCases = [
     queryParam: "filter[age][$nin]=25&filter[age][$nin]=35",
     expectedResult: [],
   },
-  //arrays
+  // arrays
   {
     description:
       "returns correct data using the $in operator with multiple strings",
@@ -282,7 +282,7 @@ const testCases = [
     queryParam: "filter[name][$nin]=John&filter[name][$nin]=Jane",
     expectedResult: [],
   },
-  //date
+  // date
   {
     description: "returns correct data using the $eq operator with a date",
     operator: "$eq",
