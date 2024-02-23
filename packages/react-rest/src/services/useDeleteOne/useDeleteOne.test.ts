@@ -32,37 +32,26 @@ describe("react-rest/services/useDeleteOne", () => {
     )
 
     await waitFor(() => {
-      expect(result.current).toEqual([
-        expect.any(Function),
-        {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
-        },
-      ])
+      expect(result.current).toEqual([expect.any(Function), undefined])
     })
 
-    await result.current[0]("id")
+    result.current[0]("id")
 
     await waitFor(() =>
       expect(result.current).toEqual([
         expect.any(Function),
         {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
+          ["id"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
         },
       ]),
     )
@@ -76,20 +65,7 @@ describe("react-rest/services/useDeleteOne", () => {
     )
 
     await waitFor(() => {
-      expect(result.current).toEqual([
-        expect.any(Function),
-        {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
-        },
-      ])
+      expect(result.current).toEqual([expect.any(Function), undefined])
     })
 
     const errors = [
@@ -109,15 +85,17 @@ describe("react-rest/services/useDeleteOne", () => {
       expect(result.current).toEqual([
         expect.any(Function),
         {
-          status: "error",
-          meta: undefined,
-          error: errors,
-          isResolved: true,
-          isPending: false,
-          isRejected: true,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: false,
+          ["id"]: {
+            status: "error",
+            meta: undefined,
+            error: errors,
+            isResolved: true,
+            isPending: false,
+            isRejected: true,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: false,
+          },
         },
       ]),
     )
@@ -130,15 +108,17 @@ describe("react-rest/services/useDeleteOne", () => {
       expect(result.current).toEqual([
         expect.any(Function),
         {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
+          ["id"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
         },
       ]),
     )
