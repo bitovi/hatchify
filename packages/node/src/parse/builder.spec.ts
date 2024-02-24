@@ -16,7 +16,7 @@ import {
   buildUpdateOptions,
   replaceIdentifiers,
 } from "./builder.js"
-import { UnexpectedValueError } from "../error/index.js"
+import { RelationshipPathError, UnexpectedValueError } from "../error/index.js"
 import { Hatchify } from "../node.js"
 
 describe("builder", () => {
@@ -26,7 +26,7 @@ describe("builder", () => {
       name: string(),
     },
     relationships: {
-      user: belongsTo(),
+      parent: belongsTo("User"),
       todos: hasMany(),
     },
   } satisfies PartialSchema
@@ -211,7 +211,7 @@ describe("builder", () => {
       const options = buildFindOptions(
         hatchify,
         User,
-        "include=parent,todos&filter[name]=Justin&filter[todos.importance]=1&filter[parent.parent.name]=John",
+        "include=parent,parent.parent,todos&filter[name]=Justin&filter[todos.importance]=1&filter[parent.parent.name]=John",
         1,
       )
 
@@ -231,7 +231,10 @@ describe("builder", () => {
             ],
           },
           include: [
-            { association: "parent", include: [] },
+            {
+              association: "parent",
+              include: [{ association: "parent", include: [] }],
+            },
             { association: "todos", include: [] },
           ],
         },
@@ -336,9 +339,15 @@ describe("builder", () => {
       await expect(async () =>
         buildFindOptions(hatchify, Todo, "filter[invalid.name]=invalid"),
       ).rejects.toEqualErrors([
-        new UnexpectedValueError({
-          detail: `URL must have 'filter[invalid.name]' where 'invalid' is one of the includes.`,
-          parameter: `filter[invalid.name]`,
+        new RelationshipPathError({
+          detail:
+            "URL must have 'include' with 'invalid' as one of the relationships to include.",
+          parameter: "include",
+        }),
+        new RelationshipPathError({
+          detail:
+            "URL must have 'filter[invalid.name]' where 'invalid.name' is a valid attribute.",
+          parameter: "filter[invalid.name]",
         }),
       ])
     })
