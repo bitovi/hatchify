@@ -587,6 +587,29 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           ],
         })
       })
+
+      it("should handle non-existing nested associations", async () => {
+        const { status, body } = await fetch(
+          "/api/users?filter[todos.name]=test",
+        )
+
+        expect(status).toEqual(400)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 400,
+              code: "relationship-path",
+              title: "Relationship path could not be identified.",
+              detail:
+                "URL must have 'include' with 'todos' as one of the relationships to include.",
+              source: {
+                parameter: "include",
+              },
+            },
+          ],
+        })
+      })
     })
 
     describe("should support pagination meta (HATCH-203)", () => {

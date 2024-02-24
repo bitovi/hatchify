@@ -1,3 +1,5 @@
+import { parse } from "node:querystring"
+
 // @ts-ignore TS7016
 import querystringParser from "@bitovi/sequelize-querystring-parser"
 import { getSchemaKey } from "@hatchifyjs/core"
@@ -80,6 +82,18 @@ export function replaceIdentifiers(
   return queryStringWithRelationshipNames
 }
 
+function getFlatInclude(include?: string | string[]): string[] {
+  if (!include) {
+    return []
+  }
+
+  if (typeof include === "string") {
+    return include.split(",")
+  }
+
+  return include.flatMap((include) => include.split(","))
+}
+
 export function buildFindOptions(
   hatchify: Hatchify,
   schema: FinalSchema,
@@ -105,7 +119,12 @@ export function buildFindOptions(
     return qspOps as unknown as QueryStringParser<FindOptions>
   }
 
-  let ops: QueryStringParser<FindOptions> = handleWhere(qspOps, schema)
+  let ops: QueryStringParser<FindOptions> = handleWhere(
+    qspOps,
+    schema,
+    hatchify.schema,
+    getFlatInclude(parse(querystring).include),
+  )
 
   ops = handlePostgresUuid(ops, dialect)
   ops = handleSqliteDateNestedColumns(ops, dialect)
