@@ -26,7 +26,7 @@ describe("builder", () => {
       name: string(),
     },
     relationships: {
-      parent: belongsTo(),
+      parent: belongsTo("User"),
       todos: hasMany(),
     },
   } satisfies PartialSchema
