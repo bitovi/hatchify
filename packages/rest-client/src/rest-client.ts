@@ -29,6 +29,7 @@ export type {
   RestClientSchemaMap,
   SchemalessResourceRelationship,
   SchemalessResourceRelationshipObject,
+  StatefulMeta,
   Subscription,
   Unsubscribe,
   UpdateType,
