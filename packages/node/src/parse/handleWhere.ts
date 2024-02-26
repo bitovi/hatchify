@@ -4,20 +4,21 @@ import type { FindOptions } from "sequelize"
 
 import type { QueryStringParser, QueryStringParsingError } from "./builder.js"
 import { getColumnName } from "./getColumnName.js"
+import { isPathIncluded } from "./isPathIncluded.js"
+import { isValidAttribute } from "./isValidAttribute.js"
 import { walk } from "./walk.js"
-import { UnexpectedValueError } from "../error/index.js"
-
-interface Include {
-  association: string
-}
+import { RelationshipPathError, UnexpectedValueError } from "../error/index.js"
+import type { ModelFunctionsCollection } from "../types.js"
 
 export function handleWhere(
   ops: QueryStringParser<FindOptions, QueryStringParsingError>,
   schema: FinalSchema,
+  allSchemas: ModelFunctionsCollection<FinalSchema>,
+  flatIncludes: string[],
 ): QueryStringParser<FindOptions, UnexpectedValueError> {
   const errors: UnexpectedValueError[] = []
 
-  const where = walk(ops.data.where, (key, value) => {
+  const where = walk(ops.data.where, (key) => {
     if (typeof key !== "string") {
       return [null, key]
     }
@@ -39,18 +40,24 @@ export function handleWhere(
       return [null, `$${getColumnName(`${getSchemaKey(schema)}.${key}`)}$`]
     }
 
-    const [relationshipName] = key.split(".")
+    const relationshipPath = key.split(".")
 
-    const relationshipNames = (
-      !ops.data.include || Array.isArray(ops.data.include)
-        ? ((ops.data.include ?? []) as Include[])
-        : [ops.data.include as Include]
-    ).map((include) => include.association)
-
-    if (!relationshipNames.includes(relationshipName)) {
+    if (!isPathIncluded(flatIncludes, relationshipPath)) {
       errors.push(
-        new UnexpectedValueError({
-          detail: `URL must have 'filter[${key}]' where '${relationshipName}' is one of the includes.`,
+        new RelationshipPathError({
+          detail: `URL must have 'include' with '${key
+            .split(".")
+            .slice(0, relationshipPath.length - 1)
+            .join(".")}' as one of the relationships to include.`,
+          parameter: "include",
+        }),
+      )
+    }
+
+    if (!isValidAttribute(getSchemaKey(schema), relationshipPath, allSchemas)) {
+      errors.push(
+        new RelationshipPathError({
+          detail: `URL must have 'filter[${key}]' where '${key}' is a valid attribute.`,
           parameter: `filter[${key}]`,
         }),
       )

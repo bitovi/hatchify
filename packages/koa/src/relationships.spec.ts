@@ -587,6 +587,52 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           ],
         })
       })
+
+      it("should handle non-included nested associations", async () => {
+        const { status, body } = await fetch(
+          "/api/users?filter[todos.name]=test",
+        )
+
+        expect(status).toEqual(400)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 400,
+              code: "relationship-path",
+              title: "Relationship path could not be identified.",
+              detail:
+                "URL must have 'include' with 'todos' as one of the relationships to include.",
+              source: {
+                parameter: "include",
+              },
+            },
+          ],
+        })
+      })
+
+      it("should handle non-existing nested associations", async () => {
+        const { status, body } = await fetch(
+          "/api/users?include=todos,todos.invalid",
+        )
+
+        expect(status).toEqual(400)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 400,
+              code: "relationship-path",
+              title: "Relationship path could not be identified.",
+              detail:
+                "URL must have 'include' where 'todos.invalid' is a valid relationship path.",
+              source: {
+                parameter: "include",
+              },
+            },
+          ],
+        })
+      })
     })
 
     describe("should support pagination meta (HATCH-203)", () => {
@@ -672,7 +718,8 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               status: 400,
               code: "relationship-path",
               title: "Relationship path could not be identified.",
-              detail: "URL must have 'include' as one or more of 'user'.",
+              detail:
+                "URL must have 'include' where 'invalid_relationship_path' is a valid relationship path.",
               source: {
                 parameter: "include",
               },
@@ -926,7 +973,8 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               status: 400,
               code: "relationship-path",
               title: "Relationship path could not be identified.",
-              detail: "URL must not have 'include' as a parameter.",
+              detail:
+                "URL must have 'include' where 'invalid_relationship_path' is a valid relationship path.",
               source: {
                 parameter: "include",
               },

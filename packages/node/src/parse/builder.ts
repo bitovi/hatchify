@@ -1,3 +1,5 @@
+import { parse } from "node:querystring"
+
 // @ts-ignore TS7016
 import querystringParser from "@bitovi/sequelize-querystring-parser"
 import { getSchemaKey } from "@hatchifyjs/core"
@@ -16,7 +18,8 @@ import { handlePostgresUuid } from "./handlePostgresUuid.js"
 import { handleSqliteDateNestedColumns } from "./handleSqliteDateNestedColumns.js"
 import { handleSqliteLike } from "./handleSqliteLike.js"
 import { handleWhere } from "./handleWhere.js"
-import { UnexpectedValueError } from "../error/index.js"
+import { isValidInclude } from "./IsValidInclude.js"
+import { RelationshipPathError, UnexpectedValueError } from "../error/index.js"
 import type { Hatchify } from "../node.ts"
 
 export interface QueryStringParser<T, E = UnexpectedValueError> {
@@ -80,6 +83,18 @@ export function replaceIdentifiers(
   return queryStringWithRelationshipNames
 }
 
+function getFlatIncludes(include?: string | string[]): string[] {
+  if (!include) {
+    return []
+  }
+
+  if (typeof include === "string") {
+    return include.split(",")
+  }
+
+  return include.flatMap((include) => include.split(","))
+}
+
 export function buildFindOptions(
   hatchify: Hatchify,
   schema: FinalSchema,
@@ -105,7 +120,14 @@ export function buildFindOptions(
     return qspOps as unknown as QueryStringParser<FindOptions>
   }
 
-  let ops: QueryStringParser<FindOptions> = handleWhere(qspOps, schema)
+  const flatIncludes = getFlatIncludes(parse(querystring).include)
+
+  let ops: QueryStringParser<FindOptions> = handleWhere(
+    qspOps,
+    schema,
+    hatchify.schema,
+    flatIncludes,
+  )
 
   ops = handlePostgresUuid(ops, dialect)
   ops = handleSqliteDateNestedColumns(ops, dialect)
@@ -209,6 +231,26 @@ export function buildFindOptions(
       }
     }
   }
+
+  ops.errors.push(
+    ...flatIncludes.reduce(
+      (acc, include) =>
+        isValidInclude(
+          getSchemaKey(schema),
+          include.split("."),
+          hatchify.schema,
+        )
+          ? acc
+          : [
+              ...acc,
+              new RelationshipPathError({
+                detail: `URL must have 'include' where '${include}' is a valid relationship path.`,
+                parameter: "include",
+              }),
+            ],
+      [] as RelationshipPathError[],
+    ),
+  )
 
   if (ops.errors.length) {
     throw ops.errors
