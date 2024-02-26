@@ -67,7 +67,7 @@ export const useUpdateOne = <
           setMeta((prev: ContextualMeta) => {
             return {
               ...prev,
-              [data.id]: getMeta(prev[data.id].error, false, false, undefined),
+              [data.id]: getMeta(prev[data.id]?.error, false, false, undefined),
             }
           }),
         )

@@ -174,4 +174,67 @@ describe("react-rest/services/useUpdateOne", () => {
       ]),
     )
   })
+
+  it("should update multiple records", async () => {
+    createStore(["Article"])
+
+    const { result } = renderHook(() =>
+      useUpdateOne<typeof partialSchemas, "Article">(
+        fakeDataSource,
+        schemas,
+        "Article",
+      ),
+    )
+
+    await waitFor(() => {
+      expect(result.current).toEqual([expect.any(Function), {}, undefined])
+    })
+
+    await result.current[0]({
+      id: "1",
+      title: "updated-title",
+      body: "baz-body",
+    })
+    await result.current[0]({
+      id: "2",
+      title: "updated-title-2",
+      body: "baz-body-2",
+    })
+
+    await waitFor(() =>
+      expect(result.current).toEqual([
+        expect.any(Function),
+        {
+          ["1"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
+          ["2"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
+        },
+        {
+          id: "1",
+          __schema: "Article",
+          title: "updated-title",
+          body: "baz-body",
+        },
+      ]),
+    )
+  })
 })

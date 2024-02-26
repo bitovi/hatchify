@@ -48,7 +48,7 @@ export const useDeleteOne = <
           setMeta((prev: ContextualMeta) => {
             return {
               ...prev,
-              [id]: getMeta(prev[id].error, false, false, undefined),
+              [id]: getMeta(prev[id]?.error, false, false, undefined),
             }
           }),
         )

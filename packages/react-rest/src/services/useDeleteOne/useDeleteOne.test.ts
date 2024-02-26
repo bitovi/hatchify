@@ -123,4 +123,49 @@ describe("react-rest/services/useDeleteOne", () => {
       ]),
     )
   })
+
+  it("should delete multiple records", async () => {
+    createStore(["Article"])
+
+    const { result } = renderHook(() =>
+      useDeleteOne(fakeDataSource, schemas, "Article"),
+    )
+
+    await waitFor(() => {
+      expect(result.current).toEqual([expect.any(Function), {}])
+    })
+
+    await result.current[0]("id1")
+    await result.current[0]("id2")
+
+    await waitFor(() =>
+      expect(result.current).toEqual([
+        expect.any(Function),
+        {
+          ["id1"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
+          ["id2"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
+        },
+      ]),
+    )
+  })
 })
