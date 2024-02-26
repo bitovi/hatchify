@@ -2,11 +2,11 @@ import { useCallback, useState } from "react"
 import type { PartialSchema } from "@hatchifyjs/core"
 import { deleteOne, getMeta } from "@hatchifyjs/rest-client"
 import type {
+  ContextualMeta,
   FinalSchemas,
   GetSchemaNames,
-  StatefulMeta,
-  RestClient,
   MetaError,
+  RestClient,
 } from "@hatchifyjs/rest-client"
 
 /**
@@ -19,14 +19,14 @@ export const useDeleteOne = <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-): [(id: string) => void, StatefulMeta] => {
-  const [meta, setMeta] = useState<StatefulMeta>(() => ({}))
+): [(id: string) => void, ContextualMeta] => {
+  const [meta, setMeta] = useState<ContextualMeta>(() => ({}))
 
   const remove = useCallback(
     (id: string) => {
       deleteOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, id)
         .then(() =>
-          setMeta((prev: StatefulMeta) => {
+          setMeta((prev: ContextualMeta) => {
             return {
               ...prev,
               [id]: getMeta(undefined, true, false, undefined),
@@ -34,7 +34,7 @@ export const useDeleteOne = <
           }),
         )
         .catch((error: MetaError) => {
-          setMeta((prev: StatefulMeta) => {
+          setMeta((prev: ContextualMeta) => {
             return {
               ...prev,
               [id]: getMeta(error, false, false, undefined),
@@ -45,7 +45,7 @@ export const useDeleteOne = <
           }
         })
         .finally(() =>
-          setMeta((prev: StatefulMeta) => {
+          setMeta((prev: ContextualMeta) => {
             return {
               ...prev,
               [id]: getMeta(prev[id].error, false, false, undefined),

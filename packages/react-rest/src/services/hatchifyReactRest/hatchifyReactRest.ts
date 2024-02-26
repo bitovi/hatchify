@@ -20,7 +20,7 @@ import type {
   RequestMetaData,
   FlatCreateType,
   FlatUpdateType,
-  StatefulMeta,
+  ContextualMeta,
 } from "@hatchifyjs/rest-client"
 import {
   createStore,
@@ -108,14 +108,14 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
             "__schema"
           >,
         ) => void,
-        StatefulMeta,
+        ContextualMeta,
         (
           | RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
           | null
           | undefined
         ),
       ]
-      useDeleteOne: () => [(id: string) => void, StatefulMeta]
+      useDeleteOne: () => [(id: string) => void, ContextualMeta]
       // subscribes
       // subscribeToAll: (
       //   query: QueryList | undefined,

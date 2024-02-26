@@ -9,7 +9,7 @@ import type {
   RecordType,
   MetaError,
   RestClient,
-  StatefulMeta,
+  ContextualMeta,
 } from "@hatchifyjs/rest-client"
 
 type UpdateData<
@@ -35,12 +35,12 @@ export const useUpdateOne = <
   schemaName: TSchemaName,
 ): [
   (data: UpdateData<TSchemas, TSchemaName>) => void,
-  StatefulMeta,
+  ContextualMeta,
   UpdatedRecord<TSchemas, TSchemaName>,
 ] => {
   const [data, setData] =
     useState<UpdatedRecord<TSchemas, TSchemaName>>(undefined)
-  const [meta, setMeta] = useState<StatefulMeta>(() => ({}))
+  const [meta, setMeta] = useState<ContextualMeta>(() => ({}))
 
   const update = useCallback(
     (data: UpdateData<TSchemas, TSchemaName>) => {
@@ -53,7 +53,7 @@ export const useUpdateOne = <
           setData(data)
         })
         .catch((error: MetaError) => {
-          setMeta((prev: StatefulMeta) => {
+          setMeta((prev: ContextualMeta) => {
             return {
               ...prev,
               [data.id]: getMeta(error, false, false, undefined),
@@ -64,7 +64,7 @@ export const useUpdateOne = <
           }
         })
         .finally(() =>
-          setMeta((prev: StatefulMeta) => {
+          setMeta((prev: ContextualMeta) => {
             return {
               ...prev,
               [data.id]: getMeta(prev[data.id].error, false, false, undefined),
