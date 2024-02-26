@@ -10,7 +10,7 @@ The end result of following the Getting Started example in the [main readme](../
 
 ### [Grid Demo](../example/grid-demo/) ([StackBlitz](https://stackblitz.com/fork/github/bitovi/hatchify/tree/main/example/grid-demo?file=schemas.ts&terminal=dev))
 
-A different example with documents, users and customized fields. Deployed via a [workflow](../.github/workflows/grid-demo.yml) to AWS EC2 with:
+A different example with documents, users and customized fields. Deployed via a [workflow](../.github/workflows/push.yml) to AWS EC2 with:
 
 - [Koa + SQLite](https://hatchify-grid-demo.bitovi-sandbox.com:3000/)
 - [Koa + Postgres](https://hatchify-grid-demo.bitovi-sandbox.com:3001/)
