@@ -1,13 +1,5 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import {
-  assembler,
-  // string,
-  // integer,
-  // datetime,
-  // boolean,
-  // belongsTo,
-  // hasMany,
-} from "@hatchifyjs/core"
+import { assembler } from "@hatchifyjs/core"
 import type {
   GetSchemaFromName,
   GetSchemaNames,

@@ -1,4 +1,5 @@
 export type {
+  ContextualMeta,
   CreateType,
   Fields,
   FilterArray,
@@ -29,7 +30,6 @@ export type {
   RestClientSchemaMap,
   SchemalessResourceRelationship,
   SchemalessResourceRelationshipObject,
-  ContextualMeta,
   Subscription,
   Unsubscribe,
   UpdateType,
