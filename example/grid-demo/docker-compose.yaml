@@ -17,7 +17,6 @@ services:
       - BACKEND=koa
       - DATABASE=sqlite
       - DB_URI=sqlite://localhost/:memory
-      - NODE_ENV=development
     networks:
       - hatch_sqlite
 
@@ -37,7 +36,6 @@ services:
       - BACKEND=koa
       - DATABASE=postgres
       - DB_URI=postgres://postgres:password@postgres_db:5432/postgres
-      - NODE_ENV=development
     networks:
       - hatch_postgres
     depends_on:
