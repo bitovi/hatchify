@@ -35,7 +35,7 @@ describe("react-rest/services/useDeleteOne", () => {
       expect(result.current).toEqual([expect.any(Function), {}])
     })
 
-    result.current[0]("id")
+    await result.current[0]("id")
 
     await waitFor(() =>
       expect(result.current).toEqual([
