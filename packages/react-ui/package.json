@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react-ui",
-  "version": "0.1.37",
+  "version": "0.1.38",
   "type": "module",
   "main": "./dist/react-ui.js",
   "module": "./dist/react-ui.js",
@@ -29,8 +29,8 @@
     "vitest": "^0.30.1"
   },
   "dependencies": {
-    "@hatchifyjs/react-rest": "^0.1.22",
-    "@hatchifyjs/rest-client": "^0.1.17"
+    "@hatchifyjs/react-rest": "^0.1.24",
+    "@hatchifyjs/rest-client": "^0.1.19"
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.3.x",
