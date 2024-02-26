@@ -10,10 +10,14 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import type { Resource, RestClient } from "../types/index.js"
 
 export const testPartialSchemas = {
-  Todo: {
-    name: "Todo",
-    attributes: { title: string(), important: boolean() },
-    relationships: { user: belongsTo("Person") },
+  Company: {
+    name: "Company",
+    attributes: { name: string() },
+    relationships: {
+      employees: hasMany("Person"),
+      parentCompany: belongsTo("Company"),
+      childCompany: hasOne("Company"),
+    },
   },
   Person: {
     name: "Person",
@@ -23,14 +27,10 @@ export const testPartialSchemas = {
       employer: belongsTo("Company"),
     },
   },
-  Company: {
-    name: "Company",
-    attributes: { name: string() },
-    relationships: {
-      employees: hasMany("Person"),
-      parentCompany: belongsTo("Company"),
-      childCompany: hasOne("Company"),
-    },
+  Todo: {
+    name: "Todo",
+    attributes: { title: string(), important: boolean() },
+    relationships: { user: belongsTo("Person") },
   },
 } satisfies globalThis.Record<string, PartialSchema>
 

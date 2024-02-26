@@ -88,20 +88,20 @@ jobs:
           github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
-      - name: Publish rest-client-jsonapi
-        if: ${{ steps.changed-packages.outputs.rest-client-jsonapi == 'publish' }}
-        uses: ./.github/actions/job-publish
-        with:
-          directory: rest-client-jsonapi
-          npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ github.token }}
-          segment: ${{ steps.changed-packages.outputs.segment }}
-
       - name: Publish react-rest
         if: ${{ steps.changed-packages.outputs.react-rest == 'publish' }}
         uses: ./.github/actions/job-publish
         with:
           directory: react-rest
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          github-token: ${{ github.token }}
+          segment: ${{ steps.changed-packages.outputs.segment }}
+
+      - name: Publish rest-client-jsonapi
+        if: ${{ steps.changed-packages.outputs.rest-client-jsonapi == 'publish' }}
+        uses: ./.github/actions/job-publish
+        with:
+          directory: rest-client-jsonapi
           npm-token: ${{ secrets.NPM_TOKEN }}
           github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
