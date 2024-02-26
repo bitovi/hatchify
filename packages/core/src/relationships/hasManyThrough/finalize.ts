@@ -4,6 +4,7 @@ import { HatchifyInvalidSchemaError } from "../../types/index.js"
 import type { SemiFinalSchema } from "../../types/index.js"
 import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase.js"
 import { pascalCaseToCamelCase } from "../../util/pascalCaseToCamelCase.js"
+import { pluralize } from "../../util/pluralize.js"
 import { singularize } from "../../util/singularize.js"
 import { getForeignKeyAttribute } from "../utils/getForeignKeyAttribute.js"
 
@@ -44,6 +45,7 @@ export function finalize(
     schemas[targetSchema].attributes[targetKey] ?? schemas[targetSchema].id,
     true,
   )
+  const throughRelationshipName = pascalCaseToCamelCase(pluralize(through))
 
   return {
     ...schemas,
@@ -59,6 +61,12 @@ export function finalize(
           throughTargetAttribute,
           sourceKey,
           targetKey,
+        },
+        [throughRelationshipName]: {
+          type: "hasMany",
+          targetSchema: through,
+          targetAttribute: throughSourceAttribute,
+          sourceAttribute: sourceKey,
         },
       },
     },

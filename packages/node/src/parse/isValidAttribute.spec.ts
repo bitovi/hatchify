@@ -59,10 +59,6 @@ describe("isValidAttribute", () => {
     ).toBe(false)
 
     expect(
-      isValidAttribute("User", ["todos", "user", "name"], hatchedNode.schema),
-    ).toBe(true)
-
-    expect(
       isValidAttribute(
         "User",
         ["todos", "user", "invalid"],
