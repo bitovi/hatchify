@@ -18,7 +18,6 @@
 - [ ] Does new code have 90% testing coverage (100% for `core`) of both unit and E2E tests?
 - [ ] Is code secure? If applicable, add security notes to the description.
 - [ ] Do all new TODO comments have Jira links with enough information?
-- [ ] Were all changes published and deployed to [the grid](https://github.com/bitovi/hatchify-grid-demo)?
 - [ ] Has the browser error-console been reviewed to not contain new errors introduced by these code changes?
 - [ ] The site looks “good” above 1000px width.
 - [ ] The site looks “good” when the window height is small. No double scrollbars.
