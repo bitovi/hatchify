@@ -1,15 +1,6 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import {
-  assembler,
-  // string,
-  // integer,
-  // datetime,
-  // boolean,
-  // belongsTo,
-  // hasMany,
-} from "@hatchifyjs/core"
+import { assembler } from "@hatchifyjs/core"
 import type {
-  ContextualMeta,
   GetSchemaFromName,
   GetSchemaNames,
   RecordType,
@@ -21,6 +12,7 @@ import type {
   RequestMetaData,
   FlatCreateType,
   FlatUpdateType,
+  ContextualMeta,
 } from "@hatchifyjs/rest-client"
 import {
   createStore,
