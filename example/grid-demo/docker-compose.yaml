@@ -73,7 +73,7 @@ services:
       - 3003:3003
     environment:
       - APP_PORT=3003
-      - BACKEND=koa
+      - BACKEND=express
       - DATABASE=postgres
       - DB_URI=postgres://postgres:password@postgres_db:5432/postgres
     networks:
