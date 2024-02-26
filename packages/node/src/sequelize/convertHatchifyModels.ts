@@ -60,14 +60,6 @@ export function convertHatchifyModels(
             otherKey: relationship.throughTargetAttribute,
           },
         )
-        sequelize.models[getSchemaKey(model)].hasMany(
-          sequelize.models[relationship.through],
-          {
-            as: pluralize(pascalCaseToCamelCase(relationship.through)),
-            foreignKey: relationship.throughSourceAttribute,
-            sourceKey: relationship.sourceKey,
-          },
-        )
       } else if (type === "belongsTo") {
         if (
           !sequelize.models[getSchemaKey(model)].associations[relationshipName]

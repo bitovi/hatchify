@@ -18,7 +18,8 @@ import { handlePostgresUuid } from "./handlePostgresUuid.js"
 import { handleSqliteDateNestedColumns } from "./handleSqliteDateNestedColumns.js"
 import { handleSqliteLike } from "./handleSqliteLike.js"
 import { handleWhere } from "./handleWhere.js"
-import { UnexpectedValueError } from "../error/index.js"
+import { isValidInclude } from "./IsValidInclude.js"
+import { RelationshipPathError, UnexpectedValueError } from "../error/index.js"
 import type { Hatchify } from "../node.ts"
 
 export interface QueryStringParser<T, E = UnexpectedValueError> {
@@ -82,7 +83,7 @@ export function replaceIdentifiers(
   return queryStringWithRelationshipNames
 }
 
-function getFlatInclude(include?: string | string[]): string[] {
+function getFlatIncludes(include?: string | string[]): string[] {
   if (!include) {
     return []
   }
@@ -119,11 +120,13 @@ export function buildFindOptions(
     return qspOps as unknown as QueryStringParser<FindOptions>
   }
 
+  const flatIncludes = getFlatIncludes(parse(querystring).include)
+
   let ops: QueryStringParser<FindOptions> = handleWhere(
     qspOps,
     schema,
     hatchify.schema,
-    getFlatInclude(parse(querystring).include),
+    flatIncludes,
   )
 
   ops = handlePostgresUuid(ops, dialect)
@@ -228,6 +231,26 @@ export function buildFindOptions(
       }
     }
   }
+
+  ops.errors.push(
+    ...flatIncludes.reduce(
+      (acc, include) =>
+        isValidInclude(
+          getSchemaKey(schema),
+          include.split("."),
+          hatchify.schema,
+        )
+          ? acc
+          : [
+              ...acc,
+              new RelationshipPathError({
+                detail: `URL must have 'include' where '${include}' is a valid relationship path.`,
+                parameter: "include",
+              }),
+            ],
+      [] as RelationshipPathError[],
+    ),
+  )
 
   if (ops.errors.length) {
     throw ops.errors

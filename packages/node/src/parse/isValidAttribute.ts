@@ -11,12 +11,12 @@ export function isValidAttribute(
     return false
   }
 
-  if (relationshipPath.length === 1) {
-    return !!allSchemas[schemaName].attributes[relationshipPath[0]]
+  if (relationshipPath.length === 0) {
+    return false
   }
 
-  if (!allSchemas[schemaName].relationships) {
-    return false
+  if (relationshipPath.length === 1) {
+    return !!allSchemas[schemaName].attributes[relationshipPath[0]]
   }
 
   if (!allSchemas[schemaName].relationships?.[relationshipPath[0]]) {

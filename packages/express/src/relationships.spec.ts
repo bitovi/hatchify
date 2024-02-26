@@ -665,7 +665,8 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               status: 400,
               code: "relationship-path",
               title: "Relationship path could not be identified.",
-              detail: "URL must have 'include' as one or more of 'user'.",
+              detail:
+                "URL must have 'include' where 'invalid_relationship_path' is a valid relationship path.",
               source: {
                 parameter: "include",
               },
@@ -919,7 +920,8 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               status: 400,
               code: "relationship-path",
               title: "Relationship path could not be identified.",
-              detail: "URL must not have 'include' as a parameter.",
+              detail:
+                "URL must have 'include' where 'invalid_relationship_path' is a valid relationship path.",
               source: {
                 parameter: "include",
               },
