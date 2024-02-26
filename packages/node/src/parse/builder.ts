@@ -232,26 +232,25 @@ export function buildFindOptions(
     }
   }
 
-  const invalidIncludes = flatIncludes.filter(
-    (include) =>
-      !isValidInclude(
-        getSchemaKey(schema),
-        include.split("."),
-        hatchify.schema,
-      ),
+  ops.errors.push(
+    ...flatIncludes.reduce(
+      (acc, include) =>
+        isValidInclude(
+          getSchemaKey(schema),
+          include.split("."),
+          hatchify.schema,
+        )
+          ? acc
+          : [
+              ...acc,
+              new RelationshipPathError({
+                detail: `URL must have 'include' where '${include}' is a valid relationship path.`,
+                parameter: "include",
+              }),
+            ],
+      [] as RelationshipPathError[],
+    ),
   )
-
-  if (invalidIncludes.length) {
-    ops.errors.push(
-      ...invalidIncludes.map(
-        (include) =>
-          new RelationshipPathError({
-            detail: `URL must have 'include' where '${include}' is a valid relationship path.`,
-            parameter: "include",
-          }),
-      ),
-    )
-  }
 
   if (ops.errors.length) {
     throw ops.errors
