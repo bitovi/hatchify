@@ -45,7 +45,7 @@ export function finalize(
     schemas[targetSchema].attributes[targetKey] ?? schemas[targetSchema].id,
     true,
   )
-  const throughRelationshipName = pascalCaseToCamelCase(pluralize(through))
+  const throughRelationshipName = pluralize(pascalCaseToCamelCase(through))
 
   return {
     ...schemas,
