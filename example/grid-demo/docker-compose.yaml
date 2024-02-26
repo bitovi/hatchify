@@ -93,6 +93,7 @@ services:
     #  - ./db:/var/lib/postgresql/data
     networks:
       - koa_postgres
+      - express_postgres
 
 networks:
   koa_sqlite:
