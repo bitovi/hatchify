@@ -43,8 +43,6 @@ export default App
 
 Your app should now look like this:
 
-//👀
-
 ![localhost_3000_ (1)](https://github.com/bitovi/hatchify/assets/60432429/427a1511-d187-4cc4-8a92-3ce8cb70b422)
 
 Notice how the content we've placed inside `TodoEmpty` now displays in our empty list.
