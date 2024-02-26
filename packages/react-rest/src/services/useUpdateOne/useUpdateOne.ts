@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useState } from "react"
 import { updateOne, getMeta } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type {
@@ -7,9 +7,9 @@ import type {
   GetSchemaFromName,
   FlatUpdateType,
   RecordType,
-  Meta,
   MetaError,
   RestClient,
+  StatefulMeta,
 } from "@hatchifyjs/rest-client"
 
 type UpdateData<
@@ -35,36 +35,44 @@ export const useUpdateOne = <
   schemaName: TSchemaName,
 ): [
   (data: UpdateData<TSchemas, TSchemaName>) => void,
-  Meta,
+  StatefulMeta,
   UpdatedRecord<TSchemas, TSchemaName>,
 ] => {
   const [data, setData] =
     useState<UpdatedRecord<TSchemas, TSchemaName>>(undefined)
-  const [error, setError] = useState<MetaError | undefined>(undefined)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [meta, setMeta] = useState<StatefulMeta>(() => ({}))
 
   const update = useCallback(
     (data: UpdateData<TSchemas, TSchemaName>) => {
-      setLoading(true)
       updateOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, data)
         .then((data) => {
-          setError(undefined)
+          setMeta((prev) => ({
+            ...prev,
+            [data.id]: getMeta(undefined, true, false, undefined),
+          }))
           setData(data)
         })
-        .catch((error) => {
-          setError(error)
+        .catch((error: MetaError) => {
+          setMeta((prev: StatefulMeta) => {
+            return {
+              ...prev,
+              [data.id]: getMeta(error, false, false, undefined),
+            }
+          })
           if (error instanceof Error) {
             throw error
           }
         })
-        .finally(() => setLoading(false))
+        .finally(() =>
+          setMeta((prev: StatefulMeta) => {
+            return {
+              ...prev,
+              [data.id]: getMeta(prev[data.id].error, false, false, undefined),
+            }
+          }),
+        )
     },
     [dataSource, allSchemas, schemaName],
-  )
-
-  const meta = useMemo(
-    () => getMeta(error, loading, false, undefined),
-    [error, loading],
   )
 
   return [update, meta, data]

@@ -46,21 +46,7 @@ describe("react-rest/services/useUpdateOne", () => {
     )
 
     await waitFor(() => {
-      expect(result.current).toEqual([
-        expect.any(Function),
-        {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
-        },
-        undefined,
-      ])
+      expect(result.current).toEqual([expect.any(Function), {}, undefined])
     })
 
     await result.current[0]({
@@ -73,15 +59,17 @@ describe("react-rest/services/useUpdateOne", () => {
       expect(result.current).toEqual([
         expect.any(Function),
         {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
+          ["1"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
         },
         {
           id: "1",
@@ -105,21 +93,7 @@ describe("react-rest/services/useUpdateOne", () => {
     )
 
     await waitFor(() => {
-      expect(result.current).toEqual([
-        expect.any(Function),
-        {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
-        },
-        undefined,
-      ])
+      expect(result.current).toEqual([expect.any(Function), {}, undefined])
     })
 
     const errors = [
@@ -143,15 +117,17 @@ describe("react-rest/services/useUpdateOne", () => {
       expect(result.current).toEqual([
         expect.any(Function),
         {
-          status: "error",
-          meta: undefined,
-          error: errors,
-          isResolved: true,
-          isPending: false,
-          isRejected: true,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: false,
+          ["1"]: {
+            status: "error",
+            meta: undefined,
+            error: errors,
+            isResolved: true,
+            isPending: false,
+            isRejected: true,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: false,
+          },
         },
         undefined,
       ]),
@@ -177,15 +153,17 @@ describe("react-rest/services/useUpdateOne", () => {
       expect(result.current).toEqual([
         expect.any(Function),
         {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
+          ["1"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
         },
         {
           id: "1",

@@ -7,7 +7,6 @@ import type {
   StatefulMeta,
   RestClient,
   MetaError,
-  Meta,
 } from "@hatchifyjs/rest-client"
 
 /**
