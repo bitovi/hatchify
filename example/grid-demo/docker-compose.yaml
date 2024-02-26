@@ -17,6 +17,7 @@ services:
       - BACKEND=koa
       - DATABASE=sqlite
       - DB_URI=sqlite://localhost/:memory
+      - NODE_ENV=development
     networks:
       - hatch_sqlite
 
