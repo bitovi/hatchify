@@ -9,6 +9,7 @@ import {
   // hasMany,
 } from "@hatchifyjs/core"
 import type {
+  ContextualMeta,
   GetSchemaFromName,
   GetSchemaNames,
   RecordType,
@@ -20,7 +21,6 @@ import type {
   RequestMetaData,
   FlatCreateType,
   FlatUpdateType,
-  ContextualMeta,
 } from "@hatchifyjs/rest-client"
 import {
   createStore,
