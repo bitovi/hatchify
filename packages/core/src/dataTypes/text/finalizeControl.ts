@@ -16,5 +16,9 @@ export function finalizeControl(
     maxRenderLength: props.maxRenderLength ?? null,
     displayName: props.displayName ?? null,
     hidden: props.hidden ?? false,
+    ui: {
+      enableCaseSensitiveContains:
+        props.ui?.enableCaseSensitiveContains ?? false,
+    },
   }
 }
