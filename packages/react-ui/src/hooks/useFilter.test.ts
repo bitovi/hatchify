@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest"
 import { renderHook, waitFor } from "@testing-library/react"
 import useFilter from "./useFilter.js"
 
-describe("usePage", () => {
-  it("works", async () => {
+describe("useFilter", () => {
+  it("renders hook result, and setFilter properly sets current state", async () => {
     const { result } = renderHook(() => useFilter())
 
     expect(result.current.filter).toEqual(undefined)

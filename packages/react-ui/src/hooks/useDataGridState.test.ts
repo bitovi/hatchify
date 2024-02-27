@@ -41,7 +41,7 @@ const fakeRestClient = hatchifyReactRest({
 })
 
 describe("useDataGridState", () => {
-  it("works", async () => {
+  it("renders a hook result containing DatagridState", async () => {
     const { result } = renderHook(() =>
       useDataGridState(finalSchemas, partialSchemas, "Todo", fakeRestClient, {
         defaultSelected: { all: false, ids: [] },

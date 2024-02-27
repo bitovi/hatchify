@@ -3,7 +3,7 @@ import { renderHook, waitFor } from "@testing-library/react"
 import useSelected from "./useSelected.js"
 
 describe("useSelected", () => {
-  it("works", async () => {
+  it("renders hook, and setSelected properly sets currentState", async () => {
     const onSelectCallback = vi.fn()
     const { result } = renderHook(() =>
       useSelected({ all: false, ids: [] }, onSelectCallback),

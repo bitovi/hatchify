@@ -35,7 +35,7 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
   }
   const finalSchemas = assembler(partialSchemas)
 
-  it("works", () => {
+  it("'getColumnsFromSchema' returns columns based on the given schema information", () => {
     expect(
       getColumnsFromSchema(
         finalSchemas,

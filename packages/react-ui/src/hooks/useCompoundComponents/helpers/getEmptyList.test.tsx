@@ -9,7 +9,7 @@ describe("hooks/useCompoundComponents/helpers/getEmptyList", () => {
     // environment.
   })
 
-  it("falls back to default EmptyList", () => {
+  it("when given an empty list, falls back to default EmptyList", () => {
     const EmptyList = getEmptyList([])
 
     expect(EmptyList).toBeInstanceOf(Function)
