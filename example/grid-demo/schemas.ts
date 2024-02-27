@@ -15,7 +15,7 @@ import {
 export const Document = {
   name: "Document",
   attributes: {
-    name: string(),
+    name: string({ ui: { enableCaseSensitiveContains: true } }),
     dueDate: dateonly(),
     importance: integer(),
     lastUpdated: datetime(),
