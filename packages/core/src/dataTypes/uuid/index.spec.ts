@@ -142,6 +142,9 @@ describe("uuid", () => {
           primary: false,
           default: null,
           regex: UUID_REGEX,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -312,6 +315,9 @@ describe("uuid", () => {
           primary: false,
           default: null,
           regex: UUID_REGEX,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -481,6 +487,9 @@ describe("uuid", () => {
           primary: true,
           default: null,
           regex: UUID_REGEX,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),

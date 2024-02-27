@@ -36,6 +36,9 @@ export interface PartialDataTypeProps<
   default?: PrimitiveType | (() => PrimitiveType) | null
   unique?: boolean
   displayName?: string
+  ui?: {
+    enableCaseSensitiveContains?: boolean
+  }
 }
 
 export interface PartialControlType<PrimitiveType, TRequired extends boolean> {

@@ -112,6 +112,9 @@ describe("string", () => {
           default: null,
           regex: /(.*?)/,
           maxRenderLength: null,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -251,6 +254,9 @@ describe("string", () => {
           default: null,
           regex: /(.*?)/,
           maxRenderLength: null,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -389,6 +395,9 @@ describe("string", () => {
           default: null,
           regex: /(.*?)/,
           maxRenderLength: null,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -529,6 +538,9 @@ describe("string", () => {
           default: null,
           regex: /(.*?)/,
           maxRenderLength: null,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -632,6 +644,9 @@ describe("string", () => {
           default: null,
           regex: /^\d+$/,
           maxRenderLength: null,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
