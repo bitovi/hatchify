@@ -132,6 +132,7 @@ const globals : {hatchedKoa: HatchifyKoa} = {
 globals.hatchedKoa = hatchifyKoa(schemas, options);
 ```
 
+### errorHandlerMiddleware 
 
 - Provides access to the `Hatchify` class constructor
 - See [`Hatchify` Class Instance](#hatchify-class-instance) notes below
