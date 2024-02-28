@@ -1,33 +1,21 @@
 # `@hatchifyjs/koa`
 
-- [What is `@hatchifyjs/koa`?](#what-is-hatchifyjskoa)
-- [Example Usage](#example-usage)
-- [Exports](#exports)
-  - [High Level Export Naming Conventions](#high-level-export-naming-conventions)
-  - [`@hatchifyjs/koa` Package Exports](#hatchifyjskoa-package-exports)
-  - [`Hatchify` Class Instance](#hatchify-class-instance)
-  - [Naming Conventions](#naming-conventions)
-  - [`hatchedKoa.modelSync`](#hatchedkoamodelsync)
-  - [`hatchedKoa.orm`](#hatchedkoaorm)
-  - [`hatchedKoa.printEndpoints`](#hatchedkoaprintendpoints)
-  - [`hatchedKoa.schema.[schemaName]`](#hatchedkoaschemaschemaname)
-  - [`hatchedKoa.middleware.[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
-  - [`hatchedKoa.parse.[schemaName]`](#hatchedkoaparseschemaname)
-  - [`hatchedKoa.model.[schemaName]`](#hatchedkoamodelschemaname)
-  - [`hatchedKoa.serialize.[schemaName]`](#hatchedkoaserializeschemaname)
-  - [`hatchedKoa.everything.[schemaName]`](#hatchedkoaeverythingschemaname)
+`@hatchifyjs/koa` is [npm package](https://www.npmjs.com/package/@hatchifyjs/koa) that takes a [Schema](https://github.com/bitovi/hatchify/tree/main/docs/schema#readme) and produces:
 
-## What is `@hatchifyjs/koa`?
+- sequelize models,
+- an expressive [JSONAPI](https://github.com/bitovi/hatchify/blob/main/docs/jsonapi/README.md) restful middleware, and
+- utilities for building custom restful endpoints.
 
-`@hatchifyjs/koa` is a schema-driven library of middleware for your Hatchify app. By defining the schemas (AKA models) of your backend resources, `@hatchifyjs/koa` will provide you with a set of functions that you can use across your Koa app.
 
-## Example Usage
+The following uses `hatchifyKoa` to create `POST`, `GET`, `PATCH`, and `DELETE`  endpoints at `/api/todos`.
+
 
 ```ts
-import { datetime, string, PartialSchema } from "@hatchifyjs/core"
 import { hatchifyKoa } from "@hatchifyjs/koa"
+import { datetime, string, PartialSchema } from "@hatchifyjs/core"
 import Koa from "koa"
 
+// Define the schema
 const schemas = {
   Todo: {
     name: "Todo",
@@ -39,14 +27,18 @@ const schemas = {
 } satisfies Record<string, PartialSchema>
 
 const app = new Koa()
+
+// Pass schemas and other settings to configure hatchify.
 const hatchedKoa = hatchifyKoa(schemas, {
   prefix: "/api",
   database: { uri: "sqlite://localhost/:memory" },
 })
 
 ;(async () => {
+  // Update the database to match the schema
   await hatchedKoa.modelSync({ alter: true })
 
+  // Create CRUD endpoints for all schemas
   app.use(hatchedKoa.middleware.allModels.all)
 
   app.listen(3000, () => {
@@ -55,7 +47,27 @@ const hatchedKoa = hatchifyKoa(schemas, {
 })()
 ```
 
-The above usage will start a Koa webserver on port 3000 with an endpoint at `/api/todos` that implements a [JSON:API](../jsonapi/) interface to the Todo data.
+
+- [Exports](#exports)
+- [High Level Export Naming Conventions](#high-level-export-naming-conventions)
+- [`@hatchifyjs/koa` Package Exports](#hatchifyjskoa-package-exports)
+- [`Hatchify` Class Instance](#hatchify-class-instance)
+- [Naming Conventions](#naming-conventions)
+- [`hatchedKoa.modelSync`](#hatchedkoamodelsync)
+- [`hatchedKoa.orm`](#hatchedkoaorm)
+- [`hatchedKoa.printEndpoints`](#hatchedkoaprintendpoints)
+- [`hatchedKoa.schema.[schemaName]`](#hatchedkoaschemaschemaname)
+- [`hatchedKoa.middleware.[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
+- [`hatchedKoa.parse.[schemaName]`](#hatchedkoaparseschemaname)
+- [`hatchedKoa.model.[schemaName]`](#hatchedkoamodelschemaname)
+- [`hatchedKoa.serialize.[schemaName]`](#hatchedkoaserializeschemaname)
+- [`hatchedKoa.everything.[schemaName]`](#hatchedkoaeverythingschemaname)
+
+
+
+## Example Usage
+
+
 
 ## Exports
 
