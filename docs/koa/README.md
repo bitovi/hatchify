@@ -109,18 +109,21 @@ See [Using Postgres](https://github.com/bitovi/hatchify/blob/main/docs/guides/us
 
 Returns a [hatchedKoa] instance which is documented below.
 
-### HatchifyKoa
+### HatchifyKoa 
 
-`HatchifyKoa` is the constructor function used to create a [hatchedKoa] instance. This typically isn't used directly; however, it's type can be useful for TypeScript.
+`HatchifyKoa` is the constructor function used to create a [hatchedKoa] instance. This TS type typically isn't used directly (it's exported to support implicit typing of the return from the `hatchifyKoa` constructor); however, it can be useful when defining a custom type that may reference `hatchedKoa`.
 
 ```ts
 import type { HatchifyKoa from "@hatchifyjs/koa"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 
-const globals : {hatchedKoa: HatchifyKoa} = {
-  hatchedKoa:
+type Globals = {
+  hatchedKoa: HatchifyKoa
 }
-globals.hatchedKoa = hatchifyKoa(schemas, options);
+
+const globals : Globals = {
+  hatchedKoa: hatchifyKoa(schemas, options);
+}
 ```
 
 ### errorHandlerMiddleware
