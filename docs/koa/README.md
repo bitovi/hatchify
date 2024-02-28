@@ -137,6 +137,8 @@ globals.hatchedKoa = hatchifyKoa(schemas, options);
 - Provides access to the `Hatchify` class constructor
 - See [`Hatchify` Class Instance](#hatchify-class-instance) notes below
 
+## hatchedKoa 
+
 
 ### High Level Export Naming Conventions
 
