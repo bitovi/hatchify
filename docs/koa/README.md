@@ -49,19 +49,22 @@ const hatchedKoa = hatchifyKoa(schemas, {
 
 
 - [Exports](#exports)
-- [High Level Export Naming Conventions](#high-level-export-naming-conventions)
-- [`@hatchifyjs/koa` Package Exports](#hatchifyjskoa-package-exports)
-- [`Hatchify` Class Instance](#hatchify-class-instance)
-- [Naming Conventions](#naming-conventions)
-- [`hatchedKoa.modelSync`](#hatchedkoamodelsync)
-- [`hatchedKoa.orm`](#hatchedkoaorm)
-- [`hatchedKoa.printEndpoints`](#hatchedkoaprintendpoints)
-- [`hatchedKoa.schema.[schemaName]`](#hatchedkoaschemaschemaname)
-- [`hatchedKoa.middleware.[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
-- [`hatchedKoa.parse.[schemaName]`](#hatchedkoaparseschemaname)
-- [`hatchedKoa.model.[schemaName]`](#hatchedkoamodelschemaname)
-- [`hatchedKoa.serialize.[schemaName]`](#hatchedkoaserializeschemaname)
-- [`hatchedKoa.everything.[schemaName]`](#hatchedkoaeverythingschemaname)
+  - hatchifyKoa - Creates a `hatchedKoa` instance with middleware and sequelize orms
+  - HatchifyKoa - A type for TypeScript fans
+  - errorHandlerMiddleware - 
+- [`hatchedKoa X`]() - 
+  - [`hatchedKoa.modelSync`](#hatchedkoamodelsync)
+  - [`hatchedKoa.orm`](#hatchedkoaorm)
+  - [`hatchedKoa.printEndpoints`](#hatchedkoaprintendpoints)
+  - [`hatchedKoa.schema.[schemaName]`](#hatchedkoaschemaschemaname)
+  - [`hatchedKoa.middleware.[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
+  - [`hatchedKoa.parse.[schemaName]`](#hatchedkoaparseschemaname)
+  - [`hatchedKoa.model.[schemaName]`](#hatchedkoamodelschemaname)
+  - [`hatchedKoa.serialize.[schemaName]`](#hatchedkoaserializeschemaname)
+  - [`hatchedKoa.everything.[schemaName]`](#hatchedkoaeverythingschemaname)
+
+
+
 
 
 
@@ -650,3 +653,12 @@ router.get("/skills", async (ctx: Context) => {
   ctx.body = serializedTodos
 })
 ```
+
+
+## Scratch
+
+
+- [High Level Export Naming Conventions](#high-level-export-naming-conventions)
+- [`@hatchifyjs/koa` Package Exports](#hatchifyjskoa-package-exports)
+- [`Hatchify` Class Instance](#hatchify-class-instance)
+- [Naming Conventions](#naming-conventions)
