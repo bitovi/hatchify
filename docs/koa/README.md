@@ -6,9 +6,7 @@
 - an expressive [JSONAPI](https://github.com/bitovi/hatchify/blob/main/docs/jsonapi/README.md) restful middleware, and
 - utilities for building custom restful endpoints.
 
-
-The following uses `hatchifyKoa` to create `POST`, `GET`, `PATCH`, and `DELETE`  endpoints at `/api/todos`.
-
+The following uses `hatchifyKoa` to create `POST`, `GET`, `PATCH`, and `DELETE` endpoints at `/api/todos`.
 
 ```ts
 import { hatchifyKoa } from "@hatchifyjs/koa"
@@ -47,12 +45,11 @@ const hatchedKoa = hatchifyKoa(schemas, {
 })()
 ```
 
-
 - [Exports](#exports)
   - hatchifyKoa - Creates a `hatchedKoa` instance with middleware and sequelize orms
   - HatchifyKoa - A type for TypeScript fans
-  - errorHandlerMiddleware - 
-- [`hatchedKoa X`]() - 
+  - errorHandlerMiddleware -
+- [`hatchedKoa X`]() -
   - [`hatchedKoa.modelSync`](#hatchedkoamodelsync)
   - [`hatchedKoa.orm`](#hatchedkoaorm)
   - [`hatchedKoa.printEndpoints`](#hatchedkoaprintendpoints)
@@ -63,24 +60,19 @@ const hatchedKoa = hatchifyKoa(schemas, {
   - [`hatchedKoa.serialize.[schemaName]`](#hatchedkoaserializeschemaname)
   - [`hatchedKoa.everything.[schemaName]`](#hatchedkoaeverythingschemaname)
 
-
-
-
-
 ## Exports
 
 `@hatchifyjs/koa` provides three named exports:
 
-  - hatchifyKoa - Creates a `hatchedKoa` instance with middleware and sequelize orms
-  - HatchifyKoa - A type for TypeScript fans
-  - errorHandlerMiddleware - 
+- hatchifyKoa - Creates a `hatchedKoa` instance with middleware and sequelize orms
+- HatchifyKoa - A type for TypeScript fans
+- errorHandlerMiddleware -
 
 ```ts
 import { hatchifyKoa, HatchifyKoa, errorHandlerMiddleware } from "@hatchifyjs/koa"
 ```
 
-
-### hatchifyKoa 
+### hatchifyKoa
 
 `hatchifyKoa` is a `Function` that constructs a `hatchedKoa` instance with middleware and sequelize orms.
 
@@ -97,7 +89,7 @@ const hatchedKoa = hatchifyKoa(schemas, {
 })
 ```
 
-__Parameters__
+**Parameters**
 
 hatchifyKoa takes two arguments `schemas` and `options`.
 
@@ -105,20 +97,19 @@ hatchifyKoa takes two arguments `schemas` and `options`.
 
 `options` is an object with the following key / values:
 
-| Property          | Type                                   | Default                    | Details                                                                                                                     |
-| ----------------- | -------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| uri               | string                                 | sqlite://localhost/:memory | The database URI / connection string of the relational database. Ex. `postgres://user:password@host:port/database?ssl=true` |
-| logging           | (sql: string, timing?: number) => void | undefined                  | A function that gets executed every time Sequelize would log something.                                                     |
-| additionalOptions | object                                 | undefined                  | An object of additional options, which are passed directly to the underlying connection library (example: [pg](https://www.npmjs.com/package/pg))                                  |
-
+| Property          | Type                                   | Default                    | Details                                                                                                                                           |
+| ----------------- | -------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| uri               | string                                 | sqlite://localhost/:memory | The database URI / connection string of the relational database. Ex. `postgres://user:password@host:port/database?ssl=true`                       |
+| logging           | (sql: string, timing?: number) => void | undefined                  | A function that gets executed every time Sequelize would log something.                                                                           |
+| additionalOptions | object                                 | undefined                  | An object of additional options, which are passed directly to the underlying connection library (example: [pg](https://www.npmjs.com/package/pg)) |
 
 See [Using Postgres](https://github.com/bitovi/hatchify/blob/main/docs/guides/using-postgres-db.md) for instructions on how to set up HatchifyJS with postgres.
 
-__Returns__
+**Returns**
 
 Returns a [hatchedKoa] instance which is documented below.
 
-### HatchifyKoa 
+### HatchifyKoa
 
 `HatchifyKoa` is the constructor function used to create a [hatchedKoa] instance. This typically isn't used directly; however, it's type can be useful for TypeScript.
 
@@ -127,18 +118,35 @@ import type { HatchifyKoa from "@hatchifyjs/koa"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 
 const globals : {hatchedKoa: HatchifyKoa} = {
-  hatchedKoa: 
+  hatchedKoa:
 }
 globals.hatchedKoa = hatchifyKoa(schemas, options);
 ```
 
-### errorHandlerMiddleware 
+### errorHandlerMiddleware
 
-- Provides access to the `Hatchify` class constructor
-- See [`Hatchify` Class Instance](#hatchify-class-instance) notes below
+`errorHandlerMiddleware` is a generic middleware that will take any error thrown in other middleware and transform it to a nice JSON:API response:
 
-## hatchedKoa 
+```json
+{
+  "jsonapi": {
+    "version": "1.0"
+  },
+  "errors": [
+    {
+      "status": 404,
+      "code": "not-found",
+      "title": "Resource not found.",
+      "detail": "Payload must include an ID of an existing 'Todo'.",
+      "source": {
+        "pointer": "/data/relationships/todos/data/0/id"
+      }
+    }
+  ]
+}
+```
 
+## hatchedKoa
 
 ### High Level Export Naming Conventions
 
@@ -720,9 +728,7 @@ router.get("/skills", async (ctx: Context) => {
 })
 ```
 
-
 ## Scratch
-
 
 - [High Level Export Naming Conventions](#high-level-export-naming-conventions)
 - [`@hatchifyjs/koa` Package Exports](#hatchifyjskoa-package-exports)
