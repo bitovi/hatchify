@@ -99,7 +99,7 @@ const hatchedKoa = hatchifyKoa(schemas, {
 
 __Parameters__
 
-hatchifyKoa takes two arguments `schemas` and `options`.
+`hatchifyKoa` takes two arguments `schemas` and `options`.
 
 `schema` is a collection of [Hatchify Schemas](https://github.com/bitovi/hatchify/blob/main/docs/schema/README.md).
 
@@ -138,6 +138,30 @@ globals.hatchedKoa = hatchifyKoa(schemas, options);
 - See [`Hatchify` Class Instance](#hatchify-class-instance) notes below
 
 ## hatchedKoa 
+
+`hatchedKoa` is an instance of [`HatchifyKoa`] that is returned by the [`hatchifyKoa`] function. It provides:
+
+- sequelize models,
+- an expressive [JSONAPI](https://github.com/bitovi/hatchify/blob/main/docs/jsonapi/README.md) restful middleware, and
+- utilities for building custom restful endpoints.
+
+The following show some of the methods available given a `Todo` and `User` schema:
+
+```ts
+import { hatchifyKoa } from "@hatchifyjs/koa";
+
+const schemas = {
+  Todo: { ... },
+  User: { ... },
+} satisfies Record<string, PartialSchema>
+
+const hatchedKoa = hatchifyKoa(schemas, {
+  prefix: "/api",
+  database: { uri: "sqlite://localhost/:memory" },
+})
+
+hatchedKoa
+```
 
 
 ### High Level Export Naming Conventions
