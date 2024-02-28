@@ -187,13 +187,13 @@ hatchedKoa.orm       .(Todo|User)  // The sequelize ORM
 hatchedKoa.model     .(Todo|User)  // A hatchify model that extends the underlying ORM
 hatchedKoa.middleware.(Todo|User|allModels) // Middleware functions that create restful services
                      .(
-                          findAll,          // 
-                          findOne,
-                          findAllCountAll,
-                          create,
-                          update,
-                          destroy,
-                          all,             // a middleware that handles all of the middleware above
+                          findAll,          // A GET-many endpoint
+                          findAllCountAll,  // Return the unpaginated count
+                          findOne,          // A GET-one endpoint
+                          create,           // A POST endpoint
+                          update,           // A PATCH endpoint
+                          destroy,          // A DELETE endpoint
+                          all,              // Provides all of the above endpoints
                       )
 hatchedKoa.parse     .(Todo|User|allModels) // Parse JSONAPI payloads and prepare data for the orm
                      .(
