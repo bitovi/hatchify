@@ -67,12 +67,63 @@ const hatchedKoa = hatchifyKoa(schemas, {
 
 
 
-
-## Example Usage
-
-
-
 ## Exports
+
+`@hatchifyjs/koa` provides three named exports:
+
+  - hatchifyKoa - Creates a `hatchedKoa` instance with middleware and sequelize orms
+  - HatchifyKoa - A type for TypeScript fans
+  - errorHandlerMiddleware - 
+
+```ts
+import { hatchifyKoa, HatchifyKoa, errorHandlerMiddleware } from "@hatchifyjs/koa"
+```
+
+
+### hatchifyKoa 
+
+`hatchifyKoa` is a `Function` that constructs a `hatchedKoa` instance with middleware and sequelize orms.
+
+```ts
+import { hatchifyKoa } from "@hatchifyjs/koa";
+
+const schemas = { ... }
+
+const app = new Koa()
+
+const hatchedKoa = hatchifyKoa(schemas, {
+  prefix: "/api",
+  database: { uri: "sqlite://localhost/:memory" },
+})
+```
+
+__Parameters__
+
+hatchifyKoa takes two arguments `schemas` and `options`.
+
+`schema` is a collection of [Hatchify Schemas](https://github.com/bitovi/hatchify/blob/main/docs/schema/README.md).
+
+`options` is an object with the following key / values:
+
+| Property          | Type                                   | Default                    | Details                                                                                                                     |
+| ----------------- | -------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| uri               | string                                 | sqlite://localhost/:memory | The database URI / connection string of the relational database. Ex. `postgres://user:password@host:port/database?ssl=true` |
+| logging           | (sql: string, timing?: number) => void | undefined                  | A function that gets executed every time Sequelize would log something.                                                     |
+| additionalOptions | object                                 | undefined                  | An object of additional options, which are passed directly to the underlying connection library (example: [pg](https://www.npmjs.com/package/pg))                                  |
+
+
+See [Using Postgres](https://github.com/bitovi/hatchify/blob/main/docs/guides/using-postgres-db.md) for instructions on how to set up HatchifyJS with postgres.
+
+__Returns__
+
+Returns a [hatchedKoa] instance which is documented below.
+
+
+
+
+- Provides access to the `Hatchify` class constructor
+- See [`Hatchify` Class Instance](#hatchify-class-instance) notes below
+
 
 ### High Level Export Naming Conventions
 
