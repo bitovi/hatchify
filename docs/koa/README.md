@@ -118,7 +118,19 @@ __Returns__
 
 Returns a [hatchedKoa] instance which is documented below.
 
+### HatchifyKoa 
 
+`HatchifyKoa` is the constructor function used to create a [hatchedKoa] instance. This typically isn't used directly; however, it's type can be useful for TypeScript.
+
+```ts
+import type { HatchifyKoa from "@hatchifyjs/koa"
+import { hatchifyKoa } from "@hatchifyjs/koa"
+
+const globals : {hatchedKoa: HatchifyKoa} = {
+  hatchedKoa: 
+}
+globals.hatchedKoa = hatchifyKoa(schemas, options);
+```
 
 
 - Provides access to the `Hatchify` class constructor
