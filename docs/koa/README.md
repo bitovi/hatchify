@@ -130,6 +130,15 @@ const globals : Globals = {
 
 `errorHandlerMiddleware` is a generic middleware that will take any error thrown in other middleware and transform it to a nice JSON:API response:
 
+```ts
+app.use(errorHandlerMiddleware)
+app.use(hatchify.middleware.allModels.all)
+```
+
+```
+GET /api/todos/invalid
+```
+
 ```json
 {
   "jsonapi": {
