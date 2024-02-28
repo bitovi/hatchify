@@ -181,7 +181,58 @@ const hatchedKoa = hatchifyKoa(schemas, {
   database: { uri: "sqlite://localhost/:memory" },
 })
 
-hatchedKoa
+
+// The sequelize Todo and User instances
+hatchedKoa.orm.Todo
+hatchedKoa.orm.User
+
+// Middleware functions that create restful services
+const {
+  findAll,          // 
+  findOne,
+  findAllCountAll,
+  create,
+  update,
+  destroy,
+  all,              // a middleware that handles all of the middleware above
+}
+// Each schema produces the same middleware functions
+  = hatchedKoa.middleware.Todo
+  = hatchedKoa.middleware.User
+  = hatchedKoa.middleware.allModels;
+
+
+// Parse JSONAPI payloads and prepare data for sequelize
+const {
+  findAll,          
+  findOne,
+  findAllCountAll,
+  create,
+  update,
+  destroy,
+}
+// Each schema produces the same middleware functions
+  = hatchedKoa.parse.Todo
+  = hatchedKoa.parse.User
+  = hatchedKoa.parse.allModels;
+
+
+// Serialize sequelize objects into JSONAPI responses
+const {
+  findAll,          
+  findOne,
+  findAllCountAll,
+  create,
+  update,
+  destroy,
+}
+// Each schema produces the same middleware functions
+  = hatchedKoa.serialize.Todo
+  = hatchedKoa.serialize.User
+  = hatchedKoa.serialize.allModels;
+
+hatchedKoa.modelSync
+
 ```
 
 
