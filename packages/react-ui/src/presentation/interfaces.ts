@@ -51,6 +51,7 @@ export interface XDataGridProps<
   children?: React.ReactNode
   overwrite?: boolean
   minimumLoadTime?: number
+  listWrapperId?: string
 }
 
 export interface XEverythingProps<
