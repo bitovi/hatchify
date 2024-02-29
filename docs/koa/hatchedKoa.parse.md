@@ -68,6 +68,7 @@ const createOptions = await hatchedKoa.parse.Todo.create({
 ```
 
 ## update
+🛑
 
 `hatchedKoa.parse[schemaName].update(body: unknown, id?: Identifier) => UpdateOptions` parses a query string for updating an existing single instance.
 
