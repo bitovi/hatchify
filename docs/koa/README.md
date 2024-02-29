@@ -1,6 +1,6 @@
 # `@hatchifyjs/koa`
 
-`@hatchifyjs/koa` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/koa) that takes a [Schema](https://github.com/bitovi/hatchify/tree/main/docs/schema#readme) and produces:
+`@hatchifyjs/koa` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/koa) that takes a [Schema](../schema/README.md) and produces:
 
 - [Sequelize](https://sequelize.org/) models,
 - an expressive [JSON:API](../jsonapi/README.md) restful middleware, and
