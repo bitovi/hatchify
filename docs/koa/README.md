@@ -301,7 +301,8 @@ DELETE /api/users/:id
 
 ### `hatchedKoa.middleware.[schemaName|allModels]`
 
-`hatchedKoa.middleware.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy]`
+[`hatchedKoa.middleware.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy]`](./hatchedKoa.middleware.md)
+
 
 All of the `middleware` functions export a Koa Middleware that can be passed directly to a Koa app.use or a Koa router.[verb] function, mounted to a specific URL/path. The normal [schemaName] export expects to be used with:
 
