@@ -61,7 +61,7 @@ __Returns__
 - Can this throw an exception?
 - Can it return null?
 
-__Throws__
+__Rejects__
 
 - Can this throw an exception? 🛑
 
