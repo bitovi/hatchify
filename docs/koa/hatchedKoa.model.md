@@ -3,7 +3,7 @@
 `hatchedKoa.model` is a collection of methods to create, retrieve, update and delete records using the underlying [orm]. These methods 
 are grouped by Schema name.
 
-For example, the following shows using `Todo.findAll` to retrieve 
+For example, the following shows using `Todo.findAll` to retrieve todo recrods as JavaScript objects:
 
 ```ts
 import { hatchifyKoa } from "@hatchifyjs/koa";
