@@ -78,7 +78,7 @@ const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter
 // }
 ```
 
-## `create`: (`body`: unknown) => `CreateOptions`
+## `create`: (`body`: object) => `CreateOptions`
 
 Creates a new instance.
 
@@ -101,7 +101,7 @@ const serializedTodo = await hatchedKoa.everything.Todo.create({
 // }
 ```
 
-## `update`: (`body`: unknown, `id`?: Identifier) => `UpdateOptions`
+## `update`: (`body`: object, `id`?: Identifier) => `UpdateOptions`
 
 Updates one or more instances.
 
@@ -134,4 +134,3 @@ const serializedResult = await hatchedKoa.everything.Todo.destroy("", "b559e3d9-
 //   data: null,
 // }
 ```
-

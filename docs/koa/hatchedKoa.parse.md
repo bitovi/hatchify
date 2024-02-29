@@ -38,6 +38,21 @@ const findOptions = await hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
 // findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
 ```
 
+**Parameters**
+
+| Property    | Type   | Default | Details                                               |
+| ----------- | ------ | ------- | ----------------------------------------------------- |
+| querystring | string | `''`    | JSON:API querystring specifying what records to load. |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)>
+
+**Rejects**
+
+[`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
+[`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
+
 ## findOne
 
 Parses a query string for searching a single instance.
@@ -52,6 +67,22 @@ const findOptions = await hatchedKoa.parse.Todo.findOne("", "b559e3d9-bad7-4b3d-
 // findOptions = { where: { id: "b177b838-61d2-4d4d-b67a-1851289e526a" } }
 ```
 
+**Parameters**
+
+| Property    | Type   | Default     | Details                                                        |
+| ----------- | ------ | ----------- | -------------------------------------------------------------- |
+| querystring | string | `''`        | JSON:API querystring specifying what record to load.           |
+| id          | string | `undefined` | A record ID to fetch. Will ignore the querystring if provided. |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)>
+
+**Rejects**
+
+[`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
+[`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
+
 ## findAndCountAll
 
 Parses a query string for searching a single instance.
@@ -65,11 +96,26 @@ const findOptions = await hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Ba
 // findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
 ```
 
+**Parameters**
+
+| Property    | Type   | Default | Details                                               |
+| ----------- | ------ | ------- | ----------------------------------------------------- |
+| querystring | string | `''`    | JSON:API querystring specifying what records to load. |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)>
+
+**Rejects**
+
+[`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
+[`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
+
 ## create
 
 Parses a query string for creating a new instance.
 
-`hatchedKoa.parse[schemaName].create(body: unknown) => Promise<CreateOptions>`
+`hatchedKoa.parse[schemaName].create(body: object) => Promise<CreateOptions>`
 
 ```ts
 const createOptions = await hatchedKoa.parse.Todo.create({
@@ -83,16 +129,47 @@ const createOptions = await hatchedKoa.parse.Todo.create({
 // createOptions = { body: { name: "Baking" }, ops: {} }
 ```
 
+**Parameters**
+
+| Property | Type   | Default | Details                                                     |
+| -------- | ------ | ------- | ----------------------------------------------------------- |
+| body     | object | N/A     | JSON:API formatted object specifying what record to create. |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[CreateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-create)>
+
+**Rejects**
+
+[`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
+[`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
+
 ## update
 
 Parses a query string for updating an existing single instance.
 
-`hatchedKoa.parse[schemaName].update(body: unknown, id?: Identifier) => Promise<UpdateOptions>`
+`hatchedKoa.parse[schemaName].update(body: object, id?: Identifier) => Promise<UpdateOptions>`
 
 ```ts
 const updateOptions = await hatchedKoa.parse.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
-// updateOptions = { body: { name: "Baking" }, ops: {} }
+// updateOptions = { body: { name: "Serving" }, ops: { where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" } } }
 ```
+
+**Parameters**
+
+| Property | Type   | Default     | Details                                                         |
+| -------- | ------ | ----------- | --------------------------------------------------------------- |
+| body     | object | N/A         | JSON:API formatted object specifying what attributes to update. |
+| id       | string | `undefined` | A record ID to update. Will update all records if omitted.      |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[UpdateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-update)>
+
+**Rejects**
+
+[`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
+[`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
 
 ## destroy
 
@@ -107,3 +184,19 @@ const destroyOptions = await hatchedKoa.parse.Todo.destroy("filter[name]=Baking"
 const destroyOptions = await hatchedKoa.parse.Todo.destroy("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
 // destroyOptions = { where: { id: "b177b838-61d2-4d4d-b67a-1851289e526a" } }
 ```
+
+**Parameters**
+
+| Property    | Type   | Default     | Details                                                          |
+| ----------- | ------ | ----------- | ---------------------------------------------------------------- |
+| querystring | string | `''`        | JSON:API querystring specifying what record to destroy.          |
+| id          | string | `undefined` | A record ID to destroy. Will ignore the querystring if provided. |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[DestroyOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy)>
+
+**Rejects**
+
+[`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
+[`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)

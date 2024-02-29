@@ -56,7 +56,7 @@ const deserializedTodos = await hatchedKoa.model.Todo.findAll({
 | -------- | ------------------------------------------------------------------------------------------ | ------- | ----------------------------- |
 | options  | [FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll) | `{}`    | Specify what records to load. |
 
-**Resolves**
+**Returns**
 
 [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Model> | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/null)>
 
@@ -90,7 +90,7 @@ const deserializedTodos = await hatchedKoa.model.Todo.findAll({
 | -------- | ------------------------------------------------------------------------------------------ | ------- | ----------------------------- |
 | options  | [FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll) | `{}`    | Specify what records to load. |
 
-**Resolves**
+**Returns**
 
 [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<{ count: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), rows: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Model>}> | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/null)>
 
@@ -117,7 +117,7 @@ const deserializedTodo = await hatchedKoa.model.Todo.findOne({
 | -------- | ------------------------------------------------------------------------------------------ | ------- | ----------------------------- |
 | options  | [FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll) | `{}`    | Specify what records to load. |
 
-**Resolves**
+**Returns**
 
 [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<Model | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/null)>
 
@@ -143,7 +143,7 @@ const deserializedTodo = await hatchedKoa.model.Todo.create({ name: "Baking" })
 | body     | object                                                                                      | N/A     | The data for the new instance. |
 | options  | [CreateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-create) | `{}`    | Options for the creation.      |
 
-**Resolves**
+**Returns**
 
 [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<Model>
 
@@ -155,7 +155,7 @@ Since this is exposing the actual Sequelize function, it can throw any [Sequeliz
 
 updates one or more instances.
 
-`hatchedKoa.model[schemaName].update(body: unknown, options: UpdateOptions, id?: Identifier) => Promise<[number, Model[]]>`
+`hatchedKoa.model[schemaName].update(body: object, options: UpdateOptions, id?: Identifier) => Promise<[number, Model[]]>`
 
 ```ts
 const [updatedCount, updatedTodos] = await hatchedKoa.model.Todo.update({ name: "Serving" }, { where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" } })
@@ -170,7 +170,7 @@ const [updatedCount, updatedTodos] = await hatchedKoa.model.Todo.update({ name: 
 | values   | object                                                                                      | N/A     | The values to update.   |
 | options  | [UpdateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-update) | `{}`    | Options for the update. |
 
-**Resolves**
+**Returns**
 
 [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<[[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), Model[]]>
 
@@ -199,7 +199,7 @@ const deletedCount = await hatchedKoa.model.Todo.destroy({
 | :------- | :-------------------------------------------------------------------------------------------- | :------ | :----------------------- |
 | options  | [DestroyOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy) | `{}`    | Options for the destroy. |
 
-**Resolves**
+**Returns**
 
 [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)>
 
