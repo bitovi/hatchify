@@ -245,13 +245,9 @@ A reference to the `Sequelize` instance when more control is needed.
 
 ### hatchedKoa.model[schemaName]
 
-`hatchedKoa.model.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy]`
+[hatchedKoa.model](https://github.com/bitovi/hatchify/blob/main/docs/koa/hatchedKoa.model.md) is a collection of methods to create, retrieve, update and delete records using the underlying [orm]. These methods are grouped by Schema name.
 
-The `model` functions take a given model and perform the underlying ORM operation on it.
-
-#### `findAll`: (`ops`: FindOptions) => `Model[]`
-
-Search for multiple instances.
+For example, the following shows using `Todo.findAll` to retrieve todo records as JavaScript objects:
 
 ```ts
 const deserializedTodos = await hatchedKoa.model.Todo.findAll({
@@ -262,61 +258,14 @@ const deserializedTodos = await hatchedKoa.model.Todo.findAll({
 // ]
 ```
 
-#### `findOne`: (`ops`: FindOptions) => `Model | null`
+Each model has the following methods:
 
-Search for a single instance. Returns the first instance found, or null if none can be found.
-
-```ts
-const deserializedTodo = await hatchedKoa.model.Todo.findOne({
-  where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
-})
-// deserializedTodo = { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
-```
-
-#### `findAndCountAll`: (`ops`: FindOptions) => `{ count: number, rows: Model[] }`
-
-Find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
-
-```ts
-const deserializedTodos = await hatchedKoa.model.Todo.findAll({
-  where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
-  limit: 10,
-  offset: 0,
-})
-// deserializedTodos = [
-//   { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
-// ]
-```
-
-#### `create`: (`body`: unknown, `ops`: CreateOptions) => `data`
-
-Creates a new instance.
-
-```ts
-const deserializedTodo = await hatchedKoa.model.Todo.create({ name: "Baking" })
-// deserializedTodo = { name: "Baking" }
-```
-
-#### `update`: (`body`: unknown, `ops`: UpdateOptions, `id`?: Identifier) => `number`
-
-Updates one or more instances.
-
-```ts
-const [updatedCount, updatedTodos] = await hatchedKoa.model.Todo.update({ name: "Serving" }, { where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" } })
-// updatedCount = 1
-// updatedTodos = [{ name: "Baking" }]
-```
-
-#### `destroy`: (`ops`: DestroyOptions, `id`?: Identifier) => `number`
-
-Deletes one or more instances.
-
-```ts
-const deletedCount = await hatchedKoa.model.Todo.destroy({
-  where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
-})
-// deletedCount = 1
-```
+- [findAll](./hatchedKoa.model.md#findall)
+- [findAndCountAll](#findandcountall)
+- [findOne](#findone)
+- [create](#create)
+- [update](#update)
+- [destroy](#destroy)
 
 
 
