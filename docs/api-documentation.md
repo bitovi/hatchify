@@ -29,7 +29,7 @@ export const SalesPerson = {
 ## Backend
 
 <pre>
-const hatchedKoa = hatchifyKoa({ SalesPerson }, { prefix: "/api" })
+const hatchedKoa = <a href="./koa/README.md#hatchifykoa">hatchifyKoa</a>({ SalesPerson }, { prefix: "/api" })
 </pre>
 
 - `.middleware`
