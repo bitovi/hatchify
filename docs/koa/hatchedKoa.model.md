@@ -37,7 +37,7 @@ Each model has the following methods:
 
 ## findAll
 
-`hatchedKoa.model[schemaName].findAll(options : FindOptions) => [Model]` is a method that retrieves JavaScript objects from the underlying orm and database.
+`hatchedKoa.model[schemaName].findAll(options : FindOptions) => Promise<[Model]>` is a method that retrieves JavaScript objects from the underlying orm and database.
 
 ```ts
 const deserializedTodos = await hatchedKoa.model.Todo.findAll({
