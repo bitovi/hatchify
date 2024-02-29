@@ -160,7 +160,7 @@ updates one or more instances.
 ```ts
 const [updatedCount, updatedTodos] = await hatchedKoa.model.Todo.update({ name: "Serving" }, { where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" } })
 // updatedCount = 1
-// updatedTodos = [{ name: "Baking" }]
+// updatedTodos = [{ name: "Serving" }]
 ```
 
 **Parameters**

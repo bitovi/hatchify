@@ -112,7 +112,7 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update({ name: "Serving" 
 //   data: {
 //     type: "Todo",
 //     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
-//     attributes: { name: "Baking" },
+//     attributes: { name: "Serving" },
 //   },
 // }
 ```
