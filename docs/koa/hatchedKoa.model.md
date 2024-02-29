@@ -141,7 +141,7 @@ const deserializedTodo = await hatchedKoa.model.Todo.create({ name: "Baking" })
 | Property | Type                                                                                        | Default | Details                        |
 | :------- | :------------------------------------------------------------------------------------------ | :------ | :----------------------------- |
 | body     | object                                                                                      | N/A     | The data for the new instance. |
-| options  | [CreateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-create) | N/A     | Options for the creation.      |
+| options  | [CreateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-create) | `{}`    | Options for the creation.      |
 
 **Resolves**
 
@@ -168,7 +168,7 @@ const [updatedCount, updatedTodos] = await hatchedKoa.model.Todo.update({ name: 
 | Property | Type                                                                                        | Default | Details                 |
 | :------- | :------------------------------------------------------------------------------------------ | :------ | :---------------------- |
 | values   | object                                                                                      | N/A     | The values to update.   |
-| options  | [UpdateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-update) | N/A     | Options for the update. |
+| options  | [UpdateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-update) | `{}`    | Options for the update. |
 
 **Resolves**
 
@@ -197,7 +197,7 @@ const deletedCount = await hatchedKoa.model.Todo.destroy({
 
 | Property | Type                                                                                          | Default | Details                  |
 | :------- | :-------------------------------------------------------------------------------------------- | :------ | :----------------------- |
-| options  | [DestroyOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy) | {}      | Options for the destroy. |
+| options  | [DestroyOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy) | `{}`    | Options for the destroy. |
 
 **Resolves**
 
