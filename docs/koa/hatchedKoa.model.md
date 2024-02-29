@@ -102,7 +102,7 @@ Since this is exposing the actual Sequelize function, it can throw any [Sequeliz
 
 searches for a single instance. Returns the first instance found, or null if none can be found.
 
-`hatchedKoa.model[schemaName].findAll(options: FindOptions) => Model | null`
+`hatchedKoa.model[schemaName].findAll(options: FindOptions) => Promise<Model | null>`
 
 ```ts
 const deserializedTodo = await hatchedKoa.model.Todo.findOne({
