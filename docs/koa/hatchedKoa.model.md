@@ -37,7 +37,7 @@ Each model has the following methods:
 
 ## findAll
 
-`hatchedKoa.model[SCHEMA].findAll(options : FindOptions) => [Model]` is a method that retrieves JavaScript objects from the underlying orm and database.
+`hatchedKoa.model[schemaName].findAll(options : FindOptions) => [Model]` is a method that retrieves JavaScript objects from the underlying orm and database.
 
 ```ts
 const deserializedTodos = await hatchedKoa.model.Todo.findAll({
@@ -67,7 +67,7 @@ __Throws__
 
 ## findAndCountAll
 
-`hatchedKoa.model[SCHEMA].findAndCountAll(options : FindOptions) => { count: number, rows: Model[] }` finsd all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for pagination.
+`hatchedKoa.model[schemaName].findAndCountAll(options : FindOptions) => { count: number, rows: Model[] }` finsd all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for pagination.
 
 ```ts
 const deserializedTodos = await hatchedKoa.model.Todo.findAll({
@@ -84,7 +84,7 @@ const deserializedTodos = await hatchedKoa.model.Todo.findAll({
 
 ## findOne 
 
-`hatchedKoa.model[SCHEMA].findAll(options: FindOptions) => Model | null` searches for a single instance. Returns the first instance found, or null if none can be found.
+`hatchedKoa.model[schemaName].findAll(options: FindOptions) => Model | null` searches for a single instance. Returns the first instance found, or null if none can be found.
 
 ```ts
 const deserializedTodo = await hatchedKoa.model.Todo.findOne({
@@ -108,7 +108,7 @@ __Returns__
 
 ## create 
 
-`hatchedKoa.model[SCHEMA].create(body: unknown🛑, options: CreateOptions) => data🛑` creates a new instance.
+`hatchedKoa.model[schemaName].create(body: unknown🛑, options: CreateOptions) => data🛑` creates a new instance.
 
 ```ts
 const deserializedTodo = await hatchedKoa.model.Todo.create({ name: "Baking" })
@@ -128,7 +128,7 @@ __Returns__
 
 ## update
 
-`hatchedKoa.model[SCHEMA].update(body: unknown, ops: UpdateOptions, id?: Identifier) => number` updates one or more instances.
+`hatchedKoa.model[schemaName].update(body: unknown, ops: UpdateOptions, id?: Identifier) => number` updates one or more instances.
 
 ```ts
 const [updatedCount, updatedTodos] = await hatchedKoa.model.Todo.update({ name: "Serving" }, { where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" } })
@@ -146,7 +146,7 @@ __Returns__
 
 ## destroy
 
-`hatchedKoa.model[SCHEMA].destroy(ops: DestroyOptions, id?: Identifier) => number`
+`hatchedKoa.model[schemaName].destroy(ops: DestroyOptions, id?: Identifier) => number`
 
 Deletes one or more instances.
 
