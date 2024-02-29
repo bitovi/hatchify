@@ -330,6 +330,9 @@ app.use(hatchedKoa.middleware.allModels.all)
 
 ### hatchedKoa.parse[schemaName]
 
+[hatchedKoa.parse[schemaName]](./hatchedKoa.parse.md) has methods to parse a JSONAPI request and return options that can be passed to the [models] to CRUD data.
+
+
 ### `hatchedKoa.serialize.[schemaName]`
 
 `hatchedKoa.serialize.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy|error]`
