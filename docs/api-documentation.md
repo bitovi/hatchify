@@ -32,6 +32,8 @@ export const SalesPerson = {
 import { hatchifyKoa } from "<a href="./koa/README.md">@hatchifyjs/core</a>"
   
 const <a href="./koa/README.md#hatchedkoa">hatchedKoa</a> = <a href="./koa/README.md#hatchifykoa">hatchifyKoa</a>({ SalesPerson }, { prefix: "/api" })
+
+await hatchedKoa.<a href="./koa/hatchedKoa.model.md#findall">model</a>.SalesPerson.<a href="./koa/hatchedKoa.model.md#findall">findAll</a>({})
 </pre>
 
 - `.middleware`
