@@ -28,7 +28,12 @@ const deserializedTodos = await hatchedKoa.model.Todo.findAll({
 
 Each model has the following methods:
 
-- [findAll](#findAll)
+- [findAll](#findall)
+- [findAndCountAll](#findandcountall)
+- [findOne](#findone)
+- [create](#create)
+- [update](#update)
+- [destroy](#destroy)
 
 ## findAll
 
