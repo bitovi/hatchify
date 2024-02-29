@@ -34,7 +34,8 @@ import { hatchifyKoa } from "<a href="./koa/README.md">@hatchifyjs/core</a>"
 const <a href="./koa/README.md#hatchedkoa">hatchedKoa</a> = <a href="./koa/README.md#hatchifykoa">hatchifyKoa</a>({ SalesPerson }, { prefix: "/api" })
 
 await hatchedKoa.<a href="./koa/hatchedKoa.model.md#findall">model</a>.SalesPerson.<a href="./koa/hatchedKoa.model.md#findall">findAll</a>({})
-await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#findAllAndCount">findAllAndCount</a>({})
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#findandcountall">findAndCountAll</a>({})
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#findOne">findOne</a>(where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" })
 </pre>
 
 - `.middleware`
