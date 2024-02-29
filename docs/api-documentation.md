@@ -35,7 +35,10 @@ const <a href="./koa/README.md#hatchedkoa">hatchedKoa</a> = <a href="./koa/READM
 
 await hatchedKoa.<a href="./koa/hatchedKoa.model.md#findall">model</a>.SalesPerson.<a href="./koa/hatchedKoa.model.md#findall">findAll</a>({})
 await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#findandcountall">findAndCountAll</a>({})
-await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#findOne">findOne</a>(where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" })
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#findOne">findOne</a>(where: { id: "UUID" })
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#create">create</a>({name: "Justin"})
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#update">update</a>({name: "Roye"}, { where: { id: "UUID" } })
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#update">destroy</a>({ where: { id: "UUID" } })
 </pre>
 
 - `.middleware`
