@@ -29,6 +29,8 @@ export const SalesPerson = {
 ## Backend
 
 <pre>
+import { hatchedKoa } from "<a href="./koa/README.md">@hatchifyjs/core</a>"
+  
 const hatchedKoa = <a href="./koa/README.md#hatchifykoa">hatchifyKoa</a>({ SalesPerson }, { prefix: "/api" })
 </pre>
 
