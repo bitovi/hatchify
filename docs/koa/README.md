@@ -74,7 +74,7 @@ import { hatchifyKoa, HatchifyKoa, errorHandlerMiddleware } from "@hatchifyjs/ko
 
 ### hatchifyKoa
 
-`hatchifyKoa` is a `Function` that constructs a `hatchedKoa` instance with middleware and sequelize orms.
+`hatchifyKoa(schemas: Schemas, options: KoaOptions)` is a `Function` that constructs a `hatchedKoa` instance with middleware and sequelize orms.
 
 ```ts
 import { hatchifyKoa } from "@hatchifyjs/koa";
