@@ -13,6 +13,7 @@ export interface XProviderProps<T> {
 export interface SortObject {
   direction: "asc" | "desc" | undefined
   sortBy: string | undefined
+  alwaysSorted?: boolean
 }
 
 export interface PageCountObject {

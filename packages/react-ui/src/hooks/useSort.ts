@@ -6,6 +6,7 @@ export default function useSort(
 ): HatchifyDataGridSort {
   const [sort, setSort] = useState<SortObject>(
     defaultSort ?? {
+      alwaysSorted: false,
       direction: undefined,
       sortBy: undefined,
     },
@@ -19,7 +20,9 @@ export default function useSort(
   }, [sort.sortBy, sort.direction])
 
   const updateSort = (sortBy: string) => {
-    if (sort.sortBy === undefined || sort.sortBy !== sortBy) {
+    if (sort.alwaysSorted && sort.direction === "desc") {
+      setSort({ sortBy, direction: "asc" })
+    } else if (sort.sortBy === undefined || sort.sortBy !== sortBy) {
       setSort({ sortBy, direction: "asc" })
     } else if (sort.direction === "asc") {
       setSort({ sortBy, direction: "desc" })
