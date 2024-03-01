@@ -266,7 +266,7 @@ function resolveWildcard(hatchify: Hatchify, path: string): string {
     ]
   }
 
-  if (!hatchify.model[modelName]) {
+  if (!hatchify.orm.models[modelName]) {
     throw [
       new ValidationError({
         status: statusCodes.UNPROCESSABLE_ENTITY,
