@@ -249,6 +249,10 @@ console.log(hatchedKoa.schema)
 
 A reference to the `Sequelize` instance when more control is needed.
 
+```ts
+hatchedKoa.orm.models.Todo.findAll()
+```
+
 ### hatchedKoa.model[schemaName]
 
 [hatchedKoa.model](./hatchedKoa.model.md) is a collection of methods to create, retrieve, update and delete records using the underlying [ORM](https://sequelize.org/). These methods are grouped by Schema name.
