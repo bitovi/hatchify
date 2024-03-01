@@ -1,10 +1,8 @@
 # hatchedKoa.serialize
 
-`hatchedKoa.serialize.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy|error]`
+`hatchedKoa.serialize` is a collection of methods to take data from the [hatchedKoa.model](./hatchedKoa.model.md) methods and transform it to [JSON:API](../jsonapi/README.md) response formats that look like the following:
 
-Functions expected to be used to create valid [JSON:API](../jsonapi/README.md) response:
-
-```json
+```js
 {
   "data": {
     "type": "Article",
@@ -22,14 +20,19 @@ Functions expected to be used to create valid [JSON:API](../jsonapi/README.md) r
 }
 ```
 
-Normally these functions will take Model data that was returned from the ORM query. This export also includes a slightly different function for helping create JSON:API compliant Error responses.
+Normally these functions will take Model data that was returned from the ORM query. This export also includes a slightly different function for helping create JSON:API compliant Error responses. 
 
-## `findAll`: (`data`: Model[], `ops`: SerializerOptions) => `JSONAPIDocument`
+🛑 Does it take the data from the ORM?  The orm returns sequelize instances.  I think it takes it from a plain JS object returned by `model` functions ...
 
-Serializes result of multiple instances.
+## findAll
+
+`hatchedKoa.serialize[schemaName].findAll(data: Model[], ops: SerializerOptions) =>JSONAPIDocument` serializes result of multiple instances.
 
 ```ts
-const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
+const serializedTodos = await hatchedKoa.serialize.Todo.findAll(
+  [{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }],
+  ["id", "name"]
+);
 // serializedTodos = {
 //   jsonapi: { version: "1.0" },
 //   data: [
