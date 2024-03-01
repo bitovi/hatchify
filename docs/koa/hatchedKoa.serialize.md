@@ -45,25 +45,9 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAll(
 // }
 ```
 
-## `findOne`: (`data`: Model, `ops`: SerializerOptions) => `JSONAPIDocument`
+## findAndCountAll
 
-Serializes result of a single instance.
-
-```ts
-const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
-// serializedTodo = {
-//   jsonapi: { version: "1.0" },
-//   data: {
-//     type: "Todo",
-//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
-//     attributes: { name: "Baking" },
-//   },
-// }
-```
-
-## `findAndCountAll`: (`data`: {count: number; rows: Model[]}, ops: SerializerOptions) => `JSONAPIDocument`
-
-Serializes result of all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+`hatchedKoa.serialize[schemaName].findAndCountAll(data: {count: number; rows: Model[]}, ops: SerializerOptions) =>JSONAPIDocument` serializes result of all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
 
 ```ts
 const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
@@ -86,7 +70,29 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
 // }
 ```
 
-## `create`: (`data`: Model, `ops`: SerializerOptions) => `JSONAPIDocument`
+
+## findOne
+
+
+`hatchedKoa.serialize[schemaName].findOne(data: Model, ops: SerializerOptions) => JSONAPIDocument` serializes result of a single instance.
+
+```ts
+const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
+// serializedTodo = {
+//   jsonapi: { version: "1.0" },
+//   data: {
+//     type: "Todo",
+//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//     attributes: { name: "Baking" },
+//   },
+// }
+```
+
+
+
+## create
+
+`hatchedKoa.serialize[schemaName].create(data: Model, ops: SerializerOptions) =>JSONAPIDocument`
 
 Serializes a result of a new instance creation.
 
@@ -105,9 +111,11 @@ const serializedTodo = await hatchedKoa.serialize.Todo.create({
 // }
 ```
 
-## `update`: (`count`: number, `ops`: SerializerOptions) => `JSONAPIDocument`
+## update
 
-Serializes a result of an update.
+🛑 Signature doesn't match the example 🛑
+
+`hatchedKoa.serialize[schemaName].update(count: number, ops: SerializerOptions) => JSONAPIDocument` serializes a result of an update.
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.update(
@@ -127,9 +135,9 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update(
 // }
 ```
 
-## `destroy`: (`count`: number, `ops`: SerializerOptions) => `JSONAPIDocument`
+## destroy
 
-Serializes a result of a deletion.
+`hatchedKoa.serialize[schemaName].destroy(count: number, ops: SerializerOptions) => JSONAPIDocument` serializes a result of a deletion.
 
 ```ts
 const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
@@ -138,3 +146,5 @@ const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
 //   data: null,
 // }
 ```
+
+🛑 Do SerializerOptions do anything here 🛑 We also need to document SerializerOptions 🛑
