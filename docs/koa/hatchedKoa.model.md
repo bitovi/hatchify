@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This feature is deprecated. Do not use it. Use `hatchedKoa.orm.models` instead.
+
 # hatchedKoa.model
 
 `hatchedKoa.model` is a collection of methods to create, retrieve, update and delete records using the underlying [ORM](https://sequelize.org/). These methods
