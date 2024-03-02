@@ -29,7 +29,23 @@ export const SalesPerson = {
 ## Backend
 
 <pre>
-const hatchedKoa = hatchifyKoa({ SalesPerson }, { prefix: "/api" })
+import { hatchifyKoa } from "<a href="./koa/README.md">@hatchifyjs/koa</a>"
+  
+const <a href="./koa/README.md#hatchedkoa">hatchedKoa</a> = <a href="./koa/README.md#hatchifykoa">hatchifyKoa</a>({ SalesPerson }, { prefix: "/api" })
+
+await hatchedKoa.<a href="./koa/hatchedKoa.model.md">model</a>.SalesPerson.<a href="./koa/hatchedKoa.model.md#findall">findAll</a>({})
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#findandcountall">findAndCountAll</a>({})
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#findOne">findOne</a>(where: { id: "UUID" })
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#create">create</a>({name: "Justin"})
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#update">update</a>({name: "Roye"}, { where: { id: "UUID" } })
+await hatchedKoa.model.SalesPerson.<a href="./koa/hatchedKoa.model.md#update">destroy</a>({ where: { id: "UUID" } })
+
+await hatchedKoa.<a href="./koa/hatchedKoa.parse.md">parse</a>.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findall">findAll</a>("filter[name]=Baking")
+await hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")
+await hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findOne">findOne</a>("filter[name]=Baking")
+await hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#create">create</a>(JSONAPI_PAYLOAD)
+await hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#update">update</a>(🛑, UUID)
+await hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#update">destroy</a>("filter[name]=Baking")
 </pre>
 
 - `.middleware`

@@ -10,6 +10,9 @@ export interface PartialStringProps<TRequired extends boolean>
   max?: number
   regex?: RegExp
   maxRenderLength?: number
+  ui?: {
+    enableCaseSensitiveContains?: boolean
+  }
 }
 
 export interface PartialStringControlType<TRequired extends boolean>
@@ -19,6 +22,9 @@ export interface PartialStringControlType<TRequired extends boolean>
   max?: number
   regex?: RegExp
   maxRenderLength?: number | null
+  ui?: {
+    enableCaseSensitiveContains?: boolean
+  }
 }
 
 export interface PartialStringORM {

@@ -2,6 +2,8 @@
 
 - <https://hatchify-grid-demo.bitovi-sandbox.com:3000> - React Koa SQLite
 - <https://hatchify-grid-demo.bitovi-sandbox.com:3001> - React Koa Postgres
+- <https://hatchify-grid-demo.bitovi-sandbox.com:3002> - React Express SQLite
+- <https://hatchify-grid-demo.bitovi-sandbox.com:3003> - React Express Postgres
 
 The demo is redeployed on every push to `main`. To deploy a version with the latest changes:
 

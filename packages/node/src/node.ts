@@ -151,6 +151,7 @@ export class Hatchify {
   }
 
   /**
+   * @deprecated Please use `orm.models` instead.
    * The `model` export is one of the primary tools provided by Hatchify for working
    * with your Models in custom routes.
    *

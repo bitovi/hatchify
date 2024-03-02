@@ -1,12 +1,4 @@
-import {
-  assembler,
-  // integer,
-  // datetime,
-  // string,
-  // boolean,
-  // hasMany,
-  // belongsTo,
-} from "@hatchifyjs/core"
+import { assembler } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {

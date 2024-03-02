@@ -405,6 +405,16 @@ describe("rest-client-jsonapi/services/utils/query", () => {
           {
             field: "name",
             value: "Some",
+            operator: "contains",
+          },
+        ]),
+      ).toEqual("filter[name][$like]=%25Some%25")
+
+      expect(
+        filterToQueryParam([
+          {
+            field: "name",
+            value: "Some",
             operator: "istarts",
           },
         ]),

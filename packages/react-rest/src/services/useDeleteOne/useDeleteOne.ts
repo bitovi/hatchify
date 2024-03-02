@@ -1,16 +1,16 @@
-import { useCallback, useMemo, useState } from "react"
-import { deleteOne, getMeta } from "@hatchifyjs/rest-client"
+import { useCallback, useState } from "react"
 import type { PartialSchema } from "@hatchifyjs/core"
+import { deleteOne, getMeta } from "@hatchifyjs/rest-client"
 import type {
+  ContextualMeta,
   FinalSchemas,
   GetSchemaNames,
-  Meta,
   MetaError,
   RestClient,
 } from "@hatchifyjs/rest-client"
 
 /**
- * Returns a function that delete a record using the rest-client updateOne,
+ * Returns a function that delete a record using the rest-client deleteOne,
  */
 export const useDeleteOne = <
   const TSchemas extends Record<string, PartialSchema>,
@@ -19,29 +19,41 @@ export const useDeleteOne = <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
-): [(id: string) => void, Meta] => {
-  const [error, setError] = useState<MetaError | undefined>(undefined)
-  const [loading, setLoading] = useState<boolean>(false)
+): [(id: string) => void, ContextualMeta] => {
+  const [meta, setMeta] = useState<ContextualMeta>(() => ({}))
 
   const remove = useCallback(
     (id: string) => {
-      setLoading(true)
       deleteOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, id)
-        .then(() => setError(undefined))
-        .catch((error) => {
-          setError(error)
+        .then(() =>
+          setMeta((prev: ContextualMeta) => {
+            return {
+              ...prev,
+              [id]: getMeta(undefined, true, false, undefined),
+            }
+          }),
+        )
+        .catch((error: MetaError) => {
+          setMeta((prev: ContextualMeta) => {
+            return {
+              ...prev,
+              [id]: getMeta(error, false, false, undefined),
+            }
+          })
           if (error instanceof Error) {
             throw error
           }
         })
-        .finally(() => setLoading(false))
+        .finally(() =>
+          setMeta((prev: ContextualMeta) => {
+            return {
+              ...prev,
+              [id]: getMeta(prev[id]?.error, false, false, undefined),
+            }
+          }),
+        )
     },
     [dataSource, allSchemas, schemaName],
-  )
-
-  const meta = useMemo(
-    () => getMeta(error, loading, false, undefined),
-    [error, loading],
   )
 
   return [remove, meta]

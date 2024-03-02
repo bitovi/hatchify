@@ -2,7 +2,12 @@ import type { FilterTypes } from "@hatchifyjs/rest-client"
 
 export type FilterableControls = (typeof filterableControlTypes)[number]
 
-export type Operators = "icontains" | "istarts" | "iends" | FilterTypes
+export type Operators =
+  | "contains"
+  | "icontains"
+  | "istarts"
+  | "iends"
+  | FilterTypes
 
 export interface Option {
   operator: Operators
@@ -23,6 +28,7 @@ export const filterableControlTypes = [
 
 export const operatorOptionsByType: OptionsByFilterableControls = {
   String: [
+    { operator: "contains", text: "contains (case sensitive)" },
     { operator: "icontains", text: "contains" },
     { operator: "istarts", text: "starts with" },
     { operator: "iends", text: "ends with" },

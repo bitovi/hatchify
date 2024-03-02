@@ -15,5 +15,8 @@ export function finalizeControl(
     regex: props.regex ?? /(.*?)/,
     displayName: props.displayName ?? null,
     hidden: props.hidden ?? false,
+    ui: {
+      enableCaseSensitiveContains: false,
+    },
   }
 }

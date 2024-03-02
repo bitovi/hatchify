@@ -186,7 +186,7 @@ curl 'http://localhost:3000/api/users' \
 }'
 ```
 
-To learn more about the service layer, read [the docs regarding our JSONAPI implementation](docs/jsonapi/README.md)
+To learn more about the service layer, read [the docs regarding our JSON:API implementation](docs/jsonapi/README.md)
 
 With some data in place, we can now further review the project.
 

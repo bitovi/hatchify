@@ -1,13 +1,5 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import {
-  assembler,
-  // string,
-  // integer,
-  // datetime,
-  // boolean,
-  // belongsTo,
-  // hasMany,
-} from "@hatchifyjs/core"
+import { assembler } from "@hatchifyjs/core"
 import type {
   GetSchemaFromName,
   GetSchemaNames,
@@ -20,6 +12,7 @@ import type {
   RequestMetaData,
   FlatCreateType,
   FlatUpdateType,
+  ContextualMeta,
 } from "@hatchifyjs/rest-client"
 import {
   createStore,
@@ -107,14 +100,14 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
             "__schema"
           >,
         ) => void,
-        Meta,
+        ContextualMeta,
         (
           | RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
           | null
           | undefined
         ),
       ]
-      useDeleteOne: () => [(id: string) => void, Meta]
+      useDeleteOne: () => [(id: string) => void, ContextualMeta]
       // subscribes
       // subscribeToAll: (
       //   query: QueryList | undefined,
@@ -173,7 +166,7 @@ export const hatchifyReactRest = <
             typedSchemaName,
             data,
           ),
-        deleteOne: (id) =>
+        deleteOne: (id: string) =>
           deleteOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,

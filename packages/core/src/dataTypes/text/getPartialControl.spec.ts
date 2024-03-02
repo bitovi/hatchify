@@ -28,4 +28,18 @@ describe("getPartialControl", () => {
 
     expect(getPartialControl({ default: func }).default).toEqual(func)
   })
+
+  it("handles ui", () => {
+    expect(getPartialControl({ ui: undefined }).ui).toBeUndefined()
+    expect(getPartialControl({ ui: {} }).ui).toEqual({})
+    expect(
+      getPartialControl({ ui: { enableCaseSensitiveContains: undefined } }).ui,
+    ).toEqual({ enableCaseSensitiveContains: undefined })
+    expect(
+      getPartialControl({ ui: { enableCaseSensitiveContains: false } }).ui,
+    ).toEqual({ enableCaseSensitiveContains: false })
+    expect(
+      getPartialControl({ ui: { enableCaseSensitiveContains: true } }).ui,
+    ).toEqual({ enableCaseSensitiveContains: true })
+  })
 })

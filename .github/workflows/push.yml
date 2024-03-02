@@ -88,20 +88,20 @@ jobs:
           github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
-      - name: Publish rest-client-jsonapi
-        if: ${{ steps.changed-packages.outputs.rest-client-jsonapi == 'publish' }}
-        uses: ./.github/actions/job-publish
-        with:
-          directory: rest-client-jsonapi
-          npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ github.token }}
-          segment: ${{ steps.changed-packages.outputs.segment }}
-
       - name: Publish react-rest
         if: ${{ steps.changed-packages.outputs.react-rest == 'publish' }}
         uses: ./.github/actions/job-publish
         with:
           directory: react-rest
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          github-token: ${{ github.token }}
+          segment: ${{ steps.changed-packages.outputs.segment }}
+
+      - name: Publish rest-client-jsonapi
+        if: ${{ steps.changed-packages.outputs.rest-client-jsonapi == 'publish' }}
+        uses: ./.github/actions/job-publish
+        with:
+          directory: rest-client-jsonapi
           npm-token: ${{ secrets.NPM_TOKEN }}
           github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
@@ -198,8 +198,8 @@ jobs:
           aws_r53_enable: true
           aws_r53_domain_name: bitovi-sandbox.com
           aws_r53_sub_domain_name: hatchify-grid-demo
-          aws_elb_app_port: 3000,3001
-          aws_elb_listen_port: 3000,3001
+          aws_elb_app_port: 3000,3001,3002,3003
+          aws_elb_listen_port: 3000,3001,3002,3003
           aws_elb_healthcheck: "HTTP:3000/"
 
           aws_ec2_instance_root_vol_size: 40
