@@ -637,33 +637,34 @@ describe.each(dbDialects)("Relationships", (dialect) => {
 
     describe("should support pagination meta (HATCH-203)", () => {
       it("with pagination", async () => {
-        const [{ body: mrPagination }] = await Promise.all([
-          fetch("/api/users", {
-            method: "post",
-            body: {
-              data: {
-                type: "User",
-                attributes: {
-                  name: "Pagination",
-                  age: 18,
-                },
+        const { body: mrPagination } = await fetch("/api/users", {
+          method: "post",
+          body: {
+            data: {
+              type: "User",
+              attributes: {
+                name: "Pagination",
+                age: 18,
               },
             },
-          }),
-          fetch("/api/users", {
-            method: "post",
-            body: {
-              data: {
-                type: "User",
-                attributes: {
-                  name: "Pagination",
-                },
+          },
+        })
+
+        await fetch("/api/users", {
+          method: "post",
+          body: {
+            data: {
+              type: "User",
+              attributes: {
+                name: "Pagination",
+                age: 19,
               },
             },
-          }),
-        ])
+          },
+        })
+
         const { body: users } = await fetch(
-          `/api/users?filter[name]=Pagination&page[number]=1&page[size]=1`,
+          `/api/users?filter[name]=Pagination&page[number]=1&page[size]=1&sort=age`,
         )
 
         expect(users).toEqual({
