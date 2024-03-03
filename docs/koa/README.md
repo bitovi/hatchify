@@ -224,40 +224,6 @@ await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#findOn
 await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#create">create</a>({ id: UUID, name: "Roye" })
 await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#update">update</a>(1, { id: UUID, name: "Roye" })
 await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#destroy">destroy</a>(2)
-  
-  
-hatchedKoa.schema    .(Todo|User)  // The full schemas
-hatchedKoa.orm       .(Todo|User)  // The Sequelize ORM
-hatchedKoa.model     .(Todo|User)  // A Hatchify model that extends the underlying ORM
-hatchedKoa.middleware.(Todo|User|allModels) // Middleware functions that create restful services
-                     .(
-                          findAll,          // A GET-many endpoint
-                          findAllCountAll,  // Return the unpaginated count
-                          findOne,          // A GET-one endpoint
-                          create,           // A POST endpoint
-                          update,           // A PATCH endpoint
-                          destroy,          // A DELETE endpoint
-                          all,              // Provides all of the above endpoints
-                      )
-hatchedKoa.parse     .(Todo|User|allModels) // Parse JSON:API payloads and prepare data for the ORM
-                     .(
-                          findAll,          //
-                          findOne,
-                          findAllCountAll,
-                          create,
-                          update,
-                          destroy,
-                      )
-hatchedKoa.serialize .(Todo|User|allModels) // Return JSON:API responses from instances of the ORM
-                     .(
-                          findAll,          //
-                          findOne,
-                          findAllCountAll,
-                          create,
-                          update,
-                          destroy,
-                      )
-
 </pre>
 
 ### hatchedKoa.schema.[schemaName]
