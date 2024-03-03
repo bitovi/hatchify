@@ -15,9 +15,9 @@ router.get("/skills", async (ctx: Context) => {
 })
 ```
 
-## `findAll`: (`query`: ParsedUrlQuery) => `FindOptions`
+## findAll
 
-Search for multiple instances.
+`hatchedKoa.everything[schemaName].findAll(querystring: string) => Promise<JSONAPIDocument>` searches for multiple instances.
 
 ```ts
 const serializedTodos = await hatchedKoa.everything.Todo.findAll("filter[name]=Baking")
@@ -33,9 +33,33 @@ const serializedTodos = await hatchedKoa.everything.Todo.findAll("filter[name]=B
 // }
 ```
 
-## `findOne`: (`query`: ParsedUrlQuery, `id`: Identifier) => `FindOptions`
+## findAndCountAll
 
-Search for a single instance. Returns the first instance found, or null if none can be found.
+`hatchedKoa.everything[schemaName].findAndCountAll(querystring: string) => Promise<JSONAPIDocument>` find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+
+```ts
+const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter[name]=Baking&limit=10&offset=0")
+// serializedTodos = {
+//   jsonapi: { version: "1.0" },
+//   data: [
+//     {
+//       type: "Todo",
+//       id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//       attributes: { name: "Baking" },
+//     }
+//   ],
+//   meta: { unpaginatedCount: 1 }
+// }
+```
+
+
+## findOne
+
+> 🛑 Why Parsed in ParsedUrlQuery ... this is present many places 
+> 🛑 is the id optional?
+
+`hatchedKoa.everything[schemaName].findOne(query: ParsedUrlQuery🛑, id🛑: Identifier) => Promise<JSONAPIDocument>` search 
+for a single instance. Returns the first instance found, or null if none can be found.
 
 ```ts
 const serializedTodo = await hatchedKoa.everything.Todo.findOne("filter[name]=Baking")
@@ -59,28 +83,11 @@ const serializedTodo = await hatchedKoa.everything.Todo.findOne("", "b559e3d9-ba
 // }
 ```
 
-## `findAndCountAll`: (`query`: ParsedUrlQuery) => `FindOptions`
 
-Find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
 
-```ts
-const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter[name]=Baking&limit=10&offset=0")
-// serializedTodos = {
-//   jsonapi: { version: "1.0" },
-//   data: [
-//     {
-//       type: "Todo",
-//       id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
-//       attributes: { name: "Baking" },
-//     }
-//   ],
-//   meta: { unpaginatedCount: 1 }
-// }
-```
+## create
 
-## `create`: (`body`: object) => `CreateOptions`
-
-Creates a new instance.
+`hatchedKoa.model[schemaName].create(body: object) => Promise<JSONAPIDocument>` creates a new instance.
 
 ```ts
 const serializedTodo = await hatchedKoa.everything.Todo.create({
@@ -101,9 +108,9 @@ const serializedTodo = await hatchedKoa.everything.Todo.create({
 // }
 ```
 
-## `update`: (`body`: object, `id`?: Identifier) => `UpdateOptions`
+## update
 
-Updates one or more instances.
+`hatchedKoa.model[schemaName].update(body: object, id?: Identifier) => Promise<JSONAPIDocument>` updates one or more instances.
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
@@ -117,9 +124,9 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update({ name: "Serving" 
 // }
 ```
 
-## `destroy`: (`query`: ParsedUrlQuery, `id`?: Identifier) => `DestroyOptions`
+## destroy
 
-Deletes one or more instances.
+`hatchedKoa.model[schemaName].update(query: ParsedUrlQuery, id?: Identifier) => Promise<JSONAPIDocument>` deletes one or more instances.
 
 ```ts
 const serializedResult = await hatchedKoa.everything.Todo.destroy("filter[name]=Baking")
