@@ -50,14 +50,14 @@ const hatchedKoa = hatchifyKoa(schemas, {
   - [HatchifyKoa](#hatchifykoa-1) - A type for TypeScript usage
   - [errorHandlerMiddleware](#errorhandlermiddleware) - An error handle that produces JSONAPI formatted errors
 - [`hatchedKoa`](#hatchedkoa) -
-  - [`hatchedKoa.everything.[schemaName]`](#hatchedkoaeverythingschemaname)
-  - [`hatchedKoa.middleware.[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
+  - [`hatchedKoa.everything[schemaName]`](#hatchedkoaeverythingschemaname)
+  - [`hatchedKoa.middleware[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
   - [`hatchedKoa.modelSync`](#hatchedkoamodelsync)
   - [`hatchedKoa.orm`](#hatchedkoaorm)
-  - [`hatchedKoa.parse.[schemaName]`](#hatchedkoaparseschemaname)
+  - [`hatchedKoa.parse[schemaName]`](#hatchedkoaparseschemaname)
   - [`hatchedKoa.printEndpoints`](#hatchedkoaprintendpoints)
-  - [`hatchedKoa.schema.[schemaName]`](#hatchedkoaschemaschemaname)
-  - [`hatchedKoa.serialize.[schemaName]`](#hatchedkoaserializeschemaname)
+  - [`hatchedKoa.schema[schemaName]`](#hatchedkoaschemaschemaname)
+  - [`hatchedKoa.serialize[schemaName]`](#hatchedkoaserializeschemaname)
 
 
 ## Exports
@@ -224,7 +224,7 @@ await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#update
 await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#destroy">destroy</a>(2)
 </pre>
 
-### `hatchedKoa.everything.[schemaName]`
+### `hatchedKoa.everything[schemaName]`
 
 [hatchedKoa.everything](./hatchedKoa.everything.md) functions very similar to the `middleware` export but is expected to be used more directly, usually when defining user-created middleware.
 
@@ -239,11 +239,11 @@ router.get("/skills", async (ctx: Context) => {
 })
 ```
 
-### hatchedKoa.middleware.[schemaName|allModels]
+### hatchedKoa.middleware[schemaName|allModels]
 
-[`hatchedKoa.middleware.[schemaName].[findAll|findOne|findAndCountAll|create|update|destroy]`](./hatchedKoa.middleware.md)
+[`hatchedKoa.middleware[schemaName][findAll|findOne|findAndCountAll|create|update|destroy]`](./hatchedKoa.middleware.md)
 
-All of the `middleware` functions export a Koa Middleware that can be passed directly to a Koa `app.use` or a Koa `router.[verb]` function, mounted to a specific URL/path. The normal [schemaName] export expects to be used with:
+All of the `middleware` functions export a Koa Middleware that can be passed directly to a Koa `app.use` or a Koa `router[verb]` function, mounted to a specific URL/path. The normal [schemaName] export expects to be used with:
 
 - findAll
 - findOne
@@ -311,7 +311,7 @@ app.use(hatchedKoa.middleware.allModels.all)
 
 ### hatchedKoa.schema[schemaName]
 
-`hatchedKoa.schema.[schemaName].[attributes|displayAttribute|name|namespace|pluralName|relationships]`
+`hatchedKoa.schema[schemaName][attributes|displayAttribute|name|namespace|pluralName|relationships]`
 
 The `schema` export provides access to all the Hatchify final schemas. This can be useful for debugging the schemas you provided.
 
@@ -334,71 +334,3 @@ console.log(hatchedKoa.schema)
 ### `hatchedKoa.serialize[schemaName]`
 
 [hatchedKoa.serialize[schemaName]](./hatchedKoa.serialize.md) has methods to transform the result of [models](./hatchedKoa.model.md) back into a [JSON:API](../jsonapi/README.md) response.
-
-
-
-## Scratch
-
-- [High Level Export Naming Conventions](#high-level-export-naming-conventions)
-- [`@hatchifyjs/koa` Package Exports](#hatchifyjskoa-package-exports)
-
-### `@hatchifyjs/koa` Package Exports
-
-`hatchifyKoa`
-
-- Provides access to the `Hatchify` class constructor
-- See [`Hatchify` Class Instance](#hatchify-class-instance) notes below
-
-### `Hatchify` Class Instance
-
-The Hatchify class exports a number of properties that provide functions, generally per-schema, for different common CRUD and REST API operations. Some of these include
-
-- Parameter parsing
-- Create / update data validation
-- Response formatting / serialization
-- ORM query operations
-- Combinations of the above
-
-### Naming Conventions
-
-The general naming convention is as follows
-
-`hatchedKoa.[accessor].[schemaName|allModels].[operation]`
-
-- `hatchedKoa` is a variable that points to your Hatchify instance with some assumed number of loaded models. This will always be the entry point into Hatchify.
-- `accessor` is a string acting as a namespace to indicate which subset of functions you want to use. This will always be some property exported from Hatchify itself and should have TypeScript support showing the different available options.
-- `schemaName` is a property value that, generally, will correspond to one of your loaded models. These models come from the values passed to Hatchify at creation.
-  - By convention, because this is being used as a class, the name should use `PascalCase`. An exception is namespaces where name would look like `Namespace_ModelName`. Read more on [naming](../schema/naming.md).
-  - In some cases there are special properties like allModels that can signify that the operation should determine the model itself or can otherwise apply to all defined models at once.
-- `operation` is a property that reflects the different ORM/CRUD operations that you would like to perform or prepare data for. Because this is called off a specific model the general properties and attribute validation for that model will apply when running the operation.
-
-### High Level Export Naming Conventions
-
-```ts
-const hatchedKoa = hatchifyKoa(schemas, options)
-
-hatchedKoa.[
-  middleware | parse | model | serialize | everything | modelSync | orm | printEndpoints | schema
-].[
-  <MODEL_NAME> | allModels
-].[
-  all
-  findAll
-  findOne
-  findAndCountAll
-  create
-  update
-  destroy
-]
-
-hatchedKoa.model.User.findAll
-
-hatchedKoa.middleware.User.create
-
-hatchedKoa.parse.Todo.update
-
-hatchedKoa.serialize.Todo.update
-```
-
-- [`Hatchify` Class Instance](#hatchify-class-instance)
-- [Naming Conventions](#naming-conventions)
