@@ -26,3 +26,15 @@ This exports a single middleware function that based on the method and the URL w
 ```ts
 app.use(hatchedKoa.middleware.allModels.all)
 ```
+
+## hatchedKoa.middleware.allModels
+
+## hatchedKoa.middleware[schemaName]
+
+### findAll
+### findOne
+### findAndCountAll
+### create
+### update
+### destroy
+### all
