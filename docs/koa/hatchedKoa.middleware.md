@@ -32,8 +32,8 @@ app.use(hatchedKoa.middleware.allModels.all)
 ## hatchedKoa.middleware[schemaName]
 
 ### findAll
-### findOne
 ### findAndCountAll
+### findOne
 ### create
 ### update
 ### destroy
