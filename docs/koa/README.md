@@ -202,8 +202,7 @@ await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#find
 await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#create">create</a>(JSONAPI_PAYLOAD)
 await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#update">update</a>(🛑, UUID)
 await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#destroy">destroy</a>("",UUID)
-  
-  
+
 <b>// Parse JSONAPI requests into arguments for sequelize</b>
 await hatchedKoa.<a href="./hatchedKoa.parse.md">parse</a>.SalesPerson.<a href="./hatchedKoa.parse.md#findall">findAll</a>("filter[name]=Jane")
 await hatchedKoa.parse.SalesPerson.<a href="./hatchedKoa.parse.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")
