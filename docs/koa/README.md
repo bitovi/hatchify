@@ -194,6 +194,15 @@ router.get(  "/sales-people/:id", hatchedKoa.middleware.SalesPerson.<a href="./h
 router.post( "/sales-people",     hatchedKoa.middleware.SalesPerson.<a href="./hatchedKoa.middleware.md#create">create</a>)
 router.patch("/sales-people/:id", hatchedKoa.middleware.SalesPerson.<a href="./hatchedKoa.middleware.md#update">update</a>)
 router.del(  "/sales-people/:id", hatchedKoa.middleware.SalesPerson.<a href="./hatchedKoa.middleware.md#destroy">destroy</a>)
+
+<b>// Methods that do "everything" the middleware does</b>
+await hatchedKoa.<a href="./hatchedKoa.everything.md">everything</a>.SalesPerson.<a href="./hatchedKoa.everything.md#findall">findAll</a>("filter[name]=Jane")
+await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")
+await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#findOne">findOne</a>("filter[name]=Baking")
+await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#create">create</a>(JSONAPI_PAYLOAD)
+await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#update">update</a>(🛑, UUID)
+await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#destroy">destroy</a>("",UUID)
+  
   
 <b>// Parse JSONAPI requests into arguments for sequelize</b>
 await hatchedKoa.<a href="./hatchedKoa.parse.md">parse</a>.SalesPerson.<a href="./hatchedKoa.parse.md#findall">findAll</a>("filter[name]=Jane")
