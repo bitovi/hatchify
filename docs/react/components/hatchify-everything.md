@@ -12,7 +12,7 @@ import * as Schemas from "../schemas.js"
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const { Everything } = hatchedReact.Everything
+const { Everything } = hatchedReact
 // or
 const Everything = hatchedReact.Everything
 ```
@@ -56,5 +56,3 @@ const App: React.FC = () => {
   )
 }
 ```
-
-Learn more about customizing `EmptyList` in [this guide](../guides/customizing-your-list.md).

@@ -21,17 +21,16 @@ const UserColumn = hatchedReact.components.User.Column
 
 ## Props
 
-| Prop Name            | Type                    | Default | Description |
-| -------------------- | ----------------------- | ------- | ----------- |
-| children             | React.ReactNode or Null | -       |             |
-| label                | string                  | -       |             |
-| name                 | string                  | -       |             |
-| sortable             | boolean                 | -       |             |
-| prepend              | boolean                 | -       |             |
-| renderDataValue      | func                    | -       |             |
-| DataValueComponent   | DataValueComponent      | -       |             |
-| renderHeaderValue    | func                    | -       |             |
-| HeaderValueComponent | HeaderValueComponent    | -       |             |
+| Prop Name            | Type                 | Default | Description                                                            |
+| -------------------- | -------------------- | ------- | ---------------------------------------------------------------------- |
+| label                | string               | -       | The `label` will be what appears as the `Column` heading.              |
+| name                 | string               | -       | The `name` is the key on the schema that will fill out each column row |
+| sortable             | boolean              | -       | If `true`, the `Column` will be sortable.                              |
+| prepend              | boolean              | -       |                                                                        |
+| renderDataValue      | func                 | -       |                                                                        |
+| DataValueComponent   | DataValueComponent   | -       |                                                                        |
+| renderHeaderValue    | func                 | -       |                                                                        |
+| HeaderValueComponent | HeaderValueComponent | -       |                                                                        |
 
 ## Unique Types
 

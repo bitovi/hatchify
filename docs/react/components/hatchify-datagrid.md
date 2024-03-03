@@ -32,8 +32,6 @@ const UserDataGrid = hatchedReact.components.User.DataGrid
 | overwrite        | boolean                                  | -       | If `true` only provided `Column` children will render rather than the `DataGrid`.                                                                                                                                                                                                               |
 | minimumLoadTime  | number                                   | -       | Set a minimum load time in ms that it takes for the prop to render. For some views a fast load time may appear to flicker too much                                                                                                                                                              |
 
-The option elements to populate the select with. For DataGrid, the props can be Column,
-
 ## Prop Details
 
 ### defaultSelected + onSelectedChange
