@@ -46,18 +46,19 @@ const hatchedKoa = hatchifyKoa(schemas, {
 ```
 
 - [Exports](#exports)
-  - hatchifyKoa - Creates a `hatchedKoa` instance with middleware and sequelize orms
-  - HatchifyKoa - A type for TypeScript fans
-  - errorHandlerMiddleware -
-- [`hatchedKoa`]() -
+  - [hatchifyKoa](#hatchifykoa) - Creates a `hatchedKoa` instance with middleware and sequelize orms
+  - [HatchifyKoa](#hatchifykoa-1) - A type for TypeScript usage
+  - [errorHandlerMiddleware](#errorhandlermiddleware) - An error handle that produces JSONAPI formatted errors
+- [`hatchedKoa`](#hatchedkoa) -
+  - [`hatchedKoa.everything.[schemaName]`](#hatchedkoaeverythingschemaname)
+  - [`hatchedKoa.middleware.[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
   - [`hatchedKoa.modelSync`](#hatchedkoamodelsync)
   - [`hatchedKoa.orm`](#hatchedkoaorm)
+  - [`hatchedKoa.parse.[schemaName]`](#hatchedkoaparseschemaname)
   - [`hatchedKoa.printEndpoints`](#hatchedkoaprintendpoints)
   - [`hatchedKoa.schema.[schemaName]`](#hatchedkoaschemaschemaname)
-  - [`hatchedKoa.middleware.[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
-  - [`hatchedKoa.parse.[schemaName]`](#hatchedkoaparseschemaname)
   - [`hatchedKoa.serialize.[schemaName]`](#hatchedkoaserializeschemaname)
-  - [`hatchedKoa.everything.[schemaName]`](#hatchedkoaeverythingschemaname)
+
 
 ## Exports
 
@@ -253,29 +254,6 @@ A reference to the `Sequelize` instance when more control is needed.
 hatchedKoa.orm.models.Todo.findAll()
 ```
 
-### hatchedKoa.model[schemaName]
-
-[hatchedKoa.model](./hatchedKoa.model.md) is a collection of methods to create, retrieve, update and delete records using the underlying [ORM](https://sequelize.org/). These methods are grouped by Schema name.
-
-For example, the following shows using `Todo.findAll` to retrieve todo records as JavaScript objects:
-
-```ts
-const deserializedTodos = await hatchedKoa.model.Todo.findAll({
-  where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
-})
-// deserializedTodos = [
-//   { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
-// ]
-```
-
-Each model has the following methods:
-
-- [findAll](./hatchedKoa.model.md#findall)
-- [findAndCountAll](./hatchedKoa.model.md#findandcountall)
-- [findOne](./hatchedKoa.model.md#findone)
-- [create](./hatchedKoa.model.md#create)
-- [update](./hatchedKoa.model.md#update)
-- [destroy](./hatchedKoa.model.md#destroy)
 
 ### `hatchedKoa.modelSync`
 
