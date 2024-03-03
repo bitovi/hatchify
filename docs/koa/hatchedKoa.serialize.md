@@ -47,7 +47,7 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAll(
 
 ## findAndCountAll
 
-`hatchedKoa.serialize[schemaName].findAndCountAll(data: {count: number; rows: Model[]}, ops: SerializerOptions) =>JSONAPIDocument` serializes result of all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+`hatchedKoa.serialize[schemaName].findAndCountAll(data: {count: number; rows: Model[]}, ops: SerializerOptions) => JSONAPIDocument` serializes result of all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
 
 ```ts
 const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
