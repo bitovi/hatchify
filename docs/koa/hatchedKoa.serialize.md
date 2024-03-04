@@ -22,6 +22,15 @@
 
 Normally these functions will take Model data that was returned from the ORM query. This export also includes a slightly different function for helping create JSON:API compliant Error responses.
 
+Each model has the following methods:
+
+- [findAll](#findall)
+- [findAndCountAll](#findandcountall)
+- [findOne](#findone)
+- [create](#create)
+- [update](#update)
+- [destroy](#destroy)
+
 ## findAll
 
 Serializes result of multiple instances.
