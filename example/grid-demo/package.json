@@ -33,7 +33,7 @@
     "@bitovi/eslint-config": "^1.6.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@hatchifyjs/react": "0.1.49",
+    "@hatchifyjs/react": "^0.1.50",
     "@mui/material": "^5.15.0",
     "@types/koa": "^2.13.12",
     "@types/pg": "^8.10.9",
