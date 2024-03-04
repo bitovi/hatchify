@@ -309,13 +309,13 @@ An array with the following properties:
 
 `QueryList` is an object with the following properties:
 
-| Property | Type                                                 | Default     | Details                                   |
-| -------- | ---------------------------------------------------- | ----------- | ----------------------------------------- |
-| include  | `string[]?`                                          | `undefined` | Specify which relationships to include.   |
-| fields   | `string[]?`                                          | `undefined` | Specify which fields to return.           |
-| filter   | `{ field: string, operator: string, value: any }[]?` | `undefined` | Specify which records to include.         |
-| sort     | `string?`                                            | `undefined` | Specify how to sort the records.          |
-| page     | `{ page: number, size: number }?`                    | `undefined` | Specify which page of records to include. |
+| Property | Type                                                 | Details                                   |
+| -------- | ---------------------------------------------------- | ----------------------------------------- |
+| include  | `string[]?`                                          | Specify which relationships to include.   |
+| fields   | `string[]?`                                          | Specify which fields to return.           |
+| filter   | `{ field: string, operator: string, value: any }[]?` | Specify which records to include.         |
+| sort     | `string?`                                            | Specify how to sort the records.          |
+| page     | `{ page: number, size: number }?`                    | Specify which page of records to include. |
 
 ### QueryOne
 
