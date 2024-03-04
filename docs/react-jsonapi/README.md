@@ -43,19 +43,22 @@ await hatchedReactRest.Todo.deleteOne(createdRecord.id)
 ```
 
 - [Exports](#exports)
-- [`createJsonapiClient`](#createjsonapiclient)
-- [`hatchifyReactRest`](#hatchifyreactrest)
-  - [`hatchifyReactRest[SchemaName].findAll`](#hatchifyreactrestschemanamefindall)
-  - [`hatchifyReactRest[SchemaName].findOne`](#hatchifyreactrestschemanamefindone)
-  - [`hatchifyReactRest[SchemaName].createOne`](#hatchifyreactrestschemanamecreateone)
-  - [`hatchifyReactRest[SchemaName].updateOne`](#hatchifyreactrestschemanameupdateone)
-  - [`hatchifyReactRest[SchemaName].deleteOne`](#hatchifyreactrestschemanamedeleteone)
-  - [`hatchifyReactRest[SchemaName].useAll`](#hatchifyreactrestschemanameuseall)
-  - [`hatchifyReactRest[SchemaName].useOne`](#hatchifyreactrestschemanameuseone)
-  - [`hatchifyReactRest[SchemaName].useCreateOne`](#hatchifyreactrestschemanameusecreateone)
-  - [`hatchifyReactRest[SchemaName].useUpdateOne`](#hatchifyreactrestschemanameuseupdateone)
-  - [`hatchifyReactRest[SchemaName].useDeleteOne`](#hatchifyreactrestschemanameusedeleteone)
+- [createJsonapiClient](#createjsonapiclient)
+- [hatchifyReactRest](#hatchifyreactrest)
+  - [hatchifyReactRest[SchemaName].findAll](#hatchifyreactrestschemanamefindall)
+  - [hatchifyReactRest[SchemaName].findOne](#hatchifyreactrestschemanamefindone)
+  - [hatchifyReactRest[SchemaName].createOne](#hatchifyreactrestschemanamecreateone)
+  - [hatchifyReactRest[SchemaName].updateOne](#hatchifyreactrestschemanameupdateone)
+  - [hatchifyReactRest[SchemaName].deleteOne](#hatchifyreactrestschemanamedeleteone)
+  - [hatchifyReactRest[SchemaName].useAll](#hatchifyreactrestschemanameuseall)
+  - [hatchifyReactRest[SchemaName].useOne](#hatchifyreactrestschemanameuseone)
+  - [hatchifyReactRest[SchemaName].useCreateOne](#hatchifyreactrestschemanameusecreateone)
+  - [hatchifyReactRest[SchemaName].useUpdateOne](#hatchifyreactrestschemanameuseupdateone)
+  - [hatchifyReactRest[SchemaName].useDeleteOne](#hatchifyreactrestschemanameusedeleteone)
 - [Types](#types)
+  - [QueryList](#querylist)
+  - [QueryOne](#queryone)
+  - [RecordType](#recordtype)
 
 ## Exports
 
@@ -68,7 +71,7 @@ await hatchedReactRest.Todo.deleteOne(createdRecord.id)
 import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonapi"
 ```
 
-## `createJsonapiClient`
+## createJsonapiClient
 
 `createJsonapiClient(baseUrl: string, schemas: Schemas): RestClient` is a function that takes a base URL and a set of schemas and returns a `RestClient` object for a JSONAPI backend.
 
@@ -76,7 +79,7 @@ import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonap
 const jsonapiClient = createJsonapiClient("/api", schemas)
 ```
 
-## `hatchifyReactRest`
+## hatchifyReactRest
 
 `hatchifyReactRest(restClient: RestClient): HatchifyReactRest` is a function that takes a `RestClient` and returns an object with promise and hook-based functions for each schema.
 
@@ -84,9 +87,9 @@ const jsonapiClient = createJsonapiClient("/api", schemas)
 const hatchedReactRest = hatchifyReactRest(jsonapiClient)
 ```
 
-### `hatchifyReactRest[SchemaName].findAll`
+### hatchifyReactRest[SchemaName].findAll
 
-`hatchedReactRest[SchemaName].findAll(): Promise<[Record[], MetaData]>` is a function that returns a promise that resolves to an array of records of the given schema and any metadata returned by the server.
+`hatchedReactRest[SchemaName].findAll(): Promise<[RecordType[], MetaData]>` is a function that returns a promise that resolves to an array of records of the given schema and any metadata returned by the server.
 
 ```ts
 const result = await hatchedReactRest.Todo.findAll({})
@@ -102,14 +105,14 @@ const result = await hatchedReactRest.Todo.findAll({})
 
 An array with the following properties:
 
-| Property    | Type       | Details                                                                       |
-| ----------- | ---------- | ----------------------------------------------------------------------------- |
-| `result[0]` | `Record[]` | An array of records of the given schema.                                      |
-| `result[1]` | `MetaData` | An object with metadata returned by the server, such as the count of records. |
+| Property    | Type                                     | Details                                                                       |
+| ----------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `result[0]` | <a href="#recordtype">`RecordType[]`</a> | An array of records of the given schema.                                      |
+| `result[1]` | `MetaData`                               | An object with metadata returned by the server, such as the count of records. |
 
 ### `hatchifyReactRest[SchemaName].findOne`
 
-`hatchedReactRest[SchemaName].findOne(id: string): Promise<Record>` is a function that returns a promise that resolves to a single record of the given schema for the id.
+`hatchedReactRest[SchemaName].findOne(id: string): Promise<RecordType>` is a function that returns a promise that resolves to a single record of the given schema for the id.
 
 ```ts
 const record = await hatchedReactRest.Todo.findOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
@@ -124,14 +127,14 @@ const record = await hatchedReactRest.Todo.findOne({
 
 **Parameters**
 
-| Property  | Type                      | Details                                                 |
-| --------- | ------------------------- | ------------------------------------------------------- |
-| IdOrQuery | `string`                  | The id of the record.                                   |
-|           | <a href="">`QueryOne`</a> | The id of the record and an optional include or fields. |
+| Property  | Type                               | Details                                                 |
+| --------- | ---------------------------------- | ------------------------------------------------------- |
+| IdOrQuery | `string`                           | The id of the record.                                   |
+|           | <a href="#queryone">`QueryOne`</a> | The id of the record and an optional include or fields. |
 
-### `hatchifyReactRest[SchemaName].createOne`
+### hatchifyReactRest[SchemaName].createOne
 
-`hatchedReactRest[SchemaName].createOne(data: Partial<Record>): Promise<Record>` is a function that returns a promise that resolves to the newly created record.
+`hatchedReactRest[SchemaName].createOne(data: Partial<RecordType>): Promise<RecordType>` is a function that returns a promise that resolves to the newly created record.
 
 ```ts
 const createdRecord = await hatchedReactRest.Todo.createOne({
@@ -142,17 +145,17 @@ const createdRecord = await hatchedReactRest.Todo.createOne({
 
 **Parameters**
 
-| Property | Type                  | Details                                           |
-| -------- | --------------------- | ------------------------------------------------- |
-| data     | `Partial<RecordType>` | An object containing the data for the new record. |
+| Property | Type                                            | Details                                           |
+| -------- | ----------------------------------------------- | ------------------------------------------------- |
+| data     | <a href="#recordtype">`Partial<RecordType>`</a> | An object containing the data for the new record. |
 
 **Returns**
 
 The newly created record.
 
-### `hatchifyReactRest[SchemaName].updateOne`
+### hatchifyReactRest[SchemaName].updateOne
 
-`hatchedReactRest[SchemaName].updateOne(data: Partial<Record>): Promise<Record>` is a function that returns a promise that resolves to the updated record.
+`hatchedReactRest[SchemaName].updateOne(data: Partial<RecordType>): Promise<RecordType>` is a function that returns a promise that resolves to the updated record.
 
 ```ts
 const updated = await hatchedReact.model.Todo.updateOne({
@@ -163,15 +166,15 @@ const updated = await hatchedReact.model.Todo.updateOne({
 
 **Parameters**
 
-| Property | Type                  | Details                                                                                               |
-| -------- | --------------------- | ----------------------------------------------------------------------------------------------------- |
-| data     | `Partial<RecordType>` | An object containing the data for the updated record. The id is required to be passed into RecordType |
+| Property | Type                                            | Details                                                                                               |
+| -------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| data     | <a href="#recordtype">`Partial<RecordType>`</a> | An object containing the data for the updated record. The id is required to be passed into RecordType |
 
 **Returns**
 
 The updated record.
 
-### `hatchifyReactRest[SchemaName].deleteOne`
+### hatchifyReactRest[SchemaName].deleteOne
 
 `hatchedReactRest[SchemaName].deleteOne(id: string): Promise<void>` is a function that returns a promise that resolves when the record is deleted.
 
@@ -189,9 +192,9 @@ await hatchedReactRest.Todo.deleteOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 
 A promise that resolves when the record is deleted.
 
-### `hatchifyReactRest[SchemaName].useAll`
+### hatchifyReactRest[SchemaName].useAll
 
-`hatchedReactRest[SchemaName].useAll(): [Record[], RequestState]` is a hook that returns an array of records and request state data of the given schema.
+`hatchedReactRest[SchemaName].useAll(): [RecordType[], RequestState]` is a hook that returns an array of records and request state data of the given schema.
 
 ```ts
 const result = hatchedReactRest.Todo.useAll()
@@ -205,36 +208,36 @@ TODO: QueryList, baseFilter, minimumLoadTime
 
 An array with the following properties:
 
-| Property    | Type           | Details                                  |
-| ----------- | -------------- | ---------------------------------------- |
-| `result[0]` | `Record[]`     | An array of records of the given schema. |
-| `result[1]` | `RequestState` | An object with request state data.       |
+| Property    | Type                                     | Details                                  |
+| ----------- | ---------------------------------------- | ---------------------------------------- |
+| `result[0]` | <a href="#recordtype">`RecordType[]`</a> | An array of records of the given schema. |
+| `result[1]` | `RequestState`                           | An object with request state data.       |
 
-### `hatchifyReactRest[SchemaName].useOne`
+### hatchifyReactRest[SchemaName].useOne
 
-`hatchedReactRest[SchemaName].useOne(id: string): [Record, RequestState]` is a hook that returns a single record and request state data of the given schema and id.
+`hatchedReactRest[SchemaName].useOne(id: string): [RecordType, RequestState]` is a hook that returns a single record and request state data of the given schema and id.
 
 ```ts
 const [record, requestState] = hatchedReactRest.Todo.useOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 ```
 
-### `hatchifyReactRest[SchemaName].useCreateOne`
+### hatchifyReactRest[SchemaName].useCreateOne
 
-`hatchedReactRest[SchemaName].useCreateOne(): [(data: Partial<Record>) => Promise<void>, RequestState, Record?]` is a hook that returns a function to create a record, request state data, and the most recently created record.
+`hatchedReactRest[SchemaName].useCreateOne(): [(data: Partial<RecordType>) => Promise<void>, RequestState, RecordType?]` is a hook that returns a function to create a record, request state data, and the most recently created record.
 
 ```ts
 const [createRecord, requestState, createdRecord] = hatchedReactRest.Todo.useCreateOne()
 ```
 
-### `hatchifyReactRest[SchemaName].useUpdateOne`
+### hatchifyReactRest[SchemaName].useUpdateOne
 
-`hatchedReactRest[SchemaName].useUpdateOne(): [(data: Partial<Record>) => Promise<void>, { id: RequestState }, Record?]` is a hook that returns a function to update a record, request state data keyed by the id of the updated record, and the most recently updated record.
+`hatchedReactRest[SchemaName].useUpdateOne(): [(data: Partial<RecordType>) => Promise<void>, { id: RequestState }, RecordType?]` is a hook that returns a function to update a record, request state data keyed by the id of the updated record, and the most recently updated record.
 
 ```ts
 const [updateRecord, requestState, updatedRecord] = hatchedReactRest.Todo.useUpdateOne()
 ```
 
-### `hatchifyReactRest[SchemaName].useDeleteOne`
+### hatchifyReactRest[SchemaName].useDeleteOne
 
 `hatchedReactRest[SchemaName].useDeleteOne(): [(id: string) => Promise<void>, { id: RequestState }]` is a hook that returns a function to delete a record and request state data keyed by the id of the deleted record.
 
@@ -244,7 +247,7 @@ const [deleteRecord, requestState] = hatchedReactRest.Todo.useDeleteOne()
 
 ## Types
 
-### `QueryList`
+### QueryList
 
 `QueryList` is an object with the following properties:
 
@@ -256,7 +259,7 @@ const [deleteRecord, requestState] = hatchedReactRest.Todo.useDeleteOne()
 | sort     | `string?`                                            | `undefined` | Specify how to sort the records.          |
 | page     | `{ page: number, size: number }?`                    | `undefined` | Specify which page of records to include. |
 
-### `QueryOne`
+### QueryOne
 
 `QueryOne` is an object with the following properties:
 
@@ -265,3 +268,12 @@ const [deleteRecord, requestState] = hatchedReactRest.Todo.useDeleteOne()
 | id       | `string`    | The id of the record.                   |
 | include  | `string[]?` | Specify which relationships to include. |
 | fields   | `string[]?` | Specify which fields to return.         |
+
+### RecordType
+
+`RecordType` is a flat object representing the fields (id, attributes, and relationships) of a schema.
+
+| Property | Type     | Details                                         |
+| -------- | -------- | ----------------------------------------------- |
+| id       | `string` | The id of the record.                           |
+| ...      | `any`    | The attributes and relationships of the record. |
