@@ -13,7 +13,7 @@ export const SalesPerson = {
   <a href="schema/naming.md#schemaname">name</a>: "SalesPerson",
   <a href="schema/naming.md#schemapluralname">pluralName</a>: "SalesPeople",
   id: <a href="schema/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
-  attributes: {
+  <a href="./schema/attribute-types/README.md">attributes</a>: {
     <a href="schema/naming.md#schemaattributesattribute_name">name</a>:         <a href="./attribute-types/string.md">string</a>({ required: true }),
     description:  <a href="schema/attribute-types/text.md">text</a>(),
     hireDate:     <a href="schema/attribute-types/datetime.md">datetime</a>(),
@@ -24,7 +24,7 @@ export const SalesPerson = {
     status:       <a href="schema/attribute-types/enum.md">enumerate</a>({ values: ["active", "inactive"] }),
     salesGroupId: <a href="./schema/attribute-types/uuid.md">uuid</a>(),
   },
-  relationships: {
+  <a href="./schema/relationship-types/README.md">relationships</a>: {
     salesGroup: <a href="schema/relationship-types/belongs-to.md">belongsTo</a>(),
     accounts:   <a href="schema/relationship-types/has-many.md">hasMany</a>(),
     todos:      hasMany().<a href="schema/relationship-types/has-many-through.md">through</a>()
