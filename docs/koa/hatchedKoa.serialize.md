@@ -22,11 +22,11 @@
 
 Normally these functions will take Model data that was returned from the ORM query. This export also includes a slightly different function for helping create JSON:API compliant Error responses.
 
-🛑 Does it take the data from the ORM? The orm returns sequelize instances. I think it takes it from a plain JS object returned by `model` functions ...
-
 ## findAll
 
-`hatchedKoa.serialize[schemaName].findAll(data: Model[], ops: SerializerOptions) =>JSONAPIDocument` serializes result of multiple instances.
+Serializes result of multiple instances.
+
+`hatchedKoa.serialize[schemaName].findAll(data: PlainRecord[] | ORMModel[], attributes: string[]) =>JSONAPIDocument`
 
 ```ts
 const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
@@ -46,7 +46,7 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9
 
 Serializes result of all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
 
-`hatchedKoa.serialize[schemaName].findAndCountAll(data: {count: number; rows: Model[]}, ops: SerializerOptions) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findAndCountAll(data: { count: number; rows: PlainRecord[] | ORMModel[] }, attributes: string[]) => JSONAPIDocument`
 
 ```ts
 const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
@@ -73,7 +73,7 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
 
 Serializes result of a single instance.
 
-`hatchedKoa.serialize[schemaName].findOne(data: Model, ops: SerializerOptions) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findOne(data: PlainRecord | ORMModel, attributes: string[]) => JSONAPIDocument`
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
@@ -91,7 +91,7 @@ const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-b
 
 Serializes a result of a new instance creation.
 
-`hatchedKoa.serialize[schemaName].create(data: Model, ops: SerializerOptions) =>JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].create(data: Model) =>JSONAPIDocument`
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.create({
@@ -112,9 +112,7 @@ const serializedTodo = await hatchedKoa.serialize.Todo.create({
 
 Serializes a result of an update.
 
-🛑 Signature doesn't match the example 🛑
-
-`hatchedKoa.serialize[schemaName].update(count: number, ops: SerializerOptions) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].update(count: number, affectedCount: number) => JSONAPIDocument`
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.update(
@@ -138,7 +136,7 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update(
 
 Serializes a result of a deletion.
 
-`hatchedKoa.serialize[schemaName].destroy(count: number, ops: SerializerOptions) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].destroy(affectedCount: number) => JSONAPIDocument`
 
 ```ts
 const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
@@ -147,5 +145,3 @@ const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
 //   data: null,
 // }
 ```
-
-🛑 Do SerializerOptions do anything here 🛑 We also need to document SerializerOptions 🛑
