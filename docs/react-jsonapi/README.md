@@ -45,16 +45,16 @@ await hatchedReactRest.Todo.deleteOne(createdRecord.id)
 - [Exports](#exports)
 - [createJsonapiClient](#createjsonapiclient)
 - [hatchifyReactRest](#hatchifyreactrest)
-  - [hatchifyReactRest[SchemaName].findAll](#hatchifyreactrestschemanamefindall)
-  - [hatchifyReactRest[SchemaName].findOne](#hatchifyreactrestschemanamefindone)
-  - [hatchifyReactRest[SchemaName].createOne](#hatchifyreactrestschemanamecreateone)
-  - [hatchifyReactRest[SchemaName].updateOne](#hatchifyreactrestschemanameupdateone)
-  - [hatchifyReactRest[SchemaName].deleteOne](#hatchifyreactrestschemanamedeleteone)
-  - [hatchifyReactRest[SchemaName].useAll](#hatchifyreactrestschemanameuseall)
-  - [hatchifyReactRest[SchemaName].useOne](#hatchifyreactrestschemanameuseone)
-  - [hatchifyReactRest[SchemaName].useCreateOne](#hatchifyreactrestschemanameusecreateone)
-  - [hatchifyReactRest[SchemaName].useUpdateOne](#hatchifyreactrestschemanameuseupdateone)
-  - [hatchifyReactRest[SchemaName].useDeleteOne](#hatchifyreactrestschemanameusedeleteone)
+  - [findAll](#findall)
+  - [findOne](#findone)
+  - [createOne](#createone)
+  - [updateOne](#updateone)
+  - [deleteOne](#deleteone)
+  - [useAll](#useall)
+  - [useOne](#useone)
+  - [useCreateOne](#usecreateone)
+  - [useUpdateOne](#useupdateone)
+  - [useDeleteOne](#usedeleteone)
 - [Types](#types)
   - [QueryList](#querylist)
   - [QueryOne](#queryone)
@@ -87,7 +87,7 @@ const jsonapiClient = createJsonapiClient("/api", schemas)
 const hatchedReactRest = hatchifyReactRest(jsonapiClient)
 ```
 
-### hatchifyReactRest[SchemaName].findAll
+### findAll
 
 `hatchedReactRest[SchemaName].findAll(): Promise<[RecordType[], MetaData]>` is a function that returns a promise that resolves to an array of records of the given schema and any metadata returned by the server.
 
@@ -132,7 +132,7 @@ const record = await hatchedReactRest.Todo.findOne({
 | IdOrQuery | `string`                           | The id of the record.                                   |
 |           | <a href="#queryone">`QueryOne`</a> | The id of the record and an optional include or fields. |
 
-### hatchifyReactRest[SchemaName].createOne
+### createOne
 
 `hatchedReactRest[SchemaName].createOne(data: Partial<RecordType>): Promise<RecordType>` is a function that returns a promise that resolves to the newly created record.
 
@@ -153,7 +153,7 @@ const createdRecord = await hatchedReactRest.Todo.createOne({
 
 The newly created record.
 
-### hatchifyReactRest[SchemaName].updateOne
+### updateOne
 
 `hatchedReactRest[SchemaName].updateOne(data: Partial<RecordType>): Promise<RecordType>` is a function that returns a promise that resolves to the updated record.
 
@@ -174,7 +174,7 @@ const updated = await hatchedReact.model.Todo.updateOne({
 
 The updated record.
 
-### hatchifyReactRest[SchemaName].deleteOne
+### deleteOne
 
 `hatchedReactRest[SchemaName].deleteOne(id: string): Promise<void>` is a function that returns a promise that resolves when the record is deleted.
 
@@ -192,7 +192,7 @@ await hatchedReactRest.Todo.deleteOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 
 A promise that resolves when the record is deleted.
 
-### hatchifyReactRest[SchemaName].useAll
+### useAll
 
 `hatchedReactRest[SchemaName].useAll(): [RecordType[], RequestState]` is a hook that returns an array of records and request state data of the given schema.
 
@@ -213,7 +213,7 @@ An array with the following properties:
 | `result[0]` | <a href="#recordtype">`RecordType[]`</a> | An array of records of the given schema. |
 | `result[1]` | `RequestState`                           | An object with request state data.       |
 
-### hatchifyReactRest[SchemaName].useOne
+### useOne
 
 `hatchedReactRest[SchemaName].useOne(id: string): [RecordType, RequestState]` is a hook that returns a single record and request state data of the given schema and id.
 
@@ -221,7 +221,7 @@ An array with the following properties:
 const [record, requestState] = hatchedReactRest.Todo.useOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 ```
 
-### hatchifyReactRest[SchemaName].useCreateOne
+### useCreateOne
 
 `hatchedReactRest[SchemaName].useCreateOne(): [(data: Partial<RecordType>) => Promise<void>, RequestState, RecordType?]` is a hook that returns a function to create a record, request state data, and the most recently created record.
 
@@ -229,7 +229,7 @@ const [record, requestState] = hatchedReactRest.Todo.useOne("de596092-aa33-42e7-
 const [createRecord, requestState, createdRecord] = hatchedReactRest.Todo.useCreateOne()
 ```
 
-### hatchifyReactRest[SchemaName].useUpdateOne
+### useUpdateOne
 
 `hatchedReactRest[SchemaName].useUpdateOne(): [(data: Partial<RecordType>) => Promise<void>, { id: RequestState }, RecordType?]` is a hook that returns a function to update a record, request state data keyed by the id of the updated record, and the most recently updated record.
 
@@ -237,7 +237,7 @@ const [createRecord, requestState, createdRecord] = hatchedReactRest.Todo.useCre
 const [updateRecord, requestState, updatedRecord] = hatchedReactRest.Todo.useUpdateOne()
 ```
 
-### hatchifyReactRest[SchemaName].useDeleteOne
+### useDeleteOne
 
 `hatchedReactRest[SchemaName].useDeleteOne(): [(id: string) => Promise<void>, { id: RequestState }]` is a hook that returns a function to delete a record and request state data keyed by the id of the deleted record.
 
