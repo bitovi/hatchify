@@ -187,10 +187,10 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update(
 
 **Parameters**
 
-| Property      | Type                       | Default     | Details                           |
-| ------------- | -------------------------- | ----------- | --------------------------------- |
-| data          | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show.      |
-| affectedCount | number                     | `undefined` | Specify what total count to show. |
+| Property      | Type                       | Default     | Details                      |
+| ------------- | -------------------------- | ----------- | ---------------------------- |
+| data          | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show. |
+| affectedCount | number                     | `undefined` | Specify update count.        |
 
 **Returns**
 
@@ -212,9 +212,9 @@ const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
 
 **Parameters**
 
-| Property      | Type   | Default     | Details                           |
-| ------------- | ------ | ----------- | --------------------------------- |
-| affectedCount | number | `undefined` | Specify what total count to show. |
+| Property      | Type   | Default     | Details                |
+| ------------- | ------ | ----------- | ---------------------- |
+| affectedCount | number | `undefined` | Specify deleted count. |
 
 **Returns**
 
