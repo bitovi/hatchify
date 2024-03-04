@@ -1,6 +1,6 @@
 # `@hatchifyjs/react-jsonapi`
 
-`@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../schema/README.md) and produces an API layer that your frontend can use for a JSONAPI backend.
+`@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../schema/README.md) and produces an API layer that your frontend can use for a JSON:API backend.
 
 ```ts
 import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonapi"
@@ -19,27 +19,28 @@ const schemas = {
 const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", schemas))
 
 // Use the promise-based API
-hatchedReactRest.Todo.findAll({}).then(([records]) => {
-  console.log(records)
-})
-
-hatchedReactRest.Todo.findOne("de596092-aa33-42e7-8bb7-09ec5b20d73f").then(([record]) => {
-  console.log(record)
-})
-
+const [records, requestMeta] = await hatchedReactRest.Todo.findAll({})
+const record = await hatchedReactRest.Todo.findOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 const createdRecord = await hatchedReactRest.Todo.createOne({
   name: "Learn HatchifyJS",
   dueDate: new Date(),
 })
-
 await hatchedReactRest.Todo.updateOne({
   id: createdRecord.id,
   name: "Master HatchifyJS",
 })
-
 await hatchedReactRest.Todo.deleteOne(createdRecord.id)
 
-// todo: hook-based API
+// Use the hook-based API
+function MyComponent() {
+  const [records, useAllState] = hatchedReactRest.Todo.useAll()
+  const [record, useOneState] = hatchedReactRest.Todo.useOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
+  const [create, createState, createdRecord] = hatchedReactRest.Todo.useCreateOne()
+  const [update, updateState, updatedRecord] = hatchedReactRest.Todo.useUpdateOne()
+  const [delete, deleteState] = hatchedReactRest.Todo.useDeleteOne()
+
+  // ...
+}
 ```
 
 - [Exports](#exports)
@@ -65,7 +66,7 @@ await hatchedReactRest.Todo.deleteOne(createdRecord.id)
 `@hatchifyjs/react-jsonapi` exports the following:
 
 - `hatchifyReactRest` - A function that takes a `RestClient` and returns an object with promise and hook-based functions for each schema.
-- `createJsonapiClient` - A function that takes a base URL and a set of schemas and returns a `RestClient` object for a JSONAPI backend.
+- `createJsonapiClient` - A function that takes a base URL and a set of schemas and returns a `RestClient` object for a JSON:API backend.
 
 ```ts
 import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonapi"
@@ -73,7 +74,7 @@ import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonap
 
 ## createJsonapiClient
 
-`createJsonapiClient(baseUrl: string, schemas: Schemas): RestClient` is a function that takes a base URL and a set of schemas and returns a `RestClient` object for a JSONAPI backend.
+`createJsonapiClient(baseUrl: string, schemas: Schemas): RestClient` is a function that takes a base URL and a set of schemas and returns a `RestClient` object for a JSON:API backend.
 
 ```ts
 const jsonapiClient = createJsonapiClient("/api", schemas)
