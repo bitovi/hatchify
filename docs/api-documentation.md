@@ -76,22 +76,11 @@ await hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#up
 await hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#destroy">destroy</a>(2)
 </pre>
 
-- `.middleware`
-  - `.allModels`
-    - `.all`
-    - `.crud`
-    - `.findAndCountAll`
-    - `.findOne`
-    - `.create`
-    - `.update`
-    - `.destroy`
-- `.[MODEL_NAME]
-  - `.all`
-  - `.crud`
-  - `.findAndCountAll`
-  - `.findOne`
-  - `.create`
-  - `.update`
-  - `.destroy`
+## JSON:API Services
+
+<pre>
+GET /api/sales-people?
+  <a href="./jsonapi/reading/filtering/README.md">filter</a>[name]<a href="./jsonapi/reading/filtering#omitted-operators">=</a>Justin
+</pre>
 
 ## Frontend
