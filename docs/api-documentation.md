@@ -116,4 +116,38 @@ GET /api/sales-people?
   fields[<a href="./jsonapi/reading/sparse-fields/README.md#example-with-relationships">SalesGroup</a>]=name
 </pre>
 
-## Frontend
+## Frontend API Layer
+
+<pre>
+import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonapi";
+
+const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", Schemas))
+
+<b>// Promise methods</b>
+hatchedReactRest.SalesPerson.<a href="">findAll</a>()
+hatchedReactRest.SalesPerson.<a href="">create</a>()
+
+<b>// Hooks</b>
+const MyReactComponent = () => {
+  const [] = hatchedReactRest.SalesPerson.<a href="">useAll</a>()
+  const [] = hatchedReactRest.SalesPerson.<a href="">create</a>()
+}
+</pre>
+
+## Frontend Component Layer
+
+<pre>
+import { hatchifyReact, createJsonapiClient } from "@hatchifyjs/react-jsonapi";
+
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+
+hatchedReact.<a>model</a> <b>// The same as hatchedReactRest above
+
+Provider ...
+
+  
+const MyReactComponent = () => {
+  const [] = hatchedReactRest.SalesPerson.<a href="">useAll</a>()
+  const [] = hatchedReactRest.SalesPerson.<a href="">create</a>()
+}
+</pre>
