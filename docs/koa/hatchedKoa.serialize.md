@@ -1,6 +1,6 @@
 # hatchedKoa.serialize
 
-`hatchedKoa.serialize` is a collection of methods to take data from the `hatchedKoa.orm.models` methods and transform it to [JSON:API](../jsonapi/README.md) response formats that look like the following:
+`hatchedKoa.serialize` is a collection of methods to take results from the `hatchedKoa.orm.models` methods or a plain Javascript object (POJO) representation of them and transform them to [JSON:API](../jsonapi/README.md) response format that look like the following:
 
 ```js
 {
@@ -19,8 +19,6 @@
   ]
 }
 ```
-
-Normally these functions will take Model data that was returned from the ORM query. This export also includes a slightly different function for helping create JSON:API compliant Error responses.
 
 Each model has the following methods:
 
