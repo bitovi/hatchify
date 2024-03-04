@@ -14,7 +14,7 @@ export const SalesPerson = {
   <a href="schema/naming.md#schemapluralname">pluralName</a>: "SalesPeople",
   id: <a href="schema/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   <a href="./schema/attribute-types/README.md">attributes</a>: {
-    <a href="schema/naming.md#schemaattributesattribute_name">name</a>:         <a href="./attribute-types/string.md">string</a>({ required: true }),
+    <a href="schema/naming.md#general-guidelines">name</a>:         <a href="./attribute-types/string.md">string</a>({ required: true }),
     description:  <a href="schema/attribute-types/text.md">text</a>(),
     hireDate:     <a href="schema/attribute-types/datetime.md">datetime</a>(),
     birthday:     <a href="./schema/attribute-types/datetime.md">dateonly</a>(),
