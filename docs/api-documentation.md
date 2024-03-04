@@ -80,7 +80,33 @@ await hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#de
 
 <pre>
 GET /api/sales-people?
-  <a href="./jsonapi/reading/filtering/README.md">filter</a>[name]<a href="./jsonapi/reading/filtering#omitted-operators">=</a>Justin
+
+  <a href="./jsonapi/reading/filtering/README.md">filter</a>[name]<a href="./jsonapi/reading/filtering/no-operator.md">=</a>Justin
+  filter[name][<a href="./jsonapi/reading/filtering/%24eq.md">$eq</a>]=Justin
+  filter[name][<a href="./jsonapi/reading/filtering/%24ne.md">$ne</a>]=Justin
+  filter[name][<a href="./jsonapi/reading/filtering/%24in.md">$in</a>]=Justin&filter[name][$in]=Roye
+  filter[name][<a href="./jsonapi/reading/filtering/%24nin.md">$nin</a>]=Justin&filter[name][$nin]=Roye
+  filter[name][<a href="./jsonapi/reading/filtering/%24gt.md">$gt</a>]=Roye
+  filter[name][<a href="./jsonapi/reading/filtering/%24gte.md">$gte</a>]=Arthur
+  filter[name][<a href="./jsonapi/reading/filtering/%24gte.md">$gte</a>]=Arthur
+  filter[name][<a href="./jsonapi/reading/filtering/%24lt.md">$lt</a>]=Roye
+  filter[name][<a href="./jsonapi/reading/filtering/%24lte.md">$lte</a>]=Roye
+  filter[name][<a href="./jsonapi/reading/filtering/%24ilike.md">$ilike</a>]=startsWith%
+  filter[name][$ilike]=%endsWith
+  filter[name][$ilike]=%contains%
+  filter[name][<a href="./jsonapi/reading/filtering/%24like.md">$like</a>]=startsWithCaseSensitive%
+  
+  <a href="./jsonapi/reading/paginating/README.md">page</a>[<a href="./jsonapi/reading/paginating/README.md#offset-and-limit-pagination">limit</a>]=5
+  page[<a href="./jsonapi/reading/paginating/README.md#offset-and-limit-pagination">offset</a>]=10
+  page[<a href="./jsonapi/reading/paginating/README.md#page-based-pagination">number</a>]=2
+  page[<a href="./jsonapi/reading/paginating/README.md#page-based-pagination">size</a>]=20
+
+  <a href="./jsonapi/reading/relationships/README.md">include</a>=todos,accounts.owner
+
+  <a href="./jsonapi/reading/sorting/README.md">sort</a>=-importance,salesGroup.name
+
+  <a href="./jsonapi/reading/sparse-fields/README.md">fields</a>[SalesPerson]=name,importance
+  fields[<a href="./jsonapi/reading/sparse-fields/README.md#example-with-relationships">SalesGroup</a>]=name
 </pre>
 
 ## Frontend
