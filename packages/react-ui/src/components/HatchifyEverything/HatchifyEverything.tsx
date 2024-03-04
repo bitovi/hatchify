@@ -26,7 +26,7 @@ export interface HatchifyEverythingProps<
   minimumLoadTime?: number
 }
 
-function HatchifyEverything<
+export function HatchifyEverything<
   const TSchemas extends Record<string, PartialSchema>,
 >({ finalSchemas, ...rest }: HatchifyEverythingProps<TSchemas>): JSX.Element {
   return (

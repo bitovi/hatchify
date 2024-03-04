@@ -3,7 +3,7 @@ import { renderHook, waitFor } from "@testing-library/react"
 import usePage from "./usePage.js"
 
 describe("usePage", () => {
-  it("works", async () => {
+  it("renders hook, and setPage properly sets currentState", async () => {
     const { result } = renderHook(() => usePage())
 
     expect(result.current.page).toEqual({

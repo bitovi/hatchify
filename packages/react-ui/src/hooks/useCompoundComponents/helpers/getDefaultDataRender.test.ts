@@ -35,7 +35,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
     },
   })
 
-  it("works for attribute", () => {
+  it("when given a record for a matching attribute, properly renders it in column", () => {
     const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
@@ -51,7 +51,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
     expect(columnRenderFn(record).props.value).toEqual("test")
   })
 
-  it("returns empty string for attribute with no value", () => {
+  it("when no attribute matches, renders and empty string in column", () => {
     const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
@@ -67,7 +67,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
     expect(columnRenderFn(record).props.value).toEqual("")
   })
 
-  it("works for boolean attribute", () => {
+  it("when given a boolean attribute, properly renders it in column", () => {
     const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
@@ -84,7 +84,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
     ).toEqual(true)
   })
 
-  it("works for dateonly attribute", () => {
+  it("when given a 'dateonly' attribute, properly renders it in column", () => {
     const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
@@ -100,7 +100,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
     expect(columnRenderFn(record).props.value).toEqual("2023-10-27T21")
   })
 
-  it("works for relationship", () => {
+  it("when given a 'relationship' attribute, properly renders it in column", () => {
     const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",
@@ -121,7 +121,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
     })
   })
 
-  it("works for relationship with label", () => {
+  it("when given a 'relationship value with a label', properly renders it in column", () => {
     const columnRenderFn = getDefaultDataRender({
       finalSchemas,
       schemaName: "Todo",

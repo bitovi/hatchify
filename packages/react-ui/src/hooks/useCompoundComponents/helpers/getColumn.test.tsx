@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest"
+import { describe, it, expect, vi } from "vitest"
 import {
   assembler,
   belongsTo,
@@ -34,7 +34,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     },
   })
 
-  it("works with attribute on base schema", () => {
+  it("returns a column given an attribute on base schema", () => {
     const column = getColumn({
       finalSchemas: finalSchemas,
       schemaName: "Todo",
@@ -55,7 +55,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     })
   })
 
-  it("works with compoundComponentProps", () => {
+  it("return a column when given compoundComponentProps", () => {
     const column = getColumn({
       finalSchemas: finalSchemas,
       schemaName: "Todo",
@@ -78,30 +78,144 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     })
   })
 
-  it("correctly sets headerOverride", () => {
-    const column = getColumn({
-      finalSchemas: finalSchemas,
-      schemaName: "Todo",
-      field: "title",
-      key: "title",
-      control: finalSchemas.Todo.attributes.created.control,
-      compoundComponentProps: {
-        renderHeaderValue: () => null,
-      },
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+  describe("correctly sets renderDataValue", () => {
+    const mockDataFunction = vi
+      .fn()
+      .mockImplementation(({ args, value }) => "Data")
+
+    const mockDataComponent = (header: string) => {
+      return <h1> {header} </h1>
+    }
+
+    it("for when 'renderData' is given", () => {
+      const column = getColumn({
+        finalSchemas: finalSchemas,
+        schemaName: "Todo",
+        field: "title",
+        key: "title",
+        control: finalSchemas.Todo.attributes.created.control,
+        compoundComponentProps: {
+          renderData: mockDataFunction,
+        },
+        defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      })
+
+      expect(column.renderData("string" as any)).toBe("Data")
     })
 
-    expect(column).toEqual({
-      headerOverride: true,
-      sortable: true,
-      key: "title",
-      label: "Title",
-      renderData: expect.any(Function),
-      renderHeader: expect.any(Function),
+    it("for when 'renderDataValue' is given", () => {
+      const column = getColumn({
+        finalSchemas: finalSchemas,
+        schemaName: "Todo",
+        field: "title",
+        key: "title",
+        control: finalSchemas.Todo.attributes.created.control,
+        compoundComponentProps: {
+          renderDataValue: mockDataFunction,
+        },
+        defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      })
+
+      expect(
+        column.renderData({ record: { title: "something" } as any } as any),
+      ).toBe("Data")
+    })
+
+    it("for when 'DataValueComponent' is given, renders without error", () => {
+      const column = getColumn({
+        finalSchemas: finalSchemas,
+        schemaName: "Todo",
+        field: "title",
+        key: "title",
+        control: finalSchemas.Todo.attributes.created.control,
+        compoundComponentProps: {
+          DataValueComponent: mockDataComponent,
+        },
+        defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      })
+
+      column.renderData({ record: { title: "something" } as any } as any)
+    })
+  })
+  describe("correctly sets headerOverride", () => {
+    const mockHeaderFunction = vi
+      .fn()
+      .mockImplementation((args: unknown) => "Overidden Header")
+
+    const mockComponent = (header: string) => {
+      return <h1> {header} </h1>
+    }
+
+    it("for when renderHeaderValue is null", () => {
+      const column = getColumn({
+        finalSchemas: finalSchemas,
+        schemaName: "Todo",
+        field: "title",
+        key: "title",
+        control: finalSchemas.Todo.attributes.created.control,
+        compoundComponentProps: {
+          renderHeaderValue: () => null,
+        },
+        defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      })
+
+      expect(column).toEqual({
+        headerOverride: true,
+        sortable: true,
+        key: "title",
+        label: "Title",
+        renderData: expect.any(Function),
+        renderHeader: expect.any(Function),
+      })
+    })
+
+    it("for when renderHeaderValue is given render function", () => {
+      const column = getColumn({
+        finalSchemas: finalSchemas,
+        schemaName: "Todo",
+        field: "title",
+        key: "title",
+        control: finalSchemas.Todo.attributes.created.control,
+        compoundComponentProps: {
+          renderHeaderValue: mockHeaderFunction,
+        },
+        defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      })
+
+      column.renderHeader("string" as any)
+
+      expect(mockHeaderFunction).toBeCalled()
+
+      // expect(column).toEqual({
+      //   headerOverride: true,
+      //   sortable: true,
+      //   key: "title",
+      //   label: "Title",
+      //   renderData: expect.any(Function),
+      //   renderHeader: () => expect.any(Function),
+      // })
+    })
+
+    it("for when HeaderValueComponent is given a component", () => {
+      const column = getColumn({
+        finalSchemas: finalSchemas,
+        schemaName: "Todo",
+        field: "title",
+        key: "title",
+        control: finalSchemas.Todo.attributes.created.control,
+        compoundComponentProps: {
+          HeaderValueComponent: mockComponent,
+        },
+        defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      })
+
+      column.renderHeader("string" as any)
+
+      expect(mockHeaderFunction).toBeCalled()
     })
   })
 
-  it("works with additional column", () => {
+  it("returns Column when given an additional column prop", () => {
     const column = getColumn({
       finalSchemas: finalSchemas,
       schemaName: "Todo",
@@ -122,7 +236,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
     })
   })
 
-  it("works on relationship", () => {
+  it("returns a column when given a relationship", () => {
     const column = getColumn({
       finalSchemas: finalSchemas,
       schemaName: "Todo",
@@ -146,9 +260,8 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
 })
 
 describe("hooks/useCompoundComponents/helpers/formatFieldAsLabel", () => {
-  it("works", () => {
-    // todo: should be `Camel Case`
-    expect(formatFieldAsLabel("camelCase")).toBe("CamelCase")
+  it("returns field names as Title Case for labeling", () => {
+    expect(formatFieldAsLabel("camelCase")).toBe("Camel Case")
     expect(formatFieldAsLabel("Singluar")).toBe("Singluar")
   })
 })

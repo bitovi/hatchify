@@ -35,7 +35,7 @@ describe("hooks/useCompoundComponents/helpers/getColumns", () => {
   }
   const finalSchemas = assembler(partialSchemas)
 
-  it("works with no children", () => {
+  it("returns Columns per given schema, and given no children", () => {
     expect(
       getColumns(
         finalSchemas,
@@ -114,5 +114,36 @@ describe("hooks/useCompoundComponents/helpers/getColumns", () => {
         sortable: true,
       },
     ])
+  })
+
+  describe("overwrite", () => {
+    it("returns extra columns when overwrite is true while given an Array of JSX.elements", () => {
+      const childArray = [
+        {
+          key: "Extra Details",
+          type: { name: "Column" },
+          props: { extra: "Extra Details" },
+        },
+      ] as JSX.Element[]
+
+      expect(
+        getColumns(
+          finalSchemas,
+          "Todo",
+          HatchifyPresentationDefaultValueComponents,
+          true,
+          childArray,
+        ),
+      ).toEqual([
+        {
+          headerOverride: false,
+          key: "extra-0",
+          label: "",
+          renderData: expect.any(Function),
+          renderHeader: expect.any(Function),
+          sortable: false,
+        },
+      ])
+    })
   })
 })

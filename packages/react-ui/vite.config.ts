@@ -14,7 +14,14 @@ export default defineConfig({
   },
   plugins: [{ ...nodeExternals(), enforce: "pre" }, dts(), react()],
   test: {
+    reporters: "verbose",
     globals: true,
     environment: "jsdom",
+    coverage: {
+      statements: 90,
+      branches: 90,
+      functions: 75,
+      lines: 90,
+    },
   },
 })

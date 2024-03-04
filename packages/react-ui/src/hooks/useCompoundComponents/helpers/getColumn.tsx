@@ -101,13 +101,10 @@ export function getColumn<
   } else {
     column.renderHeader = () => displayName
   }
-
   return column
 }
 
 export function formatFieldAsLabel(field: string): string {
-  return field
-    .replace(/(^\w)/g, (g) => g[0].toUpperCase())
-    .replace(/([-_]\w)/g, (g) => " " + g[1].toUpperCase())
-    .trim()
+  const result = field.replace(/([A-Z])/g, " $1")
+  return (result.charAt(0).toUpperCase() + result.slice(1)).trim()
 }

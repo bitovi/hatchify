@@ -3,7 +3,7 @@ import { renderHook, waitFor } from "@testing-library/react"
 import useSort from "./useSort.js"
 
 describe("useSort", () => {
-  it("works", async () => {
+  it("renders hook, and setSort properly sets currentState", async () => {
     const { result } = renderHook(() => useSort())
 
     // initial state
