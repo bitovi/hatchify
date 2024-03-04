@@ -12,10 +12,9 @@ Hatchify implements [JSON:API 1.1](https://jsonapi.org/format/1.1/). The JSON:AP
 - [Updating](./updating.md)
 - [Deleting](./deleting.md)
 
+The following is an overview of HatchifyJS's JSON:API implementation:
 
-## Hatchify's JSON:API Overview
-
-### Reading Lists
+## Reading Lists
 
 To get a list of records, you do something like:
 
@@ -33,7 +32,9 @@ GET /api/sales-people?
 HatchifyJS supports "MongoDB" style filtering operators (`$gt`) above.
 
 
-### Reading a single record
+## Reading a single record
 
-### Creating
+## Creating
 
+
+## Unsupported features
