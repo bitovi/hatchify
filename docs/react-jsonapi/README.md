@@ -55,6 +55,7 @@ await hatchedReactRest.Todo.deleteOne(createdRecord.id)
   - [`hatchifyReactRest[SchemaName].useCreateOne`](#hatchifyreactrestschemanameusecreateone)
   - [`hatchifyReactRest[SchemaName].useUpdateOne`](#hatchifyreactrestschemanameuseupdateone)
   - [`hatchifyReactRest[SchemaName].useDeleteOne`](#hatchifyreactrestschemanameusedeleteone)
+- [Types](#types)
 
 ## Exports
 
@@ -93,17 +94,9 @@ const result = await hatchedReactRest.Todo.findAll({})
 
 **Parameters**
 
-An object with the following properties:
-
-⚠️ TODO: move to QueryList type! ⚠️
-
-| Property | Type                                                 | Default     | Details                                   |
-| -------- | ---------------------------------------------------- | ----------- | ----------------------------------------- |
-| include  | `string[]?`                                          | `undefined` | Specify which relationships to include.   |
-| fields   | `string[]?`                                          | `undefined` | Specify which fields to return.           |
-| filter   | `{ field: string, operator: string, value: any }[]?` | `undefined` | Specify which records to include.         |
-| sort     | `string?`                                            | `undefined` | Specify how to sort the records.          |
-| page     | `{ page: number, size: number }?`                    | `undefined` | Specify which page of records to include. |
+| Property | Type                                 | Details                                                          |
+| -------- | ------------------------------------ | ---------------------------------------------------------------- |
+| query    | <a href="#querylist">`QueryList`</a> | An object with optional include, fields, filter, sort, and page. |
 
 **Returns**
 
@@ -248,3 +241,27 @@ const [updateRecord, requestState, updatedRecord] = hatchedReactRest.Todo.useUpd
 ```ts
 const [deleteRecord, requestState] = hatchedReactRest.Todo.useDeleteOne()
 ```
+
+## Types
+
+### `QueryList`
+
+`QueryList` is an object with the following properties:
+
+| Property | Type                                                 | Default     | Details                                   |
+| -------- | ---------------------------------------------------- | ----------- | ----------------------------------------- |
+| include  | `string[]?`                                          | `undefined` | Specify which relationships to include.   |
+| fields   | `string[]?`                                          | `undefined` | Specify which fields to return.           |
+| filter   | `{ field: string, operator: string, value: any }[]?` | `undefined` | Specify which records to include.         |
+| sort     | `string?`                                            | `undefined` | Specify how to sort the records.          |
+| page     | `{ page: number, size: number }?`                    | `undefined` | Specify which page of records to include. |
+
+### `QueryOne`
+
+`QueryOne` is an object with the following properties:
+
+| Property | Type        | Details                                 |
+| -------- | ----------- | --------------------------------------- |
+| id       | `string`    | The id of the record.                   |
+| include  | `string[]?` | Specify which relationships to include. |
+| fields   | `string[]?` | Specify which fields to return.         |
