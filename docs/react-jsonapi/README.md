@@ -35,9 +35,9 @@ await hatchedReactRest.Todo.deleteOne(createdRecord.id)
 function MyComponent() {
   const [records, useAllState] = hatchedReactRest.Todo.useAll()
   const [record, useOneState] = hatchedReactRest.Todo.useOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
-  const [create, createState, createdRecord] = hatchedReactRest.Todo.useCreateOne()
-  const [update, updateState, updatedRecord] = hatchedReactRest.Todo.useUpdateOne()
-  const [delete, deleteState] = hatchedReactRest.Todo.useDeleteOne()
+  const [createTodo, createState, createdRecord] = hatchedReactRest.Todo.useCreateOne()
+  const [updateTodo, updateState, updatedRecord] = hatchedReactRest.Todo.useUpdateOne()
+  const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
 
   // ...
 }
@@ -57,9 +57,11 @@ function MyComponent() {
   - [useUpdateOne](#useupdateone)
   - [useDeleteOne](#usedeleteone)
 - [Types](#types)
+  - [MetaData](#metadata)
   - [QueryList](#querylist)
   - [QueryOne](#queryone)
   - [RecordType](#recordtype)
+  - [RequestState](#requeststate)
 
 ## Exports
 
@@ -98,9 +100,9 @@ const result = await hatchedReactRest.Todo.findAll({})
 
 **Parameters**
 
-| Property | Type                                 | Details                                                          |
-| -------- | ------------------------------------ | ---------------------------------------------------------------- |
-| query    | <a href="#querylist">`QueryList`</a> | An object with optional include, fields, filter, sort, and page. |
+| Property  | Type                                 | Details                                                          |
+| --------- | ------------------------------------ | ---------------------------------------------------------------- |
+| queryList | <a href="#querylist">`QueryList`</a> | An object with optional include, fields, filter, sort, and page. |
 
 **Returns**
 
@@ -109,7 +111,7 @@ An array with the following properties:
 | Property    | Type                                     | Details                                                                       |
 | ----------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
 | `result[0]` | <a href="#recordtype">`RecordType[]`</a> | An array of records of the given schema.                                      |
-| `result[1]` | `MetaData`                               | An object with metadata returned by the server, such as the count of records. |
+| `result[1]` | <a href="#metadata">`MetaData`</a>       | An object with metadata returned by the server, such as the count of records. |
 
 ### `hatchifyReactRest[SchemaName].findOne`
 
@@ -128,10 +130,10 @@ const record = await hatchedReactRest.Todo.findOne({
 
 **Parameters**
 
-| Property  | Type                               | Details                                                 |
-| --------- | ---------------------------------- | ------------------------------------------------------- |
-| IdOrQuery | `string`                           | The id of the record.                                   |
-|           | <a href="#queryone">`QueryOne`</a> | The id of the record and an optional include or fields. |
+| Property     | Type                                | Details                                                 |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| IdOrQueryOne | `string`                            | The id of the record.                                   |
+|              | <a href="#queryone ">`QueryOne`</a> | The id of the record and an optional include or fields. |
 
 ### createOne
 
@@ -203,32 +205,61 @@ const result = hatchedReactRest.Todo.useAll()
 
 **Parameters**
 
-TODO: QueryList, baseFilter, minimumLoadTime
+| Property        | Type                                                 | Details                                                          |
+| --------------- | ---------------------------------------------------- | ---------------------------------------------------------------- |
+| queryList       | <a href="#querylist">`QueryList`</a>                 | An object with optional include, fields, filter, sort, and page. |
+| baseFilter      | `{ field: string, operator: string, value: any }[]?` | An object with optional fields, operator, and value.             |
+| minimumLoadTime | `number?`                                            | The minimum time to show a loading spinner.                      |
 
 **Returns**
 
 An array with the following properties:
 
-| Property    | Type                                     | Details                                  |
-| ----------- | ---------------------------------------- | ---------------------------------------- |
-| `result[0]` | <a href="#recordtype">`RecordType[]`</a> | An array of records of the given schema. |
-| `result[1]` | `RequestState`                           | An object with request state data.       |
+| Property    | Type                                       | Details                                  |
+| ----------- | ------------------------------------------ | ---------------------------------------- |
+| `result[0]` | <a href="#recordtype">`RecordType[]`</a>   | An array of records of the given schema. |
+| `result[1]` | <a href="#requeststate">`RequestState`</a> | An object with request state data.       |
 
 ### useOne
 
 `hatchedReactRest[SchemaName].useOne(id: string): [RecordType, RequestState]` is a hook that returns a single record and request state data of the given schema and id.
 
 ```ts
-const [record, requestState] = hatchedReactRest.Todo.useOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
+const result = hatchedReactRest.Todo.useOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 ```
+
+**Parameters**
+
+| Property | Type     | Details                        |
+| -------- | -------- | ------------------------------ |
+| id       | `string` | The id of the record to fetch. |
+
+**Returns**
+
+An array with the following properties:
+
+| Property    | Type                                       | Details                            |
+| ----------- | ------------------------------------------ | ---------------------------------- |
+| `result[0]` | <a href="#recordtype">`RecordType`</a>     | The record of the given schema.    |
+| `result[1]` | <a href="#requeststate">`RequestState`</a> | An object with request state data. |
 
 ### useCreateOne
 
 `hatchedReactRest[SchemaName].useCreateOne(): [(data: Partial<RecordType>) => Promise<void>, RequestState, RecordType?]` is a hook that returns a function to create a record, request state data, and the most recently created record.
 
 ```ts
-const [createRecord, requestState, createdRecord] = hatchedReactRest.Todo.useCreateOne()
+const result = hatchedReactRest.Todo.useCreateOne()
 ```
+
+**Returns**
+
+An array with the following properties:
+
+| Property    | Type                                                                     | Details                            |
+| ----------- | ------------------------------------------------------------------------ | ---------------------------------- |
+| `result[0]` | <a href="#recordtype">`(data: Partial<RecordType>) => Promise<void>`</a> | A function to create a record.     |
+| `result[1]` | <a href="#requeststate">`RequestState`</a>                               | An object with request state data. |
+| `result[2]` | <a href="#recordtype">`RecordType`</a>                                   | The most recently created record.  |
 
 ### useUpdateOne
 
@@ -238,6 +269,16 @@ const [createRecord, requestState, createdRecord] = hatchedReactRest.Todo.useCre
 const [updateRecord, requestState, updatedRecord] = hatchedReactRest.Todo.useUpdateOne()
 ```
 
+**Returns**
+
+An array with the following properties:
+
+| Property    | Type                                                                     | Details                            |
+| ----------- | ------------------------------------------------------------------------ | ---------------------------------- |
+| `result[0]` | <a href="#recordtype">`(data: Partial<RecordType>) => Promise<void>`</a> | A function to update a record.     |
+| `result[1]` | <a href="#requeststate">`RequestState`</a>                               | An object with request state data. |
+| `result[2]` | <a href="#recordtype">`RecordType`</a>                                   | The most recently updated record.  |
+
 ### useDeleteOne
 
 `hatchedReactRest[SchemaName].useDeleteOne(): [(id: string) => Promise<void>, { id: RequestState }]` is a hook that returns a function to delete a record and request state data keyed by the id of the deleted record.
@@ -246,7 +287,23 @@ const [updateRecord, requestState, updatedRecord] = hatchedReactRest.Todo.useUpd
 const [deleteRecord, requestState] = hatchedReactRest.Todo.useDeleteOne()
 ```
 
+**Returns**
+
+An array with the following properties:
+
+| Property    | Type                            | Details                        |
+| ----------- | ------------------------------- | ------------------------------ |
+| `result[0]` | `(id: string) => Promise<void>` | A function to delete a record. |
+
 ## Types
+
+### MetaData
+
+`MetaData` is an object with metadata returned by the server, such as the count of records.
+
+| Property | Type  | Details                                  |
+| -------- | ----- | ---------------------------------------- |
+| ...      | `any` | Metadata, for example `unpaginatedCount` |
 
 ### QueryList
 
@@ -278,3 +335,19 @@ const [deleteRecord, requestState] = hatchedReactRest.Todo.useDeleteOne()
 | -------- | -------- | ----------------------------------------------- |
 | id       | `string` | The id of the record.                           |
 | ...      | `any`    | The attributes and relationships of the record. |
+
+### RequestState
+
+`RequestState` is an object with the following properties:
+
+| Property       | Type                                | Details                                            |
+| -------------- | ----------------------------------- | -------------------------------------------------- |
+| error          | `Error?`                            | An error object if the request failed.             |
+| isPending      | `boolean`                           | Whether the request is pending.                    |
+| isRejected     | `boolean`                           | Whether the request failed.                        |
+| isResolved     | `boolean`                           | Whether the request was completed.                 |
+| isRevalidating | `boolean`                           | Whether the request is revalidating a stale state. |
+| isStale        | `boolean`                           | Whether the data is out of date.                   |
+| isSuccess      | `boolean`                           | Whether the request was successful.                |
+| meta           | <a href="#metadata">`MetaData`</a>  | Metadata returned by the server.                   |
+| status         | `"loading" \| "error" \| "success"` | The status of the request.                         |
