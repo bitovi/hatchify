@@ -19,7 +19,7 @@ const schemas = {
 const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", schemas))
 
 // Use the promise-based API
-hatchedReactRest.Todo.findAll().then(([records]) => {
+hatchedReactRest.Todo.findAll({}).then(([records]) => {
   console.log(records)
 })
 
@@ -88,10 +88,7 @@ const hatchedReactRest = hatchifyReactRest(jsonapiClient)
 `hatchedReactRest.[SchemaName].findAll(): Promise<[Record[], MetaData]>` is a function that returns a promise that resolves to an array of records of the given schema and any metadata returned by the server.
 
 ```ts
-hatchedReactRest.Todo.findAll().then(([records, meta]) => {
-  console.log(records)
-  console.log(meta)
-})
+const [records, meta] = await hatchedReactRest.Todo.findAll({})
 ```
 
 **Parameters**
@@ -100,11 +97,11 @@ An object with the following properties:
 
 | Property | Type                                                | Default     | Details                                   |
 | -------- | --------------------------------------------------- | ----------- | ----------------------------------------- |
-| include  | `string[]`                                          | `undefined` | Specify which relationships to include.   |
-| fields   | `string[]`                                          | `undefined` | Specify which fields to return.           |
-| filter   | `{ field: string, operator: string, value: any }[]` | `undefined` | Specify which records to include.         |
-| sort     | `string`                                            | `undefined` | Specify how to sort the records.          |
-| page     | `{ page: number, size: number }`                    | `undefined` | Specify which page of records to include. |
+| include? | `string[]`                                          | `undefined` | Specify which relationships to include.   |
+| fields?  | `string[]`                                          | `undefined` | Specify which fields to return.           |
+| filter?  | `{ field: string, operator: string, value: any }[]` | `undefined` | Specify which records to include.         |
+| sort?    | `string`                                            | `undefined` | Specify how to sort the records.          |
+| page?    | `{ page: number, size: number }`                    | `undefined` | Specify which page of records to include. |
 
 **Returns**
 
@@ -117,13 +114,19 @@ An array with the following properties:
 
 ### `hatchifyReactRest.[SchemaName].findOne`
 
-`hatchedReactRest.[SchemaName].findOne(id: string): Promise<[Record, MetaData]>` is a function that returns a promise that resolves to a single record of the given schema and its id, as well as any metadata returned by the server.
+`hatchedReactRest.[SchemaName].findOne(id: string): Promise<Record>` is a function that returns a promise that resolves to a single record of the given schema for the id.
 
 ```ts
-hatchedReactRest.Todo.findOne("de596092-aa33-42e7-8bb7-09ec5b20d73f").then(([record, meta]) => {
-  console.log(record)
-})
+const record = await hatchedReactRest.Todo.findOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 ```
+
+**Parameters**
+
+| Property | Type     | Details               |
+| -------- | -------- | --------------------- |
+| id       | `string` | The id of the record. |
+
+or
 
 ### `hatchifyReactRest.[SchemaName].createOne`
 
@@ -141,7 +144,7 @@ const createdRecord = await hatchedReactRest.Todo.createOne({
 `hatchedReactRest.[SchemaName].updateOne(data: Partial<Record>): Promise<Record>` is a function that returns a promise that resolves to the updated record.
 
 ```ts
-await hatchedReactRest.Todo.updateOne({
+const updated = await hatchedReact.model.Todo.updateOne({
   id: createdRecord.id,
   name: "Master HatchifyJS",
 })
@@ -152,7 +155,7 @@ await hatchedReactRest.Todo.updateOne({
 `hatchedReactRest.[SchemaName].deleteOne(id: string): Promise<void>` is a function that returns a promise that resolves when the record is deleted.
 
 ```ts
-await hatchedReactRest.Todo.deleteOne(createdRecord.id)
+await hatchedReactRest.Todo.deleteOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 ```
 
 ### `hatchifyReactRest.[SchemaName].useAll`
