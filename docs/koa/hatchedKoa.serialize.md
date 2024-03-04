@@ -33,7 +33,7 @@ Each model has the following methods:
 
 ## findAll
 
-Serializes result of multiple instances.
+Serializes result of multiple instances and to show only the specified attributes.
 
 `hatchedKoa.serialize[schemaName].findAll(data: PlainRecord[] | ORMRecord[], attributes: string[]) =>JSONAPIDocument`
 
@@ -53,7 +53,7 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9
 
 ## findAndCountAll
 
-Serializes result of all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+Serializes result of paginated data and a total count to show only the specified attributes. This is very useful for pagination.
 
 `hatchedKoa.serialize[schemaName].findAndCountAll(data: { count: number; rows: PlainRecord[] | ORMRecord[] }, attributes: string[]) => JSONAPIDocument`
 
@@ -61,7 +61,7 @@ Serializes result of all the rows matching your query, within a specified offset
 const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
   {
     rows: [{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }],
-    count: 1,
+    count: 10,
   },
   ["id", "name"],
 )
@@ -74,7 +74,7 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
 //       attributes: { name: "Baking" },
 //     }
 //   ],
-//   meta: { unpaginatedCount: 1 }
+//   meta: { unpaginatedCount: 10 }
 // }
 ```
 

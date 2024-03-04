@@ -76,11 +76,11 @@ Finds all the rows matching your query, within a specified offset / limit, and g
 ```ts
 const deserializedTodos = await hatchedKoa.model.Todo.findAll({
   where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
-  limit: 10,
+  limit: 1,
   offset: 0,
 })
 // deserializedTodos = {
-//   count: 1,
+//   count: 10,
 //   rows: [
 //     { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
 //   ]
