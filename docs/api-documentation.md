@@ -127,7 +127,7 @@ const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", { SalesPe
 hatchedReactRest.SalesPerson.<a href="">findAll</a>({ page: { number: 1, size: 10 }})
 hatchedReactRest.SalesPerson.<a href="">findOne</a>("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 hatchedReactRest.SalesPerson.<a href="">createOne</a>({ name: "John" })
-hatchedReactRest.SalesPerson.<a href="">updateOne</a>({ id: "de596092-aa33-42e7-8bb7-09ec5b20d73f", name: "Todd" })
+hatchedReactRest.SalesPerson.<a href="">updateOne</a>({ id: "de596092-aa33-42e7-8bb7-09ec5b20d73f", name: "Johnny" })
 hatchedReactRest.SalesPerson.<a href="">deleteOne</a>("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 
 <b>// Hooks</b>
