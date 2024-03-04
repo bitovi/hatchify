@@ -1,6 +1,6 @@
 # hatchedKoa.serialize
 
-`hatchedKoa.serialize` is a collection of methods to take results from the `hatchedKoa.orm.models` methods which is either one or more of `ORMRecord` or `PlainRecord` and transform them to [JSON:API](../jsonapi/README.md) response format that look like the following:
+`hatchedKoa.serialize` is a collection of methods to take results from the `hatchedKoa.orm.models` methods which is one or more of either `ORMRecord` or `PlainRecord` and transform them to [JSON:API](../jsonapi/README.md) response format that look like the following:
 
 ```js
 {
