@@ -5,23 +5,30 @@ This page links to all the other API documentation. This is like a big cheat she
 ## Schema
 
 <pre>
-import { PartialSchema, belongsTo, boolean, datetime, integer, hasMany, string } from "@hatchifyjs/core"
+import { PartialSchema, 
+  boolean, datetime, dateonly, integer, string, enumerate
+  belongsTo, hasMany, hasOne } from "@hatchifyjs/core"
   
 export const SalesPerson = {
   <a href="schema/naming.md#schemaname">name</a>: "SalesPerson",
   <a href="schema/naming.md#schemapluralname">pluralName</a>: "SalesPeople",
   id: <a href="schema/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   attributes: {
-    <a href="schema/naming.md#schemaattributesattribute_name">name</a>: <a href="./attribute-types/string.md">string</a>({ required: true }),
-    description: <a href="schema/attribute-types/text.md">text</a>(),
-    dueDate: <a href="schema/attribute-types/datetime.md">datetime</a>(),
-    importance: <a href="schema/attribute-types/integer.md">integer</a>({min: 0, max: 100, step: 10}),
-    complete: <a href="schema/attribute-types/boolean.md">boolean</a>({ default: false }),
+    <a href="schema/naming.md#schemaattributesattribute_name">name</a>:         <a href="./attribute-types/string.md">string</a>({ required: true }),
+    description:  <a href="schema/attribute-types/text.md">text</a>(),
+    hireDate:     <a href="schema/attribute-types/datetime.md">datetime</a>(),
+    birthday:     <a href="./schema/attribute-types/datetime.md">dateonly</a>(),
+    commission:   <a href="./schema/attribute-types/number.md">number</a>({min: 0}),
+    importance:   <a href="schema/attribute-types/integer.md">integer</a>({min: 0, max: 100, step: 10}),
+    isSenior:     <a href="schema/attribute-types/boolean.md">boolean</a>({ default: false }),
+    status:       <a href="schema/attribute-types/enum.md">enumerate</a>({ values: ["active", "inactive"] }),
+    salesGroupId: <a href="./schema/attribute-types/uuid.md">uuid</a>(),
   },
   relationships: {
     salesGroup: <a href="schema/relationship-types/belongs-to.md">belongsTo</a>(),
     accounts:   <a href="schema/relationship-types/has-many.md">hasMany</a>(),
     todos:      hasMany().<a href="schema/relationship-types/has-many-through.md">through</a>()
+    user:       <a href="./schema/relationship-types/has-one.md">hasOne</a>()
   },
 } satisfies <a href="schema/naming.md">PartialSchema</a>
 </pre>
