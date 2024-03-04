@@ -11,3 +11,29 @@ Hatchify implements [JSON:API 1.1](https://jsonapi.org/format/1.1/). The JSON:AP
   - [Sparse Fields](./reading/sparse-fields/README.md)
 - [Updating](./updating.md)
 - [Deleting](./deleting.md)
+
+
+## Hatchify's JSON:API Overview
+
+### Reading Lists
+
+To get a list of records, you do something like:
+
+```
+GET /api/sales-people?
+  filter[name]=Justin
+  filter[age][$gt]=41
+
+
+{
+
+}
+```
+
+HatchifyJS supports "MongoDB" style filtering operators (`$gt`) above.
+
+
+### Reading a single record
+
+### Creating
+
