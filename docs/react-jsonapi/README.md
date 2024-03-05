@@ -19,7 +19,7 @@ const schemas = {
 const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", schemas))
 
 // Use the promise-based API
-const [records, requestMeta] = await hatchedReactRest.Todo.findAll({})
+const [records, requestMeta] = await hatchedReactRest.Todo.findAll()
 const record = await hatchedReactRest.Todo.findOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 const createdRecord = await hatchedReactRest.Todo.createOne({
   name: "Learn HatchifyJS",
@@ -95,14 +95,14 @@ const hatchedReactRest = hatchifyReactRest(jsonapiClient)
 `hatchedReactRest[SchemaName].findAll(): Promise<[RecordType[], MetaData]>` is a function that returns a promise that resolves to an array of records of the given schema and any metadata returned by the server.
 
 ```ts
-const result = await hatchedReactRest.Todo.findAll({})
+const result = await hatchedReactRest.Todo.findAll()
 ```
 
 **Parameters**
 
-| Property  | Type                                 | Details                                                          |
-| --------- | ------------------------------------ | ---------------------------------------------------------------- |
-| queryList | <a href="#querylist">`QueryList`</a> | An object with optional include, fields, filter, sort, and page. |
+| Property  | Type                                  | Details                                                          |
+| --------- | ------------------------------------- | ---------------------------------------------------------------- |
+| queryList | <a href="#querylist">`QueryList?`</a> | An object with optional include, fields, filter, sort, and page. |
 
 **Returns**
 
@@ -207,7 +207,7 @@ const result = hatchedReactRest.Todo.useAll()
 
 | Property        | Type                                                 | Details                                                          |
 | --------------- | ---------------------------------------------------- | ---------------------------------------------------------------- |
-| queryList       | <a href="#querylist">`QueryList`</a>                 | An object with optional include, fields, filter, sort, and page. |
+| queryList       | <a href="#querylist">`QueryList?`</a>                | An object with optional include, fields, filter, sort, and page. |
 | baseFilter      | `{ field: string, operator: string, value: any }[]?` | An object with optional fields, operator, and value.             |
 | minimumLoadTime | `number?`                                            | The minimum time to show a loading spinner.                      |
 
