@@ -82,10 +82,10 @@ The `useDataGridState({})` accepts and returns a [`DataGridState`](./types.md#da
 
 | key                | type                                        | description                                                                                                                       |
 | ------------------ | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | 
-| `defaultSelected`  | `{all: boolean; ids: string[];}| undefined;`| Optional, used for checkboxes          |
-| `onSelectedChange` | `{all: boolean; ids: string[];}| undefined;`| Optional, used for checkboxes          |
-| `fields`           | `[key: string]: string[];`| Optional, fields to be included. If not defined, all fields from the schema and included relationships will be returned |
-| `include`          | `(keyof TPartialSchema["relationships"])[]| string[]`| Optional, relationships to be included |
-| `defaultPage`      | `{ number: number; size: number; }`| Optional, default paginated page                                                                                                  |
-| `defaultSort`      | `{direction: "asc"|"desc"|undefined;|sortBy: string|undefined;}`|Optional, default sort direction |
-| `baseFilter`       | `Array<{ field: string; operator: string; value: string | string[] | number | number[] | boolean | boolean[];}> | {[field: string]: {[filter in FilterTypes]?: string | string[] | number | number[] | boolean | boolean[];}} | string | undefined` | Optional, a pre filter to be used alongside additional filters |
+| `defaultSelected`  | `{all: boolean; ids: string[];} \| undefined;` | Optional, used for checkboxes          |
+| `onSelectedChange` | `{all: boolean; ids: string[];} \| undefined;` | Optional, used for checkboxes          |
+| `fields`           | `[key: string]: string[];` | Optional, fields to be included. If not defined, all fields from the schema and included relationships will be returned |
+| `include`          | `(keyof TPartialSchema[relationships])[] \| string[]` | Optional, relationships to be included |
+| `defaultPage`      | `{ number: number; size: number; }` | Optional, default paginated page |
+| `defaultSort`      | `{direction: "asc" \| "desc" \| undefined; \| sortBy: string \| undefined;}` | Optional, default sort direction |
+| `baseFilter`       | `Array<{ field: string; operator: string; value: string | string[] | number | number[] | boolean | boolean[];}> | {[field: string]: {[filter in FilterTypes]?: string | string[] | number | number[] | boolean | boolean[];}} | string | undefined` \| Optional, a pre filter to be used alongside additional filters |
