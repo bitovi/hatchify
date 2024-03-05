@@ -1,6 +1,6 @@
 # hatchedKoa.serialize
 
-`hatchedKoa.serialize` is a collection of methods to take data from the [hatchedKoa.model](./hatchedKoa.model.md) methods and transform it to [JSON:API](../jsonapi/README.md) response formats that look like the following:
+`hatchedKoa.serialize` is a collection of methods to take results from the `hatchedKoa.orm.models` methods which is one or more of either `ORMRecord` or `PlainRecord` and transform them to [JSON:API](../jsonapi/README.md) response format that look like the following:
 
 ```js
 {
@@ -20,13 +20,20 @@
 }
 ```
 
-Normally these functions will take Model data that was returned from the ORM query. This export also includes a slightly different function for helping create JSON:API compliant Error responses.
+Each model has the following methods:
+
+- [findAll](#findall)
+- [findAndCountAll](#findandcountall)
+- [findOne](#findone)
+- [create](#create)
+- [update](#update)
+- [destroy](#destroy)
 
 ## findAll
 
-Serializes result of multiple instances.
+Serializes result of multiple instances and to show only the specified attributes.
 
-`hatchedKoa.serialize[schemaName].findAll(data: PlainRecord[] | ORMModel[], attributes: string[]) =>JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findAll(data: PlainRecord[] | ORMRecord[], attributes: string[]) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
@@ -42,17 +49,28 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9
 // }
 ```
 
+**Parameters**
+
+| Property   | Type                           | Default     | Details                          |
+| ---------- | ------------------------------ | ----------- | -------------------------------- |
+| data       | `PlainRecord[] \| ORMRecord[]` | `undefined` | Specify what records to show.    |
+| attributes | string[]                       | `undefined` | Specify what attributes to show. |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+
 ## findAndCountAll
 
-Serializes result of all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+Serializes result of paginated data and a total count to show only the specified attributes. This is very useful for pagination.
 
-`hatchedKoa.serialize[schemaName].findAndCountAll(data: { count: number; rows: PlainRecord[] | ORMModel[] }, attributes: string[]) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findAndCountAll(data: { count: number; rows: PlainRecord[] | ORMRecord[] }, attributes: string[]) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
   {
     rows: [{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }],
-    count: 1,
+    count: 10,
   },
   ["id", "name"],
 )
@@ -65,15 +83,26 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
 //       attributes: { name: "Baking" },
 //     }
 //   ],
-//   meta: { unpaginatedCount: 1 }
+//   meta: { unpaginatedCount: 10 }
 // }
 ```
+
+**Parameters**
+
+| Property   | Type                                                    | Default     | Details                                       |
+| ---------- | ------------------------------------------------------- | ----------- | --------------------------------------------- |
+| data       | `{ data: PlainRecord[] \| ORMRecord[], count: number }` | `undefined` | Specify what records and total cound to show. |
+| attributes | string[]                                                | `undefined` | Specify what attributes to show.              |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
 
 ## findOne
 
 Serializes result of a single instance.
 
-`hatchedKoa.serialize[schemaName].findOne(data: PlainRecord | ORMModel, attributes: string[]) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findOne(data: PlainRecord | ORMRecord, attributes: string[]) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
@@ -87,11 +116,22 @@ const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-b
 // }
 ```
 
+**Parameters**
+
+| Property   | Type                       | Default     | Details                          |
+| ---------- | -------------------------- | ----------- | -------------------------------- |
+| data       | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show.     |
+| attributes | string[]                   | `undefined` | Specify what attributes to show. |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+
 ## create
 
 Serializes a result of a new instance creation.
 
-`hatchedKoa.serialize[schemaName].create(data: Model) =>JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].create(data: PlainRecord | ORMRecord) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.create({
@@ -108,11 +148,22 @@ const serializedTodo = await hatchedKoa.serialize.Todo.create({
 // }
 ```
 
+**Parameters**
+
+| Property   | Type                       | Default     | Details                          |
+| ---------- | -------------------------- | ----------- | -------------------------------- |
+| data       | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show.     |
+| attributes | string[]                   | `undefined` | Specify what attributes to show. |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+
 ## update
 
 Serializes a result of an update.
 
-`hatchedKoa.serialize[schemaName].update(count: number, affectedCount: number) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].update(data: PlainRecord | ORMRecord, affectedCount: number) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.update(
@@ -132,11 +183,22 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update(
 // }
 ```
 
+**Parameters**
+
+| Property      | Type                       | Default     | Details                      |
+| ------------- | -------------------------- | ----------- | ---------------------------- |
+| data          | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show. |
+| affectedCount | number                     | `undefined` | Specify update count.        |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+
 ## destroy
 
 Serializes a result of a deletion.
 
-`hatchedKoa.serialize[schemaName].destroy(affectedCount: number) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].destroy(affectedCount: number) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
@@ -145,3 +207,13 @@ const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
 //   data: null,
 // }
 ```
+
+**Parameters**
+
+| Property      | Type   | Default     | Details                |
+| ------------- | ------ | ----------- | ---------------------- |
+| affectedCount | number | `undefined` | Specify deleted count. |
+
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>

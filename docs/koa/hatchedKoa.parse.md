@@ -92,8 +92,8 @@ Parses a query string for searching a single instance.
 Parses a query string for searching all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
 
 ```ts
-const findOptions = await hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Baking&limit=10&offset=0")
-// findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
+const findOptions = await hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Baking&limit=1&offset=0")
+// findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } }, limit: 1, offset: 0 }
 ```
 
 **Parameters**
