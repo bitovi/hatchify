@@ -113,7 +113,7 @@ An array with the following properties:
 | `result[0]` | <a href="#recordtype">`RecordType[]`</a> | An array of records of the given schema.                                      |
 | `result[1]` | <a href="#metadata">`MetaData`</a>       | An object with metadata returned by the server, such as the count of records. |
 
-### `hatchifyReactRest[SchemaName].findOne`
+### findOne
 
 `hatchedReactRest[SchemaName].findOne(id: string): Promise<RecordType>` is a function that returns a promise that resolves to a single record of the given schema for the id.
 
