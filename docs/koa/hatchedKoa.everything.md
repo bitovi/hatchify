@@ -83,9 +83,6 @@ const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter
 
 ## findOne
 
-> 🛑 Why Parsed in ParsedUrlQuery ... this is present many places
-> 🛑 is the id optional?
-
 `hatchedKoa.everything[schemaName].findOne(querystring: string, id: Identifier) => Promise<JSONAPIDocument>` search
 for a single instance. Returns the first instance found, or null if none can be found.
 
