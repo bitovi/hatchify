@@ -299,7 +299,7 @@ When you know the ID of the record you are looking for, you can fetch it like:
 GET /api/sales-people/ffaf131e-9e27-4bd6-a715-59fff9ed5044
 ```
 
-And get a response that looks like:
+And get a successful response that looks like:
 
 ```json
 {
@@ -334,7 +334,6 @@ POST /api/sales-people
   },
   "data": {
     "type": "SalesPerson",
-    "id": "ffaf131e-9e27-4bd6-a715-59fff9ed5044",
     "attributes": {
       "name": "Justin",
       "dateHired": "2000-01-01"
@@ -348,6 +347,24 @@ POST /api/sales-people
           }
         ]
       }
+    }
+  }
+}
+```
+
+Successful response includes an ID and no relationships even though we are linking them:
+
+```json
+{
+  "jsonapi": {
+    "version": "1.0"
+  },
+  "data": {
+    "type": "SalesPerson",
+    "id": "ffaf131e-9e27-4bd6-a715-59fff9ed5044",
+    "attributes": {
+      "name": "Justin",
+      "dateHired": "2000-01-01"
     }
   }
 }
@@ -388,6 +405,23 @@ PATCH /api/sales-people/ffaf131e-9e27-4bd6-a715-59fff9ed5044
 }
 ```
 
+Successful response includes an ID and no relationships even though we are unlinking previous relationships and linking new ones, so we will have to specify all relationships every time we update a record:
+
+```json
+{
+  "jsonapi": {
+    "version": "1.0"
+  },
+  "data": {
+    "type": "SalesPerson",
+    "id": "ffaf131e-9e27-4bd6-a715-59fff9ed5044",
+    "attributes": {
+      "dateHired": "2020-01-01"
+    }
+  }
+}
+```
+
 [Read more on HatchifyJS's updating](./updating.md)
 
 ## Deleting a record
@@ -398,8 +432,19 @@ The JSON:API specs allows [deletion](https://jsonapi.org/format/#crud-deleting) 
 DELETE /api/sales-people/ffaf131e-9e27-4bd6-a715-59fff9ed5044
 ```
 
+Successful response will look like:
+
+```json
+{
+  "jsonapi": {
+    "version": "1.0"
+  },
+  "data": null
+}
+```
+
 [Read more on HatchifyJS's deleting](./deleting.md)
 
 ## Unsupported features
 
-- `/relationships` endpoints. Currently we have to [update the record](#updating-a-record) to update its relationships.
+- `/relationships` endpoints. Currently we have to [update the record](#updating-a-record) which will overwrite all existing relationships.
