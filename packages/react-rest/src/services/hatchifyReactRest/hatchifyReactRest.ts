@@ -35,7 +35,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
     [SchemaName in keyof TSchemas]: {
       // promises
       findAll: (
-        query: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
+        query?: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
       ) => Promise<
         [
           Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>>,
