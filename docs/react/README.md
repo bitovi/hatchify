@@ -13,7 +13,7 @@ The following uses `hatchifyReact`to create a `hatchedReact` app with the define
 ```tsx
 import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 
-// Define the Schema(s)
+// Define your Schema(s)
 export const Schemas = {
   Todo: {
     name: "Todo",
@@ -36,7 +36,7 @@ export const Schemas = {
   },
 } satisfies Record<string, PartialSchema>
 
-// Create the Hatched React App instance
+// Create your Hatched React App instance
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 // Define variables for your Hatchify schema generated components
@@ -71,10 +71,10 @@ The `HatchifyProvider` wraps all Hatchify components to manage their internal st
     - [HatchifyApp](#usedatagridstate)
     - [RecordType](#usedatagridstate)
 - [`hatchedReact`](#hatchedreact)
-  - [`hatchedReact.Everything`](./Everything.md)
-  - [`hatchedReact.components`](./components.md)
-  - [`hatchedReact.model`](./model.md)
-  - [`hatchedReact.state`](./state.md)
+  - [`hatchedReact.Everything`](#everything)
+  - [`hatchedReact.components`](#components)
+  - [`hatchedReact.model`](#model)
+  - [`hatchedReact.state`](#state)
     - [useDataGridState](#usedatagridstate)
 - [MUI Components](#mui-components)
 
@@ -82,11 +82,11 @@ The `HatchifyProvider` wraps all Hatchify components to manage their internal st
   - createJsonapiClient - Creates a new [JSON:API rest client](#createjsonapiclient) using the defined schemas
   - hatchifyReact - Constructs a `hatchedReact` app instance with custom components,helper functions, and type definitions
   - HatchifyProvider - A component that hosts and provides access to Hatchify-related state
-- [`hatchedReact`](#hatchedReact)
+- [`hatchedReact`](#hatchedreact)
   - [`hatchedReact.Everything`](#everything)
   - [`hatchedReact.components`](#components)
   - [`hatchedReact.state`](#state)
-  - [`hatchedReact.model`](#hatchedReact.model)
+  - [`hatchedReact.model`](#model)
 
 ## Exports
 
@@ -117,7 +117,7 @@ Returns a `JSON:API rest client` instance object
 
 ### hatchifyReact
 
-`hatchifyReact(createJsonapiClient("/api", Schemas))` is a `Function` that initializes the `HatchifyApp` object from the JSON:API rest client. Inside of the object you will find [`components`](), [`model`](), [`state`](), and [`Everything`]().
+`hatchifyReact(createJsonapiClient("/api", Schemas))` is a `Function` that initializes the `HatchifyApp` object from the JSON:API rest client. Inside of the retured object you will find [`components`](./components.md), [`model`](./model.md), [`state`](./state.md), and [`Everything`](#everything).
 
 ```ts
 import {createJsonapiClient, hatchifyReact} from "@hatchifyjs/react"
@@ -180,7 +180,7 @@ The following show some of the methods available given a `Todo` and `User` schem
 
 ### Everything
 
-`Everything` is a default component comprised of a set of tabs (one for each schema) and `DataGrid`s. This is used when the app is generated to quickly see the defined schemas and records.
+`Everything` is a default component comprised of a set of tabs (one for each schema) and `DataGrid`s. This is used when the app is generated to swiftly validate the defined schemas and records.
 
 ```tsx
 const App: React.FC = () => {
@@ -253,21 +253,7 @@ Learn more about the available hooks and promises [here](model.md).
 
 ### state
 
-#### useDataGridState
-
-`useDataGridState` is a hook for each of the defined schemas to be used in the app. This is used under the hood in Hatchify, but is available for use in situations where customization is needed.<br>
-
-`useDataGridState` takes in one parameter, an object, with the following keys:
-
-| key                | description                                                                                                                       |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| `defaultSelected`  | Optional, used for checkboxes                                                                                                     |
-| `onSelectedChange` | Optional, used for checkboxes                                                                                                     |
-| `fields`           | Optional, fields to be included. If not <br> defined, all fields from the schema <br> and included relationships will be returned |
-| `include`          | Optional, relationships to be included                                                                                            |
-| `defaultPage`      | Optional, default paginated page                                                                                                  |
-| `defaultSort`      | Optional, default sort direction                                                                                                  |
-| `baseFilter`       | Optional, a pre filter to be used alongside additional filters                                                                    |
+The `state` is a set of hooks for each of the defined schemas to be used in the app. These get used under the hood in the Hatchify components, but are available for use in situations where customization is needed. The `state` object holds a record of schemas each with their own [`useDataGridState`](./state.md#usedatagridstate) hook.
 
 ```tsx
 const todoState = hatchedReact.state.Todo.useDataGridState({
