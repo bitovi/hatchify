@@ -48,7 +48,7 @@ const findOptions = hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
 
 [FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)
 
-**Rejects**
+**Throws**
 
 [`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
 [`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
@@ -78,7 +78,7 @@ const findOptions = hatchedKoa.parse.Todo.findOne("", "b559e3d9-bad7-4b3d-8b75-e
 
 [FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)
 
-**Rejects**
+**Throws**
 
 [`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
 [`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
@@ -106,7 +106,7 @@ const findOptions = hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Baking&l
 
 [FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)
 
-**Rejects**
+**Throws**
 
 [`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
 [`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
@@ -139,7 +139,7 @@ const createOptions = hatchedKoa.parse.Todo.create({
 
 [CreateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-create)
 
-**Rejects**
+**Throws**
 
 [`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
 [`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
@@ -166,7 +166,7 @@ const updateOptions = hatchedKoa.parse.Todo.update({ name: "Serving" }, "b559e3d
 
 [UpdateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-update)
 
-**Rejects**
+**Throws**
 
 [`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
 [`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
@@ -192,7 +192,7 @@ const destroyOptions = hatchedKoa.parse.Todo.destroy("b559e3d9-bad7-4b3d-8b75-e4
 
 [DestroyOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy)
 
-**Rejects**
+**Throws**
 
 [`RelationshipPathError`](../../packages/node/src/error/types/RelationshipPathError.ts) |
 [`UnexpectedValueError`](../../packages/node/src/error/types/UnexpectedValueError.ts) | [`ValueRequiredError`](../../packages/node/src/error/types/ValueRequiredError.ts)
