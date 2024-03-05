@@ -31,7 +31,7 @@ Each model has the following methods:
 
 Parses a query string for searching multiple instances.
 
-`hatchedKoa.parse[schemaName].findAll: (querystring: string) => Promise<FindOptions>`
+`hatchedKoa.parse[schemaName].findAll: (querystring: string) => FindOptions`
 
 ```ts
 const findOptions = hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
@@ -46,7 +46,7 @@ const findOptions = hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
 
 **Returns**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)>
+[FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)
 
 **Rejects**
 
@@ -57,7 +57,7 @@ const findOptions = hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
 
 Parses a query string for searching a single instance.
 
-`hatchedKoa.parse[schemaName].findOne: (querystring: string, id?: Identifier) => Promise<FindOptions>`
+`hatchedKoa.parse[schemaName].findOne: (querystring: string, id?: Identifier) => FindOptions`
 
 ```ts
 const findOptions = hatchedKoa.parse.Todo.findOne("filter[name]=Baking")
@@ -76,7 +76,7 @@ const findOptions = hatchedKoa.parse.Todo.findOne("", "b559e3d9-bad7-4b3d-8b75-e
 
 **Returns**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)>
+[FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)
 
 **Rejects**
 
@@ -87,7 +87,7 @@ const findOptions = hatchedKoa.parse.Todo.findOne("", "b559e3d9-bad7-4b3d-8b75-e
 
 Parses a query string for searching a single instance.
 
-`hatchedKoa.parse[schemaName].findAndCountAll: (querystring: string) => Promise<FindOptions>`
+`hatchedKoa.parse[schemaName].findAndCountAll: (querystring: string) => FindOptions`
 
 Parses a query string for searching all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
 
@@ -104,7 +104,7 @@ const findOptions = hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Baking&l
 
 **Returns**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)>
+[FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll)
 
 **Rejects**
 
@@ -115,7 +115,7 @@ const findOptions = hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Baking&l
 
 Parses a query string for creating a new instance.
 
-`hatchedKoa.parse[schemaName].create: (body: object) => Promise<CreateOptions>`
+`hatchedKoa.parse[schemaName].create: (body: object) => CreateOptions`
 
 ```ts
 const createOptions = hatchedKoa.parse.Todo.create({
@@ -137,7 +137,7 @@ const createOptions = hatchedKoa.parse.Todo.create({
 
 **Returns**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[CreateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-create)>
+[CreateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-create)
 
 **Rejects**
 
@@ -148,7 +148,7 @@ const createOptions = hatchedKoa.parse.Todo.create({
 
 Parses a query string for updating an existing single instance.
 
-`hatchedKoa.parse[schemaName].update: (body: object, id?: Identifier) => Promise<UpdateOptions>`
+`hatchedKoa.parse[schemaName].update: (body: object, id?: Identifier) => UpdateOptions`
 
 ```ts
 const updateOptions = hatchedKoa.parse.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
@@ -164,7 +164,7 @@ const updateOptions = hatchedKoa.parse.Todo.update({ name: "Serving" }, "b559e3d
 
 **Returns**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[UpdateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-update)>
+[UpdateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-update)
 
 **Rejects**
 
@@ -175,7 +175,7 @@ const updateOptions = hatchedKoa.parse.Todo.update({ name: "Serving" }, "b559e3d
 
 Parses a query string for deleting one or more instances.
 
-`hatchedKoa.parse[schemaName].destroy: (querystring: string, id?: Identifier) => Promise<DestroyOptions>`
+`hatchedKoa.parse[schemaName].destroy: (querystring: string, id?: Identifier) => DestroyOptions`
 
 ```ts
 const destroyOptions = hatchedKoa.parse.Todo.destroy("b559e3d9-bad7-4b3d-8b75-e406dfec4673")
@@ -190,7 +190,7 @@ const destroyOptions = hatchedKoa.parse.Todo.destroy("b559e3d9-bad7-4b3d-8b75-e4
 
 **Returns**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[DestroyOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy)>
+[DestroyOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy)
 
 **Rejects**
 
