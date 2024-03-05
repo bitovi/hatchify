@@ -103,7 +103,6 @@ Parameters:
 | `boolean`                       | True to allow `Date` to be type `Date or String`, false to only allow `Date` |
 | `boolean`                       | Keep type safety for schema attributes, while allowing custom computed fields|
 
-
 ```ts
  // 👀
   type TodoForm = RecordType<
