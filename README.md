@@ -247,7 +247,7 @@ Learn how to make Hatchify match your needs with its technical interface documen
 
 This project is supported by [Bitovi](https://bitovi.com/), a web software consultancy. You can get help or ask questions on our:
 
-- [Discord Community](https://discord.com/invite/J7ejFsZnJ4)
+- [Discord Community](https://discord.gg/aJJrvv92XV)
 
 - [Twitter](https://twitter.com/bitovi)
 
