@@ -143,7 +143,7 @@ A response of paginated results will look similar to the one below and when the 
 
 ### Relationships
 
-One of the JSON:API builtin advantages is to pull related data with references so the response is more compact:
+One of the JSON:API builtin advantages is to pull in compacted related references:
 
 <pre>
 GET /api/sales-people?
