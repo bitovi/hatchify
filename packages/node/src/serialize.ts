@@ -25,71 +25,18 @@ export interface SerializeFunctions<
    *
    * @returns {JSONAPIDocument}
    */
-  findAll: (data: T[], attributes: any) => Promise<JSONAPIDocument>
-  findOne: (data: T, attributes: any) => Promise<JSONAPIDocument>
+  findAll: (instances: T[], attributes: any) => JSONAPIDocument
+  findOne: (instance: T, attributes: any) => JSONAPIDocument
   findAndCountAll: (
     data: {
       rows: T[]
       count: number
     },
     attributes: any,
-  ) => Promise<JSONAPIDocument>
-  create: (data: T) => Promise<JSONAPIDocument>
-  update: (instance: T, rowCount: number) => Promise<JSONAPIDocument>
-  destroy: (rowCount: number) => Promise<JSONAPIDocument>
-}
-
-async function findAllImpl(
-  hatchify: Hatchify,
-  schemaName: string,
-  array: any[],
-) {
-  return hatchify.serializer.serialize(schemaName, array)
-}
-
-async function findOneImpl(
-  hatchify: Hatchify,
-  schemaName: string,
-  instance: any,
-) {
-  return hatchify.serializer.serialize(schemaName, instance)
-}
-
-async function findAndCountAllImpl(
-  hatchify: Hatchify,
-  schemeName: string,
-  result: any,
-) {
-  return hatchify.serializer.serialize(schemeName, result.rows, {
-    unpaginatedCount: result.count,
-  })
-}
-
-async function createImpl(
-  hatchify: Hatchify,
-  schemaName: string,
-  instance: any,
-) {
-  return hatchify.serializer.serialize(schemaName, instance)
-}
-
-async function destroyImpl(
-  hatchify: Hatchify,
-  schemaName: string,
-  rowCount: number,
-) {
-  return hatchify.serializer.serialize(schemaName, null, { count: rowCount })
-}
-
-async function updateImpl(
-  hatchify: Hatchify,
-  schemaName: string,
-  instance: any,
-  rowCount: number,
-) {
-  return hatchify.serializer.serialize(schemaName, instance, {
-    count: rowCount,
-  })
+  ) => JSONAPIDocument
+  create: (instance: T) => JSONAPIDocument
+  update: (instance: T, count: number) => JSONAPIDocument
+  destroy: (count: number) => JSONAPIDocument
 }
 
 export function buildSerializerForModel(
@@ -97,14 +44,16 @@ export function buildSerializerForModel(
   schemaName: string,
 ): SerializeFunctions {
   return {
-    findAll: async (array) => findAllImpl(hatchify, schemaName, array),
-    findOne: async (instance) => findOneImpl(hatchify, schemaName, instance),
-    findAndCountAll: async (result) =>
-      findAndCountAllImpl(hatchify, schemaName, result),
-    create: async (instance) => createImpl(hatchify, schemaName, instance),
-    destroy: async (rowCount) => destroyImpl(hatchify, schemaName, rowCount),
-    update: async (instance, rowCount) =>
-      updateImpl(hatchify, schemaName, instance, rowCount),
+    findAll: (instances) =>
+      hatchify.serializer.serialize(schemaName, instances),
+    findOne: (instance) => hatchify.serializer.serialize(schemaName, instance),
+    findAndCountAll: ({ rows, count: unpaginatedCount }) =>
+      hatchify.serializer.serialize(schemaName, rows, { unpaginatedCount }),
+    create: (instance) => hatchify.serializer.serialize(schemaName, instance),
+    update: (instance, count) =>
+      hatchify.serializer.serialize(schemaName, instance, { count }),
+    destroy: (count) =>
+      hatchify.serializer.serialize(schemaName, null, { count }),
   }
 }
 
@@ -134,8 +83,8 @@ export function registerSchema(
       {},
     ),
     topLevelMeta: (
-      _data: any,
-      { unpaginatedCount }: { unpaginatedCount: any },
+      _data: JSONAPIDocument,
+      { unpaginatedCount }: { unpaginatedCount: number },
     ) =>
       unpaginatedCount != null
         ? {

@@ -11,12 +11,12 @@ For example `hatchedKoa.parse.Todo.findAll` takes the URL query params and retur
 ```ts
 router.get("/skills", async (ctx: Context) => {
   const findOptions = await hatchedKoa.parse.Todo.findAll(ctx.querystring)
-  const deserializedTodos = await hatchedKoa.model.Todo.findAll(findOptions)
+  const deserializedTodos = await hatchedKoa.orm.models.Todo.findAll(findOptions)
   ctx.body = deserializedTodos
 })
 ```
 
-The returned `FindOptions` are something that can be directly understood by the ORM and our follow up call to `hatchedKoa.model.Todo.findAll` takes advantage of this to do the actual database lookup for Skills.
+The returned `FindOptions` are something that can be directly understood by the ORM and our follow up call to `hatchedKoa.orm.models.Todo.findAll` takes advantage of this to do the actual database lookup for Skills.
 
 Each model has the following methods:
 
@@ -157,10 +157,10 @@ const updateOptions = await hatchedKoa.parse.Todo.update({ name: "Serving" }, "b
 
 **Parameters**
 
-| Property | Type   | Default     | Details                                                         |
-| -------- | ------ | ----------- | --------------------------------------------------------------- |
-| body     | object | N/A         | JSON:API formatted object specifying what attributes to update. |
-| id       | string | `undefined` | A record ID to update. Will update all records if omitted.      |
+| Property | Type       | Default | Details                                                         |
+| -------- | ---------- | ------- | --------------------------------------------------------------- |
+| body     | object     | N/A     | JSON:API formatted object specifying what attributes to update. |
+| id       | Identifier | N/A     | A record ID to update. Will update all records if omitted.      |
 
 **Returns**
 
@@ -178,19 +178,15 @@ Parses a query string for deleting one or more instances.
 `hatchedKoa.parse[schemaName].destroy: (querystring: string, id?: Identifier) => Promise<DestroyOptions>`
 
 ```ts
-const destroyOptions = await hatchedKoa.parse.Todo.destroy("filter[name]=Baking")
-// destroyOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
-
-const destroyOptions = await hatchedKoa.parse.Todo.destroy("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+const destroyOptions = await hatchedKoa.parse.Todo.destroy("b559e3d9-bad7-4b3d-8b75-e406dfec4673")
 // destroyOptions = { where: { id: "b177b838-61d2-4d4d-b67a-1851289e526a" } }
 ```
 
 **Parameters**
 
-| Property    | Type   | Default     | Details                                                          |
-| ----------- | ------ | ----------- | ---------------------------------------------------------------- |
-| querystring | string | `''`        | JSON:API query string specifying what record to destroy.         |
-| id          | string | `undefined` | A record ID to destroy. Will ignore the querystring if provided. |
+| Property | Type       | Default | Details                                                          |
+| -------- | ---------- | ------- | ---------------------------------------------------------------- |
+| id       | Identifier | N/A     | A record ID to destroy. Will ignore the querystring if provided. |
 
 **Returns**
 
