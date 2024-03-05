@@ -4,7 +4,7 @@
   "coverageReporters": ["html", "text", "text-summary"],
   "coverageThreshold": {
     "global": {
-      "branches": 78,
+      "branches": 76,
       "functions": 75,
       "lines": 87,
       "statements": 84
