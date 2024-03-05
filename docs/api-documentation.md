@@ -76,11 +76,11 @@ await hatchedKoa.orm.models.SalesPerson.<a href="https://sequelize.org/docs/v6/c
 
 <b>// Serialize sequelize data back to JSONAPI responses</b>
 await hatchedKoa.<a href="./koa/hatchedKoa.parse.md">serialize</a>.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findall">findAll</a>([{ id: UUID, name: "Roye" }])
-await hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findandcountall">findAndCountAll</a>({rows: [{id: UUID, ...}], count: 1})
-await hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findOne">findOne</a>({ id: UUID, name: "Roye" })
-await hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#create">create</a>({ id: UUID, name: "Roye" })
-await hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#update">update</a>(1, { id: UUID, name: "Roye" })
-await hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#destroy">destroy</a>(2)
+hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findandcountall">findAndCountAll</a>({rows: [{id: UUID, ...}], count: 1})
+hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findOne">findOne</a>({ id: UUID, name: "Roye" })
+hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#create">create</a>({ id: UUID, name: "Roye" })
+hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#update">update</a>(1, { id: UUID, name: "Roye" })
+hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#destroy">destroy</a>(2)
 </pre>
 
 ## JSON:API Services

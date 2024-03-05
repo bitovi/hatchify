@@ -36,7 +36,7 @@ Serializes result of multiple instances and to show only the specified attribute
 `hatchedKoa.serialize[schemaName].findAll: (data: PlainRecord[] | ORMRecord[], attributes: string[]) => JSONAPIDocument`
 
 ```ts
-const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
+const serializedTodos = hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
 // serializedTodos = {
 //   jsonapi: { version: "1.0" },
 //   data: [
@@ -67,7 +67,7 @@ Serializes result of paginated data and a total count to show only the specified
 `hatchedKoa.serialize[schemaName].findAndCountAll: (data: { count: number; rows: PlainRecord[] | ORMRecord[] }, attributes: string[]) => JSONAPIDocument`
 
 ```ts
-const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
+const serializedTodos = hatchedKoa.serialize.Todo.findAndCountAll(
   {
     rows: [{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }],
     count: 10,
@@ -105,7 +105,7 @@ Serializes result of a single instance.
 `hatchedKoa.serialize[schemaName].findOne: (data: PlainRecord | ORMRecord, attributes: string[]) => JSONAPIDocument`
 
 ```ts
-const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
+const serializedTodo = hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
 // serializedTodo = {
 //   jsonapi: { version: "1.0" },
 //   data: {
@@ -134,7 +134,7 @@ Serializes a result of a new instance creation.
 `hatchedKoa.serialize[schemaName].create: (data: PlainRecord | ORMRecord) => JSONAPIDocument`
 
 ```ts
-const serializedTodo = await hatchedKoa.serialize.Todo.create({
+const serializedTodo = hatchedKoa.serialize.Todo.create({
   id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
   name: "Baking",
 })
@@ -166,7 +166,7 @@ Serializes a result of an update.
 `hatchedKoa.serialize[schemaName].update: (data: PlainRecord | ORMRecord, affectedCount: number) => JSONAPIDocument`
 
 ```ts
-const serializedTodo = await hatchedKoa.serialize.Todo.update(
+const serializedTodo = hatchedKoa.serialize.Todo.update(
   {
     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
     name: "Baking",
@@ -201,7 +201,7 @@ Serializes a result of a deletion.
 `hatchedKoa.serialize[schemaName].destroy: (affectedCount: number) => JSONAPIDocument`
 
 ```ts
-const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
+const serializedResult = hatchedKoa.serialize.Todo.destroy(1)
 // serializedResult = {
 //   jsonapi: { version: "1.0" },
 //   data: null,
