@@ -82,7 +82,7 @@ export function createEverything(hatchify: Hatchify, modelName: string) {
   return async function createImpl(
     rawbody: JSONAPIDocument,
   ): Promise<JSONAPIDocument> {
-    const { body, ops } = await hatchify.parse[modelName].create(rawbody)
+    const { body, ops } = hatchify.parse[modelName].create(rawbody)
     const result = await hatchify.orm.models[modelName].create(body, ops)
     return hatchify.serialize[modelName].create(result.get({ plain: true }))
   }
@@ -93,7 +93,7 @@ export function updateEverything(hatchify: Hatchify, modelName: string) {
     rawbody: JSONAPIDocument,
     id: Identifier,
   ): Promise<JSONAPIDocument> {
-    const { body, ops } = await hatchify.parse[modelName].update(rawbody, id)
+    const { body, ops } = hatchify.parse[modelName].update(rawbody, id)
     const [affectedCount] = await hatchify.orm.models[modelName].update(
       body,
       ops,
