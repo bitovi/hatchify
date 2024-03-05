@@ -1,14 +1,25 @@
 # @hatchify/react - State
 
-<-- STATE DEFINITION -->
-
-- `hatchedApp.state` property independently manages the state of the components associated with your [schemas](../schema/README.md) via the context provided from the [`HatchifyProvider`](./components.md#hatchify-provider)🛑.
+The `hatchedApp.state` property independently manages the state of the components associated with your [schemas](../schema/README.md) via the context provided from the [`HatchifyProvider`](./components.md#hatchify-provider)🛑.
 
 `const todoState = hatchedApp.state.Todo`
 
-- The [`useDataGridState({})`](#useDataGridState) hook exists on each `hatchedApp.state.[schema]` object. [`useDataGridState({})`](#useDataGridState) takes in and returns a [`DataGridState`](./types.md#datagridstate) typed object.
+## useDataGridState
 
-`const todoState = hatchedApp.state.Todo.useDataGridState({})`
+The [`useDataGridState({})`](#usedatagridstate) hook exists on each `hatchedApp.state.[schema]` object. [`useDataGridState({})`](#usedatagridstate) takes in and returns a [`DataGridState`](./types.md#datagridstate) typed object to allow you to customize the Data Grid subcomponents.
+
+```tsx
+const todoState = hatchedApp.state.Todo.useDataGridState({
+  defaultSelected,
+  onSelectedChange,
+  fields,
+  include,
+  defaultPage,
+  defaultSort,
+  baseFilter,
+  minimumLoadTime,
+})
+```
 
 ```tsx
 import { createJsonapiClient, hatchifyReact, HatchifyProvider } from "@hatchify/react"
@@ -67,9 +78,10 @@ const hatchedComponent = () => {
 
   return (
     <HatchifyProvider>
-      <Filters {...todoState} />
+      <MyCustomFilter {...todoState} />
       <List {...todoState} />
-      <MyCustomPagination page={todoState.page} setPage={todoState.setPage} />
+      <Pagination {...todoState} />
+      // <MyCustomPagination page={todoState.page} setPage={todoState.setPage} />
       // <TodoDataGrid />
     </HatchifyProvider>
   )
@@ -78,14 +90,20 @@ const hatchedComponent = () => {
 
 ## useDataGridState({})
 
-The `useDataGridState({})` accepts and returns a [`DataGridState`](./types.md#datagridstate) typed object with the following parameters/keys:
+The `useDataGridState({})` accepts an object with the following properties:
 
-| key                | type                                        | description                                                                                                                       |
-| ------------------ | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | 
-| `defaultSelected`  | `{all: boolean; ids: string[];} \| undefined;` | Optional, used for checkboxes          |
-| `onSelectedChange` | `{all: boolean; ids: string[];} \| undefined;` | Optional, used for checkboxes          |
-| `fields`           | `[key: string]: string[];` | Optional, fields to be included. If not defined, all fields from the schema and included relationships will be returned |
-| `include`          | `(keyof TPartialSchema[relationships])[] \| string[]` | Optional, relationships to be included |
-| `defaultPage`      | `{ number: number; size: number; }` | Optional, default paginated page |
-| `defaultSort`      | `{direction: "asc" \| "desc" \| undefined; \| sortBy: string \| undefined;}` | Optional, default sort direction |
-| `baseFilter`       | `Array<{ field: string; operator: string; value: string \| string[] \| number \| number[] \| boolean \| boolean[];}> \| {[field: string]: {[filter in FilterTypes]?: string \| string[] \| number \| number[] \| boolean \| boolean[];}} \| string \| undefined` | Optional, a pre filter to be used alongside additional filters |
+| key                | type                                                                                                                                                                                                                                                             | description                                                                                                             |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `defaultSelected`  | `{all: boolean; ids: string[];} \| undefined;`                                                                                                                                                                                                                   | Optional, used for checkboxes                                                                                           |
+| `onSelectedChange` | `{all: boolean; ids: string[];} \| undefined;`                                                                                                                                                                                                                   | Optional, callback function used for checkboxes                                                                         |
+| `fields`           | `[key: string]: string[];`                                                                                                                                                                                                                                       | Optional, fields to be included. If not defined, all fields from the schema and included relationships will be returned |
+| `include`          | `(keyof TPartialSchema[relationships])[] \| string[]`                                                                                                                                                                                                            | Optional, relationships to be included                                                                                  |
+| `defaultPage`      | `{ number: number; size: number; }`                                                                                                                                                                                                                              | Optional, default paginated page                                                                                        |
+| `defaultSort`      | `{direction: "asc" \| "desc" \| undefined; \| sortBy: string \| undefined;}`                                                                                                                                                                                     | Optional, default sort direction                                                                                        |
+| `baseFilter`       | `Array<{ field: string; operator: string; value: string \| string[] \| number \| number[] \| boolean \| boolean[];}> \| {[field: string]: {[filter in FilterTypes]?: string \| string[] \| number \| number[] \| boolean \| boolean[];}} \| string \| undefined` | Optional, a pre filter to be used alongside additional filters                                                          |
+
+`useDataGridState({})` then returns a [`DataGridState`](./types.md#datagridstate) typed object.
+
+```tsx
+
+```
