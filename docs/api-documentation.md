@@ -57,15 +57,15 @@ await hatchedKoa.<a href="./koa/hatchedKoa.everything.md">everything</a>.SalesPe
 await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")
 await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#findOne">findOne</a>("filter[name]=Baking")
 await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#create">create</a>(JSONAPI_PAYLOAD)
-await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#update">update</a>(🛑, UUID)
+await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#update">update</a>(JSONAPI_PARTIAL_PAYLOAD, UUID)
 await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#destroy">destroy</a>("",UUID)
 
 <b>// Parse JSONAPI requests into arguments for sequelize</b>
-await hatchedKoa.<a href="./koa/hatchedKoa.parse.md">parse</a>.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findall">findAll</a>("filter[name]=Jane")
+hatchedKoa.<a href="./koa/hatchedKoa.parse.md">parse</a>.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findall">findAll</a>("filter[name]=Jane")
 hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")
 hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findOne">findOne</a>("filter[name]=Baking")
 hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#create">create</a>(JSONAPI_PAYLOAD)
-hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#update">update</a>(🛑, UUID)
+hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#update">update</a>(JSONAPI_PARTIAL_PAYLOAD, UUID)
 hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#destroy">destroy</a>("",UUID)
 
 <b>// Use the underlying sequelize methods</b>
@@ -75,7 +75,7 @@ await hatchedKoa.orm.models.SalesPerson.<a href="https://sequelize.org/docs/v6/c
 await hatchedKoa.orm.models.SalesPerson.<a href="https://sequelize.org/docs/v6/core-concepts/model-querying-basics/#simple-delete-queries">destroy</a>({where: {id: UUID}})
 
 <b>// Serialize sequelize data back to JSONAPI responses</b>
-await hatchedKoa.<a href="./koa/hatchedKoa.parse.md">serialize</a>.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findall">findAll</a>([{ id: UUID, name: "Roye" }])
+hatchedKoa.<a href="./koa/hatchedKoa.parse.md">serialize</a>.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findall">findAll</a>([{ id: UUID, name: "Roye" }])
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findandcountall">findAndCountAll</a>({rows: [{id: UUID, ...}], count: 1})
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findOne">findOne</a>({ id: UUID, name: "Roye" })
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#create">create</a>({ id: UUID, name: "Roye" })
