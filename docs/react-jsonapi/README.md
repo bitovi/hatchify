@@ -14,27 +14,27 @@ const schemas = {
       dueDate: datetime(),
     },
   },
-} satisfies Record<string, PartialSchema>
+} satisfies Record<string, PartialSchema>;
 
 const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", schemas))
 
 // Use the promise-based API
 const [records, requestMeta] = await hatchedReactRest.Todo.findAll()
-const record = await hatchedReactRest.Todo.findOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
-const createdRecord = await hatchedReactRest.Todo.createOne({
-  name: "Learn HatchifyJS",
-  dueDate: new Date(),
-})
-await hatchedReactRest.Todo.updateOne({
-  id: createdRecord.id,
-  name: "Master HatchifyJS",
-})
+const record =                 await hatchedReactRest.Todo.findOne(UUID)
+const createdRecord =          await hatchedReactRest.Todo.createOne({
+                                 name: "Learn HatchifyJS",
+                                 dueDate: new Date(),
+                               })
+                              await hatchedReactRest.Todo.updateOne({
+                                id: createdRecord.id,
+                                name: "Master HatchifyJS",
+                              })
 await hatchedReactRest.Todo.deleteOne(createdRecord.id)
 
 // Use the hook-based API
 function MyComponent() {
   const [records, useAllState] = hatchedReactRest.Todo.useAll()
-  const [record, useOneState] = hatchedReactRest.Todo.useOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
+  const [record, useOneState] = hatchedReactRest.Todo.useOne(UUID)
   const [createTodo, createState, createdRecord] = hatchedReactRest.Todo.useCreateOne()
   const [updateTodo, updateState, updatedRecord] = hatchedReactRest.Todo.useUpdateOne()
   const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
