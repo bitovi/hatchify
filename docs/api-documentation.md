@@ -121,16 +121,22 @@ GET /api/sales-people?
 <pre>
 import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonapi";
 
-const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", Schemas))
+const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", { SalesPerson }))
 
 <b>// Promise methods</b>
-hatchedReactRest.SalesPerson.<a href="">findAll</a>()
-hatchedReactRest.SalesPerson.<a href="">create</a>()
+hatchedReactRest.SalesPerson.<a href="">findAll</a>({ page: { number: 1, size: 10 }})
+hatchedReactRest.SalesPerson.<a href="">findOne</a>("de596092-aa33-42e7-8bb7-09ec5b20d73f")
+hatchedReactRest.SalesPerson.<a href="">createOne</a>({ name: "John" })
+hatchedReactRest.SalesPerson.<a href="">updateOne</a>({ id: "de596092-aa33-42e7-8bb7-09ec5b20d73f", name: "Johnny" })
+hatchedReactRest.SalesPerson.<a href="">deleteOne</a>("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 
 <b>// Hooks</b>
 const MyReactComponent = () => {
-  const [] = hatchedReactRest.SalesPerson.<a href="">useAll</a>()
-  const [] = hatchedReactRest.SalesPerson.<a href="">create</a>()
+  const [records, getAllState] = hatchedReactRest.SalesPerson.<a href="">useAll</a>({ page: { number: 1, size: 10 }})
+  const [record, getOneState] = hatchedReactRest.SalesPerson.<a href="">useOne</a>("de596092-aa33-42e7-8bb7-09ec5b20d73f")
+  const [create, createState] = hatchedReactRest.SalesPerson.<a href="">useCreateOne</a>()
+  const [update, updateState] = hatchedReactRest.SalesPerson.<a href="">useUpdateOne</a>()
+  const [delete, deleteStaet] = hatchedReactRest.SalesPerson.<a href="">useDeleteOne</a>()
 }
 </pre>
 
