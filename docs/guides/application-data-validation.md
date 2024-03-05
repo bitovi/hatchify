@@ -75,12 +75,12 @@ router.post("/api/assignments", async (ctx, next) => {
 
   // Wrap with a managed Sequelize transaction
   await hatchedKoa.orm.transaction(async (transaction) => {
-    let assignmentsForEmployee = await hatchedKoa.model.Assignment.findAll({
+    let assignmentsForEmployee = await hatchedKoa.orm.models.Assignment.findAll({
       where: { employeeId },
       transaction,
     })
 
-    assignmentsForEmployee = await hatchedKoa.model.Assignment.findAll({
+    assignmentsForEmployee = await hatchedKoa.orm.models.Assignment.findAll({
       where: {
         employeeId,
         startDate: { [Op.gt]: startDate },
@@ -98,7 +98,7 @@ router.post("/api/assignments", async (ctx, next) => {
       ]
     }
 
-    const assignment = await hatchedKoa.model.Assignment.create(createOptions.body, { ...createOptions.ops, transaction })
+    const assignment = await hatchedKoa.orm.models.Assignment.create(createOptions.body, { ...createOptions.ops, transaction })
     const result = await hatchedKoa.serialize.Assignment.create(assignment)
   })
 

@@ -171,11 +171,10 @@ const serializedTodo = await hatchedKoa.everything.Todo.update({ name: "Serving"
 
 **Parameters**
 
-| Property    | Type       | Default | Details                                                         |
-| ----------- | ---------- | ------- | --------------------------------------------------------------- |
-| body        | string     | N/A     | JSON:API formatted object specifying what attributes to update. |
-| querystring | string     | `''`    | JSON:API query string specifying relationships and fields.      |
-| id          | Identifier | N/A     | The ID of the record to update.                                 |
+| Property | Type       | Default | Details                                                         |
+| -------- | ---------- | ------- | --------------------------------------------------------------- |
+| body     | string     | N/A     | JSON:API formatted object specifying what attributes to update. |
+| id       | Identifier | N/A     | The ID of the record to update.                                 |
 
 **Resolves**
 
@@ -183,16 +182,10 @@ const serializedTodo = await hatchedKoa.everything.Todo.update({ name: "Serving"
 
 ## destroy
 
-`hatchedKoa.model[schemaName].destroy: (querystring: string, id?: Identifier) => Promise<JSONAPIDocument>` deletes one or more instances.
+`hatchedKoa.model[schemaName].destroy: (id: Identifier) => Promise<JSONAPIDocument>` deletes one or more instances.
 
 ```ts
-const serializedResult = await hatchedKoa.everything.Todo.destroy("filter[name]=Baking")
-// serializedResult = {
-//   jsonapi: { version: "1.0" },
-//   data: null,
-// }
-
-const serializedResult = await hatchedKoa.everything.Todo.destroy("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+const serializedResult = await hatchedKoa.everything.Todo.destroy("b559e3d9-bad7-4b3d-8b75-e406dfec4673")
 // serializedResult = {
 //   jsonapi: { version: "1.0" },
 //   data: null,
@@ -201,10 +194,9 @@ const serializedResult = await hatchedKoa.everything.Todo.destroy("", "b559e3d9-
 
 **Parameters**
 
-| Property    | Type       | Default | Details                                                    |
-| ----------- | ---------- | ------- | ---------------------------------------------------------- |
-| querystring | string     | `''`    | JSON:API query string specifying relationships and fields. |
-| id          | Identifier | N/A     | The ID of the record to delete.                            |
+| Property | Type       | Default | Details                         |
+| -------- | ---------- | ------- | ------------------------------- |
+| id       | Identifier | N/A     | The ID of the record to delete. |
 
 **Resolves**
 
