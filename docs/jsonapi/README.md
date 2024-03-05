@@ -64,6 +64,7 @@ While the JSON:API specs suggests having a [`filter`](https://jsonapi.org/format
 <pre>
 GET /api/sales-people?
   <a href="./reading/filtering/README.md">filter</a>[name]<a href="./reading/filtering/no-operator.md">=</a>Justin
+  filter[name]=<a href="../schema/attribute-types/string.md#api-implications">%00</a>                      <b>// %00 is an encoded null value</b>
   filter[name][<a href="./reading/filtering/%24eq.md">$eq</a>]=Justin
   filter[name][<a href="./reading/filtering/%24ne.md">$ne</a>]=Justin
   filter[name][<a href="./reading/filtering/%24in.md">$in</a>]=Justin&filter[name][$in]=Roye
@@ -73,10 +74,10 @@ GET /api/sales-people?
   filter[name][<a href="./reading/filtering/%24gte.md">$gte</a>]=Arthur
   filter[name][<a href="./reading/filtering/%24lt.md">$lt</a>]=Roye
   filter[name][<a href="./reading/filtering/%24lte.md">$lte</a>]=Roye
-  filter[name][<a href="./reading/filtering/%24ilike.md">$ilike</a>]=startsWith%
-  filter[name][$ilike]=%endsWith
-  filter[name][$ilike]=%contains%
-  filter[name][<a href="./reading/filtering/%24like.md">$like</a>]=startsWithCaseSensitive%
+  filter[name][<a href="./reading/filtering/%24ilike.md">$ilike</a>]=startsWith%25   <b>// %25 is a % encoded</b>
+  filter[name][$ilike]=%25endsWith  
+  filter[name][$ilike]=%25contains%25
+  filter[name][<a href="./reading/filtering/%24like.md">$like</a>]=startsWithCaseSensitive%25
 </pre>
 
 A response of filtered results will look similar to the one below where irrelevant results will be omitted based on the query string parameters:
