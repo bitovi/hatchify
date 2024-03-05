@@ -10,7 +10,7 @@ For example `hatchedKoa.parse.Todo.findAll` takes the URL query params and retur
 
 ```ts
 router.get("/skills", async (ctx: Context) => {
-  const findOptions = await hatchedKoa.parse.Todo.findAll(ctx.querystring)
+  const findOptions = hatchedKoa.parse.Todo.findAll(ctx.querystring)
   const deserializedTodos = await hatchedKoa.orm.models.Todo.findAll(findOptions)
   ctx.body = deserializedTodos
 })
@@ -34,7 +34,7 @@ Parses a query string for searching multiple instances.
 `hatchedKoa.parse[schemaName].findAll: (querystring: string) => Promise<FindOptions>`
 
 ```ts
-const findOptions = await hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
+const findOptions = hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
 // findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
 ```
 
@@ -60,10 +60,10 @@ Parses a query string for searching a single instance.
 `hatchedKoa.parse[schemaName].findOne: (querystring: string, id?: Identifier) => Promise<FindOptions>`
 
 ```ts
-const findOptions = await hatchedKoa.parse.Todo.findOne("filter[name]=Baking")
+const findOptions = hatchedKoa.parse.Todo.findOne("filter[name]=Baking")
 // findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } } }
 
-const findOptions = await hatchedKoa.parse.Todo.findOne("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+const findOptions = hatchedKoa.parse.Todo.findOne("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
 // findOptions = { where: { id: "b177b838-61d2-4d4d-b67a-1851289e526a" } }
 ```
 
@@ -92,7 +92,7 @@ Parses a query string for searching a single instance.
 Parses a query string for searching all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
 
 ```ts
-const findOptions = await hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Baking&limit=1&offset=0")
+const findOptions = hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Baking&limit=1&offset=0")
 // findOptions = { where: { "$Todo.name$": { [Op.eq]: "Baking" } }, limit: 1, offset: 0 }
 ```
 
@@ -118,7 +118,7 @@ Parses a query string for creating a new instance.
 `hatchedKoa.parse[schemaName].create: (body: object) => Promise<CreateOptions>`
 
 ```ts
-const createOptions = await hatchedKoa.parse.Todo.create({
+const createOptions = hatchedKoa.parse.Todo.create({
   data: {
     type: "Todo",
     attributes: {
@@ -151,7 +151,7 @@ Parses a query string for updating an existing single instance.
 `hatchedKoa.parse[schemaName].update: (body: object, id?: Identifier) => Promise<UpdateOptions>`
 
 ```ts
-const updateOptions = await hatchedKoa.parse.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+const updateOptions = hatchedKoa.parse.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
 // updateOptions = { body: { name: "Serving" }, ops: { where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" } } }
 ```
 
@@ -178,7 +178,7 @@ Parses a query string for deleting one or more instances.
 `hatchedKoa.parse[schemaName].destroy: (querystring: string, id?: Identifier) => Promise<DestroyOptions>`
 
 ```ts
-const destroyOptions = await hatchedKoa.parse.Todo.destroy("b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+const destroyOptions = hatchedKoa.parse.Todo.destroy("b559e3d9-bad7-4b3d-8b75-e406dfec4673")
 // destroyOptions = { where: { id: "b177b838-61d2-4d4d-b67a-1851289e526a" } }
 ```
 

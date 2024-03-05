@@ -69,7 +69,7 @@ router.post("/api/assignments", async (ctx, next) => {
   // Run a parse first to do a general check that all the required
   // information is there, before we start the transactions and everything
   // If this doesn't pass we can fail fast and just bail out.
-  const createOptions = await hatchedKoa.parse.Assignment.create(ctx.body)
+  const createOptions = hatchedKoa.parse.Assignment.create(ctx.body)
 
   const { startDate, endDate, employeeId } = <Assignment>ctx.body
 
