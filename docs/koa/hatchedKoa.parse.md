@@ -31,7 +31,7 @@ Each model has the following methods:
 
 Parses a query string for searching multiple instances.
 
-`hatchedKoa.parse[schemaName].findAll(querystring: string) => Promise<FindOptions>`
+`hatchedKoa.parse[schemaName].findAll: (querystring: string) => Promise<FindOptions>`
 
 ```ts
 const findOptions = await hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
@@ -57,7 +57,7 @@ const findOptions = await hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
 
 Parses a query string for searching a single instance.
 
-`hatchedKoa.parse[schemaName].findOne(querystring: string, id?: Identifier) => Promise<FindOptions>`
+`hatchedKoa.parse[schemaName].findOne: (querystring: string, id?: Identifier) => Promise<FindOptions>`
 
 ```ts
 const findOptions = await hatchedKoa.parse.Todo.findOne("filter[name]=Baking")
@@ -87,7 +87,7 @@ const findOptions = await hatchedKoa.parse.Todo.findOne("", "b559e3d9-bad7-4b3d-
 
 Parses a query string for searching a single instance.
 
-`hatchedKoa.parse[schemaName].findAndCountAll(querystring: string) => Promise<FindOptions>`
+`hatchedKoa.parse[schemaName].findAndCountAll: (querystring: string) => Promise<FindOptions>`
 
 Parses a query string for searching all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
 
@@ -115,7 +115,7 @@ const findOptions = await hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Ba
 
 Parses a query string for creating a new instance.
 
-`hatchedKoa.parse[schemaName].create(body: object) => Promise<CreateOptions>`
+`hatchedKoa.parse[schemaName].create: (body: object) => Promise<CreateOptions>`
 
 ```ts
 const createOptions = await hatchedKoa.parse.Todo.create({
@@ -148,7 +148,7 @@ const createOptions = await hatchedKoa.parse.Todo.create({
 
 Parses a query string for updating an existing single instance.
 
-`hatchedKoa.parse[schemaName].update(body: object, id?: Identifier) => Promise<UpdateOptions>`
+`hatchedKoa.parse[schemaName].update: (body: object, id?: Identifier) => Promise<UpdateOptions>`
 
 ```ts
 const updateOptions = await hatchedKoa.parse.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
@@ -175,7 +175,7 @@ const updateOptions = await hatchedKoa.parse.Todo.update({ name: "Serving" }, "b
 
 Parses a query string for deleting one or more instances.
 
-`hatchedKoa.parse[schemaName].destroy(querystring: string, id?: Identifier) => Promise<DestroyOptions>`
+`hatchedKoa.parse[schemaName].destroy: (querystring: string, id?: Identifier) => Promise<DestroyOptions>`
 
 ```ts
 const destroyOptions = await hatchedKoa.parse.Todo.destroy("filter[name]=Baking")

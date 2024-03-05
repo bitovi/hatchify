@@ -26,7 +26,7 @@ Each model has the following methods:
 
 ## findAll
 
-`hatchedKoa.everything[schemaName].findAll(querystring: string) => Promise<JSONAPIDocument>` searches for multiple instances.
+`hatchedKoa.everything[schemaName].findAll: (querystring: string) => Promise<JSONAPIDocument>` searches for multiple instances.
 
 ```ts
 const serializedTodos = await hatchedKoa.everything.Todo.findAll("filter[name]=Baking")
@@ -54,7 +54,7 @@ const serializedTodos = await hatchedKoa.everything.Todo.findAll("filter[name]=B
 
 ## findAndCountAll
 
-`hatchedKoa.everything[schemaName].findAndCountAll(querystring: string) => Promise<JSONAPIDocument>` find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+`hatchedKoa.everything[schemaName].findAndCountAll: (querystring: string) => Promise<JSONAPIDocument>` find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
 
 ```ts
 const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter[name]=Baking&limit=10&offset=0")
@@ -83,7 +83,7 @@ const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter
 
 ## findOne
 
-`hatchedKoa.everything[schemaName].findOne(querystring: string, id: Identifier) => Promise<JSONAPIDocument>` search
+`hatchedKoa.everything[schemaName].findOne: (querystring: string, id: Identifier) => Promise<JSONAPIDocument>` search
 for a single instance. Returns the first instance found, or null if none can be found.
 
 ```ts
@@ -121,7 +121,7 @@ const serializedTodo = await hatchedKoa.everything.Todo.findOne("", "b559e3d9-ba
 
 ## create
 
-`hatchedKoa.model[schemaName].create(body: object) => Promise<JSONAPIDocument>` creates a new instance.
+`hatchedKoa.model[schemaName].create: (body: object) => Promise<JSONAPIDocument>` creates a new instance.
 
 ```ts
 const serializedTodo = await hatchedKoa.everything.Todo.create({
@@ -155,7 +155,7 @@ const serializedTodo = await hatchedKoa.everything.Todo.create({
 
 ## update
 
-`hatchedKoa.model[schemaName].update(body: object, querystring: string, id?: Identifier) => Promise<JSONAPIDocument>` updates one or more instances.
+`hatchedKoa.model[schemaName].update: (body: object, querystring: string, id?: Identifier) => Promise<JSONAPIDocument>` updates one or more instances.
 
 ```ts
 const serializedTodo = await hatchedKoa.everything.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
@@ -183,7 +183,7 @@ const serializedTodo = await hatchedKoa.everything.Todo.update({ name: "Serving"
 
 ## destroy
 
-`hatchedKoa.model[schemaName].destroy(querystring: string, id?: Identifier) => Promise<JSONAPIDocument>` deletes one or more instances.
+`hatchedKoa.model[schemaName].destroy: (querystring: string, id?: Identifier) => Promise<JSONAPIDocument>` deletes one or more instances.
 
 ```ts
 const serializedResult = await hatchedKoa.everything.Todo.destroy("filter[name]=Baking")

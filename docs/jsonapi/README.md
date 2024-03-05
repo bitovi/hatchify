@@ -231,6 +231,7 @@ The JSON:API specs have detailed guidelines how to implement the [`sort`](https:
 
 <pre>
 GET /api/sales-people?
+  include=salesGroup
   <a href="./reading/sorting/README.md">sort</a>=-importance,salesGroup.name
 </pre>
 
@@ -238,7 +239,7 @@ GET /api/sales-people?
 
 ### Sparse Fields
 
-The JSON:API specs have detailed guidelines how to implement the [`fields`](https://jsonapi.org/format/#fetching-sparse-fieldsets) query string parameter. HatchifyJs implements it with a slight difference in casing of the schemas:
+The JSON:API specs have detailed guidelines how to implement the [`fields`](https://jsonapi.org/format/#fetching-sparse-fieldsets) query string parameter. HatchifyJS implements it with a slight difference in casing of the schemas:
 
 <pre>
 GET /api/sales-people?

@@ -33,7 +33,7 @@ Each model has the following methods:
 
 Serializes result of multiple instances and to show only the specified attributes.
 
-`hatchedKoa.serialize[schemaName].findAll(data: PlainRecord[] | ORMRecord[], attributes: string[]) => Promise<JSONAPIDocument>`
+`hatchedKoa.serialize[schemaName].findAll: (data: PlainRecord[] | ORMRecord[], attributes: string[]) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
@@ -64,7 +64,7 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9
 
 Serializes result of paginated data and a total count to show only the specified attributes. This is very useful for pagination.
 
-`hatchedKoa.serialize[schemaName].findAndCountAll(data: { count: number; rows: PlainRecord[] | ORMRecord[] }, attributes: string[]) => Promise<JSONAPIDocument>`
+`hatchedKoa.serialize[schemaName].findAndCountAll: (data: { count: number; rows: PlainRecord[] | ORMRecord[] }, attributes: string[]) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
@@ -102,7 +102,7 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
 
 Serializes result of a single instance.
 
-`hatchedKoa.serialize[schemaName].findOne(data: PlainRecord | ORMRecord, attributes: string[]) => Promise<JSONAPIDocument>`
+`hatchedKoa.serialize[schemaName].findOne: (data: PlainRecord | ORMRecord, attributes: string[]) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
@@ -131,7 +131,7 @@ const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-b
 
 Serializes a result of a new instance creation.
 
-`hatchedKoa.serialize[schemaName].create(data: PlainRecord | ORMRecord) => Promise<JSONAPIDocument>`
+`hatchedKoa.serialize[schemaName].create: (data: PlainRecord | ORMRecord) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.create({
@@ -163,7 +163,7 @@ const serializedTodo = await hatchedKoa.serialize.Todo.create({
 
 Serializes a result of an update.
 
-`hatchedKoa.serialize[schemaName].update(data: PlainRecord | ORMRecord, affectedCount: number) => Promise<JSONAPIDocument>`
+`hatchedKoa.serialize[schemaName].update: (data: PlainRecord | ORMRecord, affectedCount: number) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedTodo = await hatchedKoa.serialize.Todo.update(
@@ -198,7 +198,7 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update(
 
 Serializes a result of a deletion.
 
-`hatchedKoa.serialize[schemaName].destroy(affectedCount: number) => Promise<JSONAPIDocument>`
+`hatchedKoa.serialize[schemaName].destroy: (affectedCount: number) => Promise<JSONAPIDocument>`
 
 ```ts
 const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
