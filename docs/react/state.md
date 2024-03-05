@@ -88,4 +88,4 @@ The `useDataGridState({})` accepts and returns a [`DataGridState`](./types.md#da
 | `include`          | `(keyof TPartialSchema[relationships])[] \| string[]` | Optional, relationships to be included |
 | `defaultPage`      | `{ number: number; size: number; }` | Optional, default paginated page |
 | `defaultSort`      | `{direction: "asc" \| "desc" \| undefined; \| sortBy: string \| undefined;}` | Optional, default sort direction |
-| `baseFilter`       | `Array<{ field: string; operator: string; value: string | string[] | number | number[] | boolean | boolean[];}> | {[field: string]: {[filter in FilterTypes]?: string | string[] | number | number[] | boolean | boolean[];}} | string | undefined` \| Optional, a pre filter to be used alongside additional filters |
+| `baseFilter`       | `Array<{ field: string; operator: string; value: string \| string[] \| number \| number[] \| boolean \| boolean[];}> \| {[field: string]: {[filter in FilterTypes]?: string \| string[] \| number \| number[] \| boolean \| boolean[];}} \| string \| undefined` | Optional, a pre filter to be used alongside additional filters |
