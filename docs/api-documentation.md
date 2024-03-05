@@ -80,7 +80,7 @@ hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findandc
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findOne">findOne</a>({ id: UUID, name: "Roye" })
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#create">create</a>({ id: UUID, name: "Roye" })
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#update">update</a>({ id: UUID, name: "Roye" }, 1)
-hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#destroy">destroy</a>(2)
+hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#destroy">destroy</a>()
 </pre>
 
 ## JSON:API Services

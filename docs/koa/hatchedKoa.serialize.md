@@ -198,21 +198,15 @@ const serializedTodo = hatchedKoa.serialize.Todo.update(
 
 Serializes a result of a deletion.
 
-`hatchedKoa.serialize[schemaName].destroy: (affectedCount: number) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].destroy: () => JSONAPIDocument`
 
 ```ts
-const serializedResult = hatchedKoa.serialize.Todo.destroy(1)
+const serializedResult = hatchedKoa.serialize.Todo.destroy()
 // serializedResult = {
 //   jsonapi: { version: "1.0" },
 //   data: null,
 // }
 ```
-
-**Parameters**
-
-| Property      | Type   | Default     | Details                |
-| ------------- | ------ | ----------- | ---------------------- |
-| affectedCount | number | `undefined` | Specify deleted count. |
 
 **Returns**
 

@@ -126,6 +126,6 @@ export function destroyEverything(hatchify: Hatchify, modelName: string) {
         }),
       ]
     }
-    return hatchify.serialize[modelName].destroy(affectedCount)
+    return hatchify.serialize[modelName].destroy()
   }
 }
