@@ -40,9 +40,9 @@ const findOptions = await hatchedKoa.parse.Todo.findAll("filter[name]=Baking")
 
 **Parameters**
 
-| Property    | Type   | Default | Details                                               |
-| ----------- | ------ | ------- | ----------------------------------------------------- |
-| querystring | string | `''`    | JSON:API querystring specifying what records to load. |
+| Property    | Type   | Default | Details                                                                              |
+| ----------- | ------ | ------- | ------------------------------------------------------------------------------------ |
+| querystring | string | `''`    | JSON:API query string specifying filter, pagination, relationships, sort and fields. |
 
 **Returns**
 
@@ -71,7 +71,7 @@ const findOptions = await hatchedKoa.parse.Todo.findOne("", "b559e3d9-bad7-4b3d-
 
 | Property    | Type   | Default     | Details                                                        |
 | ----------- | ------ | ----------- | -------------------------------------------------------------- |
-| querystring | string | `''`        | JSON:API querystring specifying what record to load.           |
+| querystring | string | `''`        | JSON:API query string specifying what record to load.          |
 | id          | string | `undefined` | A record ID to fetch. Will ignore the querystring if provided. |
 
 **Returns**
@@ -98,9 +98,9 @@ const findOptions = await hatchedKoa.parse.Todo.findAndCountAll("filter[name]=Ba
 
 **Parameters**
 
-| Property    | Type   | Default | Details                                               |
-| ----------- | ------ | ------- | ----------------------------------------------------- |
-| querystring | string | `''`    | JSON:API querystring specifying what records to load. |
+| Property    | Type   | Default | Details                                                                              |
+| ----------- | ------ | ------- | ------------------------------------------------------------------------------------ |
+| querystring | string | `''`    | JSON:API query string specifying filter, pagination, relationships, sort and fields. |
 
 **Returns**
 
@@ -189,7 +189,7 @@ const destroyOptions = await hatchedKoa.parse.Todo.destroy("", "b559e3d9-bad7-4b
 
 | Property    | Type   | Default     | Details                                                          |
 | ----------- | ------ | ----------- | ---------------------------------------------------------------- |
-| querystring | string | `''`        | JSON:API querystring specifying what record to destroy.          |
+| querystring | string | `''`        | JSON:API query string specifying what record to destroy.         |
 | id          | string | `undefined` | A record ID to destroy. Will ignore the querystring if provided. |
 
 **Returns**

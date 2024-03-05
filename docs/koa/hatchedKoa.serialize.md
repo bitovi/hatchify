@@ -56,9 +56,9 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9
 | data       | `PlainRecord[] \| ORMRecord[]` | `undefined` | Specify what records to show.    |
 | attributes | string[]                       | `undefined` | Specify what attributes to show. |
 
-**Returns**
+**Resolves**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## findAndCountAll
 
@@ -94,9 +94,9 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
 | data       | `{ data: PlainRecord[] \| ORMRecord[], count: number }` | `undefined` | Specify what records and total cound to show. |
 | attributes | string[]                                                | `undefined` | Specify what attributes to show.              |
 
-**Returns**
+**Resolves**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## findOne
 
@@ -123,9 +123,9 @@ const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-b
 | data       | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show.     |
 | attributes | string[]                   | `undefined` | Specify what attributes to show. |
 
-**Returns**
+**Resolves**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## create
 
@@ -155,9 +155,9 @@ const serializedTodo = await hatchedKoa.serialize.Todo.create({
 | data       | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show.     |
 | attributes | string[]                   | `undefined` | Specify what attributes to show. |
 
-**Returns**
+**Resolves**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## update
 
@@ -190,9 +190,9 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update(
 | data          | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show. |
 | affectedCount | number                     | `undefined` | Specify update count.        |
 
-**Returns**
+**Resolves**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## destroy
 
@@ -214,6 +214,6 @@ const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
 | ------------- | ------ | ----------- | ---------------------- |
 | affectedCount | number | `undefined` | Specify deleted count. |
 
-**Returns**
+**Resolves**
 
-[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)>
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)

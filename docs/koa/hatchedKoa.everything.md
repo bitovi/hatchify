@@ -15,6 +15,15 @@ router.get("/skills", async (ctx: Context) => {
 })
 ```
 
+Each model has the following methods:
+
+- [findAll](#findall)
+- [findAndCountAll](#findandcountall)
+- [findOne](#findone)
+- [create](#create)
+- [update](#update)
+- [destroy](#destroy)
+
 ## findAll
 
 `hatchedKoa.everything[schemaName].findAll(querystring: string) => Promise<JSONAPIDocument>` searches for multiple instances.
@@ -32,6 +41,16 @@ const serializedTodos = await hatchedKoa.everything.Todo.findAll("filter[name]=B
 //   ],
 // }
 ```
+
+**Parameters**
+
+| Property    | Type   | Default | Details                                                                              |
+| ----------- | ------ | ------- | ------------------------------------------------------------------------------------ |
+| querystring | string | `''`    | JSON:API query string specifying filter, pagination, relationships, sort and fields. |
+
+**Resolves**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## findAndCountAll
 
@@ -52,13 +71,22 @@ const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter
 // }
 ```
 
+**Parameters**
+
+| Property    | Type   | Default | Details                                                                              |
+| ----------- | ------ | ------- | ------------------------------------------------------------------------------------ |
+| querystring | string | `''`    | JSON:API query string specifying filter, pagination, relationships, sort and fields. |
+
+**Resolves**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## findOne
 
-> 🛑 Why Parsed in ParsedUrlQuery ... this is present many places 
+> 🛑 Why Parsed in ParsedUrlQuery ... this is present many places
 > 🛑 is the id optional?
 
-`hatchedKoa.everything[schemaName].findOne(query: ParsedUrlQuery🛑, id🛑: Identifier) => Promise<JSONAPIDocument>` search 
+`hatchedKoa.everything[schemaName].findOne(querystring: string, id: Identifier) => Promise<JSONAPIDocument>` search
 for a single instance. Returns the first instance found, or null if none can be found.
 
 ```ts
@@ -83,7 +111,16 @@ const serializedTodo = await hatchedKoa.everything.Todo.findOne("", "b559e3d9-ba
 // }
 ```
 
+**Parameters**
 
+| Property    | Type   | Default | Details                                                    |
+| ----------- | ------ | ------- | ---------------------------------------------------------- |
+| querystring | string | `''`    | JSON:API query string specifying relationships and fields. |
+| id          | string | N/A     | The ID of the record to load.                              |
+
+**Resolves**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## create
 
@@ -108,12 +145,23 @@ const serializedTodo = await hatchedKoa.everything.Todo.create({
 // }
 ```
 
+**Parameters**
+
+| Property    | Type   | Default | Details                                                    |
+| ----------- | ------ | ------- | ---------------------------------------------------------- |
+| body        | string | N/A     | The data for the new instance.                             |
+| querystring | string | `''`    | JSON:API query string specifying relationships and fields. |
+
+**Resolves**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+
 ## update
 
-`hatchedKoa.model[schemaName].update(body: object, id?: Identifier) => Promise<JSONAPIDocument>` updates one or more instances.
+`hatchedKoa.model[schemaName].update(body: object, querystring: string, id?: Identifier) => Promise<JSONAPIDocument>` updates one or more instances.
 
 ```ts
-const serializedTodo = await hatchedKoa.serialize.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+const serializedTodo = await hatchedKoa.everything.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
 // serializedTodo = {
 //   jsonapi: { version: "1.0" },
 //   data: {
@@ -124,9 +172,21 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update({ name: "Serving" 
 // }
 ```
 
+**Parameters**
+
+| Property    | Type       | Default | Details                                                         |
+| ----------- | ---------- | ------- | --------------------------------------------------------------- |
+| body        | string     | N/A     | JSON:API formatted object specifying what attributes to update. |
+| querystring | string     | `''`    | JSON:API query string specifying relationships and fields.      |
+| id          | Identifier | N/A     | The ID of the record to update.                                 |
+
+**Resolves**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+
 ## destroy
 
-`hatchedKoa.model[schemaName].update(query: ParsedUrlQuery, id?: Identifier) => Promise<JSONAPIDocument>` deletes one or more instances.
+`hatchedKoa.model[schemaName].destroy(querystring: string, id?: Identifier) => Promise<JSONAPIDocument>` deletes one or more instances.
 
 ```ts
 const serializedResult = await hatchedKoa.everything.Todo.destroy("filter[name]=Baking")
@@ -141,3 +201,14 @@ const serializedResult = await hatchedKoa.everything.Todo.destroy("", "b559e3d9-
 //   data: null,
 // }
 ```
+
+**Parameters**
+
+| Property    | Type       | Default | Details                                                    |
+| ----------- | ---------- | ------- | ---------------------------------------------------------- |
+| querystring | string     | `''`    | JSON:API query string specifying relationships and fields. |
+| id          | Identifier | N/A     | The ID of the record to delete.                            |
+
+**Resolves**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
