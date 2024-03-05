@@ -59,7 +59,6 @@ const hatchedKoa = hatchifyKoa(schemas, {
   - [`hatchedKoa.schema[schemaName]`](#hatchedkoaschemaschemaname)
   - [`hatchedKoa.serialize[schemaName]`](#hatchedkoaserializeschemaname)
 
-
 ## Exports
 
 `@hatchifyjs/koa` provides three named exports:
@@ -217,11 +216,11 @@ await hatchedKoa.orm.models.SalesPerson.<a href="https://sequelize.org/docs/v6/c
 
 <b>// Serialize sequelize data back to JSONAPI responses</b>
 await hatchedKoa.<a href="./hatchedKoa.parse.md">serialize</a>.SalesPerson.<a href="./hatchedKoa.serialize.md#findall">findAll</a>([{ id: UUID, name: "Roye" }])
-await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#findandcountall">findAndCountAll</a>({rows: [{id: UUID, ...}], count: 1})
-await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#findOne">findOne</a>({ id: UUID, name: "Roye" })
-await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#create">create</a>({ id: UUID, name: "Roye" })
-await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#update">update</a>(1, { id: UUID, name: "Roye" })
-await hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#destroy">destroy</a>(2)
+hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#findandcountall">findAndCountAll</a>({rows: [{id: UUID, ...}], count: 1})
+hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#findOne">findOne</a>({ id: UUID, name: "Roye" })
+hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#create">create</a>({ id: UUID, name: "Roye" })
+hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#update">update</a>(1, { id: UUID, name: "Roye" })
+hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#destroy">destroy</a>(2)
 </pre>
 
 ### `hatchedKoa.everything[schemaName]`
@@ -258,7 +257,6 @@ A utility function to make sure your schemas are always synced with the database
 
 [Read more on Model Sync](../guides/model-sync.md)
 
-
 ### hatchedKoa.orm
 
 A reference to the `Sequelize` instance when more control is needed.
@@ -290,8 +288,6 @@ GET    /api/users/:id
 PATCH  /api/users/:id
 DELETE /api/users/:id
 ```
-
-
 
 Usage Examples:
 

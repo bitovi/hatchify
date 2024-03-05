@@ -31,13 +31,11 @@ export interface ParseFunctions {
   findAll: (querystring: string) => FindOptions
   findOne: (querystring: string, id: Identifier) => FindOptions
   findAndCountAll: (querystring: string) => FindOptions
-  create: (
-    body: JSONAPIDocument,
-  ) => Promise<{ body: JSONObject; ops: CreateOptions }>
+  create: (body: JSONAPIDocument) => { body: JSONObject; ops: CreateOptions }
   update: (
     body: JSONAPIDocument,
     id: Identifier,
-  ) => Promise<{ body: JSONObject; ops: UpdateOptions }>
+  ) => { body: JSONObject; ops: UpdateOptions }
   destroy: (id: Identifier) => DestroyOptions
 }
 
@@ -118,9 +116,9 @@ export function buildParserForModelStandalone(
       validateFindOptions(data, schema, hatchify)
       return data
     },
-    create: async (body) => {
+    create: (body) => {
       validateStructure(body, schema, hatchify)
-      const parsedBody = await hatchify.serializer.deserialize(
+      const parsedBody = hatchify.serializer.deserialize(
         getSchemaKey(schema),
         body,
       )
@@ -130,9 +128,9 @@ export function buildParserForModelStandalone(
         ops: {},
       }
     },
-    update: async (body, id) => {
+    update: (body, id) => {
       validateStructure(body, schema, hatchify)
-      const parsedBody = await hatchify.serializer.deserialize(
+      const parsedBody = hatchify.serializer.deserialize(
         getSchemaKey(schema),
         body,
       )

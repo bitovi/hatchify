@@ -99,7 +99,7 @@ router.post("/api/assignments", async (ctx, next) => {
     }
 
     const assignment = await hatchedKoa.orm.models.Assignment.create(createOptions.body, { ...createOptions.ops, transaction })
-    const result = await hatchedKoa.serialize.Assignment.create(assignment)
+    const result = hatchedKoa.serialize.Assignment.create(assignment)
   })
 
   ctx.status = 201
