@@ -25,8 +25,8 @@ const App: React.FC = () => {
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
         <Navigation
-          activeSchema={activeSchema}
-          setActiveSchema={setActiveSchema}
+          activeTab={activeSchema}
+          onTabChange={(tab) => setActiveSchema(tab as ActiveSchema)}
         />
         <DataGrid />
       </HatchifyProvider>
