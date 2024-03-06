@@ -223,7 +223,7 @@ The `everything` functions takes the same properties as `parse` but goes further
 For example `hatchedKoa.everything.Todo.findAll` takes the URL query params and directly returns JSON:API ready response data.
 
 ```ts
-router.get("/skills", async (ctx: Context) => {
+router.get("/todos", async (ctx: Context) => {
   const serializedTodos = await hatchedKoa.everything.Todo.findAll(ctx.query)
   ctx.body = serializedTodos
 })
