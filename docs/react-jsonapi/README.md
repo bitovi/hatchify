@@ -2,56 +2,47 @@
 
 `@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../schema/README.md) and produces an API layer that your frontend can use for a JSON:API backend.
 
-<pre>
+```tsx
 import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonapi"
-import { boolean, belongsTo, hasMany, string } from "@hatchifyjs/core"
+import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
+import { useState } from "react"
 
-const schemas = {
-  Todo: {
-    name: "Todo",
-    attributes: {
-      name: string(),
-      complete: boolean(),
-    },
-    relationships: {
-      user: belongsTo("User"),
-    },
+const Todo = {
+  name: "Todo",
+  attributes: {
+    name: string({ required: true }),
   },
-  User: {
-    name: "User",
-    attributes: {
-      email: string(),
-    },
-    relationships: {
-      todos: hasMany("Todo"),
-    },
-  },
-} satisfies Record<\string, PartialSchema>
+} satisfies PartialSchema
 
-const hatchedReactRest = <a href="#hatchifyreactrest">hatchifyReactRest</a>(<a href="#createjsonapiclient">createJsonapiClient</a>("/api", schemas))
+const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", { Todo }))
 
-// Use the promise-based API
-const [records, requestMeta] = await hatchedReactRest.Todo.<a href="#findall">findAll</a>()
-const record =                 await hatchedReactRest.Todo.<a href="#findone">findOne</a>(UUID)
-const created =                await hatchedReactRest.Todo.<a href="#createone">createOne</a>({
-  name: "Learn HatchifyJS",
-  complete: false,
-})
-const updated =                await hatchedReactRest.Todo.<a href="#updateone">updateOne</a>({
-  id: createdRecord.id,
-})
-                               await hatchedReactRest.Todo.<a href="#deleteone">deleteOne</a>(createdRecord.id)
+function App() {
+  const [todos, state] = hatchedReactRest.Todo.useAll()
+  const [createTodo, createState, created] = hatchedReactRest.Todo.useCreateOne()
+  const [name, setName] = useState("")
 
-// Use the hook-based API
-function MyHatchifyCompnent() {
-  const [records, allState] =                hatchedReactRest.Todo.<a href="#useall">useAll</a>()
-  const [record, oneState] =                 hatchedReactRest.Todo.<a href="#useone">useOne</a>(UUID)
-  const [createTodo, createState, created] = hatchedReactRest.Todo.<a href="#usecreateone">useCreateOne</a>()
-  const [updateTodo, updateState, updated] = hatchedReactRest.Todo.<a href="#useupdateone">useUpdateOne</a>()
-  const [deleteTodo, deleteState] =          hatchedReactRest.Todo.<a href="#usedeleteone">useDeleteOne</a>()
+  return (
+    <div>
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      <button
+        type="button"
+        onClick={() => {
+          createTodo({ name })
+          setName("")
+        }}
+      >
+        Create
+      </button>
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>{todo.name}</li>
+        ))}
+      </ul>
+    </div>
+  )
 }
-</pre>
+```
 
 - [Exports](#exports)
 - [createJsonapiClient](#createjsonapiclient)
