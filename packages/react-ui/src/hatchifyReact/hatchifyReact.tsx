@@ -26,8 +26,8 @@ import { HatchifyEmpty } from "../components/HatchifyEmpty/index.js"
 import { HatchifyEverything } from "../components/HatchifyEverything/index.js"
 import useDataGridState from "../hooks/useDataGridState.js"
 import type { SortObject } from "../presentation/index.js"
-import HatchifyNavigation from "../components/HatchifyNavigation/HatchifyNavigation.js"
-import HatchifyNoSchemas from "../components/HatchifyNoSchemas/HatchifyNavigation.js"
+import { HatchifyNavigation } from "../components/HatchifyNavigation/index.js"
+import { HatchifyNoSchemas } from "../components/HatchifyNoSchemas/index.js"
 
 type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
   Omit<
