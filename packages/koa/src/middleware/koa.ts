@@ -69,7 +69,7 @@ export interface MiddlewareFunctionsKoa {
 
 export function buildMiddlewareForModel(
   hatchify: HatchifyNode,
-  modelName: string | symbol,
+  modelName: string,
 ): MiddlewareFunctionsKoa {
   return Object.entries(getMiddlewareFunctions(hatchify, modelName)).reduce(
     (acc, [name, genericFunction]): MiddlewareFunctionsKoa => ({

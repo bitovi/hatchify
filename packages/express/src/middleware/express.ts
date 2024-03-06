@@ -77,9 +77,7 @@ export function buildMiddlewareForModel(
   hatchify: Hatchify,
   modelName: string,
 ): MiddlewareFunctionsExpress {
-  return Object.entries(
-    getMiddlewareFunctions(hatchify, modelName as string),
-  ).reduce(
+  return Object.entries(getMiddlewareFunctions(hatchify, modelName)).reduce(
     (acc, [name, genericFunction]) => ({
       ...acc,
       [name]: async (req: Request, res: Response, next: NextFunction) => {
