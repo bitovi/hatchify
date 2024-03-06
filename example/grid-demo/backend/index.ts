@@ -1,5 +1,5 @@
-import type { ExpressMiddleware } from "@hatchifyjs/express"
-import type { KoaMiddleware } from "@hatchifyjs/koa"
+import type { Hatchify as HatchifyExpress } from "@hatchifyjs/express"
+import type { Hatchify as HatchifyKoa } from "@hatchifyjs/koa"
 import { Command } from "commander"
 
 import {
@@ -26,15 +26,15 @@ const hatchedNode = getHatchFunction(options.framework)(schemas, {
 
   const port = +(process.env.APP_PORT ?? "3000")
 
-  ;(await setupApp(hatchedNode.middleware.allModels.all)).listen(port, () => {
+  ;(await setupApp(hatchedNode)).listen(port, () => {
     // eslint-disable-next-line no-console
     console.log(`Started on http://localhost:${port}`)
   })
 })()
 
-async function setupApp(middleware: ExpressMiddleware | KoaMiddleware) {
+async function setupApp(hatchedNode: HatchifyKoa | HatchifyExpress) {
   if (options.framework === "express") {
-    return setupExpress(middleware as ExpressMiddleware)
+    return setupExpress(hatchedNode as HatchifyExpress)
   }
-  return setupKoa(middleware as KoaMiddleware)
+  return setupKoa(hatchedNode as HatchifyKoa)
 }

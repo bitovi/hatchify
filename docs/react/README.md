@@ -1,72 +1,162 @@
 # @hatchifyjs/react
 
-- [What is @hatchifyjs/react](#what-is-hatchifyjsreact)
-  - [TypeScript](#typescript)
-  - [Types](#types)
-  - [createJsonapiClient](#createjsonapiclient)
-  - [HatchifyProvider](#hatchifyprovider)
-  - [hatchifyReact](#hatchifyreact)
-    - [Everything](#everything)
-    - [components](#components)
-    - [model](#model)
-    - [state](#state)
-      - [useDataGridState](#usedatagridstate)
-  - [MUI Components](#mui-components)
+@hatchifyjs/react is an [NPM](<(https://www.npmjs.com/package/@hatchifyjs/react)>) package that takes your schemas and provides:
 
-## What is @hatchifyjs/react?
+- React Components
+- CRUD promise functions and react hooks
+- TypeScript
 
-@hatchifyjs/react is a schema-driven library of components and helper methods for a Hatchify + React frontend. By providing the schemas (AKA models) of your backend resources, @hatchifyjs/react returns a set of components and helper functionality that you can use across your React app.
+for interacting with your [JSON:API](https://jsonapi.org/) backend.
 
-### TypeScript
+The following uses `hatchifyReact` to create a `hatchedReact` app with the defined `Todo` and `User` schemas.
 
-@hatchifyjs/react includes TypeScript support. Here's an example of how two schemas (`Todo` and `User`) provide auto-completion for an instantiated @hatchifyjs/react app (`hatchedReact`):
+```tsx
+import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
 
-![react TypeScript](../attachments/reactTs.gif)
+export const schemas = {
+  Todo: {
+    name: "Todo",
+    attributes: {
+      name: string(),
+      status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
+    },
+    relationships: {
+      user: belongsTo("User"),
+    },
+  },
+  User: {
+    name: "User",
+    attributes: {
+      name: string(),
+    },
+    relationships: {
+      todos: hasMany(),
+    },
+  },
+} satisfies Record<string, PartialSchema>
 
-## Types
+// Create your Hatched React App instance
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
 
-There are a number of types available to assist with app customization.
+// Grab the Todo DataGrid component from the hatchedReact object
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
 
-- DataGridState
-- CreateType
-- UpdateType
-- HatchifyApp
-- RecordType
+const App() {
+  return (
+    <HatchifyProvider>
+      <TodoDataGrid />
+    </HatchifyProvider>
+  )
+}
 
-Learn more about the available types [here](./types.md).
+export default App
+```
 
-## createJsonapiClient
+[!IMPORTANT]
+You must wrap your App in a [`HatchifyProvider`](#hatchifyprovider) so that you may use the components provided by [Hatchify](../../README.md).
 
-`createJsonapiClient` creates a new JSON:API rest client from the defined schemas. It accepts a base url, and schema set. For more documentation see [here](./rest-client.md) 🛑.
+- [Exports](#exports)
+  - [`createJsonapiClient`](#createjsonapiclient) - Creates a new [JSON:API rest client](#createjsonapiclient) using the defined schemas
+  - [`hatchifyReact`](#hatchifyreact) - Constructs a `hatchedReact` app instance with custom components,helper functions, and type definitions
+  - [`HatchifyProvider`](#hatchifyprovider) - A component that hosts and provides access to Hatchify-related state
+- [`hatchedReact`](#hatchedreact)
+  - [`Everything`](#everything)
+  - [`components`](#components)
+  - [`state`](#state)
+  - [`model`](#model)
+- [MUI Components](#mui-components)
+
+## Exports
 
 ```ts
+import { createJsonapiClient, hatchifyReact, HatchifyProvider } from "@hatchifyjs/react"
+```
+
+### createJsonapiClient
+
+`createJsonapiClient(baseUrl: string, schemaMap: Schemas)` is a constructor function that creates a new JSON:API rest client from the defined schemas. It accepts a base url, and schema set. For more documentation see [here](./rest-client.md) 🛑.
+
+```ts
+import { createJsonapiClient } from "@hatchifyjs/react"
+
+const schemas = { ... }
+
+const jsonClientInstance = createJsonapiClient("/api", Schemas)
+```
+
+**Parameters**
+`createJsonapiClient` takes two arguments `baseUrl` and `schemaMap`
+`baseUrl` is a `string` that references the base url for the rest client
+`schemaMap` is a collectionn of [Hatchify Schemas](../schema/README.md)
+
+**Returns**
+Returns a `JSON:API rest client` instance object
+
+### hatchifyReact
+
+`hatchifyReact(createJsonapiClient("/api", Schemas))` is a `Function` that initializes the `HatchifyApp` object from the JSON:API rest client. Inside of the retured object you will find [`components`](./components.md), [`model`](./model.md), [`state`](./state.md), and [`Everything`](#everything).
+
+```ts
+import { createJsonapiClient, hatchifyReact } from "@hatchifyjs/react"
+
+const schemas = { ... }
+
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 ```
 
-## HatchifyProvider
+### HatchifyProvider
 
-`HatchifyProvider` is a component that hosts and provides access to Hatchify-related state. Hatchify components in `HatchifyProvider`'s subtree interact with it to access Hatchify internal state. It must be a parent to any Hatchify components.
+`HatchifyProvider` gives your App access to use the components provided by Hatchify.
 
 ```tsx
-const App: React.FC = () => {
+import {HatchifyProvider} from "@hatchifyjs/react"
+
+// Define Schemas
+const schemas = { ... }
+
+// Create the Hatched React App instance
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+
+// Define variables for your Hatchify schema generated components
+const TodoColumn = hatchedReact.components.Todo.Column
+
+const App() {
   return (
-    <ThemeProvider theme={createTheme()}>
-      <HatchifyProvider>
-        {/* 👀 */}
-        <Everything />
-      </HatchifyProvider>
-    </ThemeProvider>
+    <HatchifyProvider>
+      <TodoColumn />
+    </HatchifyProvider>
   )
 }
 ```
 
-## hatchifyReact
+### Types
 
-`hatchifyReact` is a function that initializes the `HatchifyApp` object. Inside of the object you will find `components`, `model`, `state`, and `Everything`. `components`, `model`, and `state`, will be broken down further for each defined schema
+`@hatchifyjs/react` provides a number of [types](./types.md) to assist with app customization.
+
+| Type                                        | Description                                                                                                                                                                             |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`DataGridState`](./types.md#datagridstate) | The return type of the [`useDataGridState`](./state.md#usedatagridstate) hook. Can be used if you are extending the functionality of [`useDataGridState`](./state.md#usedatagridstate). |
+| [`CreateType`](./types.md#createtype)       | This can be used to type data that will be used to create a record for a given schema.                                                                                                  |
+| [`UpdateType`](./types.md#updatetype)       | This can be used to type data that will be used to update a record for a given schema.                                                                                                  |
+| [`HatchifyApp`](./types.md#hatchifyapp)     | The return type of the object that is generated by [`hatchifyReact`](#hatchifyreact).                                                                                                   |
+| [`RecordType`](./types.md#recordtype)       | The type of a record for a given schema.                                                                                                                                                 |
+
+Learn more about the available types [here](./types.md).
+
+## `hatchedReact`
+
+`hatchedReact` is the instantiated [`HatchifyReact` App](#hatchifyreact) that is returned by the [`hatchifyReact`] constructor function. It provides:
+
+- [Everything](./Everything.md) - is a default component comprised of a set of tabs 🛑 (one for each schema) and DataGrids.
+- [components](./components.md) - a set of components for each of the defined schemas to be used in the app.
+- [model](./model.md) - a set of hooks and promises for each of the defined schemas
+- [state](./state.md) - contains hooks that can be used when customizing components provided by hatchify
+
+The following show some of the methods available given a `Todo` and `User` schema:
 
 ### Everything
 
-`Everything` is a default component comprised of a set of tabs (one for each schema) and `DataGrid`s. This is used when the app is generated to quickly see the defined schemas and records.
+`Everything` is a default component comprised of a set of tabs (one for each schema) and `DataGrid`s. This is used when the app is generated to swiftly validate the defined schemas and records.
 
 ```tsx
 const App: React.FC = () => {
@@ -80,50 +170,26 @@ const App: React.FC = () => {
 }
 ```
 
-### components
-
-A set of `components` for each of the defined schemas to be used in the app.
-Included components:
-`DataGrid`
-`Column`
-`Empty`
-
-Learn more about the available components [here](./components.md).
-
 ### model
 
-The `model` is a set of hooks and promises for each of the defined schemas to be used in the app. These get used under the hood in the Hatchify components, but are available for use in situations where customization is needed.
+The [`model`](./model.md) is a set of hooks and promises for each of the defined schemas. These get used under the hood in the Hatchify components, but are available for use in situations where customization is needed.
 
-- createOne
-- deleteOne
-- findAll
-- findOne
-- updateOne
-- useAll
-- useCreateOne
-- useDeleteOne
-- useOne
-- useUpdateOne
+- [`createOne`](./model.md#createone)
+- [`deleteOne`](./model.md#deleteone)
+- [`findAll`](./model.md#findall)
+- [`findOne`](./model.md#findone)
+- [`updateOne`](./model.md#updateone)
+- [`useAll`](./model.md#useall)
+- [`useCreateOne`](./model.md#usecreateone)
+- [`useDeleteOne`](./model.md#usedeleteone)
+- [`useOne`](./model.md#useone)
+- [`useUpdateOne`](./model.md#useupdateone)
 
 Learn more about the available hooks and promises [here](model.md).
 
 ### state
 
-#### useDataGridState
-
-`useDataGridState` is a hook for each of the defined schemas to be used in the app. This is used under the hood in Hatchify, but is available for use in situations where customization is needed.<br>
-
-`useDataGridState` takes in one parameter, an object, with the following keys:
-
-| key                | description                                                                                                                       |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| `defaultSelected`  | Optional, used for checkboxes                                                                                                     |
-| `onSelectedChange` | Optional, used for checkboxes                                                                                                     |
-| `fields`           | Optional, fields to be included. If not <br> defined, all fields from the schema <br> and included relationships will be returned |
-| `include`          | Optional, relationships to be included                                                                                            |
-| `defaultPage`      | Optional, default paginated page                                                                                                  |
-| `defaultSort`      | Optional, default sort direction                                                                                                  |
-| `baseFilter`       | Optional, a pre filter to be used alongside additional filters                                                                    |
+The `state` is a set of hooks for each of the defined schemas. These get used under the hood in the Hatchify components, but are available for use in situations where customization is needed. The `state` object holds a record of schemas each with their own [`useDataGridState`](./state.md#usedatagridstate) hook.
 
 ```tsx
 const todoState = hatchedReact.state.Todo.useDataGridState({
@@ -134,13 +200,71 @@ const todoState = hatchedReact.state.Todo.useDataGridState({
 
 Learn more about the return type [here](types.md).
 
+### components
+
+[`hatchifyReact`](#hatchifyreact) provides a set of [`components`](./components.md) for each of the defined schemas. These components include:
+
+[`Column`](./components.md#column)
+[`DataGrid`](./components.md#datagrid)
+[`Everything`](./components.md#everything)
+[`Empty`](./components.md#empty)
+
+Learn more about the available components [here](./components.md).
+
+```tsx
+import {HatchifyProvider} from "@hatchifyjs/react"
+
+// Define Schemas
+const schemas = { ...Todo }
+
+// Create the Hatched React App instance
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+
+// Define variables for your Hatchify schema generated components
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
+
+const TodoColumn = hatchedReact.components.Todo.Column
+
+const TodoEmpty = hatchedReact.components.Todo.Empty
+
+const App() {
+  return (
+    <HatchifyProvider>
+      <TodoDataGrid>
+        <TodoEmpty>No todos found!</TodoEmpty>
+        <TodoColumn
+          label="Actions"
+          renderDataValue={() =>
+            <button
+              onClick={({ record }) => console.log(record)}>
+                Log Todo
+            </button>
+          }
+        />
+      </ TodoDataGrid>
+    </ HatchifyProvider>
+  )
+}
+```
+
 ## MUI Components
 
-The Hatchify components can be used separately from the HatchifyApp for customization purposes.
+`@hatchifyjs/react` uses [Material-UI](https://material-ui.com/) components under the hood. This means that you can use the MUI components directly in your app. For example, you can use the `ThemeProvider` and `createTheme` from MUI to customize the look and feel of your app.
 
-- List
-- Pagination
-- Filters
-- DataGrid
+```tsx
+const App: React.FC = () => {
+  const todoState = hatchedReact.state.Todo.useDataGridState({
+    include: ["user"],
+  }) // 👀
 
-Learn more about the available components [here](components.md).
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <List {...todoState}>
+          <TodoEmptyList>No records to display</TodoEmptyList>
+        </List>
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+```

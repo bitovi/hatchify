@@ -74,6 +74,8 @@ export interface HatchifyPresentationContextProps {
   DataGrid: React.FC<XDataGridProps>
   Layout: React.FC<XLayoutProps>
   Everything: React.FC<XEverythingProps>
+  Navigation: React.FC<any>
+  NoSchemas: React.FC<any>
   defaultValueComponents: DefaultValueComponentsTypes
   // future: defaultFieldComponents
 }
@@ -104,6 +106,8 @@ export const HatchifyPresentationContext =
     // should we have a default (headless) implementation of these?
     DataGrid: () => null,
     Everything: () => null,
+    Navigation: () => null,
+    NoSchemas: () => null,
     Layout: () => null,
     defaultValueComponents: HatchifyPresentationDefaultValueComponents,
     // future: defaultFieldComponents
@@ -119,12 +123,22 @@ interface HatchifyPresentationProviderProps
 
 export const HatchifyPresentationProvider: React.FC<
   HatchifyPresentationProviderProps
-> = ({ DataGrid, Everything, Layout, defaultValueComponents, children }) => {
+> = ({
+  DataGrid,
+  Everything,
+  Navigation,
+  NoSchemas,
+  Layout,
+  defaultValueComponents,
+  children,
+}) => {
   return (
     <HatchifyPresentationContext.Provider
       value={{
         DataGrid,
         Everything,
+        Navigation,
+        NoSchemas,
         Layout,
         defaultValueComponents,
       }}

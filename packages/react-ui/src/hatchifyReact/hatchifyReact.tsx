@@ -12,6 +12,7 @@ import type {
 } from "@hatchifyjs/rest-client"
 import type { HatchifyDataGridProps as InternalHatchifyDataGridProps } from "../components/HatchifyDataGrid/index.js"
 import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from "../components/HatchifyEverything/index.js"
+import type { HatchifyNavigationProps as InternalHatchifyNavigationProps } from "../components/HatchifyNavigation/HatchifyNavigation.js"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty/index.js"
 import type { DataGridState } from "../hooks/useDataGridState.js"
 import type {
@@ -25,11 +26,19 @@ import { HatchifyEmpty } from "../components/HatchifyEmpty/index.js"
 import { HatchifyEverything } from "../components/HatchifyEverything/index.js"
 import useDataGridState from "../hooks/useDataGridState.js"
 import type { SortObject } from "../presentation/index.js"
+import { HatchifyNavigation } from "../components/HatchifyNavigation/index.js"
+import { HatchifyNoSchemas } from "../components/HatchifyNoSchemas/index.js"
 
 type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
   Omit<
     InternalHatchifyEverythingProps<TSchemas>,
     "finalSchemas" | "partialSchemas" | "restClient"
+  >
+
+type HatchifyNavigationProps<TSchemas extends Record<string, PartialSchema>> =
+  Omit<
+    InternalHatchifyNavigationProps<TSchemas>,
+    "finalSchemas" | "partialSchemas"
   >
 
 type HatchifyDataGridProps<
@@ -64,6 +73,8 @@ type Components<TSchemas extends Record<string, PartialSchema>> = {
 export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
   components: Components<TSchemas>
   Everything: (props: HatchifyEverythingProps<TSchemas>) => JSX.Element
+  Navigation: (props: HatchifyNavigationProps<TSchemas>) => JSX.Element
+  NoSchemas: () => JSX.Element
   model: HatchifyReactRest<TSchemas>
   state: {
     [SchemaName in keyof TSchemas]: {
@@ -182,9 +193,21 @@ export function hatchifyReact<
     />
   )
 
+  const Navigation = (props: HatchifyNavigationProps<TSchemas>) => (
+    <HatchifyNavigation
+      {...props}
+      finalSchemas={finalSchemas}
+      partialSchemas={partialSchemas}
+    />
+  )
+
+  const NoSchemas = () => <HatchifyNoSchemas />
+
   return {
     components,
     Everything,
+    Navigation,
+    NoSchemas,
     model: reactRest,
     state,
   }
