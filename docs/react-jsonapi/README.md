@@ -253,11 +253,11 @@ function TodosList() {
 
 **Parameters**
 
-| Property        | Type                                                 | Details                                                          |
-| --------------- | ---------------------------------------------------- | ---------------------------------------------------------------- |
-| queryList       | <a href="#querylist">`QueryList?`</a>                | An object with optional include, fields, filter, sort, and page. |
-| baseFilter      | `{ field: string, operator: string, value: any }[]?` | An object with optional fields, operator, and value.             |
-| minimumLoadTime | `number?`                                            | The minimum time to show a loading spinner.                      |
+| Property        | Type                                                 | Details                                                                                                  |
+| --------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| queryList       | <a href="#querylist">`QueryList?`</a>                | An object with optional include, fields, filter, sort, and page.                                         |
+| baseFilter      | `{ field: string, operator: string, value: any }[]?` | An optional filter object made up of the field to filter, the operator type, and the value to filter by. |
+| minimumLoadTime | `number?`                                            | The minimum time to show a loading spinner.                                                              |
 
 **Returns**
 
