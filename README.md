@@ -1,10 +1,12 @@
 # Hatchify
 
-<img style="float:left" src="https://github.com/bitovi/hatchify/assets/78602/119af4d1-d9ac-439d-aee5-8b9759cf8915">
+<img align="left" src="https://github.com/bitovi/hatchify/assets/78602/119af4d1-d9ac-439d-aee5-8b9759cf8915" height="100px">
+
 
 Hatchify is a web application framework designed to accelerate the development of CRUD applications. If all you need is basic app, Hatchify can provide you with a fully functional system straight from a datatype schema. If you have more specialized requirements, Hatchify makes it easy to customize every part of the application to meet your needs.
 
 Hatchify is structured as a number of modular libraries that can be consumed individually to use as much, or as little, as you require. Hatchify provides the speed of low-code development and the extensibility of custom code.
+
 
 - [Getting Started](#getting-started)
 - [Guides](#guides)
@@ -220,11 +222,11 @@ Continue learning more about the Hatchify feature set with these guides that con
 
 Learn how to make Hatchify match your needs with its technical interface documentation:
 
-- [Schema](docs/schema/)
+- [Schema](docs/schema/) - Learn how to specify attributes and relationships with Hatchify's interface for defining your data, called "schemas"
   - [Attributes](docs/schema/attribute-types/README.md)
   - [Relationships](docs/schema/relationship-types/README.md)
   - [Schema Naming](docs/schema/naming.md)
-- [JSON:API](docs/jsonapi/README.md)
+- [JSON:API](docs/jsonapi/README.md) - Learn the details of our JSON:API implementation.
   - [Creating](docs/jsonapi/creating.md)
   - [Reading](docs/jsonapi/reading/README.md)
     - [Filtering](docs/jsonapi/reading/filtering/README.md)
@@ -234,14 +236,14 @@ Learn how to make Hatchify match your needs with its technical interface documen
     - [Sparse Fields](docs/jsonapi/reading/sparse-fields/README.md)
   - [Updating](docs/jsonapi/updating.md)
   - [Deleting](docs/jsonapi/deleting.md)
-- Koa
+- Koa - Learn how Hatchify leverages Koa middleware functionality
   - [API Docs](docs/koa/README.md)
-- Express
+- Express - Learn the details of our Express implementation
   - [API Docs](docs/express/README.md) 🛑
-- React
+- React - Learn how to use and customize Hatchify's schema-driven library of React components and CRUD methods
+  - [REST Client](docs/react/rest-client.md) 🛑
   - [API Docs](docs/react/README.md)
   - [Components](docs/react/components.md)
-  - [REST Client](docs/react/rest-client.md) 🛑
 
 ## Need help or have questions?
 
