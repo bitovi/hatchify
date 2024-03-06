@@ -1,6 +1,6 @@
 # hatchedKoa.serialize
 
-`hatchedKoa.serialize` is a collection of methods to take data from the [hatchedKoa.model](./hatchedKoa.model.md) methods and transform it to [JSON:API](../jsonapi/README.md) response formats that look like the following:
+`hatchedKoa.serialize` is a collection of methods to take results from the `hatchedKoa.orm.models` methods which is one or more of either `ORMRecord` or `PlainRecord` and transform them to [JSON:API](../jsonapi/README.md) response format that look like the following:
 
 ```js
 {
@@ -20,19 +20,23 @@
 }
 ```
 
-Normally these functions will take Model data that was returned from the ORM query. This export also includes a slightly different function for helping create JSON:API compliant Error responses. 
+Each model has the following methods:
 
-🛑 Does it take the data from the ORM?  The orm returns sequelize instances.  I think it takes it from a plain JS object returned by `model` functions ...
+- [findAll](#findall)
+- [findAndCountAll](#findandcountall)
+- [findOne](#findone)
+- [create](#create)
+- [update](#update)
+- [destroy](#destroy)
 
 ## findAll
 
-`hatchedKoa.serialize[schemaName].findAll(data: Model[], ops: SerializerOptions) =>JSONAPIDocument` serializes result of multiple instances.
+Serializes result of multiple instances and to show only the specified attributes.
+
+`hatchedKoa.serialize[schemaName].findAll: (data: PlainRecord[] | ORMRecord[], attributes: string[]) => JSONAPIDocument`
 
 ```ts
-const serializedTodos = await hatchedKoa.serialize.Todo.findAll(
-  [{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }],
-  ["id", "name"]
-);
+const serializedTodos = hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
 // serializedTodos = {
 //   jsonapi: { version: "1.0" },
 //   data: [
@@ -45,15 +49,28 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAll(
 // }
 ```
 
+**Parameters**
+
+| Property   | Type                           | Default     | Details                          |
+| ---------- | ------------------------------ | ----------- | -------------------------------- |
+| data       | `PlainRecord[] \| ORMRecord[]` | `undefined` | Specify what records to show.    |
+| attributes | string[]                       | `undefined` | Specify what attributes to show. |
+
+**Returns**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+
 ## findAndCountAll
 
-`hatchedKoa.serialize[schemaName].findAndCountAll(data: {count: number; rows: Model[]}, ops: SerializerOptions) =>JSONAPIDocument` serializes result of all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+Serializes result of paginated data and a total count to show only the specified attributes. This is very useful for pagination.
+
+`hatchedKoa.serialize[schemaName].findAndCountAll: (data: { count: number; rows: PlainRecord[] | ORMRecord[] }, attributes: string[]) => JSONAPIDocument`
 
 ```ts
-const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
+const serializedTodos = hatchedKoa.serialize.Todo.findAndCountAll(
   {
     rows: [{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }],
-    count: 1,
+    count: 10,
   },
   ["id", "name"],
 )
@@ -66,18 +83,29 @@ const serializedTodos = await hatchedKoa.serialize.Todo.findAndCountAll(
 //       attributes: { name: "Baking" },
 //     }
 //   ],
-//   meta: { unpaginatedCount: 1 }
+//   meta: { unpaginatedCount: 10 }
 // }
 ```
 
+**Parameters**
+
+| Property   | Type                                                    | Default     | Details                                       |
+| ---------- | ------------------------------------------------------- | ----------- | --------------------------------------------- |
+| data       | `{ data: PlainRecord[] \| ORMRecord[], count: number }` | `undefined` | Specify what records and total cound to show. |
+| attributes | string[]                                                | `undefined` | Specify what attributes to show.              |
+
+**Returns**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## findOne
 
+Serializes result of a single instance.
 
-`hatchedKoa.serialize[schemaName].findOne(data: Model, ops: SerializerOptions) => JSONAPIDocument` serializes result of a single instance.
+`hatchedKoa.serialize[schemaName].findOne: (data: PlainRecord | ORMRecord, attributes: string[]) => JSONAPIDocument`
 
 ```ts
-const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
+const serializedTodo = hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
 // serializedTodo = {
 //   jsonapi: { version: "1.0" },
 //   data: {
@@ -88,16 +116,25 @@ const serializedTodo = await hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-b
 // }
 ```
 
+**Parameters**
 
+| Property   | Type                       | Default     | Details                          |
+| ---------- | -------------------------- | ----------- | -------------------------------- |
+| data       | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show.     |
+| attributes | string[]                   | `undefined` | Specify what attributes to show. |
+
+**Returns**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## create
 
-`hatchedKoa.serialize[schemaName].create(data: Model, ops: SerializerOptions) =>JSONAPIDocument`
-
 Serializes a result of a new instance creation.
 
+`hatchedKoa.serialize[schemaName].create: (data: PlainRecord | ORMRecord) => JSONAPIDocument`
+
 ```ts
-const serializedTodo = await hatchedKoa.serialize.Todo.create({
+const serializedTodo = hatchedKoa.serialize.Todo.create({
   id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
   name: "Baking",
 })
@@ -111,14 +148,25 @@ const serializedTodo = await hatchedKoa.serialize.Todo.create({
 // }
 ```
 
+**Parameters**
+
+| Property   | Type                       | Default     | Details                          |
+| ---------- | -------------------------- | ----------- | -------------------------------- |
+| data       | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show.     |
+| attributes | string[]                   | `undefined` | Specify what attributes to show. |
+
+**Returns**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+
 ## update
 
-🛑 Signature doesn't match the example 🛑
+Serializes a result of an update.
 
-`hatchedKoa.serialize[schemaName].update(count: number, ops: SerializerOptions) => JSONAPIDocument` serializes a result of an update.
+`hatchedKoa.serialize[schemaName].update: (data: PlainRecord | ORMRecord, affectedCount: number) => JSONAPIDocument`
 
 ```ts
-const serializedTodo = await hatchedKoa.serialize.Todo.update(
+const serializedTodo = hatchedKoa.serialize.Todo.update(
   {
     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
     name: "Baking",
@@ -135,16 +183,31 @@ const serializedTodo = await hatchedKoa.serialize.Todo.update(
 // }
 ```
 
+**Parameters**
+
+| Property      | Type                       | Default     | Details                      |
+| ------------- | -------------------------- | ----------- | ---------------------------- |
+| data          | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show. |
+| affectedCount | number                     | `undefined` | Specify update count.        |
+
+**Returns**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+
 ## destroy
 
-`hatchedKoa.serialize[schemaName].destroy(count: number, ops: SerializerOptions) => JSONAPIDocument` serializes a result of a deletion.
+Serializes a result of a deletion.
+
+`hatchedKoa.serialize[schemaName].destroy: () => JSONAPIDocument`
 
 ```ts
-const serializedResult = await hatchedKoa.serialize.Todo.destroy(1)
+const serializedResult = hatchedKoa.serialize.Todo.destroy()
 // serializedResult = {
 //   jsonapi: { version: "1.0" },
 //   data: null,
 // }
 ```
 
-🛑 Do SerializerOptions do anything here 🛑 We also need to document SerializerOptions 🛑
+**Returns**
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)

@@ -377,7 +377,7 @@ export function buildExportWrapper<T>(
   const wrapper: ModelFunctionsCollection<T> = {
     allModels: handlerFunction(hatchify, "*"),
   }
-  Object.keys(hatchify.model).forEach((modelName: string) => {
+  Object.keys(hatchify.orm.models).forEach((modelName: string) => {
     wrapper[modelName] = handlerFunction(hatchify, modelName)
   })
 

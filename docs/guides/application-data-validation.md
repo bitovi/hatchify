@@ -69,18 +69,18 @@ router.post("/api/assignments", async (ctx, next) => {
   // Run a parse first to do a general check that all the required
   // information is there, before we start the transactions and everything
   // If this doesn't pass we can fail fast and just bail out.
-  const createOptions = await hatchedKoa.parse.Assignment.create(ctx.body)
+  const createOptions = hatchedKoa.parse.Assignment.create(ctx.body)
 
   const { startDate, endDate, employeeId } = <Assignment>ctx.body
 
   // Wrap with a managed Sequelize transaction
   await hatchedKoa.orm.transaction(async (transaction) => {
-    let assignmentsForEmployee = await hatchedKoa.model.Assignment.findAll({
+    let assignmentsForEmployee = await hatchedKoa.orm.models.Assignment.findAll({
       where: { employeeId },
       transaction,
     })
 
-    assignmentsForEmployee = await hatchedKoa.model.Assignment.findAll({
+    assignmentsForEmployee = await hatchedKoa.orm.models.Assignment.findAll({
       where: {
         employeeId,
         startDate: { [Op.gt]: startDate },
@@ -98,8 +98,8 @@ router.post("/api/assignments", async (ctx, next) => {
       ]
     }
 
-    const assignment = await hatchedKoa.model.Assignment.create(createOptions.body, { ...createOptions.ops, transaction })
-    const result = await hatchedKoa.serialize.Assignment.create(assignment)
+    const assignment = await hatchedKoa.orm.models.Assignment.create(createOptions.body, { ...createOptions.ops, transaction })
+    const result = hatchedKoa.serialize.Assignment.create(assignment)
   })
 
   ctx.status = 201
