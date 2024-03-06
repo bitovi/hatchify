@@ -283,9 +283,9 @@ DELETE /api/users/:id
 Usage Examples:
 
 ```ts
-router.get("/get-all-skills", hatchedKoa.middleware.Todo.findAll)
-router.get("/count-all-skills", hatchedKoa.middleware.Todo.findAndCountAll)
-router.get("/get-one-skill/:id", hatchedKoa.middleware.Todo.findOne)
+router.get("/get-all-todos", hatchedKoa.middleware.Todo.findAll)
+router.get("/get-and-count-all-todos", hatchedKoa.middleware.Todo.findAndCountAll)
+router.get("/get-one-todo/:id", hatchedKoa.middleware.Todo.findOne)
 ```
 
 `hatchedKoa.middleware.allModels.all`
