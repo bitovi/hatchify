@@ -89,8 +89,7 @@ export async function setupKoa(
   })
 
   app.use(koaErrorHandlerMiddleware)
-  app.use(hatchedKoa.middleware.allModels.findAll)
-  //app.use(hatchedKoa.middleware.allModels.destroy)
+  app.use(hatchedKoa.middleware.allModels.all)
 
   app.use(c2k(vite.middlewares))
 

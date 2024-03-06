@@ -75,7 +75,7 @@ export interface MiddlewareFunctionsExpress {
 
 export function buildMiddlewareForModel(
   hatchify: Hatchify,
-  modelName: string | symbol,
+  modelName: string,
 ): MiddlewareFunctionsExpress {
   return Object.entries(
     getMiddlewareFunctions(hatchify, modelName as string),
