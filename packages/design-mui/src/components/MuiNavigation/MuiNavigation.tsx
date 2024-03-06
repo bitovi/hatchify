@@ -7,8 +7,8 @@ export interface MuiNavigationProps<
 > {
   finalSchemas: FinalSchemas
   partialSchemas: TSchemas
-  activeSchema: keyof TSchemas | undefined
-  setActiveSchema: (schema: keyof TSchemas) => void
+  activeTab: string | undefined
+  onTabChange: (schema: string | undefined) => void
   children?: React.ReactNode | null
 }
 
@@ -22,8 +22,8 @@ function a11yProps(key: string) {
 function MuiNavigation<const TSchemas extends Record<string, PartialSchema>>({
   finalSchemas,
   partialSchemas,
-  activeSchema,
-  setActiveSchema,
+  activeTab,
+  onTabChange,
 }: MuiNavigationProps<TSchemas>): JSX.Element {
   if (!Object.values(partialSchemas).length) {
     return (
@@ -44,8 +44,8 @@ function MuiNavigation<const TSchemas extends Record<string, PartialSchema>>({
   return (
     <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 2 }}>
       <Tabs
-        value={activeSchema}
-        onChange={(_, newValue) => setActiveSchema(newValue)}
+        value={activeTab}
+        onChange={(_, newValue) => onTabChange(newValue)}
         aria-label="schema tabs navigation"
       >
         {Object.values(partialSchemas).map((schema) => {

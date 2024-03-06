@@ -7,8 +7,8 @@ export interface HatchifyNavigationProps<
 > {
   finalSchemas: FinalSchemas
   partialSchemas: TSchemas
-  activeSchema: keyof TSchemas | undefined
-  setActiveSchema: (schema: keyof TSchemas) => void
+  activeTab: string | undefined
+  onTabChange: (schema: string) => void
   children?: React.ReactNode | null
 }
 
