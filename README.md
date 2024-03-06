@@ -224,7 +224,7 @@ Learn how to make Hatchify match your needs with its technical interface documen
   - [Attributes](docs/schema/attribute-types/README.md)
   - [Relationships](docs/schema/relationship-types/README.md)
   - [Schema Naming](docs/schema/naming.md)
-- [JSON:API](docs/jsonapi/README.md) - Learn the details of our JSONAPI implementation.
+- [JSON:API](docs/jsonapi/README.md) - Learn the details of our JSON:API implementation.
   - [Creating](docs/jsonapi/creating.md)
   - [Reading](docs/jsonapi/reading/README.md)
     - [Filtering](docs/jsonapi/reading/filtering/README.md)
@@ -238,7 +238,7 @@ Learn how to make Hatchify match your needs with its technical interface documen
   - [API Docs](docs/koa/README.md)
 - Express - Learn the details of our Express implementation
   - [API Docs](docs/express/README.md) 🛑
-- React - Learn how to use and customize Hatchify's schema-driven library of React components and helper methods
+- React - Learn how to use and customize Hatchify's schema-driven library of React components and CRUD methods
   - [REST Client](docs/react/rest-client.md) 🛑
   - [API Docs](docs/react/README.md)
   - [Components](docs/react/components.md)

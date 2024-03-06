@@ -4,6 +4,8 @@ The `hatchedApp.state` property independently manages the state of the component
 
 `const todoState = hatchedApp.state.Todo`
 
+The above `hatchedApp.state.[schema]` signature exposes the [`useDataGridState`](#usedatagridstate) hook for the given schema. This hook is used to configure custom data grid components and their states.
+
 ## useDataGridState
 
 The [`useDataGridState({})`](#usedatagridstate) hook exists on each `hatchedApp.state.[schema]` object. [`useDataGridState({})`](#usedatagridstate) takes in and returns a [`DataGridState`](./types.md#datagridstate) typed object to allow you to customize the Data Grid subcomponents.
@@ -21,8 +23,10 @@ const todoState = hatchedApp.state.Todo.useDataGridState({
 })
 ```
 
+The below examples share a flow of using the prebuilt Hatchify [`DataGrid`](./components.md#datagrid) vs. using the `useDataGridState` hook to individually customize the [`List`](./components.md#list), [`Filters`](./components.md#filters), and [`Pagination`](./components.md#pagination) components that make up the DataGrid, rescpectively.
+
 ```tsx
-import { createJsonapiClient, hatchifyReact, HatchifyProvider } from "@hatchify/react"
+import { createJsonapiClient, hatchifyReact, HatchifyProvider, List, Filters, Pagination  } from "@hatchify/react"
 
 // Define your schemas
 const schemas = { ...Todo }
@@ -33,56 +37,50 @@ const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
 // Define your TodoDataGrid component
 const TodoDataGrid = hatchedReact.components.Todo.DataGrid
 
-import { List, Filters, Pagination } from "@hatchictyjs/react";
+// Render the Hatchify DataGrid
+const hatchedComponent = () => {
+  return (
+    <HatchifyProvider>
+      <TodoDataGrid />
+    </HatchifyProvider>
+  )
+}
+```
+
+```tsx
+import { createJsonapiClient, hatchifyReact, HatchifyProvider, List, Filters, Pagination  } from "@hatchify/react"
+
+// Define your schemas
+const schemas = { ...Todo }
+
+// Create your Hatchify React App instance
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
 
 
+// Render the your custom Hatchify components
 const hatchedComponent = () => {
 
-  const todoState = hatchedApp.state.Todo.useDataGridState({
-    defaultSelected: initially highlighted rows (checkbox on each row)
-    onSelectedChange: callback function when a selecion is made (checkbox on each row)
-    fields: fields to be included (jsonapi) eg. fields=["name"] - does not return other fields, only the ones specified
-    include: which relationships to include eg. include=["user", "user.friend"]
-    defaultPage: initial pagination data
-    defaultSort: initial sort direction for a column
-    baseFilter: a pre filter to be used alongside additional filters
-    minimumLoadTime: minimum time to show loading spinner
-  }) // 👀
-
-  Todo = name, date, user
-  User = name, email, friend (user)
-
-  no fields, include
-  | name | date | user(.name)
-
-  fields "name", no include
-  | name |
-
-  no fields, include user
-  | name | date | user(.name) |
-
-  no fields, include user.friend
-  | name | date | user(.name) |
-
-  table by default renders whatever fields and to-one relationships
-    if fields are specified, only those fields are rendered
-    if include is specified, those relationships are included
-
   todoState = {
-    data: Record[],
-    columns: Column[], // based off of schema
-    filters, setFilters
-    page, setPage,
-    sort, setSort
+    minimumLoadTime: 1000,
   }
+
+  const myCustomFilterState = hatchedReact.state.Todo.useDataGridState({
+    ...todoState,
+    include: ["approvedBy"],
+    fields: ["name"],
+  })
+
+  const myCustomListState = hatchedReact.state.Todo.useDataGridState({
+    ...todoState,
+    include: ["approvedBy"],
+    fields: ["name"],
+  })
 
   return (
     <HatchifyProvider>
-      <MyCustomFilter {...todoState} />
-      <List {...todoState} />
+      <MyCustomFilter {...myCustomFilterState} />
+      <List {...myCustomListState} />
       <Pagination {...todoState} />
-      // <MyCustomPagination page={todoState.page} setPage={todoState.setPage} />
-      // <TodoDataGrid />
     </HatchifyProvider>
   )
 }
