@@ -8,13 +8,12 @@ export interface EverythingFunctions {
   findAll: (querystring: string) => Promise<JSONAPIDocument>
   findOne: (querystring: string, id: Identifier) => Promise<JSONAPIDocument>
   findAndCountAll: (query: string) => Promise<JSONAPIDocument>
-  create: (body: unknown, querystring: string) => Promise<JSONAPIDocument>
-  update: (
-    body: unknown,
+  create: (
+    body: JSONAPIDocument,
     querystring: string,
-    id?: Identifier,
   ) => Promise<JSONAPIDocument>
-  destroy: (querystring: string, id: Identifier) => Promise<JSONAPIDocument>
+  update: (body: JSONAPIDocument, id: Identifier) => Promise<JSONAPIDocument>
+  destroy: (id: Identifier) => Promise<JSONAPIDocument>
 }
 
 export function buildEverythingForModel(
@@ -32,22 +31,25 @@ export function buildEverythingForModel(
 }
 
 export function findAllEverything(hatchify: Hatchify, modelName: string) {
-  return async function findAllImpl(querystring: string) {
-    const params = await hatchify.parse[modelName].findAll(querystring)
-    const result = await hatchify.model[modelName].findAll(params)
-    const response = await hatchify.serialize[modelName].findAll(
+  return async function findAllImpl(
+    querystring: string,
+  ): Promise<JSONAPIDocument> {
+    const params = hatchify.parse[modelName].findAll(querystring)
+    const result = await hatchify.orm.models[modelName].findAll(params)
+    return hatchify.serialize[modelName].findAll(
       result.map((row) => row.get({ plain: true })),
       params.attributes,
     )
-
-    return response
   }
 }
 
 export function findOneEverything(hatchify: Hatchify, modelName: string) {
-  return async function findOneImpl(querystring: string, id: Identifier) {
-    const params = await hatchify.parse[modelName].findOne(querystring, id)
-    const result = await hatchify.model[modelName].findByPk(id, params)
+  return async function findOneImpl(
+    querystring: string,
+    id: Identifier,
+  ): Promise<JSONAPIDocument> {
+    const params = hatchify.parse[modelName].findOne(querystring, id)
+    const result = await hatchify.orm.models[modelName].findByPk(id, params)
     if (!result) {
       throw [
         new NotFoundError({
@@ -55,11 +57,7 @@ export function findOneEverything(hatchify: Hatchify, modelName: string) {
         }),
       ]
     }
-    const response = await hatchify.serialize[modelName].findOne(
-      result,
-      params.attributes,
-    )
-    return response
+    return hatchify.serialize[modelName].findOne(result, params.attributes)
   }
 }
 
@@ -67,37 +65,39 @@ export function findAndCountAllEverything(
   hatchify: Hatchify,
   modelName: string,
 ) {
-  return async function findAndCountAllImpl(querystring: string) {
-    const params = await hatchify.parse[modelName].findAndCountAll(querystring)
-    const result = await hatchify.model[modelName].findAndCountAll(params)
+  return async function findAndCountAllImpl(
+    querystring: string,
+  ): Promise<JSONAPIDocument> {
+    const params = hatchify.parse[modelName].findAndCountAll(querystring)
+    const result = await hatchify.orm.models[modelName].findAndCountAll(params)
 
-    const response = await hatchify.serialize[modelName].findAndCountAll(
+    return hatchify.serialize[modelName].findAndCountAll(
       { ...result, rows: result.rows.map((row) => row.get({ plain: true })) },
       params.attributes,
     )
-    return response
   }
 }
 
 export function createEverything(hatchify: Hatchify, modelName: string) {
-  return async function createImpl(rawbody: unknown) {
-    const { body, ops } = await hatchify.parse[modelName].create(rawbody)
-    const result = await hatchify.model[modelName].create(body, ops)
-    const response = await hatchify.serialize[modelName].create(
-      result.get({ plain: true }),
-    )
-    return response
+  return async function createImpl(
+    rawbody: JSONAPIDocument,
+  ): Promise<JSONAPIDocument> {
+    const { body, ops } = hatchify.parse[modelName].create(rawbody)
+    const result = await hatchify.orm.models[modelName].create(body, ops)
+    return hatchify.serialize[modelName].create(result.get({ plain: true }))
   }
 }
 
 export function updateEverything(hatchify: Hatchify, modelName: string) {
   return async function updateImpl(
-    rawbody: any,
-    querystring: string,
-    id?: Identifier,
-  ) {
-    const { body, ops } = await hatchify.parse[modelName].update(rawbody, id)
-    const [affectedCount] = await hatchify.model[modelName].update(body, ops)
+    rawbody: JSONAPIDocument,
+    id: Identifier,
+  ): Promise<JSONAPIDocument> {
+    const { body, ops } = hatchify.parse[modelName].update(rawbody, id)
+    const [affectedCount] = await hatchify.orm.models[modelName].update(
+      body,
+      ops,
+    )
     if (!affectedCount) {
       throw [
         new NotFoundError({
@@ -106,19 +106,18 @@ export function updateEverything(hatchify: Hatchify, modelName: string) {
         }),
       ]
     }
-    const updated = await hatchify.model[modelName].findByPk(id)
-    const response = await hatchify.serialize[modelName].update(
-      updated.get({ plain: true }),
+    const updated = await hatchify.orm.models[modelName].findByPk(id)
+    return hatchify.serialize[modelName].update(
+      updated?.get({ plain: true }),
       affectedCount,
     )
-    return response
   }
 }
 
 export function destroyEverything(hatchify: Hatchify, modelName: string) {
-  return async function destroyImpl(querystring: string, id: Identifier) {
-    const params = await hatchify.parse[modelName].destroy(querystring, id)
-    const affectedCount = await hatchify.model[modelName].destroy(params)
+  return async function destroyImpl(id: Identifier): Promise<JSONAPIDocument> {
+    const params = hatchify.parse[modelName].destroy(id)
+    const affectedCount = await hatchify.orm.models[modelName].destroy(params)
     if (!affectedCount) {
       throw [
         new NotFoundError({
@@ -127,7 +126,6 @@ export function destroyEverything(hatchify: Hatchify, modelName: string) {
         }),
       ]
     }
-    const response = await hatchify.serialize[modelName].destroy(affectedCount)
-    return response
+    return hatchify.serialize[modelName].destroy()
   }
 }

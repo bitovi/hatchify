@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This feature is deprecated. Do not use it. Use `hatchedKoa.orm.models` instead.
+
 # hatchedKoa.model
 
 `hatchedKoa.model` is a collection of methods to create, retrieve, update and delete records using the underlying [ORM](https://sequelize.org/). These methods
@@ -39,7 +42,7 @@ Each model has the following methods:
 
 A method that retrieves Sequelize objects from the underlying ORM and database.
 
-`hatchedKoa.model[schemaName].findAll(options : FindOptions) => Promise<[Model]>`
+`hatchedKoa.model[schemaName].findAll: (options : FindOptions) => Promise<[Model]>`
 
 ```ts
 const deserializedTodos = await hatchedKoa.model.Todo.findAll({
@@ -68,16 +71,16 @@ Since this is exposing the actual Sequelize function, it can throw any [Sequeliz
 
 Finds all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for pagination.
 
-`hatchedKoa.model[schemaName].findAndCountAll(options : FindOptions) => Promise<{ count: number, rows: Model[] }>`
+`hatchedKoa.model[schemaName].findAndCountAll: (options : FindOptions) => Promise<{ count: number, rows: Model[] }>`
 
 ```ts
 const deserializedTodos = await hatchedKoa.model.Todo.findAll({
   where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
-  limit: 10,
+  limit: 1,
   offset: 0,
 })
 // deserializedTodos = {
-//   count: 1,
+//   count: 10,
 //   rows: [
 //     { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
 //   ]
@@ -102,7 +105,7 @@ Since this is exposing the actual Sequelize function, it can throw any [Sequeliz
 
 searches for a single instance. Returns the first instance found, or null if none can be found.
 
-`hatchedKoa.model[schemaName].findAll(options: FindOptions) => Promise<Model | null>`
+`hatchedKoa.model[schemaName].findAll: (options: FindOptions) => Promise<Model | null>`
 
 ```ts
 const deserializedTodo = await hatchedKoa.model.Todo.findOne({
@@ -129,7 +132,7 @@ Since this is exposing the actual Sequelize function, it can throw any [Sequeliz
 
 creates a new instance.
 
-`hatchedKoa.model[schemaName].create(body: object, options: CreateOptions) => Promise<Model>`
+`hatchedKoa.model[schemaName].create: (body: object, options: CreateOptions) => Promise<Model>`
 
 ```ts
 const deserializedTodo = await hatchedKoa.model.Todo.create({ name: "Baking" })
@@ -155,7 +158,7 @@ Since this is exposing the actual Sequelize function, it can throw any [Sequeliz
 
 updates one or more instances.
 
-`hatchedKoa.model[schemaName].update(body: object, options: UpdateOptions, id?: Identifier) => Promise<[number, Model[]]>`
+`hatchedKoa.model[schemaName].update: (body: object, options: UpdateOptions, id?: Identifier) => Promise<[number, Model[]]>`
 
 ```ts
 const [updatedCount, updatedTodos] = await hatchedKoa.model.Todo.update({ name: "Serving" }, { where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" } })
@@ -184,7 +187,7 @@ Since this is exposing the actual Sequelize function, it can throw any [Sequeliz
 
 Deletes one or more instances.
 
-`hatchedKoa.model[schemaName].destroy(options: DestroyOptions, id?: Identifier) => Promise<number>`
+`hatchedKoa.model[schemaName].destroy: (options: DestroyOptions, id?: Identifier) => Promise<number>`
 
 ```ts
 const deletedCount = await hatchedKoa.model.Todo.destroy({

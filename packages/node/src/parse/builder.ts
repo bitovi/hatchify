@@ -6,12 +6,10 @@ import { getSchemaKey } from "@hatchifyjs/core"
 import type { FinalSchema } from "@hatchifyjs/core"
 import type {
   CreateOptions,
-  DestroyOptions,
   Dialect,
   FindOptions,
   Identifier,
   ProjectionAlias,
-  UpdateOptions,
 } from "sequelize"
 
 import { handlePostgresUuid } from "./handlePostgresUuid.js"
@@ -271,61 +269,4 @@ export function buildCreateOptions(
   schema: FinalSchema,
 ): QueryStringParser<CreateOptions> {
   return querystringParser.parse(replaceIdentifiers(querystring, schema))
-}
-
-export function buildUpdateOptions(
-  querystring: string,
-  schema: FinalSchema,
-  id?: Identifier,
-): QueryStringParser<UpdateOptions> {
-  const ops: QueryStringParser<UpdateOptions, QueryStringParsingError> =
-    querystringParser.parse(replaceIdentifiers(querystring, schema))
-
-  if (ops.errors.length) {
-    throw ops.errors.map(
-      (error: QueryStringParsingError) =>
-        new UnexpectedValueError({
-          parameter: error.paramKey,
-          detail: error.message,
-        }),
-    )
-  }
-
-  if (!ops.data.where) {
-    ops.data.where = {}
-    if (id) {
-      ops.data.where.id = id
-    }
-  }
-
-  return ops as unknown as QueryStringParser<UpdateOptions>
-}
-
-export function buildDestroyOptions(
-  querystring: string,
-  schema: FinalSchema,
-  id?: Identifier,
-): QueryStringParser<DestroyOptions> {
-  const ops: QueryStringParser<DestroyOptions, QueryStringParsingError> =
-    querystringParser.parse(replaceIdentifiers(querystring, schema))
-
-  if (ops.errors.length) {
-    throw ops.errors.map(
-      (error: QueryStringParsingError) =>
-        new UnexpectedValueError({
-          parameter: error.paramKey,
-          detail: error.message,
-        }),
-    )
-  }
-
-  if (!ops.data.where) {
-    ops.data.where = {}
-    if (id) {
-      ops.data.where.id = id
-    }
-  }
-
-  // Perform additional checks if needed...
-  return ops as unknown as QueryStringParser<DestroyOptions>
 }
