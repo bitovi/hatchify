@@ -97,7 +97,7 @@ app.use(hatchedKoa.middleware[schemaName].all)
 This exports a single middleware function that will call `everything[schemaName].findAll` function regardless of the method and the URL. It is useful when used with a router.
 
 ```ts
-router.get("/get-all-skills", hatchedKoa.middleware.Todo.findAll)
+router.get("/get-all-todos", hatchedKoa.middleware.Todo.findAll)
 ```
 
 ### findAndCountAll
@@ -107,7 +107,7 @@ router.get("/get-all-skills", hatchedKoa.middleware.Todo.findAll)
 This exports a single middleware function that will call `everything[schemaName].findAndCountAll` function regardless of the method and the URL. It is useful when used with a router.
 
 ```ts
-router.get("/get-and-count-all-skills", hatchedKoa.middleware.Todo.findAndCountAll)
+router.get("/get-and-count-all-todos", hatchedKoa.middleware.Todo.findAndCountAll)
 ```
 
 ### findOne
@@ -117,7 +117,7 @@ router.get("/get-and-count-all-skills", hatchedKoa.middleware.Todo.findAndCountA
 This exports a single middleware function that will call `everything[schemaName].findOne` function regardless of the method and the URL. It is useful when used with a router.
 
 ```ts
-router.get("/get-one-skill/:id", hatchedKoa.middleware.Todo.findOne)
+router.get("/get-one-todo/:id", hatchedKoa.middleware.Todo.findOne)
 ```
 
 ### create
@@ -127,7 +127,7 @@ router.get("/get-one-skill/:id", hatchedKoa.middleware.Todo.findOne)
 This exports a single middleware function that will call `everything[schemaName].create` function regardless of the method and the URL. It is useful when used with a router.
 
 ```ts
-router.post("/create-skill", hatchedKoa.middleware.Todo.create)
+router.post("/create-todo", hatchedKoa.middleware.Todo.create)
 ```
 
 ### update
@@ -137,7 +137,7 @@ router.post("/create-skill", hatchedKoa.middleware.Todo.create)
 This exports a single middleware function that will call `everything[schemaName].update` function regardless of the method and the URL. It is useful when used with a router.
 
 ```ts
-router.patch("/update-skill", hatchedKoa.middleware.Todo.update)
+router.patch("/update-todo", hatchedKoa.middleware.Todo.update)
 ```
 
 ### destroy
@@ -147,5 +147,5 @@ router.patch("/update-skill", hatchedKoa.middleware.Todo.update)
 This exports a single middleware function that will call `everything[schemaName].destroy` function regardless of the method and the URL. It is useful when used with a router.
 
 ```ts
-router.delete("/delete-skill", hatchedKoa.middleware.Todo.destroy)
+router.delete("/delete-todo", hatchedKoa.middleware.Todo.destroy)
 ```
