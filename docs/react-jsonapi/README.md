@@ -1,12 +1,14 @@
 # `@hatchifyjs/react-jsonapi`
 
-`@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../schema/README.md) and produces an API layer that your frontend can use for a JSON:API backend.
+`@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../schema/README.md) and produces an API client that your frontend can use for your JSON:API backend.
+
+In this simplified example, we use `@hatchifyjs/react-jsonapi` to create and fetch todos from a JSON:API backend. To learn how to use the full power of the package, see the documentation for each individual function.
 
 ```tsx
+import { useState } from "react"
 import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonapi"
 import { string } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
-import { useState } from "react"
 
 const Todo = {
   name: "Todo",
@@ -18,8 +20,8 @@ const Todo = {
 const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", { Todo }))
 
 function App() {
-  const [todos, state] = hatchedReactRest.Todo.useAll()
-  const [createTodo, createState, created] = hatchedReactRest.Todo.useCreateOne()
+  const [todos] = hatchedReactRest.Todo.useAll()
+  const [createTodo] = hatchedReactRest.Todo.useCreateOne()
   const [name, setName] = useState("")
 
   return (
