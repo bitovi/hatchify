@@ -5,13 +5,18 @@ import { fileURLToPath } from "url"
 import type { PartialAttributeRecord, PartialSchema } from "@hatchifyjs/core"
 import type {
   DatabaseOptions,
-  ExpressMiddleware,
   Hatchify as HatchifyExpress,
   HatchifyOptions,
 } from "@hatchifyjs/express"
-import { hatchifyExpress } from "@hatchifyjs/express"
-import type { Hatchify as HatchifyKoa, KoaMiddleware } from "@hatchifyjs/koa"
-import { hatchifyKoa } from "@hatchifyjs/koa"
+import {
+  errorHandlerMiddleware as expressErrorHandlerMiddleware,
+  hatchifyExpress,
+} from "@hatchifyjs/express"
+import type { Hatchify as HatchifyKoa } from "@hatchifyjs/koa"
+import {
+  hatchifyKoa,
+  errorHandlerMiddleware as koaErrorHandlerMiddleware,
+} from "@hatchifyjs/koa"
 import type { Express } from "express"
 import express from "express"
 import Koa from "koa"
@@ -51,7 +56,7 @@ export function getDatabaseConfiguration(
 }
 
 export async function setupExpress(
-  middleware: ExpressMiddleware,
+  hatchedExpress: HatchifyExpress,
 ): Promise<Express> {
   const app = express()
 
@@ -68,12 +73,13 @@ export async function setupExpress(
     }
   })
 
-  app.use(middleware)
+  app.use(expressErrorHandlerMiddleware)
+  app.use(hatchedExpress.middleware.allModels.all)
   return app
 }
 
 export async function setupKoa(
-  middleware: KoaMiddleware,
+  hatchedKoa: HatchifyKoa,
 ): Promise<Koa<Koa.DefaultState, Koa.DefaultContext>> {
   const app = new Koa()
 
@@ -82,7 +88,9 @@ export async function setupKoa(
     server: { middlewareMode: true },
   })
 
-  app.use(middleware)
+  app.use(koaErrorHandlerMiddleware)
+  app.use(hatchedKoa.middleware.allModels.findAll)
+  //app.use(hatchedKoa.middleware.allModels.destroy)
 
   app.use(c2k(vite.middlewares))
 

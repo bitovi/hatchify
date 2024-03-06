@@ -36,7 +36,7 @@ export interface MiddlewareFunctionsKoa {
    */
   update: KoaMiddleware
   /**
-   * Deletes one or more instances.
+   * Deletes one instance.
    */
   destroy: KoaMiddleware
 
@@ -69,11 +69,8 @@ export interface MiddlewareFunctionsKoa {
 
 export function buildMiddlewareForModel(
   hatchify: HatchifyNode,
-  modelName: string | symbol,
 ): MiddlewareFunctionsKoa {
-  return Object.entries(
-    getMiddlewareFunctions(hatchify, modelName as string),
-  ).reduce(
+  return Object.entries(getMiddlewareFunctions(hatchify)).reduce(
     (acc, [name, genericFunction]): MiddlewareFunctionsKoa => ({
       ...acc,
       [name]: async (context: Koa.Context, next: Koa.Next) => {
