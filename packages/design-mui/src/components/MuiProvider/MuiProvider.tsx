@@ -7,6 +7,8 @@ import {
 import { MuiLayout } from "../MuiLayout/index.js"
 import MuiDataGrid from "../MuiDataGrid/MuiDataGrid.js"
 import { MuiEverything } from "../MuiEverything/index.js"
+import { MuiNavigation } from "../MuiNavigation/index.js"
+import { MuiNoSchemas } from "../MuiNoSchemas/index.js"
 import {
   Relationship,
   RelationshipList,
@@ -17,6 +19,8 @@ export const MuiProvider: React.FC<XProviderProps<Theme>> = ({ children }) => {
     <HatchifyPresentationProvider
       DataGrid={MuiDataGrid}
       Everything={MuiEverything}
+      Navigation={MuiNavigation}
+      NoSchemas={MuiNoSchemas}
       Layout={MuiLayout}
       // future: Details, Form
       defaultValueComponents={{
