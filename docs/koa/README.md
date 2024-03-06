@@ -127,24 +127,18 @@ const globals : Globals = {
 
 ### errorHandlerMiddleware
 
-> ⚠️ We should update this with custom usage
-
 `errorHandlerMiddleware` is a middleware to catch any Hatchify error and transform it to a proper [JSON:API](../jsonapi/README.md) response:
 
 ```ts
 import { errorHandlerMiddleware } from "@hatchifyjs/koa"
 
 app.use(errorHandlerMiddleware)
-app.use(hatchify.middleware.allModels.all)
+app.use(() => {
+  throw [new NotFoundError({ detail: "Fake error" })]
+})
 ```
 
-so when sending a request like
-
-```
-GET /api/todos/invalid
-```
-
-it will return an error similar to
+so any request will throw and handled to return an error similar to
 
 ```json
 {
@@ -155,11 +149,8 @@ it will return an error similar to
     {
       "status": 404,
       "code": "not-found",
-      "title": "Resource not found.",
-      "detail": "Payload must include an ID of an existing 'Todo'.",
-      "source": {
-        "parameter": "id"
-      }
+      "detail": "Fake error",
+      "title": "Resource not found."
     }
   ]
 }
