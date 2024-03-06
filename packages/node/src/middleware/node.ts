@@ -11,6 +11,7 @@ import type {
 
 export function getMiddlewareFunctions(
   hatchify: Hatchify,
+  modelName: string,
 ): Record<
   string,
   (
@@ -19,22 +20,25 @@ export function getMiddlewareFunctions(
   ) => Promise<MiddlewareResponse | void | Promise<void>>
 > {
   return {
-    findAll: findAllMiddleware(hatchify),
-    findOne: findOneMiddleware(hatchify),
-    findAndCountAll: findAndCountAllMiddleware(hatchify),
-    create: createMiddleware(hatchify),
-    destroy: destroyMiddleware(hatchify),
-    update: updateMiddleware(hatchify),
+    findAll: findAllMiddleware(hatchify, modelName),
+    findOne: findOneMiddleware(hatchify, modelName),
+    findAndCountAll: findAndCountAllMiddleware(hatchify, modelName),
+    create: createMiddleware(hatchify, modelName),
+    destroy: destroyMiddleware(hatchify, modelName),
+    update: updateMiddleware(hatchify, modelName),
     all: handleAllMiddleware(hatchify),
   }
 }
 
-export function findAllMiddleware(hatchify: Hatchify) {
+export function findAllMiddleware(hatchify: Hatchify, modelName: string) {
   return async function findAllImpl({
     path,
     querystring,
   }: MiddlewareRequest): Promise<MiddlewareResponse> {
-    const modelName = resolveWildcard(hatchify, path)
+    // If this is a wildcard or allModel situation, figure out the model from the route
+    if (modelName === "*") {
+      modelName = resolveWildcard(hatchify, path)
+    }
 
     return {
       body: await hatchify.everything[modelName].findAll(querystring),
@@ -42,16 +46,24 @@ export function findAllMiddleware(hatchify: Hatchify) {
   }
 }
 
-export function findOneMiddleware(hatchify: Hatchify) {
+export function findOneMiddleware(hatchify: Hatchify, modelName: string) {
   return async function findOneImpl({
     errorCallback,
     path,
     querystring,
   }: MiddlewareRequest): Promise<MiddlewareResponse> {
-    const modelName = resolveWildcard(hatchify, path)
     const params = hatchify.getHatchifyURLParamsForRoute(path)
     if (!params.id) {
       throw errorCallback(400, "BAD_REQUEST")
+    }
+
+    // If this is a wildcard or allModel situation, figure out the model from the route
+    if (modelName === "*") {
+      if (!params.modelName) {
+        throw errorCallback(400, "BAD_REQUEST")
+      }
+
+      modelName = params.modelName
     }
 
     return {
@@ -63,12 +75,18 @@ export function findOneMiddleware(hatchify: Hatchify) {
   }
 }
 
-export function findAndCountAllMiddleware(hatchify: Hatchify) {
+export function findAndCountAllMiddleware(
+  hatchify: Hatchify,
+  modelName: string,
+) {
   return async function findAndCountAllImpl({
     path,
     querystring,
   }: MiddlewareRequest): Promise<MiddlewareResponse> {
-    const modelName = resolveWildcard(hatchify, path)
+    // If this is a wildcard or allModel situation, figure out the model from the route
+    if (modelName === "*") {
+      modelName = resolveWildcard(hatchify, path)
+    }
 
     return {
       body: await hatchify.everything[modelName].findAndCountAll(querystring),
@@ -76,14 +94,17 @@ export function findAndCountAllMiddleware(hatchify: Hatchify) {
   }
 }
 
-export function createMiddleware(hatchify: Hatchify) {
+export function createMiddleware(hatchify: Hatchify, modelName: string) {
   return async function createImpl({
     body,
     path,
     querystring,
   }: MiddlewareRequest): Promise<MiddlewareResponse> {
     try {
-      const modelName = resolveWildcard(hatchify, path)
+      // If this is a wildcard or allModel situation, figure out the model from the route
+      if (modelName === "*") {
+        modelName = resolveWildcard(hatchify, path)
+      }
 
       return {
         body: await hatchify.everything[modelName].create(body, querystring),
@@ -95,13 +116,17 @@ export function createMiddleware(hatchify: Hatchify) {
   }
 }
 
-export function updateMiddleware(hatchify: Hatchify) {
+export function updateMiddleware(hatchify: Hatchify, modelName: string) {
   return async function updateImpl({
     body,
     errorCallback,
     path,
   }: MiddlewareRequest): Promise<MiddlewareResponse> {
-    const modelName = resolveWildcard(hatchify, path)
+    // If this is a wildcard or allModel situation, figure out the model from the route
+    if (modelName === "*") {
+      modelName = resolveWildcard(hatchify, path)
+    }
+
     const { id } = hatchify.getHatchifyURLParamsForRoute(path)
 
     if (!id) {
@@ -114,12 +139,16 @@ export function updateMiddleware(hatchify: Hatchify) {
   }
 }
 
-export function destroyMiddleware(hatchify: Hatchify) {
+export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
   return async function destroyImpl({
     errorCallback,
     path,
   }: MiddlewareRequest): Promise<MiddlewareResponse> {
-    const modelName = resolveWildcard(hatchify, path)
+    // If this is a wildcard or allModel situation, figure out the model from the route
+    if (modelName === "*") {
+      modelName = resolveWildcard(hatchify, path)
+    }
+
     const { id } = hatchify.getHatchifyURLParamsForRoute(path)
 
     if (!id) {

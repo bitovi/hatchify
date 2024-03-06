@@ -69,8 +69,9 @@ export interface MiddlewareFunctionsKoa {
 
 export function buildMiddlewareForModel(
   hatchify: HatchifyNode,
+  modelName: string,
 ): MiddlewareFunctionsKoa {
-  return Object.entries(getMiddlewareFunctions(hatchify)).reduce(
+  return Object.entries(getMiddlewareFunctions(hatchify, modelName)).reduce(
     (acc, [name, genericFunction]): MiddlewareFunctionsKoa => ({
       ...acc,
       [name]: async (context: Koa.Context, next: Koa.Next) => {
