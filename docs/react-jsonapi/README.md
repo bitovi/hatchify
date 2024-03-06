@@ -80,7 +80,7 @@ function MyHatchifyCompnent() {
 
 `@hatchifyjs/react-jsonapi` exports the following:
 
-- <a href="#hatchifyreactrest">`hatchifyReactRest`</a> - A function that takes a `RestClient` and returns an object with promise and hook-based functions for each schema.
+- <a href="#hatchifyreactrest">`hatchifyReactRest`</a> - A function that takes a `RestClient`, such as the one returned by `createJsonapiClient`, and returns an object with promise and hook-based functions for each schema.
 - <a href="#createjsonapiclient">`createJsonapiClient`</a> - A function that takes a base URL and a set of schemas and returns a `RestClient` object for a JSON:API backend.
 
 ```ts
@@ -89,7 +89,7 @@ import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonap
 
 ## createJsonapiClient
 
-`createJsonapiClient(baseUrl: string, schemas: Schemas): RestClient` creates a `RestClient` which can then be passed into `hatchifyReactRest`. A `RestClient` is made up of a set of functions that can be used to interact with a JSON:API backend.
+`createJsonapiClient(baseUrl: string, schemas: Schemas): RestClient` creates a `RestClient` which can then be passed into `hatchifyReactRest`. A `RestClient` is made up of a set of CRUD functions for interacting with a JSON:API backend.
 
 ```ts
 const jsonapiClient = createJsonapiClient("/api", schemas)
@@ -110,8 +110,10 @@ const [users] = await hatchedReactRest.User.useAll()
 
 `hatchedReactRest[SchemaName].findAll(): Promise<[RecordType[], MetaData]>`
 
+This is how you could use the `findAll` function to fetch a page of todos. The metadata returned by the server will contain the total count of todos.
+
 ```ts
-const [todos, metadata] = await hatchedReactRest.Todo.findAll()
+const [todos, metadata] = await hatchedReactRest.Todo.findAll({ page: { page: 1, size: 10 } })
 ```
 
 **Parameters**
@@ -131,11 +133,15 @@ An array with the following properties:
 
 ### findOne
 
-`hatchedReactRest[SchemaName].findOne(id: string): Promise<RecordType>`
+`hatchedReactRest[SchemaName].findOne(id: string | QueryOne): Promise<RecordType>`
+
+The `findOne` function can be used to fetch a single record by its id.
 
 ```ts
 const record = await hatchedReactRest.Todo.findOne(UUID)
 ```
+
+Optionally, if you'd like to specify the fields to return or the relationships to include, you can pass in a <a href="#queryone">QueryOne</a> object.
 
 ```ts
 const record = await hatchedReactRest.Todo.findOne({
@@ -153,13 +159,15 @@ const record = await hatchedReactRest.Todo.findOne({
 
 **Returns**
 
-| Type                                            | Details                         |
-| ----------------------------------------------- | ------------------------------- |
-| <a href="#recordtype">`Promise<RecordType>`</a> | The record of the given schema. |
+| Type                                            | Details                       |
+| ----------------------------------------------- | ----------------------------- |
+| <a href="#recordtype">`Promise<RecordType>`</a> | A record of the given schema. |
 
 ### createOne
 
 `hatchedReactRest[SchemaName].createOne(data: Partial<RecordType>): Promise<RecordType`
+
+The `createOne` function creates a new record for the given schema, in this case Todo. Only the required attributes need to be passed in.
 
 ```ts
 const createdRecord = await hatchedReactRest.Todo.createOne({
@@ -184,6 +192,8 @@ const createdRecord = await hatchedReactRest.Todo.createOne({
 
 `hatchedReactRest[SchemaName].updateOne(data: Partial<RecordType>): Promise<RecordType>`
 
+When using the `updateOne` function, the id must be passed in along with only the data that needs to be updated.
+
 ```ts
 const updated = await hatchedReact.model.Todo.updateOne({
   id: createdRecord.id,
@@ -206,6 +216,8 @@ const updated = await hatchedReact.model.Todo.updateOne({
 ### deleteOne
 
 `hatchedReactRest[SchemaName].deleteOne(id: string): Promise<void>`
+
+The `deleteOne` function deletes a record by its id.
 
 ```ts
 await hatchedReactRest.Todo.deleteOne(UUID)
@@ -312,7 +324,7 @@ An array with the following properties:
 
 | Property | Common Alias                                | Type                                       | Details                            |
 | -------- | ------------------------------------------- | ------------------------------------------ | ---------------------------------- |
-| `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordtype">`RecordType`</a>     | The record of the given schema.    |
+| `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordtype">`RecordType`</a>     | A record of the given schema.      |
 | `[1]`    | `state`                                     | <a href="#requeststate">`RequestState`</a> | An object with request state data. |
 
 ### useCreateOne
@@ -522,6 +534,7 @@ The expected shape of the `RecordType` in the case of the `Todo` and `User` sche
     email: string,
   },
 }
+```
 
 ### RequestState
 
@@ -547,4 +560,7 @@ The expected shape of the `RecordType` in the case of the `Todo` and `User` sche
 | Type                                                 | Details                                                                                                                                                                                           |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `(data: Partial<RecordType>) => Promise<RecordType>` | A function that updates the record, modifies the associated <a href="#requeststate">RequestState</a>, and updates the latest updated record in the <a href="#useupdateone">useUpdateOne</a> hook. |
+
+```
+
 ```
