@@ -1,5 +1,6 @@
 import { getSchemaKey } from "@hatchifyjs/core"
 import type { FinalSchema } from "@hatchifyjs/core"
+import type { JSONAPIDocument } from "json-api-serializer"
 import type {
   CreateOptions,
   DestroyOptions,
@@ -8,7 +9,7 @@ import type {
   UpdateOptions,
 } from "sequelize"
 
-import { buildDestroyOptions, buildFindOptions } from "./builder.js"
+import { buildFindOptions } from "./builder.js"
 import { validateFindOptions, validateStructure } from "./validator.js"
 import type { Hatchify } from "../node.js"
 import type { JSONObject } from "../types.js"
@@ -27,55 +28,15 @@ export interface ParseFunctions {
    * Koa Context as `ctx.querystring`
    *
    */
-  findAll: (querystring: string) => Promise<FindOptions>
-  findOne: (querystring: string, id: Identifier) => Promise<FindOptions>
-  findAndCountAll: (querystring: string) => Promise<FindOptions>
-  create: (body: unknown) => Promise<{ body: JSONObject; ops: CreateOptions }>
+  findAll: (querystring: string) => FindOptions
+  findOne: (querystring: string, id: Identifier) => FindOptions
+  findAndCountAll: (querystring: string) => FindOptions
+  create: (body: JSONAPIDocument) => { body: JSONObject; ops: CreateOptions }
   update: (
-    body: unknown,
-    id?: Identifier,
-  ) => Promise<{ body: JSONObject; ops: UpdateOptions }>
-  destroy: (querystring: string, id?: Identifier) => Promise<DestroyOptions>
-}
-
-async function findAllImpl(
-  hatchify: Hatchify,
-  schema: FinalSchema,
-  querystring: string,
-) {
-  const { data, errors } = buildFindOptions(hatchify, schema, querystring)
-  if (errors.length) {
-    throw errors
-  }
-  validateFindOptions(data, schema, hatchify)
-  return data
-}
-
-async function findOneImpl(
-  hatchify: Hatchify,
-  schema: FinalSchema,
-  querystring: string,
-  id: Identifier,
-) {
-  const { data, errors } = buildFindOptions(hatchify, schema, querystring, id)
-  if (errors.length) {
-    throw errors
-  }
-  validateFindOptions(data, schema, hatchify)
-  return data
-}
-
-async function findAndCountAllImpl(
-  hatchify: Hatchify,
-  schema: FinalSchema,
-  querystring: string,
-) {
-  const { data, errors } = buildFindOptions(hatchify, schema, querystring)
-  if (errors.length) {
-    throw errors
-  }
-  validateFindOptions(data, schema, hatchify)
-  return data
+    body: JSONAPIDocument,
+    id: Identifier,
+  ) => { body: JSONObject; ops: UpdateOptions }
+  destroy: (id: Identifier) => DestroyOptions
 }
 
 function restoreId(targetKey: string, { id, ...rest }: any) {
@@ -119,66 +80,67 @@ export function restoreIds<T extends FinalSchema = FinalSchema>(
   )
 }
 
-async function createImpl<T extends FinalSchema = FinalSchema>(
-  hatchify: Hatchify,
-  schema: T,
-  body: any,
-) {
-  validateStructure(body, schema, hatchify)
-  const parsedBody = await hatchify.serializer.deserialize(
-    getSchemaKey(schema),
-    body,
-  )
-
-  return {
-    body: restoreIds(schema, parsedBody),
-    ops: {},
-  }
-}
-
-async function updateImpl(
-  hatchify: Hatchify,
-  schema: FinalSchema,
-  body: any,
-  id?: Identifier,
-) {
-  validateStructure(body, schema, hatchify)
-  const parsedBody = await hatchify.serializer.deserialize(
-    getSchemaKey(schema),
-    body,
-  )
-
-  return {
-    body: restoreIds(schema, parsedBody),
-    ops: { where: id ? { id } : {} },
-  }
-}
-
-async function destroyImpl<T extends FinalSchema = FinalSchema>(
-  querystring: string,
-  schema: T,
-  id?: Identifier,
-) {
-  const { data, errors } = buildDestroyOptions(querystring, schema, id)
-  if (errors.length) {
-    throw errors
-  }
-  return data
-}
-
 export function buildParserForModelStandalone(
   hatchify: Hatchify,
   schema: FinalSchema,
 ): ParseFunctions {
   return {
-    findAll: async (querystring) => findAllImpl(hatchify, schema, querystring),
-    findOne: async (querystring, id) =>
-      findOneImpl(hatchify, schema, querystring, id),
-    findAndCountAll: async (querystring) =>
-      findAndCountAllImpl(hatchify, schema, querystring),
-    create: async (body) => createImpl(hatchify, schema, body),
-    destroy: async (querystring, id) => destroyImpl(querystring, schema, id),
-    update: async (body, id) => updateImpl(hatchify, schema, body, id),
+    findAll: (querystring) => {
+      {
+        const { data, errors } = buildFindOptions(hatchify, schema, querystring)
+        if (errors.length) {
+          throw errors
+        }
+        validateFindOptions(data, schema, hatchify)
+        return data
+      }
+    },
+    findOne: (querystring, id) => {
+      const { data, errors } = buildFindOptions(
+        hatchify,
+        schema,
+        querystring,
+        id,
+      )
+      if (errors.length) {
+        throw errors
+      }
+      validateFindOptions(data, schema, hatchify)
+      return data
+    },
+    findAndCountAll: (querystring) => {
+      const { data, errors } = buildFindOptions(hatchify, schema, querystring)
+      if (errors.length) {
+        throw errors
+      }
+      validateFindOptions(data, schema, hatchify)
+      return data
+    },
+    create: (body) => {
+      validateStructure(body, schema, hatchify)
+      const parsedBody = hatchify.serializer.deserialize(
+        getSchemaKey(schema),
+        body,
+      )
+
+      return {
+        body: restoreIds(schema, parsedBody),
+        ops: {},
+      }
+    },
+    update: (body, id) => {
+      validateStructure(body, schema, hatchify)
+      const parsedBody = hatchify.serializer.deserialize(
+        getSchemaKey(schema),
+        body,
+      )
+
+      return {
+        body: restoreIds(schema, parsedBody),
+        ops: { where: id ? { id } : {} },
+      }
+    },
+    destroy: (id) => ({ where: { id } }),
   }
 }
 

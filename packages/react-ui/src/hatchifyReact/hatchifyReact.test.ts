@@ -36,6 +36,8 @@ describe("react-ui/hatchifyReact", () => {
 
     expect(api).toEqual({
       Everything: expect.any(Function),
+      NoSchemas: expect.any(Function),
+      Navigation: expect.any(Function),
       components: {
         Article: {
           DataGrid: expect.any(Function),
@@ -106,6 +108,8 @@ describe("react-ui/hatchifyReact", () => {
 
     expect(api).toEqual({
       Everything: expect.any(Function),
+      NoSchemas: expect.any(Function),
+      Navigation: expect.any(Function),
       components: {
         Feature_Article: {
           DataGrid: expect.any(Function),

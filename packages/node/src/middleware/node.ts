@@ -12,12 +12,13 @@ import type {
 export function getMiddlewareFunctions(
   hatchify: Hatchify,
   modelName: string,
-): {
-  [key: string]: (
+): Record<
+  string,
+  (
     request: MiddlewareRequest,
     next: NextFunction,
   ) => Promise<MiddlewareResponse | void | Promise<void>>
-} {
+> {
   return {
     findAll: findAllMiddleware(hatchify, modelName),
     findOne: findOneMiddleware(hatchify, modelName),
@@ -94,12 +95,12 @@ export function findAndCountAllMiddleware(
 }
 
 export function createMiddleware(hatchify: Hatchify, modelName: string) {
-  return async function createImpl(
-    request: MiddlewareRequest,
-  ): Promise<MiddlewareResponse> {
+  return async function createImpl({
+    body,
+    path,
+    querystring,
+  }: MiddlewareRequest): Promise<MiddlewareResponse> {
     try {
-      const { body, path, querystring } = request
-
       // If this is a wildcard or allModel situation, figure out the model from the route
       if (modelName === "*") {
         modelName = resolveWildcard(hatchify, path)
@@ -116,29 +117,10 @@ export function createMiddleware(hatchify: Hatchify, modelName: string) {
 }
 
 export function updateMiddleware(hatchify: Hatchify, modelName: string) {
-  return async function updateImpl(
-    request: MiddlewareRequest,
-  ): Promise<MiddlewareResponse> {
-    const { body, path, querystring } = request
-
-    // If this is a wildcard or allModel situation, figure out the model from the route
-    if (modelName === "*") {
-      modelName = resolveWildcard(hatchify, path)
-    }
-
-    const { id } = hatchify.getHatchifyURLParamsForRoute(path)
-
-    return {
-      body: await hatchify.everything[modelName].update(body, querystring, id),
-    }
-  }
-}
-
-export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
-  return async function destroyImpl({
+  return async function updateImpl({
+    body,
     errorCallback,
     path,
-    querystring,
   }: MiddlewareRequest): Promise<MiddlewareResponse> {
     // If this is a wildcard or allModel situation, figure out the model from the route
     if (modelName === "*") {
@@ -152,18 +134,38 @@ export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
     }
 
     return {
-      body: await hatchify.everything[modelName].destroy(querystring, id),
+      body: await hatchify.everything[modelName].update(body, id),
+    }
+  }
+}
+
+export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
+  return async function destroyImpl({
+    errorCallback,
+    path,
+  }: MiddlewareRequest): Promise<MiddlewareResponse> {
+    // If this is a wildcard or allModel situation, figure out the model from the route
+    if (modelName === "*") {
+      modelName = resolveWildcard(hatchify, path)
+    }
+
+    const { id } = hatchify.getHatchifyURLParamsForRoute(path)
+
+    if (!id) {
+      throw errorCallback(400, "BAD_REQUEST")
+    }
+
+    return {
+      body: await hatchify.everything[modelName].destroy(id),
     }
   }
 }
 
 export function handleAllMiddleware(hatchify: Hatchify) {
   return async function handleAllImpl(
-    request: MiddlewareRequest,
+    { body, method, path, querystring }: MiddlewareRequest,
     next: NextFunction,
   ): Promise<MiddlewareResponse | ReturnType<Awaited<NextFunction>>> {
-    const { body, method, path, querystring } = request
-
     try {
       // Check if this request URL takes the format of one that we expect
       if (!hatchify.isValidHatchifyRoute(method, path)) {
@@ -215,11 +217,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
           }
 
           return {
-            body: await hatchify.everything[modelName].update(
-              body,
-              querystring,
-              id,
-            ),
+            body: await hatchify.everything[modelName].update(body, id),
           }
         }
 
@@ -235,7 +233,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
           }
 
           return {
-            body: await hatchify.everything[modelName].destroy(querystring, id),
+            body: await hatchify.everything[modelName].destroy(id),
           }
         }
 
