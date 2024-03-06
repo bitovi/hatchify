@@ -255,6 +255,6 @@ This project is supported by [Bitovi](https://bitovi.com/), a web software consu
 
 Or, you can hire us for training, consulting, or development. [Set up a free consultation.](https://www.bitovi.com/digital-consulting-services)
 
-# Trying Hatchify Online
+## Trying Hatchify Online
 
 You can try Hatchify online on [StackBlitz](https://stackblitz.com/fork/github/bitovi/hatchify/tree/main/example/getting-started?file=schemas.ts&terminal=dev). It runs the Hatchify-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine.
