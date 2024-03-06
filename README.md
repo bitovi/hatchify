@@ -222,11 +222,11 @@ Continue learning more about the Hatchify feature set with these guides that con
 
 Learn how to make Hatchify match your needs with its technical interface documentation:
 
-- [Schema](docs/schema/)
+- [Schema](docs/schema/) - Learn how to specify attributes and relationships with Hatchify's interface for defining your data, called "schemas"
   - [Attributes](docs/schema/attribute-types/README.md)
   - [Relationships](docs/schema/relationship-types/README.md)
   - [Schema Naming](docs/schema/naming.md)
-- [JSON:API](docs/jsonapi/README.md)
+- [JSON:API](docs/jsonapi/README.md) - Learn the details of our JSON:API implementation.
   - [Creating](docs/jsonapi/creating.md)
   - [Reading](docs/jsonapi/reading/README.md)
     - [Filtering](docs/jsonapi/reading/filtering/README.md)
@@ -236,14 +236,14 @@ Learn how to make Hatchify match your needs with its technical interface documen
     - [Sparse Fields](docs/jsonapi/reading/sparse-fields/README.md)
   - [Updating](docs/jsonapi/updating.md)
   - [Deleting](docs/jsonapi/deleting.md)
-- Koa
+- Koa - Learn how Hatchify leverages Koa middleware functionality
   - [API Docs](docs/koa/README.md)
-- Express
+- Express - Learn the details of our Express implementation
   - [API Docs](docs/express/README.md) 🛑
-- React
+- React - Learn how to use and customize Hatchify's schema-driven library of React components and CRUD methods
+  - [REST Client](docs/react/rest-client.md) 🛑
   - [API Docs](docs/react/README.md)
   - [Components](docs/react/components.md)
-  - [REST Client](docs/react/rest-client.md) 🛑
 
 ## Need help or have questions?
 
