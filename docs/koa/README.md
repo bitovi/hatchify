@@ -258,7 +258,7 @@ hatchedKoa.orm.models.Todo.findAll()
 
 ### hatchedKoa.parse[schemaName]
 
-[hatchedKoa.parse[schemaName]](./hatchedKoa.parse.md) has methods to parse a [JSON:API](../jsonapi/README.md) request and return options that can be passed to the [models](./hatchedKoa.model.md) to CRUD data.
+[hatchedKoa.parse[schemaName]](./hatchedKoa.parse.md) has methods to parse a [JSON:API](../jsonapi/README.md) request and return options that can be passed to the [models](#hatchedkoaorm) to CRUD data.
 
 ### hatchedKoa.printEndpoints
 
@@ -320,4 +320,4 @@ console.log(hatchedKoa.schema)
 
 ### `hatchedKoa.serialize[schemaName]`
 
-[hatchedKoa.serialize[schemaName]](./hatchedKoa.serialize.md) has methods to transform the result of [models](./hatchedKoa.model.md) back into a [JSON:API](../jsonapi/README.md) response.
+[hatchedKoa.serialize[schemaName]](./hatchedKoa.serialize.md) has methods to transform the result of [models](#hatchedkoaorm) back into a [JSON:API](../jsonapi/README.md) response.
