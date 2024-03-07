@@ -76,6 +76,9 @@ export interface HatchifyPresentationContextProps {
   Everything: React.FC<XEverythingProps>
   Navigation: React.FC<any>
   NoSchemas: React.FC<any>
+  Filters: React.FC<XDataGridProps>
+  Pagination: React.FC<XDataGridProps>
+  List: React.FC<XDataGridProps>
   defaultValueComponents: DefaultValueComponentsTypes
   // future: defaultFieldComponents
 }
@@ -108,6 +111,9 @@ export const HatchifyPresentationContext =
     Everything: () => null,
     Navigation: () => null,
     NoSchemas: () => null,
+    Filters: () => null,
+    Pagination: () => null,
+    List: () => null,
     Layout: () => null,
     defaultValueComponents: HatchifyPresentationDefaultValueComponents,
     // future: defaultFieldComponents
@@ -128,6 +134,9 @@ export const HatchifyPresentationProvider: React.FC<
   Everything,
   Navigation,
   NoSchemas,
+  Filters,
+  Pagination,
+  List,
   Layout,
   defaultValueComponents,
   children,
@@ -139,6 +148,9 @@ export const HatchifyPresentationProvider: React.FC<
         Everything,
         Navigation,
         NoSchemas,
+        Filters,
+        Pagination,
+        List,
         Layout,
         defaultValueComponents,
       }}

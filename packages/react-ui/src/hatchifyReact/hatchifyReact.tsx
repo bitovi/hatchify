@@ -25,9 +25,12 @@ import { HatchifyColumn } from "../components/HatchifyColumn/index.js"
 import { HatchifyEmpty } from "../components/HatchifyEmpty/index.js"
 import { HatchifyEverything } from "../components/HatchifyEverything/index.js"
 import useDataGridState from "../hooks/useDataGridState.js"
-import type { SortObject } from "../presentation/index.js"
+import type { SortObject, XDataGridProps } from "../presentation/index.js"
 import { HatchifyNavigation } from "../components/HatchifyNavigation/index.js"
 import { HatchifyNoSchemas } from "../components/HatchifyNoSchemas/index.js"
+import { HatchifyFilters } from "../components/HatchifyFilters/index.js"
+import { HatchifyPagination } from "../components/HatchifyPagination/index.js"
+import { HatchifyList } from "../components/HatchifyList/index.js"
 
 type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
   Omit<
@@ -49,6 +52,21 @@ type HatchifyDataGridProps<
   "finalSchemas" | "partialSchemas" | "schemaName" | "restClient"
 >
 
+type HatchifyFiltersProps<
+  TSchemas extends Record<string, PartialSchema>,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = XDataGridProps<TSchemas, TSchemaName>
+
+type HatchifyPaginationProps<
+  TSchemas extends Record<string, PartialSchema>,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = XDataGridProps<TSchemas, TSchemaName>
+
+type HatchifyListProps<
+  TSchemas extends Record<string, PartialSchema>,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = XDataGridProps<TSchemas, TSchemaName>
+
 type HatchifyColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -67,6 +85,14 @@ type Components<TSchemas extends Record<string, PartialSchema>> = {
       props: HatchifyColumnProps<TSchemas, SchemaName>,
     ) => React.ReactElement
     Empty: (props: HatchifyEmptyProps) => React.ReactElement
+    // eject
+    Filters: (
+      props: HatchifyFiltersProps<TSchemas, SchemaName>,
+    ) => React.ReactElement
+    Pagination: (
+      props: HatchifyPaginationProps<TSchemas, SchemaName>,
+    ) => React.ReactElement
+    List: (props: HatchifyListProps<TSchemas, SchemaName>) => React.ReactElement
   }
 }
 
@@ -141,6 +167,15 @@ export function hatchifyReact<
           />
         ),
         Empty: (props) => <HatchifyEmpty {...props} />,
+        Filters: (props) => (
+          <HatchifyFilters<TSchemas, GetSchemaNames<TSchemas>> {...props} />
+        ),
+        Pagination: (props) => (
+          <HatchifyPagination<TSchemas, GetSchemaNames<TSchemas>> {...props} />
+        ),
+        List: (props) => (
+          <HatchifyList<TSchemas, GetSchemaNames<TSchemas>> {...props} />
+        ),
       }
 
       return acc
