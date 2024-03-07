@@ -1,4 +1,4 @@
-# `@hatchifyjs/koa`
+# @hatchifyjs/koa
 
 `@hatchifyjs/koa` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/koa) that takes a [Schema](../schema/README.md) and produces:
 
@@ -48,9 +48,10 @@ const hatchedKoa = hatchifyKoa(schemas, {
 - [Exports](#exports)
   - [hatchifyKoa](#hatchifykoa) - Creates a `hatchedKoa` instance with middleware and sequelize orms
   - [HatchifyKoa](#hatchifykoa-1) - A type for TypeScript usage
+  - [JSONAPIDocument](#jsonapidocument) - A type for JSON:API document that can be used as a request/response body
   - [errorHandlerMiddleware](#errorhandlermiddleware) - An error handle that produces JSONAPI formatted errors
 - [`hatchedKoa`](#hatchedkoa) -
-  - [`hatchedKoa.everything[schemaName]`](#hatchedkoaeverythingschemaname)
+  - [`hatchedKoa.everything[schemaName]`](#hatchedkoaeverythingschemanameallmodels)
   - [`hatchedKoa.middleware[schemaName|allModels]`](#hatchedkoamiddlewareschemanameallmodels)
   - [`hatchedKoa.modelSync`](#hatchedkoamodelsync)
   - [`hatchedKoa.orm`](#hatchedkoaorm)
@@ -90,30 +91,25 @@ const hatchedKoa = hatchifyKoa(schemas, {
 
 **Parameters**
 
-`hatchifyKoa` takes two arguments `schemas` and `options`.
-
-`schema` is a collection of [Hatchify Schemas](../schema/README.md).
-
-`options` is an object with the following key / values:
-
-| Property          | Type                                   | Default                    | Details                                                                                                                                           |
-| ----------------- | -------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| uri               | string                                 | sqlite://localhost/:memory | The database URI / connection string of the relational database. Ex. `postgres://user:password@host:port/database?ssl=true`                       |
-| logging           | (sql: string, timing?: number) => void | undefined                  | A function that gets executed every time Sequelize would log something.                                                                           |
-| additionalOptions | object                                 | undefined                  | An object of additional options, which are passed directly to the underlying connection library (example: [pg](https://www.npmjs.com/package/pg)) |
+| Property                  | Type                                   | Default                    | Details                                                                                                                                           |
+| ------------------------- | -------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| schemas                   | Record<string, PartialSchema>          | {}                         | A collection of [Hatchify Schemas](../schema/README.md).                                                                                          |
+| options.uri               | string                                 | sqlite://localhost/:memory | The database URI / connection string of the relational database. Ex. `postgres://user:password@host:port/database?ssl=true`                       |
+| options.logging           | (sql: string, timing?: number) => void | undefined                  | A function that gets executed every time Sequelize would log something.                                                                           |
+| options.additionalOptions | object                                 | undefined                  | An object of additional options, which are passed directly to the underlying connection library (example: [pg](https://www.npmjs.com/package/pg)) |
 
 See [Using Postgres](../guides/using-postgres-db.md) for instructions on how to set up HatchifyJS with postgres.
 
 **Returns**
 
-Returns a [HatchifyKoa] instance which is documented below.
+Returns a [HatchifyKoa](#hatchifykoa) instance which is documented below.
 
 ### HatchifyKoa
 
-`HatchifyKoa` is the constructor function used to create a [hatchedKoa] instance. This TypeScript type typically isn't used directly (it's exported to support implicit typing of the return from the `hatchifyKoa` constructor); however, it can be useful when defining a custom type that may reference `hatchedKoa`.
+`HatchifyKoa` is the constructor function used to create a [hatchedKoa](#hatchedkoa) instance. This TypeScript type typically isn't used directly (it's exported to support implicit typing of the return from the `hatchifyKoa` constructor); however, it can be useful when defining a custom type that may reference `hatchedKoa`.
 
 ```ts
-import type { HatchifyKoa from "@hatchifyjs/koa"
+import type { HatchifyKoa } from "@hatchifyjs/koa"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 
 type Globals = {
@@ -125,9 +121,19 @@ const globals : Globals = {
 }
 ```
 
+### JSONAPIDocument
+
+A type for JSON:API document that can be used as a request/response body.
+
+[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+
+## RecordObject
+
+A plain old JavaScript object (POJO).
+
 ### errorHandlerMiddleware
 
-`errorHandlerMiddleware` is a middleware to catch any Hatchify error and transform it to a proper [JSON:API](../jsonapi/README.md) response:
+`errorHandlerMiddleware` is a middleware to catch any Hatchify error and transform it to a proper [JSON:API](../jsonapi/README.md) response. For example, the following shows a middleware that throws a fake error, preceded by `errorHandlerMiddleware`:
 
 ```ts
 import { errorHandlerMiddleware } from "@hatchifyjs/koa"
@@ -158,13 +164,13 @@ so any request will throw and handled to return an error similar to
 
 ## hatchedKoa
 
-`hatchedKoa` is an instance of [`HatchifyKoa`] that is returned by the [`hatchifyKoa`] function. It provides:
+`hatchedKoa` is an instance of [`HatchifyKoa`](#hatchifykoa-1) that is returned by the [`hatchifyKoa`](#hatchifykoa) function. It provides:
 
 - [Sequelize](https://sequelize.org/) orm models,
 - an expressive [JSON:API](../jsonapi/README.md) restful middleware, and
 - utilities for building custom restful endpoints.
 
-The following show some of the methods available given a `Todo` and `User` schema:
+The following show some of the methods available given a `SalesPerson` schema:
 
 <pre>
 import { hatchifyKoa } from "@hatchifyjs/koa";
@@ -214,9 +220,9 @@ hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#update">upda
 hatchedKoa.serialize.SalesPerson.<a href="./hatchedKoa.serialize.md#destroy">destroy</a>()
 </pre>
 
-### `hatchedKoa.everything[schemaName]`
+### hatchedKoa.everything[schemaName|allModels]
 
-[hatchedKoa.everything](./hatchedKoa.everything.md) functions very similar to the `middleware` export but is expected to be used more directly, usually when defining user-created middleware.
+[`hatchedKoa.everything[schemaName|allModels]`](./hatchedKoa.everything.md) functions very similar to the `middleware` export but is expected to be used more directly, usually when defining user-created middleware.
 
 The `everything` functions takes the same properties as `parse` but goes further than just building the query options. This function will do a complete operation of parsing the request, performing the ORM query operation and then serializing the resulting data to JSON:API format.
 
@@ -231,7 +237,7 @@ router.get("/todos", async (ctx: Context) => {
 
 ### hatchedKoa.middleware[schemaName|allModels]
 
-[`hatchedKoa.middleware[schemaName][findAll|findOne|findAndCountAll|create|update|destroy]`](./hatchedKoa.middleware.md)
+[`hatchedKoa.middleware[schemaName|allModels]`](./hatchedKoa.middleware.md)
 
 All of the `middleware` functions export a Koa Middleware that can be passed directly to a Koa `app.use` or a Koa `router[verb]` function, mounted to a specific URL/path. The normal [schemaName] export expects to be used with:
 
@@ -244,9 +250,35 @@ All of the `middleware` functions export a Koa Middleware that can be passed dir
 
 ### hatchedKoa.modelSync
 
+`hatchedKoa.modelSync({ alter: true } | { force: true } | undefined)`
+
 A utility function to make sure your schemas are always synced with the database.
 
-[Read more on Model Sync](../guides/model-sync.md)
+If your database is created externally to Hatchify, you do not need to worry about it. Otherwise, Hatchify makes it simple by offering 3 syncing options:
+
+```ts
+hatchedKoa.modelSync()
+```
+
+This creates the table if it does not exist (and does nothing if it already exists)
+
+- Postgres: Namespaces (Postgres Schemas) are handled manually
+
+```ts
+hatchedKoa.modelSync({ alter: true })
+```
+
+This checks what is the current state of the table in the database (which columns it has, what are their data types, etc), and then performs the necessary changes in the table to make it match the model.
+
+- Postgres: Namespaces (Postgres Schemas) are created
+
+```ts
+hatchedKoa.modelSync({ force: true })
+```
+
+This creates the table, dropping it first if it already existed
+
+- Postgres: Namespaces (Postgres Schemas) and their tables are dropped and recreated
 
 ### hatchedKoa.orm
 
@@ -261,6 +293,8 @@ hatchedKoa.orm.models.Todo.findAll()
 [hatchedKoa.parse[schemaName]](./hatchedKoa.parse.md) has methods to parse a [JSON:API](../jsonapi/README.md) request and return options that can be passed to the [models](#hatchedkoaorm) to CRUD data.
 
 ### hatchedKoa.printEndpoints
+
+`hatchedKoa.printEndpoints()`
 
 Prints a list of endpoints generated by Hatchify. This can be useful for debugging 404 errors.
 
@@ -280,15 +314,7 @@ PATCH  /api/users/:id
 DELETE /api/users/:id
 ```
 
-Usage Examples:
-
-```ts
-router.get("/get-all-todos", hatchedKoa.middleware.Todo.findAll)
-router.get("/get-and-count-all-todos", hatchedKoa.middleware.Todo.findAndCountAll)
-router.get("/get-one-todo/:id", hatchedKoa.middleware.Todo.findOne)
-```
-
-`hatchedKoa.middleware.allModels.all`
+### hatchedKoa.middleware.allModels.all
 
 This exports a single middleware function that based on the method and the URL will call the right `everything` function. It is useful as a default handler to handle all Hatchify `GET`/`POST`/`PATCH`/`DELETE` endpoints.
 
@@ -318,6 +344,6 @@ console.log(hatchedKoa.schema)
 // }
 ```
 
-### `hatchedKoa.serialize[schemaName]`
+### hatchedKoa.serialize[schemaName]
 
 [hatchedKoa.serialize[schemaName]](./hatchedKoa.serialize.md) has methods to transform the result of [models](#hatchedkoaorm) back into a [JSON:API](../jsonapi/README.md) response.
