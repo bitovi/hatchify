@@ -269,13 +269,13 @@ const App: React.FC = () => {
             <strong>There are no todos. Time to take a break!</strong>
           </TodoDataGrid.Empty>
           {/* 👀 */}
-          <TodoDataGrid.Empty
+          <TodoDataGrid.Column
             label="Actions"
             renderDataValue={({ record }) => {
               return <button onClick={() => alert(`${record.id}`)}>View ID</button>
             }}
           />
-          <TodoDataGrid.Empty
+          <TodoDataGrid.Column
             field="name"
             label="ToDo"
             renderDataValue={({ value }) => {
