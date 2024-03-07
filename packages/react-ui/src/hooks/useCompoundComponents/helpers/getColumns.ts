@@ -6,7 +6,7 @@ import type {
   Include,
 } from "@hatchifyjs/rest-client"
 import type { HatchifyColumn } from "../useCompoundComponents.js"
-import type { DefaultValueComponentsTypes } from "../../../components/index.js"
+import type { DefaultDisplayComponentsTypes } from "../../../components/index.js"
 import { getColumn, getColumnsFromSchema } from "./index.js"
 
 export function getColumns<
@@ -15,7 +15,7 @@ export function getColumns<
 >(
   finalSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  defaultValueComponents: DefaultValueComponentsTypes,
+  defaultDisplayComponents: DefaultDisplayComponentsTypes,
   overwrite: boolean,
   childArray: JSX.Element[],
   include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>,
@@ -34,7 +34,7 @@ export function getColumns<
   const getHatchifyColumnCommon = {
     finalSchemas,
     schemaName: schemaName as string,
-    defaultValueComponents,
+    defaultDisplayComponents,
   }
 
   // use JSX order
@@ -97,7 +97,7 @@ export function getColumns<
   const schemaColumns = getColumnsFromSchema(
     finalSchemas,
     schemaName,
-    defaultValueComponents,
+    defaultDisplayComponents,
     include,
   )
 

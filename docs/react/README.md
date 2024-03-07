@@ -106,30 +106,49 @@ const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 ### [HatchifyProvider](./hatchedReact.state.md#)
 
-`HatchifyProvider` gives your App access to use the components provided by Hatchify.
+`HatchifyProvider` must wrap your application for you to use hatchify components. The `HatchifyProvider` also provides a way to ovreride the default renders for each type of attribute and relationship. This is done by passing an optional `defaultDisplayComponents` object to the provider as a prop. In the example below, rather than rendering the text "true" or "false" for a boolean, all booleans in Hatchify components will render as "✅" or "❌".
 
 ```tsx
-import {HatchifyProvider} from "@hatchifyjs/react"
+import { HatchifyProvider, hatchifyReact, createJsonapiClient } from "@hatchifyjs/react"
+import { boolean, string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 
-// Define Schemas
-const schemas = { ... }
+const schemas = {
+  Todo: {
+    name: "Todo",
+    attributes: {
+      name: string(),
+      complete: boolean(),
+    },
+  },
+} satisfies Record<string, PartialSchema>
 
-// Create the Hatched React App instance
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-// Define variables for your Hatchify schema generated components
-const TodoDataGrid = hatchedReact.components.Todo.DataGrid
+const DataGrid = hatchedReact.components.Todo.DataGrid
 
-const App() {
+function MyCustomBoolean({ value }: { value: boolean }) {
+  return value ? "✅" : "❌"
+}
+
+function App() {
   return (
-    <HatchifyProvider>
-      <TodoDataGrid>
-        <TodoDataGrid.Column />
-      </TodoDataGrid>
+    <HatchifyProvider
+      defaultDisplayComponents={{
+        Boolean: MyCustomBoolean,
+      }}
+    >
+      <DataGrid />
     </HatchifyProvider>
   )
 }
 ```
+
+**Props**
+
+| Name                       | Type                                                                        | Description                                                                                |
+| -------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `defaultDisplayComponents` | <a href="#defaultdisplaycomponents">`Partial<DefaultDisplayComponents>`</a> | An object that is keyed by type and contains a component to render the value of that type. |
 
 ### [Types](./hatchedReact.types.md)
 
@@ -265,3 +284,17 @@ const App: React.FC = () => {
   )
 }
 ```
+
+## Types
+
+### DefaultDisplayComponents
+
+`DefaultDisplayComponents` is an object that is keyed by type and contains a component to render the value of that type. This is used to override the default renders for each type of attribute and relationship.
+
+| Name           | Type                                                               | Description                                                  |
+| -------------- | ------------------------------------------------------------------ | ------------------------------------------------------------ |
+| `Boolean`      | `React.ComponentType<{ value: boolean }>`                          | A component that will be used to render boolean values.      |
+| `Date`         | `React.ComponentType<{ dateOnly: boolean, value: string }>`        | A component that will be used to render date values.         |
+| `Number`       | `React.ComponentType<{ value: number }>`                           | A component that will be used to render number values.       |
+| `String`       | `React.ComponentType<{ value: string }>`                           | A component that will be used to render string values.       |
+| `Relationship` | `React.ComponentType<{ id: string, label: string, [field]: any }>` | A component that will be used to render relationship values. |

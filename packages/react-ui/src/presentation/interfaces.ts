@@ -2,12 +2,13 @@ import type { GetSchemaNames, Filters, Meta } from "@hatchifyjs/rest-client"
 import type { DataGridState } from "../hooks/useDataGridState.js"
 import type { FinalAttributeRecord, PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyColumn } from "../hooks/index.js"
+import type { DefaultDisplayComponentsTypes } from "../react-ui.js"
 
 export type Primitive = string | boolean | number
 
-export interface XProviderProps<T> {
-  theme?: T
+export interface XProviderProps {
   children: React.ReactNode
+  defaultDisplayComponents?: Partial<DefaultDisplayComponentsTypes>
 }
 
 export interface SortObject {

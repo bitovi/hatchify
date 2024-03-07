@@ -27,7 +27,7 @@ import {
   Relationship as RelationshipInput,
 } from "./DefaultFieldComponents/index.js"
 
-export interface DefaultValueComponentsTypes {
+export interface DefaultDisplayComponentsTypes {
   String: React.FC<{ value: string }>
   StringList: React.FC<{ values: string[] }>
   Number: React.FC<{ value: number }>
@@ -79,11 +79,11 @@ export interface HatchifyPresentationContextProps {
   Filters: React.FC<XDataGridProps>
   Pagination: React.FC<XDataGridProps>
   List: React.FC<XDataGridProps>
-  defaultValueComponents: DefaultValueComponentsTypes
+  defaultDisplayComponents: DefaultDisplayComponentsTypes
   // future: defaultFieldComponents
 }
 
-export const HatchifyPresentationDefaultValueComponents = {
+export const HatchifyPresentationDefaultDisplayComponents = {
   String,
   StringList,
   Number,
@@ -115,7 +115,7 @@ export const HatchifyPresentationContext =
     Pagination: () => null,
     List: () => null,
     Layout: () => null,
-    defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+    defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     // future: defaultFieldComponents
   })
 
@@ -138,7 +138,7 @@ export const HatchifyPresentationProvider: React.FC<
   Pagination,
   List,
   Layout,
-  defaultValueComponents,
+  defaultDisplayComponents,
   children,
 }) => {
   return (
@@ -152,7 +152,7 @@ export const HatchifyPresentationProvider: React.FC<
         Pagination,
         List,
         Layout,
-        defaultValueComponents,
+        defaultDisplayComponents,
       }}
     >
       {children}

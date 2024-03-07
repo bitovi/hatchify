@@ -36,14 +36,14 @@ export default function useCompoundComponents<
   include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): CompoundComponents {
   const childArray = ReactChildren.toArray(children) as JSX.Element[]
-  const defaultValueComponents =
-    useHatchifyPresentation().defaultValueComponents
+  const defaultDisplayComponents =
+    useHatchifyPresentation().defaultDisplayComponents
 
   return {
     columns: getColumns(
       finalSchemas,
       schemaName,
-      defaultValueComponents,
+      defaultDisplayComponents,
       overwrite,
       childArray,
       include,
