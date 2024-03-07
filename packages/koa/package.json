@@ -6,7 +6,7 @@
   "exports": "./dist/exports.js",
   "types": "./dist/exports.d.ts",
   "bin": {
-    "hatchify-gsg-seed": "./hatchify-gsg-seed.js"
+    "hatchify-gsg-seed": "./dist/hatchify-gsg-seed.js"
   },
   "scripts": {
     "prepublish": "npm run clean && npm run build",
