@@ -520,7 +520,12 @@ Before making any release please make sure that:
 
 ### Releasing Hatchify packages
 
-All affected Hatchify packages are [automatically](https://github.com/bitovi/hatchify/blob/main/.github/workflows/push.yml#L7) released upon merging to the `main` branch, in order of dependencies. The segment to increment is determined by the pull request title (squashed pull request commit comment), i.e. `minor: HATCH-1234: Some Feature` (defaults to `patch`).
+All affected Hatchify packages are [automatically](https://github.com/bitovi/hatchify/blob/main/.github/workflows/push.yml#L7) released upon merging to the `main` branch, in order of dependencies. The segment to increment is determined by the pull request title (squashed pull request commit comment):
+
+- `major: HATCH-123: Major Refactor`
+- `minor: HATCH-234: Breaking Changes`
+- `patch: HATCH-345: Bug fixes`
+- `HATCH-456: More bug fixes` -> defaults to patch
 
 #### Publishing release notes
 
