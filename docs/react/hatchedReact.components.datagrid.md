@@ -1,23 +1,28 @@
-# DataGrid
+# hatchedReact.components[schemaName].DataGrid
 
-API Reference docs for the Hatchify DataGrid component. Learn more about props, and other APIs of this exported module.
 
-Similar to the MUI DataGrid, the Hatchify `DataGrid` displays the records of a specific schema, but the state does not have to be passed in.
+Similar to the [MUI DataGrid](https://mui.com/x/react-data-grid/), the Hatchify `DataGrid` displays the records of a specific schema. It includes pagination, filtering and the ability to sort the grid.
 
-## Import
+For example, the following shows an example of the DataGrid in action:
+
+[IMAGE]
+
+To produce something similar, use the following code:
 
 ```tsx
 import { hatchifyReact, createJsonapiClient } from "@hatchifyjs/react"
 import * as Schemas from "../schemas.js"
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
-
-const { DataGrid: TodoDataGrid } = hatchedReact.components.Todo
-const { DataGrid: UserDataGrid } = hatchedReact.components.User
 // or
 const TodoDataGrid = hatchedReact.components.Todo.DataGrid
-const UserDataGrid = hatchedReact.components.User.DataGrid
+
+const App = ()=>{
+  FILL THIS IN
+}
 ```
+
+
 
 ## Props
 
@@ -69,3 +74,13 @@ const App: React.FC = () => {
   )
 }
 ```
+
+## Customization
+
+There are two different ways of customizing this behavior:
+
+- Using compound components like [Column] and [Empty]
+- 
+
+
+but the state does not have to be passed in.
