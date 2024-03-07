@@ -4,7 +4,7 @@
 - [Example Usage](#example-usage)
 - [More Documentation](#more-documentation)
 
-## What is `@hatchifyjs/koa`? 
+## What is `@hatchifyjs/koa`?
 
 `@hatchifyjs/koa` is a schema-driven library of middleware for your Hatchify app. By defining the schemas (AKA models) of your backend resources, `@hatchifyjs/koa` will provide you with a set of functions that you can use across your Koa app.
 
@@ -44,4 +44,4 @@ const hatchedKoa = hatchifyKoa(schemas, {
 
 ## More Documentation
 
-[`@hatchifyjs/koa` Documentation](https://github.com/bitovi/hatchify/blob/main/doc/koa/README.md)
+[`@hatchifyjs/koa` Documentation](https://github.com/bitovi/hatchify/blob/main/docs/koa/README.md)
