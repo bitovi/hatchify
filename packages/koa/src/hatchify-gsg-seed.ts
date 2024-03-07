@@ -26,33 +26,35 @@ function getRandomUser() {
 const users = Array.from(Array(20).keys()).map(() => getRandomUser())
 const todos = Array.from(Array(200).keys()).map(() => getRandomTodoItem(users))
 
-await Promise.all(
-  users.map((user) =>
-    fetch("http://localhost:3000/api/users", {
-      method: "POST",
-      body: JSON.stringify({ data: { type: "User", attributes: user } }),
-    }),
-  ),
-)
+for (const user of users) {
+  await fetch("http://localhost:3000/api/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+    },
+    body: JSON.stringify({ data: { type: "User", attributes: user } }),
+  })
+}
 
-await Promise.all(
-  todos.map((todo) =>
-    fetch("http://localhost:3000/api/todos", {
-      method: "POST",
-      body: JSON.stringify({
-        data: {
-          type: "Todo",
-          attributes: todo,
-          relationships: {
-            user: {
-              data: {
-                type: "User",
-                id: todo.userId,
-              },
+for (const todo of todos) {
+  await fetch("http://localhost:3000/api/todos", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+    },
+    body: JSON.stringify({
+      data: {
+        type: "Todo",
+        attributes: todo,
+        relationships: {
+          user: {
+            data: {
+              type: "User",
+              id: todo.userId,
             },
           },
         },
-      }),
+      },
     }),
-  ),
-)
+  })
+}
