@@ -82,7 +82,7 @@ import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonap
 
 ## createJsonapiClient
 
-`createJsonapiClient(baseUrl: string, schemas: Schemas): RestClient` creates a `RestClient` which can then be passed into `hatchifyReactRest`. A `RestClient` is made up of a set of CRUD functions for interacting with a JSON:API backend.
+`createJsonapiClient(baseUrl: string, schemas: Schemas) => RestClient` creates a `RestClient` which can then be passed into `hatchifyReactRest`. A `RestClient` is made up of a set of CRUD functions for interacting with a JSON:API backend.
 
 ```ts
 const jsonapiClient = createJsonapiClient("/api", schemas)
@@ -90,7 +90,7 @@ const jsonapiClient = createJsonapiClient("/api", schemas)
 
 ## hatchifyReactRest
 
-`hatchifyReactRest(restClient: RestClient): HatchifyReactRest` is the entry point function. It returns an instance of `HatchifyReactRest`, which is an object keyed by each schema that was passed into the `createJsonapiClient` function. Each schema has a set of promise and hook-based functions for interacting with a JSON:API backend.
+`hatchifyReactRest(restClient: RestClient) => HatchifyReactRest` is the entry point function. It returns an instance of `HatchifyReactRest`, which is an object keyed by each schema that was passed into the `createJsonapiClient` function. Each schema has a set of promise and hook-based functions for interacting with a JSON:API backend.
 
 ```ts
 const hatchedReactRest = hatchifyReactRest(jsonapiClient)
@@ -101,7 +101,7 @@ const [users] = await hatchedReactRest.User.useAll()
 
 ### findAll
 
-`hatchedReactRest[SchemaName].findAll(): Promise<[RecordType[], MetaData]>`
+`hatchedReactRest[SchemaName].findAll() => Promise<[RecordType[], MetaData]>`
 
 This is how you could use the `findAll` function to fetch a page of todos. The metadata returned by the server will contain the total count of todos.
 
@@ -126,7 +126,7 @@ An array with the following properties:
 
 ### findOne
 
-`hatchedReactRest[SchemaName].findOne(id: string | QueryOne): Promise<RecordType>`
+`hatchedReactRest[SchemaName].findOne(id: string | QueryOne) => Promise<RecordType>`
 
 The `findOne` function can be used to fetch a single record by its id.
 
@@ -158,7 +158,7 @@ const record = await hatchedReactRest.Todo.findOne({
 
 ### createOne
 
-`hatchedReactRest[SchemaName].createOne(data: Partial<RecordType>): Promise<RecordType`
+`hatchedReactRest[SchemaName].createOne(data: Partial<RecordType>) => Promise<RecordType`
 
 The `createOne` function creates a new record for the given schema, in this case Todo. Only the required attributes need to be passed in.
 
@@ -183,7 +183,7 @@ const createdRecord = await hatchedReactRest.Todo.createOne({
 
 ### updateOne
 
-`hatchedReactRest[SchemaName].updateOne(data: Partial<RecordType>): Promise<RecordType>`
+`hatchedReactRest[SchemaName].updateOne(data: Partial<RecordType>) => Promise<RecordType>`
 
 When using the `updateOne` function, the id must be passed in along with only the data that needs to be updated.
 
@@ -208,7 +208,7 @@ const updated = await hatchedReact.model.Todo.updateOne({
 
 ### deleteOne
 
-`hatchedReactRest[SchemaName].deleteOne(id: string): Promise<void>`
+`hatchedReactRest[SchemaName].deleteOne(id: string) => Promise<void>`
 
 The `deleteOne` function deletes a record by its id.
 
@@ -230,7 +230,7 @@ await hatchedReactRest.Todo.deleteOne(UUID)
 
 ### useAll
 
-`hatchedReactRest[SchemaName].useAll(): [RecordType[], RequestState]`
+`hatchedReactRest[SchemaName].useAll() => [RecordType[], RequestState]`
 
 In this example, we use the `useAll` hook to fetch all todos and display them in a list. The hook returns an array with the todos that we map over and display. We use the the `RequestState` to determine whether to display a loading spinner or an error message.
 
@@ -275,7 +275,7 @@ An array with the following properties:
 
 ### useOne
 
-`hatchedReactRest[SchemaName].useOne(id: string): [RecordType, RequestState]`
+`hatchedReactRest[SchemaName].useOne(id: string) => [RecordType, RequestState]`
 
 Here we use the `useOne` hook to fetch a single todo and display its name and whether it is complete. Using the `RequestState` object, we conditionally handle loading and error states. If the record is not found, we display a message to the user.
 
@@ -322,7 +322,7 @@ An array with the following properties:
 
 ### useCreateOne
 
-`hatchedReactRest[SchemaName].useCreateOne(): [CreateFunction, RequestState, RecordType?]`
+`hatchedReactRest[SchemaName].useCreateOne() => [CreateFunction, RequestState, RecordType?]`
 
 Here we use the `useCreateOne` hook to create a simple form for creating a new todo. We us the `createTodo` function when the form is submitted, the `RequestState` object to conditionally handle loading and error states, and we track the `created` object to console log the newly created record.
 
@@ -370,7 +370,7 @@ An array with the following properties:
 
 ### useUpdateOne
 
-`hatchedReactRest[SchemaName].useUpdateOne(): [UpdateFunction, { id: RequestState }, RecordType?]`
+`hatchedReactRest[SchemaName].useUpdateOne() => [UpdateFunction, { id: RequestState }, RecordType?]`
 
 Here we use the `useUpdateOne` hook to create a simple edit form for updating a todo. We use the `updateTodo` function when the form is submitted, the `RequestState` object to conditionally handle loading and error states, and we track the `updated` object to console log the newly updated record.
 
@@ -417,7 +417,7 @@ An array with the following properties:
 
 ### useDeleteOne
 
-`hatchedReactRest[SchemaName].useDeleteOne(): [DeleteFunction, { id: RequestState }]`
+`hatchedReactRest[SchemaName].useDeleteOne() => [DeleteFunction, { id: RequestState }]`
 
 Here we use the `useDeleteOne` hook to create alongside a list of todos. We use the `deleteTodo` function when the delete button is clicked, and the `RequestState` object to disable the delete button when the request is pending.
 

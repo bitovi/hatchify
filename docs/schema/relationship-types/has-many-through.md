@@ -38,7 +38,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Schema Implications
+**_Schema Implications_**
 
 A schema named `AccountSalesPerson` will be created as if it was defined as follows:
 
@@ -52,17 +52,19 @@ const AccountSalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Database Implications
+**_Database Implications_**
 
 Creates a table `account_sales_person` with `account_id` and `sales_person_id` columns.
 
-### API Implications
+**_API Implications_**
 
-#### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 `salesAccounts` and `accountSalesPersons` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccounts,accountSalesPersons`
 
-#### Data Response
+**_Data Response_**
 
 `salesAccounts` and `accountSalesPersons` will be used in mutation payloads and response payloads like:
 
@@ -115,7 +117,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Schema Implications
+**_Schema Implications_**
 
 A schema named `Assignments` will be created as if it was defined as follows:
 
@@ -129,17 +131,19 @@ const Assignments = {
 } satisfies PartialSchema
 ```
 
-### Database Implications
+**_Database Implications_**
 
 Creates a table `assignment` with `account_id` and `sales_person_id` columns.
 
-### API Implications
+**_API Implications_**
 
-#### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 `accounts` and `assignments` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,assignments`
 
-#### Data Response
+**_Data Response_**
 
 `accounts` and `assignments` will be used in mutation payloads and response payloads like:
 
@@ -192,7 +196,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Schema Implications
+**_Schema Implications_**
 
 A schema named `Assignments` will be created as if it was defined as follows:
 
@@ -206,17 +210,19 @@ const Assignments = {
 } satisfies PartialSchema
 ```
 
-### Database Implications
+**_Database Implications_**
 
 Creates a table `assignment` with `the_account_id` and `the_sales_person_id` columns.
 
-### API Implications
+**_API Implications_**
 
-#### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 `accounts` and `assignments` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,assignments`
 
-#### Data Response
+**_Data Response_**
 
 `accounts` and `assignments` will be used in mutation payloads and response payloads like:
 
@@ -269,7 +275,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Schema Implications
+**_Schema Implications_**
 
 A schema named `Assignments` will be created and schemas will be updated as if they were defined as follows:
 
@@ -300,19 +306,21 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Database Implications
+**_Database Implications_**
 
 Creates a table `assignment` with `account_id` and `sales_person_id` columns.
 Creates a column `account_id` in the `account` table.
 Creates a column `sales_person_id` in the `sales_person` table.
 
-### API Implications
+**_API Implications_**
 
-#### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 `accounts` and `assignments` will be used in the include query parameter like `GET /api/sales-persons?include=accounts,assignments`
 
-#### Data Response
+**_Data Response_**
 
 `accounts` and `assignments` will be used in mutation payloads and response payloads like:
 
