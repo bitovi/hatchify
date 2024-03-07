@@ -38,10 +38,9 @@ const App = ()=>{
 | baseFilter       | [Filters]                                  | -       | This object accepts a variety of different Filter shapes. One being an array of objects, a `FilterArray`, that contains a `field`, the column to filter, the `operator`, to determine the type of filter, and `value` is the the value we're comparing column data against for filtering.       |
 | overwrite        | boolean                                  | -       | If `true` only provided `Column` children will render rather than the `DataGrid`.                                                                                                                                                                                                               |
 | minimumLoadTime  | number                                   | -       | Set a minimum load time in ms that it takes for the prop to render. For some views a fast load time may appear to flicker too much.                                                                                                                                                              |
+## Examples
 
-## Prop Details
-
-### defaultSelected + onSelectedChange
+### Using defaultSelected & onSelectedChange
 
 For these props, you'll want to pass state variables made with React's `useState`.
 
@@ -52,13 +51,13 @@ const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
 })
 ```
 
-### baseFilter
+### Setting baseFilter
 
 The potential `operators` for `baseFilter` are the following:
 (Need to link to the operators, filering on jsonapi has them listed)
 (Add a table probably)
 
-### Example
+### Full Example
 
 ```tsx
 //in App.tsx
