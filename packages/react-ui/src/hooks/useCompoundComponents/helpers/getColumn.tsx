@@ -1,7 +1,7 @@
 import { camelCaseToTitleCase } from "@hatchifyjs/core"
 import type { PartialSchema, FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FinalSchemas, GetSchemaNames } from "@hatchifyjs/rest-client"
-import type { DefaultValueComponentsTypes } from "../../../components/index.js"
+import type { DefaultDisplayComponentsTypes } from "../../../components/index.js"
 import type { HatchifyColumn } from "../useCompoundComponents.js"
 import { getDefaultDataRender } from "./index.js"
 
@@ -15,7 +15,7 @@ export function getColumn<
   field,
   compoundComponentProps,
   isRelationship,
-  defaultValueComponents,
+  defaultDisplayComponents,
   sortable,
   key,
 }: {
@@ -25,7 +25,7 @@ export function getColumn<
   field: string
   compoundComponentProps: any
   isRelationship?: boolean
-  defaultValueComponents: DefaultValueComponentsTypes
+  defaultDisplayComponents: DefaultDisplayComponentsTypes
   sortable?: boolean
   key: string
 }): HatchifyColumn {
@@ -81,7 +81,7 @@ export function getColumn<
       field: field,
       isRelationship: isRelationship === true,
       isAdditional,
-      defaultValueComponents,
+      defaultDisplayComponents,
     })
   }
 

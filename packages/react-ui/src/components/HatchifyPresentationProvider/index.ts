@@ -1,10 +1,10 @@
 export {
   useHatchifyPresentation,
-  HatchifyPresentationDefaultValueComponents,
+  HatchifyPresentationDefaultDisplayComponents,
   HatchifyPresentationDefaultFieldComponents,
   HatchifyPresentationProvider,
 } from "./HatchifyPresentationProvider.js"
 export type {
-  DefaultValueComponentsTypes,
+  DefaultDisplayComponentsTypes,
   DefaultFieldComponentsTypes,
 } from "./HatchifyPresentationProvider.js"
