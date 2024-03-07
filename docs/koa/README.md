@@ -241,7 +241,31 @@ All of the `middleware` functions export a Koa Middleware that can be passed dir
 
 A utility function to make sure your schemas are always synced with the database.
 
-[Read more on Model Sync](../guides/model-sync.md)
+If your database is created externally to Hatchify, you do not need to worry about it. Otherwise, Hatchify makes it simple by offering 3 syncing options:
+
+```ts
+hatchedKoa.modelSync()
+```
+
+This creates the table if it does not exist (and does nothing if it already exists)
+
+- Postgres: Namespaces (Postgres Schemas) are handled manually
+
+```ts
+hatchedKoa.modelSync({ alter: true })
+```
+
+This checks what is the current state of the table in the database (which columns it has, what are their data types, etc), and then performs the necessary changes in the table to make it match the model.
+
+- Postgres: Namespaces (Postgres Schemas) are created
+
+```ts
+hatchedKoa.modelSync({ force: true })
+```
+
+This creates the table, dropping it first if it already existed
+
+- Postgres: Namespaces (Postgres Schemas) and their tables are dropped and recreated
 
 ### hatchedKoa.orm
 
@@ -275,7 +299,7 @@ PATCH  /api/users/:id
 DELETE /api/users/:id
 ```
 
-`hatchedKoa.middleware.allModels.all`
+### hatchedKoa.middleware.allModels.all
 
 This exports a single middleware function that based on the method and the URL will call the right `everything` function. It is useful as a default handler to handle all Hatchify `GET`/`POST`/`PATCH`/`DELETE` endpoints.
 
