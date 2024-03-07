@@ -94,7 +94,7 @@ Returns a `JSON:API rest client` instance object
 
 ### hatchifyReact
 
-`hatchifyReact(createJsonapiClient("/api", Schemas))` is a `Function` that initializes the `HatchifyApp` object from the JSON:API rest client. Inside of the retured object you will find [`components`](./components.md), [`model`](./model.md), [`state`](./state.md), and [`Everything`](#everything).
+`hatchifyReact(createJsonapiClient("/api", Schemas))` is a `Function` that initializes the `HatchifyApp` object from the JSON:API rest client. Inside of the retured object you will find [`components`](./components.md), [`model`](./hatchedReact.model.md), [`state`](./state.md), and [`Everything`](#everything).
 
 ```ts
 import { createJsonapiClient, hatchifyReact } from "@hatchifyjs/react"
@@ -104,7 +104,7 @@ const schemas = { ... }
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 ```
 
-### HatchifyProvider
+### [HatchifyProvider](./hatchedReact.state.md#)
 
 `HatchifyProvider` must wrap your application for you to use hatchify components. The `HatchifyProvider` also provides a way to ovreride the default renders for each type of attribute and relationship. This is done by passing an optional `defaultDisplayComponents` object to the provider as a prop. In the example below, rather than rendering the text "true" or "false" for a boolean, all booleans in Hatchify components will render as "✅" or "❌".
 
@@ -150,7 +150,7 @@ function App() {
 | -------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | `defaultDisplayComponents` | <a href="#defaultdisplaycomponents">`Partial<DefaultDisplayComponents>`</a> | An object that is keyed by type and contains a component to render the value of that type. |
 
-### Types
+### [Types](./hatchedReact.types.md)
 
 `@hatchifyjs/react` provides a number of [types](./types.md) to assist with app customization.
 
@@ -170,7 +170,7 @@ Learn more about the available types [here](./types.md).
 
 - [Everything](./Everything.md) - is a default component comprised of a set of tabs 🛑 (one for each schema) and DataGrids.
 - [components](./components.md) - a set of components for each of the defined schemas to be used in the app.
-- [model](./model.md) - a set of hooks and promises for each of the defined schemas
+- [model](./hatchedReact.model.md) - a set of hooks and promises for each of the defined schemas
 - [state](./state.md) - contains hooks that can be used when customizing components provided by hatchify
 
 The following show some of the methods available given a `Todo` and `User` schema:
@@ -191,24 +191,24 @@ const App: React.FC = () => {
 }
 ```
 
-### model
+### [model](./hatchedReact.model.md)
 
-The [`model`](./model.md) is a set of hooks and promises for each of the defined schemas. These get used under the hood in the Hatchify components, but are available for use in situations where customization is needed.
+The [`model`](./hatchedReact.model.md) is a set of hooks and promises for each of the defined schemas. These get used under the hood in the Hatchify components, but are available for use in situations where customization is needed.
 
-- [`createOne`](./model.md#createone)
-- [`deleteOne`](./model.md#deleteone)
-- [`findAll`](./model.md#findall)
-- [`findOne`](./model.md#findone)
-- [`updateOne`](./model.md#updateone)
-- [`useAll`](./model.md#useall)
-- [`useCreateOne`](./model.md#usecreateone)
-- [`useDeleteOne`](./model.md#usedeleteone)
-- [`useOne`](./model.md#useone)
-- [`useUpdateOne`](./model.md#useupdateone)
+- [`createOne`](./hatchedReact.model.md#createone)
+- [`deleteOne`](./hatchedReact.model.md#deleteone)
+- [`findAll`](./hatchedReact.model.md#findall)
+- [`findOne`](./hatchedReact.model.md#findone)
+- [`updateOne`](./hatchedReact.model.md#updateone)
+- [`useAll`](./hatchedReact.model.md#useall)
+- [`useCreateOne`](./hatchedReact.model.md#usecreateone)
+- [`useDeleteOne`](./hatchedReact.model.md#usedeleteone)
+- [`useOne`](./hatchedReact.model.md#useone)
+- [`useUpdateOne`](./hatchedReact.model.md#useupdateone)
 
-Learn more about the available hooks and promises [here](model.md).
+Learn more about the available hooks and promises [here](hatchedReact.model.md).
 
-### state
+### [state](./hatchedReact.state.md)
 
 The `state` is a set of hooks for each of the defined schemas. These get used under the hood in the Hatchify components, but are available for use in situations where customization is needed. The `state` object holds a record of schemas each with their own [`useDataGridState`](./state.md#usedatagridstate) hook.
 
@@ -221,16 +221,16 @@ const todoState = hatchedReact.state.Todo.useDataGridState({
 
 Learn more about the return type [here](types.md).
 
-### components
+### [components](./hatchedReact.components.md)
 
-[`hatchifyReact`](#hatchifyreact) provides a set of [`components`](./components.md) for each of the defined schemas. These components include:
+[`hatchifyReact`](#hatchifyreact) provides a set of [`components`](./hatchedReact.components.md) for each of the defined schemas. These components include:
 
-[`Column`](./components.md#column)
-[`DataGrid`](./components.md#datagrid)
-[`Everything`](./components.md#everything)
-[`Empty`](./components.md#empty)
+[`Column`](./hatchedReact.components.column.md)
+[`DataGrid`](./hatchedReact.components.datagrid.md)
+[`Empty`](./hatchedReact.components.empty.md)
+[`Everything`](./hatchedReact.components.everything.md)
 
-Learn more about the available components [here](./components.md).
+Learn more about the available components [here](./hatchedReact.components.md).
 
 ```tsx
 import {HatchifyProvider} from "@hatchifyjs/react"

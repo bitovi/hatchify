@@ -8,7 +8,7 @@
 
 `hatchedKoa.middleware.allModels.all`
 
-This exports a single middleware function that based on the method and the URL will call the right `everything` function. It is useful as a default handler to handle all Hatchify `GET`/`POST`/`PATCH`/`DELETE` endpoints.
+A middleware that calls the right `everything` function for all `GET`/`POST`/`PATCH`/`DELETE` requests. It is useful as a default handler to handle all Hatchify `GET`/`POST`/`PATCH`/`DELETE` endpoints.
 
 ```ts
 app.use(hatchedKoa.middleware.allModels.all)
@@ -18,7 +18,7 @@ app.use(hatchedKoa.middleware.allModels.all)
 
 `hatchedKoa.middleware.allModels.findAll`
 
-This exports a single middleware function that based on the URL will call the right `everything[schemaName].findAll` function regardless of the method.
+A middleware that calls the right `everything[schemaName].findAll` for GET requests to `/[schemaName]`.
 
 ```ts
 app.use(hatchedKoa.middleware.allModels.findAll)
@@ -28,7 +28,7 @@ app.use(hatchedKoa.middleware.allModels.findAll)
 
 `hatchedKoa.middleware.allModels.findAndCountAll`
 
-This exports a single middleware function that based on the URL will call the right `everything[schemaName].findAndCountAll` function regardless of the method.
+A middleware that calls the right `everything[schemaName].findAndCountAll` for GET requests to `/[schemaName]`.
 
 ```ts
 app.use(hatchedKoa.middleware.allModels.findAndCountAll)
@@ -38,7 +38,7 @@ app.use(hatchedKoa.middleware.allModels.findAndCountAll)
 
 `hatchedKoa.middleware.allModels.findOne`
 
-This exports a single middleware function that based on the URL will call the right `everything[schemaName].findOne` function regardless of the method.
+A middleware that calls the right `everything[schemaName].findOne` for GET requests to `/[schemaName]`.
 
 ```ts
 app.use(hatchedKoa.middleware.allModels.findOne)
@@ -48,7 +48,7 @@ app.use(hatchedKoa.middleware.allModels.findOne)
 
 `hatchedKoa.middleware.allModels.create`
 
-This exports a single middleware function that based on the URL will call the right `everything[schemaName].create` function regardless of the method.
+A middleware that calls the right `everything[schemaName].findAll` for POST requests to `/[schemaName]`.
 
 ```ts
 app.use(hatchedKoa.middleware.allModels.create)
@@ -58,7 +58,7 @@ app.use(hatchedKoa.middleware.allModels.create)
 
 `hatchedKoa.middleware.allModels.update`
 
-This exports a single middleware function that based on the URL will call the right `everything[schemaName].update` function regardless of the method.
+A middleware that calls the right `everything[schemaName].findAll` for PATCH requests to `/[schemaName]`.
 
 ```ts
 app.use(hatchedKoa.middleware.allModels.update)
@@ -68,7 +68,7 @@ app.use(hatchedKoa.middleware.allModels.update)
 
 `hatchedKoa.middleware.allModels.destroy`
 
-This exports a single middleware function that based on the URL will call the right `everything[schemaName].destroy` function regardless of the method.
+A middleware that calls the right `everything[schemaName].findAll` for DELETE requests to `/[schemaName]`.
 
 ```ts
 app.use(hatchedKoa.middleware.allModels.destroy)
@@ -78,74 +78,74 @@ app.use(hatchedKoa.middleware.allModels.destroy)
 
 `hatchedKoa.middleware[schemaName].[all|findAll|findOne|findAndCountAll|create|update|destroy]`
 
-All of the `middleware` functions export a Koa Middleware that can be passed directly to a Koa app.use or a Koa router.[verb] function, mounted to a specific URL/path. The normal [schemaName] export expects to be used with:
+All of the `middleware` functions export a Koa Middleware that can be passed directly to a Koa `app.use`. The normal [schemaName] export expects to be used with:
 
 ### all
 
 `hatchedKoa.middleware[schemaName].all`
 
-This exports a single middleware function that based on the method and the URL will call the right `everything` function for a specific schema. It is useful as a default handler to handle all Hatchify `GET`/`POST`/`PATCH`/`DELETE` endpoints.
+A middleware that calls the right `everything` function for `GET`/`POST`/`PATCH`/`DELETE` to `/todos`.
 
 ```ts
-app.use(hatchedKoa.middleware[schemaName].all)
+app.use(hatchedKoa.middleware.Todo.all)
 ```
 
 ### findAll
 
 `hatchedKoa.middleware[schemaName].findAll`
 
-This exports a single middleware function that will call `everything[schemaName].findAll` function regardless of the method and the URL. It is useful when used with a router.
+A middleware that calls `everything.Todo.findAll` for GET requests to `/todos`.
 
 ```ts
-router.get("/get-all-todos", hatchedKoa.middleware.Todo.findAll)
+app.use(hatchedKoa.middleware.Todo.findAll)
 ```
 
 ### findAndCountAll
 
 `hatchedKoa.middleware[schemaName].findAndCountAll`
 
-This exports a single middleware function that will call `everything[schemaName].findAndCountAll` function regardless of the method and the URL. It is useful when used with a router.
+A middleware that calls `everything.Todo.findAndCountAll` for GET requests to `/todos`.
 
 ```ts
-router.get("/get-and-count-all-todos", hatchedKoa.middleware.Todo.findAndCountAll)
+app.use(hatchedKoa.middleware.Todo.findAndCountAll)
 ```
 
 ### findOne
 
 `hatchedKoa.middleware[schemaName].findOne`
 
-This exports a single middleware function that will call `everything[schemaName].findOne` function regardless of the method and the URL. It is useful when used with a router.
+A middleware that calls `everything.Todo.findOne` for GET requests to `/[schemaName]/:id`.
 
 ```ts
-router.get("/get-one-todo/:id", hatchedKoa.middleware.Todo.findOne)
+app.use(hatchedKoa.middleware.Todo.findOne)
 ```
 
 ### create
 
 `hatchedKoa.middleware[schemaName].create`
 
-This exports a single middleware function that will call `everything[schemaName].create` function regardless of the method and the URL. It is useful when used with a router.
+A middleware that calls `everything.Todo.create` for POST requests to `/todos`.
 
 ```ts
-router.post("/create-todo", hatchedKoa.middleware.Todo.create)
+app.use(hatchedKoa.middleware.Todo.create)
 ```
 
 ### update
 
 `hatchedKoa.middleware[schemaName].update`
 
-This exports a single middleware function that will call `everything[schemaName].update` function regardless of the method and the URL. It is useful when used with a router.
+A middleware that calls `everything.Todo.update` for PATCH requests to `/todos`.
 
 ```ts
-router.patch("/update-todo", hatchedKoa.middleware.Todo.update)
+app.use(hatchedKoa.middleware.Todo.update)
 ```
 
 ### destroy
 
 `hatchedKoa.middleware[schemaName].destroy`
 
-This exports a single middleware function that will call `everything[schemaName].destroy` function regardless of the method and the URL. It is useful when used with a router.
+A middleware that calls `everything.Todo.findAll` for DELETE requests to `/todos`.
 
 ```ts
-router.delete("/delete-todo", hatchedKoa.middleware.Todo.destroy)
+app.use(hatchedKoa.middleware.Todo.destroy)
 ```

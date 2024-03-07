@@ -1,45 +1,48 @@
 # `@hatchifyjs/react-jsonapi`
 
-`@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../schema/README.md) and produces an API layer that your frontend can use for a JSON:API backend.
+`@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../schema/README.md) and produces an API client that your frontend can use for your JSON:API backend.
 
-```ts
+In this simplified example, we use `@hatchifyjs/react-jsonapi` to create and fetch todos from a JSON:API backend. To learn how to use the full power of the package, see the documentation for each individual function.
+
+```tsx
+import { useState } from "react"
 import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonapi"
+import { string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 
-// Define the schema
-const schemas = {
-  Todo: {
-    name: "Todo",
-    attributes: {
-      name: string(),
-      dueDate: datetime(),
-    },
+const Todo = {
+  name: "Todo",
+  attributes: {
+    name: string({ required: true }),
   },
-} satisfies Record<string, PartialSchema>;
+} satisfies PartialSchema
 
-const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", schemas))
+const hatchedReactRest = hatchifyReactRest(createJsonapiClient("/api", { Todo }))
 
-// Use the promise-based API
-const [records, requestMeta] = await hatchedReactRest.Todo.findAll()
-const record =                 await hatchedReactRest.Todo.findOne(UUID)
-const createdRecord =          await hatchedReactRest.Todo.createOne({
-                                 name: "Learn HatchifyJS",
-                                 dueDate: new Date(),
-                               })
-                              await hatchedReactRest.Todo.updateOne({
-                                id: createdRecord.id,
-                                name: "Master HatchifyJS",
-                              })
-await hatchedReactRest.Todo.deleteOne(createdRecord.id)
+function App() {
+  const [todos] = hatchedReactRest.Todo.useAll()
+  const [createTodo] = hatchedReactRest.Todo.useCreateOne()
+  const [name, setName] = useState("")
 
-// Use the hook-based API
-function MyComponent() {
-  const [records, useAllState] = hatchedReactRest.Todo.useAll()
-  const [record, useOneState] = hatchedReactRest.Todo.useOne(UUID)
-  const [createTodo, createState, createdRecord] = hatchedReactRest.Todo.useCreateOne()
-  const [updateTodo, updateState, updatedRecord] = hatchedReactRest.Todo.useUpdateOne()
-  const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
-
-  // ...
+  return (
+    <div>
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      <button
+        type="button"
+        onClick={() => {
+          createTodo({ name })
+          setName("")
+        }}
+      >
+        Create
+      </button>
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>{todo.name}</li>
+        ))}
+      </ul>
+    </div>
+  )
 }
 ```
 
@@ -57,18 +60,21 @@ function MyComponent() {
   - [useUpdateOne](#useupdateone)
   - [useDeleteOne](#usedeleteone)
 - [Types](#types)
+  - [CreateFunction](#createfunction)
+  - [DeleteFunction](#deletefunction)
   - [MetaData](#metadata)
   - [QueryList](#querylist)
   - [QueryOne](#queryone)
   - [RecordType](#recordtype)
   - [RequestState](#requeststate)
+  - [UpdateFunction](#updatefunction)
 
 ## Exports
 
 `@hatchifyjs/react-jsonapi` exports the following:
 
-- `hatchifyReactRest` - A function that takes a `RestClient` and returns an object with promise and hook-based functions for each schema.
-- `createJsonapiClient` - A function that takes a base URL and a set of schemas and returns a `RestClient` object for a JSON:API backend.
+- <a href="#hatchifyreactrest">`hatchifyReactRest`</a> - A function that takes a `RestClient`, such as the one returned by `createJsonapiClient`, and returns an object with promise and hook-based functions for each schema.
+- <a href="#createjsonapiclient">`createJsonapiClient`</a> - A function that takes a base URL and a set of schemas and returns a `RestClient` object for a JSON:API backend.
 
 ```ts
 import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonapi"
@@ -76,7 +82,7 @@ import { hatchifyReactRest, createJsonapiClient } from "@hatchifyjs/react-jsonap
 
 ## createJsonapiClient
 
-`createJsonapiClient(baseUrl: string, schemas: Schemas): RestClient` is a function that takes a base URL and a set of schemas and returns a `RestClient` object for a JSON:API backend.
+`createJsonapiClient(baseUrl: string, schemas: Schemas) => RestClient` creates a `RestClient` which can then be passed into `hatchifyReactRest`. A `RestClient` is made up of a set of CRUD functions for interacting with a JSON:API backend.
 
 ```ts
 const jsonapiClient = createJsonapiClient("/api", schemas)
@@ -84,18 +90,23 @@ const jsonapiClient = createJsonapiClient("/api", schemas)
 
 ## hatchifyReactRest
 
-`hatchifyReactRest(restClient: RestClient): HatchifyReactRest` is a function that takes a `RestClient` and returns an object with promise and hook-based functions for each schema.
+`hatchifyReactRest(restClient: RestClient) => HatchifyReactRest` is the entry point function. It returns an instance of `HatchifyReactRest`, which is an object keyed by each schema that was passed into the `createJsonapiClient` function. Each schema has a set of promise and hook-based functions for interacting with a JSON:API backend.
 
 ```ts
 const hatchedReactRest = hatchifyReactRest(jsonapiClient)
+
+const [todos] = await hatchedReactRest.Todo.useAll()
+const [users] = await hatchedReactRest.User.useAll()
 ```
 
 ### findAll
 
-`hatchedReactRest[SchemaName].findAll(): Promise<[RecordType[], MetaData]>` is a function that returns a promise that resolves to an array of records of the given schema and any metadata returned by the server.
+`hatchedReactRest[SchemaName].findAll() => Promise<[RecordType[], MetaData]>`
+
+This is how you could use the `findAll` function to fetch a page of todos. The metadata returned by the server will contain the total count of todos.
 
 ```ts
-const result = await hatchedReactRest.Todo.findAll()
+const [todos, metadata] = await hatchedReactRest.Todo.findAll({ page: { page: 1, size: 10 } })
 ```
 
 **Parameters**
@@ -108,22 +119,26 @@ const result = await hatchedReactRest.Todo.findAll()
 
 An array with the following properties:
 
-| Property    | Type                                     | Details                                                                       |
-| ----------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
-| `result[0]` | <a href="#recordtype">`RecordType[]`</a> | An array of records of the given schema.                                      |
-| `result[1]` | <a href="#metadata">`MetaData`</a>       | An object with metadata returned by the server, such as the count of records. |
+| Property | Common Alias                                | Type                                     | Details                                                                       |
+| -------- | ------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordtype">`RecordType[]`</a> | An array of records of the given schema.                                      |
+| `[1]`    | `metadata`                                  | <a href="#metadata">`MetaData`</a>       | An object with metadata returned by the server, such as the count of records. |
 
 ### findOne
 
-`hatchedReactRest[SchemaName].findOne(id: string): Promise<RecordType>` is a function that returns a promise that resolves to a single record of the given schema for the id.
+`hatchedReactRest[SchemaName].findOne(id: string | QueryOne) => Promise<RecordType>`
+
+The `findOne` function can be used to fetch a single record by its id.
 
 ```ts
-const record = await hatchedReactRest.Todo.findOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
+const record = await hatchedReactRest.Todo.findOne(UUID)
 ```
+
+Optionally, if you'd like to specify the fields to return or the relationships to include, you can pass in a <a href="#queryone">QueryOne</a> object.
 
 ```ts
 const record = await hatchedReactRest.Todo.findOne({
-  id: "de596092-aa33-42e7-8bb7-09ec5b20d73f",
+  id: UUID,
   fields: ["name"],
 })
 ```
@@ -135,14 +150,22 @@ const record = await hatchedReactRest.Todo.findOne({
 | IdOrQueryOne | `string`                            | The id of the record.                                   |
 |              | <a href="#queryone ">`QueryOne`</a> | The id of the record and an optional include or fields. |
 
+**Returns**
+
+| Type                                            | Details                       |
+| ----------------------------------------------- | ----------------------------- |
+| <a href="#recordtype">`Promise<RecordType>`</a> | A record of the given schema. |
+
 ### createOne
 
-`hatchedReactRest[SchemaName].createOne(data: Partial<RecordType>): Promise<RecordType>` is a function that returns a promise that resolves to the newly created record.
+`hatchedReactRest[SchemaName].createOne(data: Partial<RecordType>) => Promise<RecordType`
+
+The `createOne` function creates a new record for the given schema, in this case Todo. Only the required attributes need to be passed in.
 
 ```ts
 const createdRecord = await hatchedReactRest.Todo.createOne({
   name: "Learn HatchifyJS",
-  dueDate: new Date(),
+  complete: false,
 })
 ```
 
@@ -154,11 +177,15 @@ const createdRecord = await hatchedReactRest.Todo.createOne({
 
 **Returns**
 
-The newly created record.
+| Type                                            | Details                   |
+| ----------------------------------------------- | ------------------------- |
+| <a href="#recordtype">`Promise<RecordType>`</a> | The newly created record. |
 
 ### updateOne
 
-`hatchedReactRest[SchemaName].updateOne(data: Partial<RecordType>): Promise<RecordType>` is a function that returns a promise that resolves to the updated record.
+`hatchedReactRest[SchemaName].updateOne(data: Partial<RecordType>) => Promise<RecordType>`
+
+When using the `updateOne` function, the id must be passed in along with only the data that needs to be updated.
 
 ```ts
 const updated = await hatchedReact.model.Todo.updateOne({
@@ -175,14 +202,18 @@ const updated = await hatchedReact.model.Todo.updateOne({
 
 **Returns**
 
-The updated record.
+| Type                                            | Details             |
+| ----------------------------------------------- | ------------------- |
+| <a href="#recordtype">`Promise<RecordType>`</a> | The updated record. |
 
 ### deleteOne
 
-`hatchedReactRest[SchemaName].deleteOne(id: string): Promise<void>` is a function that returns a promise that resolves when the record is deleted.
+`hatchedReactRest[SchemaName].deleteOne(id: string) => Promise<void>`
+
+The `deleteOne` function deletes a record by its id.
 
 ```ts
-await hatchedReactRest.Todo.deleteOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
+await hatchedReactRest.Todo.deleteOne(UUID)
 ```
 
 **Parameters**
@@ -193,109 +224,257 @@ await hatchedReactRest.Todo.deleteOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
 
 **Returns**
 
-A promise that resolves when the record is deleted.
+| Type            | Details                                             |
+| --------------- | --------------------------------------------------- |
+| `Promise<void>` | A promise that resolves when the record is deleted. |
 
 ### useAll
 
-`hatchedReactRest[SchemaName].useAll(): [RecordType[], RequestState]` is a hook that returns an array of records and request state data of the given schema.
+`hatchedReactRest[SchemaName].useAll() => [RecordType[], RequestState]`
 
-```ts
-const result = hatchedReactRest.Todo.useAll()
+In this example, we use the `useAll` hook to fetch all todos and display them in a list. The hook returns an array with the todos that we map over and display. We use the the `RequestState` to determine whether to display a loading spinner or an error message.
+
+```tsx
+function TodosList() {
+  const [todos, state] = hatchedReactRest.Todo.useAll()
+
+  if (state.isPending) {
+    return <div>Loading...</div>
+  }
+
+  if (state.isRejected) {
+    return <div>Error: {state.error.message}</div>
+  }
+
+  return (
+    <ul>
+      {todos.map((todo) => (
+        <li key={todo.id}>{todo.name}</li>
+      ))}
+    </ul>
+  )
+}
 ```
 
 **Parameters**
 
-| Property        | Type                                                 | Details                                                          |
-| --------------- | ---------------------------------------------------- | ---------------------------------------------------------------- |
-| queryList       | <a href="#querylist">`QueryList?`</a>                | An object with optional include, fields, filter, sort, and page. |
-| baseFilter      | `{ field: string, operator: string, value: any }[]?` | An object with optional fields, operator, and value.             |
-| minimumLoadTime | `number?`                                            | The minimum time to show a loading spinner.                      |
+| Property        | Type                                                 | Details                                                                                                  |
+| --------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| queryList       | <a href="#querylist">`QueryList?`</a>                | An object with optional include, fields, filter, sort, and page.                                         |
+| baseFilter      | `{ field: string, operator: string, value: any }[]?` | An optional filter object made up of the field to filter, the operator type, and the value to filter by. |
+| minimumLoadTime | `number?`                                            | The minimum time to show a loading spinner.                                                              |
 
 **Returns**
 
 An array with the following properties:
 
-| Property    | Type                                       | Details                                  |
-| ----------- | ------------------------------------------ | ---------------------------------------- |
-| `result[0]` | <a href="#recordtype">`RecordType[]`</a>   | An array of records of the given schema. |
-| `result[1]` | <a href="#requeststate">`RequestState`</a> | An object with request state data.       |
+| Property | Common Alias                                | Type                                       | Details                                  |
+| -------- | ------------------------------------------- | ------------------------------------------ | ---------------------------------------- |
+| `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordtype">`RecordType[]`</a>   | An array of records of the given schema. |
+| `[1]`    | `state`                                     | <a href="#requeststate">`RequestState`</a> | An object with request state data.       |
 
 ### useOne
 
-`hatchedReactRest[SchemaName].useOne(id: string): [RecordType, RequestState]` is a hook that returns a single record and request state data of the given schema and id.
+`hatchedReactRest[SchemaName].useOne(id: string) => [RecordType, RequestState]`
 
-```ts
-const result = hatchedReactRest.Todo.useOne("de596092-aa33-42e7-8bb7-09ec5b20d73f")
+Here we use the `useOne` hook to fetch a single todo and display its name and whether it is complete. Using the `RequestState` object, we conditionally handle loading and error states. If the record is not found, we display a message to the user.
+
+```tsx
+function ViewTodo({ uuid }: { uuid: string }) {
+  const [todo, state] = hatchedReactRest.Todo.useOne(uuid)
+
+  if (state.isPending) {
+    return <div>Loading...</div>
+  }
+
+  if (state.isRejected) {
+    return <div>Error: {state.error.message}</div>
+  }
+
+  if (!todo) {
+    return <div>Not found</div>
+  }
+
+  return (
+    <div>
+      <p>Name: {todo.name}</p>
+      <p>Complete: {todo.complete ? "Yes" : "No"}</p>
+    </div>
+  )
+}
 ```
 
 **Parameters**
 
-| Property | Type     | Details                        |
-| -------- | -------- | ------------------------------ |
-| id       | `string` | The id of the record to fetch. |
+| Property     | Type                                | Details                                                 |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| IdOrQueryOne | `string`                            | The id of the record.                                   |
+|              | <a href="#queryone ">`QueryOne`</a> | The id of the record and an optional include or fields. |
 
 **Returns**
 
 An array with the following properties:
 
-| Property    | Type                                       | Details                            |
-| ----------- | ------------------------------------------ | ---------------------------------- |
-| `result[0]` | <a href="#recordtype">`RecordType`</a>     | The record of the given schema.    |
-| `result[1]` | <a href="#requeststate">`RequestState`</a> | An object with request state data. |
+| Property | Common Alias                                | Type                                       | Details                            |
+| -------- | ------------------------------------------- | ------------------------------------------ | ---------------------------------- |
+| `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordtype">`RecordType`</a>     | A record of the given schema.      |
+| `[1]`    | `state`                                     | <a href="#requeststate">`RequestState`</a> | An object with request state data. |
 
 ### useCreateOne
 
-`hatchedReactRest[SchemaName].useCreateOne(): [(data: Partial<RecordType>) => Promise<void>, RequestState, RecordType?]` is a hook that returns a function to create a record, request state data, and the most recently created record.
+`hatchedReactRest[SchemaName].useCreateOne() => [CreateFunction, RequestState, RecordType?]`
 
-```ts
-const result = hatchedReactRest.Todo.useCreateOne()
+Here we use the `useCreateOne` hook to create a simple form for creating a new todo. We us the `createTodo` function when the form is submitted, the `RequestState` object to conditionally handle loading and error states, and we track the `created` object to console log the newly created record.
+
+```tsx
+function CreateTodo() {
+  const [createTodo, state, created] = hatchedReactRest.Todo.useCreateOne()
+  const [name, setName] = useState("")
+
+  useEffect(() => {
+    console.log("created record:", created)
+  }, [created])
+
+  if (state.isPending) {
+    return <div>Creating...</div>
+  }
+
+  if (state.isRejected) {
+    return <div>Error: {state.error.message}</div>
+  }
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        createTodo({ name })
+        setName("")
+      }}
+    >
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      <button type="submit">Create</button>
+    </form>
+  )
+}
 ```
 
 **Returns**
 
 An array with the following properties:
 
-| Property    | Type                                                                     | Details                            |
-| ----------- | ------------------------------------------------------------------------ | ---------------------------------- |
-| `result[0]` | <a href="#recordtype">`(data: Partial<RecordType>) => Promise<void>`</a> | A function to create a record.     |
-| `result[1]` | <a href="#requeststate">`RequestState`</a>                               | An object with request state data. |
-| `result[2]` | <a href="#recordtype">`RecordType`</a>                                   | The most recently created record.  |
+| Property | Common Alias         | Type                                           | Details                            |
+| -------- | -------------------- | ---------------------------------------------- | ---------------------------------- |
+| `[0]`    | `create{SchemaName}` | <a href="#createfunction">`CreateFunction`</a> | A function to create a record.     |
+| `[1]`    | `state`              | <a href="#requeststate">`RequestState`</a>     | An object with request state data. |
+| `[2]`    | `created`            | <a href="#recordtype">`RecordType`</a>         | The most recently created record.  |
 
 ### useUpdateOne
 
-`hatchedReactRest[SchemaName].useUpdateOne(): [(data: Partial<RecordType>) => Promise<void>, { id: RequestState }, RecordType?]` is a hook that returns a function to update a record, request state data keyed by the id of the updated record, and the most recently updated record.
+`hatchedReactRest[SchemaName].useUpdateOne() => [UpdateFunction, { id: RequestState }, RecordType?]`
 
-```ts
-const [updateRecord, requestState, updatedRecord] = hatchedReactRest.Todo.useUpdateOne()
+Here we use the `useUpdateOne` hook to create a simple edit form for updating a todo. We use the `updateTodo` function when the form is submitted, the `RequestState` object to conditionally handle loading and error states, and we track the `updated` object to console log the newly updated record.
+
+```tsx
+function EditTodo({ todo }: { todo: { id: string; name: string } }) {
+  const [updateTodo, state, updated] = hatchedReactRest.Todo.useUpdateOne()
+  const [name, setName] = useState(todo.name)
+
+  useEffect(() => {
+    console.log("updated record:", updated)
+  }, [updated])
+
+  if (state[todo.id]?.isPending) {
+    return <div>Updating...</div>
+  }
+
+  if (state[todo.id]?.isRejected) {
+    return <div>Error: {state[todo.id]?.error.message}</div>
+  }
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        updateTodo({ id: todo.id, name })
+      }}
+    >
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      <button type="submit">Update</button>
+    </form>
+  )
+}
 ```
 
 **Returns**
 
 An array with the following properties:
 
-| Property    | Type                                                                     | Details                            |
-| ----------- | ------------------------------------------------------------------------ | ---------------------------------- |
-| `result[0]` | <a href="#recordtype">`(data: Partial<RecordType>) => Promise<void>`</a> | A function to update a record.     |
-| `result[1]` | <a href="#requeststate">`RequestState`</a>                               | An object with request state data. |
-| `result[2]` | <a href="#recordtype">`RecordType`</a>                                   | The most recently updated record.  |
+| Property | Common Alias         | Type                                           | Details                            |
+| -------- | -------------------- | ---------------------------------------------- | ---------------------------------- |
+| `[0]`    | `update{SchemaName}` | <a href="#updatefunction">`UpdateFunction`</a> | A function to update a record.     |
+| `[1]`    | `state`              | <a href="#requeststate">`RequestState`</a>     | An object with request state data. |
+| `[2]`    | `updated`            | <a href="#recordtype">`RecordType`</a>         | The most recently updated record.  |
 
 ### useDeleteOne
 
-`hatchedReactRest[SchemaName].useDeleteOne(): [(id: string) => Promise<void>, { id: RequestState }]` is a hook that returns a function to delete a record and request state data keyed by the id of the deleted record.
+`hatchedReactRest[SchemaName].useDeleteOne() => [DeleteFunction, { id: RequestState }]`
 
-```ts
-const [deleteRecord, requestState] = hatchedReactRest.Todo.useDeleteOne()
+Here we use the `useDeleteOne` hook to create alongside a list of todos. We use the `deleteTodo` function when the delete button is clicked, and the `RequestState` object to disable the delete button when the request is pending.
+
+```tsx
+function TodosListWithDelete() {
+  const [deleteTodo, state] = hatchedReactRest.Todo.useDeleteOne()
+  const [todos, todosState] = hatchedReactRest.Todo.useAll()
+
+  if (todosState.isPending) {
+    return <div>Loading...</div>
+  }
+
+  if (todosState.isRejected) {
+    return <div>Error: {todosState.error.message}</div>
+  }
+
+  return (
+    <ul>
+      {todos.map((todo) => (
+        <li key={todo.id}>
+          {todo.name}
+          <button disabled={state[todo.id]?.isPending} onClick={() => deleteTodo(todo.id)}>
+            Delete
+          </button>
+        </li>
+      ))}
+    </ul>
+  )
+}
 ```
 
 **Returns**
 
 An array with the following properties:
 
-| Property    | Type                            | Details                        |
-| ----------- | ------------------------------- | ------------------------------ |
-| `result[0]` | `(id: string) => Promise<void>` | A function to delete a record. |
+| Property | Common Alias         | Type                                           | Details                            |
+| -------- | -------------------- | ---------------------------------------------- | ---------------------------------- |
+| `[0]`    | `delete{SchemaName}` | <a href="#deletefunction">`DeleteFunction`</a> | A function to delete a record.     |
+| `[1]`    | `state`              | <a href="#requeststate">`RequestState`</a>     | An object with request state data. |
 
 ## Types
+
+### CreateFunction
+
+`CreateFunction` is a function that takes an object containing the data for the new record and returns a promise that resolves to the newly created record.
+
+| Type                                        | Details                                                                                                                                                                                         |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `(data: RecordType) => Promise<RecordType>` | A function that creates a record, modifies the associated <a href="#requeststate">RequestState</a>, and updates the latest created record in the <a href="#usecreateone">useCreateOne</a> hook. |
+
+### DeleteFunction
+
+`DeleteFunction` is a function that takes the id of the record to delete and returns a promise that resolves when the record is deleted.
+
+| Type                            | Details                                                                                                                                                     |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `(id: string) => Promise<void>` | A function that deletes a record and modifies the associated <a href="#requeststate">RequestState</a> in the <a href="#usedeleteone">useDeleteOne</a> hook. |
 
 ### MetaData
 
@@ -329,25 +508,52 @@ An array with the following properties:
 
 ### RecordType
 
-`RecordType` is a flat object representing the fields (id, attributes, and relationships) of a schema.
+`RecordType` is a flat object representing the JSON:API response from the backend. The attributes and relationships are flattened to the top level of the object.
 
 | Property | Type     | Details                                         |
 | -------- | -------- | ----------------------------------------------- |
 | id       | `string` | The id of the record.                           |
 | ...      | `any`    | The attributes and relationships of the record. |
 
+The expected shape of the `RecordType` in the case of the `Todo` and `User` schemas would be:
+
+```ts
+{
+  id: string,
+  name: string,
+  complete: boolean,
+  user: {
+    id: string,
+    email: string,
+  },
+}
+```
+
 ### RequestState
 
 `RequestState` is an object with the following properties:
 
-| Property       | Type                                | Details                                            |
-| -------------- | ----------------------------------- | -------------------------------------------------- |
-| error          | `Error?`                            | An error object if the request failed.             |
-| isPending      | `boolean`                           | Whether the request is pending.                    |
-| isRejected     | `boolean`                           | Whether the request failed.                        |
-| isResolved     | `boolean`                           | Whether the request was completed.                 |
-| isRevalidating | `boolean`                           | Whether the request is revalidating a stale state. |
-| isStale        | `boolean`                           | Whether the data is out of date.                   |
-| isSuccess      | `boolean`                           | Whether the request was successful.                |
-| meta           | <a href="#metadata">`MetaData`</a>  | Metadata returned by the server.                   |
-| status         | `"loading" \| "error" \| "success"` | The status of the request.                         |
+| Property   | Type                               | Details                                                         |
+| ---------- | ---------------------------------- | --------------------------------------------------------------- |
+| error      | `Error?`                           | An error object if the request failed.                          |
+| isPending  | `boolean`                          | True if the status is `"loading"`, false otherwise.             |
+| isRejected | `boolean`                          | True if the status is `"error"`, false otherwise.               |
+| isResolved | `boolean`                          | True if the status is `"success"` or `"error`, false otherwise. |
+| isSuccess  | `boolean`                          | True if status is `"success"`, false otherwise.                 |
+| meta       | <a href="#metadata">`MetaData`</a> | Metadata returned by the server.                                |
+|            |                                    |
+| status     | `"loading"`                        | If the promise is pending.                                      |
+|            | `"error"`                          | If the promise is rejected.                                     |
+|            | `"success"`                        | If the promise is successfully resolved.                        |
+
+### UpdateFunction
+
+`UpdateFunction` is a function that takes an object containing the data for the new record and returns a promise that resolves to the newly updated record.
+
+| Type                                                 | Details                                                                                                                                                                                           |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `(data: Partial<RecordType>) => Promise<RecordType>` | A function that updates the record, modifies the associated <a href="#requeststate">RequestState</a>, and updates the latest updated record in the <a href="#useupdateone">useUpdateOne</a> hook. |
+
+```
+
+```

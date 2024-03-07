@@ -1,6 +1,6 @@
 # Attribute Types
 
-A single scheme could use different attribute types to describe the different data shapes it needs to store.
+Each schema can use different attribute types to describe the different data shapes it needs to store.
 
 - [General Guidelines](#general-guidelines)
 - [displayName](#displayname)
@@ -8,9 +8,9 @@ A single scheme could use different attribute types to describe the different da
 
 ## General Guidelines
 
-An attribute name should be singular camelCase:
+Attribute keys should be singular and camelCase:
 
-```typescript
+```ts
 // hatchify-app/schemas.ts
 export const SalesPerson = {
   name: "SalesPerson",
@@ -29,22 +29,24 @@ export const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Database Implications
+**_Database Implications_**
 
 Creates columns `first_name`, `last_name`, `age`, etc. in the `sales_person` table.
 
-### API Implications
+**_API Implications_**
 
-#### Querying Data
+This has no effect on the API.
+
+**_Querying Data_**
 
 Creates a `/sales-persons` API.
 `firstName` will be used in the query parameters:
 
-```
+```js
 GET /api/sales-persons?fields[SalesPerson]=firstName
 ```
 
-##### Data Response
+**_Data Response_**
 
 `firstName` will be used in the mutation and response payloads:
 
@@ -74,15 +76,15 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Database Implications
+**_Database Implications_**
 
 This has no effect on the database.
 
-### API Implications
+**_API Implications_**
 
 This has no effect on the API.
 
-### UI Implications
+**_UI Implications_**
 
 The `lastName` attribute will be displayed as "Surname" in the table header and filter dropdowns.
 

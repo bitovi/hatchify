@@ -45,7 +45,3 @@ export interface HatchifyDataGridSelected {
   setSelected: ({ all, ids }: { all: boolean; ids: string[] }) => void
 }
 ```
-
-HatchifyDataGridSelected description
-
-### HatchifyDataGridSelected

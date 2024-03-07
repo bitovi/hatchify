@@ -1,23 +1,33 @@
 # hatchedKoa.serialize
 
-`hatchedKoa.serialize` is a collection of methods to take results from the `hatchedKoa.orm.models` methods which is one or more of either `ORMRecord` or `PlainRecord` and transform them to [JSON:API](../jsonapi/README.md) response format that look like the following:
+`hatchedKoa.serialize` is a collection of methods to take results from the `hatchedKoa.orm.models` methods which is one or more of either `ORMRecord` or [`RecordObject`](./README.md#recordobject) and transform them to [JSON:API](../jsonapi/README.md) response format that look like the following:
 
-```js
-{
-  "data": {
-    "type": "Article",
-    "id": "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
-    "attributes": {
-      // ... this article's attributes
-    },
-    "relationships": {
-      // ... this article's relationships
-    }
-  },
-  "included": [
-    // ... this article's related objects resolved
-  ]
-}
+```ts
+const serializedArticle = hatchedKoa.serialize.Article.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking", author: { id: "24390449-d661-4ac4-8878-26d45b774679", name: "Justin" } }, ["id", "name"])
+// serializedArticle = {
+//   data: {
+//     type: "Article",
+//     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//     attributes: {
+//       name: "Baking",
+//     },
+//     relationships: {
+//       author: {
+//         type: "User",
+//         id: "24390449-d661-4ac4-8878-26d45b774679",
+//       },
+//     },
+//   },
+//   included: [
+//     {
+//       type: "User",
+//       id: "24390449-d661-4ac4-8878-26d45b774679",
+//       attributes: {
+//         name: "Justin",
+//       },
+//     },
+//   ],
+// }
 ```
 
 Each model has the following methods:
@@ -33,7 +43,7 @@ Each model has the following methods:
 
 Serializes result of multiple instances and to show only the specified attributes.
 
-`hatchedKoa.serialize[schemaName].findAll: (data: PlainRecord[] | ORMRecord[], attributes: string[]) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findAll(data: RecordObject[] | ORMRecord[], attributes: string[]) => JSONAPIDocument`
 
 ```ts
 const serializedTodos = hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
@@ -51,20 +61,20 @@ const serializedTodos = hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-
 
 **Parameters**
 
-| Property   | Type                           | Default     | Details                          |
-| ---------- | ------------------------------ | ----------- | -------------------------------- |
-| data       | `PlainRecord[] \| ORMRecord[]` | `undefined` | Specify what records to show.    |
-| attributes | string[]                       | `undefined` | Specify what attributes to show. |
+| Property   | Type                            | Default     | Details                          |
+| ---------- | ------------------------------- | ----------- | -------------------------------- |
+| data       | `RecordObject[] \| ORMRecord[]` | `undefined` | Specify what records to show.    |
+| attributes | string[]                        | `undefined` | Specify what attributes to show. |
 
 **Returns**
 
-[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
 
 ## findAndCountAll
 
 Serializes result of paginated data and a total count to show only the specified attributes. This is very useful for pagination.
 
-`hatchedKoa.serialize[schemaName].findAndCountAll: (data: { count: number; rows: PlainRecord[] | ORMRecord[] }, attributes: string[]) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findAndCountAll(data: { count: number; rows: RecordObject[] | ORMRecord[] }, attributes: string[]) => JSONAPIDocument`
 
 ```ts
 const serializedTodos = hatchedKoa.serialize.Todo.findAndCountAll(
@@ -89,20 +99,20 @@ const serializedTodos = hatchedKoa.serialize.Todo.findAndCountAll(
 
 **Parameters**
 
-| Property   | Type                                                    | Default     | Details                                       |
-| ---------- | ------------------------------------------------------- | ----------- | --------------------------------------------- |
-| data       | `{ data: PlainRecord[] \| ORMRecord[], count: number }` | `undefined` | Specify what records and total cound to show. |
-| attributes | string[]                                                | `undefined` | Specify what attributes to show.              |
+| Property   | Type                                                     | Default     | Details                                       |
+| ---------- | -------------------------------------------------------- | ----------- | --------------------------------------------- |
+| data       | `{ data: RecordObject[] \| ORMRecord[], count: number }` | `undefined` | Specify what records and total cound to show. |
+| attributes | string[]                                                 | `undefined` | Specify what attributes to show.              |
 
 **Returns**
 
-[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
 
 ## findOne
 
 Serializes result of a single instance.
 
-`hatchedKoa.serialize[schemaName].findOne: (data: PlainRecord | ORMRecord, attributes: string[]) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findOne(data: RecordObject | ORMRecord, attributes: string[]) => JSONAPIDocument`
 
 ```ts
 const serializedTodo = hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
@@ -118,20 +128,20 @@ const serializedTodo = hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b
 
 **Parameters**
 
-| Property   | Type                       | Default     | Details                          |
-| ---------- | -------------------------- | ----------- | -------------------------------- |
-| data       | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show.     |
-| attributes | string[]                   | `undefined` | Specify what attributes to show. |
+| Property   | Type                        | Default     | Details                          |
+| ---------- | --------------------------- | ----------- | -------------------------------- |
+| data       | `RecordObject \| ORMRecord` | `undefined` | Specify what record to show.     |
+| attributes | string[]                    | `undefined` | Specify what attributes to show. |
 
 **Returns**
 
-[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
 
 ## create
 
 Serializes a result of a new instance creation.
 
-`hatchedKoa.serialize[schemaName].create: (data: PlainRecord | ORMRecord) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].create(data: RecordObject | ORMRecord) => JSONAPIDocument`
 
 ```ts
 const serializedTodo = hatchedKoa.serialize.Todo.create({
@@ -150,20 +160,20 @@ const serializedTodo = hatchedKoa.serialize.Todo.create({
 
 **Parameters**
 
-| Property   | Type                       | Default     | Details                          |
-| ---------- | -------------------------- | ----------- | -------------------------------- |
-| data       | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show.     |
-| attributes | string[]                   | `undefined` | Specify what attributes to show. |
+| Property   | Type                        | Default     | Details                          |
+| ---------- | --------------------------- | ----------- | -------------------------------- |
+| data       | `RecordObject \| ORMRecord` | `undefined` | Specify what record to show.     |
+| attributes | string[]                    | `undefined` | Specify what attributes to show. |
 
 **Returns**
 
-[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
 
 ## update
 
 Serializes a result of an update.
 
-`hatchedKoa.serialize[schemaName].update: (data: PlainRecord | ORMRecord, affectedCount: number) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].update(data: RecordObject | ORMRecord, affectedCount: number) => JSONAPIDocument`
 
 ```ts
 const serializedTodo = hatchedKoa.serialize.Todo.update(
@@ -185,20 +195,20 @@ const serializedTodo = hatchedKoa.serialize.Todo.update(
 
 **Parameters**
 
-| Property      | Type                       | Default     | Details                      |
-| ------------- | -------------------------- | ----------- | ---------------------------- |
-| data          | `PlainRecord \| ORMRecord` | `undefined` | Specify what record to show. |
-| affectedCount | number                     | `undefined` | Specify update count.        |
+| Property      | Type                        | Default     | Details                      |
+| ------------- | --------------------------- | ----------- | ---------------------------- |
+| data          | `RecordObject \| ORMRecord` | `undefined` | Specify what record to show. |
+| affectedCount | number                      | `undefined` | Specify update count.        |
 
 **Returns**
 
-[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
 
 ## destroy
 
 Serializes a result of a deletion.
 
-`hatchedKoa.serialize[schemaName].destroy: () => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].destroy() => JSONAPIDocument`
 
 ```ts
 const serializedResult = hatchedKoa.serialize.Todo.destroy()
@@ -210,4 +220,4 @@ const serializedResult = hatchedKoa.serialize.Todo.destroy()
 
 **Returns**
 
-[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.

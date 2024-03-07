@@ -405,7 +405,7 @@ PATCH /api/sales-people/ffaf131e-9e27-4bd6-a715-59fff9ed5044
 }
 ```
 
-Successful response includes an ID and no relationships even though we are unlinking previous relationships and linking new ones, so we will have to specify all relationships every time we update a record:
+Successful response includes an ID and no relationships. Behind the scenes, all linked todos will be unlinked from the sales person and the new todo will be linked now. If other relationships exist they will not be touched.
 
 ```json
 {

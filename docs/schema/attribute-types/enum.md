@@ -21,13 +21,15 @@ export const Todo = {
 | `required` | If the attribute must be provided. <br/> Example: `enumerate({required: true, values:[...])`      |   `Boolean`    |   Yes    |   `false`   |
 | `unique`   | If the attribute must be unique. <br/> Example: `enumerate({unique: true, values:[...]})`         |   `Boolean`    |   Yes    |   `false`   |
 
-## Database Implications
+**_Database Implications_**
 
 The `enumerate` type will create a sequelize [DataTypes.ENUM](https://sequelize.org/docs/v6/other-topics/other-data-types/#enums) column.
 
-## API Implications
+**_API Implications_**
 
-### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 ```js
 GET /api/todos?filter[status][$eq]=Pen // all todos with status of Pending
@@ -37,7 +39,7 @@ GET /api/todos?filter[status][$eq]=%00 // all todos with no statusding
 GET /api/todos?filter[status][$in][]=Pending&[status][$in][]=Failed // all todos with status of either Pending or Failed.
 ```
 
-### Data Response
+**_Data Response_**
 
 String data will be returned as a string value or `null` as follows:
 
@@ -52,7 +54,7 @@ String data will be returned as a string value or `null` as follows:
 }
 ```
 
-### Mutating Data
+**_Mutating Data_**
 
 When creating or updating an enumerate attribute, one of the defined values or `null` (if not required) must be provided. Any other value will return a service error.
 
