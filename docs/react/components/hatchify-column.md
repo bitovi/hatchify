@@ -12,11 +12,11 @@ import * as Schemas from "../schemas.js"
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const { Column: TodoColumn } = hatchedReact.components.Todo
-const { Column: UserColumn } = hatchedReact.components.User
+const { Column: TodoColumn } = hatchedReact.components.Todo.DataGrid
+const { Column: UserColumn } = hatchedReact.components.User.DataGrid
 // or
-const TodoColumn = hatchedReact.components.Todo.Column
-const UserColumn = hatchedReact.components.User.Column
+const TodoColumn = hatchedReact.components.Todo.DataGrid.Column
+const UserColumn = hatchedReact.components.User.DataGrid.Column
 ```
 
 ## Props

@@ -160,21 +160,24 @@ export function hatchifyReact<
         />
       )
 
-      // eslint-disable-next-line react/display-name
-      dataGridCompoundComponents.Column = (
-        props: HatchifyColumnProps<TSchemas, TSchemaName>,
-      ) => (
-        <HatchifyColumn<TSchemas, GetSchemaNames<TSchemas>>
-          allSchemas={finalSchemas}
-          schemaName={finalSchemaName}
-          {...props}
-        />
-      )
+      function Column(props: HatchifyColumnProps<TSchemas, TSchemaName>) {
+        return (
+          <HatchifyColumn<TSchemas, GetSchemaNames<TSchemas>>
+            allSchemas={finalSchemas}
+            schemaName={finalSchemaName}
+            {...props}
+          />
+        )
+      }
 
-      // eslint-disable-next-line react/display-name
-      dataGridCompoundComponents.Empty = (props: HatchifyEmptyProps) => (
-        <HatchifyEmpty {...props} />
-      )
+      function Empty(props: HatchifyEmptyProps) {
+        return <HatchifyEmpty {...props} />
+      }
+
+      Column.displayName = "Column"
+      Empty.displayName = "Empty"
+      dataGridCompoundComponents.Column = Column
+      dataGridCompoundComponents.Empty = Empty
 
       acc[key] = {
         DataGrid: dataGridCompoundComponents,
