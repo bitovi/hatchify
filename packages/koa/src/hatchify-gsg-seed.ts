@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /* istanbul ignore file */
 
 // A script distributed with hatchifyKoa to make seeding data in the
