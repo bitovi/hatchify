@@ -25,13 +25,15 @@ Use [dateonly](./dateonly.md) for a date type without time.
 | `min`      | The min date allowed. <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
 | `step`     | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`   |    `"day"`     |   Yes    | `undefined` |
 
-## Database Implications
+**_Database Implications_**
 
 The `datetime` type will create sequelize [DataTypes.DATE](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) column.
 
-## API Implications
+**_API Implications_**
 
-### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 For dates, use a `1990-12-31T06:00:00.000Z` value, in your queries as follows:
 
@@ -45,7 +47,7 @@ Any other value type will return a service error.
 
 Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with dates
 
-### Data Response
+**_Data Response_**
 
 Datetime data will be returned as `1990-12-31T06:00:00.000Z`, or `null` as follows:
 
@@ -61,7 +63,7 @@ Datetime data will be returned as `1990-12-31T06:00:00.000Z`, or `null` as follo
 }
 ```
 
-### Mutating Data
+**_Mutating Data_**
 
 When creating or updating a datetime attribute, a valid date in the form of `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` must be provided. Any other value type will return a service error.
 

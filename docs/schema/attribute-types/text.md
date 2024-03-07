@@ -20,13 +20,15 @@ export const Todo = {
 | `primary`  | The attribute is a primary key. <br/> Example: `text({primary: true})`          | `Boolean` |   Yes    | `false` |
 | `unique`   | The attribute must be unique. <br/> Example: `text({unique: true})`             | `Boolean` |   Yes    | `false` |
 
-## Database Implications
+**_Database Implications_**
 
 The `text` type will create a sequelize [DataTypes.TEXT](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
 
-## API Implications
+**_API Implications_**
 
-### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 For text, use any string value, or `%00` in your queries as follows:
 
@@ -46,7 +48,7 @@ Note:
 `%25` is the ASCII value for `%`, and serves as a wildcard in `ilike` queries.
 `%20` is the ASCII value for space.
 
-### Data Response
+**_Data Response_**
 
 Text data will be returned as a string:
 
@@ -62,7 +64,7 @@ Text data will be returned as a string:
 }
 ```
 
-### Mutating Data
+**_Mutating Data_**
 
 When creating or updating a text attribute, a string value, or `null` must be provided. Any other value will return a service error.
 

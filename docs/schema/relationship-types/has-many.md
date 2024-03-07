@@ -38,7 +38,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Schema Implications
+**_Schema Implications_**
 
 An attribute named `salesPersonId` will be created as if it was defined as follows:
 
@@ -51,17 +51,19 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-### Database Implications
+**_Database Implications_**
 
 Creates a column `sales_person_id` in the `account` table.
 
-### API Implications
+**_API Implications_**
 
-#### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 `salesAccounts` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccounts`
 
-#### Data Response
+**_Data Response_**
 
 `salesAccounts` will be used in mutation payloads and response payloads like:
 
@@ -107,17 +109,19 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### Database Implications
+**_Database Implications_**
 
 Creates a column `account_id` in the `account` table.
 
-### API Implications
+**_API Implications_**
 
-#### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 `salesAccounts` will be used in the include query parameter like `GET /api/sales-persons?include=salesAccounts`
 
-#### Data Response
+**_Data Response_**
 
 `salesAccounts` will be used in mutation payloads and response payloads like:
 

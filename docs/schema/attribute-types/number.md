@@ -24,13 +24,15 @@ export const Todo = {
 | `min`           | The minimum value allowed. <br/> Example: `number({min: -100})`                    | `Number`  |   Yes    | `Number.MIN_VALUE` 🛑 |
 | `autoIncrement` | If the value should be incremented. <br/> Example: `number({autoIncrement: true})` | `Boolean` |   Yes    |        `false`        |
 
-## Database Implications
+**_Database Implications_**
 
 The `number` type will create a sequelize [DataTypes.DECIMAL](https://sequelize.org/docs/v6/core-concepts/model-basics/#numbers) column.
 
-## API Implications
+**_API Implications_**
 
-### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 For numbers, use any number value and `%00` in your queries as follows:
 
@@ -47,7 +49,7 @@ Any other value will return a service error.
 
 Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with numbers.
 
-### Data Response
+**_Data Response_**
 
 Number data will be returned as a number:
 
@@ -62,7 +64,7 @@ Number data will be returned as a number:
 }
 ```
 
-### Mutating Data
+**_Mutating Data_**
 
 When creating or updating an number attribute, A number or `null` must be provided. Any other value will return a service error.
 

@@ -21,13 +21,15 @@ export const Todo = {
 | `references` | [See References]()                                                             |           |          |         |
 | `required`   | If the attribute must be provided.                                             | `Boolean` |   Yes    | `false` |
 
-## Database Implications
+**_Database Implications_**
 
 The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
 
-## API Implications
+**_API Implications_**
 
-### Querying Data
+This has no effect on the API
+
+**_Querying Data_**
 
 If `required` is `false`, filtering `null` values is handled like the following:
 
@@ -39,7 +41,7 @@ GET /api/todos?filter[name]=%00 // all todos with null as the name value
 GET /api/todos?filter[name]=null // all todos with "null" as the name value
 ```
 
-### Data Response
+**_Data Response_**
 
 String data will be returned as a string value or `null` as follows:
 
@@ -54,7 +56,7 @@ String data will be returned as a string value or `null` as follows:
 }
 ```
 
-### Mutating Data
+**_Mutating Data_**
 
 When creating or updating a string attribute, string value or `null` must be provided. Any other value will return a service error.
 

@@ -58,22 +58,24 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-#### Database Implications
+**_Database Implications_**
 
 Creates a `sales_person` table.
 
-#### API Implications
+**_API Implications_**
 
-##### Querying Data
+This has no effect on the API.
+
+**_Querying Data_**
 
 Creates a `/sales-persons` API.
 `SalesPerson` will be used in the `fields` query parameter:
 
-```
+```js
 GET /api/sales-persons?fields[SalesPerson]=name
 ```
 
-##### Data Response
+**_Data Response_**
 
 `SalesPerson` will be used as the response `type`:
 
@@ -100,18 +102,20 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-#### API Implications
+**_API Implications_**
 
-##### Querying Data
+This has no effect on the API.
+
+**_Querying Data_**
 
 Creates a `/sales-people` API.
 `name` will still be used in the `fields` query parameter:
 
-```
+```js
 GET /api/sales-persons?fields[SalesPerson]=name
 ```
 
-##### Data Response
+**_Data Response_**
 
 `name` will still be used as the response `type`:
 
@@ -156,22 +160,24 @@ const AcmeCorp_SalesPerson = {
 } satisfies PartialSchema
 ```
 
-#### Database Implications
+**_Database Implications_**
 
 Creates a table `sales_person` in the Postgres schema `acme_corp`.
 
-#### API Implications
+**_API Implications_**
 
-##### Querying Data
+This has no effect on the API.
+
+**_Querying Data_**
 
 Creates an `acme-corp/sales-persons` API.
 `namespace_name`, will be used in the `fields` query parameter:
 
-```
+```js
 GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 ```
 
-##### Data Response
+**_Data Response_**
 
 `namespace_name` will be used as the response `type`:
 
@@ -185,7 +191,7 @@ GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 }
 ```
 
-##### Returned Models Implications
+**_Returned Models Implications_**
 
 `hatchifyKoa({AcmeCorp_SalesPerson})` returns `models.AcmeCorp_SalesPerson`
 `hatchifyReact({AcmeCorp_SalesPerson})` returns `[components|model|state].AcmeCorp_SalesPerson`
@@ -234,7 +240,7 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-#### UI Implications
+**_UI Implications_**
 
 When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `displayAttribute` was not set, then the `name` attribute would have been used.
 
