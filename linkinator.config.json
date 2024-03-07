@@ -1,0 +1,5 @@
+{
+  "markdown": true,
+  "recurse": true,
+  "skip": "(node_modules|:300\\d)"
+}
