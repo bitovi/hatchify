@@ -8,7 +8,7 @@ import {
   string,
 } from "@hatchifyjs/core"
 import { getDefaultDataRender } from "./index.js"
-import { HatchifyPresentationDefaultValueComponents } from "../../../components/index.js"
+import { HatchifyPresentationDefaultDisplayComponents } from "../../../components/index.js"
 
 /* eslint-disable testing-library/render-result-naming-convention */
 describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
@@ -43,7 +43,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
       field: "title",
       isRelationship: false,
       isAdditional: false,
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
     const record = { record: { id: "1", title: "test" } }
 
@@ -59,7 +59,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
       field: "title",
       isRelationship: false,
       isAdditional: false,
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
     const record = { record: { id: "1" } }
 
@@ -75,7 +75,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
       field: "important",
       isRelationship: false,
       isAdditional: false,
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
 
     expect(
@@ -92,7 +92,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
       field: "created",
       isRelationship: false,
       isAdditional: false,
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
     const record = { record: { id: "1", created: "2023-10-27T21" } }
 
@@ -108,7 +108,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
       field: "user",
       isRelationship: true,
       isAdditional: false,
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
     const record = {
       record: { id: "1", user: { id: "user-01", type: "User" } },
@@ -129,7 +129,7 @@ describe("hooks/useCompoundComponents/helpers/getDefaultDataRender", () => {
       field: "user",
       isRelationship: true,
       isAdditional: false,
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
     const record = {
       record: {

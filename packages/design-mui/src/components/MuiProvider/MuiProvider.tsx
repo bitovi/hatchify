@@ -1,8 +1,7 @@
-import type { Theme } from "@mui/material"
 import type { XProviderProps } from "@hatchifyjs/react-ui"
 import {
   HatchifyPresentationProvider,
-  HatchifyPresentationDefaultValueComponents,
+  HatchifyPresentationDefaultDisplayComponents,
 } from "@hatchifyjs/react-ui"
 import { MuiLayout } from "../MuiLayout/index.js"
 import MuiDataGrid from "../MuiDataGrid/MuiDataGrid.js"
@@ -14,7 +13,10 @@ import {
   RelationshipList,
 } from "./DefaultDisplayComponents/index.js"
 
-export const MuiProvider: React.FC<XProviderProps<Theme>> = ({ children }) => {
+export const MuiProvider: React.FC<XProviderProps> = ({
+  defaultDisplayComponents,
+  children,
+}) => {
   return (
     <HatchifyPresentationProvider
       DataGrid={MuiDataGrid}
@@ -23,10 +25,11 @@ export const MuiProvider: React.FC<XProviderProps<Theme>> = ({ children }) => {
       NoSchemas={MuiNoSchemas}
       Layout={MuiLayout}
       // future: Details, Form
-      defaultValueComponents={{
-        ...HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents={{
+        ...HatchifyPresentationDefaultDisplayComponents,
         Relationship,
         RelationshipList,
+        ...defaultDisplayComponents,
       }}
       // future: defaultFieldComponents
     >

@@ -7,7 +7,7 @@ import {
   hasMany,
   string,
 } from "@hatchifyjs/core"
-import { HatchifyPresentationDefaultValueComponents } from "../../../components/index.js"
+import { HatchifyPresentationDefaultDisplayComponents } from "../../../components/index.js"
 import { getColumnsFromSchema } from "./index.js"
 
 describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
@@ -40,7 +40,7 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
       getColumnsFromSchema(
         finalSchemas,
         "Todo",
-        HatchifyPresentationDefaultValueComponents,
+        HatchifyPresentationDefaultDisplayComponents,
       ),
     ).toEqual([
       {
@@ -73,7 +73,7 @@ describe("hooks/useCompoundComponents/helpers/getColumnsFromSchema", () => {
       getColumnsFromSchema<typeof partialSchemas, "Todo">(
         finalSchemas,
         "Todo",
-        HatchifyPresentationDefaultValueComponents,
+        HatchifyPresentationDefaultDisplayComponents,
         ["user"],
       ),
     ).toEqual([

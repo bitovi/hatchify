@@ -27,7 +27,7 @@ import {
   Relationship as RelationshipInput,
 } from "./DefaultFieldComponents/index.js"
 
-export interface DefaultValueComponentsTypes {
+export interface DefaultDisplayComponentsTypes {
   String: React.FC<{ value: string }>
   StringList: React.FC<{ values: string[] }>
   Number: React.FC<{ value: number }>
@@ -76,11 +76,11 @@ export interface HatchifyPresentationContextProps {
   Everything: React.FC<XEverythingProps>
   Navigation: React.FC<any>
   NoSchemas: React.FC<any>
-  defaultValueComponents: DefaultValueComponentsTypes
+  defaultDisplayComponents: DefaultDisplayComponentsTypes
   // future: defaultFieldComponents
 }
 
-export const HatchifyPresentationDefaultValueComponents = {
+export const HatchifyPresentationDefaultDisplayComponents = {
   String,
   StringList,
   Number,
@@ -109,7 +109,7 @@ export const HatchifyPresentationContext =
     Navigation: () => null,
     NoSchemas: () => null,
     Layout: () => null,
-    defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+    defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     // future: defaultFieldComponents
   })
 
@@ -129,7 +129,7 @@ export const HatchifyPresentationProvider: React.FC<
   Navigation,
   NoSchemas,
   Layout,
-  defaultValueComponents,
+  defaultDisplayComponents,
   children,
 }) => {
   return (
@@ -140,7 +140,7 @@ export const HatchifyPresentationProvider: React.FC<
         Navigation,
         NoSchemas,
         Layout,
-        defaultValueComponents,
+        defaultDisplayComponents,
       }}
     >
       {children}
