@@ -66,6 +66,10 @@ You must wrap your App in a [`HatchifyProvider`](#hatchifyprovider) so that you 
   - [`model`](#model)
 - [MUI Components](#mui-components)
 
+## Exported components vs hatchedReact.components
+
+Here's the difference
+
 ## Exports
 
 ```ts
