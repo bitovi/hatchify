@@ -76,16 +76,16 @@ type HatchifyColumnProps<
 
 type Components<TSchemas extends Record<string, PartialSchema>> = {
   [SchemaName in keyof TSchemas]: {
-    // core
-    DataGrid: (
+    // compound (state managed)
+    DataGrid: ((
       props: HatchifyDataGridProps<TSchemas, SchemaName>,
-    ) => React.ReactElement
-    // compound
-    Column: (
-      props: HatchifyColumnProps<TSchemas, SchemaName>,
-    ) => React.ReactElement
-    Empty: (props: HatchifyEmptyProps) => React.ReactElement
-    // eject
+    ) => React.ReactElement) & {
+      Column: (
+        props: HatchifyColumnProps<TSchemas, SchemaName>,
+      ) => React.ReactElement
+      Empty: (props: HatchifyEmptyProps) => React.ReactElement
+    }
+    // unmanaged state
     Filters: (
       props: HatchifyFiltersProps<TSchemas, SchemaName>,
     ) => React.ReactElement
@@ -148,25 +148,36 @@ export function hatchifyReact<
         ? `${schema.namespace}_${schema.name}`
         : schema.name
 
+      const dataGridCompoundComponents = (
+        props: HatchifyDataGridProps<TSchemas, TSchemaName>,
+      ) => (
+        <HatchifyDataGrid<TSchemas, GetSchemaNames<TSchemas>>
+          finalSchemas={finalSchemas}
+          partialSchemas={partialSchemas}
+          schemaName={finalSchemaName}
+          restClient={reactRest}
+          {...props}
+        />
+      )
+
+      // eslint-disable-next-line react/display-name
+      dataGridCompoundComponents.Column = (
+        props: HatchifyColumnProps<TSchemas, TSchemaName>,
+      ) => (
+        <HatchifyColumn<TSchemas, GetSchemaNames<TSchemas>>
+          allSchemas={finalSchemas}
+          schemaName={finalSchemaName}
+          {...props}
+        />
+      )
+
+      // eslint-disable-next-line react/display-name
+      dataGridCompoundComponents.Empty = (props: HatchifyEmptyProps) => (
+        <HatchifyEmpty {...props} />
+      )
+
       acc[key] = {
-        DataGrid: (props) => (
-          <HatchifyDataGrid<TSchemas, GetSchemaNames<TSchemas>>
-            finalSchemas={finalSchemas}
-            partialSchemas={partialSchemas}
-            schemaName={finalSchemaName}
-            restClient={reactRest}
-            {...props}
-          />
-        ),
-        Column: (props) => (
-          // todo fix ts!!!
-          <HatchifyColumn<TSchemas, GetSchemaNames<TSchemas>>
-            allSchemas={finalSchemas as any} // todo:arthur
-            schemaName={finalSchemaName}
-            {...props}
-          />
-        ),
-        Empty: (props) => <HatchifyEmpty {...props} />,
+        DataGrid: dataGridCompoundComponents,
         Filters: (props) => (
           <HatchifyFilters<TSchemas, GetSchemaNames<TSchemas>> {...props} />
         ),
@@ -247,85 +258,3 @@ export function hatchifyReact<
     state,
   }
 }
-
-// todo: leaving for testing, remove once core no longer has `ts-expect-error`s
-// const schemas = {
-//   Todo: {
-//     name: "Todo",
-//     displayAttribute: "title",
-//     attributes: {
-//       title: string(),
-//       reqTitle: string({ required: true }),
-//       age: integer({ required: true }),
-//       optAge: integer({ required: false }),
-//       important: boolean({ required: true }),
-//       optImportant: boolean(),
-//       created: datetime({ required: true }),
-//       optCreated: datetime(),
-//     },
-//     relationships: {
-//       user: belongsTo("User"),
-//     },
-//   },
-//   User: {
-//     name: "User",
-//     attributes: {
-//       name: string({ required: true }),
-//       age: integer({ required: true }),
-//       employed: boolean(),
-//     },
-//     relationships: {
-//       todos: hasMany("Todo").through(),
-//     },
-//   },
-// } satisfies Record<string, PartialSchema>
-
-// const app = hatchifyReact({
-//   completeSchemaMap: schemas,
-// } as RestClient<typeof schemas, any>)
-
-// app.model.Todo.createOne({
-//   reqTitle: "",
-//   age: 1,
-//   important: true,
-//   created: new Date(),
-//   shouldError: false,
-// })
-
-// app.model.User.findAll({}).then(([records]) => {
-//   records[0].id
-//   records[0].name
-//   records[0].employed
-//   records[0].shouldError
-// })
-
-// const state = app.state.Admin_Todo.useDataGridState({
-//   include: ["user"],
-//   baseFilter: [{ field: "age", operator: ">", value: 1 }],
-// })
-// state.data.map((_todo) => {
-//   _todo
-// })
-// state.data[0].id
-// state.data[0].age
-// state.data[0].optAge
-// state.data[0].shouldError
-
-// const TodoList = app.components.Todo.DataGrid
-// const TodoColumn = app.components.Todo.Column
-
-// function AgeComponent() {
-//   return <div>hello</div>
-// }
-
-// function Test() {
-//   return (
-//     <TodoList>
-//       <TodoColumn
-//         field="age"
-//         label="Age"
-//         renderDataValue={({ record }) => <div>{record.asdfa}</div>}
-//       />
-//     </TodoList>
-//   )
-// }
