@@ -5,6 +5,9 @@
   "type": "module",
   "exports": "./dist/exports.js",
   "types": "./dist/exports.d.ts",
+  "bin": {
+    "hatchify-gsg-seed": "./hatchify-gsg-seed.js"
+  },
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "build": "tsc",
@@ -34,10 +37,12 @@
     "@hatchifyjs/node": "^1.3.32",
     "dotenv": "^16.3.1",
     "jsonapi-serializer": "^3.6.7",
+    "node-fetch": "^3.3.2",
     "typedoc": "^0.25.4"
   },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",
+    "@faker-js/faker": "^8.4.1",
     "@koa/router": "^12.0.0",
     "@types/jest": "^29.5.12",
     "@types/jsonapi-serializer": "^3.6.8",
