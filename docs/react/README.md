@@ -241,19 +241,14 @@ const schemas = { ...Todo }
 // Create the Hatched React App instance
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-// Define variables for your Hatchify schema generated components
 const TodoDataGrid = hatchedReact.components.Todo.DataGrid
-
-const TodoColumn = hatchedReact.components.Todo.Column
-
-const TodoEmpty = hatchedReact.components.Todo.Empty
 
 const App() {
   return (
     <HatchifyProvider>
       <TodoDataGrid>
-        <TodoEmpty>No todos found!</TodoEmpty>
-        <TodoColumn
+        <TodoDataGrid.Empty>No TodoDataGrid.todos found!</TodoDataGrid.Empty>
+        <TodoDataGrid.Column
           label="Actions"
           renderDataValue={() =>
             <button
@@ -262,7 +257,7 @@ const App() {
             </button>
           }
         />
-      </ TodoDataGrid>
+      </TodoDataGrid>
     </ HatchifyProvider>
   )
 }

@@ -93,9 +93,17 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
-        <TodoDataGrid defaultSelected={selected} defaultPage={{ number: 1, size: 5 }} defaultSort={{ direction: "asc", sortBy: "dueDate" }} baseFilter={[{field: "Name" operator: "$contains", value: "Walk"}]} overwrite minimumLoadTime={100} />
-        <TodoColumn label="Name" name="name">
-        <TodoEmpty>There are no records available</TodoEmpty>
+        <TodoDataGrid
+          defaultSelected={selected}
+          defaultPage={{ number: 1, size: 5 }}
+          defaultSort={{ direction: "asc", sortBy: "dueDate" }}
+          baseFilter={[{field: "Name" operator: "$contains", value: "Walk"}]}
+          overwrite
+          minimumLoadTime={100}
+        >
+          <TodoDataGrid.Column label="Name" field="name" />
+          <TodoDataGrid.Empty>There are no records available</TodoDataGrid.Empty>
+        </TodoDataGrid>
       </HatchifyProvider>
     </ThemeProvider>
   )

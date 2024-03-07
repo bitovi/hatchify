@@ -1,10 +1,10 @@
 # Customizing your list
 
-Hatchify gives you the option to customize your list with two compound components that can be nested within your `DataGrid` component: `Column`, and `Empty`.
+Hatchify gives you the option to customize your list with two compound components that can be nested within your `DataGrid` component: `DataGrid.Column`, and `DataGrid.Empty`.
 
-Let's start with `Empty`.
+Let's start with `DataGrid.Empty`.
 
-## `Empty`
+## `DataGrid.Empty`
 
 ### Code
 
@@ -19,20 +19,19 @@ import * as Schemas from "../schemas.js"
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.DataGrid // 👀
-const TodoEmpty = hatchedReact.components.Todo.Empty // 👀
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid // 👀
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
-        <TodoList>
+        <TodoDataGrid>
           {/* 👀 */}
-          <TodoEmpty>
+          <TodoDataGrid.Empty>
             {/* 👀 */}
             <strong>There are no todos. Time to take a break!</strong>
-          </TodoEmpty>
-        </TodoList>
+          </TodoDataGrid.Empty>
+        </TodoDataGrid>
       </HatchifyProvider>
     </ThemeProvider>
   )
@@ -45,37 +44,45 @@ Your app should now look like this:
 
 ![localhost_3000_ (1)](https://github.com/bitovi/hatchify/assets/60432429/427a1511-d187-4cc4-8a92-3ce8cb70b422)
 
-Notice how the content we've placed inside `TodoEmpty` now displays in our empty list.
+Notice how the content we've placed inside `TodoDataGrid.Empty` now displays in our empty list.
 
 ### How it works
 
-- We need a reference to the `Todo.Empty` component. The following aliases it to make it easier to reference:
+- Because the `DataGrid.Empty` component is meant to be used only within a `DataGrid`, you can access it by either appending `.Empty` to the `DataGrid`.
+
+```tsx
+const TodoEmpty = hatchedReact.components.Todo.DataGrid.Empty
+```
+
+Or you can use your existing `DataGrid` component and access `Empty` as a property of it:
+
+```tsx
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
+
+return <TodoDataGrid.Empty />
+```
+
+- The `<TodoDataGrid.Empty>` component specifies the content that should be displayed when the list is empty. To use it, simply put the empty list content within `<TodoDataGrid.Empty>` and put `<TodoDataGrid.Empty>` within the `<TodoDataGrid>` component:
 
   ```tsx
-  const TodoEmpty = hatchedReact.components.Todo.Empty
-  ```
-
-- The `<TodoEmpty>` component specifies the content that should be displayed when the list is empty. To use it, simply put the empty list content within `<TodoEmpty>` and put `<TodoEmpty>` within the `<TodoList>` component:
-
-  ```tsx
-  <TodoList>
-    <TodoEmpty>
+  <TodoDataGrid>
+    <TodoDataGrid.Empty>
       <strong>There are no todos. Time to take a break!</strong>
-    </TodoEmpty>
-  </TodoList>
+    </TodoDataGrid.Empty>
+  </TodoDataGrid>
   ```
 
-And that's all there is to it! Next, lets explore `Column`, which offers a lot more customization.
+And that's all there is to it! Next, lets explore `DataGrid.Column`, which offers a lot more customization.
 
 ✏️ Before you proceed, post some seed data to your database. You can use the snippet from the [Seeding Data section in the Hatchify getting started guide](../../README.md#seeding-data) to do this.
 
-## `Column`
+## `DataGrid.Column`
 
-`Column` is a powerful compound component that allows you to make fine-grained customizations to your list. It can be used to make selective changes and additions, or it can be used to override your list entirely.
+`DataGrid.Column` is a powerful compound component that allows you to make fine-grained customizations to your list. It can be used to make selective changes and additions, or it can be used to override your list entirely.
 
-The behaviour of your `Column` customizations is determined by the `field` prop, as well as the `overwrite` prop on the parent `DataGrid` component. Depending on how you use the `field` prop, a `Column` is considered either "Extra" or "Custom". Let's start by looking at the difference between the two.
+The behaviour of your `DataGrid.Column` customizations is determined by the `field` prop, as well as the `overwrite` prop on the parent `DataGrid` component. Depending on how you use the `field` prop, a `DataGrid.Column` is considered either "Extra" or "Custom". Let's start by looking at the difference between the two.
 
-### Custom `Column`
+### Custom `DataGrid.Column`
 
 #### Code
 
@@ -90,20 +97,18 @@ import * as Schemas from "../schemas.js"
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.DataGrid
-const TodoEmpty = hatchedReact.components.Todo.Empty
-const TodoColumn = hatchedReact.components.Todo.Column // 👀
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
-        <TodoList>
-          <TodoEmpty>
+        <TodoDataGrid>
+          <TodoDataGrid.Empty>
             <strong>There are no todos. Time to take a break!</strong>
-          </TodoEmpty>
+          </TodoDataGrid.Empty>
           {/* 👀 */}
-          <TodoColumn
+          <TodoDataGrid.Column
             field="name"
             label="ToDo"
             renderDataValue={({ value }) => {
@@ -114,7 +119,7 @@ const App: React.FC = () => {
             }}
             sortable={true}
           />
-        </TodoList>
+        </TodoDataGrid>
       </HatchifyProvider>
     </ThemeProvider>
   )
@@ -131,16 +136,24 @@ Notice how the column for the `name` field has been replaced with our Custom col
 
 #### How it works
 
-- Just like `Todo.Empty`, we need a reference to the `Todo.Column` component. The following aliases it to make it easier to reference:
+- Just like `Empty`, we can access `Column` by appending `.Column` to the `DataGrid` component.
+
+```tsx
+const TodoColumn = hatchedReact.components.Todo.DataGrid.Column
+```
+
+Or we can use our existing `DataGrid` component and access `Column` as a property of it:
+
+```tsx
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
+
+return <TodoDataGrid.Column />
+```
+
+- By setting the `field` property on our `DataGrid.Column` to `name`, we're establishing our `DataGrid.Column` as being a Custom column. What this does is tell Hatchify to apply our customizations to the column that corresponds to the `name` field on our record.
 
   ```tsx
-  const TodoColumn = hatchedReact.components.Todo.Column
-  ```
-
-- By setting the `field` property on our `Column` to `name`, we're establishing our `Column` as being a Custom column. What this does is tell Hatchify to apply our customizations to the column that corresponds to the `name` field on our record.
-
-  ```tsx
-  <TodoColumn
+  <TodoDataGrid.Column
     field="name"
     //...Remaining props...
   />
@@ -149,7 +162,7 @@ Notice how the column for the `name` field has been replaced with our Custom col
 - The `label` prop allows you to overwrite the column's default header with a custom string.
 
   ```tsx
-  <TodoColumn
+  <TodoDataGrid.Column
     label="ToDo"
     //...Remaining props...
   />
@@ -158,7 +171,7 @@ Notice how the column for the `name` field has been replaced with our Custom col
 - The `renderDataValue` prop allows you to pass in a callback that returns JSX. That JSX will fully overwrite the contents of each data cell.
 
   ```tsx
-  <TodoColumn
+  <TodoDataGrid.Column
     renderDataValue={({ value }) => {
       return <strong>{value}</strong>
     }}
@@ -179,7 +192,7 @@ Notice how the column for the `name` field has been replaced with our Custom col
 
     ```tsx
     // Replace `renderDataValue` with `DataValueComponent` and pass in your `CustomComponent`:
-    <TodoColumn
+    <TodoDataGrid.Column
       DataValueComponent={CustomComponent}
       //...Remaining props...
     />
@@ -193,7 +206,7 @@ Notice how the column for the `name` field has been replaced with our Custom col
   }}
   ```
 
-  This example is a little contrived because the `label` we're destructuring in our app code above will always be equal to the `label` prop that we set on our `Column`, so we could have simply omitted the `label` prop entirely and hard-coded the value in the return of our callback.
+  This example is a little contrived because the `label` we're destructuring in our app code above will always be equal to the `label` prop that we set on our `DataGrid.Column`, so we could have simply omitted the `label` prop entirely and hard-coded the value in the return of our callback.
 
   Just like `renderDataValue`, `renderHeaderValue` accepts a single object as its argument, but its shape is more complex. Let's look at it in detail:
 
@@ -216,7 +229,7 @@ Notice how the column for the `name` field has been replaced with our Custom col
 - The `sortable` prop tells Hatchify whether or not to render the default column sorting UI in the column's header cell.
 
   ```tsx
-  <TodoColumn
+  <TodoDataGrid.Column
     sortable={true}
     //...Remaining props...
   />
@@ -230,7 +243,7 @@ Notice how the column for the `name` field has been replaced with our Custom col
 
 Okay! We just learned how to selectively modify an existing column--now let's try adding brand new columns to our list.
 
-### Extra `Column`
+### Extra `DataGrid.Column`
 
 #### Code
 
@@ -245,26 +258,24 @@ import * as Schemas from "../schemas.js"
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.DataGrid
-const TodoEmpty = hatchedReact.components.Todo.Empty
-const TodoColumn = hatchedReact.components.Todo.Column
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
-        <TodoList>
-          <TodoEmpty>
+        <TodoDataGrid>
+          <TodoDataGrid.Empty>
             <strong>There are no todos. Time to take a break!</strong>
-          </TodoEmpty>
+          </TodoDataGrid.Empty>
           {/* 👀 */}
-          <TodoColumn
+          <TodoDataGrid.Column
             label="Actions"
             renderDataValue={({ record }) => {
               return <button onClick={() => alert(`${record.id}`)}>View ID</button>
             }}
           />
-          <TodoColumn
+          <TodoDataGrid.Column
             field="name"
             label="ToDo"
             renderDataValue={({ value }) => {
@@ -275,7 +286,7 @@ const App: React.FC = () => {
             }}
             sortable={true}
           />
-        </TodoList>
+        </TodoDataGrid>
       </HatchifyProvider>
     </ThemeProvider>
   )
@@ -295,11 +306,11 @@ Notice the new "Actions" column at the end of our list.
 - Columns without a `field` prop are treated as Extra columns and will always appear at the end of your list, even if you include them before Custom columns. In the below example, the "Actions" column will appear at the end of our table, even though it's defined before the "name" column:
 
   ```tsx
-  <TodoColumn
+  <TodoDataGrid.Column
     label="Actions"
     //...Remaining props...
   />
-  <TodoColumn
+  <TodoDataGrid.Column
     field="name"
     //...Remaining props...
   />
@@ -325,23 +336,21 @@ import * as Schemas from "../schemas.js"
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.DataGrid
-const TodoEmpty = hatchedReact.components.Todo.Empty
-const TodoColumn = hatchedReact.components.Todo.Column
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
-        <TodoList
+        <TodoDataGrid
           {/* 👀 */}
           overwrite
         >
-          <TodoEmpty>
+          <TodoDataGrid.Empty>
             <strong>There are no todos. Time to take a break!</strong>
-          </TodoEmpty>
+          </TodoDataGrid.Empty>
           {/* 👀 */}
-          <TodoColumn
+          <TodoDataGrid.Column
             label="Override column"
             renderDataValue={({ record }) => {
               return <strong>{record.name}</strong>
@@ -350,14 +359,14 @@ const App: React.FC = () => {
               return <strong>{label}</strong>
             }}
           />
-          <TodoColumn
+          <TodoDataGrid.Column
             prepend
             label="Actions"
             renderDataValue={({ record }) => {
               return <button onClick={() => alert(`${record.id}`)}>View ID</button>
             }}
           />
-        </TodoList>
+        </TodoDataGrid>
       </HatchifyProvider>
     </ThemeProvider>
   )
@@ -374,6 +383,6 @@ Notice that most of our columns are no longer rendering. Don't worry--this is by
 
 #### How it works
 
-- As soon as you add the `ovewrite` prop to the `DataGrid` component, Hatchify will no longer render any columns that you don't specify. This means that you'll need to add a `Column` component for each field that you want to render.
+- As soon as you add the `ovewrite` prop to the `DataGrid` component, Hatchify will no longer render any columns that you don't specify. This means that you'll need to add a `DataGrid.Column` component for each field that you want to render.
 - An example use case for this feature is a list that needs to be heavily customized; you might need all the fields on your records in order to populate your list, but each column requires computed values or needs to be in a custom order, etc.
-- When in `overwrite` mode, the order will be determined by the order of your `Column` components, so if you want your columns to appear in a specific order, you'll need to specify them in that order. The `prepend` prop, or absence of it, has no effect when in `overwrite` mode.
+- When in `overwrite` mode, the order will be determined by the order of your `DataGrid.Column` components, so if you want your columns to appear in a specific order, you'll need to specify them in that order. The `prepend` prop, or absence of it, has no effect when in `overwrite` mode.

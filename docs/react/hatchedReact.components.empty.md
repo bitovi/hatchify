@@ -2,7 +2,7 @@
 
 API Reference docs for the Hatchify Empty component. Learn more about props.
 
-The `Empty` is used to customize what is displayed when the Hatchify `DataGrid` has no records to display.
+The `DataGrid.Empty` is used to customize what is displayed when the Hatchify `DataGrid` has no records to display.
 
 ## Import
 
@@ -29,14 +29,14 @@ const TodoEmpty = hatchedReact.components.Todo.Empty
 
 ```tsx
 //in App.tsx
-const TodoEmpty = hatchedReact.components.Todo.Empty // 👀
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid // 👀
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
         <TodoDataGrid>
-          <TodoEmpty>No records to display</TodoEmpty> {/* 👀 */}
+          <TodoDataGrid.Empty>No records to display</TodoDataGrid.Empty> {/* 👀 */}
         </TodoDataGrid>
       </HatchifyProvider>
     </ThemeProvider>
