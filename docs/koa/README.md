@@ -183,14 +183,6 @@ app.use(hatchedKoa.middleware.SalesPerson.<a href="./koa/hatchedKoa.middleware.m
 app.use(hatchedKoa.middleware.SalesPerson.<a href="./koa/hatchedKoa.middleware.md#update">update</a>)
 app.use(hatchedKoa.middleware.SalesPerson.<a href="./koa/hatchedKoa.middleware.md#destroy">destroy</a>)
 
-<b>// JSONAPI Handler for CRUD operations</b>
-router.all(  "/sales-people",     hatchedKoa.handler.<a href="./koa/hatchedKoa.middleware.md#hatchedkoamiddlewareallmodels">allModels</a>.<a href="./koa/hatchedKoa.middleware.md#all">all</a>);
-router.get(  "/sales-people",     hatchedKoa.handler.SalesPerson.<a href="./koa/hatchedKoa.middleware.md#findandcountall">findAndCountAll</a>)
-router.get(  "/sales-people/:id", hatchedKoa.handler.SalesPerson.<a href="./koa/hatchedKoa.middleware.md#findone">findOne</a>)
-router.post( "/sales-people",     hatchedKoa.handler.SalesPerson.<a href="./koa/hatchedKoa.middleware.md#create">create</a>)
-router.patch("/sales-people/:id", hatchedKoa.handler.SalesPerson.<a href="./koa/hatchedKoa.middleware.md#update">update</a>)
-router.del(  "/sales-people/:id", hatchedKoa.handler.SalesPerson.<a href="./koa/hatchedKoa.middleware.md#destroy">destroy</a>)
-
 <b>// Methods that do "everything" the middleware does</b>
 await hatchedKoa.<a href="./hatchedKoa.everything.md">everything</a>.SalesPerson.<a href="./hatchedKoa.everything.md#findall">findAll</a>("filter[name]=Jane")
 await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")

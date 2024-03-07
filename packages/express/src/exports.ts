@@ -45,4 +45,4 @@ export type {
 export type {
   ExpressMiddleware,
   MiddlewareFunctionsExpress,
-} from "./middleware/express.js"
+} from "./middleware.js"
