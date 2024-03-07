@@ -12,12 +12,13 @@ import type {
 export function getMiddlewareFunctions(
   hatchify: Hatchify,
   modelName: string,
-): {
-  [key: string]: (
+): Record<
+  string,
+  (
     request: MiddlewareRequest,
     next: NextFunction,
   ) => Promise<MiddlewareResponse | void | Promise<void>>
-} {
+> {
   return {
     findAll: findAllMiddleware(hatchify, modelName),
     findOne: findOneMiddleware(hatchify, modelName),
@@ -94,12 +95,12 @@ export function findAndCountAllMiddleware(
 }
 
 export function createMiddleware(hatchify: Hatchify, modelName: string) {
-  return async function createImpl(
-    request: MiddlewareRequest,
-  ): Promise<MiddlewareResponse> {
+  return async function createImpl({
+    body,
+    path,
+    querystring,
+  }: MiddlewareRequest): Promise<MiddlewareResponse> {
     try {
-      const { body, path, querystring } = request
-
       // If this is a wildcard or allModel situation, figure out the model from the route
       if (modelName === "*") {
         modelName = resolveWildcard(hatchify, path)
@@ -162,11 +163,9 @@ export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
 
 export function handleAllMiddleware(hatchify: Hatchify) {
   return async function handleAllImpl(
-    request: MiddlewareRequest,
+    { body, method, path, querystring }: MiddlewareRequest,
     next: NextFunction,
   ): Promise<MiddlewareResponse | ReturnType<Awaited<NextFunction>>> {
-    const { body, method, path, querystring } = request
-
     try {
       // Check if this request URL takes the format of one that we expect
       if (!hatchify.isValidHatchifyRoute(method, path)) {

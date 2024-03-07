@@ -9,7 +9,7 @@ These functions are expected to be used more directly, usually when defining use
 For example `hatchedKoa.parse.Todo.findAll` takes the URL query params and returns Sequelize `FindOptions`. For this sort of request the query params are processed to see if there are any filters, sorts, or other restrictions being placed on the findAll query.
 
 ```ts
-router.get("/skills", async (ctx: Context) => {
+router.get("/todos", async (ctx: Context) => {
   const findOptions = hatchedKoa.parse.Todo.findAll(ctx.querystring)
   const deserializedTodos = await hatchedKoa.orm.models.Todo.findAll(findOptions)
   ctx.body = deserializedTodos

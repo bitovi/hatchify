@@ -43,7 +43,7 @@ In just a few short steps we will set up a project containing a Hatchify fronten
    ```
 4. Navigate to the Hatchify welcome screen:
 
-![image](https://github.com/bitovi/hatchify/assets/2623867/5ac60386-dc61-4bf7-b254-d806a782638b)
+<img width="1289" alt="Screenshot 2024-03-06 at 10 35 02 AM" src="https://github.com/bitovi/hatchify/assets/9858612/5c98359d-5b1f-419d-812a-3f751670fe57">
 
 Congrats, you’ve got a seed of something great started!
 
@@ -84,7 +84,7 @@ export const User = {
 
 As soon as you save this change, the app will automatically reload to include the new data types you've added:
 
-![image](https://github.com/bitovi/hatchify/assets/2623867/8c172eda-0cd1-417d-b733-3a063f42d455)
+<img width="1289" alt="Screenshot 2024-03-06 at 10 35 58 AM" src="https://github.com/bitovi/hatchify/assets/9858612/e6f00fcb-ef76-4509-9a04-065f5548951f">
 
 This defines a `Todo` and `User` type, each with some attributes. It also creates a relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
 
@@ -196,11 +196,11 @@ With some data in place, we can now further review the project.
 
 Now that data has been seeded the UI should look like:
 
-![image](https://github.com/bitovi/hatchify/assets/2623867/db06b817-e6de-42d6-97c4-c9ef814cd43e)
+<img width="1289" alt="Screenshot 2024-03-06 at 11 17 38 AM" src="https://github.com/bitovi/hatchify/assets/9858612/214e948a-084f-4aa3-a935-a9352b128a8e">
 
 You can start using this basic app to sort & filter the data:
 
-![image](https://github.com/bitovi/hatchify/assets/2623867/47ac1208-27f4-49be-b648-b05556fb2749)
+<img width="1289" alt="Screenshot 2024-03-06 at 11 18 33 AM" src="https://github.com/bitovi/hatchify/assets/9858612/c9819b0f-e096-4695-b04c-1712b9ad699f">
 
 What you've built is currently bare bones, but read through our guides in the following section to learn how to enhance it to meet your needs.
 
@@ -255,6 +255,6 @@ This project is supported by [Bitovi](https://bitovi.com/), a web software consu
 
 Or, you can hire us for training, consulting, or development. [Set up a free consultation.](https://www.bitovi.com/digital-consulting-services)
 
-# Trying Hatchify Online
+## Trying Hatchify Online
 
 You can try Hatchify online on [StackBlitz](https://stackblitz.com/fork/github/bitovi/hatchify/tree/main/example/getting-started?file=schemas.ts&terminal=dev). It runs the Hatchify-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine.
