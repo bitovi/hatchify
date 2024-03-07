@@ -18,13 +18,13 @@ export const Todo = {
 | `default`  | The default value of the attribute. <br/> Example: `boolean({default: true})` | `Boolean` |   Yes    |         |
 | `required` | If the attribute must be provided. <br/> Example: `boolean({required: true})` | `Boolean` |   Yes    | `false` |
 
-## Database Implications
+**_Database Implications_**
 
 The `boolean` type will create a sequelize [DataTypes.BOOLEAN](https://sequelize.org/docs/v6/core-concepts/model-basics/#boolean) column.
 
-## API Implications
+**_API Implications_**
 
-### Querying Data
+\*\*\_
 
 For booleans, use `true`, `false`, and `%00` in your queries as follows:
 
@@ -40,7 +40,7 @@ Any other value will return a service error.
 
 Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with booleans.
 
-### Data Response
+**_Data Response_**
 
 Boolean data will be returned as `true`, `false`, or `null` as follows:
 
@@ -55,7 +55,7 @@ Boolean data will be returned as `true`, `false`, or `null` as follows:
 }
 ```
 
-### Mutating Data
+**_Mutating Data_**
 
 When creating or updating a boolean attribute, `true`, `false`, or `null` must be provided. Any other value will return a service error.
 
