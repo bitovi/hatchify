@@ -46,4 +46,4 @@ export type {
 
 export type KoaMiddleware = Middleware
 
-export type { MiddlewareFunctionsKoa } from "./middleware/koa.js"
+export type { MiddlewareFunctionsKoa } from "./middleware.js"
