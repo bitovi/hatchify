@@ -93,7 +93,7 @@ const hatchedExpress = hatchifyExpress(schemas, {
 
 | Property                  | Type                                   | Default                    | Details                                                                                                                                           |
 | ------------------------- | -------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| schemas                   | Record<string, PartialSchema>          | {}                         | A collection of [Hatchify Schemas](../core/README.md).                                                                                          |
+| schemas                   | Record<string, PartialSchema>          | {}                         | A collection of [Hatchify Schemas](../core/README.md).                                                                                            |
 | options.uri               | string                                 | sqlite://localhost/:memory | The database URI / connection string of the relational database. Ex. `postgres://user:password@host:port/database?ssl=true`                       |
 | options.logging           | (sql: string, timing?: number) => void | undefined                  | A function that gets executed every time Sequelize would log something.                                                                           |
 | options.additionalOptions | object                                 | undefined                  | An object of additional options, which are passed directly to the underlying connection library (example: [pg](https://www.npmjs.com/package/pg)) |
@@ -213,8 +213,8 @@ await hatchedExpress.everything.SalesPerson.<a href="./hatchedExpress.everything
 hatchedExpress.<a href="./hatchedExpress.parse.md">parse</a>.SalesPerson.<a href="./hatchedExpress.parse.md#findall">findAll</a>("filter[name]=Jane")
 hatchedExpress.parse.SalesPerson.<a href="./hatchedExpress.parse.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")
 hatchedExpress.parse.SalesPerson.<a href="./hatchedExpress.parse.md#findOne">findOne</a>("filter[name]=Baking")
-hatchedExpress.parse.SalesPerson.<a href="./hatchedExpress.parse.md#create">create</a>(JSONAPI_PAYLOAD)
-hatchedExpress.parse.SalesPerson.<a href="./hatchedExpress.parse.md#update">update</a>(JSONAPI_PARTIAL_PAYLOAD, UUID)
+hatchedExpress.parse.SalesPerson.<a href="./hatchedExpress.parse.md#create">create</a>({"jsonapi": {...}, data: {...}})
+hatchedExpress.parse.SalesPerson.<a href="./hatchedExpress.parse.md#update">update</a>({"jsonapi": {...}, data: {...}}, UUID)
 hatchedExpress.parse.SalesPerson.<a href="./hatchedExpress.parse.md#destroy">destroy</a>(UUID)
 
 <b>// Use the underlying sequelize methods</b>
