@@ -29,7 +29,7 @@ export interface SerializeFunctions<
   findOne: (instance: T) => JSONAPIDocument
   findAndCountAll: (data: { rows: T[]; count: number }) => JSONAPIDocument
   create: (instance: T) => JSONAPIDocument
-  update: (instance: T, count: number) => JSONAPIDocument
+  update: (instance: T) => JSONAPIDocument
   destroy: () => JSONAPIDocument
 }
 
@@ -44,8 +44,7 @@ export function buildSerializerForModel(
     findAndCountAll: ({ rows, count: unpaginatedCount }) =>
       hatchify.serializer.serialize(schemaName, rows, { unpaginatedCount }),
     create: (instance) => hatchify.serializer.serialize(schemaName, instance),
-    update: (instance, count) =>
-      hatchify.serializer.serialize(schemaName, instance, { count }),
+    update: (instance) => hatchify.serializer.serialize(schemaName, instance),
     destroy: () => hatchify.serializer.serialize(schemaName, null),
   }
 }

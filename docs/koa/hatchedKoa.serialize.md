@@ -167,16 +167,13 @@ Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a r
 
 Serializes a result of an update.
 
-`hatchedKoa.serialize[schemaName].update(data: RecordObject | ORMRecord, affectedCount: number) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].update(data: RecordObject | ORMRecord) => JSONAPIDocument`
 
 ```ts
-const serializedTodo = hatchedKoa.serialize.Todo.update(
-  {
-    id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
-    name: "Baking",
-  },
-  1,
-)
+const serializedTodo = hatchedKoa.serialize.Todo.update({
+  id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+  name: "Baking",
+})
 // serializedTodo = {
 //   jsonapi: { version: "1.0" },
 //   data: {
@@ -189,10 +186,9 @@ const serializedTodo = hatchedKoa.serialize.Todo.update(
 
 **Parameters**
 
-| Property      | Type                        | Default     | Details                      |
-| ------------- | --------------------------- | ----------- | ---------------------------- |
-| data          | `RecordObject \| ORMRecord` | `undefined` | Specify what record to show. |
-| affectedCount | number                      | `undefined` | Specify update count.        |
+| Property | Type                        | Default     | Details                      |
+| -------- | --------------------------- | ----------- | ---------------------------- |
+| data     | `RecordObject \| ORMRecord` | `undefined` | Specify what record to show. |
 
 **Returns**
 

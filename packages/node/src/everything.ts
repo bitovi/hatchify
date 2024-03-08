@@ -106,10 +106,7 @@ export function updateEverything(hatchify: Hatchify, modelName: string) {
       ]
     }
     const updated = await hatchify.orm.models[modelName].findByPk(id)
-    return hatchify.serialize[modelName].update(
-      updated?.get({ plain: true }),
-      affectedCount,
-    )
+    return hatchify.serialize[modelName].update(updated?.get({ plain: true }))
   }
 }
 
