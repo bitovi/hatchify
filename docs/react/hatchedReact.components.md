@@ -69,16 +69,16 @@ The `Column` component is used anytime there is a need to customize the output o
 
 ```tsx
 //in App.tsx
-const TodoColumn = hatchedReact.components.Todo.Column  // 👀
+const TodoColumn = hatchedReact.components.Todo.DataGrid  // 👀
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={createTheme()}>
       <HatchifyProvider>
         <TodoDataGrid>
-          <TodoColumn {/* 👀 */}
+          <TodoDataGrid.Column {/* 👀 */}
             label="Todo"
-            name="name"
+            field="name"
           />
         </TodoDataGrid>
       </HatchifyProvider>
