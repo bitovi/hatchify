@@ -79,7 +79,7 @@ hatchedKoa.<a href="./koa/hatchedKoa.parse.md">serialize</a>.SalesPerson.<a href
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findandcountall">findAndCountAll</a>({rows: [{id: UUID, ...}], count: 1})
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#findOne">findOne</a>({ id: UUID, name: "Roye" })
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#create">create</a>({ id: UUID, name: "Roye" })
-hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#update">update</a>({ id: UUID, name: "Roye" }, 1)
+hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#update">update</a>({ id: UUID, name: "Roye" })
 hatchedKoa.serialize.SalesPerson.<a href="./koa/hatchedKoa.serialize.md#destroy">destroy</a>()
 </pre>
 

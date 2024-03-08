@@ -228,7 +228,7 @@ hatchedExpress.<a href="./hatchedExpress.parse.md">serialize</a>.SalesPerson.<a 
 hatchedExpress.serialize.SalesPerson.<a href="./hatchedExpress.serialize.md#findandcountall">findAndCountAll</a>({rows: [{id: UUID, ...}], count: 1})
 hatchedExpress.serialize.SalesPerson.<a href="./hatchedExpress.serialize.md#findOne">findOne</a>({ id: UUID, name: "Roye" })
 hatchedExpress.serialize.SalesPerson.<a href="./hatchedExpress.serialize.md#create">create</a>({ id: UUID, name: "Roye" })
-hatchedExpress.serialize.SalesPerson.<a href="./hatchedExpress.serialize.md#update">update</a>({ id: UUID, name: "Roye" }, 1)
+hatchedExpress.serialize.SalesPerson.<a href="./hatchedExpress.serialize.md#update">update</a>({ id: UUID, name: "Roye" })
 hatchedExpress.serialize.SalesPerson.<a href="./hatchedExpress.serialize.md#destroy">destroy</a>()
 </pre>
 
