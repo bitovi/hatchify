@@ -87,7 +87,7 @@ const jsonClientInstance = createJsonapiClient("/api", Schemas)
 **Parameters**
 `createJsonapiClient` takes two arguments `baseUrl` and `schemaMap`
 `baseUrl` is a `string` that references the base url for the rest client
-`schemaMap` is a collectionn of [Hatchify Schemas](../schema/README.md)
+`schemaMap` is a collectionn of [Hatchify Schemas](../core/README.md)
 
 **Returns**
 Returns a `JSON:API rest client` instance object

@@ -64,7 +64,7 @@ While the JSON:API specs suggests having a [`filter`](https://jsonapi.org/format
 <pre>
 GET /api/sales-people?
   <a href="./reading/filtering/README.md">filter</a>[name]<a href="./reading/filtering/no-operator.md">=</a>Justin
-  filter[name]=<a href="../schema/attribute-types/string.md#api-implications">%00</a>                      <b>// %00 is an encoded null value</b>
+  filter[name]=<a href="../core/attribute-types/string.md#api-implications">%00</a>                      <b>// %00 is an encoded null value</b>
   filter[name][<a href="./reading/filtering/%24eq.md">$eq</a>]=Justin
   filter[name][<a href="./reading/filtering/%24ne.md">$ne</a>]=Justin
   filter[name][<a href="./reading/filtering/%24in.md">$in</a>]=Justin&filter[name][$in]=Roye

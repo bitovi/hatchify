@@ -86,7 +86,7 @@ As soon as you save this change, the app will automatically reload to include th
 
 This defines a `Todo` and `User` type, each with some attributes. It also creates a relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
 
-You can refer to [our documentation](/docs/schema/README.md) for more information on how to define schemas.
+You can refer to [our documentation](/docs/core/README.md) for more information on how to define schemas.
 
 ### Seed Data
 
@@ -219,10 +219,10 @@ Continue learning more about the Hatchify feature set with these guides that con
 
 Learn how to make Hatchify match your needs with its technical interface documentation:
 
-- [Schema](docs/schema/) - Learn how to specify attributes and relationships with Hatchify's interface for defining your data, called "schemas"
-  - [Attributes](docs/schema/attribute-types/README.md)
-  - [Relationships](docs/schema/relationship-types/README.md)
-  - [Schema Naming](docs/schema/naming.md)
+- [Schema](docs/core/) - Learn how to specify attributes and relationships with Hatchify's interface for defining your data, called "schemas"
+  - [Attributes](docs/core/attribute-types/README.md)
+  - [Relationships](docs/core/relationship-types/README.md)
+  - [Schema Naming](docs/core/naming.md)
 - [JSON:API](docs/jsonapi/README.md) - Learn the details of our JSON:API implementation.
   - [Creating](docs/jsonapi/creating.md)
   - [Reading](docs/jsonapi/reading/README.md)

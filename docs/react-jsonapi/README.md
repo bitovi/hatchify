@@ -1,6 +1,6 @@
 # `@hatchifyjs/react-jsonapi`
 
-`@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../schema/README.md) and produces an API client that your frontend can use for your JSON:API backend.
+`@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../core/README.md) and produces an API client that your frontend can use for your JSON:API backend.
 
 The following example uses `@hatchifyjs/react-jsonapi` to create and fetch todos from a JSON:API backend. `react-jsonapi` will automatically update the list when a create happens.
 
