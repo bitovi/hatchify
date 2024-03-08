@@ -213,8 +213,8 @@ await hatchedKoa.everything.SalesPerson.<a href="./hatchedKoa.everything.md#dest
 hatchedKoa.<a href="./hatchedKoa.parse.md">parse</a>.SalesPerson.<a href="./hatchedKoa.parse.md#findall">findAll</a>("filter[name]=Jane")
 hatchedKoa.parse.SalesPerson.<a href="./hatchedKoa.parse.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")
 hatchedKoa.parse.SalesPerson.<a href="./hatchedKoa.parse.md#findOne">findOne</a>("filter[name]=Baking")
-hatchedKoa.parse.SalesPerson.<a href="./hatchedKoa.parse.md#create">create</a>({"jsonapi": {...}, data: {...}})
-hatchedKoa.parse.SalesPerson.<a href="./hatchedKoa.parse.md#update">update</a>({"jsonapi": {...}, data: {...}}, UUID)
+hatchedKoa.parse.SalesPerson.<a href="./hatchedKoa.parse.md#create">create</a>({jsonapi: {...}, data: {...}})
+hatchedKoa.parse.SalesPerson.<a href="./hatchedKoa.parse.md#update">update</a>({jsonapi: {...}, data: {...}}, UUID)
 hatchedKoa.parse.SalesPerson.<a href="./hatchedKoa.parse.md#destroy">destroy</a>(UUID)
 
 <b>// Use the underlying sequelize methods</b>

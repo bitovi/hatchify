@@ -56,16 +56,16 @@ app.use(hatchedKoa.middleware.SalesPerson.<a href="./koa/hatchedKoa.middleware.m
 await hatchedKoa.<a href="./koa/hatchedKoa.everything.md">everything</a>.SalesPerson.<a href="./koa/hatchedKoa.everything.md#findall">findAll</a>("filter[name]=Jane")
 await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")
 await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#findOne">findOne</a>("filter[name]=Baking")
-await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#create">create</a>({"jsonapi": {...}, data: {...}})
-await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#update">update</a>({"jsonapi": {...}, data: {...}}, UUID)
+await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#create">create</a>({jsonapi: {...}, data: {...}})
+await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#update">update</a>({jsonapi: {...}, data: {...}}, UUID)
 await hatchedKoa.everything.SalesPerson.<a href="./koa/hatchedKoa.everything.md#destroy">destroy</a>(UUID)
 
 <b>// Parse JSONAPI requests into arguments for sequelize</b>
 hatchedKoa.<a href="./koa/hatchedKoa.parse.md">parse</a>.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findall">findAll</a>("filter[name]=Jane")
 hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findandcountall">findAndCountAll</a>("filter[name]=Baking")
 hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#findOne">findOne</a>("filter[name]=Baking")
-hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#create">create</a>({"jsonapi": {...}, data: {...}})
-hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#update">update</a>({"jsonapi": {...}, data: {...}}, UUID)
+hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#create">create</a>({jsonapi: {...}, data: {...}})
+hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#update">update</a>({jsonapi: {...}, data: {...}}, UUID)
 hatchedKoa.parse.SalesPerson.<a href="./koa/hatchedKoa.parse.md#destroy">destroy</a>(UUID)
 
 <b>// Use the underlying sequelize methods</b>
