@@ -2,7 +2,7 @@
 
 `@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../schema/README.md) and produces an API client that your frontend can use for your JSON:API backend.
 
-In this simplified example, we use `@hatchifyjs/react-jsonapi` to create and fetch todos from a JSON:API backend. To learn how to use the full power of the package, see the documentation for each individual function.
+The following example uses `@hatchifyjs/react-jsonapi` to create and fetch todos from a JSON:API backend. `react-jsonapi` will automatically update the list when a create happens.
 
 ```tsx
 import { useState } from "react"
@@ -45,6 +45,8 @@ function App() {
   )
 }
 ```
+
+See the documentation below for each individual function.
 
 - [Exports](#exports)
 - [createJsonapiClient](#createjsonapiclient)
@@ -101,7 +103,7 @@ const [users] = await hatchedReactRest.User.useAll()
 
 ### findAll
 
-`hatchedReactRest[SchemaName].findAll() => Promise<[RecordType[], MetaData]>`
+`hatchedReactRest[SchemaName].findAll() => Promise<[RecordType[], MetaData]>` loads a list of records from the REST client.
 
 This is how you could use the `findAll` function to fetch a page of todos. The metadata returned by the server will contain the total count of todos.
 
@@ -158,7 +160,7 @@ const record = await hatchedReactRest.Todo.findOne({
 
 ### createOne
 
-`hatchedReactRest[SchemaName].createOne(data: Partial<RecordType>) => Promise<RecordType`
+`hatchedReactRest[SchemaName].createOne(data: Partial<RecordType>) => Promise<RecordType>`
 
 The `createOne` function creates a new record for the given schema, in this case Todo. Only the required attributes need to be passed in.
 
