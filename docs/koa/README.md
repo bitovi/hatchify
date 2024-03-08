@@ -127,7 +127,7 @@ A type for JSON:API document that can be used as a request/response body.
 
 [Read more on the type](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
-## RecordObject
+### RecordObject
 
 A plain old JavaScript object (POJO).
 
