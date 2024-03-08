@@ -166,7 +166,7 @@ The `createOne` function creates a new record for the given schema, in this case
 
 ```ts
 const createdRecord = await hatchedReactRest.Todo.createOne({
-  name: "Learn HatchifyJS",
+  name: "Learn Hatchify",
   complete: false,
 })
 ```
@@ -175,8 +175,8 @@ You can also create a record with a relationship by passing in the id of the rel
 
 ```ts
 const createdRecord = await hatchedReactRest.Todo.createOne({
-  name: "Learn HatchifyJS",
-  complete,
+  name: "Learn Hatchify",
+  complete: false,
   user: { id: UUID },
 })
 ```
@@ -185,8 +185,8 @@ If a todo could have many users, you would pass in an array of user ids.
 
 ```tsx
 const createdRecord = await hatchedReactRest.Todo.createOne({
-  name: "Learn HatchifyJS",
-  complete,
+  name: "Learn Hatchify",
+  complete: false,
   users: [{ id: UUID_1 }, { id: UUID_2 }],
 })
 ```
@@ -212,7 +212,7 @@ When using the `updateOne` function, the id must be passed in along with only th
 ```ts
 const updated = await hatchedReact.model.Todo.updateOne({
   id: createdRecord.id,
-  name: "Master HatchifyJS",
+  name: "Master Hatchify",
 })
 ```
 
@@ -221,7 +221,7 @@ When dealing with relationships, the same rules apply from the `createOne` funct
 ```ts
 const updated = await hatchedReact.model.Todo.updateOne({
   id: createdRecord.id,
-  name: "Master Hatch",
+  name: "Master Hatchify",
   user: { id: UUID },
 })
 ```
@@ -229,7 +229,7 @@ const updated = await hatchedReact.model.Todo.updateOne({
 ```tsx
 const updated = await hatchedReact.model.Todo.updateOne({
   id: createdRecord.id,
-  name: "Master Hatch",
+  name: "Master Hatchify",
   users: [{ id: UUID_1 }, { id: UUID_2 }],
 })
 ```
@@ -506,7 +506,7 @@ An array with the following properties:
 | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `(data: RecordObject) => Promise<RecordObject>` | A function that creates a record, modifies the associated <a href="#requeststate">RequestState</a>, and updates the latest created record in the <a href="#usecreateone">useCreateOne</a> hook. |
 
-For passing in relationships through the `RecordObject`, see the example in <a href="#createone">createOne</a> function.
+For passing in relationships through the `RecordObject`, see the example in the <a href="#createone">createOne</a> function.
 
 ### DeleteFunction
 
@@ -594,3 +594,5 @@ The expected shape of the `RecordObject` in the case of the `Todo` and `User` sc
 | Type                                                     | Details                                                                                                                                                                                           |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `(data: Partial<RecordObject>) => Promise<RecordObject>` | A function that updates the record, modifies the associated <a href="#requeststate">RequestState</a>, and updates the latest updated record in the <a href="#useupdateone">useUpdateOne</a> hook. |
+
+For passing in relationships through the `RecordObject`, see the example in the <a href="#updateone">updateOne</a> function.
