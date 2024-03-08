@@ -129,7 +129,19 @@ A type for JSON:API document that can be used as a request/response body.
 
 ### RecordObject
 
-A plain old JavaScript object (POJO). See [RecordObject](../react-jsonapi/README.md#recordobject) for more details.
+A "flattened" JavaScript object with the record's data and associated record's data as child RecordObjects. See [RecordObject](../react-jsonapi/README.md#recordobject) for more details.
+
+```js
+{
+  id: string,
+  name: string,
+  complete: boolean,
+  user: {
+    id: string,
+    email: string,
+  },
+}
+```
 
 ### errorHandlerMiddleware
 
