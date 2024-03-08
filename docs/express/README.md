@@ -24,7 +24,7 @@ const schemas = {
   },
 } satisfies Record<string, PartialSchema>
 
-const app = new Express()
+const app = Express()
 
 // Pass schemas and other settings to configure hatchify
 const hatchedExpress = hatchifyExpress(schemas, {
@@ -81,7 +81,7 @@ import { hatchifyExpress } from "@hatchifyjs/express";
 
 const schemas = { ... }
 
-const app = new Express()
+const app = Express()
 
 const hatchedExpress = hatchifyExpress(schemas, {
   prefix: "/api",

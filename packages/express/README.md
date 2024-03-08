@@ -25,7 +25,8 @@ const schemas = {
   },
 } satisfies Record<string, PartialSchema>
 
-const app = new Express()
+const app = Express()
+
 const hatchedExpress = hatchifyExpress(schemas, {
   prefix: "/api",
   database: { uri: "sqlite://localhost/:memory" },
