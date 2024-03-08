@@ -82,7 +82,7 @@ export const User = {
 
 As soon as you save this change, the app will automatically reload to include the new data types you've added:
 
-<img width="1289" alt="Screenshot 2024-03-06 at 10 35 58 AM" src="https://github.com/bitovi/hatchify/assets/9858612/e6f00fcb-ef76-4509-9a04-065f5548951f">
+<img width="1385" alt="Screenshot 2024-03-08 at 10 09 20 AM" src="https://github.com/bitovi/hatchify/assets/9858612/b0425bd2-5b05-4bec-85c9-bf0da147cc42">
 
 This defines a `Todo` and `User` type, each with some attributes. It also creates a relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
 
