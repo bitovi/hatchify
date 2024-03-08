@@ -232,7 +232,7 @@ await hatchedReactRest.Todo.deleteOne(UUID)
 
 ### useAll
 
-`hatchedReactRest[SchemaName].useAll() => [RecordType[], RequestState]`
+`hatchedReactRest[SchemaName].useAll(QueryList?) => [RecordType[], RequestState]`
 
 In this example, we use the `useAll` hook to fetch all todos and display them in a list. The hook returns an array with the todos that we map over and display. We use the the `RequestState` to determine whether to display a loading spinner or an error message.
 
@@ -262,9 +262,7 @@ function TodosList() {
 
 | Property        | Type                                                 | Details                                                                                                  |
 | --------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| queryList       | <a href="#querylist">`QueryList?`</a>                | An object with optional include, fields, filter, sort, and page.                                         |
-| baseFilter      | `{ field: string, operator: string, value: any }[]?` | An optional filter object made up of the field to filter, the operator type, and the value to filter by. |
-| minimumLoadTime | `number?`                                            | The minimum time to show a loading spinner.                                                              |
+| queryList       | <a href="#querylist">`QueryList?`</a>                | An object with optional include, fields, filter, sort, and page.                                        
 
 **Returns**
 
