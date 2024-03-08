@@ -496,7 +496,7 @@ An array with the following properties:
 | sort     | `string?`                                            | Specify how to sort the records.          |
 | page     | `{ page: number, size: number }?`                    | Specify which page of records to include. |
 
-See [JSON:API](./jsonapi/README.md) for more details on querying.
+See [JSON:API](../jsonapi/README.md) for more details on querying.
 
 ### QueryOne
 
