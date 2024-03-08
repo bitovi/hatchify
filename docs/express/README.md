@@ -116,7 +116,7 @@ type Globals = {
   hatchedExpress: HatchifyExpress
 }
 
-const globals : Globals = {
+const globals: Globals = {
   hatchedExpress: hatchifyExpress(schemas, options);
 }
 ```

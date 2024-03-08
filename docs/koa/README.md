@@ -116,7 +116,7 @@ type Globals = {
   hatchedKoa: HatchifyKoa
 }
 
-const globals : Globals = {
+const globals: Globals = {
   hatchedKoa: hatchifyKoa(schemas, options);
 }
 ```
