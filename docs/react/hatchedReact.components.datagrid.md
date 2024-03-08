@@ -43,11 +43,7 @@ const App = ()=>{
 | Prop Name        | Type                                     | Default | Description                                                                                                                                                                                                                                                                                     |
 | ---------------- | ---------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | children         | React.ReactNode or Null                  | -       | While `DataGrid` can contain no children, typically we'll use hatchify's `Column` or `EmptyList` as children for this component.                                                                                                                                                                |
-| defaultSelected  | `HatchifyDataGridSelected {
-    selected: {
-        all: boolean;
-        ids: string[];
-    };`     | -       | `defaultSelecetd` adds a checkbox selection column to the `DataGrid`. This checked or unchecked state is managed by `onSelectedChange`|
+| defaultSelected  | `HatchifyDataGridSelected {selected: {all: boolean; ids: string[]};};     | -       | `defaultSelecetd` adds a checkbox selection column to the `DataGrid`. This checked or unchecked state is managed by `onSelectedChange`|
 | onSelectedChange | `HatchifyDataGridSelected {
     setSelected: ({ all, ids }: {
         all: boolean;
