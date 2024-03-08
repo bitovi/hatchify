@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/express",
-  "version": "1.3.38",
+  "version": "1.3.39",
   "description": "Fullstack CRUD Application Solution",
   "type": "module",
   "exports": "./dist/exports.js",
