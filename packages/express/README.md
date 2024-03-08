@@ -45,4 +45,4 @@ const hatchedExpress = hatchifyExpress(schemas, {
 
 ## More Documentation
 
-[`@hatchifyjs/express` Documentation](../../docs/express/README.md)
+[`@hatchifyjs/express` Documentation](https://github.com/bitovi/hatchify/blob/main/docs/express/README.md)
