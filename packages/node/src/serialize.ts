@@ -25,15 +25,9 @@ export interface SerializeFunctions<
    *
    * @returns {JSONAPIDocument}
    */
-  findAll: (instances: T[], attributes: any) => JSONAPIDocument
-  findOne: (instance: T, attributes: any) => JSONAPIDocument
-  findAndCountAll: (
-    data: {
-      rows: T[]
-      count: number
-    },
-    attributes: any,
-  ) => JSONAPIDocument
+  findAll: (instances: T[]) => JSONAPIDocument
+  findOne: (instance: T) => JSONAPIDocument
+  findAndCountAll: (data: { rows: T[]; count: number }) => JSONAPIDocument
   create: (instance: T) => JSONAPIDocument
   update: (instance: T, count: number) => JSONAPIDocument
   destroy: () => JSONAPIDocument

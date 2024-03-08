@@ -38,7 +38,6 @@ export function findAllEverything(hatchify: Hatchify, modelName: string) {
     const result = await hatchify.orm.models[modelName].findAll(params)
     return hatchify.serialize[modelName].findAll(
       result.map((row) => row.get({ plain: true })),
-      params.attributes,
     )
   }
 }
@@ -57,7 +56,7 @@ export function findOneEverything(hatchify: Hatchify, modelName: string) {
         }),
       ]
     }
-    return hatchify.serialize[modelName].findOne(result, params.attributes)
+    return hatchify.serialize[modelName].findOne(result)
   }
 }
 
@@ -71,10 +70,10 @@ export function findAndCountAllEverything(
     const params = hatchify.parse[modelName].findAndCountAll(querystring)
     const result = await hatchify.orm.models[modelName].findAndCountAll(params)
 
-    return hatchify.serialize[modelName].findAndCountAll(
-      { ...result, rows: result.rows.map((row) => row.get({ plain: true })) },
-      params.attributes,
-    )
+    return hatchify.serialize[modelName].findAndCountAll({
+      ...result,
+      rows: result.rows.map((row) => row.get({ plain: true })),
+    })
   }
 }
 
