@@ -543,7 +543,6 @@ The expected shape of the `RecordType` in the case of the `Todo` and `User` sche
 | isResolved | `boolean`                          | True if the status is `"success"` or `"error`, false otherwise. |
 | isSuccess  | `boolean`                          | True if status is `"success"`, false otherwise.                 |
 | meta       | <a href="#metadata">`MetaData`</a> | Metadata returned by the server.                                |
-|            |                                    |
 | status     | `"loading"`                        | If the promise is pending.                                      |
 |            | `"error"`                          | If the promise is rejected.                                     |
 |            | `"success"`                        | If the promise is successfully resolved.                        |
@@ -556,6 +555,4 @@ The expected shape of the `RecordType` in the case of the `Todo` and `User` sche
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `(data: Partial<RecordType>) => Promise<RecordType>` | A function that updates the record, modifies the associated <a href="#requeststate">RequestState</a>, and updates the latest updated record in the <a href="#useupdateone">useUpdateOne</a> hook. |
 
-```
 
-```
