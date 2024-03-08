@@ -1,4 +1,4 @@
-# `@hatchifyjs/react-jsonapi`
+# @hatchifyjs/react-jsonapi
 
 `@hatchifyjs/react-jsonapi` is an [NPM package](https://www.npmjs.com/package/@hatchifyjs/react-jsonapi) that takes [Schemas](../core/README.md) and produces an API client that your frontend can use for your JSON:API backend.
 
@@ -121,10 +121,10 @@ const [todos, metadata] = await hatchedReactRest.Todo.findAll({ page: { page: 1,
 
 An array with the following properties:
 
-| Property | Common Alias                                | Type                                     | Details                                                                       |
-| -------- | ------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
+| Property | Common Alias                                | Type                                         | Details                                                                       |
+| -------- | ------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------- |
 | `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordobject">`RecordObject[]`</a> | An array of records of the given schema.                                      |
-| `[1]`    | `metadata`                                  | <a href="#metadata">`MetaData`</a>       | An object with metadata returned by the server, such as the count of records. |
+| `[1]`    | `metadata`                                  | <a href="#metadata">`MetaData`</a>           | An object with metadata returned by the server, such as the count of records. |
 
 ### findOne
 
@@ -154,8 +154,8 @@ const record = await hatchedReactRest.Todo.findOne({
 
 **Returns**
 
-| Type                                            | Details                       |
-| ----------------------------------------------- | ----------------------------- |
+| Type                                                | Details                       |
+| --------------------------------------------------- | ----------------------------- |
 | <a href="#recordobject">`Promise<RecordObject>`</a> | A record of the given schema. |
 
 ### createOne
@@ -166,21 +166,41 @@ The `createOne` function creates a new record for the given schema, in this case
 
 ```ts
 const createdRecord = await hatchedReactRest.Todo.createOne({
-  name: "Learn HatchifyJS",
+  name: "Learn Hatchify",
   complete: false,
+})
+```
+
+You can also create a record with a relationship by passing in the id of the related record.
+
+```ts
+const createdRecord = await hatchedReactRest.Todo.createOne({
+  name: "Learn Hatchify",
+  complete: false,
+  user: { id: UUID },
+})
+```
+
+If a todo could have many users, you would pass in an array of user ids.
+
+```tsx
+const createdRecord = await hatchedReactRest.Todo.createOne({
+  name: "Learn Hatchify",
+  complete: false,
+  users: [{ id: UUID_1 }, { id: UUID_2 }],
 })
 ```
 
 **Parameters**
 
-| Property | Type                                            | Details                                           |
-| -------- | ----------------------------------------------- | ------------------------------------------------- |
+| Property | Type                                                | Details                                           |
+| -------- | --------------------------------------------------- | ------------------------------------------------- |
 | data     | <a href="#recordobject">`Partial<RecordObject>`</a> | An object containing the data for the new record. |
 
 **Returns**
 
-| Type                                            | Details                   |
-| ----------------------------------------------- | ------------------------- |
+| Type                                                | Details                   |
+| --------------------------------------------------- | ------------------------- |
 | <a href="#recordobject">`Promise<RecordObject>`</a> | The newly created record. |
 
 ### updateOne
@@ -192,20 +212,38 @@ When using the `updateOne` function, the id must be passed in along with only th
 ```ts
 const updated = await hatchedReact.model.Todo.updateOne({
   id: createdRecord.id,
-  name: "Master HatchifyJS",
+  name: "Master Hatchify",
+})
+```
+
+When dealing with relationships, the same rules apply from the `createOne` function. If it's a to-one relationship then pass in an object with the id of the related record and if it's a to-many relationship then pass in an array of objects with the ids of the related records.
+
+```ts
+const updated = await hatchedReact.model.Todo.updateOne({
+  id: createdRecord.id,
+  name: "Master Hatchify",
+  user: { id: UUID },
+})
+```
+
+```tsx
+const updated = await hatchedReact.model.Todo.updateOne({
+  id: createdRecord.id,
+  name: "Master Hatchify",
+  users: [{ id: UUID_1 }, { id: UUID_2 }],
 })
 ```
 
 **Parameters**
 
-| Property | Type                                            | Details                                                                                               |
-| -------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Property | Type                                                | Details                                                                                                 |
+| -------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | data     | <a href="#recordobject">`Partial<RecordObject>`</a> | An object containing the data for the updated record. The id is required to be passed into RecordObject |
 
 **Returns**
 
-| Type                                            | Details             |
-| ----------------------------------------------- | ------------------- |
+| Type                                                | Details             |
+| --------------------------------------------------- | ------------------- |
 | <a href="#recordobject">`Promise<RecordObject>`</a> | The updated record. |
 
 ### deleteOne
@@ -260,18 +298,18 @@ function TodosList() {
 
 **Parameters**
 
-| Property        | Type                                                 | Details                                                                                                  |
-| --------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| queryList       | <a href="#querylist">`QueryList?`</a>                | An object with optional include, fields, filter, sort, and page.                                        
+| Property  | Type                                  | Details                                                          |
+| --------- | ------------------------------------- | ---------------------------------------------------------------- |
+| queryList | <a href="#querylist">`QueryList?`</a> | An object with optional include, fields, filter, sort, and page. |
 
 **Returns**
 
 An array with the following properties:
 
-| Property | Common Alias                                | Type                                       | Details                                  |
-| -------- | ------------------------------------------- | ------------------------------------------ | ---------------------------------------- |
-| `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordobject">`RecordObject[]`</a>   | An array of records of the given schema. |
-| `[1]`    | `state`                                     | <a href="#requeststate">`RequestState`</a> | An object with request state data.       |
+| Property | Common Alias                                | Type                                         | Details                                  |
+| -------- | ------------------------------------------- | -------------------------------------------- | ---------------------------------------- |
+| `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordobject">`RecordObject[]`</a> | An array of records of the given schema. |
+| `[1]`    | `state`                                     | <a href="#requeststate">`RequestState`</a>   | An object with request state data.       |
 
 ### useOne
 
@@ -317,7 +355,7 @@ An array with the following properties:
 
 | Property | Common Alias                                | Type                                       | Details                            |
 | -------- | ------------------------------------------- | ------------------------------------------ | ---------------------------------- |
-| `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordobject">`RecordObject`</a>     | A record of the given schema.      |
+| `[0]`    | the plural name of the schema, e.g. `todos` | <a href="#recordobject">`RecordObject`</a> | A record of the given schema.      |
 | `[1]`    | `state`                                     | <a href="#requeststate">`RequestState`</a> | An object with request state data. |
 
 ### useCreateOne
@@ -366,7 +404,7 @@ An array with the following properties:
 | -------- | -------------------- | ---------------------------------------------- | ---------------------------------- |
 | `[0]`    | `create{SchemaName}` | <a href="#createfunction">`CreateFunction`</a> | A function to create a record.     |
 | `[1]`    | `state`              | <a href="#requeststate">`RequestState`</a>     | An object with request state data. |
-| `[2]`    | `created`            | <a href="#recordobject">`RecordObject`</a>         | The most recently created record.  |
+| `[2]`    | `created`            | <a href="#recordobject">`RecordObject`</a>     | The most recently created record.  |
 
 ### useUpdateOne
 
@@ -413,7 +451,7 @@ An array with the following properties:
 | -------- | -------------------- | ---------------------------------------------- | ---------------------------------- |
 | `[0]`    | `update{SchemaName}` | <a href="#updatefunction">`UpdateFunction`</a> | A function to update a record.     |
 | `[1]`    | `state`              | <a href="#requeststate">`RequestState`</a>     | An object with request state data. |
-| `[2]`    | `updated`            | <a href="#recordobject">`RecordObject`</a>         | The most recently updated record.  |
+| `[2]`    | `updated`            | <a href="#recordobject">`RecordObject`</a>     | The most recently updated record.  |
 
 ### useDeleteOne
 
@@ -464,9 +502,11 @@ An array with the following properties:
 
 `CreateFunction` is a function that takes an object containing the data for the new record and returns a promise that resolves to the newly created record.
 
-| Type                                        | Details                                                                                                                                                                                         |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Type                                            | Details                                                                                                                                                                                         |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `(data: RecordObject) => Promise<RecordObject>` | A function that creates a record, modifies the associated <a href="#requeststate">RequestState</a>, and updates the latest created record in the <a href="#usecreateone">useCreateOne</a> hook. |
+
+For passing in relationships through the `RecordObject`, see the example in the <a href="#createone">createOne</a> function.
 
 ### DeleteFunction
 
@@ -551,8 +591,8 @@ The expected shape of the `RecordObject` in the case of the `Todo` and `User` sc
 
 `UpdateFunction` is a function that takes an object containing the data for the new record and returns a promise that resolves to the newly updated record.
 
-| Type                                                 | Details                                                                                                                                                                                           |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Type                                                     | Details                                                                                                                                                                                           |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `(data: Partial<RecordObject>) => Promise<RecordObject>` | A function that updates the record, modifies the associated <a href="#requeststate">RequestState</a>, and updates the latest updated record in the <a href="#useupdateone">useUpdateOne</a> hook. |
 
-
+For passing in relationships through the `RecordObject`, see the example in the <a href="#updateone">updateOne</a> function.
