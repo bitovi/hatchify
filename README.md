@@ -194,11 +194,11 @@ With some data in place, we can now further review the project.
 
 Now that data has been seeded the UI should look like:
 
-<img width="1289" alt="Screenshot 2024-03-06 at 11 17 38 AM" src="https://github.com/bitovi/hatchify/assets/9858612/214e948a-084f-4aa3-a935-a9352b128a8e">
+<img width="1385" alt="Screenshot 2024-03-08 at 10 05 44 AM" src="https://github.com/bitovi/hatchify/assets/9858612/79f67fb2-c598-4032-89f0-1c87a75ae465">
 
 You can start using this basic app to sort & filter the data:
 
-<img width="1289" alt="Screenshot 2024-03-06 at 11 18 33 AM" src="https://github.com/bitovi/hatchify/assets/9858612/c9819b0f-e096-4695-b04c-1712b9ad699f">
+<img width="1385" alt="Screenshot 2024-03-08 at 10 07 58 AM" src="https://github.com/bitovi/hatchify/assets/9858612/c3a82055-bdac-4157-8024-a3f483e51193">
 
 What you've built is currently bare bones, but read through our guides in the following section to learn how to enhance it to meet your needs.
 
