@@ -241,9 +241,9 @@ The `everything` functions takes the same properties as `parse` but goes further
 For example `hatchedExpress.everything.Todo.findAll` takes the URL query params and directly returns JSON:API ready response data.
 
 ```ts
-router.get("/todos", async (ctx: Context) => {
-  const serializedTodos = await hatchedExpress.everything.Todo.findAll(ctx.query)
-  ctx.body = serializedTodos
+router.get("/todos", async (req: Request, res: Response) => {
+  const serializedTodos = await hatchedExpress.everything.Todo.findAll(req.originalUrl.split("?")[1] || "")
+  return res.json(serializedTodos)
 })
 ```
 

@@ -9,10 +9,10 @@ These functions are expected to be used more directly, usually when defining use
 For example `hatchedExpress.parse.Todo.findAll` takes the URL query params and returns Sequelize `FindOptions`. For this sort of request the query params are processed to see if there are any filters, sorts, or other restrictions being placed on the findAll query.
 
 ```ts
-router.get("/todos", async (ctx: Context) => {
-  const findOptions = hatchedExpress.parse.Todo.findAll(ctx.querystring)
+router.get("/todos", async (req: Request, res: Response) => {
+  const findOptions = hatchedExpress.parse.Todo.findAll(req.originalUrl.split("?")[1] || "")
   const deserializedTodos = await hatchedExpress.orm.models.Todo.findAll(findOptions)
-  ctx.body = deserializedTodos
+  return res.json(deserializedTodos)
 })
 ```
 
