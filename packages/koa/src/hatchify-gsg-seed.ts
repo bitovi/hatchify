@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* istanbul ignore file */
 
-// A script distributed with hatchifyKoa to make seeding data in the
+// Script distributed with hatchifyKoa to make seeding data in the
 // getting started guide trivial. To be upgraded into a more general
 // schema-driven seeder at some point in the future.
 import { faker } from "@faker-js/faker"

@@ -3,7 +3,7 @@
 `hatchedKoa.serialize` is a collection of methods to take results from the `hatchedKoa.orm.models` methods which is one or more of either `ORMRecord` or [`RecordObject`](./README.md#recordobject) and transform them to [JSON:API](../jsonapi/README.md) response format that look like the following:
 
 ```ts
-const serializedArticle = hatchedKoa.serialize.Article.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking", author: { id: "24390449-d661-4ac4-8878-26d45b774679", name: "Justin" } }, ["id", "name"])
+const serializedArticle = hatchedKoa.serialize.Article.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking", author: { id: "24390449-d661-4ac4-8878-26d45b774679", name: "Justin" } })
 // serializedArticle = {
 //   data: {
 //     type: "Article",
@@ -46,7 +46,7 @@ Serializes result of multiple instances and to show only the specified attribute
 `hatchedKoa.serialize[schemaName].findAll(data: RecordObject[] | ORMRecord[], attributes: string[]) => JSONAPIDocument`
 
 ```ts
-const serializedTodos = hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }], ["id", "name"])
+const serializedTodos = hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }])
 // serializedTodos = {
 //   jsonapi: { version: "1.0" },
 //   data: [
@@ -61,10 +61,9 @@ const serializedTodos = hatchedKoa.serialize.Todo.findAll([{ id: "b559e3d9-bad7-
 
 **Parameters**
 
-| Property   | Type                            | Default     | Details                          |
-| ---------- | ------------------------------- | ----------- | -------------------------------- |
-| data       | `RecordObject[] \| ORMRecord[]` | `undefined` | Specify what records to show.    |
-| attributes | string[]                        | `undefined` | Specify what attributes to show. |
+| Property | Type                            | Default     | Details                       |
+| -------- | ------------------------------- | ----------- | ----------------------------- |
+| data     | `RecordObject[] \| ORMRecord[]` | `undefined` | Specify what records to show. |
 
 **Returns**
 
@@ -74,16 +73,13 @@ Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a r
 
 Serializes result of paginated data and a total count to show only the specified attributes. This is very useful for pagination.
 
-`hatchedKoa.serialize[schemaName].findAndCountAll(data: { count: number; rows: RecordObject[] | ORMRecord[] }, attributes: string[]) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findAndCountAll(data: { count: number; rows: RecordObject[] | ORMRecord[] }) => JSONAPIDocument`
 
 ```ts
-const serializedTodos = hatchedKoa.serialize.Todo.findAndCountAll(
-  {
-    rows: [{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }],
-    count: 10,
-  },
-  ["id", "name"],
-)
+const serializedTodos = hatchedKoa.serialize.Todo.findAndCountAll({
+  rows: [{ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }],
+  count: 10,
+})
 // serializedTodos = {
 //   jsonapi: { version: "1.0" },
 //   data: [
@@ -99,10 +95,9 @@ const serializedTodos = hatchedKoa.serialize.Todo.findAndCountAll(
 
 **Parameters**
 
-| Property   | Type                                                     | Default     | Details                                       |
-| ---------- | -------------------------------------------------------- | ----------- | --------------------------------------------- |
-| data       | `{ data: RecordObject[] \| ORMRecord[], count: number }` | `undefined` | Specify what records and total cound to show. |
-| attributes | string[]                                                 | `undefined` | Specify what attributes to show.              |
+| Property | Type                                                     | Default     | Details                                       |
+| -------- | -------------------------------------------------------- | ----------- | --------------------------------------------- |
+| data     | `{ data: RecordObject[] \| ORMRecord[], count: number }` | `undefined` | Specify what records and total count to show. |
 
 **Returns**
 
@@ -112,10 +107,10 @@ Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a r
 
 Serializes result of a single instance.
 
-`hatchedKoa.serialize[schemaName].findOne(data: RecordObject | ORMRecord, attributes: string[]) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].findOne(data: RecordObject | ORMRecord) => JSONAPIDocument`
 
 ```ts
-const serializedTodo = hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }, ["id", "name"])
+const serializedTodo = hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" })
 // serializedTodo = {
 //   jsonapi: { version: "1.0" },
 //   data: {
@@ -128,10 +123,9 @@ const serializedTodo = hatchedKoa.serialize.Todo.findOne({ id: "b559e3d9-bad7-4b
 
 **Parameters**
 
-| Property   | Type                        | Default     | Details                          |
-| ---------- | --------------------------- | ----------- | -------------------------------- |
-| data       | `RecordObject \| ORMRecord` | `undefined` | Specify what record to show.     |
-| attributes | string[]                    | `undefined` | Specify what attributes to show. |
+| Property | Type                        | Default     | Details                      |
+| -------- | --------------------------- | ----------- | ---------------------------- |
+| data     | `RecordObject \| ORMRecord` | `undefined` | Specify what record to show. |
 
 **Returns**
 
@@ -173,16 +167,13 @@ Returns a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a r
 
 Serializes a result of an update.
 
-`hatchedKoa.serialize[schemaName].update(data: RecordObject | ORMRecord, affectedCount: number) => JSONAPIDocument`
+`hatchedKoa.serialize[schemaName].update(data: RecordObject | ORMRecord) => JSONAPIDocument`
 
 ```ts
-const serializedTodo = hatchedKoa.serialize.Todo.update(
-  {
-    id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
-    name: "Baking",
-  },
-  1,
-)
+const serializedTodo = hatchedKoa.serialize.Todo.update({
+  id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+  name: "Baking",
+})
 // serializedTodo = {
 //   jsonapi: { version: "1.0" },
 //   data: {
@@ -195,10 +186,9 @@ const serializedTodo = hatchedKoa.serialize.Todo.update(
 
 **Parameters**
 
-| Property      | Type                        | Default     | Details                      |
-| ------------- | --------------------------- | ----------- | ---------------------------- |
-| data          | `RecordObject \| ORMRecord` | `undefined` | Specify what record to show. |
-| affectedCount | number                      | `undefined` | Specify update count.        |
+| Property | Type                        | Default     | Details                      |
+| -------- | --------------------------- | ----------- | ---------------------------- |
+| data     | `RecordObject \| ORMRecord` | `undefined` | Specify what record to show. |
 
 **Returns**
 
