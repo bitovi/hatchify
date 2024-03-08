@@ -125,7 +125,7 @@ const globals : Globals = {
 
 A type for JSON:API document that can be used as a request/response body.
 
-[JSONAPIDocument](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
+[Read more on the type](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-api-serializer/index.d.ts#L117)
 
 ## RecordObject
 

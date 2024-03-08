@@ -8,6 +8,9 @@ import MuiDataGrid from "../MuiDataGrid/MuiDataGrid.js"
 import { MuiEverything } from "../MuiEverything/index.js"
 import { MuiNavigation } from "../MuiNavigation/index.js"
 import { MuiNoSchemas } from "../MuiNoSchemas/index.js"
+import { MuiFilters } from "../MuiFilters/index.js"
+import { MuiPagination } from "../MuiPagination/index.js"
+import { MuiList } from "../MuiList/index.js"
 import {
   Relationship,
   RelationshipList,
@@ -23,6 +26,9 @@ export const MuiProvider: React.FC<XProviderProps> = ({
       Everything={MuiEverything}
       Navigation={MuiNavigation}
       NoSchemas={MuiNoSchemas}
+      Filters={MuiFilters}
+      Pagination={MuiPagination}
+      List={MuiList}
       Layout={MuiLayout}
       // future: Details, Form
       defaultDisplayComponents={{

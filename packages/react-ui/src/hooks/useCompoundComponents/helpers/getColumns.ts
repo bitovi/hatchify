@@ -23,7 +23,9 @@ export function getColumns<
   const hatchifyColumns: HatchifyColumn[] = []
   const schema = finalSchemas[schemaName as string]
 
-  const columns = childArray.filter((c) => c.type.name === "Column")
+  const columns = childArray.filter(
+    (c) => c.type.name === "Column" || c.type.displayName === "Column",
+  )
   const extra = columns.filter((c) => c.props.field === undefined)
   const replace = columns.filter((c) => c.props.field !== undefined)
   const prepend = extra.filter((c) => c.props.prepend === true)
