@@ -12,7 +12,7 @@ import { PartialSchema,
 export const SalesPerson = {
   <a href="core/naming.md#schemaname">name</a>: "SalesPerson",
   <a href="core/naming.md#schemapluralname">pluralName</a>: "SalesPeople",
-  id: <a href="core/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
+  <a href="./PartialSchema.md#id">id</a>: <a href="core/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   <a href="./core/attribute-types/README.md">attributes</a>: {
     <a href="core/naming.md#general-guidelines">name</a>:         <a href="core/attribute-types/string.md">string</a>({ required: true }),
     description:  <a href="core/attribute-types/text.md">text</a>(),
@@ -33,43 +33,35 @@ export const SalesPerson = {
 } satisfies <a href="core/naming.md">PartialSchema</a>
 </pre>
 
+To learn how to define a schema, we suggest reading:
+
+- [PartialSchema](./PartialSchema.md) - To understand how to define a schema and how it effects the database, API, and UI.
+- [Attributes](./attribute-types/README.md) - How to specify attributes on a schema.
+- [Relationships](./relationship-types/README.md) - How to specify relationships on a schema.
+
+## Exports
+
+`@hatchifyjs/core` exports the following types and methods to help you build a schema:
+
+Types: 
+- [`PartialSchema`](./PartialSchema.md) - Defines the shape of a schema for one type
+
+Attributes:
+- [`boolean`](./boolean.md)
+- [`dateonly`](./dateonly.md)
+- [`datetime`](./datetime.md)
+- [`enumerate`](./enum.md)
+- [`integer`](./integer.md)
+- [`number`](./number.md)
+- [`string`](./string.md)
+- [`text`](./text.md)
+- [`uuid`](./uuid.md)
+
+Relationships:
+
+- [`belongsTo`](./belongs-to.md)
+- [`hasMany`](./has-many.md)
+- [`hasMany().through`](./has-many-through.md)
+- [`hasOne`](./has-one.md)
 
 
-
-Hatchify Schema
-
-Hatchify provides its own interface for defining your data, called "schemas". The documentation for this interface is split into the following sections:
-
-## [Attributes](./attribute-types/README.md) - API documentation for possible datatype attributes
-
-- [Boolean](./boolean.md)
-- [Date Only](./dateonly.md)
-- [Date Time](./datetime.md)
-- [Enumerate](./enum.md)
-- [Integer](./integer.md)
-- [Number](./number.md)
-- [String](./string.md)
-- [Text](./text.md)
-- [UUID](./uuid.md)
-
-## [Relationships](./relationship-types/README.md) - API documentation for possible schema relationship types
-
-- [Belongs To](./belongs-to.md)
-- [Has Many](./has-many.md)
-- [Has Many Through](./has-many-through.md)
-- [Has One](./has-one.md)
-
-## [Naming](./naming.md) - Documentation describing the relationship between the names in the schema and the resulting tables, API services, & UI
-
-- [General Guidelines](#general-guidelines)
-  - [Casing](#casing)
-  - [Singular vs Plural](#singular-vs-plural)
-- [Schema](#schema)
-  - [name](#name)
-  - [pluralName](#pluralname)
-  - [tableName](#tablename)
-  - [namespace](#namespace-postgres-only)
-  - [id](#id)
-  - [displayAttribute](#displayattribute)
-  - [attributes](#attributes)
-  - [relationships](#relationships)
