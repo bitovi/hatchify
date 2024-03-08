@@ -235,8 +235,8 @@ Learn how to make Hatchify match your needs with its technical interface documen
   - [Deleting](docs/jsonapi/deleting.md)
 - Koa - Learn how Hatchify leverages Koa middleware functionality
   - [API Docs](docs/koa/README.md)
-- Express - Learn the details of our Express implementation
-  - [API Docs](docs/express/README.md) 🛑
+- Express - Learn how Hatchify leverages Express middleware functionality
+  - [API Docs](docs/express/README.md)
 - React - Learn how to use and customize Hatchify's schema-driven library of React components and CRUD methods
   - [REST Client](docs/react/rest-client.md) 🛑
   - [API Docs](docs/react/README.md)

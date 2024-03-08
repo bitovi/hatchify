@@ -20,7 +20,7 @@ Isomorphic WebCrypto package. Only Isomorphic. No Polyfills.
 
 Material UI implementation on of Hatchify's React components.
 
-### [Express](../packages/express/README.md) 🛑
+### [Express](../packages/express/README.md)
 
 Middleware and helper functions to integrate Hatchify into an [Express](https://expressjs.com/) server. It is implemented as a tiny wrapped around the [Hatchify Node package](#node-).
 
