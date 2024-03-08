@@ -33,7 +33,7 @@ const App = ()=>{
   - [`defaultSort`](#defaultsort)
   - [`baseFilter`](#basefilter)
   - [`overwrite`](#overwrite)
-  - [`minimumLoadTime`](#)
+  - [`minimumLoadTime`](#minimumLoadTime)
 - [Customization](#customization)
 
 
@@ -43,8 +43,16 @@ const App = ()=>{
 | Prop Name        | Type                                     | Default | Description                                                                                                                                                                                                                                                                                     |
 | ---------------- | ---------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | children         | React.ReactNode or Null                  | -       | While `DataGrid` can contain no children, typically we'll use hatchify's `Column` or `EmptyList` as children for this component.                                                                                                                                                                |
-| defaultSelected  | HatchifyDataGridSelected["selected"]?     | -       | This is the current state of column selection. To maintain it on the level this component is rendered pass the 'selected' state here.                                                                                                                                                           |
-| onSelectedChange | HatchifyDataGridSelected["setSelected""]? | -       | Pass the set function in order to update the current state into his prop.                                                                                                                                                                                                                       |
+| defaultSelected  | `HatchifyDataGridSelected {
+    selected: {
+        all: boolean;
+        ids: string[];
+    };`     | -       | `defaultSelecetd` adds a checkbox selection column to the `DataGrid`. This checked or unchecked state is managed by `onSelectedChange`                                                                                                                                                          |
+| onSelectedChange | `HatchifyDataGridSelected {
+    setSelected: ({ all, ids }: {
+        all: boolean;
+        ids: string[];
+    }) => void;` | -       | Pass the set function in order to update the current state into his prop.                                                                                                                                                                                                                       |
 | defaultPage      | [PaginationObject]                         | -       | This object accepts a `number` and `size` variable. `number` is the page of information the `DataGrid` will start on. `size` is the number of rows shown on each page.                                                                                                                          |
 | defaultSort      | [SortObject]                               | -       | This object accepts a `direction` and `sortBy` variable. `direction` can be either `asc` for ascending order, or `desc` for descending order. `sortBy` accepts the the key of any of the `DataGrid` columns, such as 'Name' or 'dueDate'. If given a non-matching key no records will be found. |
 | baseFilter       | [Filters]                                  | -       | This object accepts a variety of different Filter shapes. One being an array of objects, a `FilterArray`, that contains a `field`, the column to filter, the `operator`, to determine the type of filter, and `value` is the the value we're comparing column data against for filtering.       |
