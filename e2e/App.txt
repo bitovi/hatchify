@@ -9,9 +9,7 @@ import * as Schemas from "../schemas.js"
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-const TodoList = hatchedReact.components.Todo.DataGrid
-const TodoColumn = hatchedReact.components.Todo.Column
-const TodoEmptyList = hatchedReact.components.Todo.Empty
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
 
 const App: React.FC = () => {
   const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
@@ -35,12 +33,12 @@ const App: React.FC = () => {
         <button onClick={onActionClick} style={{ margin: 10 }}>
           action
         </button>
-        <TodoList
+        <TodoDataGrid
           defaultSelected={selected}
           onSelectedChange={(selected) => setSelected(selected)}
         >
-          <TodoEmptyList>No records to display</TodoEmptyList>
-          <TodoColumn
+          <TodoDataGrid.Empty>No records to display</TodoDataGrid.Empty>
+          <TodoDataGrid.Column
             label="Action"
             renderDataValue={({ record }) => {
               return (
@@ -54,7 +52,7 @@ const App: React.FC = () => {
               )
             }}
           />
-        </TodoList>
+        </TodoDataGrid>
       </HatchifyProvider>
     </ThemeProvider>
   )

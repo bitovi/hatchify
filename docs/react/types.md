@@ -1,17 +1,14 @@
-# @hatchifyjs/react types
+# Types
 
-- [Types](#types)
+Types available for use within your Hatchify App.
+
 - [DataGridState](#datagridstate)
 - [CreateType](#createtype)
 - [UpdateType](#updatetype)
 - [HatchifyApp](#hatchifyapp)
 - [RecordType](#recordtype)
 
-## Types
-
-Types available for use within your Hatchify App should you need them.
-
-### DataGridState
+## DataGridState
 
 This is the return type of the `useDataGridState` hook. When using the state in an ejected pattern (separated out of `hatchedReact`) it may be necessary to type your data using this type.
 
@@ -50,7 +47,7 @@ Further, the `meta` object includes:
 | `meta`           | Any meta data for the request        |
 | `status`         | "loading", "success", or "error"     |
 
-### CreateType
+## CreateType
 
 `CreateType` is the type used when data is created. It may be useful when prepping form data for record creation. This type will consist of the schema name and the attributes. `CreateType` is a generic type, so it requires the schema type when used.
 
@@ -63,7 +60,7 @@ Further, the `meta` object includes:
   })
 ```
 
-### UpdateType
+## UpdateType
 
 `UpdateType` is the type used when data is updated. It may be useful when prepping form data for record updating. This type will consist of the record id, schema name, and the attributes.
 
@@ -76,7 +73,7 @@ Further, the `meta` object includes:
   })
 ```
 
-### HatchifyApp
+## HatchifyApp
 
 `HatchifyApp` is the type of the Hatchify App that is generated with `hatchifyReact()`. It may be needed if you have services and want to type the service. It is a generic type that accepts a type parameter of the `Record<string, PartialSchema>` type.
 
@@ -90,7 +87,7 @@ const myServices = {
 }
 ```
 
-### RecordType
+## RecordType
 
 `RecordType` will match a record's schema, and can be useful for local form state when updating. Another generic type, this type accepts 2-4 parameters.
 
@@ -102,7 +99,6 @@ Parameters:
 | `PartialSchema`                 | The type of the user defined schema                                          |
 | `boolean`                       | True to allow `Date` to be type `Date or String`, false to only allow `Date` |
 | `boolean`                       | Keep type safety for schema attributes, while allowing custom computed fields|
-
 
 ```ts
  // 👀

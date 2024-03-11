@@ -36,16 +36,20 @@ describe("react-ui/hatchifyReact", () => {
 
     expect(api).toEqual({
       Everything: expect.any(Function),
+      NoSchemas: expect.any(Function),
+      Navigation: expect.any(Function),
       components: {
         Article: {
           DataGrid: expect.any(Function),
-          Column: expect.any(Function),
-          Empty: expect.any(Function),
+          Filters: expect.any(Function),
+          List: expect.any(Function),
+          Pagination: expect.any(Function),
         },
         Person: {
           DataGrid: expect.any(Function),
-          Column: expect.any(Function),
-          Empty: expect.any(Function),
+          Filters: expect.any(Function),
+          List: expect.any(Function),
+          Pagination: expect.any(Function),
         },
       },
       model: {
@@ -106,11 +110,14 @@ describe("react-ui/hatchifyReact", () => {
 
     expect(api).toEqual({
       Everything: expect.any(Function),
+      NoSchemas: expect.any(Function),
+      Navigation: expect.any(Function),
       components: {
         Feature_Article: {
           DataGrid: expect.any(Function),
-          Column: expect.any(Function),
-          Empty: expect.any(Function),
+          Filters: expect.any(Function),
+          List: expect.any(Function),
+          Pagination: expect.any(Function),
         },
       },
       model: {

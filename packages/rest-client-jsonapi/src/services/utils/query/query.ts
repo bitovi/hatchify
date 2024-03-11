@@ -72,7 +72,7 @@ export function encodeValue(
     return "%00"
   }
 
-  if (["istarts", "iends", "icontains"].includes(operator)) {
+  if (["istarts", "iends", "icontains", "contains"].includes(operator)) {
     return encodeURIComponent(
       operator === "istarts"
         ? `${value}%`
@@ -96,8 +96,16 @@ export function encodeValue(
 
 /** Helper function for `filterToQueryParam` */
 export function getOperator(operator: string): string {
-  if (operator === "empty" || operator === "nempty") {
-    return operator === "empty" ? "$eq" : "$ne"
+  if (operator === "empty") {
+    return "$eq"
+  }
+
+  if (operator === "nempty") {
+    return "$ne"
+  }
+
+  if (operator === "contains") {
+    return "$like"
   }
 
   if (["istarts", "iends", "icontains"].includes(operator)) {

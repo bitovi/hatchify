@@ -12,6 +12,7 @@ import type {
 } from "@hatchifyjs/rest-client"
 import type { HatchifyDataGridProps as InternalHatchifyDataGridProps } from "../components/HatchifyDataGrid/index.js"
 import type { HatchifyEverythingProps as InternalHatchifyEverythingProps } from "../components/HatchifyEverything/index.js"
+import type { HatchifyNavigationProps as InternalHatchifyNavigationProps } from "../components/HatchifyNavigation/HatchifyNavigation.js"
 import type { HatchifyEmptyProps } from "../components/HatchifyEmpty/index.js"
 import type { DataGridState } from "../hooks/useDataGridState.js"
 import type {
@@ -24,12 +25,23 @@ import { HatchifyColumn } from "../components/HatchifyColumn/index.js"
 import { HatchifyEmpty } from "../components/HatchifyEmpty/index.js"
 import { HatchifyEverything } from "../components/HatchifyEverything/index.js"
 import useDataGridState from "../hooks/useDataGridState.js"
-import type { SortObject } from "../presentation/index.js"
+import type { SortObject, XDataGridProps } from "../presentation/index.js"
+import { HatchifyNavigation } from "../components/HatchifyNavigation/index.js"
+import { HatchifyNoSchemas } from "../components/HatchifyNoSchemas/index.js"
+import { HatchifyFilters } from "../components/HatchifyFilters/index.js"
+import { HatchifyPagination } from "../components/HatchifyPagination/index.js"
+import { HatchifyList } from "../components/HatchifyList/index.js"
 
 type HatchifyEverythingProps<TSchemas extends Record<string, PartialSchema>> =
   Omit<
     InternalHatchifyEverythingProps<TSchemas>,
     "finalSchemas" | "partialSchemas" | "restClient"
+  >
+
+type HatchifyNavigationProps<TSchemas extends Record<string, PartialSchema>> =
+  Omit<
+    InternalHatchifyNavigationProps<TSchemas>,
+    "finalSchemas" | "partialSchemas"
   >
 
 type HatchifyDataGridProps<
@@ -40,6 +52,21 @@ type HatchifyDataGridProps<
   "finalSchemas" | "partialSchemas" | "schemaName" | "restClient"
 >
 
+type HatchifyFiltersProps<
+  TSchemas extends Record<string, PartialSchema>,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = XDataGridProps<TSchemas, TSchemaName>
+
+type HatchifyPaginationProps<
+  TSchemas extends Record<string, PartialSchema>,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = XDataGridProps<TSchemas, TSchemaName>
+
+type HatchifyListProps<
+  TSchemas extends Record<string, PartialSchema>,
+  TSchemaName extends GetSchemaNames<TSchemas>,
+> = XDataGridProps<TSchemas, TSchemaName>
+
 type HatchifyColumnProps<
   TSchemas extends Record<string, PartialSchema>,
   TSchemaName extends GetSchemaNames<TSchemas>,
@@ -49,21 +76,31 @@ type HatchifyColumnProps<
 
 type Components<TSchemas extends Record<string, PartialSchema>> = {
   [SchemaName in keyof TSchemas]: {
-    // core
-    DataGrid: (
+    // compound (state managed)
+    DataGrid: ((
       props: HatchifyDataGridProps<TSchemas, SchemaName>,
+    ) => React.ReactElement) & {
+      Column: (
+        props: HatchifyColumnProps<TSchemas, SchemaName>,
+      ) => React.ReactElement
+      Empty: (props: HatchifyEmptyProps) => React.ReactElement
+    }
+    // unmanaged state
+    Filters: (
+      props: HatchifyFiltersProps<TSchemas, SchemaName>,
     ) => React.ReactElement
-    // compound
-    Column: (
-      props: HatchifyColumnProps<TSchemas, SchemaName>,
+    Pagination: (
+      props: HatchifyPaginationProps<TSchemas, SchemaName>,
     ) => React.ReactElement
-    Empty: (props: HatchifyEmptyProps) => React.ReactElement
+    List: (props: HatchifyListProps<TSchemas, SchemaName>) => React.ReactElement
   }
 }
 
 export type HatchifyApp<TSchemas extends Record<string, PartialSchema>> = {
   components: Components<TSchemas>
   Everything: (props: HatchifyEverythingProps<TSchemas>) => JSX.Element
+  Navigation: (props: HatchifyNavigationProps<TSchemas>) => JSX.Element
+  NoSchemas: () => JSX.Element
   model: HatchifyReactRest<TSchemas>
   state: {
     [SchemaName in keyof TSchemas]: {
@@ -111,25 +148,48 @@ export function hatchifyReact<
         ? `${schema.namespace}_${schema.name}`
         : schema.name
 
-      acc[key] = {
-        DataGrid: (props) => (
-          <HatchifyDataGrid<TSchemas, GetSchemaNames<TSchemas>>
-            finalSchemas={finalSchemas}
-            partialSchemas={partialSchemas}
-            schemaName={finalSchemaName}
-            restClient={reactRest}
-            {...props}
-          />
-        ),
-        Column: (props) => (
-          // todo fix ts!!!
+      const dataGridCompoundComponents = (
+        props: HatchifyDataGridProps<TSchemas, TSchemaName>,
+      ) => (
+        <HatchifyDataGrid<TSchemas, GetSchemaNames<TSchemas>>
+          finalSchemas={finalSchemas}
+          partialSchemas={partialSchemas}
+          schemaName={finalSchemaName}
+          restClient={reactRest}
+          {...props}
+        />
+      )
+
+      function Column(props: HatchifyColumnProps<TSchemas, TSchemaName>) {
+        return (
           <HatchifyColumn<TSchemas, GetSchemaNames<TSchemas>>
-            allSchemas={finalSchemas as any} // todo:arthur
+            allSchemas={finalSchemas}
             schemaName={finalSchemaName}
             {...props}
           />
+        )
+      }
+
+      function Empty(props: HatchifyEmptyProps) {
+        return <HatchifyEmpty {...props} />
+      }
+
+      Column.displayName = "Column"
+      Empty.displayName = "Empty"
+      dataGridCompoundComponents.Column = Column
+      dataGridCompoundComponents.Empty = Empty
+
+      acc[key] = {
+        DataGrid: dataGridCompoundComponents,
+        Filters: (props) => (
+          <HatchifyFilters<TSchemas, GetSchemaNames<TSchemas>> {...props} />
         ),
-        Empty: (props) => <HatchifyEmpty {...props} />,
+        Pagination: (props) => (
+          <HatchifyPagination<TSchemas, GetSchemaNames<TSchemas>> {...props} />
+        ),
+        List: (props) => (
+          <HatchifyList<TSchemas, GetSchemaNames<TSchemas>> {...props} />
+        ),
       }
 
       return acc
@@ -182,92 +242,22 @@ export function hatchifyReact<
     />
   )
 
+  const Navigation = (props: HatchifyNavigationProps<TSchemas>) => (
+    <HatchifyNavigation
+      {...props}
+      finalSchemas={finalSchemas}
+      partialSchemas={partialSchemas}
+    />
+  )
+
+  const NoSchemas = () => <HatchifyNoSchemas />
+
   return {
     components,
     Everything,
+    Navigation,
+    NoSchemas,
     model: reactRest,
     state,
   }
 }
-
-// todo: leaving for testing, remove once core no longer has `ts-expect-error`s
-// const schemas = {
-//   Todo: {
-//     name: "Todo",
-//     displayAttribute: "title",
-//     attributes: {
-//       title: string(),
-//       reqTitle: string({ required: true }),
-//       age: integer({ required: true }),
-//       optAge: integer({ required: false }),
-//       important: boolean({ required: true }),
-//       optImportant: boolean(),
-//       created: datetime({ required: true }),
-//       optCreated: datetime(),
-//     },
-//     relationships: {
-//       user: belongsTo("User"),
-//     },
-//   },
-//   User: {
-//     name: "User",
-//     attributes: {
-//       name: string({ required: true }),
-//       age: integer({ required: true }),
-//       employed: boolean(),
-//     },
-//     relationships: {
-//       todos: hasMany("Todo").through(),
-//     },
-//   },
-// } satisfies Record<string, PartialSchema>
-
-// const app = hatchifyReact({
-//   completeSchemaMap: schemas,
-// } as RestClient<typeof schemas, any>)
-
-// app.model.Todo.createOne({
-//   reqTitle: "",
-//   age: 1,
-//   important: true,
-//   created: new Date(),
-//   shouldError: false,
-// })
-
-// app.model.User.findAll({}).then(([records]) => {
-//   records[0].id
-//   records[0].name
-//   records[0].employed
-//   records[0].shouldError
-// })
-
-// const state = app.state.Admin_Todo.useDataGridState({
-//   include: ["user"],
-//   baseFilter: [{ field: "age", operator: ">", value: 1 }],
-// })
-// state.data.map((_todo) => {
-//   _todo
-// })
-// state.data[0].id
-// state.data[0].age
-// state.data[0].optAge
-// state.data[0].shouldError
-
-// const TodoList = app.components.Todo.DataGrid
-// const TodoColumn = app.components.Todo.Column
-
-// function AgeComponent() {
-//   return <div>hello</div>
-// }
-
-// function Test() {
-//   return (
-//     <TodoList>
-//       <TodoColumn
-//         field="age"
-//         label="Age"
-//         renderDataValue={({ record }) => <div>{record.asdfa}</div>}
-//       />
-//     </TodoList>
-//   )
-// }
