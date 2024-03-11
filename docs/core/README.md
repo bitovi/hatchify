@@ -10,11 +10,11 @@ import { PartialSchema,
   belongsTo, hasMany, hasOne } from "@hatchifyjs/core"
   
 export const SalesPerson = {
-  <a href="core/naming.md#schemaname">name</a>: "SalesPerson",
-  <a href="core/naming.md#schemapluralname">pluralName</a>: "SalesPeople",
+  <a href="core/PartialSchema.md#schemaname">name</a>: "SalesPerson",
+  <a href="core/PartialSchema.md#schemapluralname">pluralName</a>: "SalesPeople",
   <a href="./PartialSchema.md#id">id</a>: <a href="core/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   <a href="./core/attribute-types/README.md">attributes</a>: {
-    <a href="core/naming.md#general-guidelines">name</a>:         <a href="core/attribute-types/string.md">string</a>({ required: true }),
+    <a href="core/PartialSchema.md#general-guidelines">name</a>:         <a href="core/attribute-types/string.md">string</a>({ required: true }),
     description:  <a href="core/attribute-types/text.md">text</a>(),
     hireDate:     <a href="core/attribute-types/datetime.md">datetime</a>(),
     birthday:     <a href="./core/attribute-types/datetime.md">dateonly</a>(),
@@ -30,7 +30,7 @@ export const SalesPerson = {
     todos:      hasMany().<a href="core/relationship-types/has-many-through.md">through</a>()
     user:       <a href="./core/relationship-types/has-one.md">hasOne</a>()
   },
-} satisfies <a href="core/naming.md">PartialSchema</a>
+} satisfies <a href="core/PartialSchema.md">PartialSchema</a>
 </pre>
 
 To learn how to define a schema, we suggest reading:

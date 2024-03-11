@@ -219,7 +219,7 @@ Continue learning more about the Hatchify feature set with these guides that con
 
 Learn how to make Hatchify match your needs with its technical interface documentation:
 
-- [Schema](docs/core/) - Learn how to specify attributes and relationships with Hatchify's interface for defining your data, called "schemas"
+- [Core](docs/core/) - Learn how to define a Schema, attributes, and relationships with Hatchify's interface for defining your data.
   - [Attributes](docs/core/attribute-types/README.md)
   - [Relationships](docs/core/relationship-types/README.md)
   - [Schema Naming](docs/core/naming.md)
