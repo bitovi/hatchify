@@ -6,6 +6,12 @@ import {
 } from "@hatchifyjs/react"
 import { createTheme, ThemeProvider } from "@mui/material"
 import * as Schemas from "../schemas.js"
+import {
+  DocumentActionsData,
+  DocumentActionsHeader,
+  DocumentDate,
+  DocumentStatus,
+} from "./components/DocumentTable.js"
 
 type ActiveSchema = keyof typeof Schemas | undefined
 
@@ -20,6 +26,7 @@ const App: React.FC = () => {
   const DataGrid = activeSchema
     ? hatchedReact.components[activeSchema].DataGrid
     : hatchedReact.NoSchemas
+  const DocumentDataGrid = hatchedReact.components.Document.DataGrid
 
   return (
     <ThemeProvider theme={createTheme()}>
@@ -28,7 +35,34 @@ const App: React.FC = () => {
           activeTab={activeSchema}
           onTabChange={(tab) => setActiveSchema(tab as ActiveSchema)}
         />
-        <DataGrid />
+        {activeSchema === "Document" ? (
+          <DocumentDataGrid>
+            <DocumentDataGrid.Column
+              field="lastUpdated"
+              renderDataValue={({ value }) => (
+                <DocumentDate value={value as string} />
+              )}
+            />
+            <DocumentDataGrid.Column
+              field="status"
+              renderDataValue={({ value }) => (
+                <DocumentStatus value={value as string} />
+              )}
+            />
+            <DocumentDataGrid.Column
+              label="Action"
+              renderDataValue={({ record }) => (
+                <DocumentActionsData record={record} />
+              )}
+              HeaderValueComponent={DocumentActionsHeader}
+            />
+            <DocumentDataGrid.Empty>
+              No records to display
+            </DocumentDataGrid.Empty>
+          </DocumentDataGrid>
+        ) : (
+          <DataGrid />
+        )}
       </HatchifyProvider>
     </ThemeProvider>
   )
