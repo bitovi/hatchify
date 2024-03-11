@@ -94,7 +94,7 @@ Hatchify doesn’t currently generate forms (though we are working on it!). To a
 
 # Seeding Sample Data
 
-✏️ Run the following command in a terminal window seed some sample data:
+✏️ Run the following command in a new terminal window to seed some sample data:
 
 ```
 npx hatchify-gsg-seed
