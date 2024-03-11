@@ -32,6 +32,7 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@bitovi/eslint-config": "^1.7.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@hatchifyjs/react": "^0.1.53",
