@@ -54,15 +54,14 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications 💾_**
+**💾 Database Implications**
 
 Creates a `sales_person` table.
 
-**_API Implications_**
+**↔️ API Implications**
 
-This has no effect on the API.
 
-**_Querying Data_**
+_Querying Data_
 
 Creates a `/sales-persons` API.
 `SalesPerson` will be used in the `fields` query parameter:
@@ -71,7 +70,7 @@ Creates a `/sales-persons` API.
 GET /api/sales-persons?fields[SalesPerson]=name
 ```
 
-**_Data Response_**
+_Data Response_
 
 `SalesPerson` will be used as the response `type`:
 
