@@ -94,97 +94,13 @@ Hatchify doesn’t currently generate forms (though we are working on it!). To a
 
 # Seeding Sample Data
 
-> ✏️ Run the following commands to create some sample data.
+✏️ Run the following command in a terminal window seed some sample data:
 
-```bash
-curl 'http://localhost:3000/api/todos' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "Todo",
-    "attributes": {
-      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002",
-      "name": "Walk the dog",
-      "dueDate": "2024-12-12",
-      "importance": 6
-    }
-  }
-}'
-
-curl 'http://localhost:3000/api/todos' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "Todo",
-    "attributes": {
-      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003",
-      "name": "Laundry",
-      "dueDate": "2024-12-02",
-      "importance": 1
-    }
-  }
-}'
-
-curl 'http://localhost:3000/api/todos' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "Todo",
-    "attributes": {
-      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004",
-      "name": "Making Calls",
-      "dueDate": "2024-12-31",
-      "importance": 7
-    }
-  }
-}'
-
-curl 'http://localhost:3000/api/users' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "User",
-    "attributes": {
-      "name": "John Doe"
-    },
-    "relationships": {
-      "todos": {
-        "data": [
-          {
-            "type": "Todo",
-            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002"
-          },
-          {
-            "type": "Todo",
-            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004"
-          }
-        ]
-      }
-    }
-  }
-}'
-
-curl 'http://localhost:3000/api/users' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "User",
-    "attributes": {
-      "name": "Jane Doe"
-    },
-    "relationships": {
-      "todos": {
-        "data": [
-          {
-            "type": "Todo",
-            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003"
-          }
-        ]
-      }
-    }
-  }
-}'
 ```
+npx hatchify-gsg-seed
+```
+
+This command will run a script that uses the REST API to seed some sample data into the database. For more information on the request being made, you can reference the create function in the [hatchedKoa.model documentation](docs/koa/hatchedKoa.model.md#create).
 
 To learn more about the service layer, read [the docs regarding our JSON:API implementation](docs/jsonapi/README.md)
 
