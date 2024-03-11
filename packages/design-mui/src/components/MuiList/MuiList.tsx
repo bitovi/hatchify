@@ -1,25 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react"
 import type { XDataGridProps } from "@hatchifyjs/react-ui"
-import { css } from "@emotion/react"
 import { Table, TableContainer } from "@mui/material"
 import { useCompoundComponents } from "@hatchifyjs/react-ui"
 import { MuiBody, MuiHeaders } from "./components/index.js"
 import type { GetSchemaNames } from "@hatchifyjs/rest-client"
 import type { PartialSchema } from "@hatchifyjs/core"
 
-const styles = {
-  table: css`
-    height: 100%;
-    overflow-y: scroll;
-  `,
-}
-
 export function MuiList<
   const TSchemas extends Record<string, PartialSchema> = any,
   const TSchemaName extends GetSchemaNames<TSchemas> = any,
 >(props: XDataGridProps<TSchemas, TSchemaName>): JSX.Element {
-  const [height, setHeight] = useState<string | number>("100%")
+  const [height, setHeight] = useState<string | number>(
+    props.fitParent ? "100%" : "auto",
+  )
 
   const { columns, Empty } = useCompoundComponents(
     props.finalSchemas,
@@ -30,7 +24,7 @@ export function MuiList<
   )
 
   useEffect(() => {
-    if (!props.listWrapperId) {
+    if (!props.fitParent || !props.listWrapperId) {
       return
     }
 
@@ -51,7 +45,7 @@ export function MuiList<
 
   return (
     <TableContainer style={{ maxHeight: height }}>
-      <Table stickyHeader css={styles.table}>
+      <Table stickyHeader>
         <MuiHeaders {...props} columns={columns} />
         <MuiBody {...props} columns={columns} Empty={Empty} />
       </Table>

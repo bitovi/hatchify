@@ -53,6 +53,7 @@ export interface XDataGridProps<
   overwrite?: boolean
   minimumLoadTime?: number
   listWrapperId?: string
+  fitParent?: boolean
 }
 
 export interface XEverythingProps<

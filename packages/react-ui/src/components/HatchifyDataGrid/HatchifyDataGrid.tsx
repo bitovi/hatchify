@@ -32,6 +32,7 @@ export interface HatchifyDataGridProps<
   baseFilter?: Filters
   overwrite?: boolean
   minimumLoadTime?: number
+  fitParent?: boolean
 }
 
 function HatchifyDataGrid<
@@ -50,6 +51,7 @@ function HatchifyDataGrid<
   baseFilter,
   overwrite,
   minimumLoadTime,
+  fitParent,
 }: HatchifyDataGridProps<TSchemas, TSchemaName>): JSX.Element {
   const { DataGrid } = useHatchifyPresentation()
   const defaultInclude = useMemo(
@@ -78,7 +80,7 @@ function HatchifyDataGrid<
   )
 
   return (
-    <DataGrid overwrite={overwrite} {...dataGridState}>
+    <DataGrid overwrite={overwrite} fitParent={fitParent} {...dataGridState}>
       {children}
     </DataGrid>
   )
