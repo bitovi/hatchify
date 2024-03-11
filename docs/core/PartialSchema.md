@@ -5,7 +5,7 @@
 - [General Guidelines](#general-guidelines)
   - [Casing](#casing)
   - [Singular vs Plural](#singular-vs-plural)
-- [Schema](#schema)
+- Schema
   - [name](#name)
   - [pluralName](#pluralname)
   - [tableName](#tablename)
@@ -54,7 +54,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+**_Database Implications 💾_**
 
 Creates a `sales_person` table.
 
