@@ -13,6 +13,7 @@
     "dev:koa:postgres": "nodemon backend/index.ts --watch backend --watch schemas.ts -- -f koa -d postgres",
     "dev:express:postgres": "nodemon backend/index.ts --watch backend --watch schemas.ts -- -f express -d postgres",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "start": "npm run start:koa:sqlite",
     "start:koa:sqlite": "node dist/backend/backend/index.js -f koa -d sqlite",
     "start:express:sqlite": "node dist/backend/backend/index.js -f express -d sqlite",
     "start:koa:postgres": "node dist/backend/backend/index.js -f koa -d postgres",
