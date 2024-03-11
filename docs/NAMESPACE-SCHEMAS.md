@@ -1,6 +1,6 @@
 # Schema Namespacing with Postgres
 
-Postgres supports “schemas” which act like namespaces for tables. You can configure the [namespace](schema/naming.md#schemanamespace-postgres-only) setting of a Hatchify schema to set a Postgres schema. If this is confusing, the following might clarify:
+Postgres supports “schemas” which act like namespaces for tables. You can configure the [namespace](core/PartialSchema.md#schemanamespace-postgres-only) setting of a Hatchify schema to set a Postgres schema. If this is confusing, the following might clarify:
 
 In Hatchify:
 

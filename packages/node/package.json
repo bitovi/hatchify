@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/node",
-  "version": "1.3.33",
+  "version": "1.3.34",
   "description": "Fullstack CRUD Application Solution",
   "type": "module",
   "main": "./dist/exports.js",
@@ -44,9 +44,9 @@
     "@types/jest": "^29.5.12",
     "@types/json-api-serializer": "^2.6.6",
     "@types/lodash": "^4.14.202",
-    "@types/node": "^20.10.4",
+    "@types/node": "^20.11.25",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-prettier": "^5.1.3",
     "sqlite3": "^5.1.6",
     "ts-jest": "^29.1.1"
   },

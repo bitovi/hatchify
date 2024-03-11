@@ -205,6 +205,7 @@ jobs:
           aws_ec2_instance_root_vol_size: 40
           aws_ec2_instance_type: t3.large
           aws_ec2_create_keypair_sm: true
+          aws_ec2_ami_update: true
 
           docker_full_cleanup: true
           docker_repo_app_directory: example/grid-demo

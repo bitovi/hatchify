@@ -82,11 +82,11 @@ export const User = {
 
 As soon as you save this change, the app will automatically reload to include the new data types you've added:
 
-<img width="1289" alt="Screenshot 2024-03-06 at 10 35 58 AM" src="https://github.com/bitovi/hatchify/assets/9858612/e6f00fcb-ef76-4509-9a04-065f5548951f">
+<img width="1385" alt="Screenshot 2024-03-08 at 10 09 20 AM" src="https://github.com/bitovi/hatchify/assets/9858612/b0425bd2-5b05-4bec-85c9-bf0da147cc42">
 
 This defines a `Todo` and `User` type, each with some attributes. It also creates a relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
 
-You can refer to [our documentation](/docs/schema/README.md) for more information on how to define schemas.
+You can refer to [our documentation](/docs/core/README.md) for more information on how to define schemas.
 
 ### Seed Data
 
@@ -194,11 +194,11 @@ With some data in place, we can now further review the project.
 
 Now that data has been seeded the UI should look like:
 
-<img width="1289" alt="Screenshot 2024-03-06 at 11 17 38 AM" src="https://github.com/bitovi/hatchify/assets/9858612/214e948a-084f-4aa3-a935-a9352b128a8e">
+<img width="1385" alt="Screenshot 2024-03-08 at 10 05 44 AM" src="https://github.com/bitovi/hatchify/assets/9858612/79f67fb2-c598-4032-89f0-1c87a75ae465">
 
 You can start using this basic app to sort & filter the data:
 
-<img width="1289" alt="Screenshot 2024-03-06 at 11 18 33 AM" src="https://github.com/bitovi/hatchify/assets/9858612/c9819b0f-e096-4695-b04c-1712b9ad699f">
+<img width="1385" alt="Screenshot 2024-03-08 at 10 07 58 AM" src="https://github.com/bitovi/hatchify/assets/9858612/c3a82055-bdac-4157-8024-a3f483e51193">
 
 What you've built is currently bare bones, but read through our guides in the following section to learn how to enhance it to meet your needs.
 
@@ -219,10 +219,10 @@ Continue learning more about the Hatchify feature set with these guides that con
 
 Learn how to make Hatchify match your needs with its technical interface documentation:
 
-- [Schema](docs/schema/) - Learn how to specify attributes and relationships with Hatchify's interface for defining your data, called "schemas"
-  - [Attributes](docs/schema/attribute-types/README.md)
-  - [Relationships](docs/schema/relationship-types/README.md)
-  - [Schema Naming](docs/schema/naming.md)
+- [Core](docs/core/) - Learn how to define a Schema, attributes, and relationships with Hatchify's interface for defining your data.
+  - [Attributes](docs/core/attribute-types/README.md)
+  - [Relationships](docs/core/relationship-types/README.md)
+  - [Schema Naming](docs/core/naming.md)
 - [JSON:API](docs/jsonapi/README.md) - Learn the details of our JSON:API implementation.
   - [Creating](docs/jsonapi/creating.md)
   - [Reading](docs/jsonapi/reading/README.md)
@@ -235,8 +235,8 @@ Learn how to make Hatchify match your needs with its technical interface documen
   - [Deleting](docs/jsonapi/deleting.md)
 - Koa - Learn how Hatchify leverages Koa middleware functionality
   - [API Docs](docs/koa/README.md)
-- Express - Learn the details of our Express implementation
-  - [API Docs](docs/express/README.md) 🛑
+- Express - Learn how Hatchify leverages Express middleware functionality
+  - [API Docs](docs/express/README.md)
 - React - Learn how to use and customize Hatchify's schema-driven library of React components and CRUD methods
   - [REST Client](docs/react/rest-client.md) 🛑
   - [API Docs](docs/react/README.md)
