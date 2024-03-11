@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import Koa from "koa"
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import * as Schemas from "../schemas.js"
+import exec from "child_process"
 
 dotenv.config()
 
@@ -36,5 +37,7 @@ const hatchedKoa = hatchifyKoa(Schemas, {
 
   app.listen(3000, () => {
     console.log("Started on http://localhost:3000")
+    // Note: this is just for seeding example data, remove when using your own schemas!
+    exec.exec("npx hatchify-gsg-seed")
   })
 })()
