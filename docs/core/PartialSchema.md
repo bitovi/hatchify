@@ -1,6 +1,6 @@
-# Schema Naming: Database, Service API, and UI
+# PartialSchema
 
-This document describes the relationship between names in the schema and the resulting names used in the database, service APIs, and UI. We will first go over the general guidelines and then how specific parts in the schema relate to names in the database, service API, and UI.
+`PartialSchema` is a type that represents a Hatchify schema. This document describes the relationship between names in the schema and the resulting names used in the database, service APIs, and UI. We will first review the general guidelines and then how specific parts in the schema relate to names in the database, service API, and UI.
 
 - [General Guidelines](#general-guidelines)
   - [Casing](#casing)
