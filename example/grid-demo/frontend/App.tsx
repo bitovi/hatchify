@@ -26,7 +26,10 @@ const App: React.FC = () => {
   const DataGrid = activeSchema
     ? hatchedReact.components[activeSchema].DataGrid
     : hatchedReact.NoSchemas
-  const DocumentDataGrid = hatchedReact.components.Document.DataGrid
+
+  const DocumentList = hatchedReact.components.Document.DataGrid
+  const DocumentColumn = hatchedReact.components.Document.DataGrid.Column
+  const DocumentEmptyList = hatchedReact.components.Document.DataGrid.Empty
 
   return (
     <ThemeProvider theme={createTheme()}>
@@ -36,30 +39,28 @@ const App: React.FC = () => {
           onTabChange={(tab) => setActiveSchema(tab as ActiveSchema)}
         />
         {activeSchema === "Document" ? (
-          <DocumentDataGrid>
-            <DocumentDataGrid.Column
+          <DocumentList>
+            <DocumentColumn
               field="lastUpdated"
               renderDataValue={({ value }) => (
                 <DocumentDate value={value as string} />
               )}
             />
-            <DocumentDataGrid.Column
+            <DocumentColumn
               field="status"
               renderDataValue={({ value }) => (
                 <DocumentStatus value={value as string} />
               )}
             />
-            <DocumentDataGrid.Column
+            <DocumentColumn
               label="Action"
               renderDataValue={({ record }) => (
                 <DocumentActionsData record={record} />
               )}
               HeaderValueComponent={DocumentActionsHeader}
             />
-            <DocumentDataGrid.Empty>
-              No records to display
-            </DocumentDataGrid.Empty>
-          </DocumentDataGrid>
+            <DocumentEmptyList>No records to display</DocumentEmptyList>
+          </DocumentList>
         ) : (
           <DataGrid />
         )}
