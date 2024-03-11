@@ -41,11 +41,7 @@ The following are **plural**:
 - Service URL path names (Ex: `/sales-persons`)
 - `hasMany` relationship names (Ex: `managers: hasMany("SalesPerson")`)
 
-## Schema
-
-This section shows how each part of the schema relates to the database, service API, or UI.
-
-### name
+## name
 
 The schema `name` should be singular PascalCase as follows:
 
@@ -88,7 +84,7 @@ GET /api/sales-persons?fields[SalesPerson]=name
 }
 ```
 
-### pluralName
+## pluralName
 
 Optionally set the `pluralName` to configure plural naming for a schema.
 
@@ -128,7 +124,7 @@ GET /api/sales-persons?fields[SalesPerson]=name
 }
 ```
 
-### tableName
+## tableName
 
 Optionally set `tableName` to control the name of the database table for the schema.
 
@@ -146,7 +142,7 @@ const SalesPerson = {
 
 - Creates a table `acme_sales_people`.
 
-### namespace (Postgres only)
+## namespace (Postgres only)
 
 Optionally set `namespace` when using Postgres to use [Postgres Schemas](https://www.postgresql.org/docs/current/ddl-schemas.html) which are like namespaces for tables. The `namespace` must be written as singular PascalCase as follows:
 
@@ -196,7 +192,7 @@ GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 `hatchifyKoa({AcmeCorp_SalesPerson})` returns `models.AcmeCorp_SalesPerson`
 `hatchifyReact({AcmeCorp_SalesPerson})` returns `[components|model|state].AcmeCorp_SalesPerson`
 
-### id
+## id
 
 JSON:API requires that the `id` attribute be named `id`, therefore this attribute cannot be renamed.
 
@@ -212,7 +208,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-### displayAttribute
+## displayAttribute
 
 Optionally set the `displayAttribute` to configure which attribute is used to display a relationship in the UI. If the `displayAttribute` is not set, then the first attribute will be used.
 
@@ -244,11 +240,11 @@ const Account = {
 
 When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `displayAttribute` was not set, then the `name` attribute would have been used.
 
-### attributes
+## attributes
 
 Naming for [attributes](../schema/attribute-types/README.md)
 
-### relationships
+## relationships
 
 Naming for [relationships](../schema/relationship-types/README.md):
 
