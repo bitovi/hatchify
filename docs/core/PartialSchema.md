@@ -83,6 +83,13 @@ _Data Response_
 }
 ```
 
+__🖼️ UI Implications__
+
+Unless `displayName` is specified, the name value is used for:
+
+- column headers
+- form labels
+
 ## pluralName
 
 Optionally set the `pluralName` to configure plural naming for a schema.
