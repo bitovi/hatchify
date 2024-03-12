@@ -43,10 +43,12 @@ To learn how to define a schema, we suggest reading:
 
 `@hatchifyjs/core` exports the following types and methods to help you build a schema:
 
-Types: 
+Types:
+
 - [`PartialSchema`](./PartialSchema.md) - Defines the shape of a schema for one type
 
 Attributes:
+
 - [`boolean`](./boolean.md)
 - [`dateonly`](./dateonly.md)
 - [`datetime`](./datetime.md)
@@ -63,5 +65,3 @@ Relationships:
 - [`hasMany`](./has-many.md)
 - [`hasMany().through`](./has-many-through.md)
 - [`hasOne`](./has-one.md)
-
-
