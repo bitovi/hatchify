@@ -115,7 +115,7 @@ const [todos, metadata] = await hatchedReactRest.Todo.findAll({ page: { page: 1,
 
 | Property  | Type                                  | Details                                                          |
 | --------- | ------------------------------------- | ---------------------------------------------------------------- |
-| queryList | <a href="#querylist">`QueryList?`</a> | An object with optional include, fields, filter, sort, and page. |
+| queryList | [`QueryList?`](#querylist) | An object with optional include, fields, filter, sort, and page. |
 
 **Returns**
 

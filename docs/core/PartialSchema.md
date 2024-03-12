@@ -1,6 +1,28 @@
 # PartialSchema
 
-`PartialSchema` is a type that represents a Hatchify schema. This document describes the relationship between names in the schema and the resulting names used in the database, service APIs, and UI. We will first review the general guidelines and then how specific parts in the schema relate to names in the database, service API, and UI.
+`PartialSchema` is a type that represents a Hatchify schema. This document describes the relationship between names in the schema and the resulting names used in the database, service APIs, and UI. 
+
+`PartialSchema` can be imported and used via TypeScript as follows:
+
+<pre>
+import type {PartialSchema} from "@hatchifyjs/core";
+  
+export const SalesPerson = {
+  <a href="./PartialSchema.md#schemaname">name</a>:             "SalesPerson",
+  <a href="./PartialSchema.md#schemapluralname">pluralName</a>:       "SalesPeople",
+  <a href="./PartialSchema.md#tablename">tableName</a>:        "acme_sales_people",
+  <a href="./PartialSchema.md#namespace">namespace</a>:        "acme",
+  <a href="./PartialSchema.md#id">id</a>:               uuid({required: true, autoIncrement: true}),
+  <a href="./PartialSchema.md#displayattribute">displayAttribute</a>: "name",
+  <a href="./attribute-types/README.md">attributes</a>:       { ... },
+  <a href="./relationship-types/README.md">relationships</a>:    { ... },
+} satisfies <a href="./PartialSchema.md">PartialSchema</a>
+</pre>
+
+
+
+
+We will first review the general guidelines and then how specific parts in the schema relate to names in the database, service API, and UI.
 
 - [General Guidelines](#general-guidelines)
   - [Casing](#casing)
@@ -104,11 +126,9 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_API Implications_**
+**↔️ API Implications**
 
-This has no effect on the API.
-
-**_Querying Data_**
+*Querying Data*
 
 Creates a `/sales-people` API.
 `name` will still be used in the `fields` query parameter:
@@ -117,7 +137,7 @@ Creates a `/sales-people` API.
 GET /api/sales-persons?fields[SalesPerson]=name
 ```
 
-**_Data Response_**
+*Data Response*
 
 `name` will still be used as the response `type`:
 
@@ -144,7 +164,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+**💾 Database Implications**
 
 - Creates a table `acme_sales_people`.
 
@@ -162,15 +182,13 @@ const AcmeCorp_SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+**💾 Database Implications**
 
 Creates a table `sales_person` in the Postgres schema `acme_corp`.
 
-**_API Implications_**
+**↔️ API Implications**
 
-This has no effect on the API.
-
-**_Querying Data_**
+*Querying Data*
 
 Creates an `acme-corp/sales-persons` API.
 `namespace_name`, will be used in the `fields` query parameter:
@@ -179,7 +197,7 @@ Creates an `acme-corp/sales-persons` API.
 GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 ```
 
-**_Data Response_**
+*Data Response*
 
 `namespace_name` will be used as the response `type`:
 
@@ -242,7 +260,7 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**_UI Implications_**
+__🖼️ UI Implications__
 
 When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `displayAttribute` was not set, then the `name` attribute would have been used.
 
