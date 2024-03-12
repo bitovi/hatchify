@@ -52,13 +52,11 @@ const AccountSalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+### 💾 Database Implications
 
 Creates a table `account_sales_person` with `account_id` and `sales_person_id` columns.
 
-**_API Implications_**
-
-This has no effect on the API
+### ↔️ API Implications
 
 **_Querying Data_**
 
@@ -131,13 +129,11 @@ const Assignments = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+### 💾 Database Implications
 
 Creates a table `assignment` with `account_id` and `sales_person_id` columns.
 
-**_API Implications_**
-
-This has no effect on the API
+### ↔️ API Implications
 
 **_Querying Data_**
 
@@ -210,13 +206,11 @@ const Assignments = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+### 💾 Database Implications
 
 Creates a table `assignment` with `the_account_id` and `the_sales_person_id` columns.
 
-**_API Implications_**
-
-This has no effect on the API
+### ↔️ API Implications
 
 **_Querying Data_**
 
@@ -306,15 +300,13 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+### 💾 Database Implications
 
 Creates a table `assignment` with `account_id` and `sales_person_id` columns.
 Creates a column `account_id` in the `account` table.
 Creates a column `sales_person_id` in the `sales_person` table.
 
-**_API Implications_**
-
-This has no effect on the API
+### ↔️ API Implications
 
 **_Querying Data_**
 

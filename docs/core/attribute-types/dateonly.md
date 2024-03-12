@@ -24,13 +24,11 @@ Use [datetime](./datetime.md) for a date type with time.
 | `max`      | The max date allowed. <br/> Example: `dateonly({max: new Date()})`, `dateonly({max: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
 | `min`      | The min date allowed. <br/> Example: `dateonly({min: new Date()})`, `dateonly({min: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
 
-**_Database Implications_**
+### 💾 Database Implications
 
 The `dateonly` type will create sequelize [DataTypes.DATEONLY](https://sequelize.org/docs/v6/core-concepts/model-basics/#dates) column.
 
-**_API Implications_**
-
-This has no effect on the API
+### ↔️ API Implications
 
 **_Querying Data_**
 

@@ -20,13 +20,11 @@ export const Todo = {
 | `primary`  | The attribute is a primary key. <br/> Example: `text({primary: true})`          | `Boolean` |   Yes    | `false` |
 | `unique`   | The attribute must be unique. <br/> Example: `text({unique: true})`             | `Boolean` |   Yes    | `false` |
 
-**_Database Implications_**
+### 💾 Database Implications
 
 The `text` type will create a sequelize [DataTypes.TEXT](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
 
-**_API Implications_**
-
-This has no effect on the API
+### ↔️ API Implications
 
 **_Querying Data_**
 

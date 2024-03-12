@@ -18,11 +18,11 @@ export const Todo = {
 | `default`  | The default value of the attribute. <br/> Example: `boolean({default: true})` | `Boolean` |   Yes    |         |
 | `required` | If the attribute must be provided. <br/> Example: `boolean({required: true})` | `Boolean` |   Yes    | `false` |
 
-**_Database Implications_**
+### 💾 Database Implications
 
 The `boolean` type will create a sequelize [DataTypes.BOOLEAN](https://sequelize.org/docs/v6/core-concepts/model-basics/#boolean) column.
 
-**_API Implications_**
+### ↔️ API Implications
 
 \*\*\_
 

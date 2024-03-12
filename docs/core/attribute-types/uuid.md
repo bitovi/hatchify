@@ -17,7 +17,7 @@ export const Todo = {
 - `references` - [See References]()
 - `required` [{Boolean=false}] - If the attribute must be provided.
 
-**_Database Implications_**
+### 💾 Database Implications
 
 The `uuid` type will create a sequelize [DataTypes.UUID](https://sequelize.org/docs/v6/core-concepts/model-basics/#uuids) column.
 
