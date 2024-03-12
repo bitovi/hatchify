@@ -23,7 +23,7 @@ You can learn more about `useDataGridState` [here](./README.md).
 
 ### [Hatchify Everything](./components/hatchify-everything.md)
 
-Hatchify `Everything` displays all available schemas by a navigation tab. The view will render with the first schema provided. In our example this will be `Todo` followed by `User`.
+Hatchify [`Everything`](./components/hatchify-everything.md) displays all available schemas by a navigation tab. The view will render with the first schema provided. In our example this will be `Todo` followed by `User`.
 
 ```tsx
 // in App.tsx
@@ -40,11 +40,9 @@ const App: React.FC = () => {
 }
 ```
 
-[Click Here](./components/hatchify-everything.md) for more details on Hatchify `Everything`.
-
 ### [Hatchify DataGrid](./components/hatchify-datagrid.md)
 
-Similar to the MUI DataGrid, the Hatchify `DataGrid` displays the records of a specific schema, but the state does not have to be passed in.
+Similar to the MUI DataGrid, the Hatchify [`DataGrid`](./components/hatchify-datagrid.md) displays the records of a specific schema, without the [`DataGridState`](./types.md#datagridstate) needing to be passed in.
 
 ```tsx
 //in App.tsx
@@ -61,11 +59,9 @@ const App: React.FC = () => {
 }
 ```
 
-[Click Here](./components/hatchify-datagrid.md) for more details on Hatchify `DataGrid`.
-
 ### [Hatchify Column](./components/hatchify-column.md)
 
-The `Column` component is used anytime there is a need to customize the output of a specific column. This can be used as a child of both the Hatchify `DataGrid` and the MUI `DataGrid`.
+The [`Column`](./components/hatchify-column.md) component is used anytime there is a need to customize the output of a specific column. This can be used as a child of both the Hatchify `DataGrid` and the MUI `DataGrid`. Learn more about custom components in [this guide](../guides/customizing-your-list.md).
 
 ```tsx
 //in App.tsx
@@ -87,12 +83,10 @@ const App: React.FC = () => {
 }
 ```
 
-[Click Here](./components/hatchify-column.md) for more details on Hatchify `Column`.
-Learn more about custom components in [this guide](../guides/customizing-your-list.md).
-
 ### [Hatchify Empty](./components//hatchify-empty.md)
 
-`Empty` is used to customize what is displayed when the Hatchify `DataGrid` has no records to display.
+[`Empty`](./components//hatchify-empty.md) is used to customize what is displayed when the Hatchify `DataGrid` has no records to display. Learn more about customizing `EmptyList` in [this guide](../guides/customizing-your-list.md).
+
 
 ```tsx
 //in App.tsx
@@ -110,9 +104,6 @@ const App: React.FC = () => {
   )
 }
 ```
-
-[Click Here](./components/hatchify-empty.md) for more details on Hatchify `Empty`.
-Learn more about customizing `EmptyList` in [this guide](../guides/customizing-your-list.md).
 
 ## Material UI Components
 
