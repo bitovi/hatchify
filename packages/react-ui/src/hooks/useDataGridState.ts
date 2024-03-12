@@ -39,8 +39,8 @@ export interface DataGridState<
   setPage: HatchifyDataGridPage["setPage"]
   sort: HatchifyDataGridSort["sort"]
   setSort: HatchifyDataGridSort["setSort"]
-  selected: HatchifyDataGridSelectedState | undefined
-  setSelected: (selected: HatchifyDataGridSelectedState) => void | undefined
+  selected: HatchifyDataGridSelectedState
+  setSelected: (selected: HatchifyDataGridSelectedState) => void
   finalSchemas: FinalSchemas
   partialSchemas: TSchemas
   schemaName: TSchemaName
