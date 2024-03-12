@@ -38,8 +38,8 @@ export interface HatchifyDataGridSelectedState {
 }
 
 export interface HatchifyDataGridSelected {
-  selected: HatchifyDataGridSelectedState
-  setSelected: (selected: HatchifyDataGridSelectedState) => void
+  selected: HatchifyDataGridSelectedState | undefined
+  setSelected: (selected: HatchifyDataGridSelectedState) => void | undefined
 }
 
 export interface HatchifyDataGridFilters {
