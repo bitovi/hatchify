@@ -39,8 +39,8 @@ export interface DataGridState<
   setPage: HatchifyDataGridPage["setPage"]
   sort: HatchifyDataGridSort["sort"]
   setSort: HatchifyDataGridSort["setSort"]
-  selected: HatchifyDataGridSelectedState | undefined
-  setSelected: (selected: HatchifyDataGridSelectedState) => void | undefined
+  selected: HatchifyDataGridSelectedState
+  setSelected: (selected: HatchifyDataGridSelectedState) => void
   finalSchemas: FinalSchemas
   partialSchemas: TSchemas
   schemaName: TSchemaName
@@ -101,8 +101,8 @@ export default function useDataGridState<
 
   useEffect(() => {
     setSelected({
-      all: selected.all ? data.length > 0 : false,
-      ids: selected.all ? data.map((record) => record.id) : [],
+      all: selected?.all ? data.length > 0 : false,
+      ids: selected?.all ? data.map((record) => record.id) : [],
     })
   }, [data])
 
