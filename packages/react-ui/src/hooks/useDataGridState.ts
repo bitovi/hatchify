@@ -124,6 +124,3 @@ export default function useDataGridState<
     schemaName,
   }
 }
-
-// selected: onSelectedChange !== undefined ? selected : undefined,
-// setSelected: onSelectedChange !== undefined ? setSelected : undefined,
