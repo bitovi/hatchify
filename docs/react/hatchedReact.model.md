@@ -1,4 +1,4 @@
-# hatchifyReact model
+# hatchedReact.model
 
 `hatchifyReact` has a sets of hooks and promises to be used depending on your app's preferences. Each set gives the ability to create, update, delete, and fetch records.
 

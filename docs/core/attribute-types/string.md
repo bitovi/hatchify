@@ -21,13 +21,11 @@ export const Todo = {
 | `references` | [See References]()                                                             |           |          |         |
 | `required`   | If the attribute must be provided.                                             | `Boolean` |   Yes    | `false` |
 
-**_Database Implications_**
+### 💾 Database Implications
 
 The `string` type will create a sequelize [DataTypes.STRING](https://sequelize.org/docs/v6/core-concepts/model-basics/#strings) column.
 
-**_API Implications_**
-
-This has no effect on the API
+### ↔️ API Implications
 
 **_Querying Data_**
 

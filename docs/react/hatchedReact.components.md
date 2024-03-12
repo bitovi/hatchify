@@ -1,4 +1,4 @@
-# @hatchifyjs/react components
+# hatchedReact.components
 
 @hatchifyjs/react has several components available to use in your React app. There are two sets of components to be used.
 

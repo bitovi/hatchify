@@ -1,6 +1,4 @@
-# Column
-
-API Reference docs for the Hatchify Column component. Learn more about props.
+# hatchedReact.components.[schemaName].DataGrid.Column
 
 The `Column` component is used anytime there is a need to customize the output of a specific column. This can be used as a child of both the Hatchify `DataGrid` and the MUI `DataGrid`.
 

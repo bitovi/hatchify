@@ -54,12 +54,11 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**💾 Database Implications**
+### 💾 Database Implications
 
 Creates a `sales_person` table.
 
-**↔️ API Implications**
-
+### ↔️ API Implications
 
 _Querying Data_
 
@@ -83,7 +82,7 @@ _Data Response_
 }
 ```
 
-__🖼️ UI Implications__
+### 🖼️ UI Implications
 
 Unless `displayName` is specified, the name value is used for:
 
@@ -104,9 +103,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_API Implications_**
-
-This has no effect on the API.
+### ↔️ API Implications
 
 **_Querying Data_**
 
@@ -144,7 +141,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+### 💾 Database Implications
 
 - Creates a table `acme_sales_people`.
 
@@ -162,13 +159,11 @@ const AcmeCorp_SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+### 💾 Database Implications
 
 Creates a table `sales_person` in the Postgres schema `acme_corp`.
 
-**_API Implications_**
-
-This has no effect on the API.
+### ↔️ API Implications
 
 **_Querying Data_**
 
@@ -193,7 +188,7 @@ GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 }
 ```
 
-**_Returned Models Implications_**
+### ↺ Returned Models Implications
 
 `hatchifyKoa({AcmeCorp_SalesPerson})` returns `models.AcmeCorp_SalesPerson`
 `hatchifyReact({AcmeCorp_SalesPerson})` returns `[components|model|state].AcmeCorp_SalesPerson`
@@ -242,7 +237,7 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**_UI Implications_**
+### 🖼️ UI Implications
 
 When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `displayAttribute` was not set, then the `name` attribute would have been used.
 

@@ -51,13 +51,11 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+### 💾 Database Implications
 
 Creates a column `sales_person_id` in the `account` table.
 
-**_API Implications_**
-
-This has no effect on the API
+### ↔️ API Implications
 
 **_Querying Data_**
 
@@ -107,13 +105,11 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+### 💾 Database Implications
 
 Creates a column `account_id` in the `account` table.
 
-**_API Implications_**
-
-This has no effect on the API
+### ↔️ API Implications
 
 **_Querying Data_**
 

@@ -18,8 +18,8 @@ export interface HatchifyEverythingProps<
   partialSchemas: TSchemas
   restClient: HatchifyReactRest<TSchemas>
   children?: React.ReactNode | null
-  defaultSelected?: HatchifyDataGridSelected["selected"]
-  onSelectedChange?: HatchifyDataGridSelected["setSelected"]
+  defaultSelected?: HatchifyDataGridSelectedState
+  onSelectedChange?: (selected: HatchifyDataGridSelectedState) => void
   defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters

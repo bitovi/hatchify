@@ -32,12 +32,14 @@ export interface HatchifyDataGridSort {
   sortQueryString: string
 }
 
+export interface HatchifyDataGridSelectedState {
+  all: boolean
+  ids: string[]
+}
+
 export interface HatchifyDataGridSelected {
-  selected: {
-    all: boolean
-    ids: string[]
-  }
-  setSelected: ({ all, ids }: { all: boolean; ids: string[] }) => void
+  selected: HatchifyDataGridSelectedState
+  setSelected: (selected: HatchifyDataGridSelectedState) => void
 }
 
 export interface HatchifyDataGridFilters {

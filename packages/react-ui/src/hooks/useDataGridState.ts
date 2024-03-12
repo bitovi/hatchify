@@ -39,8 +39,8 @@ export interface DataGridState<
   setPage: HatchifyDataGridPage["setPage"]
   sort: HatchifyDataGridSort["sort"]
   setSort: HatchifyDataGridSort["setSort"]
-  selected: HatchifyDataGridSelected["selected"] | undefined
-  setSelected: HatchifyDataGridSelected["setSelected"] | undefined
+  selected: HatchifyDataGridSelectedState | undefined
+  setSelected: (selected: HatchifyDataGridSelectedState) => void | undefined
   finalSchemas: FinalSchemas
   partialSchemas: TSchemas
   schemaName: TSchemaName
@@ -64,8 +64,8 @@ export default function useDataGridState<
     baseFilter,
     minimumLoadTime,
   }: {
-    defaultSelected?: HatchifyDataGridSelected["selected"]
-    onSelectedChange?: HatchifyDataGridSelected["setSelected"]
+    defaultSelected?: HatchifyDataGridSelectedState
+    onSelectedChange?: (selected: HatchifyDataGridSelectedState) => void
     fields?: Fields
     include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>
     defaultPage?: PaginationObject

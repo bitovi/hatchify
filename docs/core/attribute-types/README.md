@@ -29,13 +29,11 @@ export const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+### 💾 Database Implications
 
 Creates columns `first_name`, `last_name`, `age`, etc. in the `sales_person` table.
 
-**_API Implications_**
-
-This has no effect on the API.
+### ↔️ API Implications
 
 **_Querying Data_**
 
@@ -76,15 +74,15 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+### 💾 Database Implications
 
 This has no effect on the database.
 
-**_API Implications_**
+### ↔️ API Implications
 
 This has no effect on the API.
 
-**_UI Implications_**
+### 🖼️ UI Implications
 
 The `lastName` attribute will be displayed as "Surname" in the table header and filter dropdowns.
 

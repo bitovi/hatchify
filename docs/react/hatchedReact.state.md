@@ -1,4 +1,4 @@
-# @hatchify/react - State
+# hatchedReact.state
 
 The `hatchedApp.state` property independently manages the state of the components associated with your [schemas](../core/README.md) via the context provided from the [`HatchifyProvider`](./components.md#hatchify-provider)🛑.
 
