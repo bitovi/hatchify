@@ -1,4 +1,4 @@
-# Column
+# hatchedReact.components[schemName].DataGrid.Column
 
 API Reference docs for the Hatchify Column component. Learn more about props.
 
