@@ -53,8 +53,8 @@ const App: React.FC = () => {
   - [`SortObject`](#sortobject)
   - [`Filters`](#filters)
   - [`FilterArray`](#filterarray)
-- [Customization](#customization)
-
+  - [`FiltersObject`](#filtersobject)
+  
 ## Props
 
 | Prop Name                                                   | Type                                                              | Default | Description                                                                                                                                                                                                                                                                                                |

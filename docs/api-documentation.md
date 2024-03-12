@@ -10,9 +10,9 @@ import { PartialSchema,
   belongsTo, hasMany, hasOne } from "@hatchifyjs/core"
   
 export const SalesPerson = {
-  <a href="core/PartialSchema.md#schemaname">name</a>: "SalesPerson",
-  <a href="core/PartialSchema.md#schemapluralname">pluralName</a>: "SalesPeople",
-  id: <a href="core/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
+  <a href="core/PartialSchema.md#name">name</a>: "SalesPerson",
+  <a href="core/PartialSchema.md#pluralname">pluralName</a>: "SalesPeople",
+  <a href="core/PartialSchema.md#id">id</a>: <a href="core/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   <a href="./core/attribute-types/README.md">attributes</a>: {
     <a href="core/PartialSchema#general-guidelines">name</a>:         <a href="core/attribute-types/string.md">string</a>({ required: true }),
     description:  <a href="core/attribute-types/text.md">text</a>(),
@@ -147,13 +147,39 @@ import { hatchifyReact, createJsonapiClient } from "@hatchifyjs/react-jsonapi";
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-hatchedReact.<a>model</a> <b>// The same as hatchedReactRest above
+hatchedReact.<a>model</a> <b>// The same as hatchedReactRest above</b>
 
-Provider ...
+<b>// Configure our pre-built grid ... </b>
+const DataGrid = hatchedReact.components.SalesPerson.DataGrid;
+const ConfiguredGrid = () => {
+  return (
+    &lt;<a href="./react/README.md#mui-components">ThemeProvider</a> theme={createTheme()}>
+      &lt;<a href="./react/README.md#hatchifyprovider">HatchifyProvider</a>>
+        &lt;<a href="./react/hatchedReact.components.datagrid.md">DataGrid</a>>
+          &lt;<a href="./react/hatchedReact.components.column.md">DataGrid.Column</a> label="Name" field="name" />
+          &lt;<a href="./react/hatchedReact.components.empty.md">DataGrid.Empty</a>>There are no records available&lt;/TodoDataGrid.Empty>
+        &lt;/DataGrid>
+      &lt;/HatchifyProvider>
+    &lt;/ThemeProvider>
+  )
+}
 
+<b>// Or, build the grid yourself</b>
+const useDataGridState = hatchedReact.state.SalesPerson.useDataGridState;
+const Filters = hatchedReact.components.SalesPerson.Filters;
+const List = hatchedReact.components.SalesPerson.List;
+const Pagination = hatchedReact.components.SalesPerson.Pagination;
   
-const MyReactComponent = () => {
-  const [] = hatchedReactRest.SalesPerson.<a href="">useAll</a>()
-  const [] = hatchedReactRest.SalesPerson.<a href="">create</a>()
+const ManagedGrid = () => {
+  const state = <a href="./react/README.md#mui-components">useDataGridState</a>()
+  return (
+    &lt;ThemeProvider theme={createTheme()}>
+      &lt;HatchifyProvider>
+        &lt;Filters {...state} />
+        &lt;List {...state}>
+        &lt;Pagination {...state} />
+      &lt;/HatchifyProvider>
+    &lt;/ThemeProvider>
+  )
 }
 </pre>

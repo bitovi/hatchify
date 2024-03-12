@@ -1,4 +1,4 @@
-# hatchedReact.components.[schemaName].Empty
+# hatchedReact.components.[schemaName].DataGrid.Empty
 
 The `DataGrid.Empty` is used to customize what is displayed when the Hatchify `DataGrid` has no records to display.
 

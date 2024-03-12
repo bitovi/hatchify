@@ -5,6 +5,14 @@ import { assembler, string } from "@hatchifyjs/core"
 import { default as MuiEverything } from "./MuiEverything.js"
 
 describe("components/MuiList", () => {
+  beforeAll(() => {
+    global.ResizeObserver = vi.fn().mockImplementation(() => ({
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+    }))
+  })
+
   const partialSchemas = {
     User: {
       name: "User",
