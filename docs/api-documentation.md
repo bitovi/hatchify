@@ -147,11 +147,8 @@ import { hatchifyReact, createJsonapiClient } from "@hatchifyjs/react-jsonapi";
 
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
-hatchedReact.<a>model</a> <b>// The same as hatchedReactRest above
+hatchedReact.<a>model</a> <b>// The same as hatchedReactRest above</b>
 
-Provider ...
-
-  
 const MyReactComponent = () => {
   const [] = hatchedReactRest.SalesPerson.<a href="">useAll</a>()
   const [] = hatchedReactRest.SalesPerson.<a href="">create</a>()
