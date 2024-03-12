@@ -46,14 +46,7 @@ const App: React.FC = () => {
   - [`defaultSort`](#defaultsort)
   - [`baseFilter`](#basefilter)
   - [`overwrite`](#overwrite)
-  - [`minimumLoadTime`](#minimumloadtime)
-- [Types](#types)
-  - [`HatchifyDataGridSelectedState`](#hatchifydatagridselectedstate)
-  - [`PaginationObject`](#paginationobject)
-  - [`SortObject`](#sortobject)
-  - [`Filters`](#filters)
-  - [`FilterArray`](#filterarray)
-  - [`FiltersObject`](#filtersobject)
+  - [`minimumLoadTime`](#minimumloadtime)  
 
 ## Props
 
@@ -190,6 +183,8 @@ const App = () =>{
 }
 ```
 
+The potential `operators` for `baseFilter` can be found in the [`@hatchify/jsonapi implementation docs`](../jsonapi/reading/filtering/README.md).
+
 ### `overwrite`
 
 The following example will only render the Age field column.
@@ -225,79 +220,5 @@ const App = () =>{
       </TodoDataGrid>
     </ HatchifyProvider>
   )
-}
-```
-
-### Setting baseFilter
-
-The potential `operators` for `baseFilter` can be found in the [`@hatchify/jsonapi implementation docs`](../jsonapi/reading/filtering/README.md).
-
-## Types
-
-### `HatchifyDataGridSelectedState`
-
-```ts
-interface HatchifyDataGridSelectedState = {
-  all: boolean
-  ids: string[]
-}
-```
-
-### `HatchifyDataGridSelected`
-
-```ts
-interface HatchifyDataGridSelected = {
-  selected: HatchifyDataGridSelectedState
-  setSelected: (selected: HatchifyDataGridSelectedState) => void
-}
-```
-
-### `PaginationObject`
-
-```ts
-interface PaginationObject = {
-  number: number
-  size: number
-}
-```
-
-### `SortObject`
-
-```ts
-interface SortObject {
-  direction: "asc" | "desc" | undefined
-  sortBy: string | undefined
-}
-```
-
-### `FilterTypes`
-
-```ts
-type FilterTypes = "$eq" | "$ne" | "$gt" | "$gte" | "$lt" | "$lte" | "$in" | "$nin" | "$like" | "$ilike" | "empty" | "nempty"
-```
-
-### `Filters`
-
-```ts
-type Filters = FilterArray | FiltersObject | string | undefined
-```
-
-### `FilterArray`
-
-```ts
-type FilterArray = Array<{
-  field: string
-  operator: string
-  value: string | string[] | number | number[] | boolean | boolean[]
-}>
-```
-
-### `FiltersObject`
-
-```ts
-type FiltersObject = {
-  [field: string]: {
-    [filter in FilterTypes]?: string | string[] | number | number[] | boolean | boolean[]
-  }
 }
 ```
