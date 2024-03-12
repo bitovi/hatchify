@@ -104,7 +104,7 @@ const schemas = { ... }
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 ```
 
-### [HatchifyProvider](./hatchedReact.state.md#)
+### HatchifyProvider
 
 `HatchifyProvider` must wrap your application for you to use hatchify components. The `HatchifyProvider` also provides a way to ovreride the default renders for each type of attribute and relationship. This is done by passing an optional `defaultDisplayComponents` object to the provider as a prop. In the example below, rather than rendering the text "true" or "false" for a boolean, all booleans in Hatchify components will render as "✅" or "❌".
 
