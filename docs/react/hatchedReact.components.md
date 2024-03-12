@@ -145,7 +145,7 @@ const App: React.FC = () => {
 ```tsx
 //in App.tsx
 
-const Filters = atchedReact.components.Todo.Filters;
+const Filters = hatchedReact.components.Todo.Filters;
 
 const App: React.FC = () => {
   const todoState = hatchedReact.state.Todo.useDataGridState({
