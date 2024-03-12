@@ -138,7 +138,7 @@ Learn how to make Hatchify match your needs with its technical interface documen
 - [Core](docs/core/) - Learn how to define a Schema, attributes, and relationships with Hatchify's interface for defining your data.
   - [Attributes](docs/core/attribute-types/README.md)
   - [Relationships](docs/core/relationship-types/README.md)
-  - [Schema Naming](docs/core/naming.md)
+  - [Schema Naming](docs/core/PartialSchema.md)
 - [JSON:API](docs/jsonapi/README.md) - Learn the details of our JSON:API implementation.
   - [Creating](docs/jsonapi/creating.md)
   - [Reading](docs/jsonapi/reading/README.md)

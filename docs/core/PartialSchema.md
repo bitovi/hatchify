@@ -104,11 +104,9 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_API Implications_**
+**↔️ API Implications**
 
-This has no effect on the API.
-
-**_Querying Data_**
+*Querying Data*
 
 Creates a `/sales-people` API.
 `name` will still be used in the `fields` query parameter:
@@ -117,7 +115,7 @@ Creates a `/sales-people` API.
 GET /api/sales-persons?fields[SalesPerson]=name
 ```
 
-**_Data Response_**
+*Data Response*
 
 `name` will still be used as the response `type`:
 
@@ -144,7 +142,7 @@ const SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**Database Implications:**
+**💾 Database Implications**
 
 - Creates a table `acme_sales_people`.
 
@@ -162,15 +160,13 @@ const AcmeCorp_SalesPerson = {
 } satisfies PartialSchema
 ```
 
-**_Database Implications_**
+**💾 Database Implications**
 
 Creates a table `sales_person` in the Postgres schema `acme_corp`.
 
-**_API Implications_**
+**↔️ API Implications**
 
-This has no effect on the API.
-
-**_Querying Data_**
+*Querying Data*
 
 Creates an `acme-corp/sales-persons` API.
 `namespace_name`, will be used in the `fields` query parameter:
@@ -179,7 +175,7 @@ Creates an `acme-corp/sales-persons` API.
 GET /api/acme-corp/sales-persons?fields[AcmeCorp_SalesPerson]=name
 ```
 
-**_Data Response_**
+*Data Response*
 
 `namespace_name` will be used as the response `type`:
 
@@ -242,7 +238,7 @@ const Account = {
 } satisfies PartialSchema
 ```
 
-**_UI Implications_**
+__🖼️ UI Implications__
 
 When displaying an `Account` table in the UI, the `email` attribute will be used in the "Sales Person" column. If `displayAttribute` was not set, then the `name` attribute would have been used.
 
