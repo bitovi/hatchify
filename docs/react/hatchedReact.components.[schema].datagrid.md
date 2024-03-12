@@ -119,8 +119,6 @@ const App(){
 }
 ```
 
-In the above example, the `DataGrid` will render with a checkbox selection column and a `Name` column. The `defaultSelected` prop sets the initial state of the checkbox selection column to `true` and the `onSelectedChange` prop will update the state and the checkbox selection column.
-
 ### `defaultPage`
 
 The below example will set the initial page position to 1 and the maximum number of rows shown on each page to 5.
