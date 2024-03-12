@@ -6,7 +6,7 @@ import type {
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
-  HatchifyDataGridSelected,
+  HatchifyDataGridSelectedState,
   SortObject,
 } from "../../presentation/index.js"
 import { WithSchemas, NoSchemas } from "./components/index.js"
