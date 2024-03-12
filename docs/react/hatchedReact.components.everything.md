@@ -1,8 +1,7 @@
 > [!CAUTION]
 > This feature is deprecated. Do not use it!
 
-
-# Everything
+# hatchedReact.components.Everything
 
 API Reference docs for the Hatchify Everything component. Learn more about props.
 

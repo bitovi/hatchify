@@ -4,18 +4,12 @@
 
 The hatchifyReact Components are included in the HatchifyApp, and have access to the state from the provider.
 
-
-
-
 - [DataGrid](#hatchify-datagrid)
 - [Column](#hatchify-column)
 - [Empty](#hatchify-empty)
 - [List](#list)
 - [Pagination](#pagination)
 - [Filters](#filters)
-
-
-
 
 ## [Hatchify DataGrid](./components/hatchify-datagrid.md)
 
@@ -63,7 +57,6 @@ const App: React.FC = () => {
 ## [Hatchify Empty](./components//hatchify-empty.md)
 
 [`Empty`](./components//hatchify-empty.md) is used to customize what is displayed when the Hatchify `DataGrid` has no records to display. Learn more about customizing `EmptyList` in [this guide](../guides/customizing-your-list.md).
-
 
 ```tsx
 //in App.tsx
@@ -145,7 +138,7 @@ const App: React.FC = () => {
 ```tsx
 //in App.tsx
 
-const Filters = hatchedReact.components.Todo.Filters;
+const Filters = hatchedReact.components.Todo.Filters
 
 const App: React.FC = () => {
   const todoState = hatchedReact.state.Todo.useDataGridState({
@@ -170,4 +163,3 @@ const App: React.FC = () => {
 
 ![Example Closed Filter](../attachments/FiltersClosed.png)
 ![Example Open Filter](../attachments/FiltersOpen.png)
-

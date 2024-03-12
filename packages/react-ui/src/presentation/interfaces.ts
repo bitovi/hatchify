@@ -83,12 +83,14 @@ export type Relationship = {
 
 export type DataValue = Primitive | Relationship | Relationship[]
 
+export type DataValueRecord = {
+  id: string | number
+  [field: string]: DataValue
+}
+
 export type DataValueComponent = React.FC<{
   value: DataValue
-  record: {
-    id: string | number
-    [field: string]: DataValue
-  }
+  record: DataValueRecord
   control: FinalAttributeRecord[string]["control"]
   field?: string | null
 }>
