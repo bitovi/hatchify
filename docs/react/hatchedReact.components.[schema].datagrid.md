@@ -234,8 +234,20 @@ const App = () =>{
 ### Setting baseFilter
 
 The potential `operators` for `baseFilter` are the following:
-(Need to link to the operators, filering on jsonapi has them listed)
-(Add a table probably)
+
+| Operator                           | Description                                                                                                                            |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [`$eq`](../jsonapi/reading/filtering/$eq.md)                    | Matches values that are equal to the given value.                                                                                      |
+| [`$ne`](../jsonapi/reading/filtering/$ne.md)                    | Matches values that are not equal to the given value.                                                                                  |
+| [`$gt`](../jsonapi/reading/filtering/$gt.md)                    | Matches if values are greater than the given value.                                                                                    |
+| [`$gte`](../jsonapi/reading/filtering/$gte.md)                  | Matches if values are greater or equal to the given value.                                                                             |
+| [`$lt`](../jsonapi/reading/filtering/$lt.md)                    | Matches if values are less than the given value.                                                                                       |
+| [`$lte`](../jsonapi/reading/filtering/$lte.md)                  | Matches if values are less or equal to the given value.                                                                                |
+| [`$in`](../jsonapi/reading/filtering/$in.md)                    | Matches any of the values in an array.                                                                                                 |
+| [`$nin`](../jsonapi/reading/filtering/$nin.md)                  | Matches none of the values specified in an array.                                                                                      |
+| [`$like`](../jsonapi/reading/filtering/$like.md)                | %foo → ends with foo<br>foo% → starts with<br>%foo% → contains<br>foo → equals                                                         |
+| [`$ilike`](../jsonapi/reading/filtering/$ilike.md)              | %foo → ends with foo (insensitive)<br>foo% → starts with (insensitive)<br>%foo% → contains (insensitive)<br>foo → equals (insensitive) |
+| [omitted operator](../jsonapi/reading/filtering/no-operator.md) | behavior varies, see table in Omitted Operators section below.                                                                         |
 
 ## Types
 
