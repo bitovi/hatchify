@@ -149,8 +149,37 @@ const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 hatchedReact.<a>model</a> <b>// The same as hatchedReactRest above</b>
 
-const MyReactComponent = () => {
-  const [] = hatchedReactRest.SalesPerson.<a href="">useAll</a>()
-  const [] = hatchedReactRest.SalesPerson.<a href="">create</a>()
+<b>// Configure our pre-built grid ... </b>
+const DataGrid = hatchedReact.components.SalesPerson.DataGrid;
+const ConfiguredGrid = () => {
+  return (
+    &lt;<a href="./react/README.md#mui-components">ThemeProvider</a> theme={createTheme()}>
+      &lt;<a href="./react/README.md#hatchifyprovider">HatchifyProvider</a>>
+        &lt;<a href="./react/hatchedReact.components.datagrid.md">DataGrid</a>>
+          &lt;<a href="./react/hatchedReact.components.column.md">DataGrid.Column</a> label="Name" field="name" />
+          &lt;<a href="./react/hatchedReact.components.empty.md">DataGrid.Empty</a>>There are no records available&lt;/TodoDataGrid.Empty>
+        &lt;/DataGrid>
+      &lt;/HatchifyProvider>
+    &lt;/ThemeProvider>
+  )
+}
+
+<b>// Or, build the grid yourself</b>
+const useDataGridState = hatchedReact.state.SalesPerson.useDataGridState;
+const Filters = hatchedReact.components.SalesPerson.Filters;
+const List = hatchedReact.components.SalesPerson.List;
+const Pagination = hatchedReact.components.SalesPerson.Pagination;
+  
+const ManagedGrid = () => {
+  const state = <a href="./react/README.md#mui-components">useDataGridState</a>()
+  return (
+    &lt;ThemeProvider theme={createTheme()}>
+      &lt;HatchifyProvider>
+        &lt;Filters {...state} />
+        &lt;List {...state}>
+        &lt;Pagination {...state} />
+      &lt;/HatchifyProvider>
+    &lt;/ThemeProvider>
+  )
 }
 </pre>
