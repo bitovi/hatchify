@@ -8,15 +8,15 @@
 import type {PartialSchema} from "@hatchifyjs/core";
   
 export const SalesPerson = {
-  <a href="core/PartialSchema.md#schemaname">name</a>:             "SalesPerson",
-  <a href="core/PartialSchema.md#schemapluralname">pluralName</a>:       "SalesPeople",
-  <a href="core/PartialSchema.md#tablename">tableName</a>:        "acme_sales_people",
-  <a href="core/PartialSchema.md#namespace">namespace</a>:        "acme",
+  <a href="./PartialSchema.md#schemaname">name</a>:             "SalesPerson",
+  <a href="./PartialSchema.md#schemapluralname">pluralName</a>:       "SalesPeople",
+  <a href="./PartialSchema.md#tablename">tableName</a>:        "acme_sales_people",
+  <a href="./PartialSchema.md#namespace">namespace</a>:        "acme",
   <a href="./PartialSchema.md#id">id</a>:               uuid({required: true, autoIncrement: true}),
-  <a href="core/PartialSchema.md#displayattribute">displayAttribute</a>: "name",
-  <a href="./core/attribute-types/README.md">attributes</a>:       { ... },
-  <a href="./core/relationship-types/README.md">relationships</a>:    { ... },
-} satisfies <a href="core/PartialSchema.md">PartialSchema</a>
+  <a href="./PartialSchema.md#displayattribute">displayAttribute</a>: "name",
+  <a href="./attribute-types/README.md">attributes</a>:       { ... },
+  <a href="./relationship-types/README.md">relationships</a>:    { ... },
+} satisfies <a href="./PartialSchema.md">PartialSchema</a>
 </pre>
 
 
