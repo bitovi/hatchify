@@ -14,7 +14,7 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   HatchifyDataGridPage,
-  HatchifyDataGridSelected,
+  HatchifyDataGridSelectedState,
   HatchifyDataGridSort,
   SortObject,
 } from "../presentation/index.js"
