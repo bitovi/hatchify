@@ -7,6 +7,12 @@ Types available for use within your Hatchify App.
 - [UpdateType](#updatetype)
 - [HatchifyApp](#hatchifyapp)
 - [RecordType](#recordtype)
+- [`HatchifyDataGridSelectedState`](#hatchifydatagridselectedstate)
+  - [`PaginationObject`](#paginationobject)
+  - [`SortObject`](#sortobject)
+  - [`Filters`](#filters)
+  - [`FilterArray`](#filterarray)
+  - [`FiltersObject`](#filtersobject)
 
 ## DataGridState
 
@@ -113,4 +119,73 @@ Parameters:
     name: "new todo name",
     importance: "7",
   })
+```
+
+
+### `HatchifyDataGridSelectedState`
+
+```ts
+interface HatchifyDataGridSelectedState = {
+  all: boolean
+  ids: string[]
+}
+```
+
+### `HatchifyDataGridSelected`
+
+```ts
+interface HatchifyDataGridSelected = {
+  selected: HatchifyDataGridSelectedState
+  setSelected: (selected: HatchifyDataGridSelectedState) => void
+}
+```
+
+### `PaginationObject`
+
+```ts
+interface PaginationObject = {
+  number: number
+  size: number
+}
+```
+
+### `SortObject`
+
+```ts
+interface SortObject {
+  direction: "asc" | "desc" | undefined
+  sortBy: string | undefined
+}
+```
+
+### `FilterTypes`
+
+```ts
+type FilterTypes = "$eq" | "$ne" | "$gt" | "$gte" | "$lt" | "$lte" | "$in" | "$nin" | "$like" | "$ilike" | "empty" | "nempty"
+```
+
+### `Filters`
+
+```ts
+type Filters = FilterArray | FiltersObject | string | undefined
+```
+
+### `FilterArray`
+
+```ts
+type FilterArray = Array<{
+  field: string
+  operator: string
+  value: string | string[] | number | number[] | boolean | boolean[]
+}>
+```
+
+### `FiltersObject`
+
+```ts
+type FiltersObject = {
+  [field: string]: {
+    [filter in FilterTypes]?: string | string[] | number | number[] | boolean | boolean[]
+  }
+}
 ```
