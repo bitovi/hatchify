@@ -318,12 +318,3 @@ type FiltersObject = {
   }
 }
 ```
-
-## Customization
-
-There are two different ways of customizing this behavior:
-
-- Using compound components like [Column] and [Empty]
--
-
-but the state does not have to be passed in.
