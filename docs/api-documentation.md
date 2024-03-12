@@ -10,9 +10,9 @@ import { PartialSchema,
   belongsTo, hasMany, hasOne } from "@hatchifyjs/core"
   
 export const SalesPerson = {
-  <a href="core/PartialSchema.md#schemaname">name</a>: "SalesPerson",
-  <a href="core/PartialSchema.md#schemapluralname">pluralName</a>: "SalesPeople",
-  id: <a href="core/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
+  <a href="core/PartialSchema.md#name">name</a>: "SalesPerson",
+  <a href="core/PartialSchema.md#pluralname">pluralName</a>: "SalesPeople",
+  <a href="core/PartialSchema.md#id">id</a>: <a href="core/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   <a href="./core/attribute-types/README.md">attributes</a>: {
     <a href="core/PartialSchema#general-guidelines">name</a>:         <a href="core/attribute-types/string.md">string</a>({ required: true }),
     description:  <a href="core/attribute-types/text.md">text</a>(),
