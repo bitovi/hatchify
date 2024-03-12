@@ -1,4 +1,4 @@
-# Empty
+# hatchedReact.components[schemName].DataGrid.Empty
 
 API Reference docs for the Hatchify Empty component. Learn more about props.
 
