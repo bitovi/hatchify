@@ -139,8 +139,8 @@ interface HatchifyDataGridSelectedState = {
 
 ```ts
 interface HatchifyDataGridSelected = {
-  selected: HatchifyDataGridSelectedState
-  setSelected: (selected: HatchifyDataGridSelectedState) => void
+  selected?: HatchifyDataGridSelectedState
+  setSelected?: (selected: HatchifyDataGridSelectedState) => void
 }
 ```
 
