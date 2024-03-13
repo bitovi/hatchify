@@ -171,4 +171,4 @@ Or, you can hire us for training, consulting, or development. [Set up a free con
 
 ## Trying Hatchify Online
 
-You can try Hatchify online on [StackBlitz](https://stackblitz.com/fork/github/bitovi/hatchify/tree/main/example/getting-started?file=schemas.ts&terminal=dev). It runs the Hatchify-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine.
+You can try Hatchify online on [StackBlitz](https://stackblitz.com/edit/bitovi-hatchify-t7amou?embed=1&file=backend%2Findex.ts). It runs the Hatchify-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine.
