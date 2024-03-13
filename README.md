@@ -1,5 +1,16 @@
 # Hatchify
 
+<div align="center">
+
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8662/badge)](https://www.bestpractices.dev/projects/8662)
+[![npm version](https://img.shields.io/npm/v/@hatchifyjs/core.svg)](https://www.npmjs.com/package/@hatchifyjs/core)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+
+[![Discord](https://img.shields.io/discord/1007137664606150746.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/invite/Za8CFzvmz3)
+[![Twitter Follow](https://img.shields.io/twitter/follow/bitovi?style=social)](https://twitter.com/bitovi)
+
+</div>
+
 <img align="left" src="https://github.com/bitovi/hatchify/assets/78602/119af4d1-d9ac-439d-aee5-8b9759cf8915" height="100px">
 
 Hatchify is a web application framework designed to accelerate the development of CRUD applications. If all you need is basic app, Hatchify can provide you with a fully functional system straight from a datatype schema. If you have more specialized requirements, Hatchify makes it easy to customize every part of the application to meet your needs.
