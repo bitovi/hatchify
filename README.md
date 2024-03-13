@@ -35,8 +35,9 @@ In just a few short steps we will set up a project containing a Hatchify fronten
    - For the backend prompt answer: "Koa"
    - For the database prompt answer: "SQLite"
 
-3. Start the server:
+3. Change into the project directiory and start the server:
    ```bash
+   cd hatchify-app
    npm run dev
    ```
 4. Navigate to the Hatchify welcome screen:
