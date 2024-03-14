@@ -1,0 +1,6 @@
+{
+  "markdown": true,
+  "recurse": true,
+  "skip": "node_modules http://localhost",
+  "silent": true
+}
