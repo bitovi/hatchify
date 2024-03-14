@@ -1,6 +1,6 @@
 {
   "markdown": true,
   "recurse": true,
-  "skip": "node_modules localhost hatchify-grid-demo.bitovi-sandbox.com",
+  "skip": "node_modules localhost",
   "silent": true
 }
