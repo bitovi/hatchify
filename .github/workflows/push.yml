@@ -13,7 +13,7 @@ jobs:
         with:
           paths: "**/*.md"
           recurse: true
-          linksToSkip: "^http:\/\/localhost"
+          linksToSkip: "http://localhost"
 
   publish-changes:
     if: ${{ !contains(github.event.head_commit.message, 'skip-publish') && github.ref == 'refs/heads/main' }}
