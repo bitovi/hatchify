@@ -104,11 +104,11 @@ describe("components/MuiList", () => {
       />,
     )
 
-    expect(
-      await screen.findByText(
-        "There are no schemas. Create some to get started!",
-      ),
-    ).toBeInTheDocument()
+    expect(await screen.findByText("There are no schemas.")).toBeInTheDocument()
+
+    const schemaLink = await screen.findByRole("link")
+    expect(schemaLink).toBeInTheDocument()
+    expect(schemaLink).toHaveTextContent("Create some to get started!")
   })
   it("Shows no records found when there is no data", async () => {
     render(
