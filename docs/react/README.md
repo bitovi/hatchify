@@ -76,7 +76,7 @@ Hatchify's components are currently used to:
 
 __Accessing Components__
 
-The [./hatchedReact/Navigation.md](#navigation) component is "all-schemas" aware and is available directly on [`hatchedReact`](#hatchedreact) as follows:
+The [`Navigation`](./hatchedReact/Navigation.md) component is "all-schemas" aware and is available directly on [`hatchedReact`](#hatchedreact) as follows:
 
 ```js
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
