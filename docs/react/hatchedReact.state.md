@@ -1,6 +1,6 @@
 # hatchedReact.state
 
-The `hatchedApp.state` property independently manages the state of the components associated with your [schemas](../core/README.md) via the context provided from the [`HatchifyProvider`](./components.md#hatchify-provider)🛑.
+The `hatchedApp.state` property independently manages the state of the components associated with your [schemas](../core/README.md) via the context provided from the [`HatchifyProvider`](./hatchedReact.components.md#hatchify-provider)🛑.
 
 `const todoState = hatchedApp.state.Todo`
 
