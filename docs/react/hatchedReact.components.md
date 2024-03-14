@@ -11,9 +11,9 @@ The hatchifyReact Components are included in the HatchifyApp, and have access to
 - [Pagination](#pagination)
 - [Filters](#filters)
 
-## [Hatchify DataGrid](./components/hatchify-datagrid.md)
+## DataGrid
 
-Similar to the MUI DataGrid, the Hatchify [`DataGrid`](./components/hatchify-datagrid.md) displays the records of a specific schema, without the [`DataGridState`](./types.md#datagridstate) needing to be passed in.
+Similar to the MUI DataGrid, the Hatchify [`DataGrid`](./hatchedReact.components[schemaName].datagrid.md) displays the records of a specific schema, without the [`DataGridState`](./types.md#datagridstate) needing to be passed in.
 
 ```tsx
 //in App.tsx
@@ -30,9 +30,9 @@ const App: React.FC = () => {
 }
 ```
 
-## [Hatchify Column](./components/hatchify-column.md)
+## DataGrid.Column
 
-The [`Column`](./components/hatchify-column.md) component is used anytime there is a need to customize the output of a specific column. This can be used as a child of both the Hatchify `DataGrid` and the MUI `DataGrid`. Learn more about custom components in [this guide](../guides/customizing-your-list.md).
+The [`DataGrid.Column`](./hatchedReact.components[schemaName].DataGrid.Column.md) component is used anytime there is a need to customize the output of a specific column. This can be used as a child of both the Hatchify `DataGrid` and the MUI `DataGrid`. Learn more about custom components in [this guide](../guides/customizing-your-list.md).
 
 ```tsx
 //in App.tsx
@@ -54,9 +54,9 @@ const App: React.FC = () => {
 }
 ```
 
-## [Hatchify Empty](./components//hatchify-empty.md)
+## DataGrid.Empty
 
-[`Empty`](./components//hatchify-empty.md) is used to customize what is displayed when the Hatchify `DataGrid` has no records to display. Learn more about customizing `EmptyList` in [this guide](../guides/customizing-your-list.md).
+[`DataGrid.Empty`](./hatchedReact.components[schemaName].DataGrid.Empty.md) is used to customize what is displayed when the Hatchify `DataGrid` has no records to display. Learn more about customizing `EmptyList` in [this guide](../guides/customizing-your-list.md).
 
 ```tsx
 //in App.tsx
@@ -77,7 +77,7 @@ const App: React.FC = () => {
 
 ## List
 
-`List` is used for displaying rows of records.
+[`List`](./hatchedReact.components[schemaName].List.md) is used for displaying rows of records.
 
 ```tsx
 //in App.tsx
@@ -104,7 +104,7 @@ const App: React.FC = () => {
 
 ## Pagination
 
-`Pagination` is used for paginating data in the table.
+[`Pagination`](./hatchedReact.components[schemaName].Pagination.md) is used for paginating data in the table.
 
 ```tsx
 //in App.tsx
@@ -133,7 +133,7 @@ const App: React.FC = () => {
 
 ## Filters
 
-`Filters` is used for filtering data in the table.
+[`Filters`](./hatchedReact.components[schemaName].DataGrid.Filters.md) is used for filtering data in the table.
 
 ```tsx
 //in App.tsx

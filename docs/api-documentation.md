@@ -155,9 +155,9 @@ const ConfiguredGrid = () => {
   return (
     &lt;<a href="./react/README.md#mui-components">ThemeProvider</a> theme={createTheme()}>
       &lt;<a href="./react/README.md#hatchifyprovider">HatchifyProvider</a>>
-        &lt;<a href="./react/hatchedReact.components.datagrid.md">DataGrid</a>>
-          &lt;<a href="./react/hatchedReact.components.column.md">DataGrid.Column</a> label="Name" field="name" />
-          &lt;<a href="./react/hatchedReact.components.empty.md">DataGrid.Empty</a>>There are no records available&lt;/TodoDataGrid.Empty>
+        &lt;<a href="./react/hatchedReact.components[schemaName].DataGrid.md">DataGrid</a>>
+          &lt;<a href="./react/hatchedReact.components[schemaName].DataGrid.Column.md">DataGrid.Column</a> label="Name" field="name" />
+          &lt;<a href="./react/hatchedReact.components[schemaName].DataGrid.Empty.md">DataGrid.Empty</a>>There are no records available&lt;/TodoDataGrid.Empty>
         &lt;/DataGrid>
       &lt;/HatchifyProvider>
     &lt;/ThemeProvider>
