@@ -1,6 +1,6 @@
 # @hatchifyjs/react
 
-@hatchifyjs/react is an [NPM](<(https://www.npmjs.com/package/@hatchifyjs/react)>) package that takes your schemas and provides:
+`@hatchifyjs/react` is an [NPM](<(https://www.npmjs.com/package/@hatchifyjs/react)>) package that takes your schemas and provides:
 
 - React Components
 - CRUD promise functions and react hooks
@@ -52,8 +52,9 @@ const App() {
 export default App
 ```
 
-[!IMPORTANT]
-You must wrap your App in a [`HatchifyProvider`](#hatchifyprovider) so that you may use the components provided by [Hatchify](../../README.md).
+> [!IMPORTANT]
+> You must wrap your App in a [`HatchifyProvider`](#hatchifyprovider) so that you may use the components provided by [Hatchify](../../README.md).
+
 
 - [Exports](#exports)
   - [`createJsonapiClient`](#createjsonapiclient) - Creates a new [JSON:API rest client](#createjsonapiclient) using the defined schemas
@@ -225,10 +226,12 @@ Learn more about the return type [here](types.md).
 
 [`hatchifyReact`](#hatchifyreact) provides a set of [`components`](./hatchedReact.components.md) for each of the defined schemas. These components include:
 
-[`Column`](./hatchedReact.components.column.md)
-[`DataGrid`](./hatchedReact.components.datagrid.md)
-[`Empty`](./hatchedReact.components.empty.md)
-[`Everything`](./hatchedReact.components.everything.md)
+- [`DataGrid`](./hatchedReact.components[schemaName].DataGrid.md)
+  - [`DataGrid.Column`](./hatchedReact.components[schemaName].DataGrid.Column.md)
+  - [`DataGrid.Empty`](./hatchedReact.components[schemaName].DataGrid.Empty.md)
+- [`Filters`](./hatchedReact.components[schemaName].Filters.md)
+- [`List`](./hatchedReact.components[schemaName].List.md)
+- [`Pagination`](./hatchedReact.components[schemaName].Pagination.md)
 
 Learn more about the available components [here](./hatchedReact.components.md).
 
