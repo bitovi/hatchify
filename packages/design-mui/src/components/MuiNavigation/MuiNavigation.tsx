@@ -36,7 +36,16 @@ function MuiNavigation<const TSchemas extends Record<string, PartialSchema>>({
           textAlign: "center",
         }}
       >
-        There are no schemas. Create some to get started!
+        <span>
+          There are no schemas.&#32;
+          <a
+            href="https://github.com/bitovi/hatchify?tab=readme-ov-file#schemas"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Create some to get started!
+          </a>
+        </span>
       </Box>
     )
   }
