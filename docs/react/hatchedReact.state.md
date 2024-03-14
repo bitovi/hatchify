@@ -102,6 +102,3 @@ The `useDataGridState({})` accepts an object with the following properties:
 
 `useDataGridState({})` then returns a [`DataGridState`](./types.md#datagridstate) typed object.
 
-```tsx
-
-```

@@ -13,7 +13,7 @@ The hatchifyReact Components are included in the HatchifyApp, and have access to
 
 ## DataGrid
 
-Similar to the MUI DataGrid, the Hatchify [`DataGrid`](./hatchedReact.components[schemaName].datagrid.md) displays the records of a specific schema, without the [`DataGridState`](./types.md#datagridstate) needing to be passed in.
+Similar to the MUI DataGrid, the Hatchify [`DataGrid`](./hatchedReact.components[schemaName].DataGrid.md) displays the records of a specific schema, without the [`DataGridState`](./types.md#datagridstate) needing to be passed in.
 
 ```tsx
 //in App.tsx
@@ -133,7 +133,7 @@ const App: React.FC = () => {
 
 ## Filters
 
-[`Filters`](./hatchedReact.components[schemaName].DataGrid.Filters.md) is used for filtering data in the table.
+[`Filters`](./hatchedReact.components[schemaName].Filters.md) is used for filtering data.
 
 ```tsx
 //in App.tsx

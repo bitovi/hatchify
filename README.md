@@ -166,9 +166,9 @@ Learn how to make Hatchify match your needs with its technical interface documen
 - Express - Learn how Hatchify leverages Express middleware functionality
   - [API Docs](docs/express/README.md)
 - React - Learn how to use and customize Hatchify's schema-driven library of React components and CRUD methods
-  - [REST Client](docs/react/rest-client.md) 🛑
+  - [REST Client](docs/react-jsonapi/README.md) 🛑
   - [API Docs](docs/react/README.md)
-  - [Components](docs/react/components.md)
+  - [Components](docs/react/hatchedReact.components.md)
 
 ## Need help or have questions?
 
