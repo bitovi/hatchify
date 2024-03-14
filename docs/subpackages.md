@@ -4,7 +4,7 @@ Hatchify is built as a monorepo of multiple packages so you can choose which one
 
 ## Packages
 
-### [Core](../packages/core/README.md) 🛑
+### [Core](../packages/core/README.md)
 
 Hatchify's schemas and shared types.
 
@@ -36,11 +36,11 @@ Middleware and helper functions to integrate Hatchify into any Node server.
 
 Transforms CRUD-related query strings into structured data.
 
-### [React](../packages/react/README.md) 🛑
+### [React](../packages/react/README.md)
 
 Entry point for apps wanting Hatchify's React components and hooks.
 
-### [React JSON:API](../packages/react-jsonapi/README.md) 🛑
+### [React JSON:API](../packages/react-jsonapi/README.md)
 
 Entry point for apps wanting Hatchify's data fetching.
 
