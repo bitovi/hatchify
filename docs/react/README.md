@@ -1,6 +1,6 @@
 # @hatchifyjs/react
 
-`@hatchifyjs/react` is an [NPM](<(https://www.npmjs.com/package/@hatchifyjs/react)>) package that takes your schemas and provides:
+`@hatchifyjs/react` is an [NPM](https://www.npmjs.com/package/@hatchifyjs/react) package that takes your schemas and provides:
 
 - React components
 - React hooks for interacting with your [JSON:API](https://jsonapi.org/) backend
@@ -53,7 +53,6 @@ export default App
 > [!IMPORTANT]
 > You must wrap your App in a [`HatchifyProvider`](#hatchifyprovider) so that you may use the components provided by [Hatchify](../../README.md).
 
-
 - [Exports](#exports)
   - [`createJsonapiClient`](#createjsonapiclient) - Creates a new [JSON:API rest client](#createjsonapiclient) using the defined schemas
   - [`hatchifyReact`](#hatchifyreact) - Constructs a `hatchedReact` app instance with custom components,helper functions, and type definitions
@@ -65,8 +64,6 @@ export default App
   - [`model`](#model)
 - [MUI Components](#mui-components)
 
-
-
 ## React Components Setup
 
 Hatchify's components are currently used to:
@@ -74,7 +71,7 @@ Hatchify's components are currently used to:
 - Provide a navigation utility to tab through different schemas
 - Build filterable, paginated, and sortable grids.
 
-__Accessing Components__
+**Accessing Components**
 
 The [`Navigation`](./hatchedReact.Navigation.md) component is "all-schemas" aware and is available directly on [`hatchedReact`](#hatchedreact) as follows:
 
@@ -87,14 +84,14 @@ The grid components (ex: [DataGrid](./hatchedReact.components[schemaName].DataGr
 
 ```js
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
-hatchedReact.components.Todo.DataGrid;
+hatchedReact.components.Todo.DataGrid
 ```
 
-__Component Provider Dependencies__
+**Component Provider Dependencies**
 
-Hatchify uses [MaterialUI](#mui-components) for design components.  For example, Hatchify's `Navigation` component uses MaterialUI's [`<Tabs>`](https://mui.com/material-ui/react-tabs/) component "under the hood".  You must provide these components to Hatchify. The way to do this is by providing your MaterialUI `ThemeProvider`. 
+Hatchify uses [MaterialUI](#mui-components) for design components. For example, Hatchify's `Navigation` component uses MaterialUI's [`<Tabs>`](https://mui.com/material-ui/react-tabs/) component "under the hood". You must provide these components to Hatchify. The way to do this is by providing your MaterialUI `ThemeProvider`.
 
-Similarly, Hatchify has its own provider - [`HatchifyProvider`](#hatchifyprovider). `HatchifyProvider` provides components specific to the data being displayed. For example, you can swap out globally how you want to display dates (See [`HatchifyProvider`'s documentation](#hatchifyprovider) for more details). 
+Similarly, Hatchify has its own provider - [`HatchifyProvider`](#hatchifyprovider). `HatchifyProvider` provides components specific to the data being displayed. For example, you can swap out globally how you want to display dates (See [`HatchifyProvider`'s documentation](#hatchifyprovider) for more details).
 
 You must provide both a MaterialUI and Hatchify provider for Hatchify's components to work. This is typically done in your application's root. See the example below how to do this:
 
@@ -102,11 +99,11 @@ You must provide both a MaterialUI and Hatchify provider for Hatchify's componen
 import {
   hatchifyReact,
   createJsonapiClient,
-  HatchifyProvider,          // Hatchify's provider           
+  HatchifyProvider,          // Hatchify's provider
 } from "@hatchifyjs/react"
 import {
   createTheme,
-  ThemeProvider              
+  ThemeProvider
 } from "@mui/material"       // Material's provider
 
 import * as Schemas from "../schemas.js"
@@ -127,7 +124,6 @@ const App: React.FC = () => {
 
 export default App
 ```
-
 
 ## Exports
 
@@ -237,7 +233,6 @@ Learn more about the available types [here](./types.md).
 - [state](./state.md) - contains hooks that can be used when customizing components provided by hatchify
 
 The following show some of the methods available given a `Todo` and `User` schema:
-
 
 ### [model](./hatchedReact.model.md)
 

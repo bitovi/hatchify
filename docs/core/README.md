@@ -49,19 +49,19 @@ Types:
 
 Attributes:
 
-- [`boolean`](./boolean.md)
-- [`dateonly`](./dateonly.md)
-- [`datetime`](./datetime.md)
-- [`enumerate`](./enum.md)
-- [`integer`](./integer.md)
-- [`number`](./number.md)
-- [`string`](./string.md)
-- [`text`](./text.md)
-- [`uuid`](./uuid.md)
+- [`boolean`](./attribute-types/boolean.md)
+- [`dateonly`](./attribute-types/dateonly.md)
+- [`datetime`](./attribute-types/datetime.md)
+- [`enumerate`](./attribute-types/enum.md)
+- [`integer`](./attribute-types/integer.md)
+- [`number`](./attribute-types/number.md)
+- [`string`](./attribute-types/string.md)
+- [`text`](./attribute-types/text.md)
+- [`uuid`](./attribute-types/uuid.md)
 
 Relationships:
 
-- [`belongsTo`](./belongs-to.md)
-- [`hasMany`](./has-many.md)
-- [`hasMany().through`](./has-many-through.md)
-- [`hasOne`](./has-one.md)
+- [`belongsTo`](./relationship-types/belongs-to.md)
+- [`hasMany`](./relationship-types/has-many.md)
+- [`hasMany().through`](./relationship-types/has-many-through.md)
+- [`hasOne`](./relationship-types/has-one.md)
