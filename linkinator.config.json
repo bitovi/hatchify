@@ -1,4 +1,0 @@
-{
-  "markdown": true,
-  "skip": "(^http://localhost/$|:3000)"
-}

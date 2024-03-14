@@ -12,6 +12,8 @@ jobs:
       - uses: JustinBeckwith/linkinator-action@v1
         with:
           paths: "**/*.md"
+          skip: "(^http://localhost/$|:3000)"
+          markdown: true
 
   publish-changes:
     if: ${{ !contains(github.event.head_commit.message, 'skip-publish') && github.ref == 'refs/heads/main' }}
