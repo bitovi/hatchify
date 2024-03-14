@@ -66,7 +66,16 @@ export function MuiEverything<
                 justifyContent="center"
                 display="flex"
               >
-                There are no schemas. Create some to get started!
+                <span>
+                  There are no schemas.&#32;
+                  <a
+                    href="https://github.com/bitovi/hatchify?tab=readme-ov-file#schemas"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Create some to get started!
+                  </a>
+                </span>
               </Typography>
             </Grid>
           </Grid>
