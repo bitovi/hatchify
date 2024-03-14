@@ -42,7 +42,7 @@ GET /api/todos?filter[dueDate][$gte]=2023-12-01 // all todos that are on or afte
 
 Any other value type will return a service error.
 
-Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with dates
+Checkout the [compatibility table](../../jsonapi/reading/filtering/README.md#compatibility)) for what operators can be used with dates
 
 **_Data Response_**
 

@@ -44,7 +44,7 @@ GET /api/todos?filter[importance][$in][]=1&filter[importance][$in][]=2 // all to
 
 Any other value will return a service error.
 
-Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with integers.
+Checkout the [compatibility table](../../jsonapi/reading/filtering/README.md#compatibility)) for what operators can be used with integers.
 
 **_Data Response_**
 

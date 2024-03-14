@@ -38,7 +38,7 @@ GET /api/todos?complete=false // all false todos
 
 Any other value will return a service error.
 
-Checkout the [compatibility table](../../filtering-data/README.md#compatibility) for what operators can be used with booleans.
+Checkout the [compatibility table](../../jsonapi/reading/filtering/README.md#compatibility)) for what operators can be used with booleans.
 
 **_Data Response_**
 
