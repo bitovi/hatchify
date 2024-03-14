@@ -133,7 +133,7 @@ import { createJsonapiClient, hatchifyReact, HatchifyProvider } from "@hatchifyj
 
 ### createJsonapiClient
 
-`createJsonapiClient(baseUrl: string, schemaMap: Schemas)` is a constructor function that creates a new JSON:API rest client from the defined schemas. It accepts a base url, and schema set. For more documentation see [here](./rest-client.md) 🛑.
+`createJsonapiClient(baseUrl: string, schemaMap: Schemas)` is a constructor function that creates a new JSON:API rest client from the defined schemas. It accepts a base url, and schema set. For more documentation see [here](../react-jsonapi/README.md).
 
 ```ts
 import { createJsonapiClient } from "@hatchifyjs/react"
@@ -153,7 +153,7 @@ Returns a `JSON:API rest client` instance object
 
 ### hatchifyReact
 
-`hatchifyReact(createJsonapiClient("/api", Schemas))` is a `Function` that initializes the `HatchifyApp` object from the JSON:API rest client. Inside of the retured object you will find [`components`](./components.md), [`model`](./hatchedReact.model.md), [`state`](./state.md), and [`Everything`](#everything).
+`hatchifyReact(createJsonapiClient("/api", Schemas))` is a `Function` that initializes the `HatchifyApp` object from the JSON:API rest client. Inside of the retured object you will find [`components`](./hatchedReact.components.md), [`model`](./hatchedReact.model.md), [`state`](./hatchedReact.state.md), and [`Everything`](#everything).
 
 ```ts
 import { createJsonapiClient, hatchifyReact } from "@hatchifyjs/react"
@@ -209,7 +209,7 @@ function App() {
 | -------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | `defaultDisplayComponents` | <a href="#defaultdisplaycomponents">`Partial<DefaultDisplayComponents>`</a> | An object that is keyed by type and contains a component to render the value of that type. |
 
-### [Types](./hatchedReact.types.md)
+### [Types](./types.md)
 
 `@hatchifyjs/react` provides a number of [types](./types.md) to assist with app customization.
 

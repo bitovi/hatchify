@@ -23,7 +23,7 @@ const todoState = hatchedApp.state.Todo.useDataGridState({
 })
 ```
 
-The below examples share a flow of using the prebuilt Hatchify [`DataGrid`](./components.md#datagrid) vs. using the `useDataGridState` hook to individually customize the [`List`](./components.md#list), [`Filters`](./components.md#filters), and [`Pagination`](./components.md#pagination) components that make up the DataGrid, rescpectively.
+The below examples share a flow of using the prebuilt Hatchify [`DataGrid`](./hatchedReact.components.md#datagrid) vs. using the `useDataGridState` hook to individually customize the [`List`](./hatchedReact.components.md#list), [`Filters`](./hatchedReact.components.md#filters), and [`Pagination`](./hatchedReact.components.md#pagination) components that make up the DataGrid, rescpectively.
 
 ```tsx
 import { createJsonapiClient, hatchifyReact, HatchifyProvider, List, Filters, Pagination  } from "@hatchify/react"
