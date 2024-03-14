@@ -1,6 +1,4 @@
 {
   "markdown": true,
-  "recurse": true,
-  "skip": "^(http://localhost)",
-  "silent": true
+  "skip": "(^http://localhost/$|:3000)"
 }
