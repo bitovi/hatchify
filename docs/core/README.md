@@ -10,27 +10,27 @@ import { PartialSchema,
   belongsTo, hasMany, hasOne } from "@hatchifyjs/core"
   
 export const SalesPerson = {
-  <a href="core/PartialSchema.md#schemaname">name</a>: "SalesPerson",
-  <a href="core/PartialSchema.md#schemapluralname">pluralName</a>: "SalesPeople",
-  <a href="./PartialSchema.md#id">id</a>: <a href="core/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
-  <a href="./core/attribute-types/README.md">attributes</a>: {
-    <a href="core/PartialSchema.md#general-guidelines">name</a>:         <a href="core/attribute-types/string.md">string</a>({ required: true }),
-    description:  <a href="core/attribute-types/text.md">text</a>(),
-    hireDate:     <a href="core/attribute-types/datetime.md">datetime</a>(),
-    birthday:     <a href="./core/attribute-types/datetime.md">dateonly</a>(),
-    commission:   <a href="./core/attribute-types/number.md">number</a>({min: 0}),
-    importance:   <a href="core/attribute-types/integer.md">integer</a>({min: 0, max: 100, step: 10}),
-    isSenior:     <a href="core/attribute-types/boolean.md">boolean</a>({ default: false }),
-    status:       <a href="core/attribute-types/enum.md">enumerate</a>({ values: ["active", "inactive"] }),
-    salesGroupId: <a href="./core/attribute-types/uuid.md">uuid</a>(),
+  <a href="./PartialSchema.md#schemaname">name</a>: "SalesPerson",
+  <a href="./PartialSchema.md#schemapluralname">pluralName</a>: "SalesPeople",
+  <a href="./PartialSchema.md#id">id</a>: <a href="./attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
+  <a href="./attribute-types/README.md">attributes</a>: {
+    <a href="./PartialSchema.md#general-guidelines">name</a>:         <a href="./attribute-types/string.md">string</a>({ required: true }),
+    description:  <a href="./attribute-types/text.md">text</a>(),
+    hireDate:     <a href="./attribute-types/datetime.md">datetime</a>(),
+    birthday:     <a href="./attribute-types/datetime.md">dateonly</a>(),
+    commission:   <a href="./attribute-types/number.md">number</a>({min: 0}),
+    importance:   <a href="./attribute-types/integer.md">integer</a>({min: 0, max: 100, step: 10}),
+    isSenior:     <a href="./attribute-types/boolean.md">boolean</a>({ default: false }),
+    status:       <a href="./attribute-types/enum.md">enumerate</a>({ values: ["active", "inactive"] }),
+    salesGroupId: <a href="./attribute-types/uuid.md">uuid</a>(),
   },
-  <a href="./core/relationship-types/README.md">relationships</a>: {
-    salesGroup: <a href="core/relationship-types/belongs-to.md">belongsTo</a>(),
-    accounts:   <a href="core/relationship-types/has-many.md">hasMany</a>(),
-    todos:      hasMany().<a href="core/relationship-types/has-many-through.md">through</a>()
-    user:       <a href="./core/relationship-types/has-one.md">hasOne</a>()
+  <a href="./relationship-types/README.md">relationships</a>: {
+    salesGroup: <a href="./relationship-types/belongs-to.md">belongsTo</a>(),
+    accounts:   <a href="./relationship-types/has-many.md">hasMany</a>(),
+    todos:      hasMany().<a href="./relationship-types/has-many-through.md">through</a>()
+    user:       <a href="./relationship-types/has-one.md">hasOne</a>()
   },
-} satisfies <a href="core/PartialSchema.md">PartialSchema</a>
+} satisfies <a href="./PartialSchema.md">PartialSchema</a>
 </pre>
 
 To learn how to define a schema, we suggest reading:
