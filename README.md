@@ -104,7 +104,7 @@ You can refer to [our documentation](/docs/core/README.md) for more information 
 
 Hatchify doesn’t currently generate forms (though we are working on it!). To add data, you can use the REST APIs that Hatchify’s middleware provides.
 
-# Seeding Sample Data
+## Seeding Sample Data
 
 ✏️ Run the following command in a new terminal window to seed some sample data:
 
