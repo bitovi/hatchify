@@ -227,7 +227,7 @@ Learn more about the available types [here](./types.md).
 
 `hatchedReact` is the instantiated [`HatchifyReact` App](#hatchifyreact) that is returned by the [`hatchifyReact`] constructor function. It provides:
 
-- [components](./components.md) - a set of components for each of the defined schemas to be used in the app.
+- [components](./hatchedReact.components.md) - a set of components for each of the defined schemas to be used in the app.
 - [model](./hatchedReact.model.md) - a set of hooks and promises for each of the defined schemas
 - [state](./hatchedReact.state.md) - contains hooks that can be used when customizing components provided by hatchify
 
