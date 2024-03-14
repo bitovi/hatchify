@@ -243,11 +243,11 @@ When displaying an `Account` table in the UI, the `email` attribute will be used
 
 ## attributes
 
-Naming for [attributes](../schema/attribute-types/README.md)
+Naming for [attributes](./attribute-types/README.md)
 
 ## relationships
 
-Naming for [relationships](../schema/relationship-types/README.md):
+Naming for [relationships](./relationship-types/README.md):
 
 - [belongsTo](./relationship-types/belongs-to.md)
 - [hasMany](./relationship-types/has-many.md)

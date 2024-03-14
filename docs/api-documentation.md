@@ -14,7 +14,7 @@ export const SalesPerson = {
   <a href="core/PartialSchema.md#pluralname">pluralName</a>: "SalesPeople",
   <a href="core/PartialSchema.md#id">id</a>: <a href="core/attribute-types/uuid.md">uuid</a>({required: true, autoIncrement: true}),
   <a href="./core/attribute-types/README.md">attributes</a>: {
-    <a href="core/PartialSchema#general-guidelines">name</a>:         <a href="core/attribute-types/string.md">string</a>({ required: true }),
+    <a href="core/PartialSchema.md#general-guidelines">name</a>:         <a href="core/attribute-types/string.md">string</a>({ required: true }),
     description:  <a href="core/attribute-types/text.md">text</a>(),
     hireDate:     <a href="core/attribute-types/datetime.md">datetime</a>(),
     birthday:     <a href="./core/attribute-types/datetime.md">dateonly</a>(),
