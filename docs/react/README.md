@@ -11,6 +11,7 @@ __In this Document__
 - [Setup](#setup)
   - [Basic Setup](#basic-setup)
   - [React Components Setup](#react-components-setup)
+  - [Customizing the MUI theme](#customizing-the-mui-theme)
 - [Exports](#exports)
   - [`createJsonapiClient`](#createjsonapiclient) - Creates a new [JSON:API rest client](#createjsonapiclient) using the defined schemas
   - [`hatchifyReact`](#hatchifyreact) - Constructs a `hatchedReact` app instance with custom components,helper functions, and type definitions
@@ -19,9 +20,9 @@ __In this Document__
   - [`components`](#components)
   - [`state`](#state)
   - [`model`](#model)
-- [MUI Components](#mui-components)
 
-## Setup
+
+## Setup and Use
 
 ### Basic Setup
 
@@ -108,10 +109,27 @@ const App: React.FC = () => {
 export default App
 ```
 
+## Customizing the MUI theme
 
+`@hatchifyjs/react` uses [Material-UI](https://material-ui.com/) components under the hood. This means that you can use the MUI components directly in your app. For example, you can use the `ThemeProvider` and `createTheme` from MUI to customize the look and feel of your app.
 
+```tsx
+const App: React.FC = () => {
+  const todoState = hatchedReact.state.Todo.useDataGridState({
+    include: ["user"],
+  }) // 👀
 
-
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <List {...todoState}>
+          <TodoEmptyList>No records to display</TodoEmptyList>
+        </List>
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+```
 
 ## Exports
 
@@ -295,27 +313,7 @@ const App() {
 }
 ```
 
-## MUI Components
 
-`@hatchifyjs/react` uses [Material-UI](https://material-ui.com/) components under the hood. This means that you can use the MUI components directly in your app. For example, you can use the `ThemeProvider` and `createTheme` from MUI to customize the look and feel of your app.
-
-```tsx
-const App: React.FC = () => {
-  const todoState = hatchedReact.state.Todo.useDataGridState({
-    include: ["user"],
-  }) // 👀
-
-  return (
-    <ThemeProvider theme={createTheme()}>
-      <HatchifyProvider>
-        <List {...todoState}>
-          <TodoEmptyList>No records to display</TodoEmptyList>
-        </List>
-      </HatchifyProvider>
-    </ThemeProvider>
-  )
-}
-```
 
 ## Types
 
