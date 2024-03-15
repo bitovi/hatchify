@@ -154,6 +154,7 @@ describe("builder", () => {
         data: {
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -235,6 +236,7 @@ describe("builder", () => {
             },
             { association: "todos", include: [] },
           ],
+          distinct: true,
         },
         errors: [],
         orm: "sequelize",
@@ -408,6 +410,7 @@ describe("builder", () => {
         data: {
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,

@@ -78,6 +78,7 @@ describe("indexNamespace", () => {
           include: [
             { association: "lipitorUser", include: [], attributes: ["name"] },
           ],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -136,6 +137,7 @@ describe("indexNamespace", () => {
           include: [
             { association: "xanaxUser", include: [], attributes: ["name"] },
           ],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -197,6 +199,7 @@ describe("indexNamespace", () => {
           include: [
             { association: "xanaxUser", include: [], attributes: ["name"] },
           ],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -343,6 +346,7 @@ describe("indexNamespace", () => {
         include: [
           { association: "xanaxUser", include: [], attributes: ["name"] },
         ],
+        distinct: true,
         limit: 5,
         offset: 10,
         subQuery: false,

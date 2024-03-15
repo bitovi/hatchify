@@ -916,7 +916,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
 
       expect(body).toEqual({
         jsonapi: { version: "1.0" },
-        meta: { unpaginatedCount: 2 },
+        meta: { unpaginatedCount: 1 },
         data: [
           {
             type: "User",

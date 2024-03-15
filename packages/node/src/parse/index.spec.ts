@@ -62,6 +62,7 @@ describe("index", () => {
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -130,6 +131,7 @@ describe("index", () => {
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -199,6 +201,7 @@ describe("index", () => {
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -355,6 +358,7 @@ describe("index", () => {
       expect(results).toEqual({
         attributes: ["id", "name", "dueDate"],
         include: [{ association: "user", include: [], attributes: ["name"] }],
+        distinct: true,
         limit: 5,
         offset: 10,
         subQuery: false,
