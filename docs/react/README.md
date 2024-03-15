@@ -2,67 +2,116 @@
 
 `@hatchifyjs/react` is an [NPM](https://www.npmjs.com/package/@hatchifyjs/react) package that takes your schemas and provides:
 
-- React [components](hatchedReact.components.md)
+- React [components](hatchedReact.components.md) to create data grids and navigation
 - React [hooks](#model) for interacting with your [JSON:API](https://jsonapi.org/) backend
 - TypeScript [types](#types)
 
-The following uses `hatchifyReact` to create a `hatchedReact` app with the defined `Todo` and `User` schemas.
+__In this Document__
+
+- [Setup](#setup)
+  - [Basic Setup](#basic-setup)
+  - [React Components Setup](#react-components-setup)
+- [Exports](#exports)
+  - [`createJsonapiClient`](#createjsonapiclient) - Creates a new [JSON:API rest client](#createjsonapiclient) using the defined schemas
+  - [`hatchifyReact`](#hatchifyreact) - Constructs a `hatchedReact` app instance with custom components,helper functions, and type definitions
+  - [`HatchifyProvider`](#hatchifyprovider) - A component that hosts and provides access to Hatchify-related state
+- [`hatchedReact`](#hatchedreact)
+  - [`components`](#components)
+  - [`state`](#state)
+  - [`model`](#model)
+- [MUI Components](#mui-components)
+
+## Setup
+
+### Basic Setup
+
+To set up the components and hooks, you first need to:
+
+1. Import [createJsonapiClient] and [hatchifyReact] from `@hatchifyjs/react`
+2. Create a `jsonapiClient` with a schema
+3. Pass `jsonapiClient` to `hatchifyReact`
+
+This will create a [`hatchedReact`](#hatchedreact) object where you can access hooks and components as follows:
 
 ```tsx
-import { hatchifyReact, HatchifyProvider, createJsonapiClient } from "@hatchifyjs/react"
+import {
+  hatchifyReact,
+  createJsonapiClient,
+} from "@hatchifyjs/react"
 
-export const schemas = {
-  Todo: {
-    name: "Todo",
-    attributes: {
-      name: string(),
-      status: enumerate({ values: ["Pending", "Failed", "Completed"] }),
-    },
-    relationships: {
-      user: belongsTo("User"),
-    },
-  },
-  User: {
-    name: "User",
-    attributes: {
-      name: string(),
-    },
-    relationships: {
-      todos: hasMany(),
-    },
-  },
-} satisfies Record<string, PartialSchema>
+const Schemas = {Todo: { ... }}
 
-// Create your Hatched React App instance
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas));
+
+hatchedReact.model.Todo.useList
+hatchedReact.components.Todo.DataGrid
+```
+
+### React Components Setup
+
+Hatchify's components are currently used to:
+
+- Provide a navigation utility to tab through different schemas
+- Build filterable, paginated, and sortable grids.
+
+**Accessing Components**
+
+The [`Navigation`](./hatchedReact.Navigation.md) component is "all-schemas" aware and is available directly on [`hatchedReact`](#hatchedreact) as follows:
+
+```js
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
+const Navigation = hatchedReact.Navigation
+```
 
-// Grab the Todo DataGrid component from the hatchedReact object
-const TodoDataGrid = hatchedReact.components.Todo.DataGrid
+The grid components (ex: [DataGrid](./hatchedReact.components[schemaName].DataGrid.md)) are available on the `.components` for their specific schema type as follows:
 
-const App() {
+```js
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
+hatchedReact.components.Todo.DataGrid
+```
+
+**Component Provider Dependencies**
+
+Hatchify uses [MaterialUI](#mui-components) for design components. For example, Hatchify's `Navigation` component uses MaterialUI's [`<Tabs>`](https://mui.com/material-ui/react-tabs/) component "under the hood". You must provide these components to Hatchify. The way to do this is by providing your MaterialUI `ThemeProvider`.
+
+Similarly, Hatchify has its own provider - [`HatchifyProvider`](#hatchifyprovider). `HatchifyProvider` provides components specific to the data being displayed. For example, you can swap out globally how you want to display dates (See [`HatchifyProvider`'s documentation](#hatchifyprovider) for more details).
+
+You must provide both a MaterialUI and Hatchify provider for Hatchify's components to work. This is typically done in your application's root. See the example below how to do this:
+
+```ts
+import {
+  hatchifyReact,
+  createJsonapiClient,
+  HatchifyProvider,          // Hatchify's provider
+} from "@hatchifyjs/react"
+import {
+  createTheme,
+  ThemeProvider
+} from "@mui/material"       // Material's provider
+
+import * as Schemas from "../schemas.js"
+
+const hatchedReact = hatchifyReact( createJsonapiClient("/api", Schemas) )
+
+const App: React.FC = () => {
+
+  // MaterialUI's ThemeProvider must be outside the HatchifyProvider:
   return (
-    <HatchifyProvider>
-      <TodoDataGrid />
-    </HatchifyProvider>
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <HATCHIFY.COMPONENTS.HERE/>
+      </HatchifyProvider>
+    </ThemeProvider>
   )
 }
 
 export default App
 ```
 
-> [!IMPORTANT]
-> You must wrap your App in a [`HatchifyProvider`](#hatchifyprovider) so that you may use the components provided by [Hatchify](../../README.md).
 
-- [Exports](#exports)
-  - [`createJsonapiClient`](#createjsonapiclient) - Creates a new [JSON:API rest client](#createjsonapiclient) using the defined schemas
-  - [`hatchifyReact`](#hatchifyreact) - Constructs a `hatchedReact` app instance with custom components,helper functions, and type definitions
-  - [`HatchifyProvider`](#hatchifyprovider) - A component that hosts and provides access to Hatchify-related state
-- [`hatchedReact`](#hatchedreact)
-  - [`Everything`](#everything)
-  - [`components`](#components)
-  - [`state`](#state)
-  - [`model`](#model)
-- [MUI Components](#mui-components)
+
+
+
 
 ## Exports
 
