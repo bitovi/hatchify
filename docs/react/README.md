@@ -2,8 +2,8 @@
 
 `@hatchifyjs/react` is an [NPM](https://www.npmjs.com/package/@hatchifyjs/react) package that takes your schemas and provides:
 
-- React components
-- React hooks for interacting with your [JSON:API](https://jsonapi.org/) backend
+- React [components](hatchedReact.components.md)
+- React [hooks](#model) for interacting with your [JSON:API](https://jsonapi.org/) backend
 - TypeScript types
 
 The following uses `hatchifyReact` to create a `hatchedReact` app with the defined `Todo` and `User` schemas.
