@@ -4,7 +4,7 @@
 
 - React [components](hatchedReact.components.md)
 - React [hooks](#model) for interacting with your [JSON:API](https://jsonapi.org/) backend
-- TypeScript types
+- TypeScript [types](#types)
 
 The following uses `hatchifyReact` to create a `hatchedReact` app with the defined `Todo` and `User` schemas.
 
