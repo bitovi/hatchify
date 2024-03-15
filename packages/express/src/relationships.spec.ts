@@ -850,7 +850,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
 
       expect(body).toEqual({
         jsonapi: { version: "1.0" },
-        meta: { unpaginatedCount: 2 },
+        meta: { unpaginatedCount: 1 },
         data: [
           {
             type: "User",
@@ -883,6 +883,127 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           },
         ],
       })
+    })
+
+    it("counts correctly", async () => {
+      await fetch("/api/users", {
+        method: "post",
+        body: {
+          data: {
+            type: "User",
+            id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
+            attributes: {
+              name: "John",
+            },
+          },
+        },
+      })
+
+      await fetch("/api/todos", {
+        method: "post",
+        body: {
+          data: {
+            type: "Todo",
+            id: "410819f6-d1c4-44f4-9a52-edbac765e714",
+            attributes: { name: "Walking" },
+            relationships: {
+              user: {
+                data: {
+                  type: "User",
+                  id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
+                },
+              },
+            },
+          },
+        },
+      })
+
+      await fetch("/api/todos", {
+        method: "post",
+        body: {
+          data: {
+            type: "Todo",
+            id: "754ca095-4967-4472-a0f4-1a8e2d761a24",
+            attributes: { name: "Cooking" },
+            relationships: {
+              user: {
+                data: {
+                  type: "User",
+                  id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
+                },
+              },
+            },
+          },
+        },
+      })
+
+      await fetch("/api/todos", {
+        method: "post",
+        body: {
+          data: {
+            type: "Todo",
+            id: "754ca095-4967-4472-a0f4-1a8e2d761a25",
+            attributes: { name: "Cleaning" },
+            relationships: {
+              user: {
+                data: {
+                  type: "User",
+                  id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
+                },
+              },
+            },
+          },
+        },
+      })
+
+      await Promise.all(
+        [
+          {
+            id: "410819f6-d1c4-44f4-9a52-edbac765e714",
+            name: "Walking",
+          },
+          {
+            id: "754ca095-4967-4472-a0f4-1a8e2d761a24",
+            name: "Cooking",
+          },
+          {
+            id: "754ca095-4967-4472-a0f4-1a8e2d761a25",
+            name: "Cleaning",
+          },
+        ].map(({ id, name }) =>
+          fetch("/api/todos", {
+            method: "post",
+            body: {
+              data: {
+                type: "Todo",
+                id,
+                attributes: { name },
+                relationships: {
+                  user: {
+                    data: {
+                      type: "User",
+                      id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
+                    },
+                  },
+                },
+              },
+            },
+          }),
+        ),
+      )
+
+      // const await (hatchify as any).orm.User.findAll({})
+      const { body: users } = await fetch(
+        "/api/users?include=todos&filter[id]=f8d68fc0-48b1-4e90-af73-c9a4dc577461",
+      )
+
+      expect(users.meta.unpaginatedCount).toEqual(1)
+
+      const { body: todos } = await fetch(
+        "/api/todos?include=user&filter[user.id]=f8d68fc0-48b1-4e90-af73-c9a4dc577461",
+      )
+
+      expect(todos.meta.unpaginatedCount).toEqual(3)
     })
   })
 
