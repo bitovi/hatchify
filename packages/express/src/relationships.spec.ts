@@ -992,7 +992,6 @@ describe.each(dbDialects)("Relationships", (dialect) => {
         ),
       )
 
-      // const await (hatchify as any).orm.User.findAll({})
       const { body: users } = await fetch(
         "/api/users?include=todos&filter[id]=f8d68fc0-48b1-4e90-af73-c9a4dc577461",
       )
