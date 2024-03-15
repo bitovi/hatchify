@@ -11,6 +11,68 @@ The hatchifyReact Components are included in the HatchifyApp, and have access to
 - [Pagination](#pagination)
 - [Filters](#filters)
 
+
+## React Components Setup
+
+Hatchify's components are currently used to:
+
+- Provide a navigation utility to tab through different schemas
+- Build filterable, paginated, and sortable grids.
+
+**Accessing Components**
+
+The [`Navigation`](./hatchedReact.Navigation.md) component is "all-schemas" aware and is available directly on [`hatchedReact`](#hatchedreact) as follows:
+
+```js
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
+const Navigation = hatchedReact.Navigation
+```
+
+The grid components (ex: [DataGrid](./hatchedReact.components[schemaName].DataGrid.md)) are available on the `.components` for their specific schema type as follows:
+
+```js
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
+hatchedReact.components.Todo.DataGrid
+```
+
+**Component Provider Dependencies**
+
+Hatchify uses [MaterialUI](#mui-components) for design components. For example, Hatchify's `Navigation` component uses MaterialUI's [`<Tabs>`](https://mui.com/material-ui/react-tabs/) component "under the hood". You must provide these components to Hatchify. The way to do this is by providing your MaterialUI `ThemeProvider`.
+
+Similarly, Hatchify has its own provider - [`HatchifyProvider`](#hatchifyprovider). `HatchifyProvider` provides components specific to the data being displayed. For example, you can swap out globally how you want to display dates (See [`HatchifyProvider`'s documentation](#hatchifyprovider) for more details).
+
+You must provide both a MaterialUI and Hatchify provider for Hatchify's components to work. This is typically done in your application's root. See the example below how to do this:
+
+```ts
+import {
+  hatchifyReact,
+  createJsonapiClient,
+  HatchifyProvider,          // Hatchify's provider
+} from "@hatchifyjs/react"
+import {
+  createTheme,
+  ThemeProvider
+} from "@mui/material"       // Material's provider
+
+import * as Schemas from "../schemas.js"
+
+const hatchedReact = hatchifyReact( createJsonapiClient("/api", Schemas) )
+
+const App: React.FC = () => {
+
+  // MaterialUI's ThemeProvider must be outside the HatchifyProvider:
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <HATCHIFY.COMPONENTS.HERE/>
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+
+export default App
+```
+
 ## DataGrid
 
 Similar to the MUI DataGrid, the Hatchify [`DataGrid`](./hatchedReact.components[schemaName].DataGrid.md) displays the records of a specific schema, without the [`DataGridState`](./types.md#datagridstate) needing to be passed in.
