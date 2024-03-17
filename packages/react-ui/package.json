@@ -3,7 +3,7 @@
   "version": "0.1.47",
   "type": "module",
   "main": "./dist/react-ui.js",
-  "module": "./dist/react-ui.js",
+  "exports": "./dist/react-ui.js",
   "types": "./dist/react-ui.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
