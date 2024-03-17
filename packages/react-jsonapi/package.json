@@ -2,7 +2,7 @@
   "name": "@hatchifyjs/react-jsonapi",
   "version": "0.1.29",
   "type": "module",
-  "module": "./dist/react-jsonapi.js",
+  "exports": "./dist/react-jsonapi.js",
   "types": "./dist/react-jsonapi.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
