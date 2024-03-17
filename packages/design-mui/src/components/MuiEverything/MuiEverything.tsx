@@ -1,4 +1,4 @@
-import { Grid, Tabs, Tab, Typography } from "@mui/material";
+import { Grid, Tabs, Tab, Typography } from "@mui/material"
 import { HatchifyEmpty } from "@hatchifyjs/react-ui"
 import type { XEverythingProps } from "@hatchifyjs/react-ui"
 import type { PartialSchema } from "@hatchifyjs/core"
