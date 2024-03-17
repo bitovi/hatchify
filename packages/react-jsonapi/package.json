@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react-jsonapi",
-  "version": "0.1.29",
+  "version": "0.1.30",
   "type": "module",
   "exports": "./dist/react-jsonapi.js",
   "types": "./dist/react-jsonapi.d.ts",
