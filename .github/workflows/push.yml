@@ -1,11 +1,22 @@
 name: "@hatchifyjs/push"
-on:
-  push:
-    branches: [main]
+on: push
 
 jobs:
+  linkinator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: JustinBeckwith/linkinator-action@v1
+        with:
+          paths: "**/*.md"
+          skip: "(^http://localhost/$|:3000)"
+          markdown: true
+
   publish-changes:
-    if: ${{!contains(github.event.head_commit.message, 'skip-publish')}}
+    if: ${{ !contains(github.event.head_commit.message, 'skip-publish') && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -152,6 +163,7 @@ jobs:
           segment: ${{ steps.changed-packages.outputs.segment }}
 
   verify-example:
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: publish-changes
     runs-on: ubuntu-latest
     defaults:
@@ -179,22 +191,20 @@ jobs:
 
   deploy:
     needs: verify-example
-    if: ${{!contains(github.head_ref, 'skip-deploy')}}
+    if: ${{ !contains(github.event.head_commit.message, 'skip-publish') && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name }}
       url: ${{ steps.deploy.outputs.vm_url }}
     steps:
-      - id: deploy-postgres
-        name: Deploy with postgres
-        uses: bitovi/github-actions-deploy-docker-to-ec2@v1.0.0
+      - id: destroy-deployment
+        name: Destroy Deployment
+        uses: bitovi/github-actions-deploy-docker-to-ec2@v1.0.1
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID_SANDBOX }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY_SANDBOX }}
           aws_default_region: us-east-1
 
-          # Provide a secret called `DOT_ENV` to append environment variables to the .env file
-          # dot_env: ${{ secrets.DOT_ENV }}
           aws_r53_enable: true
           aws_r53_domain_name: bitovi-sandbox.com
           aws_r53_sub_domain_name: hatchify-grid-demo
@@ -205,10 +215,34 @@ jobs:
           aws_ec2_instance_root_vol_size: 40
           aws_ec2_instance_type: t3.large
           aws_ec2_create_keypair_sm: true
+          aws_ec2_ami_update: true
 
           docker_full_cleanup: true
           docker_repo_app_directory: example/grid-demo
           docker_repo_app_directory_cleanup: true
 
-          # tf_stack_destroy: true
+          tf_stack_destroy: true
           tf_state_bucket_destroy: true
+      - id: deploy
+        name: Deploy
+        uses: bitovi/github-actions-deploy-docker-to-ec2@v1.0.1
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID_SANDBOX }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY_SANDBOX }}
+          aws_default_region: us-east-1
+
+          aws_r53_enable: true
+          aws_r53_domain_name: bitovi-sandbox.com
+          aws_r53_sub_domain_name: hatchify-grid-demo
+          aws_elb_app_port: 3000,3001,3002,3003
+          aws_elb_listen_port: 3000,3001,3002,3003
+          aws_elb_healthcheck: "HTTP:3000/"
+
+          aws_ec2_instance_root_vol_size: 40
+          aws_ec2_instance_type: t3.large
+          aws_ec2_create_keypair_sm: true
+          aws_ec2_ami_update: true
+
+          docker_full_cleanup: true
+          docker_repo_app_directory: example/grid-demo
+          docker_repo_app_directory_cleanup: true

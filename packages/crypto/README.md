@@ -1,0 +1,1 @@
+Isomorphic WebCrypto package. Only Isomorphic. No Polyfills. Used by Hatchify to create UUIDs.

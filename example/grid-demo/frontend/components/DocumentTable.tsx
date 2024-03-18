@@ -1,4 +1,8 @@
-import { HomeRepairService } from "@mui/icons-material"
+import {
+  HomeRepairService as HomeRepairServiceIcon,
+  Download as DownloadIcon,
+  Visibility as VisibilityIcon,
+} from "@mui/icons-material"
 import { Button, Icon, IconButton } from "@mui/material"
 import type { ReactElement } from "react"
 
@@ -94,18 +98,16 @@ export function DocumentActionsData({
   return (
     <>
       <IconButton
-        className="material-icons"
-        sx={{ color: "grey" }}
-        onClick={() => alert(`Download clicked on ${record.name}`)}
+        aria-label="download"
+        onClick={() => alert(`Dowanload clicked on ${record.name}`)}
       >
-        download
+        <DownloadIcon />
       </IconButton>
       <IconButton
-        className="material-icons"
-        sx={{ color: "grey" }}
-        onClick={() => alert(`View clicked on ${record.name}`)}
+        aria-label="view"
+        onClick={() => alert(`Vieaw clicked on ${record.name}`)}
       >
-        visibility
+        <VisibilityIcon />
       </IconButton>
     </>
   )
@@ -125,7 +127,7 @@ export function DocumentActionsHeader({
       }}
     >
       <strong>{column.label}</strong>
-      <HomeRepairService
+      <HomeRepairServiceIcon
         sx={{
           transform: "translateY(-2px)",
         }}

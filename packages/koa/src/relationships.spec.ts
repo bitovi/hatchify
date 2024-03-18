@@ -12,6 +12,15 @@ import { dbDialects, startServerWith } from "./testing/utils.js"
 
 describe.each(dbDialects)("Relationships", (dialect) => {
   describe(`${dialect} - Users and Todos`, () => {
+    const Skill = {
+      name: "Skill",
+      attributes: {
+        name: string(),
+      },
+      relationships: {
+        user: belongsTo(),
+      },
+    } satisfies PartialSchema
     const User = {
       name: "User",
       attributes: {
@@ -20,6 +29,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       },
       relationships: {
         todos: hasMany(),
+        skills: hasMany(),
       },
     } satisfies PartialSchema
     const Todo = {
@@ -38,7 +48,10 @@ describe.each(dbDialects)("Relationships", (dialect) => {
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
     beforeAll(async () => {
-      ;({ fetch, teardown } = await startServerWith({ User, Todo }, dialect))
+      ;({ fetch, teardown } = await startServerWith(
+        { Skill, User, Todo },
+        dialect,
+      ))
     })
 
     afterAll(async () => {
@@ -903,7 +916,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
 
       expect(body).toEqual({
         jsonapi: { version: "1.0" },
-        meta: { unpaginatedCount: 2 },
+        meta: { unpaginatedCount: 1 },
         data: [
           {
             type: "User",
@@ -936,6 +949,102 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           },
         ],
       })
+    })
+
+    it("should only overwrite specified relationships (HATCH-550)", async () => {
+      await Promise.all([
+        fetch("/api/todos", {
+          method: "post",
+          body: {
+            data: {
+              type: "Todo",
+              id: "b2a0fbbe-ac7c-4087-bf58-c606237a5808",
+              attributes: {
+                name: "Walk the dog",
+                dueDate: "2024-12-12T00:00:00.000Z",
+                importance: 6,
+              },
+            },
+          },
+        }),
+        fetch("/api/skills", {
+          method: "post",
+          body: {
+            data: {
+              type: "Skill",
+              id: "a967e091-6e0c-4caa-9759-112608fea33c",
+              attributes: {
+                name: "Cooking",
+              },
+            },
+          },
+        }),
+      ])
+
+      await fetch("/api/users", {
+        method: "post",
+        body: {
+          data: {
+            type: "User",
+            id: "d9f1592f-e712-465e-b445-c5e072349b89",
+            attributes: {
+              name: "Justin",
+            },
+            relationships: {
+              skills: {
+                data: [
+                  {
+                    type: "Skill",
+                    id: "a967e091-6e0c-4caa-9759-112608fea33c",
+                  },
+                ],
+              },
+              todos: {
+                data: [
+                  {
+                    type: "Todo",
+                    id: "b2a0fbbe-ac7c-4087-bf58-c606237a5808",
+                  },
+                ],
+              },
+            },
+          },
+        },
+      })
+
+      const { body: userBefore } = await fetch(
+        `/api/users/d9f1592f-e712-465e-b445-c5e072349b89?include=skills,todos`,
+      )
+
+      await fetch("/api/users/d9f1592f-e712-465e-b445-c5e072349b89", {
+        method: "patch",
+        body: {
+          data: {
+            type: "User",
+            id: "d9f1592f-e712-465e-b445-c5e072349b89",
+            attributes: {
+              age: 27,
+            },
+            relationships: {
+              skills: {
+                data: [],
+              },
+            },
+          },
+        },
+      })
+
+      const { body: userAfter } = await fetch(
+        `/api/users/d9f1592f-e712-465e-b445-c5e072349b89?include=skills,todos`,
+      )
+
+      expect(userBefore.data.attributes).toEqual({ name: "Justin", age: null })
+      expect(userBefore.data.relationships.skills.data).toHaveLength(1)
+      expect(userBefore.data.relationships.todos.data).toHaveLength(1)
+
+      expect(userAfter.data.attributes).toEqual({ name: "Justin", age: 27 })
+      expect(userAfter.data.relationships.skills.data).toHaveLength(0)
+      expect(userAfter.data.relationships.todos.data).toHaveLength(1)
     })
   })
 

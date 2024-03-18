@@ -105,14 +105,10 @@ async function init() {
                   `"${argBackend}" isn't a valid backend. Please choose from below: `,
                 )
               : reset("Select a backend:"),
-          choices: Object.values(BACKENDS)
-            .filter(
-              (backend) => backend.name === "koa", // TODO: It was decided to limit to Koa at the moment
-            )
-            .map((backend) => ({
-              title: backend.color(backend.display || backend.name),
-              value: backend,
-            })),
+          choices: Object.values(BACKENDS).map((backend) => ({
+            title: backend.color(backend.display || backend.name),
+            value: backend,
+          })),
         },
         {
           type: DATABASES[argDatabase] ? null : "select",

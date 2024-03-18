@@ -27,7 +27,7 @@ import {
   Relationship as RelationshipInput,
 } from "./DefaultFieldComponents/index.js"
 
-export interface DefaultValueComponentsTypes {
+export interface DefaultDisplayComponentsTypes {
   String: React.FC<{ value: string }>
   StringList: React.FC<{ values: string[] }>
   Number: React.FC<{ value: number }>
@@ -74,11 +74,16 @@ export interface HatchifyPresentationContextProps {
   DataGrid: React.FC<XDataGridProps>
   Layout: React.FC<XLayoutProps>
   Everything: React.FC<XEverythingProps>
-  defaultValueComponents: DefaultValueComponentsTypes
+  Navigation: React.FC<any>
+  NoSchemas: React.FC<any>
+  Filters: React.FC<XDataGridProps>
+  Pagination: React.FC<XDataGridProps>
+  List: React.FC<XDataGridProps>
+  defaultDisplayComponents: DefaultDisplayComponentsTypes
   // future: defaultFieldComponents
 }
 
-export const HatchifyPresentationDefaultValueComponents = {
+export const HatchifyPresentationDefaultDisplayComponents = {
   String,
   StringList,
   Number,
@@ -104,8 +109,13 @@ export const HatchifyPresentationContext =
     // should we have a default (headless) implementation of these?
     DataGrid: () => null,
     Everything: () => null,
+    Navigation: () => null,
+    NoSchemas: () => null,
+    Filters: () => null,
+    Pagination: () => null,
+    List: () => null,
     Layout: () => null,
-    defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+    defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     // future: defaultFieldComponents
   })
 
@@ -119,14 +129,30 @@ interface HatchifyPresentationProviderProps
 
 export const HatchifyPresentationProvider: React.FC<
   HatchifyPresentationProviderProps
-> = ({ DataGrid, Everything, Layout, defaultValueComponents, children }) => {
+> = ({
+  DataGrid,
+  Everything,
+  Navigation,
+  NoSchemas,
+  Filters,
+  Pagination,
+  List,
+  Layout,
+  defaultDisplayComponents,
+  children,
+}) => {
   return (
     <HatchifyPresentationContext.Provider
       value={{
         DataGrid,
         Everything,
+        Navigation,
+        NoSchemas,
+        Filters,
+        Pagination,
+        List,
         Layout,
-        defaultValueComponents,
+        defaultDisplayComponents,
       }}
     >
       {children}

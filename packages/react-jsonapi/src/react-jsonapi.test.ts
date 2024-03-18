@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { reactJsonapi } from "./react-jsonapi.js"
+import { hatchifyReactRest, createJsonapiClient } from "./react-jsonapi.js"
 import { hasMany, integer } from "@hatchifyjs/core"
 
 const TestSchema = {
@@ -20,7 +20,9 @@ const TestSchema = {
 
 describe("react-jsonapi", () =>
   it("works", () => {
-    const reactRest = reactJsonapi(TestSchema, "http://localhost:3000/api")
+    const reactRest = hatchifyReactRest(
+      createJsonapiClient("http://localhost:3000/api", TestSchema),
+    )
 
     expect(reactRest).toEqual({
       Article: {
