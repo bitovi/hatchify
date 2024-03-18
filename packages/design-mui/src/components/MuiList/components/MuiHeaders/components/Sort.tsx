@@ -1,7 +1,6 @@
 import type { HatchifyColumn, HeaderProps } from "@hatchifyjs/react-ui"
 import type { Meta } from "@hatchifyjs/rest-client"
 import { Box, TableSortLabel } from "@mui/material"
-import { visuallyHidden } from "@mui/utils"
 
 export const Sort: React.FC<
   Pick<HeaderProps, "direction" | "setSort" | "sortBy"> & {
@@ -21,7 +20,7 @@ export const Sort: React.FC<
   >
     {children}
     {columnKey === sortBy ? (
-      <Box component="span" sx={visuallyHidden}>
+      <Box component="span">
         {direction === "desc" ? "sorted descending" : "sorted ascending"}
       </Box>
     ) : null}

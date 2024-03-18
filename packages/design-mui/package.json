@@ -31,8 +31,7 @@
   },
   "dependencies": {
     "@hatchifyjs/react-ui": "^0.1.48",
-    "@mui/icons-material": "^5.14.1",
-    "@mui/utils": "^5.13.1"
+    "@mui/icons-material": "^5.14.1"
   },
   "peerDependencies": {
     "@emotion/react": "^11.10.6",
