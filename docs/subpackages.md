@@ -4,7 +4,7 @@ Hatchify is built as a monorepo of multiple packages so you can choose which one
 
 ## Packages
 
-### [Core](../packages/core/README.md) 🛑
+### [Core](../packages/core/README.md)
 
 Hatchify's schemas and shared types.
 
@@ -12,15 +12,15 @@ Hatchify's schemas and shared types.
 
 Create a new Hatchify-based project.
 
-### [Crypto](../packages/crypto/README.md) 🛑
+### [Crypto](../packages/crypto/README.md)
 
 Isomorphic WebCrypto package. Only Isomorphic. No Polyfills.
 
-### [Design Material UI](../packages/design-mui/README.md) 🛑
+### [Design Material UI](../packages/design-mui/README.md)
 
 Material UI implementation on of Hatchify's React components.
 
-### [Express](../packages/express/README.md) 🛑
+### [Express](../packages/express/README.md)
 
 Middleware and helper functions to integrate Hatchify into an [Express](https://expressjs.com/) server. It is implemented as a tiny wrapped around the [Hatchify Node package](#node-).
 
@@ -28,7 +28,7 @@ Middleware and helper functions to integrate Hatchify into an [Express](https://
 
 Middleware and helper functions to integrate Hatchify into a [Koa](https://koajs.com/) server. It is implemented as a tiny wrapped around the [Hatchify Node package](#node-).
 
-### [Node](../packages/node/README.md) 🛑
+### [Node](../packages/node/README.md)
 
 Middleware and helper functions to integrate Hatchify into any Node server.
 
@@ -36,11 +36,11 @@ Middleware and helper functions to integrate Hatchify into any Node server.
 
 Transforms CRUD-related query strings into structured data.
 
-### [React](../packages/react/README.md) 🛑
+### [React](../packages/react/README.md)
 
 Entry point for apps wanting Hatchify's React components and hooks.
 
-### [React JSON:API](../packages/react-jsonapi/README.md) 🛑
+### [React JSON:API](../packages/react-jsonapi/README.md)
 
 Entry point for apps wanting Hatchify's data fetching.
 
@@ -48,15 +48,15 @@ Entry point for apps wanting Hatchify's data fetching.
 
 Adds React-specific data fetching (hooks) on top of the [Rest Client](#rest-client-) functions.
 
-### [React UI](../packages/react-ui/README.md) 🛑
+### [React UI](../packages/react-ui/README.md)
 
 React components that tie together `design-*` components with [React Rest](#react-rest) data-fetching.
 
-### [Rest Client](../packages/rest-client/README.md) 🛑
+### [Rest Client](../packages/rest-client/README.md)
 
 Data-fetching functions that are not framework-specific.
 
-### [Rest Client JSON:API](../packages/rest-client-jsonapi/README.md) 🛑
+### [Rest Client JSON:API](../packages/rest-client-jsonapi/README.md) 
 
 Responsible for making network requests to a JSON:API-compliant backend.
 

@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/core",
-  "version": "0.3.19",
+  "version": "0.3.21",
   "type": "module",
   "exports": "./dist/core.js",
   "types": "./dist/core.d.ts",
@@ -16,7 +16,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@hatchifyjs/crypto": "^1.0.1"
+    "@hatchifyjs/crypto": "^1.0.2"
   },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",

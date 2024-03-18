@@ -33,6 +33,9 @@ describe("isValidAttribute", () => {
     expect(
       isValidAttribute("User", ["todos", "user", "name"], hatchedNode.schema),
     ).toBe(true)
+    expect(
+      isValidAttribute("User", ["todos", "user", "id"], hatchedNode.schema),
+    ).toBe(true)
   })
 
   it("returns false for non-existing schema names", () => {

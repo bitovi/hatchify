@@ -8,6 +8,7 @@ import {
   uuid,
 } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
+import type { JSONAPIDocument } from "json-api-serializer"
 import { Op } from "sequelize"
 
 import { RelationshipPathError, UnexpectedValueError } from "../error/index.js"
@@ -61,6 +62,7 @@ describe("index", () => {
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -86,7 +88,9 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findAll("fields[Todo]=invalid")).rejects.toEqualErrors([
+        await expect(async () =>
+          findAll("fields[Todo]=invalid"),
+        ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
               "URL must have 'fields[Todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
@@ -96,7 +100,9 @@ describe("index", () => {
       })
 
       it("handles invalid query string", async () => {
-        await expect(findAll("fields=name,dueDate")).rejects.toEqualErrors([
+        await expect(async () =>
+          findAll("fields=name,dueDate"),
+        ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail: "Incorrect format was provided for fields.",
             parameter: "fields",
@@ -105,7 +111,9 @@ describe("index", () => {
       })
 
       it("handles invalid include", async () => {
-        await expect(findAll("include=notrealincludes")).rejects.toEqualErrors([
+        await expect(async () =>
+          findAll("include=notrealincludes"),
+        ).rejects.toEqualErrors([
           new RelationshipPathError({
             detail: RelationshipPathDetail,
             parameter: "include",
@@ -123,6 +131,7 @@ describe("index", () => {
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -148,7 +157,7 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(
+        await expect(async () =>
           findAndCountAll("fields[Todo]=invalid"),
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
@@ -160,7 +169,7 @@ describe("index", () => {
       })
 
       it("handles invalid query string", async () => {
-        await expect(
+        await expect(async () =>
           findAndCountAll("fields=name,dueDate"),
         ).rejects.toEqualErrors([
           new UnexpectedValueError({
@@ -171,7 +180,7 @@ describe("index", () => {
       })
 
       it("handles invalid include", async () => {
-        await expect(
+        await expect(async () =>
           findAndCountAll("include=notrealincludes"),
         ).rejects.toEqualErrors([
           new RelationshipPathError({
@@ -192,6 +201,7 @@ describe("index", () => {
         expect(results).toEqual({
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -217,7 +227,9 @@ describe("index", () => {
       })
 
       it("handles unknown attributes", async () => {
-        await expect(findOne("fields[Todo]=invalid", 1)).rejects.toEqualErrors([
+        await expect(async () =>
+          findOne("fields[Todo]=invalid", 1),
+        ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail:
               "URL must have 'fields[Todo]' as comma separated values containing one or more of 'name', 'dueDate', 'importance', 'status', 'userId'.",
@@ -227,7 +239,9 @@ describe("index", () => {
       })
 
       it("handles invalid query string", async () => {
-        await expect(findOne("fields=name,dueDate", 1)).rejects.toEqualErrors([
+        await expect(async () =>
+          findOne("fields=name,dueDate", 1),
+        ).rejects.toEqualErrors([
           new UnexpectedValueError({
             detail: "Incorrect format was provided for fields.",
             parameter: "fields",
@@ -236,7 +250,7 @@ describe("index", () => {
       })
 
       it("handles invalid include", async () => {
-        await expect(
+        await expect(async () =>
           findOne("include=notrealincludes", 1),
         ).rejects.toEqualErrors([
           new RelationshipPathError({
@@ -260,7 +274,7 @@ describe("index", () => {
             },
           },
         }
-        const results = await create(body)
+        const results = await create(body as unknown as JSONAPIDocument)
 
         expect(results).toEqual({ body: body.data.attributes, ops: {} })
       })
@@ -278,94 +292,22 @@ describe("index", () => {
             },
           },
         }
-        const results = await update(body, 1)
+        const results = await update(body as unknown as JSONAPIDocument, 1)
 
         expect(results).toEqual({
           body: body.data.attributes,
           ops: { where: { id: 1 } },
         })
       })
-
-      it("works without ID", async () => {
-        const body = {
-          data: {
-            type: "Todo",
-            attributes: {
-              name: "Laundry",
-              dueDate: "2024-12-02",
-              importance: 1,
-            },
-          },
-        }
-        const results = await update(body)
-
-        expect(results).toEqual({
-          body: body.data.attributes,
-          ops: { where: {} },
-        })
-      })
     })
 
     describe("destroy", () => {
       it("works with ID attribute provided", async () => {
-        const results = await destroy(
-          "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
-        )
+        const results = await destroy("28f82f4c-cfa9-4e95-8e88-2e376b184192")
 
         expect(results).toEqual({
-          attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [], attributes: ["name"] }],
-          limit: 5,
-          offset: 10,
-          subQuery: false,
-          where: { name: { [Op.eq]: "laundry" } },
+          where: { id: "28f82f4c-cfa9-4e95-8e88-2e376b184192" },
         })
-      })
-
-      it("does not add ID attribute if not specified", async () => {
-        const results = await destroy("fields[Todo]=name,dueDate")
-
-        expect(results).toEqual({
-          attributes: ["name", "dueDate"],
-          where: {},
-        })
-      })
-
-      it("ignores ID if any filter provided", async () => {
-        const results = await destroy("page[number]=1&page[size]=10", 1)
-
-        expect(results).toEqual({
-          where: { id: 1 },
-          limit: 10,
-          offset: 0,
-          subQuery: false,
-        })
-      })
-
-      it("handles no attributes", async () => {
-        const results = await destroy("")
-
-        expect(results).toEqual({
-          where: {},
-        })
-      })
-
-      it("does not error on unknown attributes", async () => {
-        const results = await destroy("fields[Todo]=invalid")
-
-        expect(results).toEqual({
-          attributes: ["invalid"],
-          where: {},
-        })
-      })
-
-      it("handles invalid query string", async () => {
-        await expect(destroy("fields=name,dueDate")).rejects.toEqualErrors([
-          new UnexpectedValueError({
-            detail: "Incorrect format was provided for fields.",
-            parameter: "fields",
-          }),
-        ])
       })
     })
   })
@@ -388,7 +330,7 @@ describe("index", () => {
     )
 
     it("handles invalid include", async () => {
-      await expect(findAll("include=user")).rejects.toEqualErrors([
+      await expect(async () => findAll("include=user")).rejects.toEqualErrors([
         new RelationshipPathError({
           detail:
             "URL must have 'include' where 'user' is a valid relationship path.",
@@ -416,6 +358,7 @@ describe("index", () => {
       expect(results).toEqual({
         attributes: ["id", "name", "dueDate"],
         include: [{ association: "user", include: [], attributes: ["name"] }],
+        distinct: true,
         limit: 5,
         offset: 10,
         subQuery: false,

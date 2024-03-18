@@ -16,7 +16,10 @@ export function isValidAttribute(
   }
 
   if (relationshipPath.length === 1) {
-    return !!allSchemas[schemaName].attributes[relationshipPath[0]]
+    return (
+      relationshipPath[0] === "id" ||
+      !!allSchemas[schemaName].attributes[relationshipPath[0]]
+    )
   }
 
   if (!allSchemas[schemaName].relationships?.[relationshipPath[0]]) {

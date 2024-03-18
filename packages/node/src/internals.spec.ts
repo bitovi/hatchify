@@ -3,7 +3,6 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import { jest } from "@jest/globals"
 
 import { Hatchify } from "./node.js"
-import { HatchifySymbolModel } from "./types.js"
 
 describe("Internal Tests", () => {
   const Model = {
@@ -36,15 +35,6 @@ describe("Internal Tests", () => {
     expect(hatchify.isValidHatchifyRoute("GET", "/api/model/1")).toBe(false)
     expect(hatchify.isValidHatchifyRoute("GET", "/api/unknown")).toBe(false)
     expect(hatchify.isValidHatchifyRoute("GET", "/api/unknown/1")).toBe(false)
-  })
-
-  it("should test the existence of hatchify symbol on models", async () => {
-    hatchify = new Hatchify({ Model }, { prefix: "/api" })
-
-    const model2 = hatchify.model.Model[HatchifySymbolModel]
-    expect(model2).toBeTruthy()
-    expect(model2).toHaveProperty("attributes")
-    expect(model2).toHaveProperty("name")
   })
 
   it("should print all endpoints", async () => {

@@ -19,7 +19,7 @@ GET /api/todos?filter[name][$ilike]=clean%25
 
 > Note: `%25` is `%` escaped.
 
-These queries are also supported in [react-rest](../../packages/react-rest/README.md):
+These queries are also supported in [react-rest](../../../react-jsonapi/README.md#hatchifyreactrest):
 
 ```ts
 Todo.useAll({
