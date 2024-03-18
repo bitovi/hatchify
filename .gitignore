@@ -11,6 +11,8 @@ Thumbs.db
 npm-debug.log*
 .obsidian
 .nx
+yalc.lock
+.yalc
 
 /e2e/hatchify-app
 /e2e/test-results/
