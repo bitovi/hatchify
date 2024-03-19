@@ -318,10 +318,10 @@ const App() {
 
 `DefaultDisplayComponents` is an object that is keyed by type and contains a component to render the value of that type. This is used to override the default renders for each type of attribute and relationship.
 
-| Name           | Type                                                                 | Description                                                  |
-| -------------- | -------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `Boolean`      | `React.ComponentType<{ value: boolean }>`                            | A component that will be used to render boolean values.      |
-| `Date`         | `React.ComponentType<{ step: StringStep \| number, value: string }>` | A component that will be used to render date values.         |
-| `Number`       | `React.ComponentType<{ value: number }>`                             | A component that will be used to render number values.       |
-| `String`       | `React.ComponentType<{ value: string }>`                             | A component that will be used to render string values.       |
-| `Relationship` | `React.ComponentType<{ id: string, label: string, [field]: any }>`   | A component that will be used to render relationship values. |
+| Name           | Type                                                                  | Description                                                  |
+| -------------- | --------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `Boolean`      | `React.ComponentType<{ value: boolean }>`                             | A component that will be used to render boolean values.      |
+| `Date`         | `React.ComponentType<{ step?: StringStep \| number, value: string }>` | A component that will be used to render date values.         |
+| `Number`       | `React.ComponentType<{ value: number }>`                              | A component that will be used to render number values.       |
+| `String`       | `React.ComponentType<{ value: string }>`                              | A component that will be used to render string values.       |
+| `Relationship` | `React.ComponentType<{ id: string, label: string, [field]: any }>`    | A component that will be used to render relationship values. |
