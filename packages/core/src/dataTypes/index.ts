@@ -1,7 +1,7 @@
 export { boolean } from "./boolean/index.js"
 export { dateonly, isISO8601DateString } from "./dateonly/index.js"
-export type { StringStep } from "./dateonly/index.js"
 export { datetime, isISO8601DatetimeString } from "./datetime/index.js"
+export type { StringStep } from "./datetime/index.js"
 export { enumerate } from "./enumerate/index.js"
 export { integer } from "./integer/index.js"
 export { number } from "./number/index.js"
