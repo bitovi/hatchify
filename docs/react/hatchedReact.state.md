@@ -26,7 +26,7 @@ const todoState = hatchedApp.state.Todo.useDataGridState({
 The below examples share a flow of using the prebuilt Hatchify [`DataGrid`](./hatchedReact.components.md#datagrid) vs. using the `useDataGridState` hook to individually customize the [`List`](./hatchedReact.components.md#list), [`Filters`](./hatchedReact.components.md#filters), and [`Pagination`](./hatchedReact.components.md#pagination) components that make up the DataGrid, rescpectively.
 
 ```tsx
-import { createJsonapiClient, hatchifyReact, HatchifyProvider, List, Filters, Pagination  } from "@hatchify/react"
+import { createJsonapiClient, hatchifyReact, HatchifyProvider, List, Filters, Pagination } from "@hatchify/react"
 
 // Define your schemas
 const schemas = { ...Todo }
@@ -48,7 +48,7 @@ const hatchedComponent = () => {
 ```
 
 ```tsx
-import { createJsonapiClient, hatchifyReact, HatchifyProvider, List, Filters, Pagination  } from "@hatchify/react"
+import { createJsonapiClient, hatchifyReact, HatchifyProvider, List, Filters, Pagination } from "@hatchify/react"
 
 // Define your schemas
 const schemas = { ...Todo }
@@ -56,10 +56,8 @@ const schemas = { ...Todo }
 // Create your Hatchify React App instance
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", schemas))
 
-
 // Render the your custom Hatchify components
 const hatchedComponent = () => {
-
   todoState = {
     minimumLoadTime: 1000,
   }
@@ -101,4 +99,3 @@ The `useDataGridState({})` accepts an object with the following properties:
 | `baseFilter`       | `Array<{ field: string; operator: string; value: string \| string[] \| number \| number[] \| boolean \| boolean[];}> \| {[field: string]: {[filter in FilterTypes]?: string \| string[] \| number \| number[] \| boolean \| boolean[];}} \| string \| undefined` | Optional, a pre filter to be used alongside additional filters                                                          |
 
 `useDataGridState({})` then returns a [`DataGridState`](./types.md#datagridstate) typed object.
-

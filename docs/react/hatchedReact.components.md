@@ -11,9 +11,6 @@ The hatchifyReact Components are included in the HatchifyApp, and have access to
 - [Pagination](#pagination)
 - [Filters](#filters)
 
-
-
-
 ## DataGrid
 
 Similar to the MUI DataGrid, the Hatchify [`DataGrid`](./hatchedReact.components[schemaName].DataGrid.md) displays the records of a specific schema, without the [`DataGridState`](./types.md#datagridstate) needing to be passed in.

@@ -17,9 +17,9 @@ const TodoEmpty = hatchedReact.components.Todo.Empty
 
 ## Props
 
-| Prop Name | Type                    | Default | Description                                                                                                       |
-| --------- | ----------------------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
-| `children`  | `React.ReactNode` or `Null` | -       | What to display for an emptyList, can be as simple as a string or more advanced such as a custom styled element |
+| Prop Name  | Type                        | Default | Description                                                                                                     |
+| ---------- | --------------------------- | ------- | --------------------------------------------------------------------------------------------------------------- |
+| `children` | `React.ReactNode` or `Null` | -       | What to display for an emptyList, can be as simple as a string or more advanced such as a custom styled element |
 
 ### Example
 

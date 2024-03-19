@@ -56,7 +56,7 @@ React components that tie together `design-*` components with [React Rest](#reac
 
 Data-fetching functions that are not framework-specific.
 
-### [Rest Client JSON:API](../packages/rest-client-jsonapi/README.md) 
+### [Rest Client JSON:API](../packages/rest-client-jsonapi/README.md)
 
 Responsible for making network requests to a JSON:API-compliant backend.
 
