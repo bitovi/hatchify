@@ -35,8 +35,8 @@ export interface DefaultDisplayComponentsTypes {
   NumberList: React.FC<{ values: number[] }>
   Boolean: React.FC<{ value: boolean }>
   BooleanList: React.FC<{ values: boolean[] }>
-  Date: React.FC<{ step: StringStep | number; value: string }>
-  DateList: React.FC<{ step: StringStep | number; values: string[] }>
+  Date: React.FC<{ step?: StringStep | number; value: string }>
+  DateList: React.FC<{ step?: StringStep | number; values: string[] }>
   Relationship: React.FC<{ value: RelationshipType }>
   RelationshipList: React.FC<{ values: RelationshipType[] }>
 }

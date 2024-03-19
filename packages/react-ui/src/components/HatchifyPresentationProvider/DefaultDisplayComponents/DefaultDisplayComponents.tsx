@@ -59,7 +59,7 @@ export const BooleanList: React.FC<{ values: boolean[] }> = ({ values }) => {
   )
 }
 
-export const Date: React.FC<{ step: StringStep | number; value: string }> = ({
+export const Date: React.FC<{ step?: StringStep | number; value: string }> = ({
   step,
   value,
 }) => {
@@ -96,7 +96,7 @@ export const Date: React.FC<{ step: StringStep | number; value: string }> = ({
 }
 
 export const DateList: React.FC<{
-  step: StringStep | number
+  step?: StringStep | number
   values: string[]
 }> = ({ step, values }) => {
   return (
