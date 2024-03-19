@@ -57,12 +57,10 @@
 `findAll` is an async function returns a promise to fetch all records. It accepts a query object used to filter data. Optional parameters in the object include: `include`, `fields`, `filter`, `sort`, and `page`. On success, the promise will return the records (Array of `RecordType`).
 
 ```ts
-
-  const fetchTodos = async () => {
-    await hatchedReact.model.Todo.findAll({include: ["user"]}).then((res) => console.log(res)) // 👀
-  }
-  fetchTodos()
-
+const fetchTodos = async () => {
+  await hatchedReact.model.Todo.findAll({ include: ["user"] }).then((res) => console.log(res)) // 👀
+}
+fetchTodos()
 ```
 
 ### findOne
@@ -70,12 +68,10 @@
 `findOne` is an async function returns a promise to fetch a single record. It accepts a string equal to the id of the record to be fetched, OR an object that includes the `id`, `include`, and `fields`. On success, the promise will return the record (`RecordType`).
 
 ```ts
-
-  const fetchOneTodo = async () => {
-    await hatchedReact.model.Todo.findOne("todo-id").then((res) => console.log(res)) // 👀
-  }
-  fetchOneTodo()
-
+const fetchOneTodo = async () => {
+  await hatchedReact.model.Todo.findOne("todo-id").then((res) => console.log(res)) // 👀
+}
+fetchOneTodo()
 ```
 
 OR
@@ -120,9 +116,7 @@ OR
 `useAll` is a hook used to fetch all records. This takes no arguments, and returns a tuple that includes the returned data, and the status of the request.
 
 ```ts
-
-    const [allTodos, allTodosState] = hatchedReact.model.Todo.useAll()
-
+const [allTodos, allTodosState] = hatchedReact.model.Todo.useAll()
 ```
 
 `allTodos` will be an array of `RecordType`
@@ -135,7 +129,7 @@ OR
 ```tsx
 
   const [createTodo, createTodoState, created] = hatchedReact.model.Todo.useCreateOne() // 👀
-  
+
   ...
 
   <button
@@ -163,7 +157,7 @@ OR
 ```tsx
 
   const [deleteTodo, deleteTodoState] = hatchedReact.model.Todo.useDeleteOne() // 👀
-  
+
   ...
 
   <button
@@ -185,9 +179,7 @@ OR
 `useOne` is a hook used to fetch a single record. This takes one argument - the id of the record to be fetched, and returns a tuple that includes the returned data, and the status of the request.
 
 ```ts
-
-  const [oneTodo, oneTodoState] = hatchedReact.model.Todo.useOne("todo-id")
-
+const [oneTodo, oneTodoState] = hatchedReact.model.Todo.useOne("todo-id")
 ```
 
 `oneTodo` will be an object of `RecordType`
@@ -200,7 +192,7 @@ OR
 ```tsx
 
   const [updateTodo, updateTodoState, updated] = hatchedReact.model.Todo.useUpdateOne() // 👀
-  
+
   ...
 
   <button
@@ -216,7 +208,7 @@ OR
 
 ```
 
-`updateTodo` is the function to be called to update. It accepts an  `UpdateType` object: the id of the records, and the attributes that will be updated. Any omitted attributes will not be changed or overwritten.
+`updateTodo` is the function to be called to update. It accepts an `UpdateType` object: the id of the records, and the attributes that will be updated. Any omitted attributes will not be changed or overwritten.
 
 `updateTodoState` will be a `Meta` object with information on the status of the request. This is the same meta data type as in the `useDatagridState`.
 
