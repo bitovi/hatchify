@@ -1,10 +1,10 @@
+import type { StringStep } from "@hatchifyjs/core"
 import { InputLabel } from "@mui/material"
 import type { FilterableControls, Operators } from "../../constants.js"
 import DateInput from "./DateInput.js"
 import EnumInput from "./EnumInput.js"
 import StringInput from "./StringInput.js"
 import NumberInput from "./NumberInput.js"
-import type { StringStep } from "packages/core/dist/core.js"
 
 const ValueInput: React.FC<{
   labelId: string
