@@ -13,13 +13,14 @@ export const Todo = {
 
 ## Parameters
 
-| key          | description                                                                    |   type    | optional | default |
-| ------------ | ------------------------------------------------------------------------------ | :-------: | :------: | :-----: |
-| `default`    | The default value of the attribute. <br/> Example: `string({default: "USA"})`  | `String`  |   Yes    |         |
-| `max`        | The maximum number of characters allowed. <br/> Example: `string({max: 1023})` | `Number`  |   Yes    |  `255`  |
-| `min`        | The maximum number of characters allowed. <br/> Example: `string({min: 5})`    | `Number`  |   Yes    |   `0`   |
-| `references` | [See References]()                                                             |           |          |         |
-| `required`   | If the attribute must be provided.                                             | `Boolean` |   Yes    | `false` |
+| key                              | description                                                                    |   type    | optional | default |
+| -------------------------------- | ------------------------------------------------------------------------------ | :-------: | :------: | :-----: |
+| `default`                        | The default value of the attribute. <br/> Example: `string({default: "USA"})`  | `String`  |   Yes    |         |
+| `max`                            | The maximum number of characters allowed. <br/> Example: `string({max: 1023})` | `Number`  |   Yes    |  `255`  |
+| `min`                            | The maximum number of characters allowed. <br/> Example: `string({min: 5})`    | `Number`  |   Yes    |   `0`   |
+| `references`                     | [See References]()                                                             |           |          |         |
+| `required`                       | If the attribute must be provided.                                             | `Boolean` |   Yes    | `false` |
+| `ui.enableCaseSensitiveContains` | Adds an option to filter results with case sensitivity.                        | `Boolean` |   Yes    | `false` |
 
 ### 💾 Database Implications
 

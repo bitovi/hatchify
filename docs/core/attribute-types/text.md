@@ -13,12 +13,13 @@ export const Todo = {
 
 ## Parameters
 
-| key        | description                                                                     |   type    | optional | default |
-| ---------- | ------------------------------------------------------------------------------- | :-------: | :------: | :-----: |
-| `default`  | The default value of the attribute. <br/> Example: `text({default: 'no text'})` | `String`  |   Yes    |         |
-| `required` | If the attribute must be provided. <br/> Example: `text({required: true})`      | `Boolean` |   Yes    | `false` |
-| `primary`  | The attribute is a primary key. <br/> Example: `text({primary: true})`          | `Boolean` |   Yes    | `false` |
-| `unique`   | The attribute must be unique. <br/> Example: `text({unique: true})`             | `Boolean` |   Yes    | `false` |
+| key                              | description                                                                     |   type    | optional | default |
+| -------------------------------- | ------------------------------------------------------------------------------- | :-------: | :------: | :-----: |
+| `default`                        | The default value of the attribute. <br/> Example: `text({default: 'no text'})` | `String`  |   Yes    |         |
+| `required`                       | If the attribute must be provided. <br/> Example: `text({required: true})`      | `Boolean` |   Yes    | `false` |
+| `primary`                        | The attribute is a primary key. <br/> Example: `text({primary: true})`          | `Boolean` |   Yes    | `false` |
+| `unique`                         | The attribute must be unique. <br/> Example: `text({unique: true})`             | `Boolean` |   Yes    | `false` |
+| `ui.enableCaseSensitiveContains` | Adds an option to filter results with case sensitivity.                         | `Boolean` |   Yes    | `false` |
 
 ### 💾 Database Implications
 
