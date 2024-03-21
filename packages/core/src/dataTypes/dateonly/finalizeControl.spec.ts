@@ -3,53 +3,49 @@ import { finalizeControl } from "./finalizeControl.js"
 describe("finalizeControl", () => {
   it("handles allowNull", () => {
     expect(
-      finalizeControl({ type: "Dateonly", allowNull: undefined }).allowNull,
+      finalizeControl({ type: "Date", allowNull: undefined }).allowNull,
     ).toBe(true)
     expect(
       finalizeControl({
-        type: "Dateonly",
+        type: "Date",
         allowNull: null as unknown as boolean,
       }).allowNull,
     ).toBe(true)
-    expect(
-      finalizeControl({ type: "Dateonly", allowNull: true }).allowNull,
-    ).toBe(true)
-    expect(
-      finalizeControl({ type: "Dateonly", allowNull: false }).allowNull,
-    ).toBe(false)
+    expect(finalizeControl({ type: "Date", allowNull: true }).allowNull).toBe(
+      true,
+    )
+    expect(finalizeControl({ type: "Date", allowNull: false }).allowNull).toBe(
+      false,
+    )
   })
 
   it("handles primary", () => {
+    expect(finalizeControl({ type: "Date", primary: undefined }).primary).toBe(
+      false,
+    )
     expect(
-      finalizeControl({ type: "Dateonly", primary: undefined }).primary,
-    ).toBe(false)
-    expect(
-      finalizeControl({ type: "Dateonly", primary: null as unknown as boolean })
+      finalizeControl({ type: "Date", primary: null as unknown as boolean })
         .primary,
     ).toBe(false)
-    expect(finalizeControl({ type: "Dateonly", primary: true }).primary).toBe(
-      true,
-    )
-    expect(finalizeControl({ type: "Dateonly", primary: false }).primary).toBe(
+    expect(finalizeControl({ type: "Date", primary: true }).primary).toBe(true)
+    expect(finalizeControl({ type: "Date", primary: false }).primary).toBe(
       false,
     )
   })
 
   it("handles default", () => {
     expect(
-      finalizeControl({ type: "Dateonly", default: undefined }).default,
+      finalizeControl({ type: "Date", default: undefined }).default,
     ).toBeNull()
+    expect(finalizeControl({ type: "Date", default: null }).default).toBeNull()
     expect(
-      finalizeControl({ type: "Dateonly", default: null }).default,
-    ).toBeNull()
-    expect(
-      finalizeControl({ type: "Dateonly", default: "1970-01-01" }).default,
+      finalizeControl({ type: "Date", default: "1970-01-01" }).default,
     ).toBe("1970-01-01")
 
     const func = () => "1970-01-01"
 
-    expect(
-      finalizeControl({ type: "Dateonly", default: func }).default,
-    ).toEqual(func)
+    expect(finalizeControl({ type: "Date", default: func }).default).toEqual(
+      func,
+    )
   })
 })

@@ -21,7 +21,7 @@ export interface PartialDatetimeProps<TRequired extends boolean>
 
 export interface PartialDatetimeControlType<TRequired extends boolean>
   extends PartialControlType<Date, TRequired> {
-  type: "Datetime"
+  type: "Date"
   min?: Date | typeof Infinity
   max?: Date | typeof Infinity
   step?: StringStep | number
