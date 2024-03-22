@@ -1,7 +1,10 @@
 import type { ErrorObject } from "json-api-serializer"
 
-import { codes, statusCodes } from "./error/constants.js"
-import { ValidationError, errorResponseHandler } from "./error/index.js"
+import {
+  NotFoundError,
+  ValidationError,
+  errorResponseHandler,
+} from "./error/index.js"
 import type { Hatchify } from "./node.js"
 import type {
   MiddlewareRequest,
@@ -11,7 +14,7 @@ import type {
 
 export function getMiddlewareFunctions(
   hatchify: Hatchify,
-  modelName: string,
+  schemaName: string,
 ): Record<
   string,
   (
@@ -20,17 +23,17 @@ export function getMiddlewareFunctions(
   ) => Promise<MiddlewareResponse | void | Promise<void>>
 > {
   return {
-    findAll: findAllMiddleware(hatchify, modelName),
-    findOne: findOneMiddleware(hatchify, modelName),
-    findAndCountAll: findAndCountAllMiddleware(hatchify, modelName),
-    create: createMiddleware(hatchify, modelName),
-    destroy: destroyMiddleware(hatchify, modelName),
-    update: updateMiddleware(hatchify, modelName),
+    findAll: findAllMiddleware(hatchify, schemaName),
+    findOne: findOneMiddleware(hatchify, schemaName),
+    findAndCountAll: findAndCountAllMiddleware(hatchify, schemaName),
+    create: createMiddleware(hatchify, schemaName),
+    destroy: destroyMiddleware(hatchify, schemaName),
+    update: updateMiddleware(hatchify, schemaName),
     all: handleAllMiddleware(hatchify),
   }
 }
 
-export function findAllMiddleware(hatchify: Hatchify, modelName: string) {
+export function findAllMiddleware(hatchify: Hatchify, schemaName: string) {
   return async function findAllImpl(
     { method, path, querystring }: MiddlewareRequest,
     next: NextFunction,
@@ -40,17 +43,17 @@ export function findAllMiddleware(hatchify: Hatchify, modelName: string) {
     }
 
     // If this is a wildcard or allModel situation, figure out the model from the route
-    if (modelName === "*") {
-      modelName = resolveWildcard(hatchify, path)
+    if (schemaName === "*") {
+      schemaName = resolveWildcard(hatchify, path)
     }
 
     return {
-      body: await hatchify.everything[modelName].findAll(querystring),
+      body: await hatchify.everything[schemaName].findAll(querystring),
     }
   }
 }
 
-export function findOneMiddleware(hatchify: Hatchify, modelName: string) {
+export function findOneMiddleware(hatchify: Hatchify, schemaName: string) {
   return async function findOneImpl(
     { method, path, querystring }: MiddlewareRequest,
     next: NextFunction,
@@ -66,16 +69,16 @@ export function findOneMiddleware(hatchify: Hatchify, modelName: string) {
     }
 
     // If this is a wildcard or allModel situation, figure out the model from the route
-    if (modelName === "*") {
-      if (!params.modelName) {
+    if (schemaName === "*") {
+      if (!params.schemaName) {
         return await next()
       }
 
-      modelName = params.modelName
+      schemaName = params.schemaName
     }
 
     return {
-      body: await hatchify.everything[modelName].findOne(
+      body: await hatchify.everything[schemaName].findOne(
         querystring,
         params.id,
       ),
@@ -85,7 +88,7 @@ export function findOneMiddleware(hatchify: Hatchify, modelName: string) {
 
 export function findAndCountAllMiddleware(
   hatchify: Hatchify,
-  modelName: string,
+  schemaName: string,
 ) {
   return async function findAndCountAllImpl(
     { method, path, querystring }: MiddlewareRequest,
@@ -96,17 +99,17 @@ export function findAndCountAllMiddleware(
     }
 
     // If this is a wildcard or allModel situation, figure out the model from the route
-    if (modelName === "*") {
-      modelName = resolveWildcard(hatchify, path)
+    if (schemaName === "*") {
+      schemaName = resolveWildcard(hatchify, path)
     }
 
     return {
-      body: await hatchify.everything[modelName].findAndCountAll(querystring),
+      body: await hatchify.everything[schemaName].findAndCountAll(querystring),
     }
   }
 }
 
-export function createMiddleware(hatchify: Hatchify, modelName: string) {
+export function createMiddleware(hatchify: Hatchify, schemaName: string) {
   return async function createImpl(
     { body, method, path, querystring }: MiddlewareRequest,
     next: NextFunction,
@@ -117,12 +120,12 @@ export function createMiddleware(hatchify: Hatchify, modelName: string) {
 
     try {
       // If this is a wildcard or allModel situation, figure out the model from the route
-      if (modelName === "*") {
-        modelName = resolveWildcard(hatchify, path)
+      if (schemaName === "*") {
+        schemaName = resolveWildcard(hatchify, path)
       }
 
       return {
-        body: await hatchify.everything[modelName].create(body, querystring),
+        body: await hatchify.everything[schemaName].create(body, querystring),
       }
     } catch (ex) {
       console.error("error", ex)
@@ -131,7 +134,7 @@ export function createMiddleware(hatchify: Hatchify, modelName: string) {
   }
 }
 
-export function updateMiddleware(hatchify: Hatchify, modelName: string) {
+export function updateMiddleware(hatchify: Hatchify, schemaName: string) {
   return async function updateImpl(
     { body, method, path }: MiddlewareRequest,
     next: NextFunction,
@@ -141,8 +144,8 @@ export function updateMiddleware(hatchify: Hatchify, modelName: string) {
     }
 
     // If this is a wildcard or allModel situation, figure out the model from the route
-    if (modelName === "*") {
-      modelName = resolveWildcard(hatchify, path)
+    if (schemaName === "*") {
+      schemaName = resolveWildcard(hatchify, path)
     }
 
     const { id } = hatchify.getHatchifyURLParamsForRoute(path)
@@ -152,12 +155,12 @@ export function updateMiddleware(hatchify: Hatchify, modelName: string) {
     }
 
     return {
-      body: await hatchify.everything[modelName].update(body, id),
+      body: await hatchify.everything[schemaName].update(body, id),
     }
   }
 }
 
-export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
+export function destroyMiddleware(hatchify: Hatchify, schemaName: string) {
   return async function destroyImpl(
     { method, path }: MiddlewareRequest,
     next: NextFunction,
@@ -167,8 +170,8 @@ export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
     }
 
     // If this is a wildcard or allModel situation, figure out the model from the route
-    if (modelName === "*") {
-      modelName = resolveWildcard(hatchify, path)
+    if (schemaName === "*") {
+      schemaName = resolveWildcard(hatchify, path)
     }
 
     const { id } = hatchify.getHatchifyURLParamsForRoute(path)
@@ -178,7 +181,7 @@ export function destroyMiddleware(hatchify: Hatchify, modelName: string) {
     }
 
     return {
-      body: await hatchify.everything[modelName].destroy(id),
+      body: await hatchify.everything[schemaName].destroy(id),
     }
   }
 }
@@ -194,9 +197,9 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         return await next()
       }
 
-      const { modelName, id } = hatchify.getHatchifyURLParamsForRoute(path)
+      const { schemaName, id } = hatchify.getHatchifyURLParamsForRoute(path)
 
-      if (!modelName) {
+      if (!schemaName) {
         return await next()
       }
 
@@ -204,7 +207,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         case "GET": {
           if (id) {
             return {
-              body: await hatchify.everything[modelName].findOne(
+              body: await hatchify.everything[schemaName].findOne(
                 querystring,
                 id,
               ),
@@ -212,7 +215,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
           }
 
           return {
-            body: await hatchify.everything[modelName].findAndCountAll(
+            body: await hatchify.everything[schemaName].findAndCountAll(
               querystring,
             ),
           }
@@ -220,7 +223,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
 
         case "POST": {
           return {
-            body: await hatchify.everything[modelName].create(
+            body: await hatchify.everything[schemaName].create(
               body,
               querystring,
             ),
@@ -231,15 +234,13 @@ export function handleAllMiddleware(hatchify: Hatchify) {
           if (!id) {
             throw [
               new ValidationError({
-                status: statusCodes.UNPROCESSABLE_ENTITY,
-                code: codes.ERR_INVALID_PARAMETER,
                 title: "Invalid ID Provided",
               }),
             ]
           }
 
           return {
-            body: await hatchify.everything[modelName].update(body, id),
+            body: await hatchify.everything[schemaName].update(body, id),
           }
         }
 
@@ -247,15 +248,13 @@ export function handleAllMiddleware(hatchify: Hatchify) {
           if (!id) {
             throw [
               new ValidationError({
-                status: statusCodes.UNPROCESSABLE_ENTITY,
-                code: codes.ERR_INVALID_PARAMETER,
                 title: "Invalid ID Provided",
               }),
             ]
           }
 
           return {
-            body: await hatchify.everything[modelName].destroy(id),
+            body: await hatchify.everything[schemaName].destroy(id),
           }
         }
 
@@ -275,26 +274,18 @@ export function handleAllMiddleware(hatchify: Hatchify) {
 }
 
 export function resolveWildcard(hatchify: Hatchify, path: string): string {
-  const { modelName } = hatchify.getHatchifyURLParamsForRoute(path)
-  if (!modelName) {
+  const { schemaName } = hatchify.getHatchifyURLParamsForRoute(path)
+  if (!schemaName) {
     throw [
       new ValidationError({
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        code: codes.ERR_INVALID_PARAMETER,
         title: "Invalid URL Format",
       }),
     ]
   }
 
-  if (!hatchify.orm.models[modelName]) {
-    throw [
-      new ValidationError({
-        status: statusCodes.UNPROCESSABLE_ENTITY,
-        code: codes.ERR_INVALID_PARAMETER,
-        title: "Bad Model Name: ",
-      }),
-    ]
+  if (!hatchify.orm.models[schemaName]) {
+    throw [new NotFoundError({ detail: `Schema ${schemaName} was not found` })]
   }
 
-  return modelName
+  return schemaName
 }

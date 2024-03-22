@@ -51,13 +51,13 @@ export function buildSerializerForModel(
 
 export function registerSchema(
   serializer: JSONAPISerializer,
-  model: FinalSchema,
+  schema: FinalSchema,
   associations: Record<string, IAssociation>,
   primaryKey: string,
 ): void {
-  serializer.register(getSchemaKey(model), {
+  serializer.register(getSchemaKey(schema), {
     id: primaryKey,
-    whitelist: Object.keys(model.attributes),
+    whitelist: Object.keys(schema.attributes),
     relationships: Object.entries(associations).reduce(
       (acc, [associationName, { model }]) => ({
         ...acc,
