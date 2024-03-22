@@ -18,14 +18,14 @@ describe("middleware", () => {
   const baseRequest = {
     body: {},
     errorCallback: jest.fn(),
-    path: "/api/models",
+    path: "/api/schemas",
     querystring: "",
   }
 
   beforeEach(() => {
     hatchedNode = {
       everything: {
-        Model: {
+        Schema: {
           findAll: jest.fn(),
           findOne: jest.fn(),
           findAndCountAll: jest.fn(),
@@ -36,7 +36,7 @@ describe("middleware", () => {
       },
       orm: {
         models: {
-          Model: {},
+          Schema: {},
         },
       },
     } as unknown as Hatchify
@@ -44,7 +44,7 @@ describe("middleware", () => {
 
   describe("getMiddlewareFunctions", () => {
     it("exports all middleware", () => {
-      expect(getMiddlewareFunctions(hatchedNode, "Model")).toEqual({
+      expect(getMiddlewareFunctions(hatchedNode, "Schema")).toEqual({
         findAll: expect.any(Function),
         findOne: expect.any(Function),
         findAndCountAll: expect.any(Function),
@@ -59,53 +59,53 @@ describe("middleware", () => {
   describe("findAllMiddleware", () => {
     it("does not skip GET calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const findAllImpl = findAllMiddleware(hatchedNode, "Model")
+      const findAllImpl = findAllMiddleware(hatchedNode, "Schema")
 
       await findAllImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.findAll).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findAll).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("skips POST calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const findAllImpl = findAllMiddleware(hatchedNode, "Model")
+      const findAllImpl = findAllMiddleware(hatchedNode, "Schema")
 
       await findAllImpl({ ...baseRequest, method: "POST" }, next)
 
-      expect(hatchedNode.everything.Model.findAll).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findAll).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
 
     it("handles wildcard", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const findAllImpl = findAllMiddleware(hatchedNode, "*")
 
       await findAllImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.findAll).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findAll).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("handles non-existing models", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const findAllImpl = findAllMiddleware(hatchedNode, "Invalid")
 
       await findAllImpl({ ...baseRequest, method: "POST" }, next)
 
-      expect(hatchedNode.everything.Model.findAll).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findAll).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
   })
@@ -114,56 +114,56 @@ describe("middleware", () => {
     it("does not skip GET calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const findOneImpl = findOneMiddleware(hatchedNode, "Model")
+      const findOneImpl = findOneMiddleware(hatchedNode, "Schema")
 
       await findOneImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.findOne).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findOne).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("skips POST calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const findOneImpl = findOneMiddleware(hatchedNode, "Model")
+      const findOneImpl = findOneMiddleware(hatchedNode, "Schema")
 
       await findOneImpl({ ...baseRequest, method: "POST" }, next)
 
-      expect(hatchedNode.everything.Model.findOne).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findOne).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
 
     it("handles wildcard", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const findOneImpl = findOneMiddleware(hatchedNode, "*")
 
       await findOneImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.findOne).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findOne).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("handles non-existing models", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const findOneImpl = findOneMiddleware(hatchedNode, "Invalid")
 
       await findOneImpl({ ...baseRequest, method: "POST" }, next)
 
-      expect(hatchedNode.everything.Model.findOne).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findOne).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
   })
@@ -171,54 +171,54 @@ describe("middleware", () => {
   describe("findAndCountAllMiddleware", () => {
     it("does not skip GET calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const findAndCountAllImpl = findAndCountAllMiddleware(
         hatchedNode,
-        "Model",
+        "Schema",
       )
 
       await findAndCountAllImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.findAndCountAll).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findAndCountAll).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("skips POST calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const findAndCountAllImpl = findAndCountAllMiddleware(
         hatchedNode,
-        "Model",
+        "Schema",
       )
 
       await findAndCountAllImpl({ ...baseRequest, method: "POST" }, next)
 
       expect(
-        hatchedNode.everything.Model.findAndCountAll,
+        hatchedNode.everything.Schema.findAndCountAll,
       ).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
 
     it("handles wildcard", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const findAndCountAllImpl = findAndCountAllMiddleware(hatchedNode, "*")
 
       await findAndCountAllImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.findAndCountAll).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.findAndCountAll).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("handles non-existing models", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const findAndCountAllImpl = findAndCountAllMiddleware(
@@ -229,7 +229,7 @@ describe("middleware", () => {
       await findAndCountAllImpl({ ...baseRequest, method: "POST" }, next)
 
       expect(
-        hatchedNode.everything.Model.findAndCountAll,
+        hatchedNode.everything.Schema.findAndCountAll,
       ).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
@@ -238,53 +238,53 @@ describe("middleware", () => {
   describe("createMiddleware", () => {
     it("does not skip POST calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const createImpl = createMiddleware(hatchedNode, "Model")
+      const createImpl = createMiddleware(hatchedNode, "Schema")
 
       await createImpl({ ...baseRequest, method: "POST" }, next)
 
-      expect(hatchedNode.everything.Model.create).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.create).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("skips GET calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const createImpl = createMiddleware(hatchedNode, "Model")
+      const createImpl = createMiddleware(hatchedNode, "Schema")
 
       await createImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.create).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.create).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
 
     it("handles wildcard", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const createImpl = createMiddleware(hatchedNode, "*")
 
       await createImpl({ ...baseRequest, method: "POST" }, next)
 
-      expect(hatchedNode.everything.Model.create).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.create).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("handles non-existing models", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const createImpl = createMiddleware(hatchedNode, "Invalid")
 
       await createImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.create).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.create).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
   })
@@ -293,56 +293,56 @@ describe("middleware", () => {
     it("does not skip PATCH calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const updateImpl = updateMiddleware(hatchedNode, "Model")
+      const updateImpl = updateMiddleware(hatchedNode, "Schema")
 
       await updateImpl({ ...baseRequest, method: "PATCH" }, next)
 
-      expect(hatchedNode.everything.Model.update).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.update).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("skips GET calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const updateImpl = updateMiddleware(hatchedNode, "Model")
+      const updateImpl = updateMiddleware(hatchedNode, "Schema")
 
       await updateImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.update).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.update).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
 
     it("handles wildcard", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const updateImpl = updateMiddleware(hatchedNode, "*")
 
       await updateImpl({ ...baseRequest, method: "PATCH" }, next)
 
-      expect(hatchedNode.everything.Model.update).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.update).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("handles non-existing models", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const updateImpl = updateMiddleware(hatchedNode, "Invalid")
 
       await updateImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.update).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.update).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
   })
@@ -351,56 +351,56 @@ describe("middleware", () => {
     it("does not skip DELETE calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const destroyImpl = destroyMiddleware(hatchedNode, "Model")
+      const destroyImpl = destroyMiddleware(hatchedNode, "Schema")
 
       await destroyImpl({ ...baseRequest, method: "DELETE" }, next)
 
-      expect(hatchedNode.everything.Model.destroy).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.destroy).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("skips GET calls", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
-      const destroyImpl = destroyMiddleware(hatchedNode, "Model")
+      const destroyImpl = destroyMiddleware(hatchedNode, "Schema")
 
       await destroyImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.destroy).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.destroy).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
 
     it("handles wildcard", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const destroyImpl = destroyMiddleware(hatchedNode, "*")
 
       await destroyImpl({ ...baseRequest, method: "DELETE" }, next)
 
-      expect(hatchedNode.everything.Model.destroy).toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.destroy).toHaveBeenCalled()
       expect(next).not.toHaveBeenCalled()
     })
 
     it("handles non-existing models", async () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
         id: "5354dff7-381c-43bf-866f-2b889919f632",
-        modelName: "Model",
+        schemaName: "Schema",
       })
       const next = jest.fn() as NextFunction
       const destroyImpl = destroyMiddleware(hatchedNode, "Invalid")
 
       await destroyImpl({ ...baseRequest, method: "GET" }, next)
 
-      expect(hatchedNode.everything.Model.destroy).not.toHaveBeenCalled()
+      expect(hatchedNode.everything.Schema.destroy).not.toHaveBeenCalled()
       expect(next).toHaveBeenCalled()
     })
   })
@@ -408,9 +408,9 @@ describe("middleware", () => {
   describe("resolveWildcard", () => {
     it("resolves properly", () => {
       hatchedNode.getHatchifyURLParamsForRoute = () => ({
-        modelName: "Model",
+        schemaName: "Schema",
       })
-      expect(resolveWildcard(hatchedNode, "/models")).toBe("Model")
+      expect(resolveWildcard(hatchedNode, "/models")).toBe("Schema")
     })
   })
 })

@@ -1,23 +1,12 @@
 import { HatchifyError } from "./HatchifyError.js"
-import { codes } from "../constants.js"
-import type { statusCodes } from "../constants.js"
+import { codes, statusCodes } from "../constants.js"
 
 export class ValidationError extends HatchifyError {
-  constructor({
-    title,
-    status,
-    code,
-    pointer,
-  }: {
-    title: string
-    status: statusCodes
-    code?: codes
-    pointer?: string
-  }) {
+  constructor({ title, pointer }: { title: string; pointer?: string }) {
     super({
       title,
-      status,
-      code: code || codes.ERR_INVALID_PARAMETER,
+      status: statusCodes.UNPROCESSABLE_ENTITY,
+      code: codes.ERR_INVALID_PARAMETER,
       pointer,
     })
   }
