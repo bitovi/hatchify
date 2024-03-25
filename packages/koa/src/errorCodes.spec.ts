@@ -726,6 +726,91 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
       })
     })
 
+    describe("should return error UNEXPECTED_VALUE error code when receiving data for non-existing relationships (HATCH-214)", () => {
+      it("POST", async () => {
+        const ERROR_CODE_RELATIONSHIP_PATH = {
+          status: 400,
+          code: "relationship-path",
+          title: "Relationship path could not be identified.",
+          detail: "Payload must include an identifiable relationship path.",
+          source: {
+            pointer: "/data/relationships/usrError",
+          },
+        }
+
+        const { status, body } = await fetch("/api/todos", {
+          method: "post",
+          body: {
+            data: {
+              type: "Todo",
+              attributes: {
+                name: "A todo for user 1",
+                dueDate: "2024-12-12",
+                importance: 8,
+              },
+              relationships: {
+                usrError: {
+                  data: {
+                    type: "User",
+                    id: "435d86ab-ff9f-4599-a805-a978f49710b1",
+                  },
+                },
+              },
+            },
+          },
+        })
+
+        expect(status).toBe(ERROR_CODE_RELATIONSHIP_PATH.status)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [ERROR_CODE_RELATIONSHIP_PATH],
+        })
+      })
+
+      it("PATCH", async () => {
+        const ERROR_CODE_RELATIONSHIP_PATH = {
+          status: 400,
+          code: "relationship-path",
+          title: "Relationship path could not be identified.",
+          detail: "Payload must include an identifiable relationship path.",
+          source: {
+            pointer: "/data/relationships/usrError",
+          },
+        }
+
+        const { status, body } = await fetch(
+          "/api/todos/cbfb99bc-f55d-4b9a-8abf-381dd0c8c709",
+          {
+            method: "patch",
+            body: {
+              data: {
+                type: "Todo",
+                attributes: {
+                  name: "A todo for user 1",
+                  dueDate: "2024-12-12",
+                  importance: 8,
+                },
+                relationships: {
+                  usrError: {
+                    data: {
+                      type: "User",
+                      id: "435d86ab-ff9f-4599-a805-a978f49710b1",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        )
+
+        expect(status).toBe(ERROR_CODE_RELATIONSHIP_PATH.status)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [ERROR_CODE_RELATIONSHIP_PATH],
+        })
+      })
+    })
+
     it("should return error VALUE_REQUIRED error code when receiving no data for relationships (HATCH-215)", async () => {
       const ERROR_CODE_VALUE_REQUIRED = {
         status: 422,
@@ -733,7 +818,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
         title: "Payload is missing a required value.",
         detail: "Payload must include a value for 'data'.",
         source: {
-          pointer: "/data/attributes/user/data",
+          pointer: "/data/relationships/user/data",
         },
       }
       const { status, body } = await fetch("/api/todos", {
@@ -824,7 +909,7 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
       })
     })
 
-    it("should return error UNEXPECTED_VALUE error code when receiving non-existing schema (HATCH-389)", async () => {
+    it("should return error UNEXPECTED_VALUE error code when receiving non-existing schema (HATCH-244)", async () => {
       const ERROR_CODE_UNEXPECTED_VALUE = {
         status: 422,
         code: "unexpected-value",
@@ -840,6 +925,85 @@ describe.each(dbDialects)("Error Code Tests", (dialect) => {
       expect(body).toEqual({
         jsonapi: { version: "1.0" },
         errors: [ERROR_CODE_UNEXPECTED_VALUE],
+      })
+    })
+
+    describe("should return error UNEXPECTED_VALUE error code when 'type' property is misspelled (HATCH-207)", () => {
+      it("POST", async () => {
+        const ERROR_CODE_VALUE_REQUIRED = {
+          status: 422,
+          code: "value-required",
+          title: "Payload is missing a required value.",
+          detail: "Payload must include a value for 'type'.",
+          source: {
+            pointer: "/data/type",
+          },
+        }
+        const response = await fetch("/api/todos", {
+          method: "post",
+          body: {
+            data: {
+              typed: "Todo",
+              attributes: {
+                id: "101",
+                name: "Walk the dog",
+                dueDate: "2024-12-12",
+                importance: 6,
+                complete: true,
+              },
+            },
+          },
+        })
+
+        expect(response).toBeTruthy()
+
+        const { status, body } = response
+
+        expect(status).toBe(ERROR_CODE_VALUE_REQUIRED.status)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [ERROR_CODE_VALUE_REQUIRED],
+        })
+      })
+
+      it("PATCH", async () => {
+        const ERROR_CODE_VALUE_REQUIRED = {
+          status: 422,
+          code: "value-required",
+          title: "Payload is missing a required value.",
+          detail: "Payload must include a value for 'type'.",
+          source: {
+            pointer: "/data/type",
+          },
+        }
+        const response = await fetch(
+          "/api/todos/cbfb99bc-f55d-4b9a-8abf-381dd0c8c709",
+          {
+            method: "patch",
+            body: {
+              data: {
+                typed: "Todo",
+                attributes: {
+                  id: "101",
+                  name: "Walk the dog",
+                  dueDate: "2024-12-12",
+                  importance: 6,
+                  complete: true,
+                },
+              },
+            },
+          },
+        )
+
+        expect(response).toBeTruthy()
+
+        const { status, body } = response
+
+        expect(status).toBe(ERROR_CODE_VALUE_REQUIRED.status)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [ERROR_CODE_VALUE_REQUIRED],
+        })
       })
     })
   })
