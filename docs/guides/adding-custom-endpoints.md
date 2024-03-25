@@ -4,7 +4,7 @@ While Hatchify gives you a lot of power out of the box many applications, especi
 
 This is helpful if you need to:
 
-- Enforce request authorization
+- [Enforce request authorization](./adding-request-authorization.md)
 - Add custom validation
 - Integrate with 3rd party services
 - Handle file uploads/downloads

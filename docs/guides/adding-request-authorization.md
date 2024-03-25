@@ -1,13 +1,15 @@
 # Adding request authorization
 
-While Hatchify gives you a lot of power out of the box many applications, especially as they grow in complexity, need to apply custom rules and logic to their CRUD operations. Hatchify is prepared for this as well, allowing you to easily and flexibly override any of the default behavior to fit your needs. Even though you have customized the solution you can still use many of the Hatchify helper functions and features to accelerate development.
+So you have a working app and you want to limit access to specific users. Due to the nature of Hatchify where we opt-in to use the auto-generated middleware, adding authorization check is as simple as adding another middleware to your favorite backend framework. A common way to maintain an HTTP session is using cookies, since browsers will automatically attach them to all requests sent to our backend.
 
-This is helpful if you need to:
+## Prerequisites
 
-- Enforce request authorization
-- Add custom validation
-- Integrate with 3rd party services
-- Handle file uploads/downloads
+If you are using `Koa`, we suggest using the Koa Router to help create custom routes easily:
+
+```bash
+npm install co-body
+npm install @types/co-body --save-dev
+```
 
 ## Example
 
@@ -41,6 +43,7 @@ Now we want to add request authorization, while keeping the existing Hatchify lo
 
 ```typescript
 import Koa from "koa"
+import parse from "co-body" // 👀
 import { hatchifyKoa } from "@hatchifyjs/koa"
 import * as Schemas from "../schemas"
 
@@ -53,7 +56,43 @@ const hatchedKoa = hatchifyKoa(Schemas, {
 })
 
 ;(async () => {
-  // This is the auth middleware we add to check the value of the `auth` cookie
+  // This is the authentication middleware we add to set the value of the `auth` cookie
+  app.use(async (ctx, next) => {
+    if (ctx.method !== "POST" || ctx.url !== "/login") {
+      return next()
+    }
+
+    const body = await parse(ctx)
+
+    if (!body) {
+      return next()
+    }
+
+    // TODO: These are here just for demo purposes. They should live in the database or a 3rd party service.
+    const users: Record<string, string> = {
+      admin: "adminPassword",
+      user: "userPassword",
+    }
+
+    const { username, password } = body
+
+    if (password === users[username]) {
+      ctx.cookies.set("auth", "custom-value")
+      return ctx.redirect("/")
+    }
+
+    ctx.status = 401
+    ctx.body = {
+      errors: [
+        {
+          status: 401,
+          code: "unauthorized",
+        },
+      ],
+    }
+  })
+
+  // This is the authorization middleware we add to check the value of the `auth` cookie
   app.use(async (ctx, next) => {
     const authToken = ctx.header.cookie?.match(/auth=([^;]*)/)?.[1]
 
@@ -101,7 +140,7 @@ curl http://localhost:3000/api/cases
 }
 ```
 
-However, passing the right auth cookie will get all the results:
+However, when the browser (or Postman) is making a request to `/login` with `{ "username": "admin", "password": "adminPassword" }` it will set a cookie and automatically attach it to all future requests, allowing to access our routes:
 
 ```curl
 curl http://localhost:3000/api/cases --cookie "auth=custom-value"
