@@ -146,7 +146,7 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
         ...acc,
         new ValueRequiredError({
           detail: `Payload must include a value for '${relationshipName}'.`,
-          pointer: `/data/attributes/${relationshipName}`,
+          pointer: `/data/relationships/${relationshipName}`,
         }),
       ]
     }
@@ -156,7 +156,7 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
         ...acc,
         new ValueRequiredError({
           detail: "Payload must include a value for 'data'.",
-          pointer: `/data/attributes/${relationshipName}/data`,
+          pointer: `/data/relationships/${relationshipName}/data`,
         }),
       ]
     }
