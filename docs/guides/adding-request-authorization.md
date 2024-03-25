@@ -4,7 +4,7 @@ So you have a working app and you want to limit access to specific users. Due to
 
 ## Prerequisites
 
-If you are using `Koa`, we suggest using the Koa Router to help create custom routes easily:
+If you are using `Koa`, we suggest using [`co-body`](https://www.npmjs.com/package/co-body) to parse request body easily:
 
 ```bash
 npm install co-body
