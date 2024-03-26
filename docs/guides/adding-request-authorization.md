@@ -94,7 +94,7 @@ const hatchedKoa = hatchifyKoa(Schemas, {
 
   // This is the authorization middleware we add to check the value of the `auth` cookie
   app.use(async (ctx, next) => {
-    const authToken = ctx.header.cookie?.match(/auth=([^;]*)/)?.[1]
+    const authToken = ctx.cookies.get("auth")
 
     if (authToken === "custom-value") {
       return next()
