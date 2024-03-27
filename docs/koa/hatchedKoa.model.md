@@ -1,6 +1,9 @@
+> [!CAUTION]
+> This feature is deprecated. Do not use it. Use `hatchedKoa.orm.models` instead.
+
 # hatchedKoa.model
 
-`hatchedKoa.model` is a collection of methods to create, retrieve, update and delete records using the underlying [orm]. These methods 
+`hatchedKoa.model` is a collection of methods to create, retrieve, update and delete records using the underlying [ORM](https://sequelize.org/). These methods
 are grouped by Schema name.
 
 For example, the following shows using `Todo.findAll` to retrieve todo records as JavaScript objects:
@@ -37,7 +40,9 @@ Each model has the following methods:
 
 ## findAll
 
-`hatchedKoa.model[schemaName].findAll(options : FindOptions) => [Model]` is a method that retrieves JavaScript objects from the underlying orm and database.
+A method that retrieves Sequelize objects from the underlying ORM and database.
+
+`hatchedKoa.model[schemaName].findAll(options : FindOptions) => Promise<[Model]>`
 
 ```ts
 const deserializedTodos = await hatchedKoa.model.Todo.findAll({
@@ -48,43 +53,59 @@ const deserializedTodos = await hatchedKoa.model.Todo.findAll({
 // ]
 ```
 
-__Parameters__
+**Parameters**
 
-| Property    | Type           | Default | Details                       |
-| ----------- | -------------- | ------- | ----------------------------- |
-| options | \[FindOptions] | `{}`    | Specify what records to load. |
+| Property | Type                                                                                       | Default | Details                       |
+| -------- | ------------------------------------------------------------------------------------------ | ------- | ----------------------------- |
+| options  | [FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll) | `{}`    | Specify what records to load. |
 
-__Returns__
+**Returns**
 
-🛑 What format? Array of JS objects?
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Model> | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/null)>
 
-- Can this throw an exception?
-- Can it return null?
+**Rejects**
 
-__Throws__
-
-- Can this throw an exception? 🛑
+Since this is exposing the actual Sequelize function, it can throw any [Sequelize error](https://sequelize.org/api/v6/class/src/errors/base-error.ts~baseerror).
 
 ## findAndCountAll
 
-`hatchedKoa.model[schemaName].findAndCountAll(options : FindOptions) => { count: number, rows: Model[] }` finsd all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for pagination.
+Finds all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for pagination.
+
+`hatchedKoa.model[schemaName].findAndCountAll(options : FindOptions) => Promise<{ count: number, rows: Model[] }>`
 
 ```ts
 const deserializedTodos = await hatchedKoa.model.Todo.findAll({
   where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" },
-  limit: 10,
+  limit: 1,
   offset: 0,
 })
-// 🛑 should this be showing the count being returned?
-// deserializedTodos = [
-//   { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
-// ]
+// deserializedTodos = {
+//   count: 10,
+//   rows: [
+//     { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
+//   ]
+// }
 ```
 
+**Parameters**
 
-## findOne 
+| Property | Type                                                                                       | Default | Details                       |
+| -------- | ------------------------------------------------------------------------------------------ | ------- | ----------------------------- |
+| options  | [FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll) | `{}`    | Specify what records to load. |
 
-`hatchedKoa.model[schemaName].findAll(options: FindOptions) => Model | null` searches for a single instance. Returns the first instance found, or null if none can be found.
+**Returns**
+
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<{ count: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), rows: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Model>}> | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/null)>
+
+**Rejects**
+
+Since this is exposing the actual Sequelize function, it can throw any [Sequelize error](https://sequelize.org/api/v6/class/src/errors/base-error.ts~baseerror).
+
+## findOne
+
+searches for a single instance. Returns the first instance found, or null if none can be found.
+
+`hatchedKoa.model[schemaName].findAll(options: FindOptions) => Promise<Model | null>`
 
 ```ts
 const deserializedTodo = await hatchedKoa.model.Todo.findOne({
@@ -93,62 +114,80 @@ const deserializedTodo = await hatchedKoa.model.Todo.findOne({
 // deserializedTodo = { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673", name: "Baking" }
 ```
 
-__Parameters__
+**Parameters**
 
-| Property    | Type           | Default | Details                       |
-| ----------- | -------------- | ------- | ----------------------------- |
-| options | \[FindOptions] | `{}`    | Specify what record to load. |
+| Property | Type                                                                                       | Default | Details                       |
+| -------- | ------------------------------------------------------------------------------------------ | ------- | ----------------------------- |
+| options  | [FindOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll) | `{}`    | Specify what records to load. |
 
-__Returns__
+**Returns**
 
-- 🛑 
-- Can this throw an exception?
-- Can it return null?
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<Model | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/null)>
 
+**Rejects**
 
-## create 
+Since this is exposing the actual Sequelize function, it can throw any [Sequelize error](https://sequelize.org/api/v6/class/src/errors/base-error.ts~baseerror).
 
-`hatchedKoa.model[schemaName].create(body: unknown🛑, options: CreateOptions) => data🛑` creates a new instance.
+## create
+
+creates a new instance.
+
+`hatchedKoa.model[schemaName].create(body: object, options: CreateOptions) => Promise<Model>`
 
 ```ts
 const deserializedTodo = await hatchedKoa.model.Todo.create({ name: "Baking" })
 // deserializedTodo = { name: "Baking" }
 ```
 
-__Parameters__
+**Parameters**
 
-| Property | Type             | Default | Details                        |
-| :------- | :--------------- | :------ | :----------------------------- |
-| body     | \[unknown🛑]       | N/A     | The data for the new instance. |
-| ops      | \[CreateOptions🛑] | N/A     | Options for the creation.      |
+| Property | Type                                                                                        | Default | Details                        |
+| :------- | :------------------------------------------------------------------------------------------ | :------ | :----------------------------- |
+| body     | object                                                                                      | N/A     | The data for the new instance. |
+| options  | [CreateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-create) | `{}`    | Options for the creation.      |
 
-__Returns__
+**Returns**
 
-🛑 
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<Model>
+
+**Rejects**
+
+Since this is exposing the actual Sequelize function, it can throw any [Sequelize error](https://sequelize.org/api/v6/class/src/errors/base-error.ts~baseerror).
 
 ## update
 
-`hatchedKoa.model[schemaName].update(body: unknown, ops: UpdateOptions, id?: Identifier) => number` updates one or more instances.
+updates one or more instances.
+
+`hatchedKoa.model[schemaName].update(body: object, options: UpdateOptions) => Promise<[number, Model[]]>`
 
 ```ts
 const [updatedCount, updatedTodos] = await hatchedKoa.model.Todo.update({ name: "Serving" }, { where: { id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673" } })
 // updatedCount = 1
-// updatedTodos = [{ name: "Baking" }]
+// updatedTodos = [{ name: "Serving" }]
 ```
 
-__Parameters__
+**Parameters**
 
-🛑 Are UpdateOptions and DestroyOptions different than findOptions?
+| Property | Type                                                                                        | Default | Details                 |
+| :------- | :------------------------------------------------------------------------------------------ | :------ | :---------------------- |
+| values   | object                                                                                      | N/A     | The values to update.   |
+| options  | [UpdateOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-update) | `{}`    | Options for the update. |
 
-__Returns__
+**Returns**
 
-🛑 
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<[[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), Model[]]>
+
+The promise returns an array with one or two elements. The first element is always the number of affected rows, while the second element is the actual affected rows (only supported in postgres with options.returning true).
+
+**Rejects**
+
+Since this is exposing the actual Sequelize function, it can throw any [Sequelize error](https://sequelize.org/api/v6/class/src/errors/base-error.ts~baseerror).
 
 ## destroy
 
-`hatchedKoa.model[schemaName].destroy(ops: DestroyOptions, id?: Identifier) => number`
-
 Deletes one or more instances.
+
+`hatchedKoa.model[schemaName].destroy(options: DestroyOptions, id?: Identifier) => Promise<number>`
 
 ```ts
 const deletedCount = await hatchedKoa.model.Todo.destroy({
@@ -157,10 +196,18 @@ const deletedCount = await hatchedKoa.model.Todo.destroy({
 // deletedCount = 1
 ```
 
-__Parameters__
+**Parameters**
 
-🛑 Are UpdateOptions and DestroyOptions different than findOptions?
+| Property | Type                                                                                          | Default | Details                  |
+| :------- | :-------------------------------------------------------------------------------------------- | :------ | :----------------------- |
+| options  | [DestroyOptions](https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy) | `{}`    | Options for the destroy. |
 
-__Returns__
+**Returns**
 
-🛑 
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)>
+
+The promise returns the number of destroyed rows.
+
+**Rejects**
+
+Since this is exposing the actual Sequelize function, it can throw any [Sequelize error](https://sequelize.org/api/v6/class/src/errors/base-error.ts~baseerror).

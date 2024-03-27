@@ -2,12 +2,13 @@ import type { GetSchemaNames, Filters, Meta } from "@hatchifyjs/rest-client"
 import type { DataGridState } from "../hooks/useDataGridState.js"
 import type { FinalAttributeRecord, PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyColumn } from "../hooks/index.js"
+import type { DefaultDisplayComponentsTypes } from "../react-ui.js"
 
 export type Primitive = string | boolean | number
 
-export interface XProviderProps<T> {
-  theme?: T
+export interface XProviderProps {
   children: React.ReactNode
+  defaultDisplayComponents?: Partial<DefaultDisplayComponentsTypes>
 }
 
 export interface SortObject {
@@ -32,12 +33,14 @@ export interface HatchifyDataGridSort {
   sortQueryString: string
 }
 
+export interface HatchifyDataGridSelectedState {
+  all: boolean
+  ids: string[]
+}
+
 export interface HatchifyDataGridSelected {
-  selected: {
-    all: boolean
-    ids: string[]
-  }
-  setSelected: ({ all, ids }: { all: boolean; ids: string[] }) => void
+  selected: HatchifyDataGridSelectedState
+  setSelected: (selected: HatchifyDataGridSelectedState) => void
 }
 
 export interface HatchifyDataGridFilters {
@@ -52,6 +55,8 @@ export interface XDataGridProps<
   children?: React.ReactNode
   overwrite?: boolean
   minimumLoadTime?: number
+  listWrapperId?: string
+  fitParent?: boolean
 }
 
 export interface XEverythingProps<
@@ -79,12 +84,14 @@ export type Relationship = {
 
 export type DataValue = Primitive | Relationship | Relationship[]
 
+export type DataValueRecord = {
+  id: string | number
+  [field: string]: DataValue
+}
+
 export type DataValueComponent = React.FC<{
   value: DataValue
-  record: {
-    id: string | number
-    [field: string]: DataValue
-  }
+  record: DataValueRecord
   control: FinalAttributeRecord[string]["control"]
   field?: string | null
 }>

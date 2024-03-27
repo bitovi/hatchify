@@ -26,7 +26,7 @@ It is essential that you provide an [SSCCE](http://sscce.org/)/[MCVE](https://st
 
 If you can even provide a Pull Request with a failing test (unit test or integration test), that is great! The bug will likely be fixed much faster in this case.
 
-You can also create and execute your SSCCE locally: see [Section 5](https://github.com/bitovi/hatchify/blob/main/CONTRIBUTING.md#running-an-sscce).
+You can also create and execute your SSCCE locally.
 
 ### Opening an issue to request a new feature
 
@@ -520,7 +520,12 @@ Before making any release please make sure that:
 
 ### Releasing Hatchify packages
 
-All affected Hatchify packages are [automatically](https://github.com/bitovi/hatchify/blob/main/.github/workflows/push.yml#L7) released upon merging to the `main` branch, in order of dependencies. The segment to increment is determined by the pull request title (squashed pull request commit comment), i.e. `minor: HATCH-1234: Some Feature` (defaults to `patch`).
+All affected Hatchify packages are [automatically](./.github/workflows/push.yml#L7) released upon merging to the `main` branch, in order of dependencies. The segment to increment is determined by the pull request title (squashed pull request commit comment):
+
+- `major: HATCH-123: Major Refactor`
+- `minor: HATCH-234: Breaking Changes`
+- `patch: HATCH-345: Bug fixes`
+- `HATCH-456: More bug fixes` -> defaults to patch
 
 #### Publishing release notes
 

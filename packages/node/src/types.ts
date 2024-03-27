@@ -135,7 +135,7 @@ type ModelAttributes<M extends Model = Model, TAttributes = unknown> = {
 }
 
 export interface MiddlewareRequest {
-  body: unknown
+  body: JSONAPIDocument
   method: string
   path: string
   querystring: string

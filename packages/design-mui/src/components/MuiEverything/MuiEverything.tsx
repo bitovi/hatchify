@@ -1,7 +1,4 @@
-import Grid from "@mui/material/Grid/index.js"
-import Tabs from "@mui/material/Tabs/index.js"
-import Tab from "@mui/material/Tab/index.js"
-import Typography from "@mui/material/Typography/index.js"
+import { Grid, Tabs, Tab, Typography } from "@mui/material"
 import { HatchifyEmpty } from "@hatchifyjs/react-ui"
 import type { XEverythingProps } from "@hatchifyjs/react-ui"
 import type { PartialSchema } from "@hatchifyjs/core"
@@ -66,7 +63,16 @@ export function MuiEverything<
                 justifyContent="center"
                 display="flex"
               >
-                There are no schemas. Create some to get started!
+                <span>
+                  There are no schemas.&#32;
+                  <a
+                    href="https://github.com/bitovi/hatchify?tab=readme-ov-file#schemas"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Create some to get started!
+                  </a>
+                </span>
               </Typography>
             </Grid>
           </Grid>

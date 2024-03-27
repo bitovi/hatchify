@@ -11,9 +11,7 @@ import { Op } from "sequelize"
 
 import {
   buildCreateOptions,
-  buildDestroyOptions,
   buildFindOptions,
-  buildUpdateOptions,
   replaceIdentifiers,
 } from "./builder.js"
 import { RelationshipPathError, UnexpectedValueError } from "../error/index.js"
@@ -156,6 +154,7 @@ describe("builder", () => {
         data: {
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -237,6 +236,7 @@ describe("builder", () => {
             },
             { association: "todos", include: [] },
           ],
+          distinct: true,
         },
         errors: [],
         orm: "sequelize",
@@ -410,6 +410,7 @@ describe("builder", () => {
         data: {
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -432,176 +433,6 @@ describe("builder", () => {
       const error = options.errors[0] as unknown as Error
       expect(error.name).toEqual("QuerystringParsingError")
       expect(error.message).toEqual("Incorrect format was provided for fields.")
-    })
-  })
-
-  describe("buildUpdateOptions", () => {
-    it("works with ID attribute provided", () => {
-      const options = buildUpdateOptions(
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
-        Todo,
-      )
-
-      expect(options).toEqual({
-        data: {
-          attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [], attributes: ["name"] }],
-          limit: 5,
-          offset: 10,
-          subQuery: false,
-          where: { name: { [Op.eq]: "laundry" } },
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("does not add ID attribute if not specified", () => {
-      const options = buildUpdateOptions("fields[Todo]=name,dueDate", Todo)
-
-      expect(options).toEqual({
-        data: {
-          attributes: ["name", "dueDate"],
-          where: {},
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("ignores ID if any filter provided", () => {
-      const options = buildUpdateOptions(
-        "page[number]=1&page[size]=10",
-        Todo,
-        1,
-      )
-
-      expect(options).toEqual({
-        data: {
-          where: { id: 1 },
-          limit: 10,
-          offset: 0,
-          subQuery: false,
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("handles no attributes", () => {
-      const options = buildUpdateOptions("", Todo)
-
-      expect(options).toEqual({
-        data: { where: {} },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("does not error on unknown attributes", () => {
-      const options = buildUpdateOptions("fields[Todo]=invalid", Todo)
-
-      expect(options).toEqual({
-        data: { attributes: ["invalid"], where: {} },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("handles invalid query string", async () => {
-      await expect(async () =>
-        buildUpdateOptions("fields=name,dueDate", Todo),
-      ).rejects.toEqualErrors([
-        new UnexpectedValueError({
-          detail: "Incorrect format was provided for fields.",
-          parameter: "fields",
-        }),
-      ])
-    })
-  })
-
-  describe("buildDestroyOptions", () => {
-    it("works with ID attribute provided", () => {
-      const options = buildDestroyOptions(
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
-        Todo,
-      )
-
-      expect(options).toEqual({
-        data: {
-          attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [], attributes: ["name"] }],
-          limit: 5,
-          offset: 10,
-          subQuery: false,
-          where: { name: { [Op.eq]: "laundry" } },
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("does not add ID attribute if not specified", () => {
-      const options = buildDestroyOptions("fields[Todo]=name,dueDate", Todo)
-
-      expect(options).toEqual({
-        data: {
-          attributes: ["name", "dueDate"],
-          where: {},
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("ignores ID if any filter provided", () => {
-      const options = buildDestroyOptions(
-        "page[number]=1&page[size]=10",
-        Todo,
-        1,
-      )
-
-      expect(options).toEqual({
-        data: {
-          where: { id: 1 },
-          limit: 10,
-          offset: 0,
-          subQuery: false,
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("handles no attributes", () => {
-      const options = buildDestroyOptions("", Todo)
-
-      expect(options).toEqual({
-        data: { where: {} },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("does not error on unknown attributes", () => {
-      const options = buildDestroyOptions("fields[Todo]=invalid", Todo)
-
-      expect(options).toEqual({
-        data: { attributes: ["invalid"], where: {} },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("handles invalid query string", async () => {
-      await expect(async () =>
-        buildDestroyOptions("fields=name,dueDate", Todo),
-      ).rejects.toEqualErrors([
-        new UnexpectedValueError({
-          detail: "Incorrect format was provided for fields.",
-          parameter: "fields",
-        }),
-      ])
     })
   })
 })

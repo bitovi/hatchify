@@ -8,8 +8,8 @@ import { startServerWith } from "./testing/utils.js"
 dotenv.config({ path: ".env" })
 
 describe("JSON:API Tests", () => {
-  const TestSchema_Model = {
-    name: "Model",
+  const TestSchema_Schema = {
+    name: "Schema",
     namespace: "TestSchema",
     attributes: {
       firstName: string({ required: true }),
@@ -18,7 +18,7 @@ describe("JSON:API Tests", () => {
   } satisfies PartialSchema
 
   function serialize(data: any) {
-    const serializer = new Serializer("TestSchema_Model", {
+    const serializer = new Serializer("TestSchema_Schema", {
       keyForAttribute: "camelCase",
       attributes: Object.keys(data),
       pluralizeType: false,
@@ -32,7 +32,7 @@ describe("JSON:API Tests", () => {
 
   beforeAll(async () => {
     ;({ fetch, teardown } = await startServerWith(
-      { TestSchema_Model },
+      { TestSchema_Schema },
       "postgres",
     ))
   })
@@ -43,12 +43,12 @@ describe("JSON:API Tests", () => {
 
   it("should handle JSON:API create body", async () => {
     //JK will separate cases into different it() tests
-    const r1 = await fetch("/api/test-schema/models", {
+    const r1 = await fetch("/api/test-schema/schemas", {
       method: "post",
       body: serialize({
         firstName: "firstName",
         lastName: "lastName",
-        type: "TestSchema_Model",
+        type: "TestSchema_Schema",
       }),
     })
     expect(r1).toBeTruthy()
@@ -56,12 +56,12 @@ describe("JSON:API Tests", () => {
     expect(r1.body.data).toHaveProperty("id")
     expect(r1.body.data.id).toBeTruthy()
 
-    const r2 = await fetch("/api/test-schema/models", {
+    const r2 = await fetch("/api/test-schema/schemas", {
       method: "post",
       body: serialize({
         firstName: "firstName2",
         lastName: "lastName2",
-        type: "TestSchema_Model",
+        type: "TestSchema_Schema",
       }),
     })
 
@@ -70,7 +70,7 @@ describe("JSON:API Tests", () => {
     expect(r2.body.data).toHaveProperty("id")
     expect(r2.body.data.id).toBeTruthy()
 
-    const find = await fetch(`/api/test-schema/models/${r2.body.data.id}`)
+    const find = await fetch(`/api/test-schema/schemas/${r2.body.data.id}`)
 
     expect(find).toBeTruthy()
     expect(find.status).toBe(200)
@@ -79,24 +79,24 @@ describe("JSON:API Tests", () => {
   })
 
   it("should be able to omit namespace when referring to fields that belongs to the same namespace", async () => {
-    const r1 = await fetch("/api/test-schema/models", {
+    const r1 = await fetch("/api/test-schema/schemas", {
       method: "post",
       body: serialize({
         firstName: "firstName",
         lastName: "lastName",
-        type: "TestSchema_Model",
+        type: "TestSchema_Schema",
       }),
     })
     expect(r1).toBeTruthy()
     expect(r1.status).toBe(200)
 
     const namespaceless = await fetch(
-      "/api/test-schema/models?fields[Model]=firstName",
+      "/api/test-schema/schemas?fields[Schema]=firstName",
     )
     expect(namespaceless).toBeTruthy()
     expect(namespaceless.status).toBe(200)
     const hasNamespace = await fetch(
-      "/api/test-schema/models?fields[TestSchema_Model]=firstName",
+      "/api/test-schema/schemas?fields[TestSchema_Schema]=firstName",
     )
     expect(hasNamespace).toBeTruthy()
     expect(hasNamespace.status).toBe(200)

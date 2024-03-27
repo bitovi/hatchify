@@ -7,7 +7,7 @@ import {
   hasMany,
   string,
 } from "@hatchifyjs/core"
-import { HatchifyPresentationDefaultValueComponents } from "../../../components/index.js"
+import { HatchifyPresentationDefaultDisplayComponents } from "../../../components/index.js"
 import { getColumn, formatFieldAsLabel } from "./index.js"
 
 describe("hooks/useCompoundComponents/helpers/getColumn", () => {
@@ -42,7 +42,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
       key: "title",
       control: finalSchemas.Todo.attributes.title.control,
       compoundComponentProps: {},
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
 
     expect(column).toEqual({
@@ -65,7 +65,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
       compoundComponentProps: {
         label: "CREATED",
       },
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
 
     expect(column).toEqual({
@@ -88,7 +88,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
       compoundComponentProps: {
         renderHeaderValue: () => null,
       },
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
 
     expect(column).toEqual({
@@ -109,7 +109,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
       key: "additional-0",
       control: null,
       compoundComponentProps: { label: "Additional Column" },
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
 
     expect(column).toEqual({
@@ -131,7 +131,7 @@ describe("hooks/useCompoundComponents/helpers/getColumn", () => {
       sortable: true,
       control: null,
       compoundComponentProps: {},
-      defaultValueComponents: HatchifyPresentationDefaultValueComponents,
+      defaultDisplayComponents: HatchifyPresentationDefaultDisplayComponents,
     })
 
     expect(column).toEqual({

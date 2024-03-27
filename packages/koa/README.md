@@ -44,4 +44,4 @@ const hatchedKoa = hatchifyKoa(schemas, {
 
 ## More Documentation
 
-[`@hatchifyjs/koa` Documentation](https://github.com/bitovi/hatchify/blob/main/doc/koa/README.md)
+[`@hatchifyjs/koa` Documentation](https://github.com/bitovi/hatchify/blob/main/docs/koa/README.md)

@@ -9,15 +9,24 @@ The `everything` functions takes the same properties as `parse` but goes further
 For example `hatchedKoa.everything.Todo.findAll` takes the URL query params and directly returns JSON:API ready response data.
 
 ```ts
-router.get("/skills", async (ctx: Context) => {
+router.get("/todos", async (ctx: Context) => {
   const serializedTodos = await hatchedKoa.everything.Todo.findAll(ctx.query)
   ctx.body = serializedTodos
 })
 ```
 
-## `findAll`: (`query`: ParsedUrlQuery) => `FindOptions`
+Each model has the following methods:
 
-Search for multiple instances.
+- [findAll](#findall)
+- [findAndCountAll](#findandcountall)
+- [findOne](#findone)
+- [create](#create)
+- [update](#update)
+- [destroy](#destroy)
+
+## findAll
+
+`hatchedKoa.everything[schemaName].findAll(querystring: string) => Promise<JSONAPIDocument>` searches for multiple instances.
 
 ```ts
 const serializedTodos = await hatchedKoa.everything.Todo.findAll("filter[name]=Baking")
@@ -33,9 +42,49 @@ const serializedTodos = await hatchedKoa.everything.Todo.findAll("filter[name]=B
 // }
 ```
 
-## `findOne`: (`query`: ParsedUrlQuery, `id`: Identifier) => `FindOptions`
+**Parameters**
 
-Search for a single instance. Returns the first instance found, or null if none can be found.
+| Property    | Type   | Default | Details                                                                              |
+| ----------- | ------ | ------- | ------------------------------------------------------------------------------------ |
+| querystring | string | `''`    | JSON:API query string specifying filter, pagination, relationships, sort and fields. |
+
+**Resolves**
+
+Resolves to a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
+
+## findAndCountAll
+
+`hatchedKoa.everything[schemaName].findAndCountAll(querystring: string) => Promise<JSONAPIDocument>` find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+
+```ts
+const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter[name]=Baking&limit=10&offset=0")
+// serializedTodos = {
+//   jsonapi: { version: "1.0" },
+//   data: [
+//     {
+//       type: "Todo",
+//       id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
+//       attributes: { name: "Baking" },
+//     }
+//   ],
+//   meta: { unpaginatedCount: 1 }
+// }
+```
+
+**Parameters**
+
+| Property    | Type   | Default | Details                                                                              |
+| ----------- | ------ | ------- | ------------------------------------------------------------------------------------ |
+| querystring | string | `''`    | JSON:API query string specifying filter, pagination, relationships, sort and fields. |
+
+**Resolves**
+
+Resolves to a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
+
+## findOne
+
+`hatchedKoa.everything[schemaName].findOne(querystring: string, id: Identifier) => Promise<JSONAPIDocument>` search
+for a single instance. Returns the first instance found, or null if none can be found.
 
 ```ts
 const serializedTodo = await hatchedKoa.everything.Todo.findOne("filter[name]=Baking")
@@ -59,28 +108,20 @@ const serializedTodo = await hatchedKoa.everything.Todo.findOne("", "b559e3d9-ba
 // }
 ```
 
-## `findAndCountAll`: (`query`: ParsedUrlQuery) => `FindOptions`
+**Parameters**
 
-Find all the rows matching your query, within a specified offset / limit, and get the total number of rows matching your query. This is very useful for paging.
+| Property    | Type   | Default | Details                                                    |
+| ----------- | ------ | ------- | ---------------------------------------------------------- |
+| querystring | string | `''`    | JSON:API query string specifying relationships and fields. |
+| id          | string | N/A     | The ID of the record to load.                              |
 
-```ts
-const serializedTodos = await hatchedKoa.everything.Todo.findAndCountAll("filter[name]=Baking&limit=10&offset=0")
-// serializedTodos = {
-//   jsonapi: { version: "1.0" },
-//   data: [
-//     {
-//       type: "Todo",
-//       id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
-//       attributes: { name: "Baking" },
-//     }
-//   ],
-//   meta: { unpaginatedCount: 1 }
-// }
-```
+**Resolves**
 
-## `create`: (`body`: unknown) => `CreateOptions`
+Resolves to a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
 
-Creates a new instance.
+## create
+
+`hatchedKoa.model[schemaName].create(body: object) => Promise<JSONAPIDocument>` creates a new instance.
 
 ```ts
 const serializedTodo = await hatchedKoa.everything.Todo.create({
@@ -101,37 +142,62 @@ const serializedTodo = await hatchedKoa.everything.Todo.create({
 // }
 ```
 
-## `update`: (`body`: unknown, `id`?: Identifier) => `UpdateOptions`
+**Parameters**
 
-Updates one or more instances.
+| Property    | Type   | Default | Details                                                    |
+| ----------- | ------ | ------- | ---------------------------------------------------------- |
+| body        | string | N/A     | The data for the new instance.                             |
+| querystring | string | `''`    | JSON:API query string specifying relationships and fields. |
+
+**Resolves**
+
+Resolves to a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
+
+## update
+
+`hatchedKoa.model[schemaName].update(body: object, id?: Identifier) => Promise<JSONAPIDocument>` updates one or more instances.
 
 ```ts
-const serializedTodo = await hatchedKoa.serialize.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+const serializedTodo = await hatchedKoa.everything.Todo.update({ name: "Serving" }, "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
 // serializedTodo = {
 //   jsonapi: { version: "1.0" },
 //   data: {
 //     type: "Todo",
 //     id: "b559e3d9-bad7-4b3d-8b75-e406dfec4673",
-//     attributes: { name: "Baking" },
+//     attributes: { name: "Serving" },
 //   },
 // }
 ```
 
-## `destroy`: (`query`: ParsedUrlQuery, `id`?: Identifier) => `DestroyOptions`
+**Parameters**
 
-Deletes one or more instances.
+| Property | Type       | Default | Details                                                         |
+| -------- | ---------- | ------- | --------------------------------------------------------------- |
+| body     | string     | N/A     | JSON:API formatted object specifying what attributes to update. |
+| id       | Identifier | N/A     | The ID of the record to update.                                 |
+
+**Resolves**
+
+Resolves to a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
+
+## destroy
+
+`hatchedKoa.model[schemaName].destroy(id: Identifier) => Promise<JSONAPIDocument>` deletes one or more instances.
 
 ```ts
-const serializedResult = await hatchedKoa.everything.Todo.destroy("filter[name]=Baking")
-// serializedResult = {
-//   jsonapi: { version: "1.0" },
-//   data: null,
-// }
-
-const serializedResult = await hatchedKoa.everything.Todo.destroy("", "b559e3d9-bad7-4b3d-8b75-e406dfec4673")
+const serializedResult = await hatchedKoa.everything.Todo.destroy("b559e3d9-bad7-4b3d-8b75-e406dfec4673")
 // serializedResult = {
 //   jsonapi: { version: "1.0" },
 //   data: null,
 // }
 ```
 
+**Parameters**
+
+| Property | Type       | Default | Details                         |
+| -------- | ---------- | ------- | ------------------------------- |
+| id       | Identifier | N/A     | The ID of the record to delete. |
+
+**Resolves**
+
+Resolves to a [JSONAPIDocument](./README.md#jsonapidocument) that can be used as a response body.
