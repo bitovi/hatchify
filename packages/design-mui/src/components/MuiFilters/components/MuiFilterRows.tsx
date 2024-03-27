@@ -138,6 +138,7 @@ export const MuiFilterRows: React.FC<{
                   onChange({ field: "value", value, index })
                 }
                 options={"values" in control ? control?.values : []}
+                step={control.step}
               />
             </Grid>
           </Fragment>

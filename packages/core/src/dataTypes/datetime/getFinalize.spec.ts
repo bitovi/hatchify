@@ -9,7 +9,7 @@ describe("getFinalize", () => {
         max: undefined,
         min: undefined,
         primary: undefined,
-        type: "Datetime",
+        type: "Date",
       },
       orm: {
         sequelize: {

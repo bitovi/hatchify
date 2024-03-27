@@ -47,8 +47,8 @@ export function getDefaultDataRender<
       return <String value="" />
     }
 
-    if (type === "date" || type === "dateonly" || type === "datetime") {
-      return <Date value={value} dateOnly={type === "dateonly"} />
+    if (type === "date") {
+      return <Date value={value} step={control.step} />
     }
 
     if (type === "enum") {
