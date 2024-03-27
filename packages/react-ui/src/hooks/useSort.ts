@@ -19,15 +19,15 @@ export default function useSort(
     return `${sort.direction === "desc" ? "-" : ""}${sort.sortBy}`
   }, [sort.sortBy, sort.direction])
 
-  const updateSort = (sortBy: string) => {
-    if (sort.alwaysSorted && sort.direction === "desc") {
-      setSort({ sortBy, direction: "asc" })
+  const updateSort = (sortBy: string, alwaysSorted = sort.alwaysSorted) => {
+    if (alwaysSorted && sort.direction === "desc") {
+      setSort({ sortBy, direction: "asc", alwaysSorted })
     } else if (sort.sortBy === undefined || sort.sortBy !== sortBy) {
-      setSort({ sortBy, direction: "asc" })
+      setSort({ sortBy, direction: "asc", alwaysSorted })
     } else if (sort.direction === "asc") {
-      setSort({ sortBy, direction: "desc" })
+      setSort({ sortBy, direction: "desc", alwaysSorted })
     } else {
-      setSort({ sortBy: undefined, direction: undefined })
+      setSort({ sortBy: undefined, direction: undefined, alwaysSorted })
     }
   }
 
