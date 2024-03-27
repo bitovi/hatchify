@@ -71,12 +71,9 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
   schema: T,
   hatchify: Hatchify,
 ): void {
-  const title = "Payload is missing a required value."
-
   if (body.data === undefined) {
     throw [
       new ValueRequiredError({
-        title,
         detail: "Payload must include a value for 'data'.",
         pointer: "/data",
       }),
@@ -95,7 +92,6 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
   if (body.data.type === undefined) {
     throw [
       new ValueRequiredError({
-        title,
         detail: "Payload must include a value for 'type'.",
         pointer: "/data/type",
       }),
@@ -114,7 +110,6 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
   if (body.data.attributes === undefined) {
     throw [
       new ValueRequiredError({
-        title,
         detail: "Payload must include a value for 'attributes'.",
         pointer: "/data/attributes",
       }),
@@ -150,9 +145,8 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
       return [
         ...acc,
         new ValueRequiredError({
-          title,
           detail: `Payload must include a value for '${relationshipName}'.`,
-          pointer: `/data/attributes/${relationshipName}`,
+          pointer: `/data/relationships/${relationshipName}`,
         }),
       ]
     }
@@ -161,9 +155,8 @@ export function validateStructure<T extends FinalSchema = FinalSchema>(
       return [
         ...acc,
         new ValueRequiredError({
-          title,
           detail: "Payload must include a value for 'data'.",
-          pointer: `/data/attributes/${relationshipName}/data`,
+          pointer: `/data/relationships/${relationshipName}/data`,
         }),
       ]
     }

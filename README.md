@@ -180,6 +180,12 @@ This project is supported by [Bitovi](https://bitovi.com/), a web software consu
 
 Or, you can hire us for training, consulting, or development. [Set up a free consultation.](https://www.bitovi.com/digital-consulting-services)
 
+## Read more about Hatchify
+Gain more insight into Hatchify by checking out our blog posts.
+
+- [Introducing Hatchify: Low-code libraries for React, Node, and Sequelize](https://www.bitovi.com/blog/introducing-hatchify-low-code-libraries-for-react-node-and-sequelize)
+- [Hatchify: The Fastest Way to Build JSON: APIs](https://www.bitovi.com/blog/hatchify-the-fastest-way-to-build-jsonapis) 
+
 ## Trying Hatchify Online
 
 You can try Hatchify online on [StackBlitz](https://stackblitz.com/edit/bitovi-hatchify-t7amou?embed=1&file=backend%2Findex.ts). It runs the Hatchify-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine.

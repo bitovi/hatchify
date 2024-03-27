@@ -270,22 +270,22 @@ export class Hatchify {
   isValidHatchifyRoute(method: string, path: string): boolean {
     return (
       !!["GET", "POST", "PATCH", "DELETE"].includes(method) &&
-      !!this.getHatchifyURLParamsForRoute(path).modelName
+      !!this.getHatchifyURLParamsForRoute(path).schemaName
     )
   }
 
   /**
    * This function will take a URL and attempt to pull Hatchify
-   * specific parameters from it. Generally these are the `modelName` and or `id`
+   * specific parameters from it. Generally these are the `schemaName` and or `id`
    *
    * Note: While this function is exported from Hatchify it is unusual to need to it externally
    *
    * @param path Usually the incoming request URL
-   * @returns { modelName?: string; id?: Identifier }
+   * @returns { schemaName?: string; id?: Identifier }
    * @internal
    */
   getHatchifyURLParamsForRoute(path: string): {
-    modelName?: string
+    schemaName?: string
     id?: Identifier
   } {
     const parsedUrl = this._pathMatch?.(path)
@@ -299,17 +299,15 @@ export class Hatchify {
     const [kebabNamespace, kebabSchemaName] =
       urlParts.length === 1 ? [undefined, urlParts[0]] : urlParts
 
-    const modelName = Object.keys(this._schemas).find((schemaName) => {
-      const schema = this._schemas[schemaName]
-      return (
-        pascalCaseToKebabCase(schema.namespace) === kebabNamespace &&
-        pascalCaseToKebabCase(schema.pluralName ?? pluralize(schema.name)) ===
-          kebabSchemaName
-      )
-    })
-
     return {
-      modelName,
+      schemaName: Object.keys(this._schemas).find((schemaName) => {
+        const schema = this._schemas[schemaName]
+        return (
+          pascalCaseToKebabCase(schema.namespace) === kebabNamespace &&
+          pascalCaseToKebabCase(schema.pluralName ?? pluralize(schema.name)) ===
+            kebabSchemaName
+        )
+      }),
       id: params.id,
     }
   }
@@ -375,9 +373,9 @@ export function buildExportWrapper<T>(
   handlerFunction: FunctionsHandler<T>,
 ): ModelFunctionsCollection<T> {
   return Object.keys(hatchify.orm.models).reduce(
-    (acc, modelName) => ({
+    (acc, schemaName) => ({
       ...acc,
-      [modelName]: handlerFunction(hatchify, modelName),
+      [schemaName]: handlerFunction(hatchify, schemaName),
     }),
     {
       allModels: handlerFunction(hatchify, "*"),
