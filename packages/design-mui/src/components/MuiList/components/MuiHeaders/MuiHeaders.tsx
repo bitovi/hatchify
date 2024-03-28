@@ -14,7 +14,7 @@ export const MuiHeaders: React.FC<
   XDataGridProps & { columns: HatchifyColumn[] }
 > = ({ selected, setSelected, sort, setSort, data, columns, meta }) => {
   const selectable = selected !== undefined && setSelected !== undefined
-  const { direction, sortBy } = sort
+  const { direction, sortBy, alwaysSorted } = sort
 
   return (
     <TableHead>
@@ -43,6 +43,7 @@ export const MuiHeaders: React.FC<
             sortDirection={column.key === sortBy ? direction : false}
           >
             <Sortable
+              alwaysSorted={alwaysSorted}
               direction={direction}
               isPending={meta.isPending}
               columnKey={column.key}
@@ -56,6 +57,7 @@ export const MuiHeaders: React.FC<
                   key: column.key,
                   label: column.label,
                 },
+                alwaysSorted,
                 meta,
                 sortBy,
                 direction,
