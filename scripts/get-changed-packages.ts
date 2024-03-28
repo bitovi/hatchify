@@ -34,7 +34,11 @@ console.log(`segment=${getSegmentFromCommitMessage(COMMIT_MESSAGE)}\n`)
 
 const packagesChanged =
   TOUCHED_FILES?.split(" ").reduce((acc, filePath) => {
-    if (!filePath.startsWith("packages/")) {
+    if (
+      !filePath.startsWith("packages/") ||
+      filePath.endsWith(".spec.ts") ||
+      filePath.endsWith(".test.ts")
+    ) {
       return acc
     }
 
