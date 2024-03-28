@@ -19,7 +19,8 @@ export const Sort: React.FC<
   sortBy,
 }) => (
   <TableSortLabel
-    alwaysSorted={alwaysSorted}
+    // todo: @Noah - this is not a valid prop for https://mui.com/material-ui/api/table-sort-label/
+    // alwaysSorted={alwaysSorted}
     disabled={isPending}
     active={columnKey === sortBy}
     direction={sortBy === sortBy ? direction : "asc"}

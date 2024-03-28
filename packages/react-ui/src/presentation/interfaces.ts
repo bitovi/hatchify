@@ -114,4 +114,5 @@ interface HeaderPropsCommon {
   meta: Meta
   setSort: HatchifyDataGridSort["setSort"]
   sortBy: SortObject["sortBy"]
+  alwaysSorted: SortObject["alwaysSorted"]
 }
