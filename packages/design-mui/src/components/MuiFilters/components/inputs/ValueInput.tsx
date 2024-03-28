@@ -1,3 +1,4 @@
+import type { StringStep } from "@hatchifyjs/core"
 import { InputLabel } from "@mui/material"
 import type { FilterableControls, Operators } from "../../constants.js"
 import DateInput from "./DateInput.js"
@@ -12,7 +13,16 @@ const ValueInput: React.FC<{
   value: any
   onChange: (value: string | string[]) => void
   options?: string[]
-}> = ({ labelId, controlType, value, operator, onChange, options = [] }) => {
+  step?: StringStep | number
+}> = ({
+  labelId,
+  controlType,
+  value,
+  operator,
+  onChange,
+  options = [],
+  step,
+}) => {
   if (operator === "empty" || operator === "nempty") {
     return null
   }
@@ -37,12 +47,13 @@ const ValueInput: React.FC<{
           options={options}
         />
       )}
-      {(controlType === "Datetime" || controlType === "Dateonly") && (
+      {controlType === "Date" && (
         <DateInput
           labelId={labelId}
           value={value}
           onChange={onChange}
           controlType={controlType}
+          step={step}
         />
       )}
       {controlType === "Number" && (

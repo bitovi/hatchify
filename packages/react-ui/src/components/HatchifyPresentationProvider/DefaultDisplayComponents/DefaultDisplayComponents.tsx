@@ -1,3 +1,4 @@
+import type { StringStep } from "@hatchifyjs/core"
 import { Fragment } from "react"
 import type { Relationship as RelationshipType } from "../../../presentation/interfaces.js"
 
@@ -58,10 +59,11 @@ export const BooleanList: React.FC<{ values: boolean[] }> = ({ values }) => {
   )
 }
 
-export const Date: React.FC<{ dateOnly: boolean; value: string }> = ({
-  dateOnly,
+export const Date: React.FC<{ step?: StringStep | number; value: string }> = ({
+  step,
   value,
 }) => {
+  const dateOnly = step === "day" || step === 86400000
   const offsetDate = new window.Date(value)
   if (dateOnly) {
     offsetDate.setMinutes(
@@ -93,16 +95,16 @@ export const Date: React.FC<{ dateOnly: boolean; value: string }> = ({
   return <>{formattedDate}</>
 }
 
-export const DateList: React.FC<{ dateOnly: boolean; values: string[] }> = ({
-  dateOnly,
-  values,
-}) => {
+export const DateList: React.FC<{
+  step?: StringStep | number
+  values: string[]
+}> = ({ step, values }) => {
   return (
     <>
       {values.map((value, index) => {
         return (
           <Fragment key={index}>
-            <Date dateOnly={dateOnly} value={value} />
+            <Date step={step} value={value} />
             {index !== values.length - 1 && "; "}
           </Fragment>
         )

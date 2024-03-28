@@ -273,6 +273,8 @@ type HeaderValueComponent = React.FC<HeaderProps>
 
 ## `XDataGridProps`
 
+> extends <a href="#datagridstate">DataGridState</a>
+
 | prop            | type              | description                                                         |
 | --------------- | ----------------- | ------------------------------------------------------------------- |
 | `children`      | `React.ReactNode` | The children components to be rendered within the custom `DataGrid` |
@@ -284,7 +286,7 @@ type HeaderValueComponent = React.FC<HeaderProps>
 interface XDataGridProps<
   TSchemas extends Record<string, PartialSchema> = any,
   TSchemaName extends GetSchemaNames<TSchemas> = any,
-> extends <a href="#datagridstate">DataGridState</a><TSchemas, TSchemaName> {
+> extends <TSchemas, TSchemaName> {
   children?: React.ReactNode
   overwrite?: boolean
   minimumLoadTime?: number

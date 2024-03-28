@@ -18,7 +18,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -131,7 +131,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           displayName: null,
           hidden: false,
           allowNull: true,
@@ -168,7 +168,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           allowNull: false,
           allowNullInfer: false,
           min: undefined,
@@ -240,7 +240,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           displayName: null,
           hidden: false,
           allowNull: false,
@@ -277,7 +277,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -410,7 +410,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           displayName: null,
           hidden: false,
           allowNull: false,
@@ -450,7 +450,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           allowNull: undefined,
           min: -Infinity,
           max: "2023-01-01",
@@ -520,7 +520,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           displayName: null,
           hidden: false,
           allowNull: true,

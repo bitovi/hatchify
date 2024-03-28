@@ -21,8 +21,7 @@ export type OptionsByFilterableControls = {
 export const filterableControlTypes = [
   "String",
   "Number",
-  "Datetime",
-  "Dateonly",
+  "Date",
   "enum",
 ] as const
 
@@ -37,16 +36,7 @@ export const operatorOptionsByType: OptionsByFilterableControls = {
     { operator: "nempty", text: "is not empty" },
     { operator: "$in", text: "is any of" },
   ],
-  Dateonly: [
-    { operator: "$eq", text: "is" },
-    { operator: "$gt", text: "is after" },
-    { operator: "$gte", text: "is on or after" },
-    { operator: "$lt", text: "is before" },
-    { operator: "$lte", text: "is on or before" },
-    { operator: "empty", text: "is empty" },
-    { operator: "nempty", text: "is not empty" },
-  ],
-  Datetime: [
+  Date: [
     { operator: "$eq", text: "is" },
     { operator: "$gt", text: "is after" },
     { operator: "$gte", text: "is on or after" },

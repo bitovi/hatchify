@@ -56,7 +56,7 @@ export function findOneEverything(hatchify: Hatchify, schemaName: string) {
         }),
       ]
     }
-    return hatchify.serialize[schemaName].findOne(result)
+    return hatchify.serialize[schemaName].findOne(result.get({ plain: true }))
   }
 }
 
