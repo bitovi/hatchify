@@ -243,8 +243,9 @@ The JSON:API specs have detailed guidelines how to implement the [`fields`](http
 
 <pre>
 GET /api/sales-people?
-  <a href="./reading/sparse-fields/README.md">fields</a>[SalesPerson]=name
-  fields[<a href="./reading/sparse-fields/README.md#example-with-relationships">Todo</a>]=name,importance
+  include=todos
+  &<a href="./reading/sparse-fields/README.md">fields</a>[SalesPerson]=name
+  &fields[<a href="./reading/sparse-fields/README.md#example-with-relationships">Todo</a>]=name,importance
 </pre>
 
 A response with sparse fields will look similar to we we had above but only specified fields will be returned:
