@@ -72,4 +72,36 @@ describe("JSON:API Tests", () => {
     expect(find.body.data).toBeTruthy()
     expect(find.body.data.id).toBe(create.body.data.id)
   })
+
+  it("should always return body after update (not JSON:API)", async () => {
+    const {
+      body: {
+        data: { id: modelId },
+      },
+    } = await fetch("/api/schemas", {
+      method: "post",
+      body: serialize({
+        firstName: "firstName",
+        lastName: "lastName",
+      }),
+    })
+
+    const {
+      body: { data: updateData },
+    } = await fetch(`/api/schemas/${modelId}`, {
+      method: "patch",
+      body: serialize({
+        lastName: "lastName2",
+      }),
+    })
+
+    expect(updateData).toEqual({
+      id: modelId,
+      type: "Schema",
+      attributes: {
+        firstName: "firstName",
+        lastName: "lastName2",
+      },
+    })
+  })
 })

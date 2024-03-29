@@ -109,9 +109,9 @@ export async function errorHandlerMiddleware(
   _req: Request,
   res: Response,
   next: NextFunction,
-) {
+): Promise<void> {
   try {
-    await next()
+    next()
   } catch (ex) {
     const { errors, status } = errorResponseHandler(
       ex as Error | HatchifyError[],

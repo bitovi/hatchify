@@ -1,10 +1,26 @@
-import { belongsTo, datetime, hasMany, integer, string } from "@hatchifyjs/core"
+import {
+  belongsTo,
+  datetime,
+  hasMany,
+  integer,
+  string,
+  uuid,
+} from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/node"
 
 import { dbDialects, startServerWith } from "./testing/utils.js"
 
 describe.each(dbDialects)("Relationships", (dialect) => {
   describe(`${dialect} - Users and Todos`, () => {
+    const Skill = {
+      name: "Skill",
+      attributes: {
+        name: string(),
+      },
+      relationships: {
+        user: belongsTo(),
+      },
+    } satisfies PartialSchema
     const User = {
       name: "User",
       attributes: {
@@ -13,6 +29,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       },
       relationships: {
         todos: hasMany(),
+        skills: hasMany(),
       },
     } satisfies PartialSchema
     const Todo = {
@@ -31,7 +48,10 @@ describe.each(dbDialects)("Relationships", (dialect) => {
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
     beforeAll(async () => {
-      ;({ fetch, teardown } = await startServerWith({ User, Todo }, dialect))
+      ;({ fetch, teardown } = await startServerWith(
+        { Skill, User, Todo },
+        dialect,
+      ))
     })
 
     afterAll(async () => {
@@ -580,6 +600,52 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           ],
         })
       })
+
+      it("should handle non-included nested associations", async () => {
+        const { status, body } = await fetch(
+          "/api/users?filter[todos.name]=test",
+        )
+
+        expect(status).toEqual(400)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 400,
+              code: "relationship-path",
+              title: "Relationship path could not be identified.",
+              detail:
+                "URL must have 'include' with 'todos' as one of the relationships to include.",
+              source: {
+                parameter: "include",
+              },
+            },
+          ],
+        })
+      })
+
+      it("should handle non-existing nested associations", async () => {
+        const { status, body } = await fetch(
+          "/api/users?include=todos,todos.invalid",
+        )
+
+        expect(status).toEqual(400)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 400,
+              code: "relationship-path",
+              title: "Relationship path could not be identified.",
+              detail:
+                "URL must have 'include' where 'todos.invalid' is a valid relationship path.",
+              source: {
+                parameter: "include",
+              },
+            },
+          ],
+        })
+      })
     })
 
     describe("should support pagination meta (HATCH-203)", () => {
@@ -885,124 +951,100 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       })
     })
 
-    it("counts correctly", async () => {
+    it("should only overwrite specified relationships (HATCH-550)", async () => {
+      await Promise.all([
+        fetch("/api/todos", {
+          method: "post",
+          body: {
+            data: {
+              type: "Todo",
+              id: "b2a0fbbe-ac7c-4087-bf58-c606237a5808",
+              attributes: {
+                name: "Walk the dog",
+                dueDate: "2024-12-12T00:00:00.000Z",
+                importance: 6,
+              },
+            },
+          },
+        }),
+        fetch("/api/skills", {
+          method: "post",
+          body: {
+            data: {
+              type: "Skill",
+              id: "a967e091-6e0c-4caa-9759-112608fea33c",
+              attributes: {
+                name: "Cooking",
+              },
+            },
+          },
+        }),
+      ])
+
       await fetch("/api/users", {
         method: "post",
         body: {
           data: {
             type: "User",
-            id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
+            id: "d9f1592f-e712-465e-b445-c5e072349b89",
             attributes: {
-              name: "John",
+              name: "Justin",
             },
-          },
-        },
-      })
-
-      await fetch("/api/todos", {
-        method: "post",
-        body: {
-          data: {
-            type: "Todo",
-            id: "410819f6-d1c4-44f4-9a52-edbac765e714",
-            attributes: { name: "Walking" },
             relationships: {
-              user: {
-                data: {
-                  type: "User",
-                  id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
-                },
-              },
-            },
-          },
-        },
-      })
-
-      await fetch("/api/todos", {
-        method: "post",
-        body: {
-          data: {
-            type: "Todo",
-            id: "754ca095-4967-4472-a0f4-1a8e2d761a24",
-            attributes: { name: "Cooking" },
-            relationships: {
-              user: {
-                data: {
-                  type: "User",
-                  id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
-                },
-              },
-            },
-          },
-        },
-      })
-
-      await fetch("/api/todos", {
-        method: "post",
-        body: {
-          data: {
-            type: "Todo",
-            id: "754ca095-4967-4472-a0f4-1a8e2d761a25",
-            attributes: { name: "Cleaning" },
-            relationships: {
-              user: {
-                data: {
-                  type: "User",
-                  id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
-                },
-              },
-            },
-          },
-        },
-      })
-
-      await Promise.all(
-        [
-          {
-            id: "410819f6-d1c4-44f4-9a52-edbac765e714",
-            name: "Walking",
-          },
-          {
-            id: "754ca095-4967-4472-a0f4-1a8e2d761a24",
-            name: "Cooking",
-          },
-          {
-            id: "754ca095-4967-4472-a0f4-1a8e2d761a25",
-            name: "Cleaning",
-          },
-        ].map(({ id, name }) =>
-          fetch("/api/todos", {
-            method: "post",
-            body: {
-              data: {
-                type: "Todo",
-                id,
-                attributes: { name },
-                relationships: {
-                  user: {
-                    data: {
-                      type: "User",
-                      id: "f8d68fc0-48b1-4e90-af73-c9a4dc577461",
-                    },
+              skills: {
+                data: [
+                  {
+                    type: "Skill",
+                    id: "a967e091-6e0c-4caa-9759-112608fea33c",
                   },
-                },
+                ],
+              },
+              todos: {
+                data: [
+                  {
+                    type: "Todo",
+                    id: "b2a0fbbe-ac7c-4087-bf58-c606237a5808",
+                  },
+                ],
               },
             },
-          }),
-        ),
+          },
+        },
+      })
+
+      const { body: userBefore } = await fetch(
+        `/api/users/d9f1592f-e712-465e-b445-c5e072349b89?include=skills,todos`,
       )
 
-      const { body: users } = await fetch(
-        "/api/users?include=todos&filter[id]=f8d68fc0-48b1-4e90-af73-c9a4dc577461",
+      await fetch("/api/users/d9f1592f-e712-465e-b445-c5e072349b89", {
+        method: "patch",
+        body: {
+          data: {
+            type: "User",
+            id: "d9f1592f-e712-465e-b445-c5e072349b89",
+            attributes: {
+              age: 27,
+            },
+            relationships: {
+              skills: {
+                data: [],
+              },
+            },
+          },
+        },
+      })
+
+      const { body: userAfter } = await fetch(
+        `/api/users/d9f1592f-e712-465e-b445-c5e072349b89?include=skills,todos`,
       )
 
-      expect(users.meta.unpaginatedCount).toEqual(1)
+      expect(userBefore.data.attributes).toEqual({ name: "Justin", age: null })
+      expect(userBefore.data.relationships.skills.data).toHaveLength(1)
+      expect(userBefore.data.relationships.todos.data).toHaveLength(1)
 
-      const { body: todos } = await fetch(
-        "/api/todos?include=user&filter[user.id]=f8d68fc0-48b1-4e90-af73-c9a4dc577461",
-      )
-
-      expect(todos.meta.unpaginatedCount).toEqual(3)
+      expect(userAfter.data.attributes).toEqual({ name: "Justin", age: 27 })
+      expect(userAfter.data.relationships.skills.data).toHaveLength(0)
+      expect(userAfter.data.relationships.todos.data).toHaveLength(1)
     })
   })
 
@@ -1253,6 +1295,82 @@ describe.each(dbDialects)("Relationships", (dialect) => {
             },
           },
         ],
+      })
+    })
+  })
+
+  describe(`${dialect} - Accounts and Sales People (HATCH-513)`, () => {
+    const Account = {
+      name: "Account",
+      attributes: {},
+      relationships: {
+        salesPeople: hasMany("SalesPerson").through("AccountSalesPerson"),
+      },
+    } satisfies PartialSchema
+
+    const SalesPerson = {
+      name: "SalesPerson",
+      attributes: {},
+      relationships: {
+        salesAccounts: hasMany("Account").through("AccountSalesPerson"),
+      },
+    } satisfies PartialSchema
+
+    const AccountSalesPerson = {
+      name: "AccountSalesPerson",
+      attributes: {
+        accountId: uuid(),
+        salesPersonId: uuid(),
+      },
+    } satisfies PartialSchema
+
+    let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
+    let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
+
+    beforeAll(async () => {
+      ;({ fetch, teardown } = await startServerWith(
+        { SalesPerson, Account, AccountSalesPerson },
+        dialect,
+      ))
+    })
+
+    afterAll(async () => {
+      await teardown()
+    })
+
+    it("does not crash", async () => {
+      const { body: salesPerson } = await fetch("/api/sales-persons", {
+        method: "post",
+        body: {
+          data: {
+            type: "SalesPerson",
+            attributes: {},
+          },
+        },
+      })
+
+      const { status, body: salesPeople } = await fetch(
+        "/api/sales-persons?include=salesAccounts,accountSalesPersons",
+      )
+
+      expect(status).toBe(200)
+      expect(salesPeople).toEqual({
+        jsonapi: { version: "1.0" },
+        data: [
+          {
+            type: "SalesPerson",
+            id: salesPerson.data.id,
+            relationships: {
+              salesAccounts: {
+                data: [],
+              },
+              accountSalesPersons: {
+                data: [],
+              },
+            },
+          },
+        ],
+        meta: { unpaginatedCount: 1 },
       })
     })
   })
