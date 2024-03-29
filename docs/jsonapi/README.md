@@ -326,6 +326,7 @@ The JSON:API specs allows [creation](https://jsonapi.org/format/#crud-creating) 
 
 ```curl
 POST /api/sales-people
+Content-Type: application/vnd.api+json
 ```
 
 ```json
@@ -379,6 +380,7 @@ The JSON:API specs allows [update](https://jsonapi.org/format/#crud-updating) of
 
 ```curl
 PATCH /api/sales-people/ffaf131e-9e27-4bd6-a715-59fff9ed5044
+Content-Type: application/vnd.api+json
 ```
 
 ```json
