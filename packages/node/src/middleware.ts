@@ -2,7 +2,7 @@ import type { ErrorObject } from "json-api-serializer"
 
 import {
   NotFoundError,
-  UnexpectedValueError,
+  ValueRequiredError,
   errorResponseHandler,
 } from "./error/index.js"
 import type { Hatchify } from "./node.js"
@@ -233,7 +233,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         case "PATCH": {
           if (!id) {
             throw [
-              new UnexpectedValueError({
+              new ValueRequiredError({
                 detail: "Invalid ID Provided",
                 parameter: "id",
               }),
@@ -248,7 +248,7 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         case "DELETE": {
           if (!id) {
             throw [
-              new UnexpectedValueError({
+              new ValueRequiredError({
                 detail: "Invalid ID Provided",
                 parameter: "id",
               }),
@@ -279,7 +279,7 @@ export function resolveWildcard(hatchify: Hatchify, path: string): string {
   const { schemaName } = hatchify.getHatchifyURLParamsForRoute(path)
   if (!schemaName) {
     throw [
-      new UnexpectedValueError({
+      new ValueRequiredError({
         detail: "Invalid URL Format",
         parameter: "schemaName",
       }),
