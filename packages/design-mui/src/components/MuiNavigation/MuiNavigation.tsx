@@ -1,11 +1,10 @@
-import type { FinalSchemas } from "@hatchifyjs/rest-client"
+import { getSchemaKey } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import { Box, Tab, Tabs } from "@mui/material"
 
 export interface MuiNavigationProps<
   TSchemas extends Record<string, PartialSchema>,
 > {
-  finalSchemas: FinalSchemas
   partialSchemas: TSchemas
   activeTab: string | undefined
   onTabChange: (schema: string | undefined) => void
@@ -20,7 +19,6 @@ function a11yProps(key: string) {
 }
 
 function MuiNavigation<const TSchemas extends Record<string, PartialSchema>>({
-  finalSchemas,
   partialSchemas,
   activeTab,
   onTabChange,
@@ -58,12 +56,13 @@ function MuiNavigation<const TSchemas extends Record<string, PartialSchema>>({
         aria-label="schema tabs navigation"
       >
         {Object.values(partialSchemas).map((schema) => {
+          const schemaKey = getSchemaKey(schema)
           return (
             <Tab
-              label={schema.name}
-              key={schema.name}
-              value={schema.name}
-              {...a11yProps(schema.name)}
+              label={schemaKey}
+              key={schemaKey}
+              value={schemaKey}
+              {...a11yProps(schemaKey)}
             />
           )
         })}

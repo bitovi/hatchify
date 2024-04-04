@@ -85,7 +85,7 @@ function App() {
               <td>{todo.user?.name}</td>
               <td>
                 <button
-                  disabled={deleteState.isPending}
+                  disabled={deleteState[todo.id]?.isPending}
                   type="button"
                   onClick={() => deleteTodo(todo.id)}
                 >

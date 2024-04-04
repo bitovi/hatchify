@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { getSchemaKey } from "@hatchifyjs/core"
 import {
   hatchifyReact,
   HatchifyProvider,
@@ -12,7 +13,7 @@ type ActiveSchema = keyof typeof Schemas | undefined
 const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 const Navigation = hatchedReact.Navigation
-const defaultSchema = Object.values(Schemas)[0]?.name as ActiveSchema
+const defaultSchema = getSchemaKey(Object.values(Schemas)[0]) as ActiveSchema
 
 const App: React.FC = () => {
   const [activeSchema, setActiveSchema] = useState<ActiveSchema>(defaultSchema)
