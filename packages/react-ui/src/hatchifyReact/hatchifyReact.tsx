@@ -1,4 +1,4 @@
-import { assembler } from "@hatchifyjs/core"
+import { assembler, getSchemaKey } from "@hatchifyjs/core"
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
@@ -144,9 +144,7 @@ export function hatchifyReact<
   const components = Object.entries(partialSchemas).reduce(
     (acc, [schemaName, schema]) => {
       const key = schemaName as keyof typeof acc
-      const finalSchemaName = schema.namespace
-        ? `${schema.namespace}_${schema.name}`
-        : schema.name
+      const schemaKey = getSchemaKey(schema)
 
       const dataGridCompoundComponents = (
         props: HatchifyDataGridProps<TSchemas, TSchemaName>,
@@ -154,7 +152,7 @@ export function hatchifyReact<
         <HatchifyDataGrid<TSchemas, GetSchemaNames<TSchemas>>
           finalSchemas={finalSchemas}
           partialSchemas={partialSchemas}
-          schemaName={finalSchemaName}
+          schemaName={schemaKey}
           restClient={reactRest}
           {...props}
         />
@@ -164,7 +162,7 @@ export function hatchifyReact<
         return (
           <HatchifyColumn<TSchemas, GetSchemaNames<TSchemas>>
             allSchemas={finalSchemas}
-            schemaName={finalSchemaName}
+            schemaName={schemaKey}
             {...props}
           />
         )
