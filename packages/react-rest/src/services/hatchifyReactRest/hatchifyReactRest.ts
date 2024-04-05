@@ -1,5 +1,5 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import { assembler } from "@hatchifyjs/core"
+import { assembler, getSchemaKey } from "@hatchifyjs/core"
 import type {
   GetSchemaFromName,
   GetSchemaNames,
@@ -127,9 +127,7 @@ export const hatchifyReactRest = <
 ): HatchifyReactRest<TSchemas> => {
   const { completeSchemaMap: partialSchemas } = restClient
   const finalSchemas = assembler(partialSchemas)
-  const storeKeys = Object.values(finalSchemas).map((schema) =>
-    schema.namespace ? `${schema.namespace}_${schema.name}` : schema.name,
-  )
+  const storeKeys = Object.values(finalSchemas).map(getSchemaKey)
   createStore(storeKeys)
 
   const functions = Object.entries(partialSchemas).reduce(
