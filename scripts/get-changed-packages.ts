@@ -1,32 +1,8 @@
 /* eslint-disable no-console */
-const dependencies = {
-  core: [],
-  create: [],
-  crypto: ["core"],
-  "design-mui": ["react"],
-  express: [],
-  koa: [],
-  node: ["express", "koa"],
-  react: [],
-  "react-jsonapi": [],
-  "react-rest": [
-    "rest-client-jsonapi",
-    "react-ui",
-    "react-jsonapi",
-    "design-mui",
-    "react",
-  ],
-  "react-ui": ["design-mui", "react"],
-  "rest-client": [
-    "react-rest",
-    "rest-client-jsonapi",
-    "react-ui",
-    "react-jsonapi",
-    "design-mui",
-    "react",
-  ],
-  "rest-client-jsonapi": ["react-jsonapi", "react"],
-}
+import fs from "fs"
+import path from "path"
+
+const dependencies = getDependencies()
 
 const { COMMIT_MESSAGE, TOUCHED_FILES } = process.env
 
@@ -59,4 +35,61 @@ function getSegmentFromCommitMessage(commitMessage?: string): string {
   return prefix && ["patch", "minor", "major"].includes(prefix)
     ? prefix
     : "patch"
+}
+
+function getDependencies() {
+  const packagesPath = path.join(__dirname, "../packages")
+
+  const firstPass = fs
+    .readdirSync(packagesPath, {
+      withFileTypes: true,
+    })
+    .reduce(
+      (acc, dirent) => {
+        if (!dirent.isDirectory()) {
+          return acc
+        }
+
+        const packagePath = path.join(packagesPath, dirent.name, "package.json")
+        const packageString = fs.readFileSync(packagePath, {
+          encoding: "utf8",
+        })
+        const { dependencies, devDependencies } = JSON.parse(packageString)
+        const parentPackageName = dirent.name
+
+        if (!acc[parentPackageName]) {
+          acc[parentPackageName] = []
+        }
+
+        Object.keys({
+          ...dependencies,
+          ...devDependencies,
+        }).forEach((childPackageName) => {
+          if (childPackageName.startsWith("@hatchifyjs/")) {
+            const suffix = childPackageName.split("/")[1]
+            if (!acc[suffix]) {
+              acc[suffix] = []
+            }
+            acc[suffix].push(parentPackageName)
+          }
+        })
+
+        return acc
+      },
+      {} as Record<string, string[]>,
+    )
+
+  return Object.entries(firstPass).reduce(
+    (acc, [packageName, currentDependencies]) => ({
+      ...acc,
+      [packageName]: [
+        ...new Set(
+          currentDependencies
+            .map((dependency) => [dependency, ...firstPass[dependency]])
+            .flat(),
+        ),
+      ],
+    }),
+    {} as Record<string, string[]>,
+  )
 }
