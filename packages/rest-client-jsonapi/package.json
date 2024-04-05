@@ -21,7 +21,6 @@
   "devDependencies": {
     "@hatchifyjs/react-rest": "^0.1.29",
     "@vitest/coverage-c8": "^0.32.2",
-    "koa": "^2.14.2",
     "msw": "^2.0.11",
     "vitest": "^0.30.1"
   },
