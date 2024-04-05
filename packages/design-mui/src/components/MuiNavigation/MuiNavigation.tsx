@@ -59,7 +59,7 @@ function MuiNavigation<const TSchemas extends Record<string, PartialSchema>>({
           const schemaKey = getSchemaKey(schema)
           return (
             <Tab
-              label={schemaKey}
+              label={schemaKey.replaceAll("_", " ")}
               key={schemaKey}
               value={schemaKey}
               {...a11yProps(schemaKey)}
