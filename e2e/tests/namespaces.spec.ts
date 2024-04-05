@@ -10,5 +10,9 @@ test("works", async ({ page }) => {
 
   await page.goto("http://localhost:5175", { waitUntil: "networkidle" })
 
+  await expect(page.getByText("ARTICLE")).toBeVisible()
+  await expect(page.getByText("FEATURE ARTICLE")).toBeVisible()
+  await expect(page.getByText("ADMIN USER")).toBeVisible()
+
   expect(messages).toEqual([])
 })

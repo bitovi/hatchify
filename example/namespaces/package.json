@@ -23,7 +23,7 @@
   "devDependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@hatchifyjs/react": "^0.1.69",
+    "@hatchifyjs/react": "^0.1.70",
     "@mui/material": "^5.15.15",
     "@types/lodash.debounce": "^4.0.9",
     "@types/react": "^18.2.66",
