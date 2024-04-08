@@ -4,7 +4,7 @@
 ## using alpine and then installing node reduces size from 375MB to 269MB
 FROM alpine AS base
 WORKDIR /app
-RUN apk update && apk add npm nodejs~=20
+RUN apk update && apk add npm nodejs~=20 && apk cache clean
 COPY package*.json ./
 RUN npm ci
 COPY schemas.ts schemas.ts

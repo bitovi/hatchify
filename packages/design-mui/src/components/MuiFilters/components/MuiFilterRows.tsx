@@ -138,6 +138,7 @@ export const MuiFilterRows: React.FC<{
                   onChange({ field: "value", value, index })
                 }
                 options={"values" in control ? control?.values : []}
+                step={control.step}
               />
             </Grid>
           </Fragment>
@@ -171,13 +172,20 @@ export function getPossibleOptions(
   // @todo HATCH-417 - fieldType should not be any, it should be a TS type
   const fieldType = control.type
   const required = !control.allowNull
+  const { enableCaseSensitiveContains } = control.ui ?? {}
 
   const options = operatorOptionsByType[
     fieldType as keyof typeof operatorOptionsByType
   ].filter((option) => {
-    return required
-      ? option.operator !== "empty" && option.operator !== "nempty"
-      : option
+    if (required && ["empty", "nempty"].includes(option.operator)) {
+      return false
+    }
+
+    if (!enableCaseSensitiveContains && option.operator === "contains") {
+      return false
+    }
+
+    return true
   })
 
   return options

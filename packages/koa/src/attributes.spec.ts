@@ -4,8 +4,8 @@ import type { PartialSchema } from "@hatchifyjs/node"
 import { startServerWith } from "./testing/utils.js"
 
 describe("Attribute Tests", () => {
-  const Model = {
-    name: "Model",
+  const Schema = {
+    name: "Schema",
     attributes: {
       firstName: string({ required: true }),
       lastName: string({ required: true }),
@@ -16,7 +16,7 @@ describe("Attribute Tests", () => {
   let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
   beforeEach(async () => {
-    ;({ fetch, teardown } = await startServerWith({ Model }, "sqlite"))
+    ;({ fetch, teardown } = await startServerWith({ Schema }, "sqlite"))
   })
 
   afterEach(async () => {
@@ -24,11 +24,11 @@ describe("Attribute Tests", () => {
   })
 
   it("should create a record and fetch specific attributes", async () => {
-    const create = await fetch("/api/models", {
+    const create = await fetch("/api/schemas", {
       method: "post",
       body: {
         data: {
-          type: "Model",
+          type: "Schema",
           attributes: {
             firstName: "firstName",
             lastName: "lastName",
@@ -42,7 +42,7 @@ describe("Attribute Tests", () => {
     expect(create.body.data).toHaveProperty("id")
 
     const find1 = await fetch(
-      `/api/models/${create.body.data.id}?fields[Model]=firstName`,
+      `/api/schemas/${create.body.data.id}?fields[Schema]=firstName`,
     )
 
     expect(find1).toBeTruthy()
@@ -52,7 +52,7 @@ describe("Attribute Tests", () => {
     expect(find1.body.data.attributes).not.toHaveProperty("lastName")
 
     const find2 = await fetch(
-      `/api/models/${create.body.data.id}?fields[Model]=lastName`,
+      `/api/schemas/${create.body.data.id}?fields[Schema]=lastName`,
     )
 
     expect(find2).toBeTruthy()
@@ -63,11 +63,11 @@ describe("Attribute Tests", () => {
   })
 
   it("should create a record and error when fetching unknown attributes", async () => {
-    const create = await fetch("/api/models", {
+    const create = await fetch("/api/schemas", {
       method: "post",
       body: {
         data: {
-          type: "Model",
+          type: "Schema",
           attributes: {
             firstName: "firstName",
             lastName: "lastName",
@@ -81,7 +81,7 @@ describe("Attribute Tests", () => {
     expect(create.body.data).toHaveProperty("id")
 
     const find1 = await fetch(
-      `/api/models/${create.body.data.id}?fields[Model]=badAttribute`,
+      `/api/schemas/${create.body.data.id}?fields[Schema]=badAttribute`,
     )
 
     expect(find1).toBeTruthy()
@@ -89,11 +89,11 @@ describe("Attribute Tests", () => {
   })
 
   it("should create several record and fetch all with specific attributes", async () => {
-    await fetch("/api/models", {
+    await fetch("/api/schemas", {
       method: "post",
       body: {
         data: {
-          type: "Model",
+          type: "Schema",
           attributes: {
             firstName: "firstName1",
             lastName: "lastName1",
@@ -102,11 +102,11 @@ describe("Attribute Tests", () => {
       },
     })
 
-    await fetch("/api/models", {
+    await fetch("/api/schemas", {
       method: "post",
       body: {
         data: {
-          type: "Model",
+          type: "Schema",
           attributes: {
             firstName: "firstName2",
             lastName: "lastName2",
@@ -115,11 +115,11 @@ describe("Attribute Tests", () => {
       },
     })
 
-    await fetch("/api/models", {
+    await fetch("/api/schemas", {
       method: "post",
       body: {
         data: {
-          type: "Model",
+          type: "Schema",
           attributes: {
             firstName: "firstName3",
             lastName: "lastName3",
@@ -128,7 +128,7 @@ describe("Attribute Tests", () => {
       },
     })
 
-    const find1 = await fetch("/api/models/?fields[Model]=firstName")
+    const find1 = await fetch("/api/schemas/?fields[Schema]=firstName")
 
     expect(find1).toBeTruthy()
     expect(find1.status).toBe(200)
@@ -139,7 +139,7 @@ describe("Attribute Tests", () => {
       expect(entry.attributes).not.toHaveProperty("lastName")
     })
 
-    const find2 = await fetch("/api/models/?fields[Model]=lastName")
+    const find2 = await fetch("/api/schemas/?fields[Schema]=lastName")
 
     expect(find2).toBeTruthy()
     expect(find2.status).toBe(200)

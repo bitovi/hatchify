@@ -10,7 +10,7 @@ import type {
 import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
-  HatchifyDataGridSelected,
+  HatchifyDataGridSelectedState,
   SortObject,
 } from "../../presentation/index.js"
 import { useHatchifyPresentation } from "../index.js"
@@ -25,13 +25,14 @@ export interface HatchifyDataGridProps<
   schemaName: TSchemaName
   restClient: HatchifyReactRest<TSchemas>
   children?: React.ReactNode | null
-  defaultSelected?: HatchifyDataGridSelected["selected"]
-  onSelectedChange?: HatchifyDataGridSelected["setSelected"]
+  defaultSelected?: HatchifyDataGridSelectedState
+  onSelectedChange?: (selected: HatchifyDataGridSelectedState) => void
   defaultPage?: PaginationObject
   defaultSort?: SortObject
   baseFilter?: Filters
   overwrite?: boolean
   minimumLoadTime?: number
+  fitParent?: boolean
 }
 
 function HatchifyDataGrid<
@@ -50,6 +51,7 @@ function HatchifyDataGrid<
   baseFilter,
   overwrite,
   minimumLoadTime,
+  fitParent,
 }: HatchifyDataGridProps<TSchemas, TSchemaName>): JSX.Element {
   const { DataGrid } = useHatchifyPresentation()
   const defaultInclude = useMemo(
@@ -78,7 +80,7 @@ function HatchifyDataGrid<
   )
 
   return (
-    <DataGrid overwrite={overwrite} {...dataGridState}>
+    <DataGrid overwrite={overwrite} fitParent={fitParent} {...dataGridState}>
       {children}
     </DataGrid>
   )

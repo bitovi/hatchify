@@ -8,126 +8,120 @@ export interface EverythingFunctions {
   findAll: (querystring: string) => Promise<JSONAPIDocument>
   findOne: (querystring: string, id: Identifier) => Promise<JSONAPIDocument>
   findAndCountAll: (query: string) => Promise<JSONAPIDocument>
-  create: (body: unknown, querystring: string) => Promise<JSONAPIDocument>
-  update: (
-    body: unknown,
+  create: (
+    body: JSONAPIDocument,
     querystring: string,
-    id?: Identifier,
   ) => Promise<JSONAPIDocument>
-  destroy: (querystring: string, id: Identifier) => Promise<JSONAPIDocument>
+  update: (body: JSONAPIDocument, id: Identifier) => Promise<JSONAPIDocument>
+  destroy: (id: Identifier) => Promise<JSONAPIDocument>
 }
 
 export function buildEverythingForModel(
   hatchify: Hatchify,
-  modelName: string,
+  schemaName: string,
 ): EverythingFunctions {
   return {
-    findAll: findAllEverything(hatchify, modelName),
-    findOne: findOneEverything(hatchify, modelName),
-    findAndCountAll: findAndCountAllEverything(hatchify, modelName),
-    create: createEverything(hatchify, modelName),
-    destroy: destroyEverything(hatchify, modelName),
-    update: updateEverything(hatchify, modelName),
+    findAll: findAllEverything(hatchify, schemaName),
+    findOne: findOneEverything(hatchify, schemaName),
+    findAndCountAll: findAndCountAllEverything(hatchify, schemaName),
+    create: createEverything(hatchify, schemaName),
+    destroy: destroyEverything(hatchify, schemaName),
+    update: updateEverything(hatchify, schemaName),
   }
 }
 
-export function findAllEverything(hatchify: Hatchify, modelName: string) {
-  return async function findAllImpl(querystring: string) {
-    const params = await hatchify.parse[modelName].findAll(querystring)
-    const result = await hatchify.model[modelName].findAll(params)
-    const response = await hatchify.serialize[modelName].findAll(
+export function findAllEverything(hatchify: Hatchify, schemaName: string) {
+  return async function findAllImpl(
+    querystring: string,
+  ): Promise<JSONAPIDocument> {
+    const params = hatchify.parse[schemaName].findAll(querystring)
+    const result = await hatchify.orm.models[schemaName].findAll(params)
+    return hatchify.serialize[schemaName].findAll(
       result.map((row) => row.get({ plain: true })),
-      params.attributes,
     )
-
-    return response
   }
 }
 
-export function findOneEverything(hatchify: Hatchify, modelName: string) {
-  return async function findOneImpl(querystring: string, id: Identifier) {
-    const params = await hatchify.parse[modelName].findOne(querystring, id)
-    const result = await hatchify.model[modelName].findByPk(id, params)
+export function findOneEverything(hatchify: Hatchify, schemaName: string) {
+  return async function findOneImpl(
+    querystring: string,
+    id: Identifier,
+  ): Promise<JSONAPIDocument> {
+    const params = hatchify.parse[schemaName].findOne(querystring, id)
+    const result = await hatchify.orm.models[schemaName].findByPk(id, params)
     if (!result) {
       throw [
         new NotFoundError({
-          detail: modelName + " with id " + id + " was not found",
+          detail: schemaName + " with id " + id + " was not found",
         }),
       ]
     }
-    const response = await hatchify.serialize[modelName].findOne(
-      result,
-      params.attributes,
-    )
-    return response
+    return hatchify.serialize[schemaName].findOne(result.get({ plain: true }))
   }
 }
 
 export function findAndCountAllEverything(
   hatchify: Hatchify,
-  modelName: string,
+  schemaName: string,
 ) {
-  return async function findAndCountAllImpl(querystring: string) {
-    const params = await hatchify.parse[modelName].findAndCountAll(querystring)
-    const result = await hatchify.model[modelName].findAndCountAll(params)
-
-    const response = await hatchify.serialize[modelName].findAndCountAll(
-      { ...result, rows: result.rows.map((row) => row.get({ plain: true })) },
-      params.attributes,
-    )
-    return response
-  }
-}
-
-export function createEverything(hatchify: Hatchify, modelName: string) {
-  return async function createImpl(rawbody: unknown) {
-    const { body, ops } = await hatchify.parse[modelName].create(rawbody)
-    const result = await hatchify.model[modelName].create(body, ops)
-    const response = await hatchify.serialize[modelName].create(
-      result.get({ plain: true }),
-    )
-    return response
-  }
-}
-
-export function updateEverything(hatchify: Hatchify, modelName: string) {
-  return async function updateImpl(
-    rawbody: any,
+  return async function findAndCountAllImpl(
     querystring: string,
-    id?: Identifier,
-  ) {
-    const { body, ops } = await hatchify.parse[modelName].update(rawbody, id)
-    const [affectedCount] = await hatchify.model[modelName].update(body, ops)
-    if (!affectedCount) {
-      throw [
-        new NotFoundError({
-          detail: `URL must include an ID of an existing '${modelName}'.`,
-          parameter: "id",
-        }),
-      ]
-    }
-    const updated = await hatchify.model[modelName].findByPk(id)
-    const response = await hatchify.serialize[modelName].update(
-      updated.get({ plain: true }),
-      affectedCount,
-    )
-    return response
+  ): Promise<JSONAPIDocument> {
+    const params = hatchify.parse[schemaName].findAndCountAll(querystring)
+    const result = await hatchify.orm.models[schemaName].findAndCountAll(params)
+
+    return hatchify.serialize[schemaName].findAndCountAll({
+      ...result,
+      rows: result.rows.map((row) => row.get({ plain: true })),
+    })
   }
 }
 
-export function destroyEverything(hatchify: Hatchify, modelName: string) {
-  return async function destroyImpl(querystring: string, id: Identifier) {
-    const params = await hatchify.parse[modelName].destroy(querystring, id)
-    const affectedCount = await hatchify.model[modelName].destroy(params)
+export function createEverything(hatchify: Hatchify, schemaName: string) {
+  return async function createImpl(
+    rawbody: JSONAPIDocument,
+  ): Promise<JSONAPIDocument> {
+    const { body, ops } = hatchify.parse[schemaName].create(rawbody)
+    const result = await hatchify.orm.models[schemaName].create(body, ops)
+    return hatchify.serialize[schemaName].create(result.get({ plain: true }))
+  }
+}
+
+export function updateEverything(hatchify: Hatchify, schemaName: string) {
+  return async function updateImpl(
+    rawbody: JSONAPIDocument,
+    id: Identifier,
+  ): Promise<JSONAPIDocument> {
+    const { body, ops } = hatchify.parse[schemaName].update(rawbody, id)
+    const [affectedCount] = await hatchify.orm.models[schemaName].update(
+      body,
+      ops,
+    )
     if (!affectedCount) {
       throw [
         new NotFoundError({
-          detail: `URL must include an ID of an existing '${modelName}'.`,
+          detail: `URL must include an ID of an existing '${schemaName}'.`,
           parameter: "id",
         }),
       ]
     }
-    const response = await hatchify.serialize[modelName].destroy(affectedCount)
-    return response
+    const updated = await hatchify.orm.models[schemaName].findByPk(id)
+    return hatchify.serialize[schemaName].update(updated?.get({ plain: true }))
+  }
+}
+
+export function destroyEverything(hatchify: Hatchify, schemaName: string) {
+  return async function destroyImpl(id: Identifier): Promise<JSONAPIDocument> {
+    const params = hatchify.parse[schemaName].destroy(id)
+    const affectedCount = await hatchify.orm.models[schemaName].destroy(params)
+    if (!affectedCount) {
+      throw [
+        new NotFoundError({
+          detail: `URL must include an ID of an existing '${schemaName}'.`,
+          parameter: "id",
+        }),
+      ]
+    }
+    return hatchify.serialize[schemaName].destroy()
   }
 }

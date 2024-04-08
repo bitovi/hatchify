@@ -15,7 +15,7 @@ export interface PartialDateonlyProps<TRequired extends boolean>
 
 export interface PartialDateonlyControlType<TRequired extends boolean>
   extends PartialControlType<string, TRequired> {
-  type: "Dateonly"
+  type: "Date"
   min?: string | typeof Infinity
   max?: string | typeof Infinity
   step?: StringStep | number

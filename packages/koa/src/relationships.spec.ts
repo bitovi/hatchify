@@ -12,6 +12,15 @@ import { dbDialects, startServerWith } from "./testing/utils.js"
 
 describe.each(dbDialects)("Relationships", (dialect) => {
   describe(`${dialect} - Users and Todos`, () => {
+    const Skill = {
+      name: "Skill",
+      attributes: {
+        name: string(),
+      },
+      relationships: {
+        user: belongsTo(),
+      },
+    } satisfies PartialSchema
     const User = {
       name: "User",
       attributes: {
@@ -20,6 +29,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
       },
       relationships: {
         todos: hasMany(),
+        skills: hasMany(),
       },
     } satisfies PartialSchema
     const Todo = {
@@ -38,7 +48,10 @@ describe.each(dbDialects)("Relationships", (dialect) => {
     let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
 
     beforeAll(async () => {
-      ;({ fetch, teardown } = await startServerWith({ User, Todo }, dialect))
+      ;({ fetch, teardown } = await startServerWith(
+        { Skill, User, Todo },
+        dialect,
+      ))
     })
 
     afterAll(async () => {
@@ -587,37 +600,84 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           ],
         })
       })
+
+      it("should handle non-included nested associations", async () => {
+        const { status, body } = await fetch(
+          "/api/users?filter[todos.name]=test",
+        )
+
+        expect(status).toEqual(400)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 400,
+              code: "relationship-path",
+              title: "Relationship path could not be identified.",
+              detail:
+                "URL must have 'include' with 'todos' as one of the relationships to include.",
+              source: {
+                parameter: "include",
+              },
+            },
+          ],
+        })
+      })
+
+      it("should handle non-existing nested associations", async () => {
+        const { status, body } = await fetch(
+          "/api/users?include=todos,todos.invalid",
+        )
+
+        expect(status).toEqual(400)
+        expect(body).toEqual({
+          jsonapi: { version: "1.0" },
+          errors: [
+            {
+              status: 400,
+              code: "relationship-path",
+              title: "Relationship path could not be identified.",
+              detail:
+                "URL must have 'include' where 'todos.invalid' is a valid relationship path.",
+              source: {
+                parameter: "include",
+              },
+            },
+          ],
+        })
+      })
     })
 
     describe("should support pagination meta (HATCH-203)", () => {
       it("with pagination", async () => {
-        const [{ body: mrPagination }] = await Promise.all([
-          fetch("/api/users", {
-            method: "post",
-            body: {
-              data: {
-                type: "User",
-                attributes: {
-                  name: "Pagination",
-                  age: 18,
-                },
+        const { body: mrPagination } = await fetch("/api/users", {
+          method: "post",
+          body: {
+            data: {
+              type: "User",
+              attributes: {
+                name: "Pagination",
+                age: 18,
               },
             },
-          }),
-          fetch("/api/users", {
-            method: "post",
-            body: {
-              data: {
-                type: "User",
-                attributes: {
-                  name: "Pagination",
-                },
+          },
+        })
+
+        await fetch("/api/users", {
+          method: "post",
+          body: {
+            data: {
+              type: "User",
+              attributes: {
+                name: "Pagination",
+                age: 19,
               },
             },
-          }),
-        ])
+          },
+        })
+
         const { body: users } = await fetch(
-          `/api/users?filter[name]=Pagination&page[number]=1&page[size]=1`,
+          `/api/users?filter[name]=Pagination&page[number]=1&page[size]=1&sort=age`,
         )
 
         expect(users).toEqual({
@@ -672,7 +732,8 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               status: 400,
               code: "relationship-path",
               title: "Relationship path could not be identified.",
-              detail: "URL must have 'include' as one or more of 'user'.",
+              detail:
+                "URL must have 'include' where 'invalid_relationship_path' is a valid relationship path.",
               source: {
                 parameter: "include",
               },
@@ -855,7 +916,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
 
       expect(body).toEqual({
         jsonapi: { version: "1.0" },
-        meta: { unpaginatedCount: 2 },
+        meta: { unpaginatedCount: 1 },
         data: [
           {
             type: "User",
@@ -888,6 +949,102 @@ describe.each(dbDialects)("Relationships", (dialect) => {
           },
         ],
       })
+    })
+
+    it("should only overwrite specified relationships (HATCH-550)", async () => {
+      await Promise.all([
+        fetch("/api/todos", {
+          method: "post",
+          body: {
+            data: {
+              type: "Todo",
+              id: "b2a0fbbe-ac7c-4087-bf58-c606237a5808",
+              attributes: {
+                name: "Walk the dog",
+                dueDate: "2024-12-12T00:00:00.000Z",
+                importance: 6,
+              },
+            },
+          },
+        }),
+        fetch("/api/skills", {
+          method: "post",
+          body: {
+            data: {
+              type: "Skill",
+              id: "a967e091-6e0c-4caa-9759-112608fea33c",
+              attributes: {
+                name: "Cooking",
+              },
+            },
+          },
+        }),
+      ])
+
+      await fetch("/api/users", {
+        method: "post",
+        body: {
+          data: {
+            type: "User",
+            id: "d9f1592f-e712-465e-b445-c5e072349b89",
+            attributes: {
+              name: "Justin",
+            },
+            relationships: {
+              skills: {
+                data: [
+                  {
+                    type: "Skill",
+                    id: "a967e091-6e0c-4caa-9759-112608fea33c",
+                  },
+                ],
+              },
+              todos: {
+                data: [
+                  {
+                    type: "Todo",
+                    id: "b2a0fbbe-ac7c-4087-bf58-c606237a5808",
+                  },
+                ],
+              },
+            },
+          },
+        },
+      })
+
+      const { body: userBefore } = await fetch(
+        `/api/users/d9f1592f-e712-465e-b445-c5e072349b89?include=skills,todos`,
+      )
+
+      await fetch("/api/users/d9f1592f-e712-465e-b445-c5e072349b89", {
+        method: "patch",
+        body: {
+          data: {
+            type: "User",
+            id: "d9f1592f-e712-465e-b445-c5e072349b89",
+            attributes: {
+              age: 27,
+            },
+            relationships: {
+              skills: {
+                data: [],
+              },
+            },
+          },
+        },
+      })
+
+      const { body: userAfter } = await fetch(
+        `/api/users/d9f1592f-e712-465e-b445-c5e072349b89?include=skills,todos`,
+      )
+
+      expect(userBefore.data.attributes).toEqual({ name: "Justin", age: null })
+      expect(userBefore.data.relationships.skills.data).toHaveLength(1)
+      expect(userBefore.data.relationships.todos.data).toHaveLength(1)
+
+      expect(userAfter.data.attributes).toEqual({ name: "Justin", age: 27 })
+      expect(userAfter.data.relationships.skills.data).toHaveLength(0)
+      expect(userAfter.data.relationships.todos.data).toHaveLength(1)
     })
   })
 
@@ -926,7 +1083,8 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               status: 400,
               code: "relationship-path",
               title: "Relationship path could not be identified.",
-              detail: "URL must not have 'include' as a parameter.",
+              detail:
+                "URL must have 'include' where 'invalid_relationship_path' is a valid relationship path.",
               source: {
                 parameter: "include",
               },

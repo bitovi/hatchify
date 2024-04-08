@@ -1,17 +1,30 @@
-# @hatchifyjs/react types
+# Types
 
-- [Types](#types)
-- [DataGridState](#datagridstate)
-- [CreateType](#createtype)
-- [UpdateType](#updatetype)
-- [HatchifyApp](#hatchifyapp)
-- [RecordType](#recordtype)
+Types available for use within your Hatchify App.
 
-## Types
+- [`DataGridState`](#datagridstate)
+- [`CreateType`](#createtype)
+- [`UpdateType`](#updatetype)
+- [`HatchifyApp`](#hatchifyapp)
+- [`RecordType`](#recordtype)
+- [`Primitive`](#primitive)
+- [`Relationship`](#relationship)
+- [`DataValue`](#datavalue)
+- [`DataValueRecord`](#datavaluerecord)
+- [`DataValueComponent`](#datavaluecomponent)
+- [`RenderHeader`](#renderheader)
+- [`HeaderValueComponent`](#headervaluecomponent)
+- [`HeaderProps`](#headerprops)
+- [`HeaderPropsCommon`](#headerpropscommon)
+- [`HatchifyDataGridSelectedState`](#hatchifydatagridselectedstate)
+- [`PaginationObject`](#paginationobject)
+- [`SortObject`](#sortobject)
+- [`Filters`](#filters)
+- [`FilterArray`](#filterarray)
+- [`FiltersObject`](#filtersobject)
+- [`XDataGridProps`](#xdatagridprops)
 
-Types available for use within your Hatchify App should you need them.
-
-### DataGridState
+## DataGridState
 
 This is the return type of the `useDataGridState` hook. When using the state in an ejected pattern (separated out of `hatchedReact`) it may be necessary to type your data using this type.
 
@@ -50,33 +63,33 @@ Further, the `meta` object includes:
 | `meta`           | Any meta data for the request        |
 | `status`         | "loading", "success", or "error"     |
 
-### CreateType
+## CreateType
 
 `CreateType` is the type used when data is created. It may be useful when prepping form data for record creation. This type will consist of the schema name and the attributes. `CreateType` is a generic type, so it requires the schema type when used.
 
 ```ts
-  type TodoForm = Omit<CreateType<(typeof Schemas)["Todo"]>, "__schema"> // 👀
-  
-  const [newTodo, setNewTodo] = useState<TodoForm>({
-    name: "new todo",
-    importance: "5",
-  })
+type TodoForm = Omit<CreateType<(typeof Schemas)["Todo"]>, "__schema"> // 👀
+
+const [newTodo, setNewTodo] = useState<TodoForm>({
+  name: "new todo",
+  importance: "5",
+})
 ```
 
-### UpdateType
+## UpdateType
 
 `UpdateType` is the type used when data is updated. It may be useful when prepping form data for record updating. This type will consist of the record id, schema name, and the attributes.
 
 ```ts
-  type TodoForm = Omit<UpdateType<(typeof Schemas)["Todo"]>, "__schema"> // 👀
+type TodoForm = Omit<UpdateType<(typeof Schemas)["Todo"]>, "__schema"> // 👀
 
-  const [editTodo, setEditTodo] = useState<TodoForm>({
-    name: "new todo name",
-    importance: "7",
-  })
+const [editTodo, setEditTodo] = useState<TodoForm>({
+  name: "new todo name",
+  importance: "7",
+})
 ```
 
-### HatchifyApp
+## HatchifyApp
 
 `HatchifyApp` is the type of the Hatchify App that is generated with `hatchifyReact()`. It may be needed if you have services and want to type the service. It is a generic type that accepts a type parameter of the `Record<string, PartialSchema>` type.
 
@@ -90,31 +103,194 @@ const myServices = {
 }
 ```
 
-### RecordType
+## RecordType
 
-`RecordType` will match a record's schema, and can be useful for local form state when updating. Another generic type, this type accepts 2-4 parameters.
+`RecordType` will match a record's schema, and can be useful for local form state when updating. This generic type accepts 2-4 parameters.
 
 Parameters:
 
-| type                            | description                                                                  |
-| ------------------------------- | ---------------------------------------------------------------------------- |
-| `Record<string, PartialSchema>` | The type of the user defined schema as a `Record` object                     |
-| `PartialSchema`                 | The type of the user defined schema                                          |
-| `boolean`                       | True to allow `Date` to be type `Date or String`, false to only allow `Date` |
-| `boolean`                       | Keep type safety for schema attributes, while allowing custom computed fields|
-
+| type                            | description                                                                   |
+| ------------------------------- | ----------------------------------------------------------------------------- |
+| `Record<string, PartialSchema>` | The type of the user defined schema as a `Record` object                      |
+| `PartialSchema`                 | The type of the user defined schema                                           |
+| `boolean`                       | True to allow `Date` to be type `Date or String`, false to only allow `Date`  |
+| `boolean`                       | Keep type safety for schema attributes, while allowing custom computed fields |
 
 ```ts
- // 👀
-  type TodoForm = RecordType<
-    { Todo: (typeof Schemas)["Todo"] },
-    (typeof Schemas)["Todo"],
-    false,
-    false
-  >
+// 👀
+type TodoForm = RecordType<{ Todo: (typeof Schemas)["Todo"] }, (typeof Schemas)["Todo"], false, false>
 
-  const [editTodo, setEditTodo] = useState<TodoForm>({
-    name: "new todo name",
-    importance: "7",
-  })
+const [editTodo, setEditTodo] = useState<TodoForm>({
+  name: "new todo name",
+  importance: "7",
+})
+```
+
+## `HatchifyDataGridSelectedState`
+
+```ts
+interface HatchifyDataGridSelectedState = {
+  all: boolean
+  ids: string[]
+}
+```
+
+## `HatchifyDataGridSelected`
+
+```ts
+interface HatchifyDataGridSelected = {
+  selected?: HatchifyDataGridSelectedState
+  setSelected?: (selected: HatchifyDataGridSelectedState) => void
+}
+```
+
+## `PaginationObject`
+
+```ts
+interface PaginationObject = {
+  number: number
+  size: number
+}
+```
+
+## `SortObject`
+
+```ts
+interface SortObject {
+  direction: "asc" | "desc" | undefined
+  sortBy: string | undefined
+}
+```
+
+## `FilterTypes`
+
+```ts
+type FilterTypes = "$eq" | "$ne" | "$gt" | "$gte" | "$lt" | "$lte" | "$in" | "$nin" | "$like" | "$ilike" | "empty" | "nempty"
+```
+
+## `Filters`
+
+```ts
+type Filters = FilterArray | FiltersObject | string | undefined
+```
+
+## `FilterArray`
+
+```ts
+type FilterArray = Array<{
+  field: string
+  operator: string
+  value: string | string[] | number | number[] | boolean | boolean[]
+}>
+```
+
+## `FiltersObject`
+
+```ts
+type FiltersObject = {
+  [field: string]: {
+    [filter in FilterTypes]?: string | string[] | number | number[] | boolean | boolean[]
+  }
+}
+```
+
+## Primitive
+
+```ts
+type Primitive = string | boolean | number
+```
+
+## `Relationship`
+
+```ts
+type Relationship = {
+  id: string
+  label: string
+  [field: string]: Primitive
+}
+```
+
+## `DataValue`
+
+```ts
+type DataValue = Primitive | Relationship | Relationship[]
+```
+
+## `DataValueRecord`
+
+```ts
+type DataValueRecord = {
+  id: string | number
+  [field: string]: DataValue
+}
+```
+
+## `DataValueComponent`
+
+```ts
+type DataValueComponent = React.FC<{
+  value: DataValue
+  record: DataValueRecord
+  control: FinalAttributeRecord[string]["control"]
+  field?: string | null
+}>
+```
+
+## `HeaderProps`
+
+```ts
+type HeaderProps =
+  | (HeaderPropsCommon & {
+      column: HatchifyColumn
+    })
+  | (HeaderPropsCommon & {
+      column: Omit<HatchifyColumn, "headerOverride" | "renderData" | "renderHeader">
+    })
+```
+
+## HeaderPropsCommon
+
+```ts
+interface HeaderPropsCommon {
+  direction: SortObject["direction"]
+  meta: Meta
+  setSort: HatchifyDataGridSort["setSort"]
+  sortBy: SortObject["sortBy"]
+}
+```
+
+## `RenderHeader`
+
+```ts
+type RenderHeader = (headerArgs: HeaderProps) => JSX.Element
+```
+
+## `HeaderValueComponent`
+
+```ts
+type HeaderValueComponent = React.FC<HeaderProps>
+```
+
+## `XDataGridProps`
+
+> extends <a href="#datagridstate">DataGridState</a>
+
+| prop            | type              | description                                                         |
+| --------------- | ----------------- | ------------------------------------------------------------------- |
+| `children`      | `React.ReactNode` | The children components to be rendered within the custom `DataGrid` |
+| `overwrite`     | `boolean`         | When `true`, will only render the children given to the component   |
+| `listWrapperId` | `string`          | The `id` assigned to the `List` wrapper component                   |
+| `fitParent`     | `boolean`         | Manages dimensions of the `List` compared to it's parent            |
+
+```ts
+interface XDataGridProps<
+  TSchemas extends Record<string, PartialSchema> = any,
+  TSchemaName extends GetSchemaNames<TSchemas> = any,
+> extends <TSchemas, TSchemaName> {
+  children?: React.ReactNode
+  overwrite?: boolean
+  minimumLoadTime?: number
+  listWrapperId?: string
+  fitParent?: boolean
+}
 ```

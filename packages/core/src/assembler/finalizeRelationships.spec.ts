@@ -164,6 +164,12 @@ describe("finalizeRelationships", () => {
               sourceKey: "id",
               targetKey: "id",
             },
+            todoUsers: {
+              type: "hasMany",
+              targetSchema: "TodoUser",
+              targetAttribute: "todoId",
+              sourceAttribute: "id",
+            },
           },
         },
         User: {
@@ -178,6 +184,12 @@ describe("finalizeRelationships", () => {
               throughTargetAttribute: "todoId",
               sourceKey: "id",
               targetKey: "id",
+            },
+            todoUsers: {
+              type: "hasMany",
+              targetSchema: "TodoUser",
+              targetAttribute: "userId",
+              sourceAttribute: "id",
             },
           },
         },

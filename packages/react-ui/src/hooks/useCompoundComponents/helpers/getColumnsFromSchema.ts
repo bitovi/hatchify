@@ -5,7 +5,7 @@ import type {
   GetSchemaNames,
   Include,
 } from "@hatchifyjs/rest-client"
-import type { DefaultValueComponentsTypes } from "../../../components/index.js"
+import type { DefaultDisplayComponentsTypes } from "../../../components/index.js"
 import type { HatchifyColumn } from "../useCompoundComponents.js"
 import { getColumn } from "./index.js"
 import { getDisplayAttribute } from "@hatchifyjs/rest-client"
@@ -16,7 +16,7 @@ export function getColumnsFromSchema<
 >(
   finalSchemas: FinalSchemas,
   schemaName: TSchemaName,
-  defaultValueComponents: DefaultValueComponentsTypes,
+  defaultDisplayComponents: DefaultDisplayComponentsTypes,
   include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>,
 ): HatchifyColumn[] {
   const schema = finalSchemas[schemaName as string]
@@ -27,7 +27,7 @@ export function getColumnsFromSchema<
       return getColumn<TSchemas, TSchemaName>({
         finalSchemas,
         schemaName,
-        defaultValueComponents,
+        defaultDisplayComponents,
         control,
         field: attributeName,
         isRelationship: false,
@@ -53,7 +53,7 @@ export function getColumnsFromSchema<
       return getColumn<TSchemas, TSchemaName>({
         finalSchemas,
         schemaName,
-        defaultValueComponents,
+        defaultDisplayComponents,
         control: null,
         field: key,
         key: `${key}.${displayAttribute}`,

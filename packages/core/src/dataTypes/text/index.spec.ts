@@ -111,6 +111,9 @@ describe("text", () => {
           default: null,
           regex: /(.*?)/,
           maxRenderLength: null,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -249,6 +252,9 @@ describe("text", () => {
           default: null,
           regex: /(.*?)/,
           maxRenderLength: null,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -386,6 +392,9 @@ describe("text", () => {
           default: null,
           regex: /(.*?)/,
           maxRenderLength: null,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),

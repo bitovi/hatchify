@@ -14,4 +14,7 @@ export {
   Filters,
   DataGrid,
 } from "@hatchifyjs/design-mui"
-export { default as createJsonapiClient } from "@hatchifyjs/rest-client-jsonapi"
+export {
+  convertToHatchifyResources,
+  default as createJsonapiClient,
+} from "@hatchifyjs/rest-client-jsonapi"

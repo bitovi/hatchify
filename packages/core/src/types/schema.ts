@@ -36,10 +36,13 @@ export interface PartialDataTypeProps<
   default?: PrimitiveType | (() => PrimitiveType) | null
   unique?: boolean
   displayName?: string
+  ui?: {
+    enableCaseSensitiveContains?: boolean
+  }
 }
 
 export interface PartialControlType<PrimitiveType, TRequired extends boolean> {
-  type: "Boolean" | "Number" | "String" | "Datetime" | "Dateonly" | "enum"
+  type: "Boolean" | "Number" | "String" | "Date" | "enum"
   allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
   hidden?: boolean

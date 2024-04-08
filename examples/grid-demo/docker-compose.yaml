@@ -1,8 +1,8 @@
 version: "3.9"
 
 services:
-  backend_sqlite:
-    container_name: backend_sqlite
+  koa_sqlite:
+    container_name: koa_sqlite
     build:
       context: .
       target: backend
@@ -18,10 +18,10 @@ services:
       - DATABASE=sqlite
       - DB_URI=sqlite://localhost/:memory
     networks:
-      - hatch_sqlite
+      - koa_sqlite
 
-  backend_postgres:
-    container_name: backend_postgres
+  koa_postgres:
+    container_name: koa_postgres
     build:
       context: .
       target: backend
@@ -37,7 +37,47 @@ services:
       - DATABASE=postgres
       - DB_URI=postgres://postgres:password@postgres_db:5432/postgres
     networks:
-      - hatch_postgres
+      - koa_postgres
+    depends_on:
+      - postgres_db
+
+  express_sqlite:
+    container_name: express_sqlite
+    build:
+      context: .
+      target: backend
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3002:3002
+    environment:
+      - APP_PORT=3002
+      - BACKEND=express
+      - DATABASE=sqlite
+      - DB_URI=sqlite://localhost/:memory
+    networks:
+      - express_sqlite
+
+  express_postgres:
+    container_name: express_postgres
+    build:
+      context: .
+      target: backend
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3003:3003
+    environment:
+      - APP_PORT=3003
+      - BACKEND=express
+      - DATABASE=postgres
+      - DB_URI=postgres://postgres:password@postgres_db:5432/postgres
+    networks:
+      - express_postgres
     depends_on:
       - postgres_db
 
@@ -52,10 +92,15 @@ services:
     #volumes:
     #  - ./db:/var/lib/postgresql/data
     networks:
-      - hatch_postgres
+      - koa_postgres
+      - express_postgres
 
 networks:
-  hatch_sqlite:
+  koa_sqlite:
     driver: bridge
-  hatch_postgres:
+  koa_postgres:
+    driver: bridge
+  express_sqlite:
+    driver: bridge
+  express_postgres:
     driver: bridge

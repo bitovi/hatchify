@@ -32,20 +32,7 @@ describe("react-rest/services/useDeleteOne", () => {
     )
 
     await waitFor(() => {
-      expect(result.current).toEqual([
-        expect.any(Function),
-        {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
-        },
-      ])
+      expect(result.current).toEqual([expect.any(Function), {}])
     })
 
     await result.current[0]("id")
@@ -54,15 +41,17 @@ describe("react-rest/services/useDeleteOne", () => {
       expect(result.current).toEqual([
         expect.any(Function),
         {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
+          ["id"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
         },
       ]),
     )
@@ -76,20 +65,7 @@ describe("react-rest/services/useDeleteOne", () => {
     )
 
     await waitFor(() => {
-      expect(result.current).toEqual([
-        expect.any(Function),
-        {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
-        },
-      ])
+      expect(result.current).toEqual([expect.any(Function), {}])
     })
 
     const errors = [
@@ -109,15 +85,17 @@ describe("react-rest/services/useDeleteOne", () => {
       expect(result.current).toEqual([
         expect.any(Function),
         {
-          status: "error",
-          meta: undefined,
-          error: errors,
-          isResolved: true,
-          isPending: false,
-          isRejected: true,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: false,
+          ["id"]: {
+            status: "error",
+            meta: undefined,
+            error: errors,
+            isResolved: true,
+            isPending: false,
+            isRejected: true,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: false,
+          },
         },
       ]),
     )
@@ -130,15 +108,62 @@ describe("react-rest/services/useDeleteOne", () => {
       expect(result.current).toEqual([
         expect.any(Function),
         {
-          status: "success",
-          meta: undefined,
-          error: undefined,
-          isResolved: true,
-          isPending: false,
-          isRejected: false,
-          isRevalidating: false,
-          isStale: false,
-          isSuccess: true,
+          ["id"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
+        },
+      ]),
+    )
+  })
+
+  it("should delete multiple records", async () => {
+    createStore(["Article"])
+
+    const { result } = renderHook(() =>
+      useDeleteOne(fakeDataSource, schemas, "Article"),
+    )
+
+    await waitFor(() => {
+      expect(result.current).toEqual([expect.any(Function), {}])
+    })
+
+    await result.current[0]("id1")
+    await result.current[0]("id2")
+
+    await waitFor(() =>
+      expect(result.current).toEqual([
+        expect.any(Function),
+        {
+          ["id1"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
+          ["id2"]: {
+            status: "success",
+            meta: undefined,
+            error: undefined,
+            isResolved: true,
+            isPending: false,
+            isRejected: false,
+            isRevalidating: false,
+            isStale: false,
+            isSuccess: true,
+          },
         },
       ]),
     )

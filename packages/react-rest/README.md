@@ -148,7 +148,6 @@ Then, we'll extend the app to handle relationships:
 
 ![image](https://github.com/bitovi/hatchify/assets/2623867/c4ef04b1-e457-411d-8199-756ee54e6898)
 
-
 <a id="listing-creating-and-deleting-todos"></a>
 
 ### Listing, creating, and deleting todos
@@ -785,7 +784,7 @@ export default App
 
 Congratulations! You've just created an app with react-rest with a fully functional development backend, complete with CRUD operations and relationship support.
 
-> **Note:** At this point we've reached the limits of what our todo app's `msw`-powered API supports. If you would like to continue exploring the HatchifyJS ecosystem, then we suggest setting up a standalone HatchifyJS backend. The getting started guide for a HatchifyJS backend can be found [here](https://github.com/bitovi/hatchify/blob/main/packages/koa/README.md).
+> **Note:** At this point we've reached the limits of what our todo app's `msw`-powered API supports. If you would like to continue exploring the HatchifyJS ecosystem, then we suggest setting up a standalone HatchifyJS backend. The getting started guide for a HatchifyJS backend can be found [here](../koa/README.md).
 
 For more information on react-rest, read on.
 

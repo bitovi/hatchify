@@ -20,7 +20,7 @@ export * from "./error/types/index.js"
 
 export type { EverythingFunctions } from "./everything.js"
 
-export { getMiddlewareFunctions } from "./middleware/node.js"
+export { getMiddlewareFunctions } from "./middleware.js"
 
 export type { ParseFunctions } from "./parse/index.js"
 

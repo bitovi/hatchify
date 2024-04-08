@@ -27,6 +27,9 @@ describe("finalizeSchema", () => {
           default: expect.any(Function),
           regex: UUID_REGEX,
           type: "String",
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         orm: {
           sequelize: {

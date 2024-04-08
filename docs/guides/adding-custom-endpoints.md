@@ -4,14 +4,14 @@ While Hatchify gives you a lot of power out of the box many applications, especi
 
 This is helpful if you need to:
 
-- Enforce request authorization
+- [Enforce request authorization](./adding-request-authorization.md)
 - Add custom validation
 - Integrate with 3rd party services
 - Handle file uploads/downloads
 
 ## Prerequisites
 
-If you are using `Koa`, we suggest using the Koa Router to help creating custom routes easily:
+If you are using `Koa`, we suggest using the Koa Router to help create custom routes easily:
 
 ```bash
 npm install @koa/router
@@ -73,7 +73,7 @@ const router = new KoaRouter() // 👀
 router.get("/api/cases", async function getCases(ctx): Promise<void> {
   const { query } = ctx
   const parseQuery = hatchedKoa.parse.Case.findAndCountAll
-  const fetchCases = hatchedKoa.model.Case.findAndCountAll
+  const fetchCases = hatchedKoa.orm.models.Case.findAndCountAll
   const serializeResponse = hatchedKoa.serialize.Case.findAndCountAll
 
   // Here is a good opportunity to manipulate the query or add input validation:

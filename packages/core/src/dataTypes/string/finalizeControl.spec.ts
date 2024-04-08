@@ -50,4 +50,25 @@ describe("finalizeControl", () => {
       func,
     )
   })
+
+  it("handles ui", () => {
+    expect(finalizeControl({ type: "String", ui: undefined }).ui).toEqual({
+      enableCaseSensitiveContains: false,
+    })
+    expect(finalizeControl({ type: "String", ui: {} }).ui).toEqual({
+      enableCaseSensitiveContains: false,
+    })
+    expect(
+      finalizeControl({
+        type: "String",
+        ui: { enableCaseSensitiveContains: false },
+      }).ui,
+    ).toEqual({ enableCaseSensitiveContains: false })
+    expect(
+      finalizeControl({
+        type: "String",
+        ui: { enableCaseSensitiveContains: true },
+      }).ui,
+    ).toEqual({ enableCaseSensitiveContains: true })
+  })
 })

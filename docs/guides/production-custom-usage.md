@@ -1,10 +1,10 @@
 # Production / Custom Usage Guide
 
-So you developed a nice app and you might be wondering how do I get prepared for deployment to production. We know that production might be accessibly to a large audience, possibly to everyone, and therefore there are steps we want to take to reduce what is running on these servers so we reduce the amount of vulnerabilities. This guide will try answering a few questions about it:
+So you developed a nice app, and you might be wondering how I prepare for deployment to production. We know that production might be accessible to a large audience, possibly to everyone, and therefore there are steps we want to take to reduce what is running on these servers so we reduce the number of vulnerabilities. This guide will work through deploying with Docker:
 
 ## How to build our Vite frontend to static files suitable for hosting on any web server / CDN / etc.?
 
-The development server runs on [Vite](https://vitejs.dev/) and [TypeScript](https://www.typescriptlang.org/). Vite is a development server so while it helps building apps faster, it is not needed to run in production. From frontend perspective, frontend is just a folder of static assets (HTML, JavaScript and CSS files). In order to create this folder from our source code, we will want to run:
+The development server runs on [Vite](https://vitejs.dev/) and [TypeScript](https://www.typescriptlang.org/). Vite is a development server so while it helps building apps faster, it is not intended for production. From a frontend perspective, the app is just a folder of static assets (HTML, JavaScript, and CSS files). In order to create this folder from our source code, we will want to run:
 
 ```bash
 npm run build:frontend
@@ -14,7 +14,7 @@ Well done, now we have all our static assets under `dist/frontend`.
 
 ## How to build our backend to run without TypeScript and the Vite dev server middleware?
 
-While we want our production to run [Koa](https://koajs.com/) or [Express](https://expressjs.com/) similar to our development server, it is also running on [TypeScript](https://www.typescriptlang.org/) that is not needed in production, and it integrates [Vite](https://vitejs.dev/) middleware to be able to develop with a single executable. Furthermore, A production server signals to our dependencies that we are running in production so performance tweaks can take place. Some logging might not be necessary, caching can be leveraged, etc.
+While we want our production to run [Koa](https://koajs.com/) or [Express](https://expressjs.com/) similar to our development server, it is also using [TypeScript](https://www.typescriptlang.org/) that is not needed in production, and it integrates [Vite](https://vitejs.dev/) middleware to be able to develop with a single executable. Furthermore, a production server signals to our dependencies that we are running in production so performance tweaks can take place. Some logging might not be necessary, caching can be leveraged, etc. Build the backend code using the following command:
 
 ```bash
 npm run build:backend
@@ -28,12 +28,25 @@ NODE_ENV=production node dist/backend/backend/index.js
 
 ## How to build a docker image for hosting the backend and the frontend under a single proxy domain?
 
-There are many ways to skin a cat when it comes to deploying our app to production servers. One of the easier ones is using Docker. What's great about Docker is that you can have a fair simulation of the deployed infrastructure tested locally before it gets deployed. In order to do that, we will create a few files at the root of our project:
+There are many ways to skin a cat when it comes to deploying our app to production servers. One of
+the easier ones is using Docker. What's great about Docker is that you can have a fair simulation of
+the deployed infrastructure tested locally before it gets deployed.
 
-1. A `backend.dockerfile` file for the backend will:
+We will use Docker to: host a Postgres database, run the backend API server, and include
+[Nginx](https://www.nginx.com/) to serve frontend assets and proxy API requests.
+
+Before continuing make sure you have Docker installed, when the version command `docker version`
+completes successfully then Docker is correctly installed.
+
+Now that Docker is ready let's create four files at the root of our project:
+
+### `backend.dockerfile`
+
+Starts the server code that hosts the API. In this file we:
 
 - Specify the Node version we need
 - Copy only the compiled Javascript files required for the app to run into the container
+- Install the `pg` package to communicate with the Postgres DB.
 - Build the dependencies for the OS of the container
 - Specify the command to execute the server
 
@@ -42,6 +55,8 @@ There are many ways to skin a cat when it comes to deploying our app to producti
 FROM node:20
 WORKDIR /usr/src/hatchify
 COPY ["package.json", "package-lock.json", "./"]
+# Install the `pg` package when using the Postgres DB.
+RUN npm install pg
 RUN npm install --production --silent
 COPY ./dist/backend .
 RUN chown -R node /usr/src/hatchify
@@ -49,10 +64,12 @@ USER node
 CMD ["npm", "run", "start:backend"]
 ```
 
-2. An `nginx.conf` configuration file will:
+### `nginx.conf`
 
-- Serve our static assets
-- Proxy API requests to our backend service
+Used by the Nginx server created as part of the [frontend.dockerfile](#frontenddockerfile).
+
+- Serves frontend static assets
+- Proxies API requests to our backend service
 
 ```nginx
 # nginx.conf
@@ -93,9 +110,11 @@ http {
 
 ```
 
-3. A `frontend.dockerfile` file for the frontend will:
+### `frontend.dockerfile`
 
-- Setup [Nginx](https://www.nginx.com/)
+Serves the frontend code.
+
+- Start Nginx
 - Copy the configuration we just created
 - Copy the static frontend assets into the container
 
@@ -107,9 +126,16 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY dist/frontend /var/www
 ```
 
-4. A `docker-compose.yml` file at the root of our project will:
+### `docker-compose.yml`
 
-- Setup a Postgres container, can be omitted if we have one outside of Docker
+Composes all of the Hatchify containers.
+
+_Note that the database user and password values are provided to the docker container at runtime
+using environment variables named `USERNAME` and `PASSWORD`. Before deploying Hatchify to production
+you must [replace the default credentials with new
+credentials](https://www.postgresqltutorial.com/postgresql-administration/postgresql-change-password/)._
+
+- Setup a Postgres container
 - Setup the backend container using the Dockerfile above along with environment variables
 - Setup the frontend container using the Dockerfile above and exposing it on port 80
 
@@ -123,8 +149,8 @@ services:
     networks:
       - hatchify-network
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=${USERNAME}
+      - POSTGRES_PASSWORD=${PASSWORD}
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 10s
@@ -161,11 +187,11 @@ networks:
 
 You are all set. You can go ahead and test it out locally using:
 
-```bash
-docker compose up --build
+```sh
+USERNAME=postgres PASSWORD=password docker compose up --build
 ```
 
-and navigating to http://localhost.
+and navigating to `http://localhost`.
 
 ## Next Steps
 

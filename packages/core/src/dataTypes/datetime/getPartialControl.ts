@@ -7,7 +7,7 @@ export function getPartialControl<TRequired extends boolean>(
   props?: PartialDatetimeProps<TRequired>,
 ): PartialDatetimeControlType<TRequired> {
   return {
-    type: "Datetime",
+    type: "Date",
     allowNull: props?.required == null ? props?.required : !props.required,
     allowNullInfer: (props?.required == null
       ? props?.required

@@ -3,11 +3,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ESNext",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "declaration": true,
     "composite": true,
     "incremental": true,
@@ -26,18 +22,17 @@
     "useDefineForClassFields": true,
     "baseUrl": ".",
     "paths": {
-      "@hatchifyjs/core": [
-        "./packages/core/dist"
-      ],
-      "@hatchifyjs/crypto": [
-        "./packages/crypto"
-      ],
-      "@hatchifyjs/node": [
-        "./packages/node/dist"
-      ]
+      "@hatchifyjs/core": ["./packages/core/dist"],
+      "@hatchifyjs/crypto": ["./packages/crypto"],
+      "@hatchifyjs/node": ["./packages/node/dist"]
     }
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/mocks/**/*",
+    "**/setupTests.ts",
+    "**/testing/**/*"
   ]
 }

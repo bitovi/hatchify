@@ -5,8 +5,8 @@ import KoaRouter from "@koa/router"
 import { startServerWith } from "./testing/utils.js"
 
 describe("Custom Tests", () => {
-  const Model = {
-    name: "Model",
+  const Schema = {
+    name: "Schema",
     attributes: {
       firstName: string({ required: true }),
       lastName: string({ required: true }),
@@ -34,7 +34,7 @@ describe("Custom Tests", () => {
 
   beforeEach(async () => {
     ;({ app, fetch, hatchify, teardown } = await startServerWith(
-      { Model, Model2, Model3 },
+      { Schema, Model2, Model3 },
       "sqlite",
     ))
   })
@@ -51,7 +51,7 @@ describe("Custom Tests", () => {
     })
 
     router.get("/alternative-model-2", async (ctx) => {
-      const response = await (hatchify as any).everything.Model.findAll(
+      const response = await (hatchify as any).everything.Schema.findAll(
         ctx.querystring,
       )
       ctx.body = { test: true, data: response }
@@ -118,7 +118,7 @@ describe("Custom Tests", () => {
 
         return await next()
       },
-      hatchify.middleware.Model.findAll,
+      hatchify.middleware.Schema.findAll,
     )
 
     app.use(router.routes())
@@ -149,7 +149,7 @@ describe("Custom Tests", () => {
 
         return await next()
       },
-      hatchify.middleware.Model.findAll,
+      hatchify.middleware.Schema.findAll,
     )
 
     app.use(router.routes())

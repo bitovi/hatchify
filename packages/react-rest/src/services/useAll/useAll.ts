@@ -89,7 +89,14 @@ export const useAll = <
         }
       })
       .finally(() => setLoading(false))
-  }, [dataSource, allSchemas, schemaName, memoizedQuery, memoizedBaseFilter])
+  }, [
+    dataSource,
+    allSchemas,
+    schemaName,
+    memoizedQuery,
+    memoizedBaseFilter,
+    minimumLoadTime,
+  ])
 
   useEffect(() => {
     fetchAll()

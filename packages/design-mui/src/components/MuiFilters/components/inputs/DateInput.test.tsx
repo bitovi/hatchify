@@ -5,12 +5,7 @@ import DateInput from "./DateInput.js"
 describe("components/MuiFilters/inputs/DateInput", () => {
   it("works", async () => {
     render(
-      <DateInput
-        controlType="Datetime"
-        labelId=""
-        value=""
-        onChange={vi.fn()}
-      />,
+      <DateInput controlType="Date" labelId="" value="" onChange={vi.fn()} />,
     )
   })
 })

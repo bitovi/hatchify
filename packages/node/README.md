@@ -1,0 +1,1 @@
+Core NodeJS functionality for Hatchify. This isn't used directly. Instead use [@hatchifyjs/express](https://github.com/bitovi/hatchify/blob/main/docs/express/README.md) or [@hatchifyjs/koa](https://github.com/bitovi/hatchify/blob/main/docs/koa/README.md).
