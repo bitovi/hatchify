@@ -1,2 +1,4 @@
+coverage
 dist
 example
+playwright-report

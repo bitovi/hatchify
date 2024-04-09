@@ -18,7 +18,7 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@bitovi/eslint-config/node",
+      "@bitovi/eslint-config/react",
       "prettier"
     ],
     "plugins": [
