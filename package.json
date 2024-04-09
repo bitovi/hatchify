@@ -55,6 +55,14 @@
           "markdownlint/md036": "warn",
           "prettier/prettier": "off"
         }
+      },
+      {
+        "files": [
+          "e2e/tests/*.spec.ts"
+        ],
+        "rules": {
+          "testing-library/prefer-screen-queries": "off"
+        }
       }
     ]
   },
