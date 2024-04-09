@@ -15,7 +15,7 @@ runs:
 
     - name: ESLint
       shell: bash
-      run: npx nx eslint ${{ inputs.package }}
+      run: npx nx lint ${{ inputs.package }}
 
     - name: depcheck
       shell: bash

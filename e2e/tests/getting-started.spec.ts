@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/prefer-screen-queries */
 import { test, expect } from "@playwright/test"
 
 test("works", async ({ page, request }) => {

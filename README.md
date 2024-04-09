@@ -47,13 +47,15 @@ In just a few short steps we will set up a project containing a Hatchify fronten
    - For the database prompt answer: "SQLite"
 
 3. Change into the project directiory and start the server:
+
    ```bash
    cd hatchify-app
    npm run dev
    ```
+
 4. Navigate to the Hatchify welcome screen:
 
-<img width="1289" alt="Screenshot 2024-03-06 at 10 35 02 AM" src="https://github.com/bitovi/hatchify/assets/9858612/5c98359d-5b1f-419d-812a-3f751670fe57">
+<img width="1289" alt="Screenshot 2024-03-06 at 10 35 02 AM" src="https://github.com/bitovi/hatchify/assets/9858612/5c98359d-5b1f-419d-812a-3f751670fe57">
 
 Congrats, you’ve got a seed of something great started!
 
@@ -94,7 +96,7 @@ export const User = {
 
 As soon as you save this change, the app will automatically reload to include the new data types you've added:
 
-<img width="1385" alt="Screenshot 2024-03-08 at 10 09 20 AM" src="https://github.com/bitovi/hatchify/assets/9858612/b0425bd2-5b05-4bec-85c9-bf0da147cc42">
+<img width="1385" alt="Screenshot 2024-03-08 at 10 09 20 AM" src="https://github.com/bitovi/hatchify/assets/9858612/b0425bd2-5b05-4bec-85c9-bf0da147cc42">
 
 This defines a `Todo` and `User` type, each with some attributes. It also creates a relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
 
@@ -108,7 +110,7 @@ Hatchify doesn’t currently generate forms (though we are working on it!). To a
 
 ✏️ Run the following command in a new terminal window to seed some sample data:
 
-```
+```bash
 npx hatchify-gsg-seed
 ```
 
@@ -122,11 +124,11 @@ With some data in place, we can now further review the project.
 
 Now that data has been seeded the UI should look like:
 
-<img width="1385" alt="Screenshot 2024-03-08 at 10 05 44 AM" src="https://github.com/bitovi/hatchify/assets/9858612/79f67fb2-c598-4032-89f0-1c87a75ae465">
+<img width="1385" alt="Screenshot 2024-03-08 at 10 05 44 AM" src="https://github.com/bitovi/hatchify/assets/9858612/79f67fb2-c598-4032-89f0-1c87a75ae465">
 
 You can start using this basic app to sort & filter the data:
 
-<img width="1385" alt="Screenshot 2024-03-08 at 10 07 58 AM" src="https://github.com/bitovi/hatchify/assets/9858612/c3a82055-bdac-4157-8024-a3f483e51193">
+<img width="1385" alt="Screenshot 2024-03-08 at 10 07 58 AM" src="https://github.com/bitovi/hatchify/assets/9858612/c3a82055-bdac-4157-8024-a3f483e51193">
 
 What you've built is currently bare bones, but read through our guides in the following section to learn how to enhance it to meet your needs.
 
@@ -181,10 +183,11 @@ This project is supported by [Bitovi](https://bitovi.com/), a web software consu
 Or, you can hire us for training, consulting, or development. [Set up a free consultation.](https://www.bitovi.com/digital-consulting-services)
 
 ## Read more about Hatchify
+
 Gain more insight into Hatchify by checking out our blog posts.
 
 - [Introducing Hatchify: Low-code libraries for React, Node, and Sequelize](https://www.bitovi.com/blog/introducing-hatchify-low-code-libraries-for-react-node-and-sequelize)
-- [Hatchify: The Fastest Way to Build JSON: APIs](https://www.bitovi.com/blog/hatchify-the-fastest-way-to-build-jsonapis) 
+- [Hatchify: The Fastest Way to Build JSON: APIs](https://www.bitovi.com/blog/hatchify-the-fastest-way-to-build-jsonapis)
 
 ## Trying Hatchify Online
 

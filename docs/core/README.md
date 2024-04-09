@@ -5,7 +5,7 @@
 The following defines a `SalesPerson` schema that has multiple attributes (aka fields) and relationships with other schemas:
 
 <pre>
-import { PartialSchema, 
+import { PartialSchema,
   boolean, datetime, dateonly, integer, string, enumerate
   belongsTo, hasMany, hasOne } from "@hatchifyjs/core"
   

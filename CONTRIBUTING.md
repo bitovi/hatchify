@@ -200,6 +200,7 @@ If you have Docker installed, use any of the following commands to start fresh l
   ```
 
 - For MySQL
+
   ```bash
   docker run --name hatchify-database -e MYSQL_ROOT_PASSWORD=password -d mysql:tag
   ```
@@ -295,7 +296,7 @@ We use a simple conventional commits convention:
 
 Example:
 
-```
+```bash
 feat: support specifying a custom name for enums
 ```
 
@@ -306,7 +307,7 @@ Happy hacking and thank you for contributing.
 We use ESLint and Prettier to enforce coding guidelines. You can run it like this:
 
 ```bash
-npx nx eslint @hatchifyjs/koa
+npx nx lint @hatchifyjs/koa
 ```
 
 ## Folder structure

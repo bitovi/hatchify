@@ -9,6 +9,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Lint
+        run: npm run lint
+
       - uses: JustinBeckwith/linkinator-action@v1
         with:
           paths: "**/*.md"

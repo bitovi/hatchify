@@ -30,6 +30,30 @@
     "typescript": "^5.0.2",
     "vite": "^5.0.12"
   },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@bitovi/eslint-config/react",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "curly": "error",
+      "one-var": [
+        "error",
+        "never"
+      ],
+      "prettier/prettier": [
+        "error",
+        {
+          "semi": false,
+          "trailingComma": "all"
+        }
+      ]
+    }
+  },
   "msw": {
     "workerDirectory": "public"
   }

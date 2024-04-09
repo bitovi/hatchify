@@ -4,7 +4,7 @@ A resource can be created by sending a POST request to a URL that represents a c
 
 For instance, a new photo might be created with the following request:
 
-```
+```bash
 POST /api/photos
 Content-Type: application/vnd.api+json
 Accept: application/vnd.api+json

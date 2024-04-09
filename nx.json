@@ -7,7 +7,7 @@
       "options": {
         "cacheableOperations": [
           "typecheck",
-          "eslint",
+          "lint",
           "depcheck",
           "test",
           "clean",

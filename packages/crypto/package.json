@@ -8,8 +8,8 @@
   "browser": "./index.browser.js",
   "scripts": {
     "typecheck": "exit 0",
-    "eslint": "eslint .",
-    "eslint:fix": "eslint --fix .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "depcheck": "depcheck .",
     "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --coverage",
     "build": "exit 0"

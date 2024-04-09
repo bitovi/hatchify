@@ -2,7 +2,8 @@
 
 This guide reviews how to use "sparse fieldsets" with Hatchify.
 
-- [Why do we need to sparse Fieldsets](#why-do-we-need-to-sparse-fieldsets)
+- [Why do we need Sparse Fieldsets](#why-do-we-need-sparse-fieldsets)
+- [Specification](#specification)
 - [A simple example](#a-simple-example)
 - [Example with Relationships](#example-with-relationships)
 
@@ -10,15 +11,15 @@ This guide reviews how to use "sparse fieldsets" with Hatchify.
 
 It's common that a schema has more attributes than we wish to display on the UI. By default, Hatchify fetches and displays all attributes of included schemas. Sparse fieldsets allows us to specify which attributes we care about for a specific query, so we can keep response size smaller and faster.
 
-# Specification
+## Specification
 
 The querystring of a request can include multiple parameters of the form `fields[Type]=fieldName`. All parameters of that form are collected and parsed into an object like:
 
-```
-fields: {
-  type: [fieldName],
-  todo: [label, complete],
-  user: [name, age]
+```json
+"fields": {
+  "type": ["fieldName"],
+  "todo": ["label", "complete"],
+  "user": ["name", "age"]
 }
 ```
 
