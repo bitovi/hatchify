@@ -61,7 +61,7 @@ RUN npm install --production --silent
 COPY ./dist/backend .
 RUN chown -R node /usr/src/hatchify
 USER node
-CMD ["npm", "run", "start:backend"]
+CMD ["node", "backend/index.js"]
 ```
 
 ### `nginx.conf`
@@ -151,8 +151,9 @@ services:
     environment:
       - POSTGRES_USER=${USERNAME}
       - POSTGRES_PASSWORD=${PASSWORD}
+      - POSTGRES_DB=${DATABASE}
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
+      test: ["CMD", "pg_isready", "-U", "${USERNAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -162,7 +163,7 @@ services:
       context: .
       dockerfile: backend.dockerfile
     environment:
-      DB_URI: postgres://postgres:password@database:5432/postgres
+      DB_URI: postgres://${USERNAME}:${PASSWORD}@database:5432/${DATABASE}
       NODE_ENV: production
     depends_on:
       database:
@@ -188,7 +189,7 @@ networks:
 You are all set. You can go ahead and test it out locally using:
 
 ```sh
-USERNAME=postgres PASSWORD=password docker compose up --build
+USERNAME=postgres PASSWORD=password DATABASE=postgres docker compose up --build
 ```
 
 and navigating to `http://localhost`.
