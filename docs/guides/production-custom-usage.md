@@ -141,7 +141,7 @@ credentials](https://www.postgresqltutorial.com/postgresql-administration/postgr
 
 ```yaml
 # docker-compose.yml
-version: "3.4"
+version: "3"
 services:
   database:
     container_name: database
@@ -157,6 +157,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
   backend:
     container_name: backend
     build:
@@ -184,6 +186,8 @@ services:
       - 80:80
 networks:
   hatchify-network: {}
+volumes:
+  pgdata:
 ```
 
 You are all set. You can go ahead and test it out locally using:
