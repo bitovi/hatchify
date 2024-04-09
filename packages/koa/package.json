@@ -20,8 +20,8 @@
     "test:watch": "node --experimental-vm-modules ../../node_modules/.bin/jest --watch --runInBand",
     "test:verbose": "node --experimental-vm-modules ../../node_modules/.bin/jest --watch --verbose --runInBand",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint .",
-    "eslint:fix": "eslint --fix .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "repository": {

@@ -199,4 +199,4 @@ and navigating to `http://localhost`.
 
 Also, this is just one example of how to deploy the frontend & backend, and that situations where the frontend is delivered via a CDN or the backend is hosted on a different domain (these require [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) support) are also valid configurations.
 
-However, if you choose to stay with Docker, there is a handy [GitHub Action to deploy Docker projects to AWS ](https://www.bitovi.com/blog/deploy-any-docker-project-to-aws-with-github-actions).
+However, if you choose to stay with Docker, there is a handy [GitHub Action to deploy Docker projects to AWS](https://www.bitovi.com/blog/deploy-any-docker-project-to-aws-with-github-actions).

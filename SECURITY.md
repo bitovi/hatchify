@@ -18,7 +18,7 @@ Please note the following requirements (all are required):
 - Summary of the suspected vulnerability
 - Detailed information as to what the suspected vulnerability does and what it has access to
 - Proof of Concept (Code samples at minimum, reproduction video optional)
-    - POC must include how the vulnerability can actually access sensitive data, simply triggering an alert popup in a browser is not a security vulnerability
+  - POC must include how the vulnerability can actually access sensitive data, simply triggering an alert popup in a browser is not a security vulnerability
 - Impact summary (who does this impact and how)
 
 Optionally you may also add your estimated CVSS 3.1 score, though we may adjust. There is no need to submit a CVE request as we will do that as part of the advisory process.
@@ -30,6 +30,7 @@ Please note that we follow a very strict internal and public disclosure policy, 
 Before doing any public disclosure we do ask that you speak to us first to ensure we are not releasing too much information before a patch is available and time has been given to users to upgrade their projects.
 
 ## Security Process Summary
+
 Below is a breakdown of our security process in order to set expectations:
 
 - Initial submission of vulnerability via GitHub's Advisory system
@@ -47,7 +48,8 @@ Below is a breakdown of our security process in order to set expectations:
 - Public disclosure (via blog post)
 
 ## Other reporting platforms and bounties
-Hatchify does not support other reporting platforms, all security vulnerabilities must be made via GitHub Advisory system. If you are unable to report via this method you may open a security ticket with us by emailing justin@bitovi.com and we will create one on your behalf but if you do not have a GitHub user account we will not be able to share the private fork, pull request, or any other information with you during the process.
+
+Hatchify does not support other reporting platforms, all security vulnerabilities must be made via GitHub Advisory system. If you are unable to report via this method you may open a security ticket with us by emailing <justin@bitovi.com> and we will create one on your behalf but if you do not have a GitHub user account we will not be able to share the private fork, pull request, or any other information with you during the process.
 
 List of some (though not all) platforms we do not support:
 

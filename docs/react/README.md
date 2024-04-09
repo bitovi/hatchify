@@ -8,7 +8,7 @@
 
 **In this Document**
 
-- [Setup](#setup)
+- [Setup and Use](#setup-and-use)
   - [Basic Setup](#basic-setup)
   - [React Components Setup](#react-components-setup)
   - [Customizing the MUI theme](#customizing-the-mui-theme)
@@ -72,7 +72,7 @@ hatchedReact.components.Todo.DataGrid
 
 **Component Provider Dependencies**
 
-Hatchify uses [MaterialUI](#mui-components) for design components. For example, Hatchify's `Navigation` component uses MaterialUI's [`<Tabs>`](https://mui.com/material-ui/react-tabs/) component "under the hood". You must provide these components to Hatchify. The way to do this is by providing your MaterialUI `ThemeProvider`.
+Hatchify uses [MaterialUI](https://mui.com/) for design components. For example, Hatchify's `Navigation` component uses MaterialUI's [`<Tabs>`](https://mui.com/material-ui/react-tabs/) component "under the hood". You must provide these components to Hatchify. The way to do this is by providing your MaterialUI `ThemeProvider`.
 
 Similarly, Hatchify has its own provider - [`HatchifyProvider`](#hatchifyprovider). `HatchifyProvider` provides components specific to the data being displayed. For example, you can swap out globally how you want to display dates (See [`HatchifyProvider`'s documentation](#hatchifyprovider) for more details).
 
@@ -151,14 +151,14 @@ const jsonClientInstance = createJsonapiClient("/api", Schemas)
 **Parameters**
 `createJsonapiClient` takes two arguments `baseUrl` and `schemaMap`
 `baseUrl` is a `string` that references the base url for the rest client
-`schemaMap` is a collectionn of [Hatchify Schemas](../core/README.md)
+`schemaMap` is a collection of [Hatchify Schemas](../core/README.md)
 
 **Returns**
 Returns a `JSON:API rest client` instance object
 
 ### hatchifyReact
 
-`hatchifyReact(createJsonapiClient("/api", Schemas))` is a `Function` that initializes the `HatchifyApp` object from the JSON:API rest client. Inside of the retured object you will find [`components`](./hatchedReact.components.md), [`model`](./hatchedReact.model.md), [`state`](./hatchedReact.state.md), and [`Everything`](#everything).
+`hatchifyReact(createJsonapiClient("/api", Schemas))` is a `Function` that initializes the `HatchifyApp` object from the JSON:API rest client. Inside of the returned object you will find [`components`](./hatchedReact.components.md), [`model`](./hatchedReact.model.md), [`state`](./hatchedReact.state.md), and [`Everything`](./hatchedReact.components.everything.md).
 
 ```ts
 import { createJsonapiClient, hatchifyReact } from "@hatchifyjs/react"
@@ -170,7 +170,7 @@ const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
 
 ### HatchifyProvider
 
-`HatchifyProvider` must wrap your application for you to use hatchify components. The `HatchifyProvider` also provides a way to ovreride the default renders for each type of attribute and relationship. This is done by passing an optional `defaultDisplayComponents` object to the provider as a prop. In the example below, rather than rendering the text "true" or "false" for a boolean, all booleans in Hatchify components will render as "✅" or "❌".
+`HatchifyProvider` must wrap your application for you to use hatchify components. The `HatchifyProvider` also provides a way to override the default renders for each type of attribute and relationship. This is done by passing an optional `defaultDisplayComponents` object to the provider as a prop. In the example below, rather than rendering the text "true" or "false" for a boolean, all booleans in Hatchify components will render as "✅" or "❌".
 
 ```tsx
 import { HatchifyProvider, hatchifyReact, createJsonapiClient } from "@hatchifyjs/react"

@@ -14,7 +14,6 @@ export const Todo = {
 ## Parameters
 
 - `autoIncrement` [{Boolean=false}] - If `true`, sets the field automatically to a unique uuid. Example: `uuid({autoIncrement: true})`
-- `references` - [See References]()
 - `required` [{Boolean=false}] - If the attribute must be provided.
 
 ### 💾 Database Implications

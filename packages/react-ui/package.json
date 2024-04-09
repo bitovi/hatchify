@@ -8,7 +8,7 @@
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint src",
+    "lint": "eslint src",
     "depcheck": "depcheck .",
     "dev": "vite",
     "test": "vitest run",

@@ -5,7 +5,7 @@ This page links to all the other API documentation. This is like a big cheat she
 ## Schema
 
 <pre>
-import { PartialSchema, 
+import { PartialSchema,
   boolean, datetime, dateonly, integer, string, enumerate
   belongsTo, hasMany, hasOne } from "@hatchifyjs/core"
   

@@ -4,9 +4,9 @@
 
 The hatchifyReact Components are included in the HatchifyApp, and have access to the state from the provider.
 
-- [DataGrid](#hatchify-datagrid)
-- [Column](#hatchify-column)
-- [Empty](#hatchify-empty)
+- [DataGrid](#datagrid)
+- [Column](#datagridcolumn)
+- [Empty](#datagridempty)
 - [List](#list)
 - [Pagination](#pagination)
 - [Filters](#filters)

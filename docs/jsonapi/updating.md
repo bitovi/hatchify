@@ -8,7 +8,7 @@ The PATCH request MUST include a single resource object as primary data. The res
 
 For example:
 
-```
+```bash
 PATCH /api/articles/8ff0beed-2585-4391-8735-cc560eaf287e
 Content-Type: application/vnd.api+json
 Accept: application/vnd.api+json
@@ -24,7 +24,7 @@ Accept: application/vnd.api+json
 }
 ```
 
-### Updating a Resource’s Attributes
+## Updating a Resource’s Attributes
 
 Any or all of a resource’s attributes MAY be included in the resource object included in a PATCH request.
 
@@ -32,7 +32,7 @@ If a request does not include all of the attributes for a resource, the server M
 
 For example, the following PATCH request is interpreted as a request to update only the title and text attributes of an article:
 
-```
+```bash
 PATCH /api/articles/8ff0beed-2585-4391-8735-cc560eaf287e
 Content-Type: application/vnd.api+json
 Accept: application/vnd.api+json

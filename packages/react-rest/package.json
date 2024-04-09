@@ -7,7 +7,7 @@
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint vite.config.ts src",
+    "lint": "eslint vite.config.ts src",
     "depcheck": "depcheck .",
     "dev": "vite",
     "test": "vitest run",

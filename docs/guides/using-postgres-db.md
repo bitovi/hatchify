@@ -108,7 +108,7 @@ the benefits of storing config in the environment [here](https://12factor.net/co
 
 > **Note:** the new PostgreSQL db we just created is empty, so you'll need to seed it just like we did in the [getting started guide](../../README.md#seeding-data)
 
-#### The following options are allowed within the db options object:
+### The following options are allowed within the db options object
 
 | Property          | Type                                   | Default                    | Details                                                                                                                     |
 | ----------------- | -------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
