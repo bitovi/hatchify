@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/design-mui",
-  "version": "0.1.69",
+  "version": "0.1.70",
   "type": "module",
   "exports": "./dist/design-mui.js",
   "types": "./dist/design-mui.d.ts",
@@ -30,7 +30,7 @@
     "vitest": "^0.30.1"
   },
   "dependencies": {
-    "@hatchifyjs/react-ui": "^0.1.53",
+    "@hatchifyjs/react-ui": "^0.1.54",
     "@mui/icons-material": "^5.14.1"
   },
   "peerDependencies": {
