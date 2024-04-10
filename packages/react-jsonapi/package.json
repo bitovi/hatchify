@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react-jsonapi",
-  "version": "0.1.37",
+  "version": "0.1.38",
   "type": "module",
   "exports": "./dist/react-jsonapi.js",
   "types": "./dist/react-jsonapi.d.ts",
@@ -16,9 +16,9 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@hatchifyjs/react-rest": "^0.1.31",
-    "@hatchifyjs/rest-client": "^0.1.22",
-    "@hatchifyjs/rest-client-jsonapi": "^0.1.34"
+    "@hatchifyjs/react-rest": "^0.1.32",
+    "@hatchifyjs/rest-client": "^0.1.24",
+    "@hatchifyjs/rest-client-jsonapi": "^0.1.35"
   },
   "peerDependencies": {
     "@hatchifyjs/core": "^0.3.x"
