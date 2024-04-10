@@ -77,7 +77,13 @@ type UnionToObject<
           ? EnumValues[any]
           : Type extends "String" | "string" | "STRING"
             ? string
-            : Type extends "Date" | "date" | "DATE"
+            : Type extends
+                  | "Date"
+                  | "date"
+                  | "DATE"
+                  | "Datetime"
+                  | "datetime"
+                  | "DATETIME"
               ? TMutate extends true
                 ? Date | string
                 : Date
