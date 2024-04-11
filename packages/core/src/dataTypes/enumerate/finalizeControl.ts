@@ -12,7 +12,7 @@ export function finalizeControl<TValues extends readonly string[]>(
     default: props.default ?? null,
     ui: {
       displayName: props?.ui?.displayName ?? null,
-      hidden: props.hidden ?? false,
+      hidden: props?.ui?.hidden ?? false,
     },
   }
 }

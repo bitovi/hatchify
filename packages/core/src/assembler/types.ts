@@ -110,14 +110,6 @@ export interface PartialSchema<
   ui?: {
     displayAttribute?: string
   }
-  // todo: arthur
-  // id?: PartialAttribute<
-  //   PartialUuidORM,
-  //   // @ts-expect-error @todo HATCH-417
-  //   PartialStringControlType,
-  //   string,
-  //   FinalUuidORM
-  // >
   id?: PartialAttributeOptions
   attributes: TAttributes
   relationships?: Record<string, PartialRelationship>
@@ -191,14 +183,6 @@ export interface FinalSchema {
   ui: {
     displayAttribute?: string
   }
-  // todo: arthur
-  // id: FinalAttribute<
-  //   PartialUuidORM,
-  //   // @ts-expect-error @todo HATCH-417
-  //   PartialStringControlType,
-  //   string,
-  //   FinalUuidORM
-  // >
   id: FinalAttributeOptions
   attributes: FinalAttributeRecord
   relationships?: Record<string, FinalRelationship>

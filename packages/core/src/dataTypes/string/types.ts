@@ -7,6 +7,8 @@ import type {
 
 export interface HatchifyStringUIOptions extends HatchifyBaseUIOptions {
   maxDisplayLength?: number | null
+  maxRenderLength?: number | null
+  enableCaseSensitiveContains?: boolean
 }
 
 export interface PartialStringProps<TRequired extends boolean>
@@ -14,14 +16,7 @@ export interface PartialStringProps<TRequired extends boolean>
   min?: number
   max?: number
   regex?: RegExp
-<<<<<<< HEAD
   ui?: HatchifyStringUIOptions
-=======
-  maxRenderLength?: number
-  ui?: {
-    enableCaseSensitiveContains?: boolean
-  }
->>>>>>> main
 }
 
 export interface PartialStringControlType<TRequired extends boolean>
@@ -30,14 +25,7 @@ export interface PartialStringControlType<TRequired extends boolean>
   min?: number
   max?: number
   regex?: RegExp
-<<<<<<< HEAD
   ui?: HatchifyStringUIOptions
-=======
-  maxRenderLength?: number | null
-  ui?: {
-    enableCaseSensitiveContains?: boolean
-  }
->>>>>>> main
 }
 
 export interface PartialStringORM {

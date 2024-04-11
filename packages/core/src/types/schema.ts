@@ -28,30 +28,25 @@ export class HatchifyInvalidSchemaError extends Error {
 
 export interface HatchifyBaseUIOptions {
   displayName?: string | null
+  enableCaseSensitiveContains?: boolean
+  hidden?: boolean
 }
 
 export interface PartialDataTypeProps<
   PrimitiveType,
   TRequired extends boolean,
 > {
-  hidden?: boolean
   primary?: boolean
   required?: TRequired // @todo HATCH-417
   default?: PrimitiveType | (() => PrimitiveType) | null
   unique?: boolean
-  // todo: arthur
-  // ui?: HatchifyBaseUIOptions
-  displayName?: string
-  ui?: {
-    enableCaseSensitiveContains?: boolean
-  }
+  ui?: HatchifyBaseUIOptions
 }
 
 export interface PartialControlType<PrimitiveType, TRequired extends boolean> {
   type: "Boolean" | "Number" | "String" | "Date" | "enum"
   allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
-  hidden?: boolean
   primary?: boolean
   default?: PrimitiveType | (() => PrimitiveType) | null
   ui?: HatchifyBaseUIOptions

@@ -186,12 +186,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -410,12 +405,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -617,12 +607,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -840,12 +825,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -1058,12 +1038,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -1309,12 +1284,7 @@ describe("number", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: true,
           min: 1,
           max: 10,

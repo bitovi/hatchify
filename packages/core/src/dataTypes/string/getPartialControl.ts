@@ -14,16 +14,11 @@ export function getPartialControl<TRequired extends boolean>(
     primary: props?.primary,
     default: props?.default,
     regex: props?.regex,
-<<<<<<< HEAD
-    ui: {
-      maxDisplayLength: props?.ui?.maxDisplayLength,
-      displayName: props?.ui?.displayName,
-=======
-    maxRenderLength: props?.maxRenderLength,
-    displayName: props?.displayName,
     ui: props?.ui && {
       enableCaseSensitiveContains: props.ui.enableCaseSensitiveContains,
->>>>>>> main
+      maxDisplayLength: props?.ui?.maxDisplayLength,
+      maxRenderLength: props?.ui?.maxRenderLength,
+      displayName: props?.ui?.displayName,
     },
   }
 }

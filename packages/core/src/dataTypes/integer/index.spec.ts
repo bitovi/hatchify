@@ -189,12 +189,7 @@ describe("integer", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -416,12 +411,7 @@ describe("integer", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -625,12 +615,7 @@ describe("integer", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -850,12 +835,7 @@ describe("integer", () => {
         },
         control: {
           type: "Number",
-<<<<<<< HEAD
-          ui: { displayName: null },
-=======
-          displayName: null,
-          hidden: false,
->>>>>>> main
+          ui: { displayName: null, hidden: false },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
