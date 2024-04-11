@@ -432,7 +432,7 @@ describe("dateonly", () => {
     })
   })
 
-  describe("datetime({step: 'day'})", () => {
+  describe("dateonly({step: 'day'})", () => {
     const type = dateonly({ step: "day" })
 
     it("prepares correctly", () => {
