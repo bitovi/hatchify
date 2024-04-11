@@ -1,14 +1,6 @@
 name: "@hatchifyjs/rest-client"
 
-on:
-  push:
-  workflow_dispatch:
-    inputs:
-      segment:
-        description: "The version segment to increment: major, minor, patch, or prerelease."
-        required: true
-      preId:
-        description: 'Appended to the prerelease segment. (default: "")'
+on: push
 
 jobs:
   verify:
@@ -28,30 +20,3 @@ jobs:
         uses: ./.github/actions/job-verify
         with:
           node-version: ${{ matrix.node-version }}
-
-  publish:
-    if: github.event_name == 'workflow_dispatch'
-    needs: verify
-
-    concurrency:
-      group: "publish"
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Publish
-        uses: ./.github/actions/job-publish
-        with:
-          directory: rest-client
-          npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ github.token }}
-          segment: ${{ github.event.inputs.segment }}
-          preId: ${{ github.event.inputs.preId }}
