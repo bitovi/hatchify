@@ -15,6 +15,7 @@ export function getPartialControl<TRequired extends boolean>(
     min: props?.min,
     max: props?.max,
     primary: props?.primary,
+    step: props?.step,
     default: props?.default,
     displayName: props?.displayName,
   }
