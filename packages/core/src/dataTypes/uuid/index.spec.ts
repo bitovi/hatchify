@@ -19,7 +19,6 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: undefined,
           min: 36,
           max: 36,
@@ -135,13 +134,21 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+<<<<<<< HEAD
           hidden: null,
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: true,
           min: 36,
           max: 36,
           primary: false,
           default: null,
           regex: UUID_REGEX,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -170,7 +177,6 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: false,
           allowNullInfer: false,
           min: 36,
@@ -305,13 +311,20 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: false,
           min: 36,
           max: 36,
+<<<<<<< HEAD
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           primary: false,
           default: null,
           regex: UUID_REGEX,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -340,7 +353,6 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: undefined,
           min: 36,
           max: 36,
@@ -474,13 +486,20 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          hidden: null,
           allowNull: false,
+<<<<<<< HEAD
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           min: 36,
           max: 36,
           primary: true,
           default: null,
           regex: UUID_REGEX,
+          ui: {
+            enableCaseSensitiveContains: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),

@@ -15,6 +15,7 @@ export function finalizeControl(
     step: props.step || 0,
     ui: {
       displayName: props?.ui?.displayName ?? null,
+      hidden: props.hidden ?? false,
     },
   }
 }

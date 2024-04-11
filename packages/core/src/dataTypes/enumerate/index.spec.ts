@@ -133,7 +133,10 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          ui: { displayName: null },
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           allowNull: true,
           primary: false,
           default: null,
@@ -296,7 +299,10 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          ui: { displayName: null },
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           allowNull: false,
           primary: false,
           default: null,
@@ -458,7 +464,10 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          ui: { displayName: null },
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           allowNull: false,
           primary: true,
           default: null,

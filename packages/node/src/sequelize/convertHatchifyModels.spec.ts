@@ -9,12 +9,12 @@ describe("convertHatchifyModels", () => {
   const sequelize = createSequelizeInstance()
   const serializer = new JSONAPISerializer()
 
-  const User: PartialSchema = {
+  const User = {
     name: "User",
     attributes: {
       age: integer({ min: 0 }),
     },
-  }
+  } satisfies PartialSchema
 
   it("works", () => {
     const models = convertHatchifyModels(

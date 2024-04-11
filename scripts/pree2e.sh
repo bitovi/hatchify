@@ -1,5 +1,5 @@
 #!/bin/sh
-cd example;
+cd e2e;
 rm -rf hatchify-app;
 node ../packages/create/index.js hatchify-app \
     --frontend ${npm_config_frontend} \
@@ -8,3 +8,4 @@ node ../packages/create/index.js hatchify-app \
     --path ../../packages;
 cp schemas.txt hatchify-app/schemas.ts;
 cp App.txt hatchify-app/frontend/App.tsx;
+cp main.txt hatchify-app/main.tsx;

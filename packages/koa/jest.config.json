@@ -1,7 +1,15 @@
 {
   "collectCoverageFrom": ["<rootDir>/src/**/*.ts"],
-  "coverageDirectory": "coverage",
+  "coverageDirectory": "../../coverage/koa",
   "coverageReporters": ["html", "text", "text-summary"],
+  "coverageThreshold": {
+    "global": {
+      "branches": 91,
+      "functions": 94,
+      "lines": 91,
+      "statements": 91
+    }
+  },
   "extensionsToTreatAsEsm": [".ts"],
   "moduleNameMapper": {
     "^(\\.{1,2}/.*)\\.js$": "$1"

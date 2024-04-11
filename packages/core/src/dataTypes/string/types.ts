@@ -14,7 +14,14 @@ export interface PartialStringProps<TRequired extends boolean>
   min?: number
   max?: number
   regex?: RegExp
+<<<<<<< HEAD
   ui?: HatchifyStringUIOptions
+=======
+  maxRenderLength?: number
+  ui?: {
+    enableCaseSensitiveContains?: boolean
+  }
+>>>>>>> main
 }
 
 export interface PartialStringControlType<TRequired extends boolean>
@@ -23,7 +30,14 @@ export interface PartialStringControlType<TRequired extends boolean>
   min?: number
   max?: number
   regex?: RegExp
+<<<<<<< HEAD
   ui?: HatchifyStringUIOptions
+=======
+  maxRenderLength?: number | null
+  ui?: {
+    enableCaseSensitiveContains?: boolean
+  }
+>>>>>>> main
 }
 
 export interface PartialStringORM {

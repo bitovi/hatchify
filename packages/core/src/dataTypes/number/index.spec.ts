@@ -186,7 +186,12 @@ describe("number", () => {
         },
         control: {
           type: "Number",
+<<<<<<< HEAD
           ui: { displayName: null },
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -405,7 +410,12 @@ describe("number", () => {
         },
         control: {
           type: "Number",
+<<<<<<< HEAD
           ui: { displayName: null },
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -607,7 +617,12 @@ describe("number", () => {
         },
         control: {
           type: "Number",
+<<<<<<< HEAD
           ui: { displayName: null },
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -825,7 +840,12 @@ describe("number", () => {
         },
         control: {
           type: "Number",
+<<<<<<< HEAD
           ui: { displayName: null },
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -1038,7 +1058,12 @@ describe("number", () => {
         },
         control: {
           type: "Number",
+<<<<<<< HEAD
           ui: { displayName: null },
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -1284,7 +1309,12 @@ describe("number", () => {
         },
         control: {
           type: "Number",
+<<<<<<< HEAD
           ui: { displayName: null },
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: true,
           min: 1,
           max: 10,

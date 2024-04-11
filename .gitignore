@@ -1,12 +1,8 @@
-# environment
-.env
-.env.*
-
 # artifacts
+coverage
 node_modules
 /**/node_modules
 /packages/*/dist
-/packages/*/coverage
 
 # misc
 .DS_Store
@@ -15,9 +11,11 @@ Thumbs.db
 npm-debug.log*
 .obsidian
 .nx
+yalc.lock
+.yalc
 
-/test-results/
-/playwright-report/
+/e2e/hatchify-app
+/e2e/test-results/
+/e2e/playwright-report/
 /playwright/.cache/
-/example/hatchify-app
 /packages/create/hatchify-app

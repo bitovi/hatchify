@@ -1,13 +1,13 @@
 {
   "name": "@hatchifyjs/react-rest",
-  "version": "0.1.19",
+  "version": "0.1.32",
   "type": "module",
   "exports": "./dist/react-rest.js",
   "types": "./dist/react-rest.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint vite.config.ts src",
+    "lint": "eslint vite.config.ts src",
     "depcheck": "depcheck .",
     "dev": "vite",
     "test": "vitest run",
@@ -17,14 +17,15 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hatchifyjs/rest-client": "0.1.15"
+    "@hatchifyjs/rest-client": "^0.1.24"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.0",
     "@vitest/coverage-c8": "^0.32.2",
     "jsdom": "^21.1.1",
-    "vite": "^4.3.1",
+    "rollup-plugin-node-externals": "^7.0.1",
+    "vite": "^5.2.8",
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.30.1"
   },

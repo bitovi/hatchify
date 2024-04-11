@@ -23,15 +23,20 @@ runs:
     - name: Setup
       uses: ./.github/actions/setup
 
+    - name: Bump Packages
+      shell: bash
+      run: |
+        npm run bump-packages --package=${{ inputs.directory }}
+
     - name: Build
       uses: ./.github/actions/build
       with:
-        package: ${{ github.workflow }}
+        package: ${{ format('@hatchifyjs/{0}', inputs.directory) }}
 
     - name: Publish to NPM
       uses: ./.github/actions/publish-npm
       with:
-        package: ${{ github.workflow }}
+        package: ${{ format('@hatchifyjs/{0}', inputs.directory) }}
         directory: ${{ inputs.directory }}
         npm-token: ${{ inputs.npm-token }}
         github-token: ${{ inputs.github-token }}

@@ -42,4 +42,7 @@ export type {
   WhereOptions,
 } from "@hatchifyjs/node"
 
-export type { MiddlewareFunctionsExpress } from "./middleware/express.js"
+export type {
+  ExpressMiddleware,
+  MiddlewareFunctionsExpress,
+} from "./middleware.js"

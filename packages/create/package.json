@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/create",
-  "version": "0.1.5",
+  "version": "0.1.17",
   "type": "module",
   "license": "MIT",
   "bin": {
@@ -19,8 +19,8 @@
     "build": "unbuild",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
-    "eslint": "eslint .",
-    "eslint:fix": "eslint --fix .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "depcheck": "depcheck .",
     "test": "echo 'TBD'"
   },

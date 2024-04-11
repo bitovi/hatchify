@@ -18,7 +18,7 @@ describe("datetime", () => {
           },
         },
         control: {
-          type: "Datetime",
+          type: "Date",
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -151,8 +151,11 @@ describe("datetime", () => {
           },
         },
         control: {
-          type: "Datetime",
-          ui: { displayName: null },
+          type: "Date",
+          ui: { 
+            displayName: null,
+            hidden: false,
+          },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -187,7 +190,7 @@ describe("datetime", () => {
           },
         },
         control: {
-          type: "Datetime",
+          type: "Date",
           allowNull: false,
           allowNullInfer: false,
           min: undefined,
@@ -341,8 +344,14 @@ describe("datetime", () => {
           },
         },
         control: {
+<<<<<<< HEAD
           type: "Datetime",
           ui: { displayName: null },
+=======
+          type: "Date",
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -377,7 +386,7 @@ describe("datetime", () => {
           },
         },
         control: {
-          type: "Datetime",
+          type: "Date",
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -530,8 +539,14 @@ describe("datetime", () => {
           },
         },
         control: {
+<<<<<<< HEAD
           type: "Datetime",
           ui: { displayName: null },
+=======
+          type: "Date",
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -566,7 +581,7 @@ describe("datetime", () => {
           },
         },
         control: {
-          type: "Datetime",
+          type: "Date",
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -730,9 +745,14 @@ describe("datetime", () => {
           },
         },
         control: {
-          type: "Datetime",
+          type: "Date",
           allowNull: true,
+<<<<<<< HEAD
           ui: { displayName: null },
+=======
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           min: -Infinity,
           max: Infinity,
           primary: false,
@@ -769,7 +789,7 @@ describe("datetime", () => {
           },
         },
         control: {
-          type: "Datetime",
+          type: "Date",
           allowNull: undefined,
           min: -Infinity,
           max: new Date("2023-01-01T00:00:00.000Z"),
@@ -947,8 +967,14 @@ describe("datetime", () => {
           },
         },
         control: {
+<<<<<<< HEAD
           type: "Datetime",
           ui: { displayName: null },
+=======
+          type: "Date",
+          displayName: null,
+          hidden: false,
+>>>>>>> main
           allowNull: true,
           min: -Infinity,
           max: new Date("2023-01-01T00:00:00.000Z"),

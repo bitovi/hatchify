@@ -79,26 +79,26 @@ Then, we'll extend the app to handle relationships:
 
 1. Ensure you’re using [node 18 and npm 9](https://nodejs.org/en/download).
 
-   ```
+   ```bash
    node -v
    ```
 
 2. Create a new react app titled “react-rest-app” with Vite. TypeScript is recommended, but not required:
 
-   ```
+   ```bash
    npm create vite@latest react-rest-app -- --template react-ts
    ```
 
 3. Move into the `/react-rest-app` directory and install the node modules:
 
-   ```
+   ```bash
    cd react-rest-app
    npm install
    ```
 
 4. Install the `@hatchifyjs/react-rest` and `@hatchify-js/rest-client-jsonapi` libraries:
 
-   ```
+   ```bash
    npm install @hatchifyjs/react-rest @hatchifyjs/rest-client-jsonapi
    ```
 
@@ -106,20 +106,20 @@ Then, we'll extend the app to handle relationships:
 
    a. Install msw:
 
-   ```
+   ```bash
    npm install msw --save-dev
    ```
 
    b. Create a `/mocks` directory and initialize msw.
 
-   ```
+   ```bash
    mkdir src/mocks
    npx msw init public/ --save
    ```
 
    c. Run the following command to add a `browser.js` file to your `/mocks` directory and populate it with some request handlers and mocked data:
 
-   ```
+   ```bash
    curl -o src/mocks/browser.ts https://raw.githubusercontent.com/bitovi/hatchify/main/example/react-rest/src/mocks/browser.ts
    ```
 
@@ -144,10 +144,9 @@ Then, we'll extend the app to handle relationships:
    )
    ```
 
-7. Run `npm run dev`, and open http://localhost:3000/ to see the starter app in action.
+7. Run `npm run dev`, and open <http://localhost:3000/> to see the starter app in action.
 
 ![image](https://github.com/bitovi/hatchify/assets/2623867/c4ef04b1-e457-411d-8199-756ee54e6898)
-
 
 <a id="listing-creating-and-deleting-todos"></a>
 
@@ -785,7 +784,7 @@ export default App
 
 Congratulations! You've just created an app with react-rest with a fully functional development backend, complete with CRUD operations and relationship support.
 
-> **Note:** At this point we've reached the limits of what our todo app's `msw`-powered API supports. If you would like to continue exploring the HatchifyJS ecosystem, then we suggest setting up a standalone HatchifyJS backend. The getting started guide for a HatchifyJS backend can be found [here](https://github.com/bitovi/hatchify/blob/main/packages/koa/README.md).
+> **Note:** At this point we've reached the limits of what our todo app's `msw`-powered API supports. If you would like to continue exploring the HatchifyJS ecosystem, then we suggest setting up a standalone HatchifyJS backend. The getting started guide for a HatchifyJS backend can be found [here](../koa/README.md).
 
 For more information on react-rest, read on.
 

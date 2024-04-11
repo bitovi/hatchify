@@ -91,7 +91,6 @@ export function errorResponseHandler(
 
         if (validationError.type?.toLowerCase() === "notnull violation") {
           return new ValueRequiredError({
-            title: "Payload is missing a required value.",
             detail: `Payload must include a value for '${path}'.`,
             pointer: `/data/attributes/${path}`,
           })

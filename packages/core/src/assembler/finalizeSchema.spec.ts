@@ -18,7 +18,6 @@ describe("finalizeSchema", () => {
       id: {
         name: 'uuid({"required":true})',
         control: {
-          hidden: null,
           allowNull: false,
           max: 36,
           min: 36,
@@ -26,6 +25,11 @@ describe("finalizeSchema", () => {
           default: expect.any(Function),
           regex: UUID_REGEX,
           type: "String",
+          ui: {
+            enableCaseSensitiveContains: false,
+            displayName: null,
+            hidden: false,
+          },
         },
         orm: {
           sequelize: {
@@ -50,7 +54,10 @@ describe("finalizeSchema", () => {
         importance: {
           name: 'integer({"min":0})',
           control: {
-            ui: { displayName: null },
+            ui: {
+              displayName: null,
+              hidden: false,
+            },
             allowNull: true,
             max: Infinity,
             min: 0,

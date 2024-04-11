@@ -2,17 +2,19 @@ import type { GetSchemaNames, Filters, Meta } from "@hatchifyjs/rest-client"
 import type { DataGridState } from "../hooks/useDataGridState.js"
 import type { FinalAttributeRecord, PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyColumn } from "../hooks/index.js"
+import type { DefaultDisplayComponentsTypes } from "../react-ui.js"
 
 export type Primitive = string | boolean | number
 
-export interface XProviderProps<T> {
-  theme?: T
+export interface XProviderProps {
   children: React.ReactNode
+  defaultDisplayComponents?: Partial<DefaultDisplayComponentsTypes>
 }
 
 export interface SortObject {
   direction: "asc" | "desc" | undefined
   sortBy: string | undefined
+  alwaysSorted?: boolean
 }
 
 export interface PageCountObject {
@@ -31,12 +33,14 @@ export interface HatchifyDataGridSort {
   sortQueryString: string
 }
 
+export interface HatchifyDataGridSelectedState {
+  all: boolean
+  ids: string[]
+}
+
 export interface HatchifyDataGridSelected {
-  selected: {
-    all: boolean
-    ids: string[]
-  }
-  setSelected: ({ all, ids }: { all: boolean; ids: string[] }) => void
+  selected: HatchifyDataGridSelectedState
+  setSelected: (selected: HatchifyDataGridSelectedState) => void
 }
 
 export interface HatchifyDataGridFilters {
@@ -50,6 +54,9 @@ export interface XDataGridProps<
 > extends DataGridState<TSchemas, TSchemaName> {
   children?: React.ReactNode
   overwrite?: boolean
+  minimumLoadTime?: number
+  listWrapperId?: string
+  fitParent?: boolean
 }
 
 export interface XEverythingProps<
@@ -77,12 +84,14 @@ export type Relationship = {
 
 export type DataValue = Primitive | Relationship | Relationship[]
 
+export type DataValueRecord = {
+  id: string | number
+  [field: string]: DataValue
+}
+
 export type DataValueComponent = React.FC<{
   value: DataValue
-  record: {
-    id: string | number
-    [field: string]: DataValue
-  }
+  record: DataValueRecord
   control: FinalAttributeRecord[string]["control"]
   field?: string | null
 }>
@@ -105,4 +114,5 @@ interface HeaderPropsCommon {
   meta: Meta
   setSort: HatchifyDataGridSort["setSort"]
   sortBy: SortObject["sortBy"]
+  alwaysSorted: SortObject["alwaysSorted"]
 }

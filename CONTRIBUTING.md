@@ -26,7 +26,7 @@ It is essential that you provide an [SSCCE](http://sscce.org/)/[MCVE](https://st
 
 If you can even provide a Pull Request with a failing test (unit test or integration test), that is great! The bug will likely be fixed much faster in this case.
 
-You can also create and execute your SSCCE locally: see [Section 5](https://github.com/bitovi/hatchify/blob/main/CONTRIBUTING.md#running-an-sscce).
+You can also create and execute your SSCCE locally.
 
 ### Opening an issue to request a new feature
 
@@ -129,7 +129,7 @@ No further configuration is required to test Hatchify against a SQLite database
 2. To create and run Postgres database, run the following command:
 
    ```bash
-   docker run --name postgres-container -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres
+   docker run --name hatchify-database -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres:alpine
    ```
 
    This installs the official Postgres image from [docker hub](https://hub.docker.com/_/postgres). Note that it configured the following:
@@ -158,7 +158,7 @@ use [DBeaver](https://dbeaver.io/download/), to create the database.
 
 2. Configure a postgres connection. The following is what needs to be specified to connect to the Postgres in docker:
 
-![image](./doc/attachments/add-postgres.png)
+![image](docs/attachments/add-postgres.png)
 
 **Click** the "Test Connection" button to test the connection. If successful, click **Finish** and go onto the next step.
 
@@ -173,7 +173,7 @@ For more information on creating a connection, [this tutorial](https://dbeaver.c
 
 4. Enter `postgres` and click "OK".
 
-   ![image](./doc/attachments/create-database.png)
+   ![image](docs/attachments/create-database.png)
 
 ##### Create a .env file with your environment variables
 
@@ -196,12 +196,13 @@ If you have Docker installed, use any of the following commands to start fresh l
 - For PostgreSQL
 
   ```bash
-  docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+  docker run --name hatchify-database -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -d postgres:alpine
   ```
 
 - For MySQL
+
   ```bash
-  docker run --name mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+  docker run --name hatchify-database -e MYSQL_ROOT_PASSWORD=password -d mysql:tag
   ```
 
 _Note:_ if you're using Windows, make sure you run these from Git Bash (or another MinGW environment), since these commands will execute bash scripts. Recall that [it's very easy to include Git Bash as your default integrated terminal on Visual Studio Code](https://code.visualstudio.com/docs/editor/integrated-terminal).
@@ -295,7 +296,7 @@ We use a simple conventional commits convention:
 
 Example:
 
-```
+```bash
 feat: support specifying a custom name for enums
 ```
 
@@ -306,32 +307,7 @@ Happy hacking and thank you for contributing.
 We use ESLint and Prettier to enforce coding guidelines. You can run it like this:
 
 ```bash
-npx nx eslint @hatchifyjs/koa
-```
-
-## Package Dependencies
-
-```mermaid
-  flowchart TD
-      A[core] --> B[node]
-      B --> C[express]
-      B --> D[koa]
-      A --> E[rest-client]
-      E --> F[rest-client-jsonapi]
-      E --> G[react-rest]
-      G --> H[react-ui]
-      E --> H
-      H --> I[design-mui]
-      I --> J[react]
-      F --> J
-      H --> J
-      A --> K[create]
-      C --> K
-      D --> K
-      J --> K
-      L[sequelize-create-with-associations] --> B
-      M[sequelize-querystring-parser] --> B
-      N[querystring-parser] --> M
+npx nx lint @hatchifyjs/koa
 ```
 
 ## Folder structure
@@ -401,7 +377,7 @@ npx nx eslint @hatchifyjs/koa
 ├── package-lock.json
 ├── package.json
 ├── packages
-│   ├── design-mui                              # @hatchifyjs/design-mui; Material UI implementation on of Hatcify's React components
+│   ├── design-mui                              # @hatchifyjs/design-mui; Material UI implementation on of Hatchify's React components
 │   │   ├── package.json
 │   │   ├── src
 │   │   │   ├── components                      # Material UI components which implement interfaces provided by `react-ui`
@@ -545,92 +521,16 @@ Before making any release please make sure that:
 
 ### Releasing Hatchify packages
 
-All Hatchify packages have the same structure which allows making releases through npm scripts.
+All affected Hatchify packages are [automatically](./.github/workflows/push.yml#L7) released upon merging to the `main` branch, in order of dependencies. The segment to increment is determined by the pull request title (squashed pull request commit comment):
 
-#### Making a release through GitHub Actions
-
-1. Select a package to release in the Actions tab
-2. Click the `Run workflow` button and input the version segment to increment: `major`, `minor`, or `patch`
-3. Run the workflow
-
-#### Making a release through the CLI
-
-1. Move to the `main` branch
-2. Fetch all latest changes from the repository
-3. Go to the directory of the package you want to release
-
-```
-cd packages/<packagename>
-```
-
-4. Increment the version. For example, to make a `PATCH` release:
-
-```
-npm version patch
-```
-
-5. Publish the package
-
-```
-npm publish
-```
-
-6. Follow the prompts to log in to npm and publish the package
-
-#### Making pre-releases
-
-If you want to release a pre-release, you can run the following command before publishing to increment the pre-release version:
-
-```
-npm version prerelease
-```
+- `major: HATCH-123: Major Refactor`
+- `minor: HATCH-234: Breaking Changes`
+- `patch: HATCH-345: Bug fixes`
+- `HATCH-456: More bug fixes` -> defaults to patch
 
 #### Publishing release notes
 
-After you have released the package, you will need to update the release on GitHub. Make sure the newly created tag has been pushed to GitHub (`git push --tags`).
-
-Then go to `https://github.com/bitovi/hatchify/releases` and edit the most recent tag. Give it a title and add any notes or links to issues, then click `Update release`.
-
-### Dependent Releases
-
-If you are making a release and another package depends on it, you will need to update the dependent package to use the new version.
-
-For example, if you are making a release for `@hatchifyjs/rest-client`, then you will need to update `@hatchifyjs/react-rest` to use the new version of `@hatchifyjs/rest-client`. And repeat the process for any other packages that depend on `@hatchifyjs/rest-client`. Once `@hatchifyjs/react-rest` has been updated, you will need to continue the process for any of its dependent packages.
-
-#### Dependent Releases through GitHub Actions
-
-Follow the same steps as above, but make sure to select the dependent package in the Actions tab.
-
-**Note:** Before making a release for a dependent package, make sure to increment the version of the dependency in the `package.json` file in a separate commit.
-
-#### Dependent Releases through the CLI
-
-Because of the number of frontend packages, it is recommended to release through CLI commands instead of using GitHub Actions.
-
-1. Move to the `main` branch
-2. Fetch all latest changes from the repository
-3. Rebuild all packages
-
-```
-nx run-many -t build
-```
-
-4. Go to the directory of the package you want to release
-5. Run `npm version <versiontype>`. For example, to make a `PATCH` release:
-
-```
-npm version patch
-```
-
-6. Publish the package
-
-```
-npm publish
-```
-
-7. Repeat steps 4-6 for any dependent packages
-
-   1. For each dependent package, update the version of the dependency in the `package.json` file before running the publish command.
+[Release notes](https://github.com/bitovi/hatchify/releases) are generated upon merging pull requests to `main` and are divided into sections using attached tags (`feature`, `fix`, etc.).
 
 #### Dependent Releases of peer dependencies
 
@@ -638,6 +538,4 @@ Peer dependencies like `@hatchifyjs/core` are pinned to the latest minor version
 
 ### Updating the Grid Demo
 
-The grid demo is in a separate [repository](https://github.com/bitovi/hatchify-grid-demo) from Hatchify.
-
-Instructions for updating the grid demo can be found in the project's [README](https://github.com/bitovi/hatchify-grid-demo/blob/main/README.md).
+The [grid demo](https://github.com/bitovi/hatchify/tree/main/example/grid-demo) updates automatically on every push to `main`.

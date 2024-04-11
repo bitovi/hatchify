@@ -2,6 +2,7 @@ export type RequestMetaData = Record<string, any> | undefined
 export type Error = any // todo
 
 export type Meta = MetaLoading | MetaSuccess | MetaError
+export type ContextualMeta = Record<string, Meta>
 
 // * isResolved: no more network requests: true if status is "success" or "error"
 // * isPending: network request in progress: true if status is "loading"

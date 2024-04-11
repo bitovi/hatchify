@@ -6,6 +6,14 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import { default as MuiEverything } from "./MuiEverything.js"
 
 describe("components/MuiList", () => {
+  beforeAll(() => {
+    global.ResizeObserver = vi.fn().mockImplementation(() => ({
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+    }))
+  })
+
   const partialSchemas = {
     User: {
       name: "User",
@@ -97,11 +105,11 @@ describe("components/MuiList", () => {
       />,
     )
 
-    expect(
-      await screen.findByText(
-        "There are no schemas. Create some to get started!",
-      ),
-    ).toBeInTheDocument()
+    expect(await screen.findByText("There are no schemas.")).toBeInTheDocument()
+
+    const schemaLink = await screen.findByRole("link")
+    expect(schemaLink).toBeInTheDocument()
+    expect(schemaLink).toHaveTextContent("Create some to get started!")
   })
   it("Shows no records found when there is no data", async () => {
     render(

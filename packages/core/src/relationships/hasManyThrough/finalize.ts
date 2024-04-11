@@ -1,11 +1,12 @@
 import type { PartialHasManyThroughRelationship } from "./types.js"
 import { getDefaultPrimaryAttribute } from "../../assembler/getDefaultPrimaryAttribute.js"
-import { uuid } from "../../dataTypes/index.js"
 import { HatchifyInvalidSchemaError } from "../../types/index.js"
 import type { SemiFinalSchema } from "../../types/index.js"
 import { camelCaseToPascalCase } from "../../util/camelCaseToPascalCase.js"
 import { pascalCaseToCamelCase } from "../../util/pascalCaseToCamelCase.js"
+import { pluralize } from "../../util/pluralize.js"
 import { singularize } from "../../util/singularize.js"
+import { getForeignKeyAttribute } from "../utils/getForeignKeyAttribute.js"
 
 export function finalize(
   sourceSchema: string,
@@ -36,6 +37,16 @@ export function finalize(
   const sourceKey = relationship.sourceKey ?? "id"
   const targetKey = relationship.targetKey ?? "id"
 
+  const sourceAttributeValue = getForeignKeyAttribute(
+    schemas[sourceSchema].attributes[sourceKey] ?? schemas[sourceSchema].id,
+    true,
+  )
+  const targetAttributeValue = getForeignKeyAttribute(
+    schemas[targetSchema].attributes[targetKey] ?? schemas[targetSchema].id,
+    true,
+  )
+  const throughRelationshipName = pluralize(pascalCaseToCamelCase(through))
+
   return {
     ...schemas,
     [sourceSchema]: {
@@ -51,6 +62,12 @@ export function finalize(
           sourceKey,
           targetKey,
         },
+        [throughRelationshipName]: {
+          type: "hasMany",
+          targetSchema: through,
+          targetAttribute: throughSourceAttribute,
+          sourceAttribute: sourceKey,
+        },
       },
     },
     ...(schemas[through]
@@ -61,14 +78,20 @@ export function finalize(
             id: getDefaultPrimaryAttribute().finalize(),
             ui: {},
             attributes: {
-              [throughSourceAttribute]: uuid({
-                required: true,
-                hidden: true,
-              }).finalize(),
-              [throughTargetAttribute]: uuid({
-                required: true,
-                hidden: true,
-              }).finalize(),
+              [throughSourceAttribute]: {
+                ...sourceAttributeValue,
+                control: {
+                  ...sourceAttributeValue.control,
+                  hidden: true,
+                },
+              },
+              [throughTargetAttribute]: {
+                ...targetAttributeValue,
+                control: {
+                  ...targetAttributeValue.control,
+                  hidden: true,
+                },
+              },
             },
             relationships: {
               [pascalCaseToCamelCase(sourceSchema)]: {

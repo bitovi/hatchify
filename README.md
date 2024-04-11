@@ -1,6 +1,17 @@
 # Hatchify
 
-<img style="float:left" src="https://github.com/bitovi/hatchify/assets/78602/119af4d1-d9ac-439d-aee5-8b9759cf8915">
+<div align="center">
+
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8662/badge)](https://www.bestpractices.dev/projects/8662)
+[![npm version](https://img.shields.io/npm/v/@hatchifyjs/core.svg)](https://www.npmjs.com/package/@hatchifyjs/core)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+
+[![Discord](https://img.shields.io/discord/1007137664606150746.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/invite/Za8CFzvmz3)
+[![Twitter Follow](https://img.shields.io/twitter/follow/bitovi?style=social)](https://twitter.com/bitovi)
+
+</div>
+
+<img align="left" src="https://github.com/bitovi/hatchify/assets/78602/119af4d1-d9ac-439d-aee5-8b9759cf8915" height="100px">
 
 Hatchify is a web application framework designed to accelerate the development of CRUD applications. If all you need is basic app, Hatchify can provide you with a fully functional system straight from a datatype schema. If you have more specialized requirements, Hatchify makes it easy to customize every part of the application to meet your needs.
 
@@ -16,7 +27,7 @@ Hatchify is structured as a number of modular libraries that can be consumed ind
 In just a few short steps we will set up a project containing a Hatchify frontend and backend. Our frontend will use [React](https://react.dev/) and [MUI](https://mui.com/), and our backend will be using [Koa](https://koajs.com/). The project also uses [Vite](https://vitejs.dev/) as a dev server which handles much of the React configuration for us.
 
 > ✏️ Perform all the following steps:
-> 
+>
 > **Note:** The ✏️ icon indicates when to follow along!
 
 1. Ensure you’re using [node 18 and npm 9 or above](https://nodejs.org/en/download)
@@ -31,17 +42,20 @@ In just a few short steps we will set up a project containing a Hatchify fronten
    ```bash
    npm init @hatchifyjs@latest
    ```
-    - For the backend prompt answer: "Koa" 
-    - For the database prompt answer: "SQLite"
-   
-3. Start the server:
+
+   - For the backend prompt answer: "Koa"
+   - For the database prompt answer: "SQLite"
+
+3. Change into the project directiory and start the server:
+
    ```bash
+   cd hatchify-app
    npm run dev
    ```
-   
+
 4. Navigate to the Hatchify welcome screen:
 
-![image](https://github.com/bitovi/hatchify/assets/2623867/5ac60386-dc61-4bf7-b254-d806a782638b)
+<img width="1289" alt="Screenshot 2024-03-06 at 10 35 02 AM" src="https://github.com/bitovi/hatchify/assets/9858612/5c98359d-5b1f-419d-812a-3f751670fe57">
 
 Congrats, you’ve got a seed of something great started!
 
@@ -79,113 +93,30 @@ export const User = {
   },
 } satisfies PartialSchema
 ```
+
 As soon as you save this change, the app will automatically reload to include the new data types you've added:
 
-![image](https://github.com/bitovi/hatchify/assets/2623867/8c172eda-0cd1-417d-b733-3a063f42d455)
+<img width="1385" alt="Screenshot 2024-03-08 at 10 09 20 AM" src="https://github.com/bitovi/hatchify/assets/9858612/b0425bd2-5b05-4bec-85c9-bf0da147cc42">
 
-This defines a `Todo` and `User` type, each with some attributes. It also creates a  relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
+This defines a `Todo` and `User` type, each with some attributes. It also creates a relationship where a Todo `belongsTo` a User, and each user `hasMany` Todos.
 
-You can refer to [our documentation](/doc/schema/README.md) for more information on how to define schemas.
+You can refer to [our documentation](/docs/core/README.md) for more information on how to define schemas.
 
 ### Seed Data
 
 Hatchify doesn’t currently generate forms (though we are working on it!). To add data, you can use the REST APIs that Hatchify’s middleware provides.
 
-# Seeding Sample Data
+## Seeding Sample Data
 
-> ✏️ Run the following commands to create some sample data.
+✏️ Run the following command in a new terminal window to seed some sample data:
 
 ```bash
-curl 'http://localhost:3000/api/todos' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "Todo",
-    "attributes": {
-      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002",
-      "name": "Walk the dog",
-      "dueDate": "2024-12-12",
-      "importance": 6
-    }
-  }
-}'
-
-curl 'http://localhost:3000/api/todos' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "Todo",
-    "attributes": {
-      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003",
-      "name": "Laundry",
-      "dueDate": "2024-12-02",
-      "importance": 1
-    }
-  }
-}'
-
-curl 'http://localhost:3000/api/todos' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "Todo",
-    "attributes": {
-      "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004",
-      "name": "Making Calls",
-      "dueDate": "2024-12-31",
-      "importance": 7
-    }
-  }
-}'
-
-curl 'http://localhost:3000/api/users' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "User",
-    "attributes": {
-      "name": "John Doe"
-    },
-    "relationships": {
-      "todos": {
-        "data": [
-          {
-            "type": "Todo",
-            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000002"
-          },
-          {
-            "type": "Todo",
-            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000004"
-          }
-        ]
-      }
-    }
-  }
-}'
-
-curl 'http://localhost:3000/api/users' \
---header 'Content-Type: application/vnd.api+json' \
---data '{
-  "data": {
-    "type": "User",
-    "attributes": {
-      "name": "Jane Doe"
-    },
-    "relationships": {
-      "todos": {
-        "data": [
-          {
-            "type": "Todo",
-            "id": "aaaaaaaa-aaaa-aaaa-aaaa-000000000003"
-          }
-        ]
-      }
-    }
-  }
-}'
+npx hatchify-gsg-seed
 ```
 
-To learn more about the service layer, read [the docs regarding our JSONAPI implementation](./doc/jsonapi/README.md)
+This command will run a script that uses the REST API to seed some sample data into the database. For more information on the request being made, you can reference the create function in the [hatchedKoa.model documentation](docs/koa/hatchedKoa.model.md#create).
+
+To learn more about the service layer, read [the docs regarding our JSON:API implementation](docs/jsonapi/README.md)
 
 With some data in place, we can now further review the project.
 
@@ -193,59 +124,71 @@ With some data in place, we can now further review the project.
 
 Now that data has been seeded the UI should look like:
 
-![image](https://github.com/bitovi/hatchify/assets/2623867/db06b817-e6de-42d6-97c4-c9ef814cd43e)
+<img width="1385" alt="Screenshot 2024-03-08 at 10 05 44 AM" src="https://github.com/bitovi/hatchify/assets/9858612/79f67fb2-c598-4032-89f0-1c87a75ae465">
 
 You can start using this basic app to sort & filter the data:
 
-![image](https://github.com/bitovi/hatchify/assets/2623867/47ac1208-27f4-49be-b648-b05556fb2749)
+<img width="1385" alt="Screenshot 2024-03-08 at 10 07 58 AM" src="https://github.com/bitovi/hatchify/assets/9858612/c3a82055-bdac-4157-8024-a3f483e51193">
 
-What you've built is currently bare bones, but read through our guides in the following section to learn how to enhance it to meet your needs. 
+What you've built is currently bare bones, but read through our guides in the following section to learn how to enhance it to meet your needs.
 
-## Next Steps
+## Guides
 
 Continue learning more about the Hatchify feature set with these guides that continue from the example above:
 
-- [Using PostgreSQL DB](./doc/guides/using-postgres-db.md)
-- [Model Sync](./doc/guides/model-sync.md)
-- [Adding custom endpoints](./doc/guides/adding-custom-endpoints.md)
-- [Adding request authorization](./doc/guides/adding-request-authorization.md)
-- [Customizing your list](./doc/guides/customizing-your-list.md)
-- [Adding checkboxes to the list](./doc/guides/adding-checkboxes-to-the-list.md)
-- [Application data validation](./doc/guides/application-data-validation.md)
+- [Using PostgreSQL DB](docs/guides/using-postgres-db.md)
+- [Adding custom endpoints](docs/guides/adding-custom-endpoints.md)
+- [Adding request authorization](docs/guides/adding-request-authorization.md)
+- [Customizing your list](docs/guides/customizing-your-list.md)
+- [Adding checkboxes to the list](docs/guides/adding-checkboxes-to-the-list.md)
+- [Application data validation](docs/guides/application-data-validation.md)
+- [Production / Custom Usage Guide](docs/guides//production-custom-usage.md)
+- [Adding form-like behavior to the DataGrid](docs/guides/adding-form-like-behavior.md)
 
 ## API Docs
 
-Dig deep into how the internals of how Hatchify works in the technical interface documentation:
+Learn how to make Hatchify match your needs with its technical interface documentation:
 
-- [Schema](./doc/schema/)
-  - [Attributes](./doc/schema/attribute-types/README.md)
-  - [Relationships](./doc/schema/relationship-types/README.md)
-  - [Schema Naming](./doc/schema/naming.md)
-- [JSON:API](./doc/jsonapi/README.md)
-  - [Creating](./doc/jsonapi/creating.md)
-  - [Reading](./doc/jsonapi/reading/README.md)
-    - [Filtering](./doc/jsonapi/reading/filtering/README.md)
-    - [Paginating](./doc/jsonapi/reading/paginating/README.md)
-    - [Sorting](./doc/jsonapi/reading/sorting/README.md)
-    - [Relationships](./doc/jsonapi/reading/relationships/README.md)
-    - [Sparse Fields](./doc/jsonapi/reading/sparse-fields/README.md)
-  - [Updating](./doc/jsonapi/updating.md)
-  - [Deleting](./doc/jsonapi/deleting.md)
-- Koa
-  - [API Docs](./doc/koa/README.md)
-- Express
-  - [API Docs](./doc/express/README.md) 🛑
-- React
-  - [API Docs](./doc/react/README.md)
-  - [Components](./doc/react/components.md)
-  - [REST Client](./doc/react/rest-client.md) 🛑
+- [Core](docs/core/) - Learn how to define a Schema, attributes, and relationships with Hatchify's interface for defining your data.
+  - [Attributes](docs/core/attribute-types/README.md)
+  - [Relationships](docs/core/relationship-types/README.md)
+  - [Schema Naming](docs/core/PartialSchema.md)
+- [JSON:API](docs/jsonapi/README.md) - Learn the details of our JSON:API implementation.
+  - [Creating](docs/jsonapi/creating.md)
+  - [Reading](docs/jsonapi/reading/README.md)
+    - [Filtering](docs/jsonapi/reading/filtering/README.md)
+    - [Paginating](docs/jsonapi/reading/paginating/README.md)
+    - [Sorting](docs/jsonapi/reading/sorting/README.md)
+    - [Relationships](docs/jsonapi/reading/relationships/README.md)
+    - [Sparse Fields](docs/jsonapi/reading/sparse-fields/README.md)
+  - [Updating](docs/jsonapi/updating.md)
+  - [Deleting](docs/jsonapi/deleting.md)
+- Koa - Learn how Hatchify leverages Koa middleware functionality
+  - [API Docs](docs/koa/README.md)
+- Express - Learn how Hatchify leverages Express middleware functionality
+  - [API Docs](docs/express/README.md)
+- React - Learn how to use and customize Hatchify's schema-driven library of React components and CRUD methods
+  - [REST Client](docs/react-jsonapi/README.md)
+  - [API Docs](docs/react/README.md)
+  - [Components](docs/react/hatchedReact.components.md)
 
 ## Need help or have questions?
 
 This project is supported by [Bitovi](https://bitovi.com/), a web software consultancy. You can get help or ask questions on our:
 
-- [Discord Community](https://discord.com/invite/J7ejFsZnJ4)
+- [Discord Community](https://discord.gg/aJJrvv92XV)
 
 - [Twitter](https://twitter.com/bitovi)
 
 Or, you can hire us for training, consulting, or development. [Set up a free consultation.](https://www.bitovi.com/digital-consulting-services)
+
+## Read more about Hatchify
+
+Gain more insight into Hatchify by checking out our blog posts.
+
+- [Introducing Hatchify: Low-code libraries for React, Node, and Sequelize](https://www.bitovi.com/blog/introducing-hatchify-low-code-libraries-for-react-node-and-sequelize)
+- [Hatchify: The Fastest Way to Build JSON: APIs](https://www.bitovi.com/blog/hatchify-the-fastest-way-to-build-jsonapis)
+
+## Trying Hatchify Online
+
+You can try Hatchify online on [StackBlitz](https://stackblitz.com/edit/bitovi-hatchify-t7amou?embed=1&file=backend%2Findex.ts). It runs the Hatchify-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine.

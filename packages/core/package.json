@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/core",
-  "version": "0.3.11",
+  "version": "0.3.23",
   "type": "module",
   "exports": "./dist/core.js",
   "types": "./dist/core.d.ts",
@@ -8,12 +8,15 @@
     "prepublish": "npm run clean && npm run build",
     "prepublishOnly": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint .",
-    "eslint:fix": "eslint --fix .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "depcheck": "depcheck .",
     "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --coverage",
     "clean": "rm -rf tsconfig.tsbuildinfo dist",
     "build": "tsc"
+  },
+  "dependencies": {
+    "@hatchifyjs/crypto": "^1.0.3"
   },
   "devDependencies": {
     "@bitovi/eslint-config": "^1.6.0",

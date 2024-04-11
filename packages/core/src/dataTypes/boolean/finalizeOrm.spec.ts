@@ -36,6 +36,41 @@ describe("finalizeOrm", () => {
     ).toBe(false)
   })
 
+  it("handles primaryKey", () => {
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          primaryKey: undefined,
+        },
+      }).sequelize.primaryKey,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          primaryKey: null as unknown as boolean,
+        },
+      }).sequelize.primaryKey,
+    ).toBe(false)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          primaryKey: true,
+        },
+      }).sequelize.primaryKey,
+    ).toBe(true)
+    expect(
+      finalizeOrm({
+        sequelize: {
+          type: "BOOLEAN",
+          primaryKey: false,
+        },
+      }).sequelize.primaryKey,
+    ).toBe(false)
+  })
+
   it("handles default", () => {
     expect(
       finalizeOrm({

@@ -1,5 +1,6 @@
 import { getDefaultPrimaryAttribute } from "./getDefaultPrimaryAttribute.js"
 import type {
+  PartialAttributeOptions,
   PartialSchema,
   PartialSchemaWithPrimaryAttribute,
 } from "./types.js"
@@ -10,13 +11,12 @@ export function ensureDefaultPrimaryAttribute(
   return {
     ...schema,
     id: schema.id
-      ? {
+      ? ({
           ...schema.id,
           control: {
             ...schema.id.control,
             primary: true,
             allowNull: false,
-            hidden: null,
           },
           orm: {
             ...schema.id.orm,
@@ -26,7 +26,7 @@ export function ensureDefaultPrimaryAttribute(
               allowNull: false,
             },
           },
-        }
+        } as PartialAttributeOptions)
       : getDefaultPrimaryAttribute(),
   }
 }

@@ -7,6 +7,7 @@ export function getPartialOrm(
     sequelize: {
       type: "BOOLEAN",
       allowNull: props?.required == null ? props?.required : !props.required,
+      primaryKey: props?.primary,
       defaultValue: props?.default,
       unique: props?.unique,
     },

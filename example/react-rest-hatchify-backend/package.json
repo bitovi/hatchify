@@ -4,37 +4,37 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:frontend": "vite build --outDir dist/frontend",
+    "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
     "dev": "nodemon backend/index.ts --watch backend --watch schemas.ts",
-    "build": "tsc && vite build",
-    "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/react-rest-hatchify-backend && npm install",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "build:frontend": "tsc && vite build --outDir dist/frontend",
-    "build:backend": "tsc --outDir dist/backend --project tsconfig.backend.json",
-    "start:frontend": "vite preview --outDir dist/frontend",
-    "start:backend": "node dist/backend/backend/index.js"
+    "start:backend": "node dist/backend/backend/index.js",
+    "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/react-rest-hatchify-backend && npm install"
   },
   "dependencies": {
-    "@hatchifyjs/core": "file:../../packages/core",
-    "@hatchifyjs/koa": "file:../../packages/koa",
-    "@hatchifyjs/react-rest": "file:../../packages/react-rest",
-    "@hatchifyjs/rest-client-jsonapi": "file:../../packages/rest-client-jsonapi",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@hatchifyjs/core": "^0.3.17",
+    "@hatchifyjs/koa": "^1.3.13",
     "koa": "^2.14.2",
     "koa-connect": "^2.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "vite": "^5.0.10"
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@hatchifyjs/react-rest": "^0.1.20",
+    "@hatchifyjs/rest-client-jsonapi": "^0.1.20",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.56.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "nodemon": "^3.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^5.2.8"
   }
 }

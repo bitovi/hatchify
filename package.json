@@ -4,11 +4,16 @@
   "version": "0.0.0",
   "scripts": {
     "build:all": "nx run-many -t build",
+    "bump-packages": "ts-node ./scripts/bump-packages",
     "check-packages": "ts-node ./scripts/check-packages",
-    "e2e": "playwright test",
+    "e2e": "playwright test --config e2e/playwright.config.ts",
+    "get-changed-packages": "ts-node ./scripts/get-changed-packages",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "pree2e": "./scripts/pree2e.sh",
-    "poste2e": "cd example && rm -rf hatchify-app",
-    "postinstall": "playwright install --with-deps"
+    "poste2e": "cd e2e && rm -rf hatchify-app",
+    "postinstall": "playwright install --with-deps",
+    "update-gs": "./scripts/updategs.sh"
   },
   "eslintConfig": {
     "root": true,
@@ -32,7 +37,34 @@
           "trailingComma": "all"
         }
       ]
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.md"
+        ],
+        "parser": "eslint-plugin-markdownlint/parser",
+        "extends": [
+          "plugin:markdownlint/recommended"
+        ],
+        "rules": {
+          "markdownlint/md013": "warn",
+          "markdownlint/md024": "warn",
+          "markdownlint/md029": "warn",
+          "markdownlint/md033": "off",
+          "markdownlint/md036": "warn",
+          "prettier/prettier": "off"
+        }
+      },
+      {
+        "files": [
+          "e2e/tests/*.spec.ts"
+        ],
+        "rules": {
+          "testing-library/prefer-screen-queries": "off"
+        }
+      }
+    ]
   },
   "prettier": {
     "semi": false,
@@ -44,8 +76,9 @@
     "depcheck": "^1.4.7",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-markdownlint": "^0.5.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "nx": "^17.2.1",
+    "nx": "^18.0.4",
     "prettier": "^3.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

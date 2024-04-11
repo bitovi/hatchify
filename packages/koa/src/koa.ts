@@ -5,8 +5,8 @@ import type {
   PartialSchema,
 } from "@hatchifyjs/node"
 
-import { buildMiddlewareForModel } from "./middleware/koa.js"
-import type { MiddlewareFunctionsKoa } from "./middleware/koa.js"
+import { buildMiddlewareForModel } from "./middleware.js"
+import type { MiddlewareFunctionsKoa } from "./middleware.js"
 
 /**
  * Hatchify can be imported from the `@hatchifyjs/koa` package
@@ -49,7 +49,7 @@ export class Hatchify extends HatchifyNode {
   }
 }
 
-export { errorHandlerMiddleware } from "./middleware/koa.js"
+export { errorHandlerMiddleware } from "./middleware.js"
 
 /**
  * `hatchifyKoa` Creates middleware functions from provided schemas

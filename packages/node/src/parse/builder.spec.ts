@@ -11,26 +11,24 @@ import { Op } from "sequelize"
 
 import {
   buildCreateOptions,
-  buildDestroyOptions,
   buildFindOptions,
-  buildUpdateOptions,
   replaceIdentifiers,
 } from "./builder.js"
-import { UnexpectedValueError } from "../error/index.js"
+import { RelationshipPathError, UnexpectedValueError } from "../error/index.js"
 import { Hatchify } from "../node.js"
 
 describe("builder", () => {
-  const UserSchema: PartialSchema = {
+  const UserSchema = {
     name: "User",
     attributes: {
       name: string(),
     },
     relationships: {
-      user: belongsTo(),
+      parent: belongsTo("User"),
       todos: hasMany(),
     },
-  }
-  const TodoSchema: PartialSchema = {
+  } satisfies PartialSchema
+  const TodoSchema = {
     name: "Todo",
     attributes: {
       name: string(),
@@ -40,14 +38,14 @@ describe("builder", () => {
     relationships: {
       user: belongsTo(),
     },
-  }
-  const DisconnectedSchemaSchema: PartialSchema = {
+  } satisfies PartialSchema
+  const DisconnectedSchemaSchema = {
     name: "DisconnectedSchema",
     attributes: {
       name: string(),
       importance: integer(),
     },
-  }
+  } satisfies PartialSchema
   const hatchify = new Hatchify(
     {
       User: UserSchema,
@@ -156,6 +154,7 @@ describe("builder", () => {
         data: {
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -211,7 +210,7 @@ describe("builder", () => {
       const options = buildFindOptions(
         hatchify,
         User,
-        "include=parent,todos&filter[name]=Justin&filter[todos.importance]=1&filter[parent.parent.name]=John",
+        "include=parent,parent.parent,todos&filter[name]=Justin&filter[todos.importance]=1&filter[parent.parent.name]=John",
         1,
       )
 
@@ -231,9 +230,13 @@ describe("builder", () => {
             ],
           },
           include: [
-            { association: "parent", include: [] },
+            {
+              association: "parent",
+              include: [{ association: "parent", include: [] }],
+            },
             { association: "todos", include: [] },
           ],
+          distinct: true,
         },
         errors: [],
         orm: "sequelize",
@@ -336,9 +339,15 @@ describe("builder", () => {
       await expect(async () =>
         buildFindOptions(hatchify, Todo, "filter[invalid.name]=invalid"),
       ).rejects.toEqualErrors([
-        new UnexpectedValueError({
-          detail: `URL must have 'filter[invalid.name]' where 'invalid' is one of the includes.`,
-          parameter: `filter[invalid.name]`,
+        new RelationshipPathError({
+          detail:
+            "URL must have 'include' with 'invalid' as one of the relationships to include.",
+          parameter: "include",
+        }),
+        new RelationshipPathError({
+          detail:
+            "URL must have 'filter[invalid.name]' where 'invalid.name' is a valid attribute.",
+          parameter: "filter[invalid.name]",
         }),
       ])
     })
@@ -401,6 +410,7 @@ describe("builder", () => {
         data: {
           attributes: ["id", "name", "dueDate"],
           include: [{ association: "user", include: [], attributes: ["name"] }],
+          distinct: true,
           limit: 5,
           offset: 10,
           subQuery: false,
@@ -423,176 +433,6 @@ describe("builder", () => {
       const error = options.errors[0] as unknown as Error
       expect(error.name).toEqual("QuerystringParsingError")
       expect(error.message).toEqual("Incorrect format was provided for fields.")
-    })
-  })
-
-  describe("buildUpdateOptions", () => {
-    it("works with ID attribute provided", () => {
-      const options = buildUpdateOptions(
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
-        Todo,
-      )
-
-      expect(options).toEqual({
-        data: {
-          attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [], attributes: ["name"] }],
-          limit: 5,
-          offset: 10,
-          subQuery: false,
-          where: { name: { [Op.eq]: "laundry" } },
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("does not add ID attribute if not specified", () => {
-      const options = buildUpdateOptions("fields[Todo]=name,dueDate", Todo)
-
-      expect(options).toEqual({
-        data: {
-          attributes: ["name", "dueDate"],
-          where: {},
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("ignores ID if any filter provided", () => {
-      const options = buildUpdateOptions(
-        "page[number]=1&page[size]=10",
-        Todo,
-        1,
-      )
-
-      expect(options).toEqual({
-        data: {
-          where: { id: 1 },
-          limit: 10,
-          offset: 0,
-          subQuery: false,
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("handles no attributes", () => {
-      const options = buildUpdateOptions("", Todo)
-
-      expect(options).toEqual({
-        data: { where: {} },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("does not error on unknown attributes", () => {
-      const options = buildUpdateOptions("fields[Todo]=invalid", Todo)
-
-      expect(options).toEqual({
-        data: { attributes: ["invalid"], where: {} },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("handles invalid query string", async () => {
-      await expect(async () =>
-        buildUpdateOptions("fields=name,dueDate", Todo),
-      ).rejects.toEqualErrors([
-        new UnexpectedValueError({
-          detail: "Incorrect format was provided for fields.",
-          parameter: "fields",
-        }),
-      ])
-    })
-  })
-
-  describe("buildDestroyOptions", () => {
-    it("works with ID attribute provided", () => {
-      const options = buildDestroyOptions(
-        "include=user&filter[name]=laundry&fields[Todo]=id,name,dueDate&fields[User]=name&page[number]=3&page[size]=5",
-        Todo,
-      )
-
-      expect(options).toEqual({
-        data: {
-          attributes: ["id", "name", "dueDate"],
-          include: [{ association: "user", include: [], attributes: ["name"] }],
-          limit: 5,
-          offset: 10,
-          subQuery: false,
-          where: { name: { [Op.eq]: "laundry" } },
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("does not add ID attribute if not specified", () => {
-      const options = buildDestroyOptions("fields[Todo]=name,dueDate", Todo)
-
-      expect(options).toEqual({
-        data: {
-          attributes: ["name", "dueDate"],
-          where: {},
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("ignores ID if any filter provided", () => {
-      const options = buildDestroyOptions(
-        "page[number]=1&page[size]=10",
-        Todo,
-        1,
-      )
-
-      expect(options).toEqual({
-        data: {
-          where: { id: 1 },
-          limit: 10,
-          offset: 0,
-          subQuery: false,
-        },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("handles no attributes", () => {
-      const options = buildDestroyOptions("", Todo)
-
-      expect(options).toEqual({
-        data: { where: {} },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("does not error on unknown attributes", () => {
-      const options = buildDestroyOptions("fields[Todo]=invalid", Todo)
-
-      expect(options).toEqual({
-        data: { attributes: ["invalid"], where: {} },
-        errors: [],
-        orm: "sequelize",
-      })
-    })
-
-    it("handles invalid query string", async () => {
-      await expect(async () =>
-        buildDestroyOptions("fields=name,dueDate", Todo),
-      ).rejects.toEqualErrors([
-        new UnexpectedValueError({
-          detail: "Incorrect format was provided for fields.",
-          parameter: "fields",
-        }),
-      ])
     })
   })
 })

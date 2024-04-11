@@ -65,14 +65,19 @@ describe("boolean", () => {
           sequelize: {
             type: "BOOLEAN",
             allowNull: true,
+            primaryKey: false,
             unique: false,
             defaultValue: null,
           },
         },
         control: {
           type: "Boolean",
-          ui: { displayName: null },
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           allowNull: true,
+          primary: false,
           default: null,
         },
         serializeORMPropertyValue: expect.any(Function),
@@ -155,14 +160,99 @@ describe("boolean", () => {
           sequelize: {
             type: "BOOLEAN",
             allowNull: false,
+            primaryKey: false,
             unique: false,
             defaultValue: null,
           },
         },
         control: {
           type: "Boolean",
-          ui: { displayName: null },
-          allowNull: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
+          primary: false,
+          default: null,
+        },
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+      })
+    })
+  })
+
+  describe("boolean({primary: true})", () => {
+    const type = boolean({ primary: true })
+
+    it("prepares correctly", () => {
+      expect(type).toEqual({
+        name: 'boolean({"primary":true})',
+        orm: {
+          sequelize: {
+            type: "BOOLEAN",
+            primaryKey: true,
+          },
+        },
+        control: {
+          type: "Boolean",
+          primary: true,
+        },
+        finalize: expect.any(Function),
+      })
+    })
+
+    it("transforms correctly", () => {
+      const {
+        serializeORMPropertyValue,
+        setORMPropertyValue,
+        setORMQueryFilterValue,
+      } = type.finalize()
+
+      // serializeORMPropertyValue
+      expect(serializeORMPropertyValue(true)).toBe(true)
+      expect(serializeORMPropertyValue(false)).toBe(false)
+      expect(serializeORMPropertyValue(null)).toBeNull()
+      expect(() =>
+        serializeORMPropertyValue("invalid" as unknown as boolean),
+      ).toThrow(new HatchifyCoerceError("as a boolean"))
+
+      // setORMPropertyValue
+      expect(setORMPropertyValue(true)).toBe(true)
+      expect(setORMPropertyValue(false)).toBe(false)
+      expect(setORMPropertyValue(null)).toBeNull()
+      expect(setORMPropertyValue(undefined)).toBeNull()
+      expect(() =>
+        setORMPropertyValue("invalid" as unknown as boolean),
+      ).toThrow(new HatchifyCoerceError("as a boolean"))
+
+      // setORMQueryFilterValue
+      expect(setORMQueryFilterValue("true")).toBe(true)
+      expect(setORMQueryFilterValue("false")).toBe(false)
+      expect(setORMQueryFilterValue("null")).toBeNull()
+      expect(setORMQueryFilterValue("undefined")).toBeNull()
+      expect(() => setORMQueryFilterValue("invalid")).toThrow(
+        new HatchifyCoerceError("as a boolean"),
+      )
+    })
+
+    it("finalizes correctly", () => {
+      expect(type.finalize()).toEqual({
+        name: 'boolean({"primary":true})',
+        orm: {
+          sequelize: {
+            type: "BOOLEAN",
+            allowNull: true,
+            primaryKey: true,
+            unique: false,
+            defaultValue: null,
+          },
+        },
+        control: {
+          type: "Boolean",
+          displayName: null,
+          hidden: false,
+          allowNull: true,
+          primary: true,
           default: null,
         },
         serializeORMPropertyValue: expect.any(Function),

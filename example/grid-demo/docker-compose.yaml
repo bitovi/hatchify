@@ -1,0 +1,106 @@
+version: "3"
+
+services:
+  koa_sqlite:
+    container_name: koa_sqlite
+    build:
+      context: .
+      target: backend
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    environment:
+      - APP_PORT=3000
+      - BACKEND=koa
+      - DATABASE=sqlite
+      - DB_URI=sqlite://localhost/:memory
+    networks:
+      - koa_sqlite
+
+  koa_postgres:
+    container_name: koa_postgres
+    build:
+      context: .
+      target: backend
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3001:3001
+    environment:
+      - APP_PORT=3001
+      - BACKEND=koa
+      - DATABASE=postgres
+      - DB_URI=postgres://postgres:password@postgres_db:5432/postgres
+    networks:
+      - koa_postgres
+    depends_on:
+      - postgres_db
+
+  express_sqlite:
+    container_name: express_sqlite
+    build:
+      context: .
+      target: backend
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3002:3002
+    environment:
+      - APP_PORT=3002
+      - BACKEND=express
+      - DATABASE=sqlite
+      - DB_URI=sqlite://localhost/:memory
+    networks:
+      - express_sqlite
+
+  express_postgres:
+    container_name: express_postgres
+    build:
+      context: .
+      target: backend
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3003:3003
+    environment:
+      - APP_PORT=3003
+      - BACKEND=express
+      - DATABASE=postgres
+      - DB_URI=postgres://postgres:password@postgres_db:5432/postgres
+    networks:
+      - express_postgres
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: postgres:15.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5432:5432
+    #volumes:
+    #  - ./db:/var/lib/postgresql/data
+    networks:
+      - koa_postgres
+      - express_postgres
+
+networks:
+  koa_sqlite:
+    driver: bridge
+  koa_postgres:
+    driver: bridge
+  express_sqlite:
+    driver: bridge
+  express_postgres:
+    driver: bridge

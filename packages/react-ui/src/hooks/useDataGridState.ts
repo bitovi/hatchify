@@ -14,7 +14,7 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import type { HatchifyReactRest } from "@hatchifyjs/react-rest"
 import type {
   HatchifyDataGridPage,
-  HatchifyDataGridSelected,
+  HatchifyDataGridSelectedState,
   HatchifyDataGridSort,
   SortObject,
 } from "../presentation/index.js"
@@ -39,8 +39,8 @@ export interface DataGridState<
   setPage: HatchifyDataGridPage["setPage"]
   sort: HatchifyDataGridSort["sort"]
   setSort: HatchifyDataGridSort["setSort"]
-  selected: HatchifyDataGridSelected["selected"] | undefined
-  setSelected: HatchifyDataGridSelected["setSelected"] | undefined
+  selected?: HatchifyDataGridSelectedState
+  setSelected?: (selected: HatchifyDataGridSelectedState) => void
   finalSchemas: FinalSchemas
   partialSchemas: TSchemas
   schemaName: TSchemaName
@@ -62,14 +62,16 @@ export default function useDataGridState<
     defaultPage,
     defaultSort,
     baseFilter,
+    minimumLoadTime,
   }: {
-    defaultSelected?: HatchifyDataGridSelected["selected"]
-    onSelectedChange?: HatchifyDataGridSelected["setSelected"]
+    defaultSelected?: HatchifyDataGridSelectedState
+    onSelectedChange?: (selected: HatchifyDataGridSelectedState) => void
     fields?: Fields
     include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>
     defaultPage?: PaginationObject
     defaultSort?: SortObject
     baseFilter?: Filters
+    minimumLoadTime?: number
   } = {},
 ): DataGridState<TSchemas, TSchemaName> {
   if (typeof schemaName !== "string") {
@@ -94,12 +96,13 @@ export default function useDataGridState<
       include,
     },
     baseFilter,
+    minimumLoadTime,
   )
 
   useEffect(() => {
     setSelected({
-      all: selected.all ? data.length > 0 : false,
-      ids: selected.all ? data.map((record) => record.id) : [],
+      all: selected?.all ? data.length > 0 : false,
+      ids: selected?.all ? data.map((record) => record.id) : [],
     })
   }, [data])
 

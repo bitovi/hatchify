@@ -14,8 +14,12 @@ export function finalizeControl(
     default: props.default ?? null,
     regex: props.regex ?? /(.*?)/,
     ui: {
+      enableCaseSensitiveContains:
+        props.ui?.enableCaseSensitiveContains ?? false,
       displayName: props?.ui?.displayName ?? null,
       maxDisplayLength: props?.ui?.maxDisplayLength ?? null,
+      maxRenderLength: props.maxRenderLength ?? null,
+      hidden: props.hidden ?? false,
     },
   }
 }

@@ -13,8 +13,8 @@ export const BACKENDS: Record<string, Backend> = {
     name: "koa",
     display: "Koa",
     color: green,
-    dependencies: ["koa", "koa-connect", "@hatchifyjs/koa"],
-    devDependencies: ["@types/koa"],
+    dependencies: ["koa", "@hatchifyjs/koa"],
+    devDependencies: ["@types/koa", "koa-connect"],
   },
 }
 
@@ -40,13 +40,13 @@ export const FRONTENDS: Record<string, Frontend> = {
     name: "react",
     display: "React",
     color: yellow,
-    dependencies: [
+    dependencies: [],
+    devDependencies: [
       "@hatchifyjs/react",
       "@mui/material",
       "@emotion/react",
       "@emotion/styled",
       "vite",
     ],
-    devDependencies: [],
   },
 }

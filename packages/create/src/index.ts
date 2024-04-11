@@ -105,14 +105,10 @@ async function init() {
                   `"${argBackend}" isn't a valid backend. Please choose from below: `,
                 )
               : reset("Select a backend:"),
-          choices: Object.values(BACKENDS)
-            .filter(
-              (backend) => backend.name === "koa", // TODO: It was decided to limit to Koa at the moment
-            )
-            .map((backend) => ({
-              title: backend.color(backend.display || backend.name),
-              value: backend,
-            })),
+          choices: Object.values(BACKENDS).map((backend) => ({
+            title: backend.color(backend.display || backend.name),
+            value: backend,
+          })),
         },
         {
           type: DATABASES[argDatabase] ? null : "select",
@@ -225,9 +221,8 @@ async function init() {
     true,
   )
 
-  const templatePackage = await fs.promises.readFile(
-    path.join(root, "package.json"),
-    "utf-8",
+  const templatePackage = JSON.parse(
+    await fs.promises.readFile(path.join(root, "package.json"), "utf-8"),
   )
 
   const backendTemplateDir = path.resolve(
@@ -239,6 +234,57 @@ async function init() {
     fileURLToPath(import.meta.url),
     "../..",
     "template-react",
+  )
+
+  const [dependencyDetails, devDependencyDetails] = await Promise.all([
+    Promise.all(
+      [
+        "sequelize",
+        "@hatchifyjs/core",
+        ...backend.dependencies,
+        ...database.dependencies,
+        ...frontend.dependencies,
+      ].map((name) =>
+        fetch(`https://registry.npmjs.org/${name}`).then((response) =>
+          response.json(),
+        ),
+      ),
+    ),
+    Promise.all(
+      [
+        ...backend.devDependencies,
+        ...database.devDependencies,
+        ...frontend.devDependencies,
+        "nodemon",
+        "ts-node",
+      ].map((name) =>
+        fetch(`https://registry.npmjs.org/${name}`).then((response) =>
+          response.json(),
+        ),
+      ),
+    ),
+  ])
+
+  const dependencies = dependencyDetails.reduce(
+    (acc, curr) => ({
+      ...acc,
+      [curr.name]:
+        argPackagePath && curr.name.startsWith("@hatchifyjs/")
+          ? `${argPackagePath}/${curr.name.replace("@hatchifyjs/", "")}`
+          : `^${curr["dist-tags"].latest}`,
+    }),
+    {},
+  )
+
+  const devDependencies = devDependencyDetails.reduce(
+    (acc, curr) => ({
+      ...acc,
+      [curr.name]:
+        argPackagePath && curr.name.startsWith("@hatchifyjs/")
+          ? `${argPackagePath}/${curr.name.replace("@hatchifyjs/", "")}`
+          : `^${curr["dist-tags"].latest}`,
+    }),
+    { ...templatePackage.dependencies, ...templatePackage.devDependencies },
   )
 
   await Promise.all([
@@ -258,18 +304,30 @@ async function init() {
       path.join(root, "package.json"),
       JSON.stringify(
         {
-          ...JSON.parse(templatePackage),
+          ...templatePackage,
           name: packageName || getProjectName(),
           type: "module",
           scripts: {
-            lint: "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-            dev: "nodemon backend/index.ts --watch backend --watch schemas.ts",
-            "build:frontend": "tsc && vite build --outDir dist/frontend",
+            build: "npm run build:backend && npm run build:frontend",
             "build:backend":
               "tsc --outDir dist/backend --project tsconfig.backend.json",
-            "start:frontend": "vite preview --outDir dist/frontend",
-            "start:backend": "node dist/backend/backend/index.js",
+            "build:frontend": "vite build --outDir dist/frontend",
+            dev: "nodemon backend/index.ts --watch backend --watch schemas.ts",
+            lint: "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+            "start:backend": "node backend/index.js",
           },
+          dependencies: Object.keys(dependencies)
+            .sort()
+            .reduce(
+              (acc, name) => ({ ...acc, [name]: dependencies[name] }),
+              {},
+            ),
+          devDependencies: Object.keys(devDependencies)
+            .sort()
+            .reduce(
+              (acc, name) => ({ ...acc, [name]: devDependencies[name] }),
+              {},
+            ),
         },
         null,
         2,
@@ -347,41 +405,6 @@ async function init() {
     copyDir(frontendTemplateDir, path.join(root, "frontend")),
   ])
 
-  const dependencies = [
-    "sequelize",
-    "@hatchifyjs/core",
-    ...backend.dependencies,
-    ...database.dependencies,
-    ...frontend.dependencies,
-  ]
-  const devDependencies = [
-    ...backend.devDependencies,
-    ...database.devDependencies,
-    ...frontend.devDependencies,
-    "nodemon",
-    "ts-node",
-  ]
-
-  runCommand(
-    `npm install --package-lock-only --no-package-lock ${dependencies
-      .map((dependency) =>
-        argPackagePath && dependency.startsWith("@hatchifyjs/")
-          ? `${argPackagePath}/${dependency.replace("@hatchifyjs/", "")}`
-          : `${dependency}@latest`,
-      )
-      .join(" ")}`,
-    root,
-  )
-  runCommand(
-    `npm install --package-lock-only --no-package-lock ${devDependencies
-      .map((dependency) =>
-        argPackagePath && dependency.startsWith("@hatchifyjs/")
-          ? `${argPackagePath}/${dependency.replace("@hatchifyjs/", "")}`
-          : `${dependency}@latest`,
-      )
-      .join(" ")} --save-dev`,
-    root,
-  )
   runCommand("npm install", root)
 
   const cdProjectName = path.relative(cwd, root)
@@ -408,7 +431,7 @@ async function init() {
       "Make sure you have Postgres running already start a docker container using:",
     )
     console.log(
-      `docker run --name hatchify-database -p ${databasePort}:5432 -e POSTGRES_PASSWORD=${databasePassword} -e POSTGRES_USER=${databaseUsername} -d ${databaseName}`,
+      `docker run --name hatchify-database -p ${databasePort}:5432 -e POSTGRES_PASSWORD=${databasePassword} -e POSTGRES_USER=${databaseUsername} -d ${databaseName}:alpine`,
     )
   }
 

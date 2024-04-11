@@ -15,6 +15,7 @@ export function finalizeControl(
     default: props.default ?? null,
     ui: {
       displayName: props?.ui?.displayName ?? null,
+      hidden: props.hidden ?? false,
     },
   }
 }

@@ -1,24 +1,42 @@
-import { integer, string } from "@hatchifyjs/core"
-import hatchifyReactRest from "@hatchifyjs/react-rest"
+import { PartialSchema, belongsTo, hasMany, string } from "@hatchifyjs/core"
 import createClient from "@hatchifyjs/rest-client-jsonapi"
+import hatchifyReactRest from "@hatchifyjs/react-rest"
+import { useState } from "react"
 
 const Todo = {
   name: "Todo",
+  displayAttribute: "name",
   attributes: {
     name: string(),
-    importance: integer(),
   },
-}
+  relationships: {
+    user: belongsTo("User"),
+  },
+} satisfies PartialSchema
 
-const jsonapi = createClient("/api", {
-  Todo,
-  //  User
-})
+const User = {
+  name: "User",
+  displayAttribute: "name",
+  attributes: {
+    name: string(),
+  },
+  relationships: {
+    todos: hasMany("Todo"),
+  },
+} satisfies PartialSchema
+
+const jsonapi = createClient("/api", { Todo, User })
 
 const hatchedReactRest = hatchifyReactRest(jsonapi)
 
 function App() {
-  const [todos, listState] = hatchedReactRest.Todo.useAll()
+  const [todos, listState] = hatchedReactRest.Todo.useAll({ include: ["user"] })
+  const [createTodo, createState] = hatchedReactRest.Todo.useCreateOne()
+  const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
+  const [todoName, setTodoName] = useState("")
+
+  const [users, usersState] = hatchedReactRest.User.useAll()
+  const [selectedUser, setSelectedUser] = useState("")
 
   if (listState.isPending) {
     return <div>loading...</div>
@@ -26,12 +44,54 @@ function App() {
 
   return (
     <div>
+      <div>
+        <input
+          type="text"
+          value={todoName}
+          onChange={(e) => setTodoName(e.target.value)}
+        />
+        <select
+          disabled={usersState.isPending}
+          value={selectedUser}
+          onChange={(e) => setSelectedUser(e.target.value)}
+        >
+          <option value="">select user</option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </select>
+        <button
+          disabled={createState.isPending}
+          type="button"
+          onClick={() => {
+            createTodo({
+              name: todoName,
+              user: { id: selectedUser },
+            })
+            setTodoName("")
+            setSelectedUser("")
+          }}
+        >
+          {createState.isPending ? "submitting..." : "submit"}
+        </button>
+      </div>
       <table>
         <thead>
           {todos.map((todo) => (
             <tr key={todo.id}>
               <td>{todo.name}</td>
-              <td>{todo.importance}</td>
+              <td>{todo.user?.name}</td>
+              <td>
+                <button
+                  disabled={deleteState[todo.id]?.isPending}
+                  type="button"
+                  onClick={() => deleteTodo(todo.id)}
+                >
+                  delete
+                </button>
+              </td>
             </tr>
           ))}
         </thead>
@@ -41,116 +101,3 @@ function App() {
 }
 
 export default App
-
-// import { useState } from "react"
-// import type { Schema } from "@hatchifyjs/react-rest"
-// import hatchifyReactRest from "@hatchifyjs/react-rest"
-// import createClient from "@hatchifyjs/rest-client-jsonapi"
-
-// const Todo: Schema = {
-//   name: "Todo",
-//   ui:{displayAttribute: "name"},
-//   attributes: {
-//     name: "string",
-//   },
-//   relationships: {
-//     user: {
-//       type: "one",
-//       schema: "User",
-//     },
-//   },
-// }
-
-// const User: Schema = {
-//   name: "User",
-//   ui:{displayAttribute: "name"},
-//   attributes: {
-//     name: "string",
-//   },
-//   relationships: {
-//     todos: {
-//       type: "many",
-//       schema: "Todo",
-//     },
-//   },
-// }
-
-// const jsonapi = createClient("/api", {
-//   Todo: { endpoint: "todos" },
-//   User: { endpoint: "users" },
-// })
-
-// const hatchedReactRest = hatchifyReactRest({ Todo, User }, jsonapi)
-
-// function App() {
-//   const [todos, listState] = hatchedReactRest.Todo.useAll({ include: ["user"] })
-//   const [createTodo, createState] = hatchedReactRest.Todo.useCreateOne()
-//   const [deleteTodo, deleteState] = hatchedReactRest.Todo.useDeleteOne()
-//   const [todoName, setTodoName] = useState("")
-
-//   const [users, usersState] = hatchedReactRest.User.useAll()
-//   const [selectedUser, setSelectedUser] = useState("")
-
-//   if (listState.isPending) {
-//     return <div>loading...</div>
-//   }
-
-//   return (
-//     <div>
-//       <div>
-//         <input
-//           type="text"
-//           value={todoName}
-//           onChange={(e) => setTodoName(e.target.value)}
-//         />
-//         <select
-//           disabled={usersState.isPending}
-//           value={selectedUser}
-//           onChange={(e) => setSelectedUser(e.target.value)}
-//         >
-//           <option value="">select user</option>
-//           {users.map((user) => (
-//             <option key={user.id} value={user.id}>
-//               {user.name}
-//             </option>
-//           ))}
-//         </select>
-//         <button
-//           disabled={createState.isPending}
-//           type="button"
-//           onClick={() => {
-//             createTodo({
-//               attributes: { name: todoName },
-//               relationships: { user: { id: selectedUser } },
-//             })
-//             setTodoName("")
-//             setSelectedUser("")
-//           }}
-//         >
-//           {createState.isPending ? "submitting..." : "submit"}
-//         </button>
-//       </div>
-//       <table>
-//         <thead>
-//           {todos.map((todo) => (
-//             <tr key={todo.id}>
-//               <td>{todo.name}</td>
-//               <td>{todo.user?.name}</td>
-//               <td>
-//                 <button
-//                   disabled={deleteState.isPending}
-//                   type="button"
-//                   onClick={() => deleteTodo(todo.id)}
-//                 >
-//                   delete
-//                 </button>
-//               </td>
-//             </tr>
-//           ))}
-//         </thead>
-//       </table>
-//     </div>
-//   )
-// }
-
-// export default App

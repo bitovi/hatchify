@@ -8,25 +8,25 @@
 With NPM:
 
 ```bash
-$ npm init @hatchifyjs@latest
+npm init @hatchifyjs@latest
 ```
 
 With Yarn:
 
 ```bash
-$ yarn create @hatchifyjs@latest
+yarn create @hatchifyjs@latest
 ```
 
 With PNPM:
 
 ```bash
-$ pnpm create @hatchifyjs@latest
+pnpm create @hatchifyjs@latest
 ```
 
 With Bun:
 
 ```bash
-$ bunx @hatchifyjs/create@latest
+bunx @hatchifyjs/create@latest
 ```
 
 Then follow the prompts!

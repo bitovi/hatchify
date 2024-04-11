@@ -1,13 +1,5 @@
 import type { PartialSchema } from "@hatchifyjs/core"
-import {
-  assembler,
-  // string,
-  // integer,
-  // datetime,
-  // boolean,
-  // belongsTo,
-  // hasMany,
-} from "@hatchifyjs/core"
+import { assembler, getSchemaKey } from "@hatchifyjs/core"
 import type {
   GetSchemaFromName,
   GetSchemaNames,
@@ -20,6 +12,7 @@ import type {
   RequestMetaData,
   FlatCreateType,
   FlatUpdateType,
+  ContextualMeta,
 } from "@hatchifyjs/rest-client"
 import {
   createStore,
@@ -42,7 +35,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
     [SchemaName in keyof TSchemas]: {
       // promises
       findAll: (
-        query: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
+        query?: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
       ) => Promise<
         [
           Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>>,
@@ -76,6 +69,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
       useAll: (
         query?: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
         baseFilter?: Filters,
+        minimumLoadTime?: number,
       ) => [
         Array<RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>>,
         Meta,
@@ -106,14 +100,14 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
             "__schema"
           >,
         ) => void,
-        Meta,
+        ContextualMeta,
         (
           | RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
           | null
           | undefined
         ),
       ]
-      useDeleteOne: () => [(id: string) => void, Meta]
+      useDeleteOne: () => [(id: string) => void, ContextualMeta]
       // subscribes
       // subscribeToAll: (
       //   query: QueryList | undefined,
@@ -133,9 +127,7 @@ export const hatchifyReactRest = <
 ): HatchifyReactRest<TSchemas> => {
   const { completeSchemaMap: partialSchemas } = restClient
   const finalSchemas = assembler(partialSchemas)
-  const storeKeys = Object.values(finalSchemas).map((schema) =>
-    schema.namespace ? `${schema.namespace}_${schema.name}` : schema.name,
-  )
+  const storeKeys = Object.values(finalSchemas).map(getSchemaKey)
   createStore(storeKeys)
 
   const functions = Object.entries(partialSchemas).reduce(
@@ -172,7 +164,7 @@ export const hatchifyReactRest = <
             typedSchemaName,
             data,
           ),
-        deleteOne: (id) =>
+        deleteOne: (id: string) =>
           deleteOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
@@ -180,13 +172,14 @@ export const hatchifyReactRest = <
             id,
           ),
         // hooks
-        useAll: (query, baseFilter) =>
+        useAll: (query, baseFilter, minimumLoadTime) =>
           useAll<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
             query ?? {},
             baseFilter,
+            minimumLoadTime,
           ),
         useOne: (query) =>
           useOne<TSchemas, TSchemaName>(

@@ -151,6 +151,7 @@ export class Hatchify {
   }
 
   /**
+   * @deprecated Please use `orm.models` instead.
    * The `model` export is one of the primary tools provided by Hatchify for working
    * with your Models in custom routes.
    *
@@ -269,22 +270,22 @@ export class Hatchify {
   isValidHatchifyRoute(method: string, path: string): boolean {
     return (
       !!["GET", "POST", "PATCH", "DELETE"].includes(method) &&
-      !!this.getHatchifyURLParamsForRoute(path).modelName
+      !!this.getHatchifyURLParamsForRoute(path).schemaName
     )
   }
 
   /**
    * This function will take a URL and attempt to pull Hatchify
-   * specific parameters from it. Generally these are the `modelName` and or `id`
+   * specific parameters from it. Generally these are the `schemaName` and or `id`
    *
    * Note: While this function is exported from Hatchify it is unusual to need to it externally
    *
    * @param path Usually the incoming request URL
-   * @returns { modelName?: string; id?: Identifier }
+   * @returns { schemaName?: string; id?: Identifier }
    * @internal
    */
   getHatchifyURLParamsForRoute(path: string): {
-    modelName?: string
+    schemaName?: string
     id?: Identifier
   } {
     const parsedUrl = this._pathMatch?.(path)
@@ -298,17 +299,15 @@ export class Hatchify {
     const [kebabNamespace, kebabSchemaName] =
       urlParts.length === 1 ? [undefined, urlParts[0]] : urlParts
 
-    const modelName = Object.keys(this._schemas).find((schemaName) => {
-      const schema = this._schemas[schemaName]
-      return (
-        pascalCaseToKebabCase(schema.namespace) === kebabNamespace &&
-        pascalCaseToKebabCase(schema.pluralName ?? pluralize(schema.name)) ===
-          kebabSchemaName
-      )
-    })
-
     return {
-      modelName,
+      schemaName: Object.keys(this._schemas).find((schemaName) => {
+        const schema = this._schemas[schemaName]
+        return (
+          pascalCaseToKebabCase(schema.namespace) === kebabNamespace &&
+          pascalCaseToKebabCase(schema.pluralName ?? pluralize(schema.name)) ===
+            kebabSchemaName
+        )
+      }),
       id: params.id,
     }
   }
@@ -373,12 +372,13 @@ export function buildExportWrapper<T>(
   hatchify: Hatchify,
   handlerFunction: FunctionsHandler<T>,
 ): ModelFunctionsCollection<T> {
-  const wrapper: ModelFunctionsCollection<T> = {
-    allModels: handlerFunction(hatchify, "*"),
-  }
-  Object.keys(hatchify.model).forEach((modelName: string) => {
-    wrapper[modelName] = handlerFunction(hatchify, modelName)
-  })
-
-  return wrapper
+  return Object.keys(hatchify.orm.models).reduce(
+    (acc, schemaName) => ({
+      ...acc,
+      [schemaName]: handlerFunction(hatchify, schemaName),
+    }),
+    {
+      allModels: handlerFunction(hatchify, "*"),
+    } as ModelFunctionsCollection<T>,
+  )
 }

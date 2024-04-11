@@ -1,13 +1,13 @@
 {
   "name": "@hatchifyjs/react",
-  "version": "0.1.40",
+  "version": "0.1.75",
   "type": "module",
   "exports": "./dist/react.js",
   "types": "./dist/react.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint src",
+    "lint": "eslint src",
     "depcheck": "depcheck .",
     "test": "vitest run",
     "test:dev": "vitest",
@@ -16,9 +16,9 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@hatchifyjs/design-mui": "0.1.42",
-    "@hatchifyjs/react-ui": "0.1.32",
-    "@hatchifyjs/rest-client-jsonapi": "0.1.19"
+    "@hatchifyjs/design-mui": "^0.1.71",
+    "@hatchifyjs/react-ui": "^0.1.55",
+    "@hatchifyjs/rest-client-jsonapi": "^0.1.35"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

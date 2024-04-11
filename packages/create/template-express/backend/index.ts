@@ -2,7 +2,6 @@ import { dirname } from "path"
 import { fileURLToPath } from "url"
 import dotenv from "dotenv"
 import Express from "express"
-import { createServer as createViteServer } from "vite"
 import { hatchifyExpress } from "@hatchifyjs/express"
 import * as Schemas from "../schemas.js"
 
@@ -21,18 +20,22 @@ const hatchedExpress = hatchifyExpress(Schemas, {
 ;(async () => {
   await hatchedExpress.modelSync({ alter: true })
 
-  const vite = await createViteServer({
-    root: `${currentDir}/../`,
-    server: { middlewareMode: true },
-  })
+  if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite")
 
-  app.use((req, res, next) => {
-    if (req.url.startsWith("/api")) {
-      next()
-    } else {
-      vite.middlewares.handle(req, res, next)
-    }
-  })
+    const vite = await createViteServer({
+      root: `${currentDir}/../`,
+      server: { middlewareMode: true },
+    })
+
+    app.use((req, res, next) => {
+      if (req.url.startsWith("/api")) {
+        next()
+      } else {
+        vite.middlewares.handle(req, res, next)
+      }
+    })
+  }
 
   app.use(hatchedExpress.middleware.allModels.all)
 

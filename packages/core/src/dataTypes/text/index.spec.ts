@@ -102,7 +102,13 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          ui: { displayName: null, maxDisplayLength: null },
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
+            maxRenderLength: null,
+            enableCaseSensitiveContains: false,
+          },
           allowNull: true,
           min: 0,
           max: Infinity,
@@ -238,7 +244,13 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          ui: { displayName: null, maxDisplayLength: null },
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
+            maxRenderLength: null,
+            enableCaseSensitiveContains: false,
+          },
           allowNull: false,
           min: 0,
           max: Infinity,
@@ -373,7 +385,13 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          ui: { displayName: null, maxDisplayLength: null },
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: null,
+            maxRenderLength: null,
+            enableCaseSensitiveContains: false,
+          },
           allowNull: false,
           min: 0,
           max: Infinity,

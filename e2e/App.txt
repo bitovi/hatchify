@@ -1,0 +1,61 @@
+import { useState } from "react"
+import {
+  hatchifyReact,
+  HatchifyProvider,
+  createJsonapiClient,
+} from "@hatchifyjs/react"
+import { createTheme, ThemeProvider } from "@mui/material"
+import * as Schemas from "../schemas.js"
+
+const hatchedReact = hatchifyReact(createJsonapiClient("/api", Schemas))
+
+const TodoDataGrid = hatchedReact.components.Todo.DataGrid
+
+const App: React.FC = () => {
+  const [selected, setSelected] = useState<{ all: boolean; ids: string[] }>({
+    all: false,
+    ids: [],
+  })
+
+  function onActionClick() {
+    if (!selected.all && !selected.ids.length) {
+      alert("action on no items")
+    } else if (selected.all) {
+      alert(`action on ALL ITEMS or items ${selected.ids.join(",")}`)
+    } else {
+      alert(`action on items ${selected.ids.join(",")}`)
+    }
+  }
+
+  return (
+    <ThemeProvider theme={createTheme()}>
+      <HatchifyProvider>
+        <button onClick={onActionClick} style={{ margin: 10 }}>
+          action
+        </button>
+        <TodoDataGrid
+          defaultSelected={selected}
+          onSelectedChange={(selected) => setSelected(selected)}
+        >
+          <TodoDataGrid.Empty>No records to display</TodoDataGrid.Empty>
+          <TodoDataGrid.Column
+            label="Action"
+            renderDataValue={({ record }) => {
+              return (
+                <>
+                  <button onClick={() => console.log(record)}>Download</button>
+                  <button onClick={() => console.log(record)}>Open</button>
+                  <button onClick={() => console.log(record)}>
+                    More Actions
+                  </button>
+                </>
+              )
+            }}
+          />
+        </TodoDataGrid>
+      </HatchifyProvider>
+    </ThemeProvider>
+  )
+}
+
+export default App

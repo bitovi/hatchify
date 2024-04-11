@@ -4,6 +4,9 @@
     "rootDir": "./src"
   },
   "extends": "../../tsconfig.json",
-  "include": ["src", "src/core.ts"]
+  "include": [
+    "src",
+    "src/core.ts"
+  ]
 }
  

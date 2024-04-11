@@ -18,7 +18,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -132,8 +132,11 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
-          ui: { displayName: null },
+          type: "Date",
+          ui: {
+            hidden: false,
+            displayName: null,
+          },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -168,7 +171,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           allowNull: false,
           allowNullInfer: false,
           min: undefined,
@@ -241,8 +244,11 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
-          ui: { displayName: null },
+          type: "Date",
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -277,7 +283,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -411,8 +417,11 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
-          ui: { displayName: null },
+          type: "Date",
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -450,7 +459,7 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
+          type: "Date",
           allowNull: undefined,
           min: -Infinity,
           max: "2023-01-01",
@@ -521,8 +530,11 @@ describe("dateonly", () => {
           },
         },
         control: {
-          type: "Dateonly",
-          ui: { displayName: null },
+          type: "Date",
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           allowNull: true,
           min: -Infinity,
           max: "2023-01-01",

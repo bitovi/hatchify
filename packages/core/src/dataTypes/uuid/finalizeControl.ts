@@ -13,5 +13,13 @@ export function finalizeControl(
     primary: !!props.primary,
     default: props.default ?? null,
     regex: props.regex ?? /(.*?)/,
+<<<<<<< HEAD
+=======
+    displayName: props.displayName ?? null,
+    hidden: props.hidden ?? false,
+    ui: {
+      enableCaseSensitiveContains: false,
+    },
+>>>>>>> main
   }
 }

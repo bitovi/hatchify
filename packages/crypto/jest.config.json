@@ -1,0 +1,21 @@
+{
+  "collectCoverageFrom": [
+    "<rootDir>/**/*.js",
+    "!<rootDir>/**/*.browser.js",
+    "!<rootDir>/**/*.spec.js",
+    "!<rootDir>/**/coverage/**/*.js"
+  ],
+  "coverageDirectory": "../../coverage/crypto",
+  "coverageReporters": ["html", "text", "text-summary"],
+  "coverageThreshold": {
+    "global": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  },
+  "roots": ["<rootDir>"],
+  "testEnvironment": "node",
+  "testPathIgnorePatterns": [".browser"]
+}

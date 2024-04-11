@@ -4,7 +4,7 @@ import type {
   GetSchemaNames,
   Record,
 } from "@hatchifyjs/rest-client"
-import type { DefaultValueComponentsTypes } from "../../../components/index.js"
+import type { DefaultDisplayComponentsTypes } from "../../../components/index.js"
 
 export function getDefaultDataRender<
   const TSchemas extends globalThis.Record<string, PartialSchema>,
@@ -16,7 +16,7 @@ export function getDefaultDataRender<
   field,
   isRelationship,
   isAdditional,
-  defaultValueComponents,
+  defaultDisplayComponents,
 }: {
   finalSchemas: FinalSchemas
   schemaName: TSchemaName
@@ -24,11 +24,11 @@ export function getDefaultDataRender<
   field: string
   isRelationship: boolean
   isAdditional: boolean
-  defaultValueComponents: DefaultValueComponentsTypes
+  defaultDisplayComponents: DefaultDisplayComponentsTypes
 }): ({ record }: { record: Record }) => React.ReactNode {
   const type = control?.type.toLowerCase() || null
   const { String, Number, Boolean, Relationship, RelationshipList, Date } =
-    defaultValueComponents
+    defaultDisplayComponents
 
   const defaultRender = ({ record }: { record: Record }) => {
     const value = record[field]
@@ -43,12 +43,12 @@ export function getDefaultDataRender<
       )
     }
 
-    if (isAdditional || !value || !type) {
+    if (isAdditional || value == null || !type) {
       return <String value="" />
     }
 
-    if (type === "date" || type === "dateonly" || type === "datetime") {
-      return <Date value={value} dateOnly={type === "dateonly"} />
+    if (type === "date") {
+      return <Date value={value} step={control.step} />
     }
 
     if (type === "enum") {

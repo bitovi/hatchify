@@ -16,7 +16,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres
+        image: postgres:alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -34,7 +34,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Verify
         uses: ./.github/actions/job-verify
@@ -55,7 +57,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Publish
         uses: ./.github/actions/job-publish
