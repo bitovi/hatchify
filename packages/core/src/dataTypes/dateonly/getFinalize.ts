@@ -45,7 +45,7 @@ export function getFinalize(
     setClientPropertyValue: (userValue: UserValue): string | null => {
       if (typeof userValue === "string") {
         if (!isISO8601DateString(userValue)) {
-          throw new HatchifyCoerceError("as an ISO 8601 date string")
+          throw new HatchifyCoerceError("as a 'YYYY-MM-DD' string")
         }
       }
 
@@ -68,7 +68,7 @@ export function getFinalize(
     setClientQueryFilterValue: (userValue: UserValue): string | null => {
       if (typeof userValue === "string") {
         if (!isISO8601DateString(userValue)) {
-          throw new HatchifyCoerceError("as an ISO 8601 date string")
+          throw new HatchifyCoerceError("as a 'YYYY-MM-DD' string")
         }
       }
 
@@ -93,7 +93,7 @@ export function getFinalize(
     ): string | null => {
       if (typeof jsonValue === "string") {
         if (!isISO8601DateString(jsonValue)) {
-          throw new HatchifyCoerceError("as an ISO 8601 date string")
+          throw new HatchifyCoerceError("as a 'YYYY-MM-DD' string")
         }
       }
 
@@ -125,7 +125,7 @@ export function getFinalize(
       }
 
       if (!isISO8601DateString(queryValue)) {
-        throw new HatchifyCoerceError("as an ISO 8601 date string")
+        throw new HatchifyCoerceError("as a 'YYYY-MM-DD' string")
       }
 
       return coerce(queryValue, control)

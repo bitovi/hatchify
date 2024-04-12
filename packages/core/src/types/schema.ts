@@ -11,14 +11,13 @@ export type UserValue = ValueInRequest
 
 export type SerializedValue = number | string | object | null
 
-export enum ControlTypes {
-  Boolean = "Boolean",
-  Number = "Number",
-  String = "String",
-  Date = "Date",
-  Dateonly = "Dateonly",
-  enum = "enum",
-}
+export type ControlTypes =
+  | "Boolean"
+  | "Number"
+  | "String"
+  | "Date"
+  | "Dateonly"
+  | "enum"
 
 export * from "../assembler/types.js"
 export * from "../relationships/types.js"
@@ -51,7 +50,7 @@ export interface PartialDataTypeProps<
 }
 
 export interface PartialControlType<PrimitiveType, TRequired extends boolean> {
-  type: keyof typeof ControlTypes
+  type: ControlTypes
   allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
   hidden?: boolean

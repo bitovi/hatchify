@@ -17,10 +17,10 @@ describe("coerce", () => {
 
   it("handles non-strings", () => {
     expect(() => coerce(1, { type: "Dateonly" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
     )
     expect(() => coerce({}, { type: "Dateonly" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
     )
     expect(() =>
       coerce(
@@ -29,21 +29,21 @@ describe("coerce", () => {
         },
         { type: "Dateonly" },
       ),
-    ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+    ).toThrow(new HatchifyCoerceError("as a 'YYYY-MM-DD' string"))
   })
 
   it("handles non-dateonly strings", () => {
     expect(() => coerce("", { type: "Dateonly" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
     )
     expect(() => coerce("invalid date", { type: "Dateonly" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
     )
     expect(() =>
       coerce("2023-01-01T00:00:00.000Z", { type: "Dateonly" }),
-    ).toThrow(new HatchifyCoerceError("as an ISO 8601 date string"))
+    ).toThrow(new HatchifyCoerceError("as a 'YYYY-MM-DD' string"))
     expect(() => coerce("1/1/2023", { type: "Dateonly" })).toThrow(
-      new HatchifyCoerceError("as an ISO 8601 date string"),
+      new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
     )
   })
 

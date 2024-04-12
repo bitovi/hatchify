@@ -1,4 +1,3 @@
-import { ControlTypes } from "@hatchifyjs/core"
 import type { StringStep } from "@hatchifyjs/core"
 import { InputLabel } from "@mui/material"
 import type { FilterableControls, Operators } from "../../constants.js"
@@ -31,7 +30,7 @@ const ValueInput: React.FC<{
   return (
     <>
       <InputLabel id={labelId}>Value</InputLabel>
-      {controlType === ControlTypes.String && (
+      {controlType === "String" && (
         <StringInput
           labelId={labelId}
           operator={operator}
@@ -39,7 +38,7 @@ const ValueInput: React.FC<{
           onChange={onChange}
         />
       )}
-      {controlType === ControlTypes.enum && (
+      {controlType === "enum" && (
         <EnumInput
           labelId={labelId}
           operator={operator}
@@ -48,7 +47,7 @@ const ValueInput: React.FC<{
           options={options}
         />
       )}
-      {controlType === ControlTypes.Date && (
+      {(controlType === "Date" || controlType === "Dateonly") && (
         <DateInput
           labelId={labelId}
           value={value}
@@ -57,7 +56,7 @@ const ValueInput: React.FC<{
           step={step}
         />
       )}
-      {controlType === ControlTypes.Number && (
+      {controlType === "Number" && (
         <NumberInput
           labelId={labelId}
           operator={operator}

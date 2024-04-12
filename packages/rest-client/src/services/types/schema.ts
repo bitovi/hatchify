@@ -1,4 +1,8 @@
-import type { FinalSchema, PartialSchema, ControlTypes } from "@hatchifyjs/core"
+import type {
+  FinalSchema,
+  PartialSchema,
+  //ControlTypes
+} from "@hatchifyjs/core"
 
 export type FinalSchemas = Record<string, FinalSchema>
 
@@ -61,22 +65,22 @@ type UnionToObject<
   [Key in Union["key"]]: Extract<Union, { key: Key }> extends {
     control: { type: infer Type; values?: infer EnumValues }
   }
-    ? Type extends ControlTypes.Number
+    ? Type extends "Number"
       ? number
-      : Type extends ControlTypes.Boolean
+      : Type extends "Boolean"
         ? boolean
-        : Type extends ControlTypes.enum
+        : Type extends "enum"
           ? EnumValues[any]
-          : Type extends ControlTypes.String
+          : Type extends "String"
             ? string
-            : Type extends ControlTypes.Dateonly
+            : Type extends "Dateonly"
               ? string
-              : Type extends ControlTypes.Date
+              : Type extends "Date"
                 ? TMutate extends true
                   ? Date | string
                   : Date
-                : never
-    : never
+                : "a"
+    : "b"
 }
 
 // Extract subset of attributes from a union

@@ -1,5 +1,4 @@
-import { ControlTypes } from "@hatchifyjs/core"
-import type { StringStep } from "@hatchifyjs/core"
+import type { ControlTypes, StringStep } from "@hatchifyjs/core"
 import { Fragment } from "react"
 import type { Relationship as RelationshipType } from "../../../presentation/interfaces.js"
 
@@ -65,8 +64,7 @@ export const Date: React.FC<{
   value: string
   type: ControlTypes
 }> = ({ step, value, type }) => {
-  const dateOnly =
-    step === "day" || step === 86400000 || type === ControlTypes.Dateonly
+  const dateOnly = step === "day" || step === 86400000 || type === "Dateonly"
   const offsetDate = new window.Date(value)
   if (dateOnly) {
     offsetDate.setMinutes(
