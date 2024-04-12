@@ -249,8 +249,10 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           allowNull: true,
           primary: true,
           default: null,

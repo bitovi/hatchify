@@ -14,8 +14,8 @@ export function getPartialControl<TRequired extends boolean>(
     primary: props?.primary,
     default: props?.default,
     regex: props?.regex,
-    ui: props?.ui && {
-      enableCaseSensitiveContains: props.ui.enableCaseSensitiveContains,
+    ui: {
+      enableCaseSensitiveContains: props?.ui?.enableCaseSensitiveContains,
       maxDisplayLength: props?.ui?.maxDisplayLength,
       maxRenderLength: props?.ui?.maxRenderLength,
       displayName: props?.ui?.displayName,

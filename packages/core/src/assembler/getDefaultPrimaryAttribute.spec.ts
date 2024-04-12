@@ -16,6 +16,10 @@ describe("getDefaultPrimaryAttribute", () => {
         primary: true,
         regex: UUID_REGEX,
         type: "String",
+        ui: {
+          displayName: undefined,
+          hidden: false,
+        },
       },
       orm: {
         sequelize: {
