@@ -1,12 +1,4 @@
-import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
-// import {
-//   belongsTo,
-//   boolean,
-//   hasMany,
-//   integer,
-//   string,
-//   enumerate,
-// } from "@hatchifyjs/core"
+import type { FinalSchema, PartialSchema, ControlTypes } from "@hatchifyjs/core"
 
 export type FinalSchemas = Record<string, FinalSchema>
 
@@ -69,25 +61,21 @@ type UnionToObject<
   [Key in Union["key"]]: Extract<Union, { key: Key }> extends {
     control: { type: infer Type; values?: infer EnumValues }
   }
-    ? Type extends "Number" | "number" | "NUMBER"
+    ? Type extends ControlTypes.Number
       ? number
-      : Type extends "Boolean" | "boolean" | "BOOLEAN"
+      : Type extends ControlTypes.Boolean
         ? boolean
-        : Type extends "Enum" | "enum" | "ENUM"
+        : Type extends ControlTypes.enum
           ? EnumValues[any]
-          : Type extends "String" | "string" | "STRING"
+          : Type extends ControlTypes.String
             ? string
-            : Type extends
-                  | "Date"
-                  | "date"
-                  | "DATE"
-                  | "Datetime"
-                  | "datetime"
-                  | "DATETIME"
-              ? TMutate extends true
-                ? Date | string
-                : Date
-              : never
+            : Type extends ControlTypes.Dateonly
+              ? string
+              : Type extends ControlTypes.Date
+                ? TMutate extends true
+                  ? Date | string
+                  : Date
+                : never
     : never
 }
 
@@ -180,80 +168,3 @@ export type MutateRelationships<TPartialSchema extends PartialSchema> = {
 export type MutateRelationship = {
   id: string
 }
-
-// todo: remove before merge to main! in feat branch just for testing
-// const partialTodo = {
-//   name: "Todo",
-//   attributes: {
-//     title: string(),
-//   },
-//   relationships: {
-//     user: belongsTo("User"),
-//     users: hasMany("User"),
-//   },
-// } satisfies PartialSchema
-
-// partialTodo.relationships.user.targetSchema
-// //                              ^?
-
-// const partialUser = {
-//   name: "User",
-//   attributes: {
-//     name: string({ required: true }),
-//     // optName: string(),
-//     age: integer({ required: true }),
-//     optAge: integer(),
-//     status: enumerate({
-//       required: true,
-//       values: ["active", "inactive"],
-//     }),
-//     // employed: boolean({ required: true }),
-//     // optEmployed: boolean({ required: false }),
-//   },
-// } satisfies PartialSchema
-
-// type Prettify<T> = {
-//   [K in keyof T]: T[K]
-// } & {}
-
-// type Schemass = { Todo: typeof partialTodo; User: typeof partialUser }
-
-// type AA = GetSchemaFromName<
-//   { Todo: typeof partialTodo; User: typeof partialUser },
-//   typeof partialTodo.relationships.user.targetSchema
-// >
-
-// type AAA = (typeof partialTodo.relationships.user)["targetSchema"]
-// //   ^?
-
-// const aaaaaa = enumerate({ values: ["active", "inactive"] })
-// type BB = (typeof aaaaaa)["control"]["values"]
-// type PBB = Prettify<BB>
-// //   ^?
-
-// type CC = {
-//   [Relationship in keyof typeof partialTodo.relationships]: (typeof partialTodo.relationships)[Relationship]["targetSchema"]
-// }
-
-// type DD = Prettify<CC>
-// //   ^?
-
-// type EE = TypedRelationships<Schemass, typeof partialTodo, false>
-
-// type AAAAAA = TypedAttributes<typeof partialUser.attributes, false>
-// type AAAAAAAAAA = Prettify<AAAAAA>
-// //   ^?
-
-// type EEE1 = Prettify<EE>["users"][0]["optEmployed"]
-// //   ^?
-// type EEE2 = Prettify<EE>["user"]["optEmployed"]
-// //   ^?
-
-// type FF = Prettify<RecordType<Schemass, typeof partialTodo, false>>
-// //   ^?
-
-// type GG = "belongsTo" extends "hasMany" | "belongsTo" ? true : false
-// //   ^?
-
-// type CCCCC = Prettify<CreateType<typeof partialUser>>
-// //   ^?

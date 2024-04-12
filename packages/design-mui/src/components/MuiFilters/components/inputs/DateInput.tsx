@@ -1,3 +1,4 @@
+import { ControlTypes } from "@hatchifyjs/core"
 import type { StringStep } from "@hatchifyjs/core"
 import { TextField } from "@mui/material"
 import type { FilterableControls } from "../../constants.js"
@@ -17,6 +18,7 @@ const DateInput: React.FC<{
       placeholder="Filter Value"
       variant="standard"
       type={
+        controlType === ControlTypes.Dateonly ||
         step === "day" ||
         step === "week" ||
         step === "year" ||

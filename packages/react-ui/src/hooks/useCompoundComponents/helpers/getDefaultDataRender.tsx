@@ -1,3 +1,4 @@
+import { ControlTypes } from "@hatchifyjs/core"
 import type { FinalAttributeRecord, PartialSchema } from "@hatchifyjs/core"
 import type {
   FinalSchemas,
@@ -26,7 +27,7 @@ export function getDefaultDataRender<
   isAdditional: boolean
   defaultDisplayComponents: DefaultDisplayComponentsTypes
 }): ({ record }: { record: Record }) => React.ReactNode {
-  const type = control?.type.toLowerCase() || null
+  const type = control?.type || null
   const { String, Number, Boolean, Relationship, RelationshipList, Date } =
     defaultDisplayComponents
 
@@ -47,15 +48,15 @@ export function getDefaultDataRender<
       return <String value="" />
     }
 
-    if (type === "date") {
-      return <Date value={value} step={control.step} />
+    if (type === ControlTypes.Dateonly || type === ControlTypes.Date) {
+      return <Date type={type} value={value} step={control.step} />
     }
 
-    if (type === "enum") {
+    if (type === ControlTypes.enum) {
       return <String value={value} />
     }
 
-    if (type === "string") {
+    if (type === ControlTypes.String) {
       const { maxRenderLength } = control
       const maxRenderLengthExceeded =
         maxRenderLength && value.length > maxRenderLength
@@ -72,11 +73,11 @@ export function getDefaultDataRender<
       )
     }
 
-    if (type === "boolean") {
+    if (type === ControlTypes.Boolean) {
       return <Boolean value={value} />
     }
 
-    if (type === "number") {
+    if (type === ControlTypes.Number) {
       return <Number value={value} />
     }
 

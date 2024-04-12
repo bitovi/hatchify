@@ -1,3 +1,4 @@
+import { ControlTypes } from "@hatchifyjs/core"
 import type { StringStep } from "@hatchifyjs/core"
 import { Fragment } from "react"
 import type { Relationship as RelationshipType } from "../../../presentation/interfaces.js"
@@ -59,11 +60,13 @@ export const BooleanList: React.FC<{ values: boolean[] }> = ({ values }) => {
   )
 }
 
-export const Date: React.FC<{ step?: StringStep | number; value: string }> = ({
-  step,
-  value,
-}) => {
-  const dateOnly = step === "day" || step === 86400000
+export const Date: React.FC<{
+  step?: StringStep | number
+  value: string
+  type: ControlTypes
+}> = ({ step, value, type }) => {
+  const dateOnly =
+    step === "day" || step === 86400000 || type === ControlTypes.Dateonly
   const offsetDate = new window.Date(value)
   if (dateOnly) {
     offsetDate.setMinutes(
@@ -98,13 +101,14 @@ export const Date: React.FC<{ step?: StringStep | number; value: string }> = ({
 export const DateList: React.FC<{
   step?: StringStep | number
   values: string[]
-}> = ({ step, values }) => {
+  type: ControlTypes
+}> = ({ step, values, type }) => {
   return (
     <>
       {values.map((value, index) => {
         return (
           <Fragment key={index}>
-            <Date step={step} value={value} />
+            <Date type={type} step={step} value={value} />
             {index !== values.length - 1 && "; "}
           </Fragment>
         )
