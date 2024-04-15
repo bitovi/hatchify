@@ -37,8 +37,8 @@ runs:
       id: version
       shell: bash
       run: |
-        git config --local user.email "Workflow: ${{ inputs.package }}[bot]"
-        git config --local user.name "${{ inputs.package }}[bot]@workflow"
+        git config --local user.email os@bitovi.com
+        git config --local user.name bitovi-os
 
         DIRECTORY="./packages/${{ inputs.directory }}"
 
