@@ -69,7 +69,7 @@ runs:
     - name: Push Tag
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ ${{ steps.generate-token.outputs.token }} }}
+        github_token: ${{ steps.generate-token.outputs.token }}
         branch: ${{ github.ref }}
         tags: true
 
