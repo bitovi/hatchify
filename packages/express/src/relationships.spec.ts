@@ -638,7 +638,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               code: "relationship-path",
               title: "Relationship path could not be identified.",
               detail:
-                "URL must have 'include' where 'todos.invalid' is a valid relationship path.",
+                "URL must have 'include' where 'todos.invalid' is one of 'todos', 'skills', etc.",
               source: {
                 parameter: "include",
               },
@@ -733,7 +733,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               code: "relationship-path",
               title: "Relationship path could not be identified.",
               detail:
-                "URL must have 'include' where 'invalid_relationship_path' is a valid relationship path.",
+                "URL must have 'include' where 'invalid_relationship_path' is one of 'user', etc.",
               source: {
                 parameter: "include",
               },
@@ -1084,7 +1084,7 @@ describe.each(dbDialects)("Relationships", (dialect) => {
               code: "relationship-path",
               title: "Relationship path could not be identified.",
               detail:
-                "URL must have 'include' where 'invalid_relationship_path' is a valid relationship path.",
+                "URL must have 'include' where 'invalid_relationship_path' is a valid relationship path, but no relationships were found.",
               source: {
                 parameter: "include",
               },
