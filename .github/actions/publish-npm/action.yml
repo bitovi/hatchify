@@ -59,10 +59,17 @@ runs:
         git commit --all --message "Publish ${{ inputs.package }} v$VERSION"
         git tag "${{ inputs.package }}/v$VERSION"
 
+    - name: Generate App token
+      id: generate-token
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ vars.MAINTAGBOT_APP_ID }}
+        private-key: ${{ secrets.MAINTAGBOT_PRIVATE_KEY }}
+
     - name: Push Tag
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ inputs.github-token }}
+        github_token: ${{ ${{ steps.generate-token.outputs.token }} }}
         branch: ${{ github.ref }}
         tags: true
 
