@@ -63,20 +63,13 @@ jobs:
           TOUCHED_FILES: ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
         run: npm run --silent get-changed-packages >> $GITHUB_OUTPUT
 
-      - name: Generate App token
-        id: generate-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ vars.MAINTAGBOT_APP_ID }}
-          private-key: ${{ secrets.MAINTAGBOT_PRIVATE_KEY }}
-
       - name: Publish crypto
         if: ${{ steps.changed-packages.outputs.crypto == 'publish' }}
         uses: ./.github/actions/job-publish
         with:
           directory: crypto
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish core
@@ -85,7 +78,7 @@ jobs:
         with:
           directory: core
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish node
@@ -94,7 +87,7 @@ jobs:
         with:
           directory: node
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish express
@@ -103,7 +96,7 @@ jobs:
         with:
           directory: express
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish koa
@@ -112,7 +105,7 @@ jobs:
         with:
           directory: koa
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish rest-client
@@ -121,7 +114,7 @@ jobs:
         with:
           directory: rest-client
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish react-rest
@@ -130,7 +123,7 @@ jobs:
         with:
           directory: react-rest
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish rest-client-jsonapi
@@ -139,7 +132,7 @@ jobs:
         with:
           directory: rest-client-jsonapi
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish react-ui
@@ -148,7 +141,7 @@ jobs:
         with:
           directory: react-ui
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish react-jsonapi
@@ -157,7 +150,7 @@ jobs:
         with:
           directory: react-jsonapi
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish design-mui
@@ -166,7 +159,7 @@ jobs:
         with:
           directory: design-mui
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish react
@@ -175,7 +168,7 @@ jobs:
         with:
           directory: react
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
       - name: Publish create
@@ -184,7 +177,7 @@ jobs:
         with:
           directory: create
           npm-token: ${{ secrets.NPM_TOKEN }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ github.token }}
           segment: ${{ steps.changed-packages.outputs.segment }}
 
   verify-example:
