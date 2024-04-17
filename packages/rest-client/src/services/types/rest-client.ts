@@ -13,6 +13,10 @@ import type {
   WithRequiredProperty,
 } from "./index.js"
 
+export type MutateOptions<TSchemas, TSchemaName> = {
+  notify?: boolean | Omit<keyof TSchemas, TSchemaName>
+}
+
 export type RestClientSchema = PartialSchema & {
   type?: string
   endpoint?: string

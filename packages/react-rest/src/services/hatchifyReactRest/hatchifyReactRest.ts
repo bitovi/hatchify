@@ -53,6 +53,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
           FlatCreateType<GetSchemaFromName<TSchemas, SchemaName>>,
           "__schema"
         >,
+        mutateOptions: MutateOptions<TSchemas>,
       ) => Promise<
         RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
       >
@@ -61,10 +62,14 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
           FlatUpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
           "__schema"
         >,
+        mutateOptions: MutateOptions<TSchemas>,
       ) => Promise<
         RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
       >
-      deleteOne: (id: string) => Promise<void>
+      deleteOne: (
+        id: string,
+        mutateOptions: MutateOptions<TSchemas>,
+      ) => Promise<void>
       // hooks
       useAll: (
         query?: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
@@ -83,22 +88,28 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
         ),
         Meta,
       ]
-      useCreateOne: () => [
+      useCreateOne: <TMutateOptions extends MutateOptions<TSchemas>>(
+        mutateOptions: TMutateOptions,
+      ) => [
         (
           data: Omit<
             FlatCreateType<GetSchemaFromName<TSchemas, SchemaName>>,
             "__schema"
           >,
+          mutateOptions: TMutateOptions,
         ) => void,
         Meta,
         RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>?,
       ]
-      useUpdateOne: () => [
+      useUpdateOne: <TMutateOptions extends MutateOptions<TSchemas>>(
+        mutateOptions: TMutateOptions,
+      ) => [
         (
           data: Omit<
             FlatUpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
             "__schema"
           >,
+          mutateOptions: TMutateOptions,
         ) => void,
         ContextualMeta,
         (
@@ -107,7 +118,9 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
           | undefined
         ),
       ]
-      useDeleteOne: () => [(id: string) => void, ContextualMeta]
+      useDeleteOne: <TMutateOptions extends MutateOptions<TSchemas>>(
+        mutateOptions: TMutateOptions,
+      ) => [(id: string, mutateOptions: TMutateOptions) => void, ContextualMeta]
       // subscribes
       // subscribeToAll: (
       //   query: QueryList | undefined,
@@ -150,21 +163,21 @@ export const hatchifyReactRest = <
             typedSchemaName,
             query,
           ),
-        createOne: (data) =>
+        createOne: (data, mutateOptions) =>
           createOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
             data,
           ),
-        updateOne: (data) =>
+        updateOne: (data, mutateOptions) =>
           updateOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
             data,
           ),
-        deleteOne: (id: string) =>
+        deleteOne: (id, mutateOptions) =>
           deleteOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
@@ -188,19 +201,19 @@ export const hatchifyReactRest = <
             typedSchemaName,
             query,
           ),
-        useCreateOne: () =>
+        useCreateOne: (mutateOptions) =>
           useCreateOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
           ),
-        useUpdateOne: () =>
+        useUpdateOne: (mutateOptions) =>
           useUpdateOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
           ),
-        useDeleteOne: () =>
+        useDeleteOne: (mutateOptions) =>
           useDeleteOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,

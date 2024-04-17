@@ -1,12 +1,4 @@
 import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
-// import {
-//   belongsTo,
-//   boolean,
-//   hasMany,
-//   integer,
-//   string,
-//   enumerate,
-// } from "@hatchifyjs/core"
 
 export type FinalSchemas = Record<string, FinalSchema>
 
