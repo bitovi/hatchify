@@ -1,8 +1,4 @@
-import type {
-  FinalSchema,
-  PartialSchema,
-  //ControlTypes
-} from "@hatchifyjs/core"
+import type { FinalSchema, PartialSchema } from "@hatchifyjs/core"
 
 export type FinalSchemas = Record<string, FinalSchema>
 
