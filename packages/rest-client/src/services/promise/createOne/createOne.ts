@@ -63,7 +63,7 @@ export const createOne = async <
   } else if (notify === false) {
     notifySubscribers(schemaName) // notify only subscribers of this schema
   } else {
-    notifySubscribers(notify) // notify only subscribers of the specified schemas
+    notifySubscribers([schemaName, ...notify]) // notify only subscribers of the specified schemas
   }
 
   // todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
