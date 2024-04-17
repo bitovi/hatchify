@@ -1,4 +1,4 @@
-name: monorepo-job-verify
+name: job-verify
 
 inputs:
   node-version:

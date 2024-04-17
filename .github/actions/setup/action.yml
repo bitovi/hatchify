@@ -1,4 +1,4 @@
-name: monorepo-setup
+name: setup
 
 inputs:
   node-version:

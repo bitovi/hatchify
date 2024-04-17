@@ -11,5 +11,11 @@ describe("getSchemaKey", () => {
         name: undefined as unknown as string,
       }),
     ).toBe("One_")
+    expect(
+      getSchemaKey(null as unknown as { namespace: string; name: string }),
+    ).toBeNull()
+    expect(
+      getSchemaKey(undefined as unknown as { namespace: string; name: string }),
+    ).toBeUndefined()
   })
 })

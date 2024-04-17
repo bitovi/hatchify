@@ -21,7 +21,7 @@ import {
 } from "./index.js"
 
 const RelationshipPathDetail =
-  "URL must have 'include' where 'notrealincludes' is a valid relationship path."
+  "URL must have 'include' where 'notrealincludes' is one of 'user', etc."
 
 describe("index", () => {
   const User = {
@@ -333,7 +333,7 @@ describe("index", () => {
       await expect(async () => findAll("include=user")).rejects.toEqualErrors([
         new RelationshipPathError({
           detail:
-            "URL must have 'include' where 'user' is a valid relationship path.",
+            "URL must have 'include' where 'user' is a valid relationship path, but no relationships were found.",
           parameter: "include",
         }),
       ])

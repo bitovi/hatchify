@@ -16,7 +16,7 @@ import { Hatchify } from "../node.js"
 import { buildParserForModel, buildParserForModelStandalone } from "./index.js"
 
 const RelationshipPathDetail =
-  "URL must have 'include' where 'notrealincludes' is a valid relationship path."
+  "URL must have 'include' where 'notrealincludes' is one of 'lipitorUser', 'xanaxUser', etc."
 
 describe("indexNamespace", () => {
   const Lipitor_User_Schema = {
@@ -319,7 +319,7 @@ describe("indexNamespace", () => {
       await expect(async () => findAll("include=user")).rejects.toEqualErrors([
         new RelationshipPathError({
           detail:
-            "URL must have 'include' where 'user' is a valid relationship path.",
+            "URL must have 'include' where 'user' is a valid relationship path, but no relationships were found.",
           parameter: "include",
         }),
       ])
