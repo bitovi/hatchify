@@ -6,6 +6,7 @@ import type {
   FinalSchemas,
   GetSchemaNames,
   MetaError,
+  MutateOptions,
   RestClient,
 } from "@hatchifyjs/rest-client"
 
@@ -19,12 +20,19 @@ export const useDeleteOne = <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
+  mutateOptions?: MutateOptions<TSchemas>,
 ): [(id: string) => void, ContextualMeta] => {
   const [meta, setMeta] = useState<ContextualMeta>(() => ({}))
 
   const remove = useCallback(
     (id: string) => {
-      deleteOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, id)
+      deleteOne<TSchemas, TSchemaName>(
+        dataSource,
+        allSchemas,
+        schemaName,
+        id,
+        mutateOptions,
+      )
         .then(() =>
           setMeta((prev: ContextualMeta) => {
             return {
@@ -53,7 +61,7 @@ export const useDeleteOne = <
           }),
         )
     },
-    [dataSource, allSchemas, schemaName],
+    [dataSource, allSchemas, schemaName, mutateOptions],
   )
 
   return [remove, meta]

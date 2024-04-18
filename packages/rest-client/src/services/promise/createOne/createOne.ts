@@ -33,7 +33,7 @@ export const createOne = async <
     FlatCreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
     "__schema"
   >,
-  { notify }: MutateOptions<TSchemas>,
+  mutateOptions?: MutateOptions<TSchemas>,
 ): Promise<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
@@ -58,13 +58,7 @@ export const createOne = async <
     relationships: relationships, // does not need to be serialized! only ids, does not contain attribute values
   })
 
-  if (notify == null || notify === true) {
-    notifySubscribers() // notify all
-  } else if (notify === false) {
-    notifySubscribers(schemaName) // notify only subscribers of this schema
-  } else {
-    notifySubscribers([schemaName, ...notify]) // notify only subscribers of the specified schemas
-  }
+  notifySubscribers(schemaName, mutateOptions?.notify)
 
   // todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
   // @ts-expect-error
