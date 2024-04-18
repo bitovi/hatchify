@@ -1,4 +1,4 @@
-import type { StringStep } from "@hatchifyjs/core"
+import type { ControlTypes, StringStep } from "@hatchifyjs/core"
 import { createContext, useContext } from "react"
 
 import type {
@@ -35,8 +35,16 @@ export interface DefaultDisplayComponentsTypes {
   NumberList: React.FC<{ values: number[] }>
   Boolean: React.FC<{ value: boolean }>
   BooleanList: React.FC<{ values: boolean[] }>
-  Date: React.FC<{ step?: StringStep | number; value: string }>
-  DateList: React.FC<{ step?: StringStep | number; values: string[] }>
+  Date: React.FC<{
+    type: ControlTypes
+    step?: StringStep | number
+    value: string
+  }>
+  DateList: React.FC<{
+    type: ControlTypes
+    step?: StringStep | number
+    values: string[]
+  }>
   Relationship: React.FC<{ value: RelationshipType }>
   RelationshipList: React.FC<{ values: RelationshipType[] }>
 }
@@ -48,6 +56,7 @@ export interface DefaultFieldComponentsTypes {
     onUpdate: (value: boolean) => void
   }>
   Date: React.FC<{
+    type: ControlTypes
     value: string
     label: string
     onUpdate: (value: string) => void

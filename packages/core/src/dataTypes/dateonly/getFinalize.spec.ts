@@ -9,7 +9,7 @@ describe("getFinalize", () => {
         displayName: undefined,
         max: undefined,
         min: undefined,
-        type: "Date",
+        type: "Dateonly",
         primary: undefined,
       },
       orm: {
