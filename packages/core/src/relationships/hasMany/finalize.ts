@@ -51,7 +51,12 @@ export function finalize(
       ...targetAttributeValue,
       control: {
         ...targetAttributeValue.control,
-        hidden: true,
+        ui: {
+          ...targetAttributeValue.control.ui,
+          displayName: null,
+          hidden: true,
+          enableCaseSensitiveContains: false,
+        },
       },
     },
   }

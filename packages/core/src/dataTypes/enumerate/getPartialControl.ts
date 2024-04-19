@@ -26,6 +26,7 @@ export function getPartialControl<
     values: props.values,
     ui: {
       displayName: props?.ui?.displayName,
+      hidden: props?.ui?.hidden,
     },
   }
 }

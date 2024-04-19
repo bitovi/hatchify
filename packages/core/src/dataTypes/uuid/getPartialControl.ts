@@ -17,7 +17,8 @@ export function getPartialControl<TRequired extends boolean>(
     regex: UUID_REGEX,
     ui: {
       displayName: props?.ui?.displayName,
-      hidden: props?.ui?.hidden ?? false,
+      hidden: props?.ui?.hidden,
+      enableCaseSensitiveContains: false,
     },
   }
 }

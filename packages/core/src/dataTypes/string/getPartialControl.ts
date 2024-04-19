@@ -17,8 +17,8 @@ export function getPartialControl<TRequired extends boolean>(
     ui: {
       enableCaseSensitiveContains: props?.ui?.enableCaseSensitiveContains,
       maxDisplayLength: props?.ui?.maxDisplayLength,
-      maxRenderLength: props?.ui?.maxRenderLength,
       displayName: props?.ui?.displayName,
+      hidden: props?.ui?.hidden,
     },
   }
 }

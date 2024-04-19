@@ -13,6 +13,7 @@ export function getPartialControl<TRequired extends boolean>(
     default: props?.default,
     ui: {
       displayName: props?.ui?.displayName,
+      hidden: props?.ui?.hidden,
     },
   }
 }

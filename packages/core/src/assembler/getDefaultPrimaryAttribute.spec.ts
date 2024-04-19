@@ -18,7 +18,8 @@ describe("getDefaultPrimaryAttribute", () => {
         type: "String",
         ui: {
           displayName: undefined,
-          hidden: false,
+          hidden: undefined,
+          enableCaseSensitiveContains: false,
         },
       },
       orm: {

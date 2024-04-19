@@ -26,7 +26,8 @@ describe("ensureDefaultPrimaryAttribute", () => {
           regex: UUID_REGEX,
           ui: {
             displayName: undefined,
-            hidden: false,
+            hidden: undefined,
+            enableCaseSensitiveContains: false,
           },
         },
         orm: {
@@ -64,7 +65,8 @@ describe("ensureDefaultPrimaryAttribute", () => {
           regex: UUID_REGEX,
           ui: {
             displayName: undefined,
-            hidden: false,
+            hidden: undefined,
+            enableCaseSensitiveContains: false,
           },
         },
         orm: {

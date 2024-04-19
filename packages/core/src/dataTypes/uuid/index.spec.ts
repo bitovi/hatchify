@@ -24,6 +24,11 @@ describe("uuid", () => {
           max: 36,
           primary: undefined,
           regex: UUID_REGEX,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+            enableCaseSensitiveContains: false,
+          },
         },
         finalize: expect.any(Function),
       })
@@ -179,6 +184,11 @@ describe("uuid", () => {
           max: 36,
           primary: undefined,
           regex: UUID_REGEX,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+            enableCaseSensitiveContains: false,
+          },
         },
         finalize: expect.any(Function),
       })
@@ -353,7 +363,8 @@ describe("uuid", () => {
           regex: UUID_REGEX,
           ui: {
             displayName: undefined,
-            hidden: false,
+            hidden: undefined,
+            enableCaseSensitiveContains: false,
           },
         },
         finalize: expect.any(Function),

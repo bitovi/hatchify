@@ -13,6 +13,11 @@ describe("getFinalize", () => {
         primary: undefined,
         regex: UUID_REGEX,
         type: "String",
+        ui: {
+          displayName: undefined,
+          enableCaseSensitiveContains: false,
+          hidden: undefined,
+        },
       },
       orm: {
         sequelize: {

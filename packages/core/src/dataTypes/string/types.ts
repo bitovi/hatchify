@@ -7,7 +7,6 @@ import type {
 
 export interface HatchifyStringUIOptions extends HatchifyBaseUIOptions {
   maxDisplayLength?: number | null
-  maxRenderLength?: number | null
   enableCaseSensitiveContains?: boolean
 }
 

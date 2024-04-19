@@ -24,7 +24,7 @@ export function getAttributesFromSchema(
     schemas[schemaName].attributes,
   )
     // todo: filtering should not rely on UUID type because it may still be an attribute
-    .filter(([, { control }]) => control.hidden !== true)
+    .filter(([, { control }]) => control.ui.hidden !== true)
     .map(([attribute]) => attribute)
   return fields
 }

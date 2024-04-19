@@ -106,7 +106,6 @@ describe("string", () => {
           ui: {
             displayName: null,
             maxDisplayLength: null,
-            maxRenderLength: null,
             hidden: false,
             enableCaseSensitiveContains: false,
           },
@@ -253,7 +252,6 @@ describe("string", () => {
           default: null,
           regex: /(.*?)/,
           ui: {
-            maxRenderLength: null,
             enableCaseSensitiveContains: false,
             displayName: null,
             maxDisplayLength: null,
@@ -392,7 +390,6 @@ describe("string", () => {
             displayName: null,
             maxDisplayLength: null,
             hidden: false,
-            maxRenderLength: null,
             enableCaseSensitiveContains: false,
           },
           allowNull: false,
@@ -536,7 +533,6 @@ describe("string", () => {
             displayName: null,
             maxDisplayLength: null,
             hidden: false,
-            maxRenderLength: null,
             enableCaseSensitiveContains: false,
           },
           allowNull: true,
@@ -642,9 +638,7 @@ describe("string", () => {
           ui: {
             displayName: null,
             maxDisplayLength: null,
-
             hidden: false,
-            maxRenderLength: null,
             enableCaseSensitiveContains: false,
           },
           allowNull: true,

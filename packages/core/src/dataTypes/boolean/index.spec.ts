@@ -167,6 +167,7 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
+          allowNull: false,
           ui: {
             displayName: null,
             hidden: false,
@@ -196,6 +197,10 @@ describe("boolean", () => {
         control: {
           type: "Boolean",
           primary: true,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+          },
         },
         finalize: expect.any(Function),
       })

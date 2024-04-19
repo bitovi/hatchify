@@ -10,7 +10,7 @@ export function getFilterableFields(
 ): HatchifyMuiFilters {
   // get all filterable fields from the base schema
   const fields = Object.entries(allSchemas[schemaName].attributes)
-    .filter(([, { control }]) => control.hidden !== true)
+    .filter(([, { control }]) => control.ui.hidden !== true)
     .filter(([, { control }]) => filterableControlTypes.includes(control.type))
     .map(([key]) => key)
 
@@ -29,7 +29,7 @@ export function getFilterableFields(
     const includedFields = Object.entries(
       allSchemas[includedRelationships[i].schema].attributes,
     )
-      .filter(([, { control }]) => control.hidden !== true)
+      .filter(([, { control }]) => control.ui.hidden !== true)
       .filter(([, { control }]) =>
         filterableControlTypes.includes(control.type),
       )

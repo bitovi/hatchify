@@ -40,7 +40,7 @@ describe("finalize", () => {
       schemas,
     )
 
-    expect(Todo.attributes.userId.control.hidden).toEqual(true)
+    expect(Todo.attributes.userId.control.ui.hidden).toEqual(true)
     expect(User.relationships?.todos).toEqual({
       type: "hasMany",
       targetSchema: "Todo",
@@ -88,7 +88,7 @@ describe("finalize", () => {
     )
 
     expect(User.attributes.managerId).toBeDefined()
-    expect(User.attributes.managerId.control.hidden).toEqual(true)
+    expect(User.attributes.managerId.control.ui.hidden).toEqual(true)
 
     expect(User.relationships?.employees).toEqual({
       type: "hasMany",

@@ -18,7 +18,6 @@ export function finalizeControl(
         props.ui?.enableCaseSensitiveContains ?? false,
       maxDisplayLength: props?.ui?.maxDisplayLength ?? null,
       displayName: props?.ui?.displayName ?? null,
-      maxRenderLength: props?.ui?.maxRenderLength ?? null,
       hidden: props?.ui?.hidden ?? false,
     },
   }
