@@ -15,14 +15,16 @@ Use [datetime](./datetime.md) for a date type with time.
 
 ## Parameters
 
-| key        | description                                                                                          |      type      | optional |   default   |
-| ---------- | ---------------------------------------------------------------------------------------------------- | :------------: | :------: | :---------: |
-| `default`  | The default value of the attribute. <br/> Example: `dateonly({default: 2023-10-02})`                 |     `Date`     |   Yes    | `undefined` |
-| `required` | If the attribute must be provided. <br/> Example: `dateonly({required: true})`                       |   `Boolean`    |   Yes    |   `false`   |
-| `primary`  | If the attribute is a primary key. <br/> Example: `dateonly({primary: true})`                        |   `Boolean`    |   Yes    |   `false`   |
-| `unique`   | If the attribute must be unique. <br/> Example: `dateonly({unique: true})`                           |   `Boolean`    |   Yes    |   `false`   |
-| `max`      | The max date allowed. <br/> Example: `dateonly({max: new Date()})`, `dateonly({max: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
-| `min`      | The min date allowed. <br/> Example: `dateonly({min: new Date()})`, `dateonly({min: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
+| key              | description                                                                                                                                     |      type      | optional |   default   |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | :------------: | :------: | :---------: |
+| `default`        | The default value of the attribute. <br/> Example: `dateonly({default: 2023-10-02})`                                                            |     `Date`     |   Yes    | `undefined` |
+| `required`       | If the attribute must be provided. <br/> Example: `dateonly({required: true})`                                                                  |   `Boolean`    |   Yes    |   `false`   |
+| `primary`        | If the attribute is a primary key. <br/> Example: `dateonly({primary: true})`                                                                   |   `Boolean`    |   Yes    |   `false`   |
+| `unique`         | If the attribute must be unique. <br/> Example: `dateonly({unique: true})`                                                                      |   `Boolean`    |   Yes    |   `false`   |
+| `max`            | The max date allowed. <br/> Example: `dateonly({max: new Date()})`, `dateonly({max: 1696283660000})`                                            | `Date, number` |   Yes    | `undefined` |
+| `min`            | The min date allowed. <br/> Example: `dateonly({min: new Date()})`, `dateonly({min: 1696283660000})`                                            | `Date, number` |   Yes    | `undefined` |
+| `ui.displayName` | The display name of the attribute. By default, the Camel Case attribute name will be used. <br/> Example: `dateonly({displayName: "Due Date"})` |    `String`    |   Yes    |   `null`    |
+| `ui.hidden`      | If the attribute should be hidden in the UI. <br/> Example: `dateonly({hidden: true})`                                                          |   `Boolean`    |   Yes    |   `false`   |
 
 ### 💾 Database Implications
 
