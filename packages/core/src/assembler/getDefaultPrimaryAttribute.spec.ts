@@ -19,7 +19,7 @@ describe("getDefaultPrimaryAttribute", () => {
         ui: {
           displayName: undefined,
           hidden: undefined,
-          enableCaseSensitiveContains: false,
+          enableCaseSensitiveContains: undefined,
         },
       },
       orm: {

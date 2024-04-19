@@ -15,7 +15,7 @@ describe("getFinalize", () => {
         type: "String",
         ui: {
           displayName: undefined,
-          enableCaseSensitiveContains: false,
+          enableCaseSensitiveContains: undefined,
           hidden: undefined,
         },
       },

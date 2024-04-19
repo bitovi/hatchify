@@ -27,7 +27,7 @@ describe("ensureDefaultPrimaryAttribute", () => {
           ui: {
             displayName: undefined,
             hidden: undefined,
-            enableCaseSensitiveContains: false,
+            enableCaseSensitiveContains: undefined,
           },
         },
         orm: {
@@ -66,7 +66,7 @@ describe("ensureDefaultPrimaryAttribute", () => {
           ui: {
             displayName: undefined,
             hidden: undefined,
-            enableCaseSensitiveContains: false,
+            enableCaseSensitiveContains: undefined,
           },
         },
         orm: {

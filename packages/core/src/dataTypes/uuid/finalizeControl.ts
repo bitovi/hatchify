@@ -16,7 +16,8 @@ export function finalizeControl(
     ui: {
       displayName: props?.ui?.displayName ?? null,
       hidden: props?.ui?.hidden ?? false,
-      enableCaseSensitiveContains: false,
+      enableCaseSensitiveContains:
+        props?.ui?.enableCaseSensitiveContains ?? false,
     },
   }
 }

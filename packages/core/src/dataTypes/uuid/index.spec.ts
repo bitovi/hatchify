@@ -27,7 +27,7 @@ describe("uuid", () => {
           ui: {
             displayName: undefined,
             hidden: undefined,
-            enableCaseSensitiveContains: false,
+            enableCaseSensitiveContains: undefined,
           },
         },
         finalize: expect.any(Function),
@@ -187,7 +187,7 @@ describe("uuid", () => {
           ui: {
             displayName: undefined,
             hidden: undefined,
-            enableCaseSensitiveContains: false,
+            enableCaseSensitiveContains: undefined,
           },
         },
         finalize: expect.any(Function),
@@ -364,7 +364,7 @@ describe("uuid", () => {
           ui: {
             displayName: undefined,
             hidden: undefined,
-            enableCaseSensitiveContains: false,
+            enableCaseSensitiveContains: undefined,
           },
         },
         finalize: expect.any(Function),
