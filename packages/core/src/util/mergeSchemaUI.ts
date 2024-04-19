@@ -23,7 +23,7 @@ export type PartialUISchemas<
 
 /**
  * Merges a set of partial schemas with a set of partial UI schemas. If the partial UI schema
- * or any of it's attibutes do not exist in the set of partial schemas, they are ignored.
+ * or any of it's attributes do not exist in the set of partial schemas, they are ignored.
  */
 export function mergeSchemaUI<
   TPartialSchemas extends Record<string, PartialSchema>,
