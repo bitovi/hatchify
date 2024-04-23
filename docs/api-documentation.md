@@ -95,7 +95,6 @@ GET /api/sales-people?
   filter[name][<a href="./jsonapi/reading/filtering/%24nin.md">$nin</a>]=Justin&filter[name][$nin]=Roye
   filter[name][<a href="./jsonapi/reading/filtering/%24gt.md">$gt</a>]=Roye
   filter[name][<a href="./jsonapi/reading/filtering/%24gte.md">$gte</a>]=Arthur
-  filter[name][<a href="./jsonapi/reading/filtering/%24gte.md">$gte</a>]=Arthur
   filter[name][<a href="./jsonapi/reading/filtering/%24lt.md">$lt</a>]=Roye
   filter[name][<a href="./jsonapi/reading/filtering/%24lte.md">$lte</a>]=Roye
   filter[name][<a href="./jsonapi/reading/filtering/%24ilike.md">$ilike</a>]=startsWith%
