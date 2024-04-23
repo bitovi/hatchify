@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/koa",
-  "version": "1.3.63",
+  "version": "1.3.64",
   "description": "Fullstack CRUD Application Solution",
   "type": "module",
   "exports": "./dist/exports.js",
