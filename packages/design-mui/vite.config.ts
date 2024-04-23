@@ -7,6 +7,7 @@ import nodeExternals from "rollup-plugin-node-externals"
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
+    minify: false,
     lib: {
       entry: "src/design-mui.ts",
       formats: ["es"],

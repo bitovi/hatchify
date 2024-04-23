@@ -1,4 +1,4 @@
-import crypto from "node:crypto"
+import crypto from "crypto"
 
 export function getCrypto() {
   return crypto.webcrypto

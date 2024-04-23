@@ -1,6 +1,6 @@
 import { Fragment } from "react"
 import { Grid, IconButton } from "@mui/material"
-import CloseIcon from "@mui/icons-material/Close.js"
+import { Close as CloseIcon } from "@mui/icons-material"
 import type { FinalAttributeRecord } from "@hatchifyjs/core"
 import type { FilterArray, FinalSchemas } from "@hatchifyjs/rest-client"
 import type { FilterableControls, Operators, Option } from "../constants.js"

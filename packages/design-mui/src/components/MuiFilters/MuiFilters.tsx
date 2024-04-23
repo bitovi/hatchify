@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Badge, Button, Grid, Popover, debounce } from "@mui/material"
-import FilterListIcon from "@mui/icons-material/FilterList.js"
-import AddIcon from "@mui/icons-material/Add.js"
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever.js"
+import {
+  FilterList as FilterListIcon,
+  Add as AddIcon,
+  DeleteForever as DeleteForeverIcon
+} from "@mui/icons-material"
 import type { XDataGridProps } from "@hatchifyjs/react-ui"
 import type { FilterArray } from "@hatchifyjs/rest-client"
 import { MuiFilterRows } from "./components/MuiFilterRows.js"
