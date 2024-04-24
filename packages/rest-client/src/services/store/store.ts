@@ -1,4 +1,4 @@
-import type { PartialSchema } from "packages/core/dist/core.js"
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FinalSchemas,
   MutateOptions,
