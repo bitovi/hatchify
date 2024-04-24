@@ -37,7 +37,7 @@ describe("components/MuiList", () => {
       role: "Software Engineer",
       status: "In a meeting",
     },
-  ]
+  ] as any
 
   const meta = {
     status: "success",

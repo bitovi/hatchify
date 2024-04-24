@@ -39,6 +39,11 @@ describe("middleware", () => {
           Schema: {},
         },
       },
+      schema: {
+        Schema: {
+          readOnly: false,
+        },
+      },
     } as unknown as Hatchify
   })
 
@@ -51,6 +56,27 @@ describe("middleware", () => {
         create: expect.any(Function),
         destroy: expect.any(Function),
         update: expect.any(Function),
+        all: expect.any(Function),
+      })
+    })
+
+    it("exports all read-only middleware", () => {
+      expect(
+        getMiddlewareFunctions(
+          {
+            ...hatchedNode,
+            schema: {
+              Schema: {
+                readOnly: true,
+              },
+            },
+          } as unknown as Hatchify,
+          "Schema",
+        ),
+      ).toEqual({
+        findAll: expect.any(Function),
+        findOne: expect.any(Function),
+        findAndCountAll: expect.any(Function),
         all: expect.any(Function),
       })
     })

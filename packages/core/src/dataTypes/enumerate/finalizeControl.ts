@@ -10,6 +10,7 @@ export function finalizeControl<TValues extends readonly string[]>(
     allowNull: props.allowNull !== false && !props.primary,
     primary: !!props.primary,
     default: props.default ?? null,
+    readOnly: props.readOnly ?? false,
     ui: {
       displayName: props?.ui?.displayName ?? null,
       hidden: props?.ui?.hidden ?? false,

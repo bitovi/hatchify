@@ -139,6 +139,7 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
+          readOnly: false,
           allowNull: true,
           min: 36,
           max: 36,
@@ -320,6 +321,7 @@ describe("uuid", () => {
           allowNull: false,
           min: 36,
           max: 36,
+          readOnly: false,
           primary: false,
           default: null,
           regex: UUID_REGEX,
@@ -495,6 +497,7 @@ describe("uuid", () => {
         control: {
           type: "String",
           allowNull: false,
+          readOnly: false,
           min: 36,
           max: 36,
           primary: true,
@@ -505,6 +508,167 @@ describe("uuid", () => {
             displayName: null,
             hidden: false,
           },
+        },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+      })
+    })
+  })
+
+  describe("uuid({readOnly: true})", () => {
+    const type = uuid({ readOnly: true })
+
+    it("prepares correctly", () => {
+      expect(type).toEqual({
+        name: 'uuid({"readOnly":true})',
+        orm: {
+          sequelize: {
+            type: "UUID",
+            allowNull: undefined,
+            primaryKey: undefined,
+          },
+        },
+        control: {
+          type: "String",
+          allowNull: undefined,
+          min: 36,
+          max: 36,
+          primary: undefined,
+          regex: UUID_REGEX,
+          readOnly: true,
+          ui: {},
+        },
+        finalize: expect.any(Function),
+      })
+    })
+
+    it("transforms correctly", () => {
+      const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
+        serializeORMPropertyValue,
+        setORMPropertyValue,
+        setORMQueryFilterValue,
+      } = type.finalize()
+
+      // setClientPropertyValue
+      expect(
+        setClientPropertyValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() => setClientPropertyValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientPropertyValue
+      expect(
+        serializeClientPropertyValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(
+        setClientQueryFilterValue?.("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(
+        serializeClientQueryFilterValue?.(
+          "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+        ),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+
+      // setClientPropertyValueFromResponse
+      expect(
+        setClientPropertyValueFromResponse?.(
+          "6ca2929f-c66d-4542-96a9-f1a6aa3d2678",
+        ),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
+
+      // serializeORMPropertyValue
+      expect(
+        serializeORMPropertyValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(serializeORMPropertyValue(null)).toBeNull()
+      expect(() => serializeORMPropertyValue("invalid")).toThrow(
+        new HatchifyCoerceError("with length greater than or equal to 36"),
+      )
+      expect(() =>
+        serializeORMPropertyValue("institut-ions-0999-ABCD-TestBranch00"),
+      ).toThrow(new HatchifyCoerceError(`with format of ${UUID_REGEX}`))
+      expect(() => serializeORMPropertyValue(1 as unknown as string)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // setORMPropertyValue
+      expect(() =>
+        setORMPropertyValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toThrow(new HatchifyCoerceError("as a read-only value"))
+      expect(() => setORMPropertyValue(null)).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() => setORMPropertyValue("invalid")).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() =>
+        setORMPropertyValue("institut-ions-0999-ABCD-TestBranch00"),
+      ).toThrow(new HatchifyCoerceError("as a read-only value"))
+      expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+
+      // setORMQueryFilterValue
+      expect(
+        setORMQueryFilterValue("6ca2929f-c66d-4542-96a9-f1a6aa3d2678"),
+      ).toBe("6ca2929f-c66d-4542-96a9-f1a6aa3d2678")
+      expect(setORMQueryFilterValue("null")).toBeNull()
+      expect(setORMQueryFilterValue("undefined")).toBeNull()
+    })
+
+    it("finalizes correctly", () => {
+      expect(type.finalize()).toEqual({
+        name: 'uuid({"readOnly":true})',
+        orm: {
+          sequelize: {
+            type: "UUID",
+            allowNull: true,
+            primaryKey: false,
+            unique: false,
+            defaultValue: null,
+          },
+        },
+        control: {
+          type: "String",
+          ui: {
+            displayName: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+          },
+          readOnly: true,
+          allowNull: true,
+          min: 36,
+          max: 36,
+          primary: false,
+          default: null,
+          regex: UUID_REGEX,
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),

@@ -17,5 +17,6 @@ export function finalizeSchema(
       }),
       {},
     ),
+    readOnly: !!schema.readOnly,
   }
 }

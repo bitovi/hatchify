@@ -39,6 +39,10 @@ export function getFinalize(
     // Example : '2023-07-17T01:45:28.778Z' => new Date('2023-07-17T01:45:28.778Z')
     //         : throw "'4 $core' is not a valid date";
     setORMPropertyValue: (jsonValue: ValueInRequest): boolean | null => {
+      if (control.readOnly) {
+        throw new HatchifyCoerceError("as a read-only value")
+      }
+
       return coerce(
         jsonValue === undefined && control.allowNull ? null : jsonValue,
         control,

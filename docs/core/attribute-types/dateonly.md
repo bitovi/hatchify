@@ -70,7 +70,7 @@ Note: Any time portion used in creating/updating the attribute will be truncated
 
 ## React Rest Behavior
 
-Similar to the API, you MUST provide react rest models a valid date in the form of `1990-12-31T06:00:00.000Z`, `1990-12-31`, or `null` value. Likewise, they will always return these values:
+Similar to the API, you MUST provide react rest models a valid date in the form of `1990-12-31`, or `null` value. Likewise, they will always return these values:
 
 ```ts
 Todo.createOne({ attributes: { dueDate: "1990-12-31" } })

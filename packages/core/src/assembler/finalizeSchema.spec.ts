@@ -12,12 +12,14 @@ describe("finalizeSchema", () => {
         attributes: {
           importance: integer({ min: 0 }),
         },
+        readOnly: true,
       }),
     ).toEqual({
       name: "Todo",
       id: {
         name: 'uuid({"required":true})',
         control: {
+          readOnly: false,
           allowNull: false,
           max: 36,
           min: 36,
@@ -58,6 +60,7 @@ describe("finalizeSchema", () => {
               displayName: null,
               hidden: false,
             },
+            readOnly: false,
             allowNull: true,
             max: Infinity,
             min: 0,
@@ -87,6 +90,7 @@ describe("finalizeSchema", () => {
           setORMQueryFilterValue: expect.any(Function),
         },
       },
+      readOnly: true,
     })
   })
 })

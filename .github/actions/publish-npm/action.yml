@@ -37,8 +37,8 @@ runs:
       id: version
       shell: bash
       run: |
-        git config --local user.email "Workflow: ${{ inputs.package }}[bot]"
-        git config --local user.name "${{ inputs.package }}[bot]@workflow"
+        git config --local user.email os@bitovi.com
+        git config --local user.name bitovi-os
 
         DIRECTORY="./packages/${{ inputs.directory }}"
 
@@ -56,7 +56,7 @@ runs:
         VERSION="$(cat $DIRECTORY/package.json | jq -r '.version')"
         echo "nextVersion=$VERSION" >> $GITHUB_OUTPUT
 
-        git commit --all --message "Publish ${{ inputs.package }} v$VERSION"
+        git commit --all --message "[skip ci] Publish ${{ inputs.package }} v$VERSION"
         git tag "${{ inputs.package }}/v$VERSION"
 
     - name: Push Tag

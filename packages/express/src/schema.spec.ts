@@ -413,7 +413,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 status: 422,
                 code: "unexpected-value",
                 detail:
-                  "Payload must have 'birthday' as an ISO 8601 date string but received 'Invalid date' instead.",
+                  "Payload must have 'birthday' as a 'YYYY-MM-DD' string but received 'Invalid date' instead.",
                 source: { pointer: "/data/attributes/birthday" },
                 title: "Unexpected value.",
               },
@@ -2131,7 +2131,7 @@ describe.each(dbDialects)("schema", (dialect) => {
                 status: 422,
                 code: "unexpected-value",
                 detail:
-                  "Payload must have 'birthday' as an ISO 8601 date string but received 'Invalid date' instead.",
+                  "Payload must have 'birthday' as a 'YYYY-MM-DD' string but received 'Invalid date' instead.",
                 source: { pointer: "/data/attributes/birthday" },
                 title: "Unexpected value.",
               },

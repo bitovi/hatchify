@@ -231,23 +231,31 @@ export function buildFindOptions(
   }
 
   ops.errors.push(
-    ...flatIncludes.reduce(
-      (acc, include) =>
-        isValidInclude(
-          getSchemaKey(schema),
-          include.split("."),
-          hatchify.schema,
-        )
-          ? acc
-          : [
-              ...acc,
-              new RelationshipPathError({
-                detail: `URL must have 'include' where '${include}' is a valid relationship path.`,
-                parameter: "include",
-              }),
-            ],
-      [] as RelationshipPathError[],
-    ),
+    ...flatIncludes.reduce((acc, include) => {
+      const directIncludes = schema.relationships
+        ? Object.keys(schema.relationships)
+        : null
+
+      return isValidInclude(
+        getSchemaKey(schema),
+        include.split("."),
+        hatchify.schema,
+      )
+        ? acc
+        : [
+            ...acc,
+            new RelationshipPathError({
+              detail: `URL must have 'include' where '${include}' ${
+                directIncludes
+                  ? `is one of ${directIncludes
+                      .map((key) => `'${key}'`)
+                      .join(", ")}, etc.`
+                  : "is a valid relationship path, but no relationships were found."
+              }`,
+              parameter: "include",
+            }),
+          ]
+    }, [] as RelationshipPathError[]),
   )
 
   if (ops.errors.length) {

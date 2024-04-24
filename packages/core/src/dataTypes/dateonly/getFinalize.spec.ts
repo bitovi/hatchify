@@ -8,7 +8,7 @@ describe("getFinalize", () => {
         allowNull: undefined,
         max: undefined,
         min: undefined,
-        type: "Date",
+        type: "Dateonly",
         primary: undefined,
         ui: {},
       },

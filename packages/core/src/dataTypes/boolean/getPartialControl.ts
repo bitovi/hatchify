@@ -11,6 +11,7 @@ export function getPartialControl<TRequired extends boolean>(
       : !props.required) as TRequired extends true ? false : true,
     primary: props?.primary,
     default: props?.default,
+    readOnly: props?.readOnly,
     ui: {
       displayName: props?.ui?.displayName,
       hidden: props?.ui?.hidden,

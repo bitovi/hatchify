@@ -45,7 +45,7 @@ export function getFinalize(
     setClientPropertyValue: (userValue: UserValue): string | null => {
       if (typeof userValue === "string") {
         if (!isISO8601DateString(userValue)) {
-          throw new HatchifyCoerceError("as an ISO 8601 date string")
+          throw new HatchifyCoerceError("as a 'YYYY-MM-DD' string")
         }
       }
 
@@ -68,7 +68,7 @@ export function getFinalize(
     setClientQueryFilterValue: (userValue: UserValue): string | null => {
       if (typeof userValue === "string") {
         if (!isISO8601DateString(userValue)) {
-          throw new HatchifyCoerceError("as an ISO 8601 date string")
+          throw new HatchifyCoerceError("as a 'YYYY-MM-DD' string")
         }
       }
 
@@ -93,7 +93,7 @@ export function getFinalize(
     ): string | null => {
       if (typeof jsonValue === "string") {
         if (!isISO8601DateString(jsonValue)) {
-          throw new HatchifyCoerceError("as an ISO 8601 date string")
+          throw new HatchifyCoerceError("as a 'YYYY-MM-DD' string")
         }
       }
 
@@ -106,6 +106,10 @@ export function getFinalize(
     // Example : '2023-07-17T01:45:28.778Z' => new Date('2023-07-17T01:45:28.778Z')
     //         : throw "'4 $core' is not a valid date";
     setORMPropertyValue: (jsonValue: ValueInRequest): string | null => {
+      if (control.readOnly) {
+        throw new HatchifyCoerceError("as a read-only value")
+      }
+
       return coerce(
         jsonValue === undefined && control.allowNull ? null : jsonValue,
         control,
@@ -125,7 +129,7 @@ export function getFinalize(
       }
 
       if (!isISO8601DateString(queryValue)) {
-        throw new HatchifyCoerceError("as an ISO 8601 date string")
+        throw new HatchifyCoerceError("as a 'YYYY-MM-DD' string")
       }
 
       return coerce(queryValue, control)

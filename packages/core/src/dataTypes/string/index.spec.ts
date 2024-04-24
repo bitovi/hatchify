@@ -109,6 +109,7 @@ describe("string", () => {
             hidden: false,
             enableCaseSensitiveContains: false,
           },
+          readOnly: false,
           allowNull: true,
           min: 0,
           max: 255,
@@ -245,6 +246,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
+          readOnly: false,
           allowNull: false,
           min: 0,
           max: 255,
@@ -392,6 +394,7 @@ describe("string", () => {
             hidden: false,
             enableCaseSensitiveContains: false,
           },
+          readOnly: false,
           allowNull: false,
           min: 0,
           max: 255,
@@ -535,6 +538,7 @@ describe("string", () => {
             hidden: false,
             enableCaseSensitiveContains: false,
           },
+          readOnly: false,
           allowNull: true,
           min: 1,
           max: 10,
@@ -641,12 +645,147 @@ describe("string", () => {
             hidden: false,
             enableCaseSensitiveContains: false,
           },
+          readOnly: false,
           allowNull: true,
           min: 0,
           max: 255,
           primary: false,
           default: null,
           regex: /^\d+$/,
+        },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+      })
+    })
+  })
+
+  describe("string({readOnly: true})", () => {
+    const type = string({ readOnly: true })
+
+    it("prepares correctly", () => {
+      expect(type).toEqual({
+        name: 'string({"readOnly":true})',
+        orm: {
+          sequelize: {
+            type: "STRING",
+            typeArgs: [],
+            allowNull: undefined,
+            primaryKey: undefined,
+          },
+        },
+        control: {
+          type: "String",
+          displayName: undefined,
+          allowNull: undefined,
+          min: undefined,
+          max: undefined,
+          primary: undefined,
+          readOnly: true,
+          ui: {},
+        },
+        finalize: expect.any(Function),
+      })
+    })
+
+    it("transforms correctly", () => {
+      const {
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
+        serializeORMPropertyValue,
+        setORMPropertyValue,
+        setORMQueryFilterValue,
+      } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.("name")).toBe("name")
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() => setClientPropertyValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.("name")).toBe("name")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.("name")).toBe("name")
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() => setClientQueryFilterValue?.(7)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.("name")).toBe("name")
+      expect(serializeClientQueryFilterValue?.(null)).toBe("null")
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.("name")).toBe("name")
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
+
+      // serializeORMPropertyValue
+      expect(serializeORMPropertyValue("valid")).toBe("valid")
+      expect(serializeORMPropertyValue(null)).toBeNull()
+      expect(() => serializeORMPropertyValue(1 as unknown as string)).toThrow(
+        new HatchifyCoerceError("as a string"),
+      )
+
+      // setORMPropertyValue
+      expect(() => setORMPropertyValue("valid")).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() => setORMPropertyValue(null)).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() => setORMPropertyValue(1 as unknown as string)).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+
+      // setORMQueryFilterValue
+      expect(setORMQueryFilterValue("valid")).toBe("valid")
+      expect(setORMQueryFilterValue("null")).toBeNull()
+      expect(setORMQueryFilterValue("undefined")).toBeNull()
+    })
+
+    it("finalizes correctly", () => {
+      expect(type.finalize()).toEqual({
+        name: 'string({"readOnly":true})',
+        orm: {
+          sequelize: {
+            type: "STRING",
+            typeArgs: [255],
+            allowNull: true,
+            primaryKey: false,
+            unique: false,
+            defaultValue: null,
+          },
+        },
+        control: {
+          type: "String",
+          ui: {
+            displayName: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+            maxDisplayLength: null,
+          },
+          readOnly: true,
+          allowNull: true,
+          min: 0,
+          max: 255,
+          primary: false,
+          default: null,
+          regex: /(.*?)/,
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),

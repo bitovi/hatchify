@@ -7,7 +7,7 @@ export function getPartialControl<TRequired extends boolean>(
   props?: PartialDateonlyProps<TRequired>,
 ): PartialDateonlyControlType<TRequired> {
   return {
-    type: "Date",
+    type: "Dateonly",
     allowNull: props?.required == null ? props?.required : !props.required,
     allowNullInfer: (props?.required == null
       ? props?.required
@@ -15,7 +15,9 @@ export function getPartialControl<TRequired extends boolean>(
     min: props?.min,
     max: props?.max,
     primary: props?.primary,
+    step: props?.step,
     default: props?.default,
+    readOnly: props?.readOnly,
     ui: {
       displayName: props?.ui?.displayName,
       hidden: props?.ui?.hidden,

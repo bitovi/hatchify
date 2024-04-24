@@ -14,6 +14,7 @@ function getRandomTodoItem(users: Array<{ id: string }>) {
     importance: faker.number.int({ min: 0, max: 10 }),
     dueDate: faker.date.soon({ days: 10 }),
     userId: users[Math.floor(Math.random() * 10)].id,
+    complete: faker.datatype.boolean(),
   }
 }
 
