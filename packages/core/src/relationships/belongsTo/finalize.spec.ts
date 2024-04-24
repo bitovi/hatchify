@@ -12,6 +12,7 @@ describe("finalize", () => {
       attributes: {
         importance: integer({ min: 0 }).finalize(),
       },
+      readOnly: false,
     },
     User: {
       name: "User",
@@ -19,6 +20,7 @@ describe("finalize", () => {
       attributes: {
         name: string().finalize(),
       },
+      readOnly: false,
     },
   }
 

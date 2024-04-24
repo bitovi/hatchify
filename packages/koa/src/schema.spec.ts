@@ -32,6 +32,7 @@ describe.each(dbDialects)("schema", (dialect) => {
           user: belongsTo(),
         },
       } satisfies PartialSchema
+
       const User = {
         name: "User",
         attributes: {
@@ -59,6 +60,14 @@ describe.each(dbDialects)("schema", (dialect) => {
         },
       } satisfies PartialSchema
 
+      const ReadOnly = {
+        name: "ReadOnly",
+        attributes: {
+          name: string(),
+        },
+        readOnly: true,
+      } satisfies PartialSchema
+
       let fetch: Awaited<ReturnType<typeof startServerWith>>["fetch"]
       let hatchify: Awaited<ReturnType<typeof startServerWith>>["hatchify"]
       let teardown: Awaited<ReturnType<typeof startServerWith>>["teardown"]
@@ -66,7 +75,7 @@ describe.each(dbDialects)("schema", (dialect) => {
 
       beforeAll(async () => {
         ;({ fetch, hatchify, teardown } = await startServerWith(
-          { Todo, User },
+          { Todo, User, ReadOnly },
           dialect,
         ))
         ;({
@@ -1493,6 +1502,33 @@ describe.each(dbDialects)("schema", (dialect) => {
               },
             ],
             meta: { unpaginatedCount: 2 },
+          })
+        })
+
+        it("supports read-only schemas", async () => {
+          const { status, body } = await fetch("/api/read-onlys", {
+            method: "post",
+            body: {
+              data: {
+                type: "ReadOnly",
+                attributes: {
+                  name: "Anything",
+                },
+              },
+            },
+          })
+
+          expect(status).toBe(422)
+          expect(body).toEqual({
+            jsonapi: { version: "1.0" },
+            errors: [
+              {
+                status: 422,
+                code: "unexpected-value",
+                detail: "Schema is read-only",
+                title: "Unexpected value.",
+              },
+            ],
           })
         })
       })

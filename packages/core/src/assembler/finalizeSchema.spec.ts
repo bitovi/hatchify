@@ -12,6 +12,7 @@ describe("finalizeSchema", () => {
         attributes: {
           importance: integer({ min: 0 }),
         },
+        readOnly: true,
       }),
     ).toEqual({
       name: "Todo",
@@ -20,6 +21,7 @@ describe("finalizeSchema", () => {
         control: {
           displayName: null,
           hidden: false,
+          readOnly: false,
           allowNull: false,
           max: 36,
           min: 36,
@@ -55,6 +57,7 @@ describe("finalizeSchema", () => {
           control: {
             displayName: null,
             hidden: false,
+            readOnly: false,
             allowNull: true,
             max: Infinity,
             min: 0,
@@ -84,6 +87,7 @@ describe("finalizeSchema", () => {
           setORMQueryFilterValue: expect.any(Function),
         },
       },
+      readOnly: true,
     })
   })
 })
