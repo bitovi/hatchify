@@ -111,6 +111,7 @@ export interface PartialSchema<
   id?: PartialAttributeOptions
   attributes: TAttributes
   relationships?: Record<string, PartialRelationship>
+  readOnly?: boolean
 }
 
 export type FinalAttributeOptions =
@@ -182,6 +183,7 @@ export interface FinalSchema {
   id: FinalAttributeOptions
   attributes: FinalAttributeRecord
   relationships?: Record<string, FinalRelationship>
+  readOnly: boolean
 }
 
 export interface SemiFinalSchema extends Omit<FinalSchema, "relationships"> {

@@ -134,6 +134,7 @@ describe("dateonly", () => {
           type: "Dateonly",
           displayName: null,
           hidden: false,
+          readOnly: false,
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -243,6 +244,7 @@ describe("dateonly", () => {
           type: "Dateonly",
           displayName: null,
           hidden: false,
+          readOnly: false,
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -413,6 +415,7 @@ describe("dateonly", () => {
           type: "Dateonly",
           displayName: null,
           hidden: false,
+          readOnly: false,
           allowNull: false,
           min: -Infinity,
           max: Infinity,
@@ -565,6 +568,7 @@ describe("dateonly", () => {
           allowNull: true,
           displayName: null,
           hidden: false,
+          readOnly: false,
           min: -Infinity,
           max: Infinity,
           primary: false,
@@ -674,9 +678,168 @@ describe("dateonly", () => {
           type: "Dateonly",
           displayName: null,
           hidden: false,
+          readOnly: false,
           allowNull: true,
           min: -Infinity,
           max: "2023-01-01",
+          primary: false,
+          default: null,
+          step: 0,
+        },
+        setClientPropertyValue: expect.any(Function),
+        serializeClientPropertyValue: expect.any(Function),
+        setClientQueryFilterValue: expect.any(Function),
+        serializeClientQueryFilterValue: expect.any(Function),
+        setClientPropertyValueFromResponse: expect.any(Function),
+        serializeORMPropertyValue: expect.any(Function),
+        setORMPropertyValue: expect.any(Function),
+        setORMQueryFilterValue: expect.any(Function),
+      })
+    })
+  })
+
+  describe("dateonly({readOnly: true})", () => {
+    const type = dateonly({ readOnly: true })
+
+    it("prepares correctly", () => {
+      expect(type).toEqual({
+        name: 'dateonly({"readOnly":true})',
+        orm: {
+          sequelize: {
+            type: "DATEONLY",
+            typeArgs: [],
+            allowNull: undefined,
+            primaryKey: undefined,
+          },
+        },
+        control: {
+          type: "Dateonly",
+          allowNull: undefined,
+          min: undefined,
+          max: undefined,
+          primary: undefined,
+          readOnly: true,
+        },
+        finalize: expect.any(Function),
+      })
+    })
+
+    it("transforms correctly", () => {
+      const {
+        serializeORMPropertyValue,
+        setORMPropertyValue,
+        setORMQueryFilterValue,
+        setClientPropertyValue,
+        serializeClientPropertyValue,
+        setClientQueryFilterValue,
+        serializeClientQueryFilterValue,
+        setClientPropertyValueFromResponse,
+      } = type.finalize()
+
+      // setClientPropertyValue
+      expect(setClientPropertyValue?.("2023-01-01")).toEqual("2023-01-01")
+      expect(setClientPropertyValue?.("2023-01-01")).toEqual("2023-01-01")
+      expect(setClientPropertyValue?.(null)).toBeNull()
+      expect(() => setClientPropertyValue?.(1)).toThrow(
+        new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
+      )
+      expect(() => setClientPropertyValue?.("2010-01-")).toThrow(
+        new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
+      )
+
+      // serializeClientPropertyValue
+      expect(serializeClientPropertyValue?.("2023-01-01")).toEqual("2023-01-01")
+      expect(serializeClientPropertyValue?.(null)).toBeNull()
+
+      // setClientQueryFilterValue
+      expect(setClientQueryFilterValue?.("2023-01-01")).toEqual("2023-01-01")
+      expect(setClientQueryFilterValue?.("2023-01-01")).toEqual("2023-01-01")
+      expect(setClientQueryFilterValue?.(null)).toBeNull()
+      expect(() => setClientQueryFilterValue?.(1)).toThrow(
+        new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
+      )
+      expect(() => setClientQueryFilterValue?.("2010-01-0")).toThrow(
+        new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
+      )
+
+      // serializeClientQueryFilterValue
+      expect(serializeClientQueryFilterValue?.("2023-01-01")).toEqual(
+        "2023-01-01",
+      )
+      expect(serializeClientQueryFilterValue?.(null)).toEqual("null")
+
+      // setClientPropertyValueFromResponse
+      expect(setClientPropertyValueFromResponse?.("2023-01-01")).toEqual(
+        "2023-01-01",
+      )
+      expect(setClientPropertyValueFromResponse?.("2023-01-01")).toEqual(
+        "2023-01-01",
+      )
+      expect(setClientPropertyValueFromResponse?.(null)).toBeNull()
+      expect(() => setClientPropertyValueFromResponse?.(1)).toThrow(
+        new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
+      )
+      expect(
+        () => setClientPropertyValueFromResponse?.("2023-01-01T00:00:00.000Z"),
+      ).toThrow(new HatchifyCoerceError("as a 'YYYY-MM-DD' string"))
+
+      // serializeORMPropertyValue
+      expect(serializeORMPropertyValue("2023-01-01")).toEqual("2023-01-01")
+      expect(serializeORMPropertyValue(null)).toBeNull()
+      expect(() => serializeORMPropertyValue(1 as unknown as string)).toThrow(
+        new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
+      )
+      expect(() =>
+        serializeORMPropertyValue("invalid" as unknown as string),
+      ).toThrow(new HatchifyCoerceError("as a 'YYYY-MM-DD' string"))
+
+      // setORMPropertyValue
+      expect(() => setORMPropertyValue("2023-01-01")).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() => setORMPropertyValue(null)).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() => setORMPropertyValue(undefined)).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() => setORMPropertyValue(1)).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+      expect(() => setORMPropertyValue("invalid")).toThrow(
+        new HatchifyCoerceError("as a read-only value"),
+      )
+
+      // setORMQueryFilterValue
+      expect(setORMQueryFilterValue("2023-01-01")).toEqual("2023-01-01")
+      expect(setORMQueryFilterValue("null")).toBeNull()
+      expect(setORMQueryFilterValue("undefined")).toBeNull()
+      expect(() => setORMQueryFilterValue("invalid")).toThrow(
+        new HatchifyCoerceError("as a 'YYYY-MM-DD' string"),
+      )
+    })
+
+    it("finalizes correctly", () => {
+      expect(type.finalize()).toEqual({
+        name: 'dateonly({"readOnly":true})',
+        orm: {
+          sequelize: {
+            type: "DATEONLY",
+            typeArgs: [],
+            allowNull: true,
+            primaryKey: false,
+            unique: false,
+            defaultValue: null,
+          },
+        },
+        control: {
+          type: "Dateonly",
+          displayName: null,
+          hidden: false,
+          readOnly: true,
+          allowNull: true,
+          min: -Infinity,
+          max: Infinity,
           primary: false,
           default: null,
           step: 0,

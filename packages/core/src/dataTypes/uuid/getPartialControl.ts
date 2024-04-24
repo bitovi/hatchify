@@ -7,6 +7,7 @@ export function getPartialControl<TRequired extends boolean>(
   return {
     type: "String",
     hidden: props?.hidden,
+    readOnly: props?.readOnly,
     allowNull: props?.required == null ? props?.required : !props.required,
     allowNullInfer: (props?.required == null
       ? props?.required

@@ -15,5 +15,6 @@ export function finalizeControl(
     step: props.step || 0,
     displayName: props.displayName ?? null,
     hidden: props.hidden ?? false,
+    readOnly: props.readOnly ?? false,
   }
 }

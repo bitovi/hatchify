@@ -17,6 +17,7 @@ describe("finalizeRelationships", () => {
         relationships: {
           user: belongsTo(),
         },
+        readOnly: false,
       },
       User: {
         name: "User",
@@ -27,6 +28,7 @@ describe("finalizeRelationships", () => {
         relationships: {
           todos: hasMany(),
         },
+        readOnly: false,
       },
     }
 
@@ -75,6 +77,7 @@ describe("finalizeRelationships", () => {
         relationships: {
           user: belongsTo(),
         },
+        readOnly: false,
       },
       User: {
         name: "User",
@@ -85,6 +88,7 @@ describe("finalizeRelationships", () => {
         relationships: {
           todo: hasOne(),
         },
+        readOnly: false,
       },
     }
 
@@ -136,6 +140,7 @@ describe("finalizeRelationships", () => {
         relationships: {
           users: hasMany().through(),
         },
+        readOnly: false,
       },
       User: {
         name: "User",
@@ -146,6 +151,7 @@ describe("finalizeRelationships", () => {
         relationships: {
           todos: hasMany().through(),
         },
+        readOnly: true,
       },
     }
 
@@ -171,6 +177,7 @@ describe("finalizeRelationships", () => {
               sourceAttribute: "id",
             },
           },
+          readOnly: false,
         },
         User: {
           ...schemas.User,
@@ -192,6 +199,7 @@ describe("finalizeRelationships", () => {
               sourceAttribute: "id",
             },
           },
+          readOnly: true,
         },
         TodoUser: {
           name: "TodoUser",
@@ -214,6 +222,7 @@ describe("finalizeRelationships", () => {
               targetAttribute: "id",
             },
           },
+          readOnly: false,
         },
       }),
     )
@@ -231,6 +240,7 @@ describe("finalizeRelationships", () => {
           user: belongsTo(),
           user2: belongsTo("User"),
         },
+        readOnly: false,
       },
       User: {
         name: "User",
@@ -241,6 +251,7 @@ describe("finalizeRelationships", () => {
         relationships: {
           todos: hasMany(),
         },
+        readOnly: false,
       },
     }
 

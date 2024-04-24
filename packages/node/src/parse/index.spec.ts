@@ -385,6 +385,7 @@ describe("index", () => {
               targetKey: "accountSaleTypeId",
             },
           },
+          readOnly: false,
         },
         {
           accounts: [
@@ -421,6 +422,7 @@ describe("index", () => {
               targetKey: "id",
             },
           },
+          readOnly: false,
         },
         {},
       )

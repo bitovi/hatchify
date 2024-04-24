@@ -12,5 +12,6 @@ export function getPartialControl<TRequired extends boolean>(
     primary: props?.primary,
     default: props?.default,
     displayName: props?.displayName,
+    readOnly: props?.readOnly,
   }
 }

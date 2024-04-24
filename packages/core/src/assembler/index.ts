@@ -1,4 +1,5 @@
 import { ensureDefaultPrimaryAttribute } from "./ensureDefaultPrimaryAttribute.js"
+import { ensureDefaultReadOnlyAttribute } from "./ensureDefaultReadOnlyAttribute.js"
 import { finalizeRelationships } from "./finalizeRelationships.js"
 import { finalizeSchema } from "./finalizeSchema.js"
 import type { FinalSchema, PartialSchema, SemiFinalSchema } from "./types.js"
@@ -18,7 +19,9 @@ export function assembler(
       }
       return {
         ...acc,
-        [schemaName]: finalizeSchema(ensureDefaultPrimaryAttribute(schema)),
+        [schemaName]: finalizeSchema(
+          ensureDefaultPrimaryAttribute(ensureDefaultReadOnlyAttribute(schema)),
+        ),
       }
     },
     {} as Record<string, SemiFinalSchema>,
