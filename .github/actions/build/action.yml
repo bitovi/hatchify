@@ -1,4 +1,4 @@
-name: monorepo-build
+name: build
 
 inputs:
   package:

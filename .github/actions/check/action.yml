@@ -1,4 +1,4 @@
-name: monorepo-check
+name: check
 
 inputs:
   package:

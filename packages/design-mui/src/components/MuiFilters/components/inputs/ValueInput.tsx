@@ -47,7 +47,7 @@ const ValueInput: React.FC<{
           options={options}
         />
       )}
-      {controlType === "Date" && (
+      {(controlType === "Date" || controlType === "Dateonly") && (
         <DateInput
           labelId={labelId}
           value={value}

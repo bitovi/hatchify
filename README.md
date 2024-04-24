@@ -53,7 +53,7 @@ In just a few short steps we will set up a project containing a Hatchify fronten
    npm run dev
    ```
 
-4. Navigate to the Hatchify welcome screen:
+4. Navigate to the Hatchify welcome screen at [http://localhost:3000/](http://localhost:3000/):
 
 <img width="1289" alt="Screenshot 2024-03-06 at 10 35 02 AM" src="https://github.com/bitovi/hatchify/assets/9858612/5c98359d-5b1f-419d-812a-3f751670fe57">
 

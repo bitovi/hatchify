@@ -1,4 +1,4 @@
-name: monorepo-job-publish
+name: job-publish
 
 inputs:
   directory:
