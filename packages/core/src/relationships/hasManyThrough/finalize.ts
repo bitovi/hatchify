@@ -106,6 +106,7 @@ export function finalize(
                 targetAttribute: targetKey,
               },
             },
+            readOnly: false,
           },
         }),
   }

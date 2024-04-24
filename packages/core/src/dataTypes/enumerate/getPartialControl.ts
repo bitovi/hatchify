@@ -25,5 +25,6 @@ export function getPartialControl<
     default: props?.default,
     values: props.values,
     displayName: props?.displayName,
+    readOnly: props?.readOnly,
   }
 }

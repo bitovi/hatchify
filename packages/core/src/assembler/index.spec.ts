@@ -13,6 +13,7 @@ describe("assembler", () => {
       attributes: {
         importance: integer({ min: 0 }),
       },
+      readOnly: true,
     } satisfies PartialSchema
 
     describe("key", () => {
@@ -119,6 +120,7 @@ describe("assembler", () => {
           "primary" in Todo.attributes.importance.control &&
             Todo.attributes.importance.control.primary,
         ).toBeUndefined()
+        expect(Todo.attributes.importance.control.readOnly).toBeUndefined()
 
         expect(
           Todo.attributes.importance.orm.sequelize.allowNull,
@@ -147,6 +149,10 @@ describe("assembler", () => {
           "primary" in assembledTodo.attributes.importance.control &&
             assembledTodo.attributes.importance.control.primary,
         ).toBe(false)
+        expect(
+          "readOnly" in assembledTodo.attributes.importance.control &&
+            assembledTodo.attributes.importance.control.readOnly,
+        ).toBe(true)
 
         expect(
           assembledTodo.attributes.importance.orm.sequelize.allowNull,

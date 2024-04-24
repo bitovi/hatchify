@@ -2,6 +2,7 @@ import type { ErrorObject } from "json-api-serializer"
 
 import {
   NotFoundError,
+  UnexpectedValueError,
   ValueRequiredError,
   errorResponseHandler,
 } from "./error/index.js"
@@ -26,9 +27,11 @@ export function getMiddlewareFunctions(
     findAll: findAllMiddleware(hatchify, schemaName),
     findOne: findOneMiddleware(hatchify, schemaName),
     findAndCountAll: findAndCountAllMiddleware(hatchify, schemaName),
-    create: createMiddleware(hatchify, schemaName),
-    destroy: destroyMiddleware(hatchify, schemaName),
-    update: updateMiddleware(hatchify, schemaName),
+    ...((schemaName === "*" || !hatchify.schema[schemaName].readOnly) && {
+      create: createMiddleware(hatchify, schemaName),
+      destroy: destroyMiddleware(hatchify, schemaName),
+      update: updateMiddleware(hatchify, schemaName),
+    }),
     all: handleAllMiddleware(hatchify),
   }
 }
@@ -222,6 +225,14 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         }
 
         case "POST": {
+          if (hatchify.schema[schemaName].readOnly) {
+            throw [
+              new UnexpectedValueError({
+                detail: "Schema is read-only",
+              }),
+            ]
+          }
+
           return {
             body: await hatchify.everything[schemaName].create(
               body,
@@ -231,6 +242,14 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         }
 
         case "PATCH": {
+          if (hatchify.schema[schemaName].readOnly) {
+            throw [
+              new UnexpectedValueError({
+                detail: "Schema is read-only",
+              }),
+            ]
+          }
+
           if (!id) {
             throw [
               new ValueRequiredError({
@@ -246,6 +265,14 @@ export function handleAllMiddleware(hatchify: Hatchify) {
         }
 
         case "DELETE": {
+          if (hatchify.schema[schemaName].readOnly) {
+            throw [
+              new UnexpectedValueError({
+                detail: "Schema is read-only",
+              }),
+            ]
+          }
+
           if (!id) {
             throw [
               new ValueRequiredError({
