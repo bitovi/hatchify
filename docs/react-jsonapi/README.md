@@ -160,7 +160,7 @@ const record = await hatchedReactRest.Todo.findOne({
 
 ### createOne
 
-`hatchedReactRest[SchemaName].createOne(data: Partial<RecordObject>) => Promise<RecordObject>`
+`hatchedReactRest[SchemaName].createOne(data: Partial<RecordObject>, mutateOptions?: MutateOptions) => Promise<RecordObject>`
 
 The `createOne` function creates a new record for the given schema, in this case Todo. Only the required attributes need to be passed in.
 
@@ -191,11 +191,25 @@ const createdRecord = await hatchedReactRest.Todo.createOne({
 })
 ```
 
+If you do not want to notify hooks and components of the `User` schema when a `Todo` is created, you can pass in the `notify` option.
+
+```ts
+const createdRecord = await hatchedReactRest.Todo.createOne(
+  {
+    name: "Learn Hatchify",
+    complete: false,
+    user: { id: UUID },
+  },
+  { notify: false },
+)
+```
+
 **Parameters**
 
-| Property | Type                                                | Details                                           |
-| -------- | --------------------------------------------------- | ------------------------------------------------- |
-| data     | <a href="#recordobject">`Partial<RecordObject>`</a> | An object containing the data for the new record. |
+| Property       | Type                                                      | Details                                                          |
+| -------------- | --------------------------------------------------------- | ---------------------------------------------------------------- |
+| data           | <a href="#recordobject">`Partial<RecordObject>`</a>       | An object containing the data for the new record.                |
+| mutateOptions? | <a href="#mutateoptions">`MutateOptions \| undefined`</a> | An object used to configure the behavior of a mutation function. |
 
 **Returns**
 
@@ -205,7 +219,7 @@ const createdRecord = await hatchedReactRest.Todo.createOne({
 
 ### updateOne
 
-`hatchedReactRest[SchemaName].updateOne(data: Partial<RecordObject>) => Promise<RecordObject>`
+`hatchedReactRest[SchemaName].updateOne(data: Partial<RecordObject>, mutateOptions?: MutateOptions) => Promise<RecordObject>`
 
 When using the `updateOne` function, the id must be passed in along with only the data that needs to be updated.
 
@@ -236,9 +250,10 @@ const updated = await hatchedReact.model.Todo.updateOne({
 
 **Parameters**
 
-| Property | Type                                                | Details                                                                                                 |
-| -------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| data     | <a href="#recordobject">`Partial<RecordObject>`</a> | An object containing the data for the updated record. The id is required to be passed into RecordObject |
+| Property       | Type                                                      | Details                                                                                                 |
+| -------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| data           | <a href="#recordobject">`Partial<RecordObject>`</a>       | An object containing the data for the updated record. The id is required to be passed into RecordObject |
+| mutateOptions? | <a href="#mutateoptions">`MutateOptions \| undefined`</a> | An object used to configure the behavior of a mutation function.                                        |
 
 **Returns**
 
@@ -248,7 +263,7 @@ const updated = await hatchedReact.model.Todo.updateOne({
 
 ### deleteOne
 
-`hatchedReactRest[SchemaName].deleteOne(id: string) => Promise<void>`
+`hatchedReactRest[SchemaName].deleteOne(id: string, mutateOptions?: MutateOptions) => Promise<void>`
 
 The `deleteOne` function deletes a record by its id.
 
@@ -258,9 +273,10 @@ await hatchedReactRest.Todo.deleteOne(UUID)
 
 **Parameters**
 
-| Property | Type     | Details                         |
-| -------- | -------- | ------------------------------- |
-| id       | `string` | The id of the record to delete. |
+| Property       | Type                                                      | Details                                                          |
+| -------------- | --------------------------------------------------------- | ---------------------------------------------------------------- |
+| id             | `string`                                                  | The id of the record to delete.                                  |
+| mutateOptions? | <a href="#mutateoptions">`MutateOptions \| undefined`</a> | An object used to configure the behavior of a mutation function. |
 
 **Returns**
 
@@ -360,7 +376,7 @@ An array with the following properties:
 
 ### useCreateOne
 
-`hatchedReactRest[SchemaName].useCreateOne() => [CreateFunction, RequestState, RecordObject?]`
+`hatchedReactRest[SchemaName].useCreateOne(mutateOptions?: MutateOptions) => [CreateFunction, RequestState, RecordObject?]`
 
 Here we use the `useCreateOne` hook to create a simple form for creating a new todo. We us the `createTodo` function when the form is submitted, the `RequestState` object to conditionally handle loading and error states, and we track the `created` object to console log the newly created record.
 
@@ -408,7 +424,7 @@ An array with the following properties:
 
 ### useUpdateOne
 
-`hatchedReactRest[SchemaName].useUpdateOne() => [UpdateFunction, { id: RequestState }, RecordObject?]`
+`hatchedReactRest[SchemaName].useUpdateOne(mutateOptions?: mutateOptions) => [UpdateFunction, { id: RequestState }, RecordObject?]`
 
 Here we use the `useUpdateOne` hook to create a simple edit form for updating a todo. We use the `updateTodo` function when the form is submitted, the `RequestState` object to conditionally handle loading and error states, and we track the `updated` object to console log the newly updated record.
 
@@ -455,7 +471,7 @@ An array with the following properties:
 
 ### useDeleteOne
 
-`hatchedReactRest[SchemaName].useDeleteOne() => [DeleteFunction, { id: RequestState }]`
+`hatchedReactRest[SchemaName].useDeleteOne(mutateOptions?: mutateOptions) => [DeleteFunction, { id: RequestState }]`
 
 Here we use the `useDeleteOne` hook to create alongside a list of todos. We use the `deleteTodo` function when the delete button is clicked, and the `RequestState` object to disable the delete button when the request is pending.
 
@@ -523,6 +539,26 @@ For passing in relationships through the `RecordObject`, see the example in the 
 | Property | Type  | Details                                  |
 | -------- | ----- | ---------------------------------------- |
 | ...      | `any` | Metadata, for example `unpaginatedCount` |
+
+### MutateOptions
+
+`MutateOptions` is an object used to configure the behavior of a mutation function.
+
+| Property | Type                                   | Details                                                                                            |
+| -------- | -------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| notify?  | `boolean \| SchemaName[] \| undefined` | Determines whether hooks and components should refetch data if a create, update, or delete happens |
+
+**notify**
+
+The `notify` property within the `MutateOptions` object is used to determine whether to refetch data for hooks (`useOne`, `useAll`, `useDataGridState`), and components (`DataGrid`).
+
+- By default, any mutation (create, update, or delete) will trigger a refetch of all active hooks and components for every schema.
+
+- If `notify` is omitted or set to `undefined`, all active hooks and components will refetch data.
+
+- If `notify` is set to `false`, only the schema that was mutated will refetch data. For exampple, `Todo.createOne({ ... })` will only refetch for hooks and components from the the `Todo` schema.
+
+- If `notify` is set to an array of schema names, only the specified schemas will refetch data as well as the mutated schema. For example, `Todo.createOne({ ... }, { notify: ["Person"] })` will only refetch for hooks and components from the `Todo` and `Person` schema.
 
 ### QueryList
 

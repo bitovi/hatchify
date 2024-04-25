@@ -10,6 +10,7 @@ import type {
   MetaError,
   RestClient,
   FlatCreateType,
+  MutateOptions,
 } from "@hatchifyjs/rest-client"
 
 type CreateData<
@@ -33,6 +34,7 @@ export const useCreateOne = <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
+  mutateOptions?: MutateOptions<TSchemas>,
 ): [
   (data: CreateData<TSchemas, TSchemaName>) => void,
   Meta,
@@ -46,7 +48,13 @@ export const useCreateOne = <
   const create = useCallback(
     (data: CreateData<TSchemas, TSchemaName>) => {
       setLoading(true)
-      createOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, data)
+      createOne<TSchemas, TSchemaName>(
+        dataSource,
+        allSchemas,
+        schemaName,
+        data,
+        mutateOptions,
+      )
         .then((data) => {
           setError(undefined)
           setData(data)
@@ -59,7 +67,7 @@ export const useCreateOne = <
         })
         .finally(() => setLoading(false))
     },
-    [dataSource, allSchemas, schemaName],
+    [dataSource, allSchemas, schemaName, mutateOptions],
   )
 
   const meta = useMemo(

@@ -14,6 +14,7 @@ export type {
   Include,
   Meta,
   MetaError,
+  MutateOptions,
   MutateRelationship,
   MutateRelationships,
   PaginationObject,
