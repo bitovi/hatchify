@@ -21,7 +21,7 @@
     "@hatchifyjs/rest-client-jsonapi": "^0.1.37"
   },
   "peerDependencies": {
-    "@hatchifyjs/core": "^0.3.x"
+    "@hatchifyjs/core": "^0.4.x"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

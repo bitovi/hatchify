@@ -56,7 +56,7 @@
     "ts-jest": "^29.0.3"
   },
   "peerDependencies": {
-    "@hatchifyjs/core": "^0.3.x",
+    "@hatchifyjs/core": "^0.4.x",
     "@types/koa": "2.x",
     "koa": "2.x",
     "sequelize": "6.x"
