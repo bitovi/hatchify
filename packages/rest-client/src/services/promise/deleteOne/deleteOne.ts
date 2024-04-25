@@ -2,6 +2,7 @@ import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FinalSchemas,
   GetSchemaNames,
+  MutateOptions,
   RestClient,
 } from "../../types/index.js"
 import { notifySubscribers } from "../../store/index.js"
@@ -21,6 +22,7 @@ export const deleteOne = async <
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
   id: string,
+  mutateOptions?: MutateOptions<TSchemas>,
 ): Promise<void> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
@@ -28,7 +30,7 @@ export const deleteOne = async <
 
   await dataSource.deleteOne(allSchemas, schemaName, id)
 
-  notifySubscribers()
+  notifySubscribers(schemaName, mutateOptions?.notify)
 
   return
 }

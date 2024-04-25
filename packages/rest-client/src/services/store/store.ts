@@ -1,5 +1,7 @@
+import type { PartialSchema } from "@hatchifyjs/core"
 import type {
   FinalSchemas,
+  MutateOptions,
   Record,
   Resource,
   Subscription,
@@ -84,21 +86,34 @@ export function insert(
   }
 }
 
-/**
- * Notifies subscribers whenever a resource is created, updated, or deleted.
- */
-export function notifySubscribers(schemaName?: string): void {
-  // if no schemaName is provided, notify all subscribers for all schemas
-  if (!schemaName) {
-    for (const schemaName in store) {
-      notifySubscribers(schemaName)
-    }
-
-    return
-  }
-
+export function notifySchema(schemaName: string): void {
   for (const subscriber of store[schemaName].subscribers) {
-    subscriber([]) // todo, future: should notify with can-query-logic results
+    subscriber([])
+  }
+}
+
+export function notifySubscribers<
+  TSchemas extends globalThis.Record<string, PartialSchema>,
+  TSchemaName extends keyof TSchemas,
+>(
+  schemaName: TSchemaName | string,
+  notify?: MutateOptions<TSchemas>["notify"],
+): void {
+  if (notify == null || notify === true) {
+    // if notify omitted or true, notify subscribers for all schemas
+    for (const schemaName in store) {
+      notifySchema(schemaName)
+    }
+  } else if (notify === false) {
+    // notify subscribers for only the mutated schema
+    notifySchema(schemaName as string)
+  } else {
+    // notify specified schemas as well as the mutated schema
+    const toNotify = new Set([schemaName, ...notify] as string[])
+
+    toNotify.forEach((schemaName) => {
+      notifySchema(schemaName)
+    })
   }
 }
 

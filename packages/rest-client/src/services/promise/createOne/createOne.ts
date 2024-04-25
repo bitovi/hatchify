@@ -7,6 +7,7 @@ import type {
   GetSchemaFromName,
   RecordType,
   FlatCreateType,
+  MutateOptions,
 } from "../../types/index.js"
 import { notifySubscribers } from "../../store/index.js"
 import {
@@ -32,6 +33,7 @@ export const createOne = async <
     FlatCreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
     "__schema"
   >,
+  mutateOptions?: MutateOptions<TSchemas>,
 ): Promise<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
@@ -56,7 +58,7 @@ export const createOne = async <
     relationships: relationships, // does not need to be serialized! only ids, does not contain attribute values
   })
 
-  notifySubscribers()
+  notifySubscribers(schemaName, mutateOptions?.notify)
 
   // todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
   // @ts-expect-error
