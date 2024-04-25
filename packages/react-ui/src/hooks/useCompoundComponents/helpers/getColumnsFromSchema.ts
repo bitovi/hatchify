@@ -22,7 +22,7 @@ export function getColumnsFromSchema<
   const schema = finalSchemas[schemaName as string]
 
   const attributesDisplays = Object.entries(schema.attributes)
-    .filter(([, { control }]) => control.hidden !== true)
+    .filter(([, { control }]) => control.ui.hidden !== true)
     .map(([attributeName, { control }]) => {
       return getColumn<TSchemas, TSchemaName>({
         finalSchemas,

@@ -54,21 +54,41 @@ describe("finalizeControl", () => {
   it("handles ui", () => {
     expect(finalizeControl({ type: "String", ui: undefined }).ui).toEqual({
       enableCaseSensitiveContains: false,
+      hidden: false,
+      displayName: null,
+      maxDisplayLength: null,
     })
     expect(finalizeControl({ type: "String", ui: {} }).ui).toEqual({
       enableCaseSensitiveContains: false,
+      hidden: false,
+      displayName: null,
+      maxDisplayLength: null,
     })
     expect(
       finalizeControl({
         type: "String",
-        ui: { enableCaseSensitiveContains: false },
+        ui: {
+          enableCaseSensitiveContains: false,
+          displayName: "Test",
+          maxDisplayLength: 50,
+        },
       }).ui,
-    ).toEqual({ enableCaseSensitiveContains: false })
+    ).toEqual({
+      enableCaseSensitiveContains: false,
+      hidden: false,
+      displayName: "Test",
+      maxDisplayLength: 50,
+    })
     expect(
       finalizeControl({
         type: "String",
-        ui: { enableCaseSensitiveContains: true },
+        ui: { enableCaseSensitiveContains: true, hidden: true },
       }).ui,
-    ).toEqual({ enableCaseSensitiveContains: true })
+    ).toEqual({
+      enableCaseSensitiveContains: true,
+      hidden: true,
+      displayName: null,
+      maxDisplayLength: null,
+    })
   })
 })

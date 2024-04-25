@@ -31,11 +31,11 @@ export function getForeignKeyAttribute(
 
   if (dataType === "enumerate") {
     return enumerate({
-      hidden: true,
+      ui: { hidden: true },
       values: attribute.control.values,
       required,
     }).finalize()
   }
 
-  return dataTypes[dataType]({ hidden: true, required }).finalize()
+  return dataTypes[dataType]({ ui: { hidden: true }, required }).finalize()
 }

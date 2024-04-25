@@ -24,6 +24,7 @@ describe("datetime", () => {
           max: undefined,
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -151,9 +152,11 @@ describe("datetime", () => {
         },
         control: {
           type: "Date",
-          displayName: null,
-          hidden: false,
           readOnly: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           allowNull: true,
           min: -Infinity,
           max: Infinity,
@@ -195,6 +198,7 @@ describe("datetime", () => {
           max: undefined,
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -342,8 +346,7 @@ describe("datetime", () => {
         },
         control: {
           type: "Date",
-          displayName: null,
-          hidden: false,
+          ui: { displayName: null, hidden: false },
           readOnly: false,
           allowNull: false,
           min: -Infinity,
@@ -385,6 +388,7 @@ describe("datetime", () => {
           max: undefined,
           primary: true,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -532,8 +536,7 @@ describe("datetime", () => {
         },
         control: {
           type: "Date",
-          displayName: null,
-          hidden: false,
+          ui: { displayName: null, hidden: false },
           readOnly: false,
           allowNull: false,
           min: -Infinity,
@@ -575,6 +578,7 @@ describe("datetime", () => {
           max: undefined,
           primary: undefined,
           step: "day",
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -734,8 +738,7 @@ describe("datetime", () => {
         control: {
           type: "Date",
           allowNull: true,
-          displayName: null,
-          hidden: false,
+          ui: { displayName: null, hidden: false },
           readOnly: false,
           min: -Infinity,
           max: Infinity,
@@ -779,6 +782,7 @@ describe("datetime", () => {
           max: new Date("2023-01-01T00:00:00.000Z"),
           primary: undefined,
           step: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -951,8 +955,7 @@ describe("datetime", () => {
         },
         control: {
           type: "Date",
-          displayName: null,
-          hidden: false,
+          ui: { displayName: null, hidden: false },
           readOnly: false,
           allowNull: true,
           min: -Infinity,
@@ -995,6 +998,7 @@ describe("datetime", () => {
           primary: undefined,
           step: undefined,
           readOnly: true,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -1126,8 +1130,7 @@ describe("datetime", () => {
         },
         control: {
           type: "Date",
-          displayName: null,
-          hidden: false,
+          ui: { displayName: null, hidden: false },
           readOnly: true,
           allowNull: true,
           min: -Infinity,

@@ -15,15 +15,17 @@ Use [dateonly](./dateonly.md) for a date type without time.
 
 ## Parameters
 
-| key        | description                                                                                          |      type      | optional |   default   |
-| ---------- | ---------------------------------------------------------------------------------------------------- | :------------: | :------: | :---------: |
-| `default`  | The default value of the attribute. <br/> Example: `datetime({default: 2023-10-02T21:16:15.349Z})`   |     `Date`     |   Yes    | `undefined` |
-| `required` | If the attribute must be provided. <br/> Example: `datetime({required: true})`                       |   `Boolean`    |   Yes    |   `false`   |
-| `primary`  | If the attribute is a primary key. <br/> Example: `datetime({primary: true})`                        |   `Boolean`    |   Yes    |   `false`   |
-| `unique`   | If the attribute must be unique. <br/> Example: `datetime({unique: true})`                           |   `Boolean`    |   Yes    |   `false`   |
-| `max`      | The max date allowed. <br/> Example: `datetime({max: new Date()})`, `datetime({max: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
-| `min`      | The min date allowed. <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})` | `Date, number` |   Yes    | `undefined` |
-| `step`     | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`   |    `"day"`     |   Yes    | `undefined` |
+| key              | description                                                                                                                                     |      type      | optional |   default   |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | :------------: | :------: | :---------: |
+| `default`        | The default value of the attribute. <br/> Example: `datetime({default: 2023-10-02T21:16:15.349Z})`                                              |     `Date`     |   Yes    | `undefined` |
+| `required`       | If the attribute must be provided. <br/> Example: `datetime({required: true})`                                                                  |   `Boolean`    |   Yes    |   `false`   |
+| `primary`        | If the attribute is a primary key. <br/> Example: `datetime({primary: true})`                                                                   |   `Boolean`    |   Yes    |   `false`   |
+| `unique`         | If the attribute must be unique. <br/> Example: `datetime({unique: true})`                                                                      |   `Boolean`    |   Yes    |   `false`   |
+| `max`            | The max date allowed. <br/> Example: `datetime({max: new Date()})`, `datetime({max: 1696283660000})`                                            | `Date, number` |   Yes    | `undefined` |
+| `min`            | The min date allowed. <br/> Example: `datetime({min: new Date()})`, `datetime({min: 1696283660000})`                                            | `Date, number` |   Yes    | `undefined` |
+| `step`           | The spacing between dates in either milliseconds or "day" <br/> Example: `datetime({step: "day"})`                                              |    `"day"`     |   Yes    | `undefined` |
+| `ui.displayName` | The display name of the attribute. By default, the Camel Case attribute name will be used. <br/> Example: `datetime({displayName: "Due Date"})` |    `String`    |   Yes    |   `null`    |
+| `ui.hidden`      | If the attribute should be hidden in the UI. <br/> Example: `datetime({hidden: true})`                                                          |   `Boolean`    |   Yes    |   `false`   |
 
 ### 💾 Database Implications
 

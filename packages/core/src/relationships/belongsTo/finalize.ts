@@ -37,7 +37,12 @@ export function finalize(
           ...sourceAttributeValue,
           control: {
             ...sourceAttributeValue.control,
-            hidden: true,
+            ui: {
+              ...sourceAttributeValue.control.ui,
+              displayName: null,
+              hidden: true,
+              enableCaseSensitiveContains: false,
+            },
           },
         },
       },

@@ -9,6 +9,7 @@ describe("finalize", () => {
     Todo: {
       name: "Todo",
       id: uuid({ required: true, default: uuidv4 }).finalize(),
+      ui: {},
       attributes: {
         importance: integer({ min: 0 }).finalize(),
       },
@@ -17,6 +18,7 @@ describe("finalize", () => {
     User: {
       name: "User",
       id: uuid({ required: true, default: uuidv4 }).finalize(),
+      ui: {},
       attributes: {
         name: string().finalize(),
       },
@@ -37,7 +39,7 @@ describe("finalize", () => {
       schemas,
     )
 
-    expect(Todo.attributes.userId.control.hidden).toEqual(true)
+    expect(Todo.attributes.userId.control.ui.hidden).toEqual(true)
     expect(User.relationships?.todo).toEqual({
       type: "hasOne",
       targetSchema: "Todo",
@@ -83,7 +85,7 @@ describe("finalize", () => {
     )
 
     expect(User.attributes.managerId).toBeDefined()
-    expect(User.attributes.managerId.control.hidden).toEqual(true)
+    expect(User.attributes.managerId.control.ui.hidden).toEqual(true)
 
     expect(User.relationships?.manager).toEqual({
       type: "hasOne",

@@ -13,13 +13,15 @@ export const Todo = {
 
 ## Parameters
 
-| key        | description                                                                                       |      type      | optional |   default   |
-| ---------- | ------------------------------------------------------------------------------------------------- | :------------: | :------: | :---------: |
-| `default`  | The default value of the attribute. <br/> Example: `enumerate({default: "Pending", values:[...])` |    `String`    |   Yes    | `undefined` |
-| `primary`  | If the attribute is a primary key. <br/> Example: `enumerate({primary: true, values:[...])`       |   `Boolean`    |   Yes    |   `false`   |
-| `values`   | The options of the enum <br/> Example: `enumerate({values: ["Pending", "Failed", "Completed"]})`  | `String Array` |    No    |             |
-| `required` | If the attribute must be provided. <br/> Example: `enumerate({required: true, values:[...])`      |   `Boolean`    |   Yes    |   `false`   |
-| `unique`   | If the attribute must be unique. <br/> Example: `enumerate({unique: true, values:[...]})`         |   `Boolean`    |   Yes    |   `false`   |
+| key              | description                                                                                                                                                  |      type      | optional |   default   |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------: | :------: | :---------: |
+| `default`        | The default value of the attribute. <br/> Example: `enumerate({default: "Pending", values:[...])`                                                            |    `String`    |   Yes    | `undefined` |
+| `primary`        | If the attribute is a primary key. <br/> Example: `enumerate({primary: true, values:[...])`                                                                  |   `Boolean`    |   Yes    |   `false`   |
+| `values`         | The options of the enum <br/> Example: `enumerate({values: ["Pending", "Failed", "Completed"]})`                                                             | `String Array` |    No    |             |
+| `required`       | If the attribute must be provided. <br/> Example: `enumerate({required: true, values:[...])`                                                                 |   `Boolean`    |   Yes    |   `false`   |
+| `unique`         | If the attribute must be unique. <br/> Example: `enumerate({unique: true, values:[...]})`                                                                    |   `Boolean`    |   Yes    |   `false`   |
+| `ui.displayName` | The display name of the attribute. By default, the Camel Case attribute name will be used. <br/> Example: `enumerate({displayName: "Status"}, values:[...])` |    `String`    |   Yes    |   `null`    |
+| `ui.hidden`      | If the attribute should be hidden in the UI. <br/> Example: `enumerate({hidden: true, values:[...]})`                                                        |   `Boolean`    |   Yes    |   `false`   |
 
 ### 💾 Database Implications
 

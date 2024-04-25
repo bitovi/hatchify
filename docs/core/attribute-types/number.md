@@ -13,16 +13,18 @@ export const Todo = {
 
 ## Parameters
 
-| key             | description                                                                        |   type    | optional |        default        |
-| --------------- | ---------------------------------------------------------------------------------- | :-------: | :------: | :-------------------: |
-| `unique`        | If the value must be unqiue. <br/> Example: `number({unique: true})`               | `Boolean` |   Yes    |        `false`        |
-| `default`       | The default value of the attribute. <br/> Example: `number({default: 0})`          | `Number`  |   Yes    |        `null`         |
-| `required`      | If the attribute must be provided. <br/> Example: `number({required: true})`       | `Boolean` |   Yes    |        `false`        |
-| `primary`       | If the attribute is a primary key. <br/> Example: `number({primary: true})`        | `Boolean` |   Yes    |        `false`        |
-| `step`          | The granularity the value must adhere to. <br/> Example: `number({step: 5})`       | `Number`  |   Yes    |          `0`          |
-| `max`           | The maximum value allowed. <br/> Example: `number({max: 100})`                     | `Number`  |   Yes    | `Number.MAX_VALUE` 🛑 |
-| `min`           | The minimum value allowed. <br/> Example: `number({min: -100})`                    | `Number`  |   Yes    | `Number.MIN_VALUE` 🛑 |
-| `autoIncrement` | If the value should be incremented. <br/> Example: `number({autoIncrement: true})` | `Boolean` |   Yes    |        `false`        |
+| key              | description                                                                                                                                     |   type    | optional |        default        |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | :-------: | :------: | :-------------------: |
+| `unique`         | If the value must be unqiue. <br/> Example: `number({unique: true})`                                                                            | `Boolean` |   Yes    |        `false`        |
+| `default`        | The default value of the attribute. <br/> Example: `number({default: 0})`                                                                       | `Number`  |   Yes    |        `null`         |
+| `required`       | If the attribute must be provided. <br/> Example: `number({required: true})`                                                                    | `Boolean` |   Yes    |        `false`        |
+| `primary`        | If the attribute is a primary key. <br/> Example: `number({primary: true})`                                                                     | `Boolean` |   Yes    |        `false`        |
+| `step`           | The granularity the value must adhere to. <br/> Example: `number({step: 5})`                                                                    | `Number`  |   Yes    |          `0`          |
+| `max`            | The maximum value allowed. <br/> Example: `number({max: 100})`                                                                                  | `Number`  |   Yes    | `Number.MAX_VALUE` 🛑 |
+| `min`            | The minimum value allowed. <br/> Example: `number({min: -100})`                                                                                 | `Number`  |   Yes    | `Number.MIN_VALUE` 🛑 |
+| `autoIncrement`  | If the value should be incremented. <br/> Example: `number({autoIncrement: true})`                                                              | `Boolean` |   Yes    |        `false`        |
+| `ui.displayName` | The display name of the attribute. By default, the Camel Case attribute name will be used. <br/> Example: `number({displayName: "Confidence"})` | `String`  |   Yes    |        `null`         |
+| `ui.hidden`      | If the attribute should be hidden in the UI. <br/> Example: `number({hidden: true})`                                                            | `Boolean` |   Yes    |        `false`        |
 
 ### 💾 Database Implications
 

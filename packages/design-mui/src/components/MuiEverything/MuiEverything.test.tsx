@@ -2,6 +2,7 @@ import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import { assembler, string } from "@hatchifyjs/core"
+import type { PartialSchema } from "@hatchifyjs/core"
 import { default as MuiEverything } from "./MuiEverything.js"
 
 describe("components/MuiList", () => {
@@ -16,13 +17,13 @@ describe("components/MuiList", () => {
   const partialSchemas = {
     User: {
       name: "User",
-      displayAttribute: "firstName",
+      ui: { displayAttribute: "firstName" },
       attributes: {
         firstName: string(),
         lastName: string(),
       },
     },
-  }
+  } satisfies Record<string, PartialSchema>
 
   const finalSchemas = assembler(partialSchemas)
 

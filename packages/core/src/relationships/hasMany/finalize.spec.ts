@@ -10,6 +10,7 @@ describe("finalize", () => {
   const schemas: Record<string, SemiFinalSchema> = {
     Todo: {
       name: "Todo",
+      ui: {},
       id: uuid({ required: true, default: uuidv4 }).finalize(),
       attributes: {
         importance: integer({ min: 0 }).finalize(),
@@ -18,6 +19,7 @@ describe("finalize", () => {
     },
     User: {
       name: "User",
+      ui: {},
       id: uuid({ required: true, default: uuidv4 }).finalize(),
       attributes: {
         name: string().finalize(),
@@ -40,7 +42,7 @@ describe("finalize", () => {
       schemas,
     )
 
-    expect(Todo.attributes.userId.control.hidden).toEqual(true)
+    expect(Todo.attributes.userId.control.ui.hidden).toEqual(true)
     expect(User.relationships?.todos).toEqual({
       type: "hasMany",
       targetSchema: "Todo",
@@ -88,7 +90,7 @@ describe("finalize", () => {
     )
 
     expect(User.attributes.managerId).toBeDefined()
-    expect(User.attributes.managerId.control.hidden).toEqual(true)
+    expect(User.attributes.managerId.control.ui.hidden).toEqual(true)
 
     expect(User.relationships?.employees).toEqual({
       type: "hasMany",

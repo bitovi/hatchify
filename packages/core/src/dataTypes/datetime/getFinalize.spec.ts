@@ -10,6 +10,7 @@ describe("getFinalize", () => {
         min: undefined,
         primary: undefined,
         type: "Date",
+        ui: {},
       },
       orm: {
         sequelize: {

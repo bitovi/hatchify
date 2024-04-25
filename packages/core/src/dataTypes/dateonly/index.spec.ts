@@ -23,6 +23,7 @@ describe("dateonly", () => {
           min: undefined,
           max: undefined,
           primary: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -132,8 +133,10 @@ describe("dateonly", () => {
         },
         control: {
           type: "Dateonly",
-          displayName: null,
-          hidden: false,
+          ui: {
+            hidden: false,
+            displayName: null,
+          },
           readOnly: false,
           allowNull: true,
           min: -Infinity,
@@ -175,6 +178,7 @@ describe("dateonly", () => {
           min: undefined,
           max: undefined,
           primary: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -242,8 +246,10 @@ describe("dateonly", () => {
         },
         control: {
           type: "Dateonly",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: false,
           allowNull: false,
           min: -Infinity,
@@ -284,6 +290,7 @@ describe("dateonly", () => {
           min: undefined,
           max: undefined,
           primary: true,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -413,8 +420,10 @@ describe("dateonly", () => {
         },
         control: {
           type: "Dateonly",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: false,
           allowNull: false,
           min: -Infinity,
@@ -456,6 +465,7 @@ describe("dateonly", () => {
           max: undefined,
           primary: undefined,
           step: "day",
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -566,8 +576,10 @@ describe("dateonly", () => {
         control: {
           type: "Dateonly",
           allowNull: true,
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: false,
           min: -Infinity,
           max: Infinity,
@@ -610,6 +622,7 @@ describe("dateonly", () => {
           min: -Infinity,
           max: "2023-01-01",
           primary: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -676,8 +689,10 @@ describe("dateonly", () => {
         },
         control: {
           type: "Dateonly",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: false,
           allowNull: true,
           min: -Infinity,
@@ -719,6 +734,10 @@ describe("dateonly", () => {
           max: undefined,
           primary: undefined,
           readOnly: true,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+          },
         },
         finalize: expect.any(Function),
       })
@@ -834,8 +853,6 @@ describe("dateonly", () => {
         },
         control: {
           type: "Dateonly",
-          displayName: null,
-          hidden: false,
           readOnly: true,
           allowNull: true,
           min: -Infinity,
@@ -843,6 +860,10 @@ describe("dateonly", () => {
           primary: false,
           default: null,
           step: 0,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),

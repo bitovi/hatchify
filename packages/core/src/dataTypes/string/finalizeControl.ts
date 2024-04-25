@@ -13,13 +13,13 @@ export function finalizeControl(
     primary: !!props.primary,
     default: props.default ?? null,
     regex: props.regex ?? /(.*?)/,
-    maxRenderLength: props?.maxRenderLength ?? null,
-    displayName: props.displayName ?? null,
-    hidden: props.hidden ?? false,
     readOnly: props.readOnly ?? false,
     ui: {
       enableCaseSensitiveContains:
         props.ui?.enableCaseSensitiveContains ?? false,
+      maxDisplayLength: props?.ui?.maxDisplayLength ?? null,
+      displayName: props?.ui?.displayName ?? null,
+      hidden: props?.ui?.hidden ?? false,
     },
   }
 }

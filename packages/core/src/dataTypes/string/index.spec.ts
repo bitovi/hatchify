@@ -19,11 +19,11 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: undefined,
           allowNull: undefined,
           min: undefined,
           max: undefined,
           primary: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -103,8 +103,12 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+          },
           readOnly: false,
           allowNull: true,
           min: 0,
@@ -112,10 +116,6 @@ describe("string", () => {
           primary: false,
           default: null,
           regex: /(.*?)/,
-          maxRenderLength: null,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -145,7 +145,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: undefined,
+          ui: {},
           allowNull: false,
           allowNullInfer: false,
           min: undefined,
@@ -246,8 +246,6 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
           readOnly: false,
           allowNull: false,
           min: 0,
@@ -255,9 +253,11 @@ describe("string", () => {
           primary: false,
           default: null,
           regex: /(.*?)/,
-          maxRenderLength: null,
           ui: {
             enableCaseSensitiveContains: false,
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
           },
         },
         setClientPropertyValue: expect.any(Function),
@@ -288,7 +288,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: undefined,
+          ui: {},
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -388,8 +388,12 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+          },
           readOnly: false,
           allowNull: false,
           min: 0,
@@ -397,10 +401,6 @@ describe("string", () => {
           primary: true,
           default: null,
           regex: /(.*?)/,
-          maxRenderLength: null,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -430,11 +430,11 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: undefined,
           allowNull: undefined,
           min: 1,
           max: 10,
           primary: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -532,8 +532,12 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+          },
           readOnly: false,
           allowNull: true,
           min: 1,
@@ -541,10 +545,6 @@ describe("string", () => {
           primary: false,
           default: null,
           regex: /(.*?)/,
-          maxRenderLength: null,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -574,7 +574,7 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: undefined,
+          ui: {},
           allowNull: undefined,
           min: undefined,
           max: undefined,
@@ -639,8 +639,12 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+          },
           readOnly: false,
           allowNull: true,
           min: 0,
@@ -648,10 +652,6 @@ describe("string", () => {
           primary: false,
           default: null,
           regex: /^\d+$/,
-          maxRenderLength: null,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -687,6 +687,7 @@ describe("string", () => {
           max: undefined,
           primary: undefined,
           readOnly: true,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -772,8 +773,12 @@ describe("string", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+            maxDisplayLength: null,
+          },
           readOnly: true,
           allowNull: true,
           min: 0,
@@ -781,10 +786,6 @@ describe("string", () => {
           primary: false,
           default: null,
           regex: /(.*?)/,
-          maxRenderLength: null,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),

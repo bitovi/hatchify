@@ -19,8 +19,6 @@ describe("finalizeSchema", () => {
       id: {
         name: 'uuid({"required":true})',
         control: {
-          displayName: null,
-          hidden: false,
           readOnly: false,
           allowNull: false,
           max: 36,
@@ -31,6 +29,8 @@ describe("finalizeSchema", () => {
           type: "String",
           ui: {
             enableCaseSensitiveContains: false,
+            displayName: null,
+            hidden: false,
           },
         },
         orm: {
@@ -51,12 +51,15 @@ describe("finalizeSchema", () => {
         setORMPropertyValue: expect.any(Function),
         setORMQueryFilterValue: expect.any(Function),
       },
+      ui: {},
       attributes: {
         importance: {
           name: 'integer({"min":0})',
           control: {
-            displayName: null,
-            hidden: false,
+            ui: {
+              displayName: null,
+              hidden: false,
+            },
             readOnly: false,
             allowNull: true,
             max: Infinity,

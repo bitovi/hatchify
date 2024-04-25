@@ -22,7 +22,7 @@ The `uuid` type will create a sequelize [DataTypes.UUID](https://sequelize.org/d
 
 ## Form Behavior 🛑
 
-`uuid()` will produce a `<button>` that when clicked, will genereate a UUID in a `<input type='text'/>` control. Users can also provide their
+`uuid()` will produce a `<button>` that when clicked, will generate a UUID in a `<input type='text'/>` control. Users can also provide their
 own UUID.
 
 <details>
