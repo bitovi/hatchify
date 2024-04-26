@@ -152,10 +152,6 @@ const SalesPerson = {
 
 Optionally set `namespace` when using Postgres to use [Postgres Schemas](https://www.postgresql.org/docs/current/ddl-schemas.html) which are like namespaces for tables. The `namespace` must be written as singular PascalCase as follows:
 
-### readOnly
-
-Optionally set `readOnly` to create only GET middleware for this schema. This is useful when data is populated from somewhere else or when pointing the schema to a SQL view.
-
 ```ts
 const AcmeCorp_SalesPerson = {
   name: "SalesPerson",
