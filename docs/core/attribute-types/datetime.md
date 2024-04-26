@@ -18,6 +18,7 @@ Use [dateonly](./dateonly.md) for a date type without time.
 | key              | description                                                                                                                                     |      type      | optional |   default   |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | :------------: | :------: | :---------: |
 | `default`        | The default value of the attribute. <br/> Example: `datetime({default: 2023-10-02T21:16:15.349Z})`                                              |     `Date`     |   Yes    | `undefined` |
+| `readOnly`       | If the attribute cannot be updated.                                                                                                             |   `Boolean`    |   Yes    |   `false`   |
 | `required`       | If the attribute must be provided. <br/> Example: `datetime({required: true})`                                                                  |   `Boolean`    |   Yes    |   `false`   |
 | `primary`        | If the attribute is a primary key. <br/> Example: `datetime({primary: true})`                                                                   |   `Boolean`    |   Yes    |   `false`   |
 | `unique`         | If the attribute must be unique. <br/> Example: `datetime({unique: true})`                                                                      |   `Boolean`    |   Yes    |   `false`   |

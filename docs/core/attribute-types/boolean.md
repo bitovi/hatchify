@@ -16,6 +16,7 @@ export const Todo = {
 | key              | description                                                                                                                                       |   type    | optional | default |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | :-------: | :------: | :-----: |
 | `default`        | The default value of the attribute. <br/> Example: `boolean({default: true})`                                                                     | `Boolean` |   Yes    |         |
+| `readOnly`       | If the attribute cannot be updated.                                                                                                               | `Boolean` |   Yes    | `false` |
 | `required`       | If the attribute must be provided. <br/> Example: `boolean({required: true})`                                                                     | `Boolean` |   Yes    | `false` |
 | `ui.displayName` | The display name of the attribute. By default, the Camel Case attribute name will be used. <br/> Example: `boolean({displayName: "Is Complete"})` | `String`  |   Yes    | `null`  |
 | `ui.hidden`      | If the attribute should be hidden in the UI. <br/> Example: `boolean({hidden: true})`                                                             | `Boolean` |   Yes    | `false` |

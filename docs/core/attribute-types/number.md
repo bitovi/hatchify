@@ -17,6 +17,7 @@ export const Todo = {
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | :-------: | :------: | :-------------------: |
 | `unique`         | If the value must be unqiue. <br/> Example: `number({unique: true})`                                                                            | `Boolean` |   Yes    |        `false`        |
 | `default`        | The default value of the attribute. <br/> Example: `number({default: 0})`                                                                       | `Number`  |   Yes    |        `null`         |
+| `readOnly`       | If the attribute cannot be updated.                                                                                                             | `Boolean` |   Yes    |        `false`        |
 | `required`       | If the attribute must be provided. <br/> Example: `number({required: true})`                                                                    | `Boolean` |   Yes    |        `false`        |
 | `primary`        | If the attribute is a primary key. <br/> Example: `number({primary: true})`                                                                     | `Boolean` |   Yes    |        `false`        |
 | `step`           | The granularity the value must adhere to. <br/> Example: `number({step: 5})`                                                                    | `Number`  |   Yes    |          `0`          |

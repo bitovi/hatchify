@@ -18,6 +18,7 @@ export const Todo = {
 | `default`                        | The default value of the attribute. <br/> Example: `string({default: "USA"})`                                                              | `String`  |   Yes    |         |
 | `max`                            | The maximum number of characters allowed. <br/> Example: `string({max: 1023})`                                                             | `Number`  |   Yes    |  `255`  |
 | `min`                            | The maximum number of characters allowed. <br/> Example: `string({min: 5})`                                                                | `Number`  |   Yes    |   `0`   |
+| `readOnly`                       | If the attribute cannot be updated.                                                                                                        | `Boolean` |   Yes    | `false` |
 | `required`                       | If the attribute must be provided.                                                                                                         | `Boolean` |   Yes    | `false` |
 | `ui.enableCaseSensitiveContains` | Adds an option to filter results with case sensitivity.                                                                                    | `Boolean` |   Yes    | `false` |
 | `ui.displayName`                 | The display name of the attribute. By default, the Camel Case attribute name will be used. <br/> Example: `string({displayName: "Name"})`  | `String`  |   Yes    | `null`  |
