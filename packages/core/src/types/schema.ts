@@ -34,31 +34,32 @@ export class HatchifyInvalidSchemaError extends Error {
   }
 }
 
+export interface HatchifyBaseUIOptions {
+  displayName?: string | null
+  enableCaseSensitiveContains?: boolean
+  hidden?: boolean
+}
+
 export interface PartialDataTypeProps<
   PrimitiveType,
   TRequired extends boolean,
 > {
-  hidden?: boolean
   readOnly?: boolean
   primary?: boolean
   required?: TRequired // @todo HATCH-417
   default?: PrimitiveType | (() => PrimitiveType) | null
   unique?: boolean
-  displayName?: string
-  ui?: {
-    enableCaseSensitiveContains?: boolean
-  }
+  ui?: HatchifyBaseUIOptions
 }
 
 export interface PartialControlType<PrimitiveType, TRequired extends boolean> {
   type: ControlTypes
   allowNullInfer: TRequired extends true ? false : true // @todo HATCH-417
   allowNull?: boolean
-  hidden?: boolean
   readOnly?: boolean
   primary?: boolean
   default?: PrimitiveType | (() => PrimitiveType) | null
-  displayName?: string | null
+  ui?: HatchifyBaseUIOptions
 }
 
 export interface PartialSequelizeDataType<ArgsType, PrimitiveType> {

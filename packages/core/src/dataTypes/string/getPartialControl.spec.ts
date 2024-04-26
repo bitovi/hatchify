@@ -30,7 +30,7 @@ describe("getPartialControl", () => {
   })
 
   it("handles ui", () => {
-    expect(getPartialControl({ ui: undefined }).ui).toBeUndefined()
+    expect(getPartialControl({ ui: undefined }).ui).toEqual({})
     expect(getPartialControl({ ui: {} }).ui).toEqual({})
     expect(
       getPartialControl({ ui: { enableCaseSensitiveContains: undefined } }).ui,

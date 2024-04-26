@@ -23,7 +23,7 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(boolean({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(boolean({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
         getForeignKeyAttribute(
@@ -32,14 +32,14 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(boolean({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(boolean({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
-        getForeignKeyAttribute(boolean({ hidden: true }).finalize()),
+        getForeignKeyAttribute(boolean({ ui: { hidden: true } }).finalize()),
       ),
-    ).toBe(JSON.stringify(boolean({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(boolean({ ui: { hidden: true } }).finalize()))
     expect(JSON.stringify(getForeignKeyAttribute(boolean().finalize()))).toBe(
-      JSON.stringify(boolean({ hidden: true }).finalize()),
+      JSON.stringify(boolean({ ui: { hidden: true } }).finalize()),
     )
   })
 
@@ -54,7 +54,7 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(dateonly({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(dateonly({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
         getForeignKeyAttribute(
@@ -63,14 +63,14 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(dateonly({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(dateonly({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
-        getForeignKeyAttribute(dateonly({ hidden: true }).finalize()),
+        getForeignKeyAttribute(dateonly({ ui: { hidden: true } }).finalize()),
       ),
-    ).toBe(JSON.stringify(dateonly({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(dateonly({ ui: { hidden: true } }).finalize()))
     expect(JSON.stringify(getForeignKeyAttribute(dateonly().finalize()))).toBe(
-      JSON.stringify(dateonly({ hidden: true }).finalize()),
+      JSON.stringify(dateonly({ ui: { hidden: true } }).finalize()),
     )
   })
 
@@ -85,7 +85,7 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(datetime({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(datetime({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
         getForeignKeyAttribute(
@@ -94,14 +94,14 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(datetime({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(datetime({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
-        getForeignKeyAttribute(datetime({ hidden: true }).finalize()),
+        getForeignKeyAttribute(datetime({ ui: { hidden: true } }).finalize()),
       ),
-    ).toBe(JSON.stringify(datetime({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(datetime({ ui: { hidden: true } }).finalize()))
     expect(JSON.stringify(getForeignKeyAttribute(datetime().finalize()))).toBe(
-      JSON.stringify(datetime({ hidden: true }).finalize()),
+      JSON.stringify(datetime({ ui: { hidden: true } }).finalize()),
     )
   })
 
@@ -119,7 +119,10 @@ describe("getForeignKeyAttribute", () => {
       ),
     ).toBe(
       JSON.stringify(
-        enumerate({ hidden: true, values: ["one", "two", "three"] }).finalize(),
+        enumerate({
+          ui: { hidden: true },
+          values: ["one", "two", "three"],
+        }).finalize(),
       ),
     )
     expect(
@@ -133,7 +136,10 @@ describe("getForeignKeyAttribute", () => {
       ),
     ).toBe(
       JSON.stringify(
-        enumerate({ hidden: true, values: ["one", "two", "three"] }).finalize(),
+        enumerate({
+          ui: { hidden: true },
+          values: ["one", "two", "three"],
+        }).finalize(),
       ),
     )
     expect(
@@ -141,13 +147,16 @@ describe("getForeignKeyAttribute", () => {
         getForeignKeyAttribute(
           enumerate({
             values: ["one", "two", "three"],
-            hidden: true,
+            ui: { hidden: true },
           }).finalize(),
         ),
       ),
     ).toBe(
       JSON.stringify(
-        enumerate({ hidden: true, values: ["one", "two", "three"] }).finalize(),
+        enumerate({
+          ui: { hidden: true },
+          values: ["one", "two", "three"],
+        }).finalize(),
       ),
     )
   })
@@ -163,7 +172,7 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(integer({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(integer({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
         getForeignKeyAttribute(
@@ -172,14 +181,14 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(integer({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(integer({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
-        getForeignKeyAttribute(integer({ hidden: true }).finalize()),
+        getForeignKeyAttribute(integer({ ui: { hidden: true } }).finalize()),
       ),
-    ).toBe(JSON.stringify(integer({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(integer({ ui: { hidden: true } }).finalize()))
     expect(JSON.stringify(getForeignKeyAttribute(integer().finalize()))).toBe(
-      JSON.stringify(integer({ hidden: true }).finalize()),
+      JSON.stringify(integer({ ui: { hidden: true } }).finalize()),
     )
   })
 
@@ -194,7 +203,7 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(number({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(number({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
         getForeignKeyAttribute(
@@ -203,14 +212,14 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(number({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(number({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
-        getForeignKeyAttribute(number({ hidden: true }).finalize()),
+        getForeignKeyAttribute(number({ ui: { hidden: true } }).finalize()),
       ),
-    ).toBe(JSON.stringify(number({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(number({ ui: { hidden: true } }).finalize()))
     expect(JSON.stringify(getForeignKeyAttribute(number().finalize()))).toBe(
-      JSON.stringify(number({ hidden: true }).finalize()),
+      JSON.stringify(number({ ui: { hidden: true } }).finalize()),
     )
   })
 
@@ -225,7 +234,7 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(string({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(string({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
         getForeignKeyAttribute(
@@ -234,14 +243,14 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(string({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(string({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
-        getForeignKeyAttribute(string({ hidden: true }).finalize()),
+        getForeignKeyAttribute(string({ ui: { hidden: true } }).finalize()),
       ),
-    ).toBe(JSON.stringify(string({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(string({ ui: { hidden: true } }).finalize()))
     expect(JSON.stringify(getForeignKeyAttribute(string().finalize()))).toBe(
-      JSON.stringify(string({ hidden: true }).finalize()),
+      JSON.stringify(string({ ui: { hidden: true } }).finalize()),
     )
   })
 
@@ -256,7 +265,7 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(text({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(text({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
         getForeignKeyAttribute(
@@ -265,12 +274,14 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(text({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(text({ ui: { hidden: true } }).finalize()))
     expect(
-      JSON.stringify(getForeignKeyAttribute(text({ hidden: true }).finalize())),
-    ).toBe(JSON.stringify(text({ hidden: true }).finalize()))
+      JSON.stringify(
+        getForeignKeyAttribute(text({ ui: { hidden: true } }).finalize()),
+      ),
+    ).toBe(JSON.stringify(text({ ui: { hidden: true } }).finalize()))
     expect(JSON.stringify(getForeignKeyAttribute(text().finalize()))).toBe(
-      JSON.stringify(text({ hidden: true }).finalize()),
+      JSON.stringify(text({ ui: { hidden: true } }).finalize()),
     )
   })
 
@@ -285,7 +296,7 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(uuid({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(uuid({ ui: { hidden: true } }).finalize()))
     expect(
       JSON.stringify(
         getForeignKeyAttribute(
@@ -294,12 +305,14 @@ describe("getForeignKeyAttribute", () => {
           }).finalize(),
         ),
       ),
-    ).toBe(JSON.stringify(uuid({ hidden: true }).finalize()))
+    ).toBe(JSON.stringify(uuid({ ui: { hidden: true } }).finalize()))
     expect(
-      JSON.stringify(getForeignKeyAttribute(uuid({ hidden: true }).finalize())),
-    ).toBe(JSON.stringify(uuid({ hidden: true }).finalize()))
+      JSON.stringify(
+        getForeignKeyAttribute(uuid({ ui: { hidden: true } }).finalize()),
+      ),
+    ).toBe(JSON.stringify(uuid({ ui: { hidden: true } }).finalize()))
     expect(JSON.stringify(getForeignKeyAttribute(uuid().finalize()))).toBe(
-      JSON.stringify(uuid({ hidden: true }).finalize()),
+      JSON.stringify(uuid({ ui: { hidden: true } }).finalize()),
     )
   })
 })

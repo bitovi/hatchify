@@ -11,6 +11,7 @@ describe("getFinalize", () => {
         primary: undefined,
         type: "enum",
         values,
+        ui: {},
       },
       orm: {
         sequelize: {

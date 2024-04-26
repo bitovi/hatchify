@@ -24,7 +24,10 @@ export function getPartialControl<
     primary: props?.primary,
     default: props?.default,
     values: props.values,
-    displayName: props?.displayName,
     readOnly: props?.readOnly,
+    ui: {
+      displayName: props?.ui?.displayName,
+      hidden: props?.ui?.hidden,
+    },
   }
 }

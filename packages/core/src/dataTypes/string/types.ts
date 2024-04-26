@@ -1,18 +1,21 @@
 import type {
+  HatchifyBaseUIOptions,
   PartialControlType,
   PartialDataTypeProps,
   PartialSequelizeDataType,
 } from "../../types/index.js"
+
+export interface HatchifyStringUIOptions extends HatchifyBaseUIOptions {
+  maxDisplayLength?: number | null
+  enableCaseSensitiveContains?: boolean
+}
 
 export interface PartialStringProps<TRequired extends boolean>
   extends PartialDataTypeProps<string, TRequired> {
   min?: number
   max?: number
   regex?: RegExp
-  maxRenderLength?: number
-  ui?: {
-    enableCaseSensitiveContains?: boolean
-  }
+  ui?: HatchifyStringUIOptions
 }
 
 export interface PartialStringControlType<TRequired extends boolean>
@@ -21,10 +24,7 @@ export interface PartialStringControlType<TRequired extends boolean>
   min?: number
   max?: number
   regex?: RegExp
-  maxRenderLength?: number | null
-  ui?: {
-    enableCaseSensitiveContains?: boolean
-  }
+  ui?: HatchifyStringUIOptions
 }
 
 export interface PartialStringORM {

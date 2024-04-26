@@ -13,13 +13,17 @@ export const Todo = {
 
 ## Parameters
 
-| key                              | description                                                                     |   type    | optional | default |
-| -------------------------------- | ------------------------------------------------------------------------------- | :-------: | :------: | :-----: |
-| `default`                        | The default value of the attribute. <br/> Example: `text({default: 'no text'})` | `String`  |   Yes    |         |
-| `required`                       | If the attribute must be provided. <br/> Example: `text({required: true})`      | `Boolean` |   Yes    | `false` |
-| `primary`                        | The attribute is a primary key. <br/> Example: `text({primary: true})`          | `Boolean` |   Yes    | `false` |
-| `unique`                         | The attribute must be unique. <br/> Example: `text({unique: true})`             | `Boolean` |   Yes    | `false` |
-| `ui.enableCaseSensitiveContains` | Adds an option to filter results with case sensitivity.                         | `Boolean` |   Yes    | `false` |
+| key                              | description                                                                                                                                    |   type    | optional | default |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | :-------: | :------: | :-----: |
+| `default`                        | The default value of the attribute. <br/> Example: `text({default: 'no text'})`                                                                | `String`  |   Yes    |         |
+| `readOnly`                       | If the attribute cannot be updated.                                                                                                            | `Boolean` |   Yes    | `false` |
+| `required`                       | If the attribute must be provided. <br/> Example: `text({required: true})`                                                                     | `Boolean` |   Yes    | `false` |
+| `primary`                        | The attribute is a primary key. <br/> Example: `text({primary: true})`                                                                         | `Boolean` |   Yes    | `false` |
+| `unique`                         | The attribute must be unique. <br/> Example: `text({unique: true})`                                                                            | `Boolean` |   Yes    | `false` |
+| `ui.enableCaseSensitiveContains` | Adds an option to filter results with case sensitivity.                                                                                        | `Boolean` |   Yes    | `false` |
+| `ui.displayName`                 | The display name of the attribute. By default, the Camel Case attribute name will be used. <br/> Example: `text({displayName: "Description"})` | `String`  |   Yes    | `null`  |
+| `ui.maxDisplayLength`            | The maximum number of characters to display in the UI. By default, there is no max length. <br/> Example: `text({maxDisplayLength: 50})`       | `Number`  |   Yes    | `null`  |
+| `ui.hidden`                      | If the attribute should be hidden in the UI. <br/> Example: `text({hidden: true})`                                                             | `Boolean` |   Yes    | `false` |
 
 ### 💾 Database Implications
 
@@ -82,7 +86,7 @@ todo.notes //-> string or null
 
 The text will be presented in the data grid. If the value is `null`, no value will be presented in the data grid.
 
-To provide better table behavior for columns with large amounts of text the `maxDisplayLength` property can also be provided. This will truncate oversized text, appending it with an ellipsis. The unabridged text will be available in a pop over. 🛑
+To provide better table behavior for columns with large amounts of text the `ui.maxDisplayLength` property can also be provided. This will truncate oversized text, appending it with an ellipsis. The unabridged text will be available in a pop over. 🛑
 
 ![Data Grid Example](../../attachments/text-grid.png)
 

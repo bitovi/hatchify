@@ -145,6 +145,24 @@ const SalesPerson = {
 
 - Creates a table `acme_sales_people`.
 
+### readOnly
+
+Optionally set `readOnly` to create only GET middleware for this schema. This is useful when data is populated from somewhere else or when pointing the schema to a SQL view.
+
+```ts
+const SalesPerson = {
+  name: "SalesPerson",
+  readOnly: true, // 👀
+  attributes: {
+    firstName: string(),
+  },
+} satisfies PartialSchema
+```
+
+### ↔️ API Implications
+
+- Prevent creation of the create/update/delete middleware.
+
 ## namespace (Postgres only)
 
 Optionally set `namespace` when using Postgres to use [Postgres Schemas](https://www.postgresql.org/docs/current/ddl-schemas.html) which are like namespaces for tables. The `namespace` must be written as singular PascalCase as follows:

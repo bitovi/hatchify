@@ -24,6 +24,7 @@ describe("enumerate", () => {
           allowNull: undefined,
           primary: undefined,
           values,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -132,8 +133,10 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: false,
           allowNull: true,
           primary: false,
@@ -172,6 +175,7 @@ describe("enumerate", () => {
           allowNullInfer: false,
           primary: undefined,
           values,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -296,8 +300,10 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: false,
           allowNull: false,
           primary: false,
@@ -335,6 +341,7 @@ describe("enumerate", () => {
           allowNull: undefined,
           primary: true,
           values,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -459,8 +466,10 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: false,
           allowNull: false,
           primary: true,
@@ -499,6 +508,7 @@ describe("enumerate", () => {
           primary: undefined,
           values,
           readOnly: true,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -613,8 +623,10 @@ describe("enumerate", () => {
         },
         control: {
           type: "enum",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: true,
           allowNull: true,
           primary: false,

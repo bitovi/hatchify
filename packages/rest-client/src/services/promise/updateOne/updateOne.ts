@@ -8,6 +8,7 @@ import type {
   GetSchemaFromName,
   RecordType,
   FlatUpdateType,
+  MutateOptions,
 } from "../../types/index.js"
 import { notifySubscribers } from "../../store/index.js"
 import {
@@ -33,6 +34,7 @@ export const updateOne = async <
     FlatUpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
     "__schema"
   >,
+  mutateOptions?: MutateOptions<TSchemas>,
 ): Promise<RecordType<TSchemas, GetSchemaFromName<TSchemas, TSchemaName>>> => {
   if (!schemaNameIsString(schemaName)) {
     throw new SchemaNameNotStringError(schemaName)
@@ -60,7 +62,7 @@ export const updateOne = async <
     relationships: relationships || undefined, // does not need to be serialized! only ids, does not contain attribute values
   })
 
-  notifySubscribers()
+  notifySubscribers(schemaName, mutateOptions?.notify)
 
   // todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
   // @ts-expect-error

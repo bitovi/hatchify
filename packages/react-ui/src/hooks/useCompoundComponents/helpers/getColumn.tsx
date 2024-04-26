@@ -41,7 +41,7 @@ export function getColumn<
   const isAdditional = control == null
   const label: string = labelProp || formatFieldAsLabel(field)
   const displayName: string =
-    control?.displayName || camelCaseToTitleCase(label)
+    control?.ui?.displayName || camelCaseToTitleCase(label)
 
   const column: HatchifyColumn = {
     sortable:

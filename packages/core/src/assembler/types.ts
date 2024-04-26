@@ -107,7 +107,9 @@ export interface PartialSchema<
   namespace?: string
   pluralName?: string
   tableName?: string
-  displayAttribute?: string
+  ui?: {
+    displayAttribute?: string
+  }
   id?: PartialAttributeOptions
   attributes: TAttributes
   relationships?: Record<string, PartialRelationship>
@@ -179,7 +181,9 @@ export interface FinalSchema {
   namespace?: string
   pluralName?: string
   tableName?: string
-  displayAttribute?: string
+  ui: {
+    displayAttribute?: string
+  }
   id: FinalAttributeOptions
   attributes: FinalAttributeRecord
   relationships?: Record<string, FinalRelationship>

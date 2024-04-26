@@ -24,6 +24,11 @@ describe("uuid", () => {
           max: 36,
           primary: undefined,
           regex: UUID_REGEX,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+            enableCaseSensitiveContains: undefined,
+          },
         },
         finalize: expect.any(Function),
       })
@@ -134,8 +139,6 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
           readOnly: false,
           allowNull: true,
           min: 36,
@@ -145,6 +148,8 @@ describe("uuid", () => {
           regex: UUID_REGEX,
           ui: {
             enableCaseSensitiveContains: false,
+            displayName: null,
+            hidden: false,
           },
         },
         setClientPropertyValue: expect.any(Function),
@@ -180,6 +185,11 @@ describe("uuid", () => {
           max: 36,
           primary: undefined,
           regex: UUID_REGEX,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+            enableCaseSensitiveContains: undefined,
+          },
         },
         finalize: expect.any(Function),
       })
@@ -311,14 +321,14 @@ describe("uuid", () => {
           allowNull: false,
           min: 36,
           max: 36,
-          displayName: null,
-          hidden: false,
           readOnly: false,
           primary: false,
           default: null,
           regex: UUID_REGEX,
           ui: {
             enableCaseSensitiveContains: false,
+            displayName: null,
+            hidden: false,
           },
         },
         setClientPropertyValue: expect.any(Function),
@@ -353,6 +363,11 @@ describe("uuid", () => {
           max: 36,
           primary: true,
           regex: UUID_REGEX,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+            enableCaseSensitiveContains: undefined,
+          },
         },
         finalize: expect.any(Function),
       })
@@ -482,8 +497,6 @@ describe("uuid", () => {
         control: {
           type: "String",
           allowNull: false,
-          displayName: null,
-          hidden: false,
           readOnly: false,
           min: 36,
           max: 36,
@@ -492,6 +505,8 @@ describe("uuid", () => {
           regex: UUID_REGEX,
           ui: {
             enableCaseSensitiveContains: false,
+            displayName: null,
+            hidden: false,
           },
         },
         setClientPropertyValue: expect.any(Function),
@@ -527,6 +542,7 @@ describe("uuid", () => {
           primary: undefined,
           regex: UUID_REGEX,
           readOnly: true,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -641,8 +657,11 @@ describe("uuid", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+          },
           readOnly: true,
           allowNull: true,
           min: 36,
@@ -650,9 +669,6 @@ describe("uuid", () => {
           primary: false,
           default: null,
           regex: UUID_REGEX,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),

@@ -13,6 +13,7 @@ import type {
   FlatCreateType,
   FlatUpdateType,
   ContextualMeta,
+  MutateOptions,
 } from "@hatchifyjs/rest-client"
 import {
   createStore,
@@ -53,6 +54,7 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
           FlatCreateType<GetSchemaFromName<TSchemas, SchemaName>>,
           "__schema"
         >,
+        mutateOptions?: MutateOptions<TSchemas>,
       ) => Promise<
         RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
       >
@@ -61,10 +63,14 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
           FlatUpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
           "__schema"
         >,
+        mutateOptions?: MutateOptions<TSchemas>,
       ) => Promise<
         RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>
       >
-      deleteOne: (id: string) => Promise<void>
+      deleteOne: (
+        id: string,
+        mutateOptions?: MutateOptions<TSchemas>,
+      ) => Promise<void>
       // hooks
       useAll: (
         query?: QueryList<GetSchemaFromName<TSchemas, SchemaName>>,
@@ -83,7 +89,9 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
         ),
         Meta,
       ]
-      useCreateOne: () => [
+      useCreateOne: <TMutateOptions extends MutateOptions<TSchemas>>(
+        mutateOptions?: TMutateOptions,
+      ) => [
         (
           data: Omit<
             FlatCreateType<GetSchemaFromName<TSchemas, SchemaName>>,
@@ -93,7 +101,9 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
         Meta,
         RecordType<TSchemas, GetSchemaFromName<TSchemas, SchemaName>>?,
       ]
-      useUpdateOne: () => [
+      useUpdateOne: <TMutateOptions extends MutateOptions<TSchemas>>(
+        mutateOptions?: TMutateOptions,
+      ) => [
         (
           data: Omit<
             FlatUpdateType<GetSchemaFromName<TSchemas, SchemaName>>,
@@ -107,7 +117,9 @@ export type HatchifyReactRest<TSchemas extends Record<string, PartialSchema>> =
           | undefined
         ),
       ]
-      useDeleteOne: () => [(id: string) => void, ContextualMeta]
+      useDeleteOne: <TMutateOptions extends MutateOptions<TSchemas>>(
+        mutateOptions?: TMutateOptions,
+      ) => [(id: string) => void, ContextualMeta]
       // subscribes
       // subscribeToAll: (
       //   query: QueryList | undefined,
@@ -150,26 +162,29 @@ export const hatchifyReactRest = <
             typedSchemaName,
             query,
           ),
-        createOne: (data) =>
+        createOne: (data, mutateOptions) =>
           createOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
             data,
+            mutateOptions,
           ),
-        updateOne: (data) =>
+        updateOne: (data, mutateOptions) =>
           updateOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
             data,
+            mutateOptions,
           ),
-        deleteOne: (id: string) =>
+        deleteOne: (id, mutateOptions) =>
           deleteOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
             id,
+            mutateOptions,
           ),
         // hooks
         useAll: (query, baseFilter, minimumLoadTime) =>
@@ -188,23 +203,26 @@ export const hatchifyReactRest = <
             typedSchemaName,
             query,
           ),
-        useCreateOne: () =>
+        useCreateOne: (mutateOptions) =>
           useCreateOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
+            mutateOptions,
           ),
-        useUpdateOne: () =>
+        useUpdateOne: (mutateOptions) =>
           useUpdateOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
+            mutateOptions,
           ),
-        useDeleteOne: () =>
+        useDeleteOne: (mutateOptions) =>
           useDeleteOne<TSchemas, TSchemaName>(
             restClient,
             finalSchemas,
             typedSchemaName,
+            mutateOptions,
           ),
       }
 
@@ -215,153 +233,3 @@ export const hatchifyReactRest = <
 
   return functions
 }
-
-// todo: leaving for testing, remove before merge to main
-// const partialTodo = {
-//   name: "Todo",
-//   attributes: {
-//     title: string(),
-//     reqTitle: string({ required: true }),
-//     age: integer({ required: true }),
-//     optAge: integer({ required: false }),
-//     important: boolean({ required: true }),
-//     optImportant: boolean(),
-//     created: datetime({ required: true }),
-//     optCreated: datetime(),
-//   },
-//   relationships: {
-//     user: belongsTo("User"),
-//     users: hasMany("User"),
-//   },
-// } satisfies PartialSchema
-
-// partialTodo.relationships.user.targetSchema
-// //                              ^?
-
-// const partialUser = {
-//   name: "User",
-//   attributes: {
-//     name: string({ required: true }),
-//     age: integer({ required: true }),
-//     employed: boolean(),
-//   },
-// } satisfies PartialSchema
-
-// const schemas = {
-//   Todo: partialTodo,
-//   User: partialUser,
-// }
-
-// const app = hatchifyReactRest({
-//   completeSchemaMap: schemas,
-// } as RestClient<typeof schemas, any>)
-
-// type Prettify<T> = {
-//   [K in keyof T]: T[K]
-// } & {}
-
-// app.Todo.createOne({
-//   attributes: { title: "hio", reqTitle: "", age: 0, important: false, created: "" },
-// })
-
-// app.Todo.findAll({
-//   include: ["user", "users"]
-// }).then(([records]) => {
-//   records[0].user
-// })
-
-// app.Todo.findOne("id").then((record) => {
-//   record?.user
-// })
-// app.User.findOne("id").then((record) => {
-//   record?.name
-//   record?.age
-//   record?.shouldError
-// })
-
-// const [one] = app.Todo.useOne("id")
-// one?.id
-// one?.optAge
-// one?.shouldError
-
-// app.Todo.findAll({}).then(([records]) => {
-//   records[0].id
-//   records[0].optAge
-//   records[0].shouldError
-// })
-
-// const [all] = app.Todo.useAll({})
-// all[0].id
-// all[0].optAge
-// all[0].shouldError
-
-// app.Todo.createOne({
-//   attributes: {
-//     reqTitle: "",
-//     age: 13,
-//     important: true,
-//     created: new Date(),
-//   },
-//   relationships: {
-//     user: {
-//       id: "1234",
-//     },
-//     users: [{ id: "1234" }],
-//   },
-// })
-// app.User.createOne({
-//   attributes: {
-//     name: "",
-//     age: 13,
-//     employed: true,
-//     shouldError: "",
-//   },
-// })
-
-// const [create] = app.Todo.useCreateOne()
-// create({
-//   attributes: {
-//     reqTitle: "",
-//     age: 13,
-//     important: true,
-//     created: new Date(),
-//     shouldError: "",
-//   },
-// })
-
-// app.Todo.updateOne({
-//   id: "1234",
-//   attributes: {
-//     reqTitle: "",
-//     age: 13,
-//     important: true,
-//     created: new Date(),
-//     // shouldError: '',
-//   },
-// })
-
-// const [update] = app.Todo.useUpdateOne()
-// update({
-//   id: "1234",
-//   attributes: {
-//     reqTitle: "",
-//     age: 13,
-//     important: true,
-//     created: new Date(),
-//     // user: {
-//     //   id: "1234"
-//     // }
-//     // shouldError: '',
-//   },
-//   relationships: {
-//     user: {
-//       id: "123",
-//     },
-//     users: [{
-//       id: "1234",
-//       id: "3434"
-//     }]
-//   }
-// })
-
-// app.Todo.deleteOne("1234")

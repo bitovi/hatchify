@@ -24,6 +24,11 @@ describe("ensureDefaultPrimaryAttribute", () => {
           max: 36,
           primary: true,
           regex: UUID_REGEX,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+            enableCaseSensitiveContains: undefined,
+          },
         },
         orm: {
           sequelize: {
@@ -58,6 +63,11 @@ describe("ensureDefaultPrimaryAttribute", () => {
           max: 36,
           primary: true,
           regex: UUID_REGEX,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+            enableCaseSensitiveContains: undefined,
+          },
         },
         orm: {
           sequelize: {

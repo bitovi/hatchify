@@ -19,11 +19,11 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: undefined,
-          displayName: undefined,
           min: 0,
           max: Infinity,
           primary: undefined,
           regex: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -102,8 +102,12 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+          },
           readOnly: false,
           allowNull: true,
           min: 0,
@@ -111,10 +115,6 @@ describe("text", () => {
           primary: false,
           default: null,
           regex: /(.*?)/,
-          maxRenderLength: null,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -143,7 +143,7 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          displayName: undefined,
+          ui: {},
           allowNull: false,
           allowNullInfer: false,
           min: 0,
@@ -244,8 +244,12 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+          },
           readOnly: false,
           allowNull: false,
           min: 0,
@@ -253,10 +257,6 @@ describe("text", () => {
           primary: false,
           default: null,
           regex: /(.*?)/,
-          maxRenderLength: null,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -286,11 +286,11 @@ describe("text", () => {
         control: {
           type: "String",
           allowNull: undefined,
-          displayName: undefined,
           min: 0,
           max: Infinity,
           primary: true,
           regex: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -385,8 +385,12 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            maxDisplayLength: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+          },
           readOnly: false,
           allowNull: false,
           min: 0,
@@ -394,10 +398,6 @@ describe("text", () => {
           primary: true,
           default: null,
           regex: /(.*?)/,
-          maxRenderLength: null,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),
@@ -426,8 +426,10 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          allowNull: undefined,
-          displayName: undefined,
+          ui: {
+            allowNull: undefined,
+            displayName: undefined,
+          },
           min: 0,
           max: Infinity,
           primary: undefined,
@@ -517,8 +519,12 @@ describe("text", () => {
         },
         control: {
           type: "String",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+            enableCaseSensitiveContains: false,
+            maxDisplayLength: null,
+          },
           readOnly: true,
           allowNull: true,
           min: 0,
@@ -526,10 +532,6 @@ describe("text", () => {
           primary: false,
           default: null,
           regex: /(.*?)/,
-          maxRenderLength: null,
-          ui: {
-            enableCaseSensitiveContains: false,
-          },
         },
         setClientPropertyValue: expect.any(Function),
         serializeClientPropertyValue: expect.any(Function),

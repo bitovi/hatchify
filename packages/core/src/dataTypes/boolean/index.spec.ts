@@ -18,6 +18,7 @@ describe("boolean", () => {
         control: {
           type: "Boolean",
           allowNull: undefined,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -71,8 +72,10 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: false,
           allowNull: true,
           primary: false,
@@ -101,6 +104,7 @@ describe("boolean", () => {
           type: "Boolean",
           allowNull: false,
           allowNullInfer: false,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -164,10 +168,12 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
-          displayName: null,
-          hidden: false,
           readOnly: false,
           allowNull: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           primary: false,
           default: null,
         },
@@ -193,6 +199,10 @@ describe("boolean", () => {
         control: {
           type: "Boolean",
           primary: true,
+          ui: {
+            displayName: undefined,
+            hidden: undefined,
+          },
         },
         finalize: expect.any(Function),
       })
@@ -246,8 +256,10 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: false,
           allowNull: true,
           primary: true,
@@ -276,6 +288,7 @@ describe("boolean", () => {
           type: "Boolean",
           allowNull: undefined,
           readOnly: true,
+          ui: {},
         },
         finalize: expect.any(Function),
       })
@@ -337,8 +350,10 @@ describe("boolean", () => {
         },
         control: {
           type: "Boolean",
-          displayName: null,
-          hidden: false,
+          ui: {
+            displayName: null,
+            hidden: false,
+          },
           readOnly: true,
           allowNull: true,
           primary: false,

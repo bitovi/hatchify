@@ -9,10 +9,8 @@ export type PartialUuidProps<TRequired extends boolean> = PartialDataTypeProps<
   TRequired
 >
 
-export type PartialUuidControlType<TRequired extends boolean> = Omit<
-  PartialStringControlType<TRequired>,
-  "maxRenderLength"
->
+export type PartialUuidControlType<TRequired extends boolean> =
+  PartialStringControlType<TRequired>
 
 export interface PartialUuidORM {
   sequelize: Omit<PartialSequelizeDataType<undefined, string>, "typeArgs">

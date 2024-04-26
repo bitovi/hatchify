@@ -13,16 +13,19 @@ export const Todo = {
 
 ## Parameters
 
-| key             | description                                                                         |   type    | optional |            default            |
-| --------------- | ----------------------------------------------------------------------------------- | :-------: | :------: | :---------------------------: |
-| `unique`        | If the value must be unqiue. <br/> Example: `integer({unique: true})`               | `Boolean` |   Yes    |            `false`            |
-| `default`       | The default value of the attribute. <br/> Example: `integer({default: 0})`          | `Integer` |   Yes    |            `null`             |
-| `required`      | If the attribute must be provided. <br/> Example: `integer({required: true})`       | `Boolean` |   Yes    |            `false`            |
-| `primary`       | If the attribute is a primary key. <br/> Example: `integer({primary: true})`        | `Boolean` |   Yes    |            `false`            |
-| `step`          | The granularity the value must adhere to. <br/> Example: `integer({step: 5})`       | `Integer` |   Yes    |              `1`              |
-| `max`           | The maximum value allowed. <br/> Example: `integer({max: 100})`                     | `Integer` |   Yes    | `Number.MAX_SAFE_INTEGER` 🛑  |
-| `min`           | The minimum value allowed. <br/> Example: `integer({min: 1})`                       | `Integer` |   Yes    | `-Number.MIN_SAFE_INTEGER` 🛑 |
-| `autoIncrement` | If the value should be incremented. <br/> Example: `integer({autoIncrement: true})` | `Boolean` |   Yes    |            `false`            |
+| key              | description                                                                                                                                      |   type    | optional |            default            |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | :-------: | :------: | :---------------------------: |
+| `unique`         | If the value must be unqiue. <br/> Example: `integer({unique: true})`                                                                            | `Boolean` |   Yes    |            `false`            |
+| `default`        | The default value of the attribute. <br/> Example: `integer({default: 0})`                                                                       | `Integer` |   Yes    |            `null`             |
+| `readOnly`       | If the attribute cannot be updated.                                                                                                              | `Boolean` |   Yes    |            `false`            |
+| `required`       | If the attribute must be provided. <br/> Example: `integer({required: true})`                                                                    | `Boolean` |   Yes    |            `false`            |
+| `primary`        | If the attribute is a primary key. <br/> Example: `integer({primary: true})`                                                                     | `Boolean` |   Yes    |            `false`            |
+| `step`           | The granularity the value must adhere to. <br/> Example: `integer({step: 5})`                                                                    | `Integer` |   Yes    |              `1`              |
+| `max`            | The maximum value allowed. <br/> Example: `integer({max: 100})`                                                                                  | `Integer` |   Yes    | `Number.MAX_SAFE_INTEGER` 🛑  |
+| `min`            | The minimum value allowed. <br/> Example: `integer({min: 1})`                                                                                    | `Integer` |   Yes    | `-Number.MIN_SAFE_INTEGER` 🛑 |
+| `autoIncrement`  | If the value should be incremented. <br/> Example: `integer({autoIncrement: true})`                                                              | `Boolean` |   Yes    |            `false`            |
+| `ui.displayName` | The display name of the attribute. By default, the Camel Case attribute name will be used. <br/> Example: `integer({displayName: "Importance"})` | `String`  |   Yes    |            `null`             |
+| `ui.hidden`      | If the attribute should be hidden in the UI. <br/> Example: `integer({hidden: true})`                                                            | `Boolean` |   Yes    |            `false`            |
 
 ### 💾 Database Implications
 

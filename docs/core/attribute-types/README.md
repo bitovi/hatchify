@@ -4,6 +4,7 @@ Each schema can use different attribute types to describe the different data sha
 
 - [General Guidelines](#general-guidelines)
 - [displayName](#displayname)
+- [readOnly](#readonly)
 - [Further Customizations](#further-customizations)
 
 ## General Guidelines
@@ -85,6 +86,32 @@ This has no effect on the API.
 ### 🖼️ UI Implications
 
 The `lastName` attribute will be displayed as "Surname" in the table header and filter dropdowns.
+
+## readOnly
+
+The `readOnly` is an optional parameter to prevent updates to the attribute using Hatchify.
+
+```ts
+const SalesPerson = {
+  name: "SalesPerson",
+  attributes: {
+    firstName: string(),
+    lastName: string({ readOnly: true }), // 👀
+  },
+} satisfies PartialSchema
+```
+
+### 💾 Database Implications
+
+This will prevent updating the attribute via Hatchify.
+
+### ↔️ API Implications
+
+This will prevent updating the attribute via Hatchify.
+
+### 🖼️ UI Implications
+
+This has no effect on the UI.
 
 ## Further Customizations
 

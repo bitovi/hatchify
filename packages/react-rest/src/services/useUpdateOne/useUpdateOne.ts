@@ -10,6 +10,7 @@ import type {
   MetaError,
   RestClient,
   ContextualMeta,
+  MutateOptions,
 } from "@hatchifyjs/rest-client"
 
 type UpdateData<
@@ -33,6 +34,7 @@ export const useUpdateOne = <
   dataSource: RestClient<TSchemas, TSchemaName>,
   allSchemas: FinalSchemas,
   schemaName: TSchemaName,
+  mutateOptions?: MutateOptions<TSchemas>,
 ): [
   (data: UpdateData<TSchemas, TSchemaName>) => void,
   ContextualMeta,
@@ -44,7 +46,13 @@ export const useUpdateOne = <
 
   const update = useCallback(
     (data: UpdateData<TSchemas, TSchemaName>) => {
-      updateOne<TSchemas, TSchemaName>(dataSource, allSchemas, schemaName, data)
+      updateOne<TSchemas, TSchemaName>(
+        dataSource,
+        allSchemas,
+        schemaName,
+        data,
+        mutateOptions,
+      )
         .then((data) => {
           setMeta((prev) => ({
             ...prev,
@@ -72,7 +80,7 @@ export const useUpdateOne = <
           }),
         )
     },
-    [dataSource, allSchemas, schemaName],
+    [dataSource, allSchemas, schemaName, mutateOptions],
   )
 
   return [update, meta, data]
