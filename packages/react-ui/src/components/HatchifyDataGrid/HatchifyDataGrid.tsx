@@ -33,6 +33,7 @@ export interface HatchifyDataGridProps<
   overwrite?: boolean
   minimumLoadTime?: number
   fitParent?: boolean
+  alwaysSorted?: boolean
 }
 
 function HatchifyDataGrid<
@@ -52,6 +53,7 @@ function HatchifyDataGrid<
   overwrite,
   minimumLoadTime,
   fitParent,
+  alwaysSorted,
 }: HatchifyDataGridProps<TSchemas, TSchemaName>): JSX.Element {
   const { DataGrid } = useHatchifyPresentation()
   const defaultInclude = useMemo(
@@ -63,6 +65,7 @@ function HatchifyDataGrid<
     [finalSchemas, schemaName],
   )
 
+  // console.log('HatchifyDataGrid.always')
   const dataGridState = useDataGridState(
     finalSchemas,
     partialSchemas,
@@ -76,6 +79,7 @@ function HatchifyDataGrid<
       defaultSort,
       baseFilter,
       minimumLoadTime,
+      alwaysSorted,
     },
   )
 

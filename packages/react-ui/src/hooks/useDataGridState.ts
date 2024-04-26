@@ -61,6 +61,7 @@ export default function useDataGridState<
     include,
     defaultPage,
     defaultSort,
+    alwaysSorted,
     baseFilter,
     minimumLoadTime,
   }: {
@@ -70,6 +71,7 @@ export default function useDataGridState<
     include?: Include<GetSchemaFromName<TSchemas, TSchemaName>>
     defaultPage?: PaginationObject
     defaultSort?: SortObject
+    alwaysSorted?: boolean
     baseFilter?: Filters
     minimumLoadTime?: number
   } = {},
@@ -81,7 +83,7 @@ export default function useDataGridState<
   }
 
   const { page, setPage } = usePage(defaultPage)
-  const { sort, sortQueryString, setSort } = useSort(defaultSort)
+  const { sort, sortQueryString, setSort } = useSort(defaultSort, alwaysSorted)
   const { filter, setFilter } = useFilter()
   const { selected, setSelected } = useSelected(
     defaultSelected,

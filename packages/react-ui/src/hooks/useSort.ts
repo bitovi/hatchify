@@ -3,10 +3,10 @@ import type { HatchifyDataGridSort, SortObject } from "../presentation/index.js"
 
 export default function useSort(
   defaultSort?: SortObject,
+  alwaysSorted?: boolean,
 ): HatchifyDataGridSort {
   const [sort, setSort] = useState<SortObject>(
     defaultSort ?? {
-      alwaysSorted: false,
       direction: undefined,
       sortBy: undefined,
     },
@@ -19,15 +19,15 @@ export default function useSort(
     return `${sort.direction === "desc" ? "-" : ""}${sort.sortBy}`
   }, [sort.sortBy, sort.direction])
 
-  const updateSort = (sortBy: string, alwaysSorted = sort.alwaysSorted) => {
+  const updateSort = (sortBy: string) => {
     if (alwaysSorted && sort.direction === "desc") {
-      setSort({ sortBy, direction: "asc", alwaysSorted })
+      setSort({ sortBy, direction: "asc" })
     } else if (sort.sortBy === undefined || sort.sortBy !== sortBy) {
-      setSort({ sortBy, direction: "asc", alwaysSorted })
+      setSort({ sortBy, direction: "asc" })
     } else if (sort.direction === "asc") {
-      setSort({ sortBy, direction: "desc", alwaysSorted })
+      setSort({ sortBy, direction: "desc" })
     } else {
-      setSort({ sortBy: undefined, direction: undefined, alwaysSorted })
+      setSort({ sortBy: undefined, direction: undefined })
     }
   }
 
