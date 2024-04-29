@@ -14,8 +14,8 @@
     "rebuild": "nx run-many -t build && cd ../.. && npm install && cd example/react-rest-hatchify-backend && npm install"
   },
   "dependencies": {
-    "@hatchifyjs/core": "^0.3.17",
-    "@hatchifyjs/koa": "^1.3.13",
+    "@hatchifyjs/core": "^0.4.1",
+    "@hatchifyjs/koa": "^1.3.66",
     "koa": "^2.14.2",
     "koa-connect": "^2.1.0",
     "sqlite3": "^5.1.7"
