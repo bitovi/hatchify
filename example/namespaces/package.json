@@ -12,8 +12,8 @@
     "start:backend": "node backend/index.js"
   },
   "dependencies": {
-    "@hatchifyjs/core": "^0.3.22",
-    "@hatchifyjs/express": "^1.3.49",
+    "@hatchifyjs/core": "^0.4.1",
+    "@hatchifyjs/express": "^1.3.53",
     "@hatchifyjs/react-rest": "^0.1.28",
     "express": "^4.19.2",
     "lodash.debounce": "^4.0.8",
