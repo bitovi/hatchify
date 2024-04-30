@@ -14,7 +14,6 @@ export interface XProviderProps {
 export interface SortObject {
   direction: "asc" | "desc" | undefined
   sortBy: string | undefined
-  alwaysSorted?: boolean
 }
 
 export interface PageCountObject {
@@ -57,6 +56,8 @@ export interface XDataGridProps<
   minimumLoadTime?: number
   listWrapperId?: string
   fitParent?: boolean
+  alwaysSorted?: boolean
+  initialSort?: SortObject
 }
 
 export interface XEverythingProps<
@@ -114,5 +115,4 @@ interface HeaderPropsCommon {
   meta: Meta
   setSort: HatchifyDataGridSort["setSort"]
   sortBy: SortObject["sortBy"]
-  alwaysSorted: SortObject["alwaysSorted"]
 }

@@ -8,7 +8,6 @@ describe("useSort", () => {
 
     // initial state
     expect(result.current.sort).toEqual({
-      alwaysSorted: false,
       direction: undefined,
       sortBy: undefined,
     })
@@ -20,7 +19,6 @@ describe("useSort", () => {
 
     // after first click, undefined -> asc
     expect(result.current.sort).toEqual({
-      alwaysSorted: false,
       direction: "asc",
       sortBy: "name",
     })
@@ -32,7 +30,6 @@ describe("useSort", () => {
 
     // after second click, asc -> desc
     expect(result.current.sort).toEqual({
-      alwaysSorted: false,
       direction: "desc",
       sortBy: "name",
     })
@@ -44,7 +41,6 @@ describe("useSort", () => {
 
     // after third click, desc -> undefined
     expect(result.current.sort).toEqual({
-      alwaysSorted: false,
       direction: undefined,
       sortBy: undefined,
     })
@@ -56,7 +52,6 @@ describe("useSort", () => {
 
     // after fourth click, undefined -> asc
     expect(result.current.sort).toEqual({
-      alwaysSorted: false,
       direction: "asc",
       sortBy: "name",
     })
@@ -68,7 +63,6 @@ describe("useSort", () => {
 
     // after new column click, asc
     expect(result.current.sort).toEqual({
-      alwaysSorted: false,
       direction: "asc",
       sortBy: "date",
     })
@@ -77,14 +71,13 @@ describe("useSort", () => {
 
   it("works when alwaysSorted is true", async () => {
     const { result } = renderHook(() =>
-      useSort({ direction: undefined, sortBy: undefined, alwaysSorted: true }),
+      useSort({ direction: undefined, sortBy: undefined }, true),
     )
 
     // initial state
     expect(result.current.sort).toEqual({
       direction: undefined,
       sortBy: undefined,
-      alwaysSorted: true,
     })
     expect(result.current.sortQueryString).toEqual("")
 
@@ -96,7 +89,6 @@ describe("useSort", () => {
     expect(result.current.sort).toEqual({
       direction: "asc",
       sortBy: "name",
-      alwaysSorted: true,
     })
     expect(result.current.sortQueryString).toEqual("name")
 
@@ -108,7 +100,6 @@ describe("useSort", () => {
     expect(result.current.sort).toEqual({
       direction: "desc",
       sortBy: "name",
-      alwaysSorted: true,
     })
     expect(result.current.sortQueryString).toEqual("-name")
 
@@ -120,7 +111,6 @@ describe("useSort", () => {
     expect(result.current.sort).toEqual({
       direction: "asc",
       sortBy: "name",
-      alwaysSorted: true,
     })
     expect(result.current.sortQueryString).toEqual("name")
 
@@ -132,7 +122,6 @@ describe("useSort", () => {
     expect(result.current.sort).toEqual({
       direction: "desc",
       sortBy: "name",
-      alwaysSorted: true,
     })
     expect(result.current.sortQueryString).toEqual("-name")
 
@@ -144,7 +133,6 @@ describe("useSort", () => {
     expect(result.current.sort).toEqual({
       direction: "asc",
       sortBy: "date",
-      alwaysSorted: true,
     })
     expect(result.current.sortQueryString).toEqual("date")
   })

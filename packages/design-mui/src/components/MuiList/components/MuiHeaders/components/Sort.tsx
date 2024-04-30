@@ -4,23 +4,15 @@ import { Box, TableSortLabel } from "@mui/material"
 import { visuallyHidden } from "@mui/utils"
 
 export const Sort: React.FC<
-  Pick<HeaderProps, "direction" | "setSort" | "sortBy" | "alwaysSorted"> & {
+  Pick<HeaderProps, "direction" | "setSort" | "sortBy"> & {
     children: React.ReactNode
     isPending: Meta["isPending"]
     columnKey: HatchifyColumn["key"]
   }
-> = ({
-  alwaysSorted,
-  children,
-  columnKey,
-  direction,
-  isPending,
-  setSort,
-  sortBy,
-}) => (
+> = ({ children, columnKey, direction, isPending, setSort, sortBy }) => (
   <TableSortLabel
     disabled={isPending}
-    active={alwaysSorted || columnKey === sortBy}
+    active={columnKey === sortBy}
     direction={sortBy === sortBy ? direction : "asc"}
     onClick={() => setSort(columnKey)}
     sx={{
