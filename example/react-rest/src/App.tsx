@@ -5,7 +5,7 @@ import { useState } from "react"
 
 const Todo = {
   name: "Todo",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: string(),
   },
@@ -16,7 +16,7 @@ const Todo = {
 
 const User = {
   name: "User",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: string(),
   },

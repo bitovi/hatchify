@@ -1,6 +1,6 @@
 {
   "name": "@hatchifyjs/react-rest",
-  "version": "0.1.35",
+  "version": "0.1.36",
   "type": "module",
   "exports": "./dist/react-rest.js",
   "types": "./dist/react-rest.d.ts",

@@ -3,7 +3,7 @@ import type { PartialSchema } from "@hatchifyjs/core"
 
 export const Article = {
   name: "Article",
-  displayAttribute: "author",
+  ui: { displayAttribute: "author" },
   attributes: {
     author: string({ required: true }),
     tag: string({ required: true }),
@@ -13,7 +13,7 @@ export const Article = {
 export const Feature_Article = {
   name: "Article",
   namespace: "Feature",
-  displayAttribute: "author",
+  ui: { displayAttribute: "author" },
   attributes: {
     author: string({ required: true }),
     tag: string({ required: true }),
