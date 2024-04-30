@@ -165,7 +165,7 @@ import createClient from "@hatchifyjs/rest-client-jsonapi"
 
 const Todo: Schema = {
   name: "Todo",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: "string",
   },
@@ -251,7 +251,7 @@ import type { Schema } from "@hatchifyjs/react-rest"
 
 const Todo: Schema = {
   name: "Todo",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: "string",
   },
@@ -427,7 +427,7 @@ First, we need to update our Todo schema to have a relationship to a user and th
 // App.tsx
 const Todo: Schema = {
   name: "Todo",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: "string",
   },
@@ -448,7 +448,7 @@ const Todo: Schema = {
 // 👀
 const User: Schema = {
   name: "User",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: "string",
   },
@@ -516,7 +516,7 @@ import createClient from "@hatchifyjs/rest-client-jsonapi"
 
 const Todo: Schema = {
   name: "Todo",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: "string",
   },
@@ -530,7 +530,7 @@ const Todo: Schema = {
 
 const User: Schema = {
   name: "User",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: "string",
   },
@@ -690,7 +690,7 @@ import createClient from "@hatchifyjs/rest-client-jsonapi"
 
 const Todo: Schema = {
   name: "Todo",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: "string",
   },
@@ -704,7 +704,7 @@ const Todo: Schema = {
 
 const User: Schema = {
   name: "User",
-  displayAttribute: "name",
+  ui: { displayAttribute: "name" },
   attributes: {
     name: "string",
   },

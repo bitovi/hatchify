@@ -234,7 +234,7 @@ Optionally set the `displayAttribute` to configure which attribute is used to di
 ```ts
 const SalesPerson = {
   name: "SalesPerson",
-  displayAttribute: "email", // 👀
+  ui: { displayAttribute: "email" }, // 👀
   attributes: {
     name: string(),
     email: string(),
