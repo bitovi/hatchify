@@ -59,24 +59,42 @@ type UnionToObject<
   TMutate extends boolean,
 > = {
   [Key in Union["key"]]: Extract<Union, { key: Key }> extends {
-    control: { type: infer Type; values?: infer EnumValues }
+    control: {
+      type: infer Type
+      values?: infer EnumValues
+      allowNullInfer: infer AllowNull
+    }
   }
     ? Type extends "Number"
-      ? number
+      ? AllowNull extends true
+        ? number | null
+        : number
       : Type extends "Boolean"
-        ? boolean
+        ? AllowNull extends true
+          ? boolean | null
+          : boolean
         : Type extends "enum"
-          ? EnumValues[any]
+          ? AllowNull extends true
+            ? EnumValues[any] | null
+            : EnumValues[any]
           : Type extends "String"
-            ? string
+            ? AllowNull extends true
+              ? string | null
+              : string
             : Type extends "Dateonly"
-              ? string
+              ? AllowNull extends true
+                ? string | null
+                : string
               : Type extends "Date"
                 ? TMutate extends true
-                  ? Date | string
-                  : Date
-                : "a"
-    : "b"
+                  ? AllowNull extends true
+                    ? Date | string | null
+                    : Date | string
+                  : AllowNull extends true
+                    ? Date | null
+                    : Date
+                : never
+    : never
 }
 
 // Extract subset of attributes from a union
