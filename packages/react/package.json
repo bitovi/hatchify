@@ -16,8 +16,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@hatchifyjs/design-mui": "^0.1.75",
-    "@hatchifyjs/react-ui": "^0.1.59",
+    "@hatchifyjs/design-mui": "^0.2.0",
+    "@hatchifyjs/react-ui": "^0.2.0",
     "@hatchifyjs/rest-client-jsonapi": "^0.1.39"
   },
   "devDependencies": {
