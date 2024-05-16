@@ -46,6 +46,10 @@ export const useUpdateOne = <
 
   const update = useCallback(
     (data: UpdateData<TSchemas, TSchemaName>) => {
+      setMeta((prev) => ({
+        ...prev,
+        [data.id]: getMeta(undefined, true, true, undefined),
+      }))
       updateOne<TSchemas, TSchemaName>(
         dataSource,
         allSchemas,
@@ -61,23 +65,19 @@ export const useUpdateOne = <
           setData(data)
         })
         .catch((error: MetaError) => {
-          setMeta((prev: ContextualMeta) => {
-            return {
-              ...prev,
-              [data.id]: getMeta(error, false, false, undefined),
-            }
-          })
+          setMeta((prev: ContextualMeta) => ({
+            ...prev,
+            [data.id]: getMeta(error, false, false, undefined),
+          }))
           if (error instanceof Error) {
             throw error
           }
         })
         .finally(() =>
-          setMeta((prev: ContextualMeta) => {
-            return {
-              ...prev,
-              [data.id]: getMeta(prev[data.id]?.error, false, false, undefined),
-            }
-          }),
+          setMeta((prev: ContextualMeta) => ({
+            ...prev,
+            [data.id]: getMeta(prev[data.id]?.error, false, false, undefined),
+          })),
         )
     },
     [dataSource, allSchemas, schemaName, mutateOptions],

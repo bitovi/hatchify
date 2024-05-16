@@ -41,6 +41,10 @@ export const findOne = async <
     updatedQuery,
   )
 
+  if (!resources.record) {
+    return undefined
+  }
+
   // todo: HATCH-417; return from `flattenResourcesIntoRecords` needs to be `RecordType`
   // @ts-expect-error
   return flattenResourcesIntoRecords(
