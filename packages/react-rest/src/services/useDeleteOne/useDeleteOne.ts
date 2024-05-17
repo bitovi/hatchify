@@ -26,6 +26,10 @@ export const useDeleteOne = <
 
   const remove = useCallback(
     (id: string) => {
+      setMeta((prev) => ({
+        ...prev,
+        [id]: getMeta(undefined, true, true, undefined),
+      }))
       deleteOne<TSchemas, TSchemaName>(
         dataSource,
         allSchemas,
@@ -34,31 +38,25 @@ export const useDeleteOne = <
         mutateOptions,
       )
         .then(() =>
-          setMeta((prev: ContextualMeta) => {
-            return {
-              ...prev,
-              [id]: getMeta(undefined, true, false, undefined),
-            }
-          }),
+          setMeta((prev: ContextualMeta) => ({
+            ...prev,
+            [id]: getMeta(undefined, true, false, undefined),
+          })),
         )
         .catch((error: MetaError) => {
-          setMeta((prev: ContextualMeta) => {
-            return {
-              ...prev,
-              [id]: getMeta(error, false, false, undefined),
-            }
-          })
+          setMeta((prev: ContextualMeta) => ({
+            ...prev,
+            [id]: getMeta(error, false, false, undefined),
+          }))
           if (error instanceof Error) {
             throw error
           }
         })
         .finally(() =>
-          setMeta((prev: ContextualMeta) => {
-            return {
-              ...prev,
-              [id]: getMeta(prev[id]?.error, false, false, undefined),
-            }
-          }),
+          setMeta((prev: ContextualMeta) => ({
+            ...prev,
+            [id]: getMeta(prev[id]?.error, false, false, undefined),
+          })),
         )
     },
     [dataSource, allSchemas, schemaName, mutateOptions],
