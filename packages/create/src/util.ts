@@ -1,6 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import spawn from "cross-spawn"
+import { exec } from "child_process"
 
 const renameFiles: Record<string, string> = {
   _gitignore: ".gitignore",
@@ -17,6 +18,34 @@ export async function replaceStringInFile(
     filePath,
     indexHtml.replaceAll(searchValue, replaceValue),
     "utf8",
+  )
+}
+
+export async function readFileWithRetries(filePath: string, retries: number = 5, delay: number = 1000): Promise<string> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    if (fs.existsSync(filePath)) {
+      return await fs.promises.readFile(filePath, "utf-8");
+    }
+    await new Promise(resolve => setTimeout(resolve, attempt * delay));
+  }
+  throw new Error(`${filePath} could not be found after ${retries} attempts`);
+}
+
+export function execCommandExitOnError(
+  command: string,
+  args: string[] = [],
+): void {
+  exec(`${command} ${args.join(" ")}`,
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`${command} error: ${error.message}`)
+        process.exit(1)
+      }
+      if (stderr) {
+        console.error(`${command} stderr: ${stderr}`)
+        process.exit(1)
+      }
+    },
   )
 }
 

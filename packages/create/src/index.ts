@@ -5,18 +5,19 @@ import { fileURLToPath } from "node:url"
 import minimist from "minimist"
 import prompts from "prompts"
 import { red, reset } from "kolorist"
+import { exec } from "child_process"
 import {
   copyDir,
-  emptyDir,
+  emptyDir, execCommandExitOnError,
   formatTargetDir,
   isEmpty,
   isValidPackageName,
-  pkgFromUserAgent,
+  pkgFromUserAgent, readFileWithRetries,
   replaceStringInFile,
   runCommand,
   toValidPackageName,
 } from "./util"
-import { DATABASES, BACKENDS, FRONTENDS } from "./constants"
+import { BACKENDS, DATABASES, FRONTENDS } from "./constants"
 import type { Database } from "./types"
 
 // Avoids autoconversion to number of the project name by defining that the args
@@ -202,6 +203,8 @@ async function init() {
           databaseHost,
         )}:${databasePort}/${encodeURIComponent(databaseName)}`)
 
+  targetDir = packageName || targetDir;
+
   const root = path.join(cwd, targetDir)
 
   if (overwrite) {
@@ -215,15 +218,15 @@ async function init() {
 
   console.log(`\nScaffolding project in ${root}...`)
 
-  runCommand(
-    `npm create vite@latest ${targetDir} -- --template react-ts`,
-    cwd,
-    true,
-  )
+  execCommandExitOnError(`npm create vite@latest "${targetDir}" -- --template react-ts`)
 
-  const templatePackage = JSON.parse(
-    await fs.promises.readFile(path.join(root, "package.json"), "utf-8"),
-  )
+  let templatePackage;
+  try {
+    templatePackage = JSON.parse(await readFileWithRetries(path.join(root, "package.json")));
+  } catch (e) {
+    console.error(e)
+    process.exit(1)
+  }
 
   const backendTemplateDir = path.resolve(
     fileURLToPath(import.meta.url),
