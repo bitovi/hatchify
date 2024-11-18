@@ -43,6 +43,8 @@ export async function findOne<
   const json = await fetchJsonApi<JsonApiResource>(
     "GET",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${query.id}${queryParams}`,
+    undefined,
+    config.fetchOptions,
   )
 
   return Promise.resolve({

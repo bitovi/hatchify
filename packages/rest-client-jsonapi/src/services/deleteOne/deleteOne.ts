@@ -29,6 +29,8 @@ export async function deleteOne<
   await fetchJsonApi(
     "DELETE",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}/${id}`,
+    undefined,
+    config.fetchOptions,
   )
 
   return Promise.resolve()

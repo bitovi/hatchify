@@ -48,6 +48,7 @@ export async function updateOne<
       "id" in jsonApiResource ? jsonApiResource.id : null
     }`,
     jsonApiResource,
+    config.fetchOptions,
   )
 
   return Promise.resolve({

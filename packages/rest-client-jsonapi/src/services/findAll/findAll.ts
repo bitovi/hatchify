@@ -60,6 +60,8 @@ export async function findAll<
   const json = await fetchJsonApi<JsonApiResource[]>(
     "GET",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}${queryParams}`,
+    undefined,
+    config.fetchOptions,
   )
 
   return Promise.resolve([

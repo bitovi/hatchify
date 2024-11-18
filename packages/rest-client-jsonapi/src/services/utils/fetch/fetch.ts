@@ -8,6 +8,7 @@ export async function fetchJsonApi<T>(
   method: "GET" | "POST" | "PATCH" | "DELETE",
   url: string,
   body?: { [key: string]: any },
+  fetchOptions?: RequestInit,
 ): Promise<{
   data: T
   included?: JsonApiResource[]
@@ -17,8 +18,10 @@ export async function fetchJsonApi<T>(
     method,
     body: body ? JSON.stringify({ data: body }) : undefined,
     headers: {
-      "Content-Type": "application/vnd.api+json",
+      ...fetchOptions?.headers,
+      "Content-Type": "application/vnd.api+json", // This will override any Content-Type in fetchOptions
     },
+    ...fetchOptions,
   })
 
   if (!response.ok) {

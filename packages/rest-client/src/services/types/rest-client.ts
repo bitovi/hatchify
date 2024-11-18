@@ -30,6 +30,7 @@ export type RestClientSchemaMap = Record<
 export interface RestClientConfig {
   baseUrl: string
   schemaMap: RestClientSchemaMap
+  fetchOptions?: RequestInit
 }
 
 // always return a Resource[] even if it's a single resource because
@@ -45,6 +46,7 @@ export interface RestClient<
     schemaName: TSchemaName,
     query: QueryList<GetSchemaFromName<TSchemas, TSchemaName>>,
     baseFilter?: Filters,
+    fetchOptions?: RequestInit,
   ) => Promise<
     [
       Resources: { records: Resource[]; related: Resource[] },
@@ -55,20 +57,24 @@ export interface RestClient<
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
     query: QueryOne<GetSchemaFromName<TSchemas, TSchemaName>>,
+    fetchOptions?: RequestInit,
   ) => Promise<{ record: Resource; related: Resource[] }>
   createOne: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
     data: CreateType<GetSchemaFromName<TSchemas, TSchemaName>>,
+    fetchOptions?: RequestInit,
   ) => Promise<{ record: Resource; related: Resource[] }>
   updateOne: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
     data: UpdateType<GetSchemaFromName<TSchemas, TSchemaName>>,
+    fetchOptions?: RequestInit,
   ) => Promise<{ record: Resource; related: Resource[] }>
   deleteOne: (
     allSchemas: FinalSchemas,
     schemaName: TSchemaName,
     id: string,
+    fetchOptions?: RequestInit,
   ) => Promise<void>
 }
