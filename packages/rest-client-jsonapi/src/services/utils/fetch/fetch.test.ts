@@ -72,4 +72,44 @@ describe("rest-client-jsonapi/services/utils/fetch", () => {
       fetchJsonApi("GET", `${baseUrl}/${schemaMap.Article.endpoint}`),
     ).rejects.toEqual("Unknown error")
   })
+
+  it("applies custom fetchOptions correctly", async () => {
+    const customHeaders = {
+      Authorization: "Bearer test-token",
+      "Custom-Header": "test-value",
+    }
+
+    server.use(
+      http.get(
+        `${baseUrl}/${schemaMap.Article.endpoint}`,
+        async ({ request }) => {
+          // Verify the headers were properly set
+          expect(request.headers.get("Authorization")).toBe("Bearer test-token")
+          expect(request.headers.get("Custom-Header")).toBe("test-value")
+          expect(request.headers.get("Content-Type")).toBe(
+            "application/vnd.api+json",
+          )
+
+          return new Response(JSON.stringify(testData))
+        },
+        { once: true },
+      ),
+    )
+
+    const data = await fetchJsonApi(
+      "GET",
+      `${baseUrl}/${schemaMap.Article.endpoint}`,
+      undefined,
+      {
+        headers: customHeaders,
+        credentials: "include",
+      },
+    )
+
+    expect(data).toEqual({
+      data: testData.data,
+      included: testData.included,
+      meta: testData.meta,
+    })
+  })
 })
