@@ -33,8 +33,7 @@ In just a few short steps we will set up a project containing a Hatchify fronten
 1. Ensure you’re using [node 18 and npm 9 or above](https://nodejs.org/en/download)
 
    ```bash
-   node -v
-   npm -v
+   echo Node: $(node -v) && echo npm: $(npm -v)
    ```
 
 2. Create a new project:
