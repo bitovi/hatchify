@@ -30,6 +30,29 @@ describe("rest-client-jsonapi/services/utils/fetch", () => {
     })
   })
 
+  it("works with fetch options", async () => {
+    const customHeaders = new Headers({
+      Authorization: "Bearer test-token",
+      "Custom-Header": "test-value",
+    })
+
+    const data = await fetchJsonApi(
+      "GET",
+      `${baseUrl}/${schemaMap.Article.endpoint}`,
+      undefined,
+      {
+        headers: customHeaders,
+        credentials: "include",
+      },
+    )
+
+    expect(data).toEqual({
+      data: testData.data,
+      included: testData.included,
+      meta: testData.meta,
+    })
+  })
+
   it("throws an error if the request fails", async () => {
     const errors = [
       {

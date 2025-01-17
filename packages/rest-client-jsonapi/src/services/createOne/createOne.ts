@@ -46,6 +46,7 @@ export async function createOne<
     "POST",
     `${config.baseUrl}/${config.schemaMap[schemaName].endpoint}`,
     jsonApiResource,
+    config.fetchOptions,
   )
 
   return Promise.resolve({

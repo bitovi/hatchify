@@ -31,7 +31,11 @@ export type CreateJsonApiResource = Omit<JsonApiResource, "id">
 export function jsonapi<
   const TSchemas extends Record<string, RestClientSchema>,
   const TSchemaName extends GetSchemaNames<TSchemas>,
->(baseUrl: string, schemaMap: TSchemas): RestClient<TSchemas, TSchemaName> {
+>(
+  baseUrl: string,
+  schemaMap: TSchemas,
+  fetchOptions?: RequestInit,
+): RestClient<TSchemas, TSchemaName> {
   // Default `type` to `schemaMap` key if not set in `schemaMap`
   const completeSchemaMap = Object.entries(schemaMap).reduce(
     (acc, [key, value]) => {
@@ -58,7 +62,11 @@ export function jsonapi<
     {} as RestClientSchemaMap,
   )
 
-  const config = { baseUrl, schemaMap: completeSchemaMap }
+  const config = {
+    baseUrl,
+    schemaMap: completeSchemaMap,
+    fetchOptions,
+  }
 
   return {
     completeSchemaMap: completeSchemaMap as TSchemas,
