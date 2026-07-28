@@ -18,7 +18,7 @@
     "express": "^4.19.2",
     "lodash.debounce": "^4.0.8",
     "sequelize": "^6.37.2",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^6.0.1"
   },
   "devDependencies": {
     "@emotion/react": "^11.11.4",
