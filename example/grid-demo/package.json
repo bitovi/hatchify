@@ -29,7 +29,7 @@
     "express": "^4.19.2",
     "koa": "^2.15.0",
     "pg": "^8.11.3",
-    "sequelize": "^6.37.1",
+    "sequelize": "^6.37.8",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
